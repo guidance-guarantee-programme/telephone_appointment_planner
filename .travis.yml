@@ -1,0 +1,10 @@
+sudo: false
+language: ruby
+cache:
+  bundler: true
+  directories:
+  - tmp/cache/assets/test
+node_js:
+- '0.10'
+before_script:
+- bundle exec rake db:create db:migrate RAILS_ENV=test
