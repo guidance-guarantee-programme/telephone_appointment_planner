@@ -5,7 +5,7 @@ require_relative 'config/application'
 
 Rails.application.load_tasks
 
-default_tasks = []
+default_tasks = [:spec]
 
 begin
   require 'rubocop/rake_task'
