@@ -13,7 +13,7 @@ RSpec.feature 'roles' do
     scenario 'allows resource managers to manage resources' do
       visit '/'
       expect(page).to have_content(
-        'Sorry, you don\'t seem to have the resource_manager_permission permission for this app.'
+        'Sorry, you don\'t seem to have the resource_manager permission for this app.'
       )
     end
   end
