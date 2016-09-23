@@ -26,8 +26,10 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
-gem 'gds-sso'
 gem 'sprockets-es6'
+
+gem 'gds-sso'
+gem 'plek'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
