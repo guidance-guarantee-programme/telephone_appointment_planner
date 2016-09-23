@@ -9,7 +9,7 @@ GDS::SSO.config do |config|
 end
 
 if Rails.env.development?
-  GDS::SSO.test_user = User.find_or_create_by(name: 'Test User') do |user|
-    user.permissions << User::RESOURCE_MANAGER_PERMISSION
-  end
+  test_user = User.first_or_initialize(name: 'Test User')
+  test_user.permissions << User::RESOURCE_MANAGER_PERMISSION
+  test_user.save!
 end
