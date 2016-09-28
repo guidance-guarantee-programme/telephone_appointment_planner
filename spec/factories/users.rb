@@ -5,7 +5,8 @@ FactoryGirl.define do
     uid { SecureRandom.uuid }
     name { Faker::Name.name }
     email 'some-name@example.org'
-    factory :resource_manager_user do
+
+    factory :resource_manager do
       permissions { Array(User::RESOURCE_MANAGER_PERMISSION) }
     end
 

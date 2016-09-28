@@ -31,7 +31,7 @@ RSpec.describe User, type: :model do
 
     context 'user with resource_manager permission' do
       it 'is true' do
-        user = build(:resource_manager_user)
+        user = build(:resource_manager)
         expect(user).to be_resource_manager
       end
     end
