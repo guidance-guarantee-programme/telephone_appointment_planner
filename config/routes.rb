@@ -6,4 +6,6 @@ Rails.application.routes.draw do
   resources :users do
     resources :slot_ranges
   end
+
+  resources :tags, only: :index
 end
