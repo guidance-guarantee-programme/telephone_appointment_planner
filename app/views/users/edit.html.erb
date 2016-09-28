@@ -1,0 +1,38 @@
+<div class="page-header">
+  <ol class="breadcrumb">
+    <li><a href="<%= root_path %>">Home</a></li>
+    <li><a href="<%= users_path %>">Manage Guiders</a></li>
+    <li class="active">Edit User &quot;<%=@guider.name %>&quot;</li>
+  </ol>
+
+  <h1>Edit User "<%=@guider.name %>"</h1>
+</div>
+
+<%= link_to "Add slot range", new_user_slot_range_path(@guider), class: 'btn btn-primary' %>
+
+<table class="table table-striped table-bordered table-hover">
+  <caption><span class="sr-only">List of guiders</span></caption>
+  <colgroup>
+    <col width="98%">
+    <col width="1%">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Slot</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @guider.slot_ranges.each do |slot_range| %>
+    <tr>
+      <td><%= "#{slot_range.from} ➡ onwards" %></td>
+      <td><%= link_to edit_user_slot_range_path(@guider, slot_range), title: "Edit Slot Range #{slot_range.from.to_s}", :class => 'btn btn-info' do %><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Edit Slot Range</span><% end %></td>
+    </tr>
+  <% end %>
+  <% if @guider.slot_ranges.empty? %>
+    <tr>
+      <td colspan="2">No slots</td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

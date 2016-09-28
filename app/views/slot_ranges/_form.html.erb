@@ -1,0 +1,54 @@
+<p>Click on the calendar to create available slots</p>
+
+<%= form_for [@guider, @slot_range], html: { class: "form-horizontal" } do |f| %>
+  <div class="calendar">
+    <div class="form-group">
+      <%= f.label :from, "From", class: 'col-sm-1 control-label' %>
+      <div class="col-sm-2">
+        <%= f.text_field :from, class: 'daterange form-control' %>
+        <script>
+        $(function() {
+          $('.daterange').daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            locale: {
+              format: 'YYYY-MM-DD 00:00:00 UTC'
+            }
+          });
+        });
+        </script>
+      </div>
+      <div class="col-sm-9 text-right">
+        <label aria-hidden="true">Add common slots:</label>
+        <div class="btn-group" role="group" aria-label="Add Common Slots" id="calendar-common">
+          <button type="button" class="btn btn-default" data-events='[
+            { "start": "08:30", "end": "09:40" },
+            { "start": "09:50", "end": "11:00" },
+            { "start": "11:20", "end": "12:30" },
+            { "start": "13:30", "end": "14:40" },
+            { "start": "14:50", "end": "16:00" }
+          ]'>Early</button>
+          <button type="button" class="btn btn-default" data-events='[
+            { "start": "09:30", "end": "10:40" },
+            { "start": "10:50", "end": "12:00" },
+            { "start": "12:20", "end": "13:30" },
+            { "start": "14:30", "end": "15:40" },
+            { "start": "15:50", "end": "17:00" }
+          ]'>Mid</button>
+          <button type="button" class="btn btn-default" data-events='[
+            { "start": "11:00", "end": "12:10" },
+            { "start": "12:20", "end": "13:30" },
+            { "start": "13:50", "end": "15:00" },
+            { "start": "16:00", "end": "17:10" },
+            { "start": "17:20", "end": "18:30" }
+          ]'>Late</button>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div data-calendar="GuiderSlotPickerCalendar" data-events=".slots-data" data-events-common="calendar-common" data-config='{"slotDurationMinutes": 70}'></div>
+    </div>
+  </div>
+  <%= f.hidden_field :slots, class: 'slots-data', value: @slot_range_json %>
+  <%= f.submit "Save", class: "btn btn-success" %>
+<% end %>

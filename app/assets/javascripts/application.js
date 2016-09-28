@@ -11,4 +11,8 @@
 // about supported directives.
 //
 //= require turbolinks
+//= require moment
+//= require fullcalendar
+//= require listjs
+//= require daterangepicker
 //= require_tree .

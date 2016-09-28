@@ -1,0 +1,12 @@
+<div class="page-header">
+  <ol class="breadcrumb">
+    <li><a href="<%= root_path %>">Home</a></li>
+    <li><a href="<%= users_path %>">Manage Guiders</a></li>
+    <li><a href="<%= edit_user_path(@guider) %>">Edit User &quot;<%=@guider.name %>&quot;</a></li>
+    <li class="active">Edit Slot Range</li>
+  </ol>
+
+  <h1>Edit User "<%=@guider.name %>" slot range from <%=@slot_range.from %></h1>
+</div>
+
+<%= render "form" %>
