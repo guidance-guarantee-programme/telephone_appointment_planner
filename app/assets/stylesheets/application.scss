@@ -1,1 +1,42 @@
- @import 'govuk_admin_template';
+@import 'govuk_admin_template';
+@import 'fullcalendar';
+@import 'daterangepicker-bs3';
+
+.fc-unthemed {
+  .fc-today {
+    background: #fff;
+  }
+
+  .close {
+    font-size: 18px;
+    height: auto;
+    padding: 0;
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    z-index: 2;
+  }
+}
+
+.calendar {
+  clear: both;
+}
+
+.table button.sort {
+  border: 0;
+  background: transparent;
+  color: #337ab7;
+  padding: 0;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.select-all {
+  display: none;
+
+  .js & {
+    display: inline;
+  }
+}

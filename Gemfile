@@ -30,6 +30,11 @@ gem 'sprockets-es6'
 
 gem 'gds-sso'
 gem 'plek'
+gem 'fullcalendar-rails'
+gem 'momentjs-rails'
+gem 'rails-assets-listjs', source: 'https://rails-assets.org'
+gem 'bootstrap-daterangepicker-rails'
+gem 'active_link_to'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -40,6 +45,15 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails', '~> 4.0'
   gem 'capybara'
+  gem 'faker'
+  gem 'pry'
+  gem 'launchy'
+  gem 'site_prism'
+end
+
+group :test do
+  gem 'poltergeist'
+  gem 'database_cleaner'
 end
 
 group :development do

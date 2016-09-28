@@ -3,4 +3,31 @@
   <%= javascript_include_tag 'application' %>
 <% end %>
 
+<% content_for :navbar_items do %>
+  <% if current_user.resource_manager? %>
+    <%= active_link_to 'Manage guiders', users_path, wrap_tag: :li %>
+  <% end %>
+<% end %>
+
+<% content_for :body_end do %>
+  <script>
+  var loadedCalendars = [];
+  $(document).on('turbolinks:load', function() {
+    var calendars = $('[data-calendar]');
+
+    if (loadedCalendars.length) {
+      return;
+    }
+
+    calendars.each(function() {
+      var calendarEl = $(this),
+      calendarType = calendarEl.data('calendar'),
+      config = calendarEl.data('config');
+
+      loadedCalendars.push(new PWTAP[calendarType](calendarEl, config));
+    });
+  });
+  </script>
+<% end %>
+
 <%= render template: 'layouts/govuk_admin_template' %>
