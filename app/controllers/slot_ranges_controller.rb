@@ -1,34 +1,37 @@
 class SlotRangesController < ApplicationController
   before_action :authorise_for_managing_resources!
+  before_action :load_current_guider
 
   def new
-    @guider = User.find(params[:user_id])
     @slot_range = @guider.slot_ranges.build
     @slot_range_json = slot_range_json
   end
 
   def edit
-    @guider = User.find(params[:user_id])
     @slot_range = @guider.slot_ranges.find(params[:id])
     @slot_range_json = slot_range_json
   end
 
   def update
-    @guider = User.find(params[:user_id])
     @slot_range = @guider.slot_ranges.find(params[:id])
-    @slot_range.slots.destroy_all
-    @slot_range.update(slot_range_parameters)
+    ActiveRecord::Base.transaction do
+      @slot_range.slots.destroy_all
+      @slot_range.update(slot_range_parameters)
+    end
     redirect_to edit_user_path(@guider), flash: { success: "Guider \"#{@guider.name}\" has been updated" }
   end
 
   def create
-    @guider = User.find(params[:user_id])
     @slot_range = @guider.slot_ranges.build(slot_range_parameters)
     @slot_range.save!
     redirect_to edit_user_path(@guider), flash: { success: "Guider \"#{@guider.name}\" has been created" }
   end
 
   private
+
+  def load_current_guider
+    @guider = User.find(params[:user_id])
+  end
 
   def slot_range_json
     @slot_range.slots.map do |slot|
