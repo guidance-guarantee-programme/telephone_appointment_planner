@@ -1,14 +1,6 @@
 <p>Click on the calendar to create available slots</p>
 
-<%
-    form_url = if @slot_range.persisted?
-                 user_slot_range_path(@guider, @slot_range)
-               else
-                 user_slot_ranges_path(@guider)
-               end
-%>
-
-<%= form_for @slot_range, url: form_url, html: { class: "form-horizontal" } do |f| %>
+<%= form_for [@guider, @slot_range], html: { class: "form-horizontal" } do |f| %>
   <div class="calendar">
     <div class="form-group">
       <%= f.label :from, "From", class: 'col-sm-1 control-label' %>
