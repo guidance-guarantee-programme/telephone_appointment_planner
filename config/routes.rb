@@ -7,5 +7,5 @@ Rails.application.routes.draw do
     resources :slot_ranges
   end
 
-  resources :groups, only: :index
+  resources :groups, only: %i(index destroy)
 end
