@@ -16,12 +16,19 @@
         <thead>
           <tr class="table-header">
             <th>Name</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           <% @tags.each do |tag| %>
             <tr class="t-tag">
               <td><%= tag.name %></td>
+              <td><%= link_to 'Delete',
+                    tag, method: :delete,
+                    class: 'btn btn-danger t-delete',
+                    data: { confirm: "Are you sure you want to delete the tag #{tag.name}?" }
+                  %>
+              </td>
             </tr>
           <% end %>
         </tbody>
