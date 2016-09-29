@@ -4,7 +4,7 @@ class User < ApplicationRecord
   RESOURCE_MANAGER_PERMISSION = 'resource_manager'.freeze
   GUIDER_PERMISSION = 'guider'.freeze
 
-  has_many :slot_ranges, dependent: :destroy
+  has_many :schedules, dependent: :destroy
 
   def self.guiders
     # This can't really be made faster because we're storing

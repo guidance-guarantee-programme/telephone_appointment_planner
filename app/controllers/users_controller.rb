@@ -7,8 +7,8 @@ class UsersController < ApplicationController
 
   def edit
     @guider = User.find(params[:id])
-    @slot_ranges = SlotRangePresenter.wrap(
-      @guider.slot_ranges.by_from
+    @schedules = SchedulePresenter.wrap(
+      @guider.schedules.by_from
     )
   end
 

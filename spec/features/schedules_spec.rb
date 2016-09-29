@@ -3,14 +3,14 @@
 
 require 'rails_helper'
 
-RSpec.feature 'slot ranges' do
+RSpec.feature 'schedules' do
   def and_there_is_a_guider
     @guider = create(:guider_user, name: 'Davey Daverson')
   end
 
-  def and_there_is_a_guider_with_a_slot_range
+  def and_there_is_a_guider_with_a_schedule
     @guider = create(:guider_user, name: 'Davey Daverson')
-    @slot_range = @guider.slot_ranges.create!(
+    @schedule = @guider.schedules.create!(
       from: Time.zone.now
     )
   end
@@ -50,8 +50,8 @@ RSpec.feature 'slot ranges' do
     page.find('[data-module="GuiderSlotPickerCalendar"]')
   end
 
-  def and_they_add_a_new_slot_range
-    click_link 'Add slot range'
+  def and_they_add_a_new_schedule
+    click_link 'Add schedule'
   end
 
   def and_they_set_the_from_date
@@ -68,18 +68,18 @@ RSpec.feature 'slot ranges' do
     click_button 'Save'
   end
 
-  def then_they_are_told_that_the_slot_range_has_been_created
+  def then_they_are_told_that_the_schedule_has_been_created
     @page = Pages::Layout.new
     expect(@page).to have_flash_of_success
   end
 
-  def then_they_are_told_that_the_slot_range_has_been_updated
+  def then_they_are_told_that_the_schedule_has_been_updated
     @page = Pages::Layout.new
     expect(@page).to have_flash_of_success
   end
 
-  def and_they_edit_the_slot_range
-    click_link "Edit Slot Range #{SlotRangePresenter.new(@slot_range).title}"
+  def and_they_edit_the_schedule
+    click_link "Edit Schedule #{SchedulePresenter.new(@schedule).title}"
   end
 
   def and_they_change_the_from_date
@@ -92,62 +92,62 @@ RSpec.feature 'slot ranges' do
   end
 
   def and_the_guider_has_the_changed_time_slots
-    @slot_range.reload
+    @schedule.reload
 
-    first_slot = @slot_range.slots.first
+    first_slot = @schedule.slots.first
     expect(first_slot.day).to eq 'Wednesday'
     expect(first_slot.start_at).to eq '11:00'
     expect(first_slot.end_at).to eq '12:10'
 
-    second_slot = @slot_range.slots.second
+    second_slot = @schedule.slots.second
     expect(second_slot.day).to eq 'Thursday'
     expect(second_slot.start_at).to eq '10:30'
     expect(second_slot.end_at).to eq '11:40'
   end
 
   def and_the_guider_has_those_time_slots_available
-    expect(@guider.slot_ranges.count).to eq 1
-    slot_range = @guider.slot_ranges.first
+    expect(@guider.schedules.count).to eq 1
+    schedule = @guider.schedules.first
 
-    expect(slot_range.slots.count).to eq 2
+    expect(schedule.slots.count).to eq 2
 
-    first_slot = slot_range.slots.first
+    first_slot = schedule.slots.first
     expect(first_slot.day).to eq 'Monday'
     expect(first_slot.start_at).to eq '09:00'
     expect(first_slot.end_at).to eq '10:10'
 
-    second_slot = slot_range.slots.second
+    second_slot = schedule.slots.second
     expect(second_slot.day).to eq 'Tuesday'
     expect(second_slot.start_at).to eq '10:30'
     expect(second_slot.end_at).to eq '11:40'
   end
 
-  scenario 'Successfully adding a new slot range to a guider', js: true do
+  scenario 'Successfully adding a new schedule to a guider', js: true do
     given_the_user_is_a_resource_manager do
       and_there_is_a_guider
       when_they_manage_guiders
       then_they_see_the_guider_name_listed
       when_they_edit_the_guider
-      and_they_add_a_new_slot_range
+      and_they_add_a_new_schedule
       and_they_set_the_from_date
       and_they_add_some_time_slots
       when_they_save_the_users_time_slots
-      then_they_are_told_that_the_slot_range_has_been_created
+      then_they_are_told_that_the_schedule_has_been_created
       and_the_guider_has_those_time_slots_available
     end
   end
 
-  scenario 'Successfully update a slot range for a guider', js: true do
+  scenario 'Successfully update a schedule for a guider', js: true do
     given_the_user_is_a_resource_manager do
-      and_there_is_a_guider_with_a_slot_range
+      and_there_is_a_guider_with_a_schedule
       when_they_manage_guiders
       then_they_see_the_guider_name_listed
       when_they_edit_the_guider
-      and_they_edit_the_slot_range
+      and_they_edit_the_schedule
       and_they_change_the_from_date
       and_they_change_the_time_slots
       when_they_save_the_users_time_slots
-      then_they_are_told_that_the_slot_range_has_been_updated
+      then_they_are_told_that_the_schedule_has_been_updated
       and_the_guider_has_the_changed_time_slots
     end
   end

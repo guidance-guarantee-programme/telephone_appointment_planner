@@ -1,6 +1,6 @@
 module Pages
-  class EditSlotRange < SitePrism::Page
-    set_url '/users/{user_id}/slot_ranges/{id}/edit'
+  class EditSchedule < SitePrism::Page
+    set_url '/users/{user_id}/schedules/{id}/edit'
     element(
       :permission_error_message,
       'h1',

@@ -1,3 +1,3 @@
 class Slot < ApplicationRecord
-  belongs_to :slot_range
+  belongs_to :schedule
 end
