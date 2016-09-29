@@ -6,7 +6,7 @@
 <% content_for :navbar_items do %>
   <% if current_user.resource_manager? %>
     <%= active_link_to 'Manage guiders', users_path, wrap_tag: :li %>
-    <%= active_link_to 'Manage tags', tags_path, wrap_tag: :li %>
+    <%= active_link_to 'Manage groups', groups_path, wrap_tag: :li %>
   <% end %>
 <% end %>
 

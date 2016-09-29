@@ -1,7 +1,7 @@
 module Pages
-  class ManageTags < SitePrism::Page
-    set_url '/tags'
+  class ManageGroups < SitePrism::Page
+    set_url '/groups'
 
-    elements :tags, '.t-tag'
+    elements :groups, '.t-group'
   end
 end
