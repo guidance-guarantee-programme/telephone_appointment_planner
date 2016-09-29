@@ -37,7 +37,7 @@ RSpec.feature 'slot ranges' do
     time = "#{time}:00"
     x, y = page.driver.evaluate_script <<-JS
       function() {
-        var $calendar = $('[data-calendar]');
+        var $calendar = $('[data-module="GuiderSlotPickerCalendar"]');
         var $header = $calendar.find(".fc-day-header:contains('#{day}')");
         var $row = $calendar.find('[data-time="#{time}"]');
         return [$header.offset().left + 10, $row.offset().top + 10];
@@ -47,7 +47,7 @@ RSpec.feature 'slot ranges' do
   end
 
   def ensure_calendar_exists
-    page.find('[data-calendar]')
+    page.find('[data-module="GuiderSlotPickerCalendar"]')
   end
 
   def and_they_add_a_new_slot_range
