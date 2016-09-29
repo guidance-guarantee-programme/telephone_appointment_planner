@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   root 'home#index'
 
   resources :users do
-    resources :slot_ranges
+    resources :schedules
   end
 
   resources :groups, only: %i(index destroy)

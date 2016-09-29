@@ -1,6 +1,6 @@
 <p>Click on the calendar to create available slots</p>
 
-<%= form_for [@guider, @slot_range], html: { class: "form-horizontal" } do |f| %>
+<%= form_for [@guider, @schedule], html: { class: "form-horizontal" } do |f| %>
   <div class="calendar">
     <div class="form-group">
       <%= f.label :from, "From", class: 'col-sm-1 control-label' %>
@@ -49,6 +49,6 @@
       <div data-module="GuiderSlotPickerCalendar" data-events=".slots-data" data-events-common="calendar-common" data-config='{"slotDurationMinutes": 70}'></div>
     </div>
   </div>
-  <%= f.hidden_field :slots, class: 'slots-data', value: @slot_range_json %>
+  <%= f.hidden_field :slots, class: 'slots-data', value: @schedule_json %>
   <%= f.submit "Save", class: "btn btn-success" %>
 <% end %>

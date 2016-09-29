@@ -8,7 +8,7 @@
   <h1>Edit User "<%=@guider.name %>"</h1>
 </div>
 
-<%= link_to "Add slot range", new_user_slot_range_path(@guider), class: 'btn btn-primary' %>
+<%= link_to "Add schedule", new_user_schedule_path(@guider), class: 'btn btn-primary' %>
 
 <table class="table table-striped table-bordered table-hover">
   <caption><span class="sr-only">List of guiders</span></caption>
@@ -18,18 +18,18 @@
   </colgroup>
   <thead>
     <tr>
-      <th>Slot</th>
+      <th>Schedule</th>
       <th>Actions</th>
     </tr>
   </thead>
   <tbody>
-  <% @slot_ranges.each do |slot_range| %>
+  <% @schedules.each do |schedule| %>
     <tr>
-      <td><%= "#{slot_range.title}" %></td>
-      <td><%= link_to edit_user_slot_range_path(@guider, slot_range), title: "Edit Slot Range #{slot_range.title}", :class => 'btn btn-info' do %><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Edit Slot Range</span><% end %></td>
+      <td><%= "#{schedule.title}" %></td>
+      <td><%= link_to edit_user_schedule_path(@guider, schedule), title: "Edit Schedule #{schedule.title}", :class => 'btn btn-info' do %><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Edit Schedule</span><% end %></td>
     </tr>
   <% end %>
-  <% if @slot_ranges.empty? %>
+  <% if @schedules.empty? %>
     <tr>
       <td colspan="2">No slots</td>
     </tr>

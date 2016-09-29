@@ -1,4 +1,4 @@
-class SlotRangePresenter < SimpleDelegator
+class SchedulePresenter < SimpleDelegator
   def title
     from.strftime('%d %B %Y')
   end
