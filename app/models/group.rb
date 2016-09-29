@@ -1,3 +1,3 @@
-class Tag < ApplicationRecord
+class Group < ApplicationRecord
   default_scope { order(:name) }
 end

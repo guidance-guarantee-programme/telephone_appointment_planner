@@ -1,16 +1,16 @@
 <div class="page-header">
   <ol class="breadcrumb">
     <li><a href="<%= root_path %>">Telephone Appointment planner</a></li>
-    <li class="active">Tags</li>
+    <li class="active">Groups</li>
   </ol>
 
-  <h1>Tags</h1>
+  <h1>Groups</h1>
 </div>
 
 <div class="row">
   <div class="col-md-12">
-    <% if @tags.empty? %>
-      <p class="no-content t-notice">No tags.</p>
+    <% if @groups.empty? %>
+      <p class="no-content t-notice">No groups.</p>
     <% else %>
       <table class="table table-bordered">
         <thead>
@@ -19,9 +19,9 @@
           </tr>
         </thead>
         <tbody>
-          <% @tags.each do |tag| %>
-            <tr class="t-tag">
-              <td><%= tag.name %></td>
+          <% @groups.each do |group| %>
+            <tr class="t-group">
+              <td><%= group.name %></td>
             </tr>
           <% end %>
         </tbody>

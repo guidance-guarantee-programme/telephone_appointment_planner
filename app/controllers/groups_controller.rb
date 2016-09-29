@@ -1,9 +1,9 @@
-class TagsController < ApplicationController
+class GroupsController < ApplicationController
   before_action do
     authorise_user!(User::RESOURCE_MANAGER_PERMISSION)
   end
 
   def index
-    @tags = Tag.all
+    @groups = Group.all
   end
 end
