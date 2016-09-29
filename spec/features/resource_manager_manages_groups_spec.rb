@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.feature 'Resource manager manages groups', js: true do
+RSpec.feature 'Resource manager manages groups' do
   scenario 'Viewing existing groups' do
     given_the_user_identifies_as_a_resource_manager do
       and_there_are_existing_groups
