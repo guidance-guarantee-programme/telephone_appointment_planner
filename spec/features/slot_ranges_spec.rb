@@ -69,13 +69,13 @@ RSpec.feature 'slot ranges' do
   end
 
   def then_they_are_told_that_the_slot_range_has_been_created
-    slot_range = @guider.slot_ranges.first
-    expect(page).to have_content "Slot Range \"#{slot_range.display_title}\" has been created"
+    @page = Pages::Layout.new
+    expect(@page).to have_flash_of_success
   end
 
   def then_they_are_told_that_the_slot_range_has_been_updated
-    slot_range = @guider.slot_ranges.first
-    expect(page).to have_content "Slot Range \"#{slot_range.display_title}\" has been updated"
+    @page = Pages::Layout.new
+    expect(@page).to have_flash_of_success
   end
 
   def and_the_edit_the_slot_range
