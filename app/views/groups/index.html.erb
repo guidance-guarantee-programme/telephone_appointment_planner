@@ -16,12 +16,19 @@
         <thead>
           <tr class="table-header">
             <th>Name</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           <% @groups.each do |group| %>
             <tr class="t-group">
               <td><%= group.name %></td>
+              <td><%= link_to 'Delete',
+                    group, method: :delete,
+                    class: 'btn btn-danger t-delete',
+                    data: { confirm: "Are you sure you want to delete the group #{group.name}?" }
+                  %>
+              </td>
             </tr>
           <% end %>
         </tbody>
