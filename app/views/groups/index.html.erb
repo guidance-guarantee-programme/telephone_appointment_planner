@@ -27,12 +27,18 @@
         <tbody>
           <% @groups.each do |group| %>
             <tr class="t-group">
-              <td><%= group.name %></td>
-              <td><%= link_to 'Delete',
-                    group, method: :delete,
-                    class: 'btn btn-danger t-delete',
-                    data: { confirm: "Are you sure you want to delete the group #{group.name}?" }
+              <td><span class="glyphicon glyphicon-tag" aria-hidden="true"></span> <%= group.name %></td>
+              <td><%=
+                    link_to(
+                      group,
+                      method: :delete,
+                      class: 'btn btn-danger t-delete',
+                      title: "Delete #{group.name} group",
+                      data: { confirm: "Are you sure you want to delete the group #{group.name}?" }
+                    ) do
                   %>
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> <span class="sr-only">Delete</span>
+                  <% end %>
               </td>
             </tr>
           <% end %>
