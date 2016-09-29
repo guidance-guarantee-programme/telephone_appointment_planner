@@ -3,7 +3,9 @@ class SchedulesController < ApplicationController
   before_action :load_current_guider
 
   def new
-    @schedule = @guider.schedules.build
+    @schedule = @guider.schedules.build(
+      from: 6.weeks.from_now
+    )
     @schedule_json = schedule_json
   end
 
@@ -16,15 +18,23 @@ class SchedulesController < ApplicationController
     @schedule = @guider.schedules.find(params[:id])
     ActiveRecord::Base.transaction do
       @schedule.slots.destroy_all
-      @schedule.update(schedule_parameters)
+      if @schedule.update(schedule_parameters)
+        redirect_to edit_user_path(@guider), success: 'Schedule has been updated'
+      else
+        @schedule_json = schedule_json
+        render :edit
+      end
     end
-    redirect_to edit_user_path(@guider), success: 'Schedule has been updated'
   end
 
   def create
     @schedule = @guider.schedules.build(schedule_parameters)
-    @schedule.save!
-    redirect_to edit_user_path(@guider), success: 'Schedule has been created'
+    if @schedule.save
+      redirect_to edit_user_path(@guider), success: 'Schedule has been created'
+    else
+      @schedule_json = schedule_json
+      render :new
+    end
   end
 
   private
