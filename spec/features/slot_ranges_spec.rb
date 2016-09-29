@@ -68,16 +68,18 @@ RSpec.feature 'slot ranges' do
     click_button 'Save'
   end
 
-  def then_they_are_told_that_the_guider_has_been_created
-    expect(page).to have_content "Guider \"#{@guider.name}\" has been created"
+  def then_they_are_told_that_the_slot_range_has_been_created
+    slot_range = @guider.slot_ranges.first
+    expect(page).to have_content "Slot Range \"#{slot_range.display_title}\" has been created"
   end
 
-  def then_they_are_told_that_the_guider_has_been_updated
-    expect(page).to have_content "Guider \"#{@guider.name}\" has been updated"
+  def then_they_are_told_that_the_slot_range_has_been_updated
+    slot_range = @guider.slot_ranges.first
+    expect(page).to have_content "Slot Range \"#{slot_range.display_title}\" has been updated"
   end
 
   def and_the_edit_the_slot_range
-    click_link "Edit Slot Range #{@slot_range.from}"
+    click_link "Edit Slot Range #{@slot_range.display_title}"
   end
 
   def and_they_change_the_from_date
@@ -130,7 +132,7 @@ RSpec.feature 'slot ranges' do
       and_they_set_the_from_date
       and_they_add_some_time_slots
       when_they_save_the_users_time_slots
-      then_they_are_told_that_the_guider_has_been_created
+      then_they_are_told_that_the_slot_range_has_been_created
       and_the_guider_has_those_time_slots_available
     end
   end
@@ -145,7 +147,7 @@ RSpec.feature 'slot ranges' do
       and_they_change_the_from_date
       and_they_change_the_time_slots
       when_they_save_the_users_time_slots
-      then_they_are_told_that_the_guider_has_been_updated
+      then_they_are_told_that_the_slot_range_has_been_updated
       and_the_guider_has_the_changed_time_slots
     end
   end
