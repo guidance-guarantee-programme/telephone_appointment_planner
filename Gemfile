@@ -17,6 +17,7 @@ gem 'momentjs-rails'
 gem 'rails-assets-listjs', source: 'https://rails-assets.org'
 gem 'bootstrap-daterangepicker-rails'
 gem 'active_link_to'
+gem 'foreman'
 
 group :development, :test do
   gem 'pry-byebug'
