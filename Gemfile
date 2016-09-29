@@ -41,3 +41,7 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'rubocop'
 end
+
+group :staging, :production do
+  gem 'rails_12factor'
+end
