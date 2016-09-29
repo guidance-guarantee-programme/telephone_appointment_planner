@@ -23,13 +23,13 @@
     </tr>
   </thead>
   <tbody>
-  <% @guider.slot_ranges.each do |slot_range| %>
+  <% @slot_ranges.each do |slot_range| %>
     <tr>
-      <td><%= "#{slot_range.display_title}" %></td>
-      <td><%= link_to edit_user_slot_range_path(@guider, slot_range), title: "Edit Slot Range #{slot_range.display_title}", :class => 'btn btn-info' do %><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Edit Slot Range</span><% end %></td>
+      <td><%= "#{slot_range.title}" %></td>
+      <td><%= link_to edit_user_slot_range_path(@guider, slot_range), title: "Edit Slot Range #{slot_range.title}", :class => 'btn btn-info' do %><span class="glyphicon glyphicon-pencil"></span><span class="sr-only">Edit Slot Range</span><% end %></td>
     </tr>
   <% end %>
-  <% if @guider.slot_ranges.empty? %>
+  <% if @slot_ranges.empty? %>
     <tr>
       <td colspan="2">No slots</td>
     </tr>

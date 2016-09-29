@@ -20,7 +20,7 @@ class SlotRangesController < ApplicationController
     end
     redirect_to(
       edit_user_path(@guider),
-      success: "Slot Range \"#{@slot_range.display_title}\" has been updated"
+      success: "Slot Range \"#{SlotRangePresenter.new(@slot_range)}\" has been updated"
     )
   end
 
@@ -29,7 +29,7 @@ class SlotRangesController < ApplicationController
     @slot_range.save!
     redirect_to(
       edit_user_path(@guider),
-      success: "Slot Range \"#{@slot_range.display_title}\" has been created"
+      success: "Slot Range \"#{SlotRangePresenter.new(@slot_range)}\" has been created"
     )
   end
 

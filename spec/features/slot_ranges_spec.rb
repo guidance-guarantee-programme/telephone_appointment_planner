@@ -79,7 +79,7 @@ RSpec.feature 'slot ranges' do
   end
 
   def and_they_edit_the_slot_range
-    click_link "Edit Slot Range #{@slot_range.display_title}"
+    click_link "Edit Slot Range #{SlotRangePresenter.new(@slot_range).title}"
   end
 
   def and_they_change_the_from_date
