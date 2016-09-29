@@ -87,13 +87,13 @@
 
       for (var currentDate = moment(calendarStartDate); currentDate < calendarEndDate; currentDate.add(1, 'days')) {
         for (var eventIndex in events) {
-	  var event = events[eventIndex];
-	  if (event.day == currentDate.format('dddd')) {
+          var event = events[eventIndex];
+          if (event.day == currentDate.format('dddd')) {
             this.$el.fullCalendar('addEventSource', [{
               start: `${currentDate.format('YYYY-MM-DD')}T${event.start_at}`,
               end: `${currentDate.format('YYYY-MM-DD')}T${event.end_at}`
             }]);
-	  }
+          }
         }
       }
     }
@@ -107,13 +107,11 @@
         var event = events[eventIndex],
         eventStartDayWord = event.start.format('dddd');
 
-	eventsOutput.push(
-		{
-			day: eventStartDayWord,
-			start_at: event.start.format('HH:mm'),
-			end_at: event.end.format('HH:mm')
-		}
-	);
+        eventsOutput.push({
+          day: eventStartDayWord,
+          start_at: event.start.format('HH:mm'),
+          end_at: event.end.format('HH:mm')
+        });
       }
 
       dataElement.val(JSON.stringify(eventsOutput, null, 2));

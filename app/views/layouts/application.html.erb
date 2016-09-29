@@ -13,20 +13,20 @@
 
 <% content_for :body_end do %>
   <script>
-  var loadedCalendars = [];
+  var loadedModules = [];
   $(document).on('turbolinks:load', function() {
-    var calendars = $('[data-calendar]');
+    var modules = $('[data-module]');
 
-    if (loadedCalendars.length) {
+    if (loadedModules.length) {
       return;
     }
 
-    calendars.each(function() {
-      var calendarEl = $(this),
-      calendarType = calendarEl.data('calendar'),
-      config = calendarEl.data('config');
+    modules.each(function() {
+      var $el = $(this),
+      type = $el.data('module'),
+      config = $el.data('config');
 
-      loadedCalendars.push(new PWTAP[calendarType](calendarEl, config));
+      loadedModules.push(new PWTAP[type]($el, config));
     });
   });
   </script>
