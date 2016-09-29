@@ -18,19 +18,13 @@ class SlotRangesController < ApplicationController
       @slot_range.slots.destroy_all
       @slot_range.update(slot_range_parameters)
     end
-    redirect_to(
-      edit_user_path(@guider),
-      success: 'Slot Range has been updated'
-    )
+    redirect_to edit_user_path(@guider), success: 'Slot range has been updated'
   end
 
   def create
     @slot_range = @guider.slot_ranges.build(slot_range_parameters)
     @slot_range.save!
-    redirect_to(
-      edit_user_path(@guider),
-      success: 'Slot range has been created'
-    )
+    redirect_to edit_user_path(@guider), success: 'Slot range has been created'
   end
 
   private
