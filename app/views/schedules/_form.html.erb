@@ -1,11 +1,22 @@
 <p>Click on the calendar to create available slots</p>
 
+<% if @schedule.errors.any? %>
+  <div class="alert alert-danger t-errors" role="alert">
+    <h3 class="alert__heading h4">There's a problem</h3>
+    <ul>
+      <% @schedule.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
 <%= form_for [@guider, @schedule], html: { class: "form-horizontal" } do |f| %>
   <div class="calendar">
     <div class="form-group">
-      <%= f.label :from, "From", class: 'col-sm-1 control-label' %>
+      <%= f.label :from, 'From', class: 'col-sm-1 control-label' %>
       <div class="col-sm-2">
-        <%= f.text_field :from, class: 'daterange form-control' %>
+        <%= f.text_field :from, class: 'daterange form-control t-from' %>
         <script>
         $(function() {
           $('.daterange').daterangepicker({
@@ -50,5 +61,5 @@
     </div>
   </div>
   <%= f.hidden_field :slots, class: 'slots-data', value: @schedule_json %>
-  <%= f.submit "Save", class: "btn btn-success" %>
+  <%= f.submit 'Save', class: 'btn btn-success t-save' %>
 <% end %>

@@ -11,7 +11,7 @@ RSpec.feature 'schedules' do
   def and_there_is_a_guider_with_a_schedule
     @guider = create(:guider_user, name: 'Davey Daverson')
     @schedule = @guider.schedules.create!(
-      from: Time.zone.now
+      from: 7.weeks.from_now
     )
   end
 
@@ -51,8 +51,10 @@ RSpec.feature 'schedules' do
   end
 
   def and_they_add_a_new_schedule
-    click_link 'Add schedule'
+    @page = Pages::NewSchedule.new
+    @page.load(user_id: @guider.id)
   end
+  alias_method :when_they_add_a_new_schedule, :and_they_add_a_new_schedule
 
   def and_they_set_the_from_date
     fill_in 'From', with: '2018-10-23 00:00:00 UTC'
@@ -65,7 +67,7 @@ RSpec.feature 'schedules' do
   end
 
   def when_they_save_the_users_time_slots
-    click_button 'Save'
+    @page.save_button.click
   end
 
   def then_they_are_told_that_the_schedule_has_been_created
@@ -79,8 +81,10 @@ RSpec.feature 'schedules' do
   end
 
   def and_they_edit_the_schedule
-    click_link "Edit Schedule #{SchedulePresenter.new(@schedule).title}"
+    @page = Pages::EditSchedule.new
+    @page.load(user_id: @guider.id, id: @schedule.id)
   end
+  alias_method :when_they_edit_the_schedule, :and_they_edit_the_schedule
 
   def and_they_change_the_from_date
     fill_in 'From', with: '2020-11-23 00:00:00 UTC'
@@ -122,6 +126,15 @@ RSpec.feature 'schedules' do
     expect(second_slot.end_at).to eq '11:40'
   end
 
+  def and_they_enter_an_invalid_from_date
+    @page.from.set '2010-10-23 00:00:00 UTC'
+  end
+
+  def then_they_are_shown_an_error
+    expect(@page).to have_error_summary
+    expect(@page).to have_errors
+  end
+
   scenario 'Successfully adding a new schedule to a guider', js: true do
     given_the_user_is_a_resource_manager do
       and_there_is_a_guider
@@ -149,6 +162,26 @@ RSpec.feature 'schedules' do
       when_they_save_the_users_time_slots
       then_they_are_told_that_the_schedule_has_been_updated
       and_the_guider_has_the_changed_time_slots
+    end
+  end
+
+  scenario 'Fails to create a schedule with invalid from date' do
+    given_the_user_is_a_resource_manager do
+      and_there_is_a_guider
+      when_they_add_a_new_schedule
+      and_they_enter_an_invalid_from_date
+      when_they_save_the_users_time_slots
+      then_they_are_shown_an_error
+    end
+  end
+
+  scenario 'Fails to update a schedule with invalid from date' do
+    given_the_user_is_a_resource_manager do
+      and_there_is_a_guider_with_a_schedule
+      when_they_edit_the_schedule
+      and_they_enter_an_invalid_from_date
+      when_they_save_the_users_time_slots
+      then_they_are_shown_an_error
     end
   end
 
