@@ -78,7 +78,7 @@ RSpec.feature 'slot ranges' do
     expect(@page).to have_flash_of_success
   end
 
-  def and_the_edit_the_slot_range
+  def and_they_edit_the_slot_range
     click_link "Edit Slot Range #{@slot_range.display_title}"
   end
 
@@ -143,7 +143,7 @@ RSpec.feature 'slot ranges' do
       when_they_manage_guiders
       then_they_see_the_guider_name_listed
       when_they_edit_the_guider
-      and_the_edit_the_slot_range
+      and_they_edit_the_slot_range
       and_they_change_the_from_date
       and_they_change_the_time_slots
       when_they_save_the_users_time_slots
