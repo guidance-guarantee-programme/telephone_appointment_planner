@@ -12,7 +12,7 @@ RSpec.feature 'roles' do
   end
 
   def and_a_guider_with_a_schedule_exists
-    @guider = create(:guider_user)
+    @guider = create(:guider)
     @schedule = @guider.schedules.create!(
       from: 7.weeks.from_now
     )
@@ -24,7 +24,7 @@ RSpec.feature 'roles' do
   end
 
   def and_a_guider_exists
-    @guider = create(:guider_user)
+    @guider = create(:guider)
   end
 
   def then_they_can_manage_guiders_slots

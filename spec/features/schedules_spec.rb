@@ -5,11 +5,11 @@ require 'rails_helper'
 
 RSpec.feature 'schedules' do
   def and_there_is_a_guider
-    @guider = create(:guider_user, name: 'Davey Daverson')
+    @guider = create(:guider, name: 'Davey Daverson')
   end
 
   def and_there_is_a_guider_with_a_schedule
-    @guider = create(:guider_user, name: 'Davey Daverson')
+    @guider = create(:guider, name: 'Davey Daverson')
     @schedule = @guider.schedules.create!(
       from: 7.weeks.from_now
     )

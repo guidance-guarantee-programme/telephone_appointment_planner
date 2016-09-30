@@ -10,7 +10,7 @@ FactoryGirl.define do
       permissions { Array(User::RESOURCE_MANAGER_PERMISSION) }
     end
 
-    factory :guider_user do
+    factory :guider do
       permissions { Array(User::GUIDER_PERMISSION) }
     end
   end

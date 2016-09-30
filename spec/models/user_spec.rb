@@ -15,7 +15,7 @@ RSpec.describe User, type: :model do
 
     context 'user with guider permission' do
       it 'is true' do
-        user = build(:guider_user)
+        user = build(:guider)
         expect(user).to be_guider
       end
     end
