@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.feature 'Resource manager manages groups' do
   scenario 'Viewing existing groups' do
-    given_the_user_identifies_as_a_resource_manager do
+    given_the_user_is_a_resource_manager do
       and_there_are_existing_groups
       when_they_visit_the_groups_page
       then_they_see_the_groups
@@ -10,21 +10,12 @@ RSpec.feature 'Resource manager manages groups' do
   end
 
   scenario 'Deleting a group' do
-    given_the_user_identifies_as_a_resource_manager do
+    given_the_user_is_a_resource_manager do
       and_there_are_existing_groups
       when_they_visit_the_groups_page
       and_they_delete_a_group
       then_the_group_is_deleted
     end
-  end
-
-  def given_the_user_identifies_as_a_resource_manager
-    @user = create(:resource_manager)
-    GDS::SSO.test_user = @user
-
-    yield
-  ensure
-    GDS::SSO.test_user = nil
   end
 
   def and_there_are_existing_groups
