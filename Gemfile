@@ -27,6 +27,7 @@ group :development, :test do
   gem 'faker'
   gem 'launchy'
   gem 'site_prism'
+  gem 'rubocop'
 end
 
 group :test do
@@ -40,7 +41,6 @@ group :development do
   gem 'listen', '~> 3.0.5'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'rubocop'
 end
 
 group :staging, :production do

@@ -5,13 +5,4 @@ require_relative 'config/application'
 
 Rails.application.load_tasks
 
-default_tasks = [:spec]
-
-begin
-  require 'rubocop/rake_task'
-  RuboCop::RakeTask.new
-  default_tasks.unshift(:rubocop)
-rescue LoadError
-end
-
-task default: default_tasks
+task default:  [:spec, :rubocop, :"js:lint"]
