@@ -55,6 +55,7 @@ GEM
     bootstrap-sass (3.3.5.1)
       autoprefixer-rails (>= 5.0.0.1)
       sass (>= 3.3.0)
+    bugsnag (4.2.1)
     builder (3.2.2)
     byebug (9.0.5)
     capybara (2.9.1)
@@ -288,6 +289,7 @@ PLATFORMS
 DEPENDENCIES
   active_link_to
   bootstrap-daterangepicker-rails
+  bugsnag
   capybara
   database_cleaner
   factory_girl_rails (~> 4.0)
