@@ -44,5 +44,6 @@ group :development do
 end
 
 group :staging, :production do
+  gem 'bugsnag'
   gem 'rails_12factor'
 end
