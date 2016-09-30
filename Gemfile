@@ -31,7 +31,7 @@ end
 
 group :test do
   gem 'poltergeist'
-  gem 'phantomjs', require: 'phantomjs/poltergeist'
+  gem 'phantomjs-binaries'
   gem 'database_cleaner'
 end
 
