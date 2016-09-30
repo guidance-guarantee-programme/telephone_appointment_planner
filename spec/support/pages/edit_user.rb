@@ -6,5 +6,6 @@ module Pages
       'h1',
       text: 'Sorry, you don\'t seem to have the resource_manager permission for this app.'
     )
+    element :flash_of_success, '.alert-success'
   end
 end
