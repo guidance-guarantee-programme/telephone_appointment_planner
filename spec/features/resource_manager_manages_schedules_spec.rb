@@ -3,8 +3,8 @@
 
 require 'rails_helper'
 
-RSpec.feature 'schedules' do
-  scenario 'Successfully adding a new schedule to a guider', js: true do
+RSpec.feature 'Resource manager manages schedules' do
+  scenario 'Successfully adds a new schedule', js: true do
     given_the_user_is_a_resource_manager do
       and_there_is_a_guider
       when_they_manage_guiders
@@ -19,7 +19,7 @@ RSpec.feature 'schedules' do
     end
   end
 
-  scenario 'Successfully update a schedule for a guider', js: true do
+  scenario 'Successfully updates a schedule', js: true do
     given_the_user_is_a_resource_manager do
       and_there_is_a_guider_with_a_schedule
       when_they_manage_guiders
@@ -54,12 +54,6 @@ RSpec.feature 'schedules' do
     end
   end
 
-  scenario 'Users without resource_manager permission can\'t manage resources' do
-    given_the_user_has_no_permissions do
-      then_they_cannot_manage_guiders
-    end
-  end
-
   def and_there_is_a_guider
     @guider = create(:guider, name: 'Davey Daverson')
   end
@@ -82,11 +76,6 @@ RSpec.feature 'schedules' do
 
   def when_they_edit_the_guider
     click_link "Edit #{@guider.name}"
-  end
-
-  def then_they_cannot_manage_guiders
-    visit root_path
-    expect(page).to_not have_link 'Manage guiders'
   end
 
   def click_on_day_and_time(day, time)
