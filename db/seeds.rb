@@ -5,4 +5,4 @@ if Rails.env.development?
   end
 end
 
-FactoryGirl.create_list(:guider_user, 10)
+FactoryGirl.create_list(:guider, 10)
