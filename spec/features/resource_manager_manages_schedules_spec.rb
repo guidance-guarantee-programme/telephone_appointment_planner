@@ -7,9 +7,6 @@ RSpec.feature 'Resource manager manages schedules' do
   scenario 'Successfully adds a new schedule', js: true do
     given_the_user_is_a_resource_manager do
       and_there_is_a_guider
-      when_they_manage_guiders
-      then_they_see_the_guider_name_listed
-      when_they_edit_the_guider
       and_they_add_a_new_schedule
       and_they_set_the_from_date
       and_they_add_some_time_slots
@@ -22,9 +19,6 @@ RSpec.feature 'Resource manager manages schedules' do
   scenario 'Successfully updates a schedule', js: true do
     given_the_user_is_a_resource_manager do
       and_there_is_a_guider_with_a_schedule
-      when_they_manage_guiders
-      then_they_see_the_guider_name_listed
-      when_they_edit_the_guider
       and_they_edit_the_schedule
       and_they_change_the_from_date
       and_they_change_the_time_slots
@@ -37,7 +31,7 @@ RSpec.feature 'Resource manager manages schedules' do
   scenario 'Fails to create a schedule with invalid from date' do
     given_the_user_is_a_resource_manager do
       and_there_is_a_guider
-      when_they_add_a_new_schedule
+      and_they_add_a_new_schedule
       and_they_enter_an_invalid_from_date
       when_they_save_the_users_time_slots
       then_they_are_shown_an_error
@@ -47,7 +41,7 @@ RSpec.feature 'Resource manager manages schedules' do
   scenario 'Fails to update a schedule with invalid from date' do
     given_the_user_is_a_resource_manager do
       and_there_is_a_guider_with_a_schedule
-      when_they_edit_the_schedule
+      and_they_edit_the_schedule
       and_they_enter_an_invalid_from_date
       when_they_save_the_users_time_slots
       then_they_are_shown_an_error
@@ -65,20 +59,8 @@ RSpec.feature 'Resource manager manages schedules' do
     )
   end
 
-  def when_they_manage_guiders
-    visit root_path
-    click_link 'Manage guiders'
-  end
-
-  def then_they_see_the_guider_name_listed
-    expect(page).to have_content @guider.name
-  end
-
-  def when_they_edit_the_guider
-    click_link "Edit #{@guider.name}"
-  end
-
   def click_on_day_and_time(day, time)
+    page.find('[data-module="GuiderSlotPickerCalendar"]')
     time = "#{time}:00"
     x, y = page.driver.evaluate_script <<-JS
       function() {
@@ -91,22 +73,16 @@ RSpec.feature 'Resource manager manages schedules' do
     page.driver.click(x, y)
   end
 
-  def ensure_calendar_exists
-    page.find('[data-module="GuiderSlotPickerCalendar"]')
-  end
-
   def and_they_add_a_new_schedule
     @page = Pages::NewSchedule.new
     @page.load(user_id: @guider.id)
   end
-  alias_method :when_they_add_a_new_schedule, :and_they_add_a_new_schedule
 
   def and_they_set_the_from_date
     fill_in 'From', with: '2018-10-23 00:00:00 UTC'
   end
 
   def and_they_add_some_time_slots
-    ensure_calendar_exists
     click_on_day_and_time 'Monday', '09:00'
     click_on_day_and_time 'Tuesday', '10:30'
   end
@@ -116,12 +92,12 @@ RSpec.feature 'Resource manager manages schedules' do
   end
 
   def then_they_are_told_that_the_schedule_has_been_created
-    @page = Pages::Layout.new
+    @page = Pages::EditUser.new
     expect(@page).to have_flash_of_success
   end
 
   def then_they_are_told_that_the_schedule_has_been_updated
-    @page = Pages::Layout.new
+    @page = Pages::EditUser.new
     expect(@page).to have_flash_of_success
   end
 
@@ -129,10 +105,9 @@ RSpec.feature 'Resource manager manages schedules' do
     @page = Pages::EditSchedule.new
     @page.load(user_id: @guider.id, id: @schedule.id)
   end
-  alias_method :when_they_edit_the_schedule, :and_they_edit_the_schedule
 
   def and_they_change_the_from_date
-    fill_in 'From', with: '2020-11-23 00:00:00 UTC'
+    @page.from.set '2020-11-23 00:00:00 UTC'
   end
 
   def and_they_change_the_time_slots
