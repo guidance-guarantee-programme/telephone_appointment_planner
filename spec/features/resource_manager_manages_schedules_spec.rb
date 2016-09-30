@@ -79,7 +79,7 @@ RSpec.feature 'Resource manager manages schedules' do
   end
 
   def and_they_set_the_from_date
-    fill_in 'From', with: '2018-10-23 00:00:00 UTC'
+    @page.from.set '23 Oct 2018'
   end
 
   def and_they_add_some_time_slots
@@ -107,7 +107,7 @@ RSpec.feature 'Resource manager manages schedules' do
   end
 
   def and_they_change_the_from_date
-    @page.from.set '2020-11-23 00:00:00 UTC'
+    @page.from.set '23 Nov 2020'
   end
 
   def and_they_change_the_time_slots
@@ -147,7 +147,7 @@ RSpec.feature 'Resource manager manages schedules' do
   end
 
   def and_they_enter_an_invalid_from_date
-    @page.from.set '2010-10-23 00:00:00 UTC'
+    @page.from.set 'something not datey'
   end
 
   def then_they_are_shown_an_error

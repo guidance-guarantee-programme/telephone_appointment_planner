@@ -16,14 +16,14 @@
     <div class="form-group">
       <%= f.label :from, 'From', class: 'col-sm-1 control-label' %>
       <div class="col-sm-2">
-        <%= f.text_field :from, class: 'daterange form-control t-from' %>
+        <%= f.text_field :from, value: @schedule.from.try(:strftime, '%-e %b %Y'), class: 'daterange form-control t-from' %>
         <script>
         $(function() {
           $('.daterange').daterangepicker({
             singleDatePicker: true,
             showDropdowns: true,
             locale: {
-              format: 'YYYY-MM-DD 00:00:00 UTC'
+              format: 'D MMM YYYY'
             }
           });
         });
