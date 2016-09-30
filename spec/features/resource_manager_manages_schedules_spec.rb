@@ -8,7 +8,7 @@ RSpec.feature 'Resource manager manages schedules' do
     given_the_user_is_a_resource_manager do
       and_there_is_a_guider
       and_they_add_a_new_schedule
-      and_they_set_the_from_date
+      and_they_set_the_initial_from_date
       and_they_add_some_time_slots
       when_they_save_the_users_time_slots
       then_they_are_told_that_the_schedule_has_been_created
@@ -78,8 +78,8 @@ RSpec.feature 'Resource manager manages schedules' do
     @page.load(user_id: @guider.id)
   end
 
-  def and_they_set_the_from_date
-    @page.from.set '23 Oct 2018'
+  def and_they_set_the_initial_from_date
+    @page.from.set '30 Sep 2016'
   end
 
   def and_they_add_some_time_slots
