@@ -4,6 +4,62 @@
 require 'rails_helper'
 
 RSpec.feature 'schedules' do
+  scenario 'Successfully adding a new schedule to a guider', js: true do
+    given_the_user_is_a_resource_manager do
+      and_there_is_a_guider
+      when_they_manage_guiders
+      then_they_see_the_guider_name_listed
+      when_they_edit_the_guider
+      and_they_add_a_new_schedule
+      and_they_set_the_from_date
+      and_they_add_some_time_slots
+      when_they_save_the_users_time_slots
+      then_they_are_told_that_the_schedule_has_been_created
+      and_the_guider_has_those_time_slots_available
+    end
+  end
+
+  scenario 'Successfully update a schedule for a guider', js: true do
+    given_the_user_is_a_resource_manager do
+      and_there_is_a_guider_with_a_schedule
+      when_they_manage_guiders
+      then_they_see_the_guider_name_listed
+      when_they_edit_the_guider
+      and_they_edit_the_schedule
+      and_they_change_the_from_date
+      and_they_change_the_time_slots
+      when_they_save_the_users_time_slots
+      then_they_are_told_that_the_schedule_has_been_updated
+      and_the_guider_has_the_changed_time_slots
+    end
+  end
+
+  scenario 'Fails to create a schedule with invalid from date' do
+    given_the_user_is_a_resource_manager do
+      and_there_is_a_guider
+      when_they_add_a_new_schedule
+      and_they_enter_an_invalid_from_date
+      when_they_save_the_users_time_slots
+      then_they_are_shown_an_error
+    end
+  end
+
+  scenario 'Fails to update a schedule with invalid from date' do
+    given_the_user_is_a_resource_manager do
+      and_there_is_a_guider_with_a_schedule
+      when_they_edit_the_schedule
+      and_they_enter_an_invalid_from_date
+      when_they_save_the_users_time_slots
+      then_they_are_shown_an_error
+    end
+  end
+
+  scenario 'Users without resource_manager permission can\'t manage resources' do
+    given_the_user_has_no_permissions do
+      then_they_cannot_manage_guiders
+    end
+  end
+
   def and_there_is_a_guider
     @guider = create(:guider, name: 'Davey Daverson')
   end
@@ -133,61 +189,5 @@ RSpec.feature 'schedules' do
   def then_they_are_shown_an_error
     expect(@page).to have_error_summary
     expect(@page).to have_errors
-  end
-
-  scenario 'Successfully adding a new schedule to a guider', js: true do
-    given_the_user_is_a_resource_manager do
-      and_there_is_a_guider
-      when_they_manage_guiders
-      then_they_see_the_guider_name_listed
-      when_they_edit_the_guider
-      and_they_add_a_new_schedule
-      and_they_set_the_from_date
-      and_they_add_some_time_slots
-      when_they_save_the_users_time_slots
-      then_they_are_told_that_the_schedule_has_been_created
-      and_the_guider_has_those_time_slots_available
-    end
-  end
-
-  scenario 'Successfully update a schedule for a guider', js: true do
-    given_the_user_is_a_resource_manager do
-      and_there_is_a_guider_with_a_schedule
-      when_they_manage_guiders
-      then_they_see_the_guider_name_listed
-      when_they_edit_the_guider
-      and_they_edit_the_schedule
-      and_they_change_the_from_date
-      and_they_change_the_time_slots
-      when_they_save_the_users_time_slots
-      then_they_are_told_that_the_schedule_has_been_updated
-      and_the_guider_has_the_changed_time_slots
-    end
-  end
-
-  scenario 'Fails to create a schedule with invalid from date' do
-    given_the_user_is_a_resource_manager do
-      and_there_is_a_guider
-      when_they_add_a_new_schedule
-      and_they_enter_an_invalid_from_date
-      when_they_save_the_users_time_slots
-      then_they_are_shown_an_error
-    end
-  end
-
-  scenario 'Fails to update a schedule with invalid from date' do
-    given_the_user_is_a_resource_manager do
-      and_there_is_a_guider_with_a_schedule
-      when_they_edit_the_schedule
-      and_they_enter_an_invalid_from_date
-      when_they_save_the_users_time_slots
-      then_they_are_shown_an_error
-    end
-  end
-
-  scenario 'Users without resource_manager permission can\'t manage resources' do
-    given_the_user_has_no_permissions do
-      then_they_cannot_manage_guiders
-    end
   end
 end
