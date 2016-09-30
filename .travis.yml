@@ -4,6 +4,7 @@ cache:
   bundler: true
   directories:
   - tmp/cache/assets/test
+  - .phantomjs
 node_js:
 - '0.10'
 before_install:
