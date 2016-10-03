@@ -197,6 +197,6 @@ RSpec.feature 'Resource manager manages schedules' do
   def then_they_cant_delete_the_schedule
     @page = Pages::EditUser.new
     @page.load(id: @guider.id)
-    expect(@page).to_not have_delete
+    expect(@page.delete).to be_disabled
   end
 end
