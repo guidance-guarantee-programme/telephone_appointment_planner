@@ -9,7 +9,7 @@ RSpec.describe Schedule, type: :model do
         end
 
         def build_schedule(start_at)
-          build(:schedule, user: user, start_at: start_at)
+          build_stubbed(:schedule, user: user, start_at: start_at)
         end
 
         it 'can have any start_at date' do
@@ -30,7 +30,7 @@ RSpec.describe Schedule, type: :model do
         end
 
         def build_schedule(start_at)
-          build(:schedule, user: user, start_at: start_at)
+          build_stubbed(:schedule, user: user, start_at: start_at)
         end
 
         it 'is valid with valid attributes' do
@@ -51,14 +51,14 @@ RSpec.describe Schedule, type: :model do
     describe '#modifiable?' do
       context 'schedule starts less than six weeks from now' do
         it 'is false' do
-          schedule = build(:schedule, start_at: 5.weeks.from_now)
+          schedule = build_stubbed(:schedule, start_at: 5.weeks.from_now)
           expect(schedule).to_not be_modifiable
         end
       end
 
       context 'schedule starts more than six weeks from now' do
         it 'is true' do
-          schedule = build(:schedule, start_at: 7.weeks.from_now)
+          schedule = build_stubbed(:schedule, start_at: 7.weeks.from_now)
           expect(schedule).to be_modifiable
         end
       end
