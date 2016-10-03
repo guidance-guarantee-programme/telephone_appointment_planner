@@ -13,7 +13,6 @@ class Schedule < ApplicationRecord
 
   def self.with_end_at
     select('*, LEAD(start_at) OVER (ORDER BY start_at) AS end_at')
-      .by_start_at
   end
 
   def modifiable?
