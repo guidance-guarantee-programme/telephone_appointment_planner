@@ -5,13 +5,19 @@ class Schedule < ApplicationRecord
   scope :by_from, -> { order(:from) }
 
   validates :from, presence: true
-  validate :from_must_be_more_than_six_weeks_in_the_future
+  validate :from_must_be_more_than_six_weeks_in_the_future, unless: :first_schedule?
 
   def destroyable?
     from > 6.weeks.from_now
   end
 
   private
+
+  def first_schedule?
+    user
+      .schedules
+      .none?(&:persisted?)
+  end
 
   def from_must_be_more_than_six_weeks_in_the_future
     maximum_age = 6.weeks.from_now.beginning_of_day
