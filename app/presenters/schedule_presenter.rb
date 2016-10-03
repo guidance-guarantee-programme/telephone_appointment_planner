@@ -1,6 +1,11 @@
 class SchedulePresenter < SimpleDelegator
   def title
-    from.strftime('%d %B %Y')
+    format = '%d %B %Y'
+    if end_at
+      "#{from.strftime(format)} to #{end_at.strftime(format)}"
+    else
+      from.strftime(format)
+    end
   end
 
   def self.wrap(objects)

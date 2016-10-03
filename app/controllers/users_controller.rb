@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   def edit
     @guider = User.find(params[:id])
     @schedules = SchedulePresenter.wrap(
-      @guider.schedules.by_from
+      @guider.schedules.with_end_at
     )
   end
 

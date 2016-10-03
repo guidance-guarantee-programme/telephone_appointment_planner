@@ -7,6 +7,15 @@ class Schedule < ApplicationRecord
   validates :from, presence: true
   validate :from_must_be_more_than_six_weeks_in_the_future, unless: :first_schedule?
 
+  def end_at
+    self[:end_at] - 1.day if self[:end_at]
+  end
+
+  def self.with_end_at
+    select('*, LEAD("from", 1) OVER (ORDER BY "from") AS end_at')
+      .by_from
+  end
+
   def modifiable?
     from > 6.weeks.from_now
   end
