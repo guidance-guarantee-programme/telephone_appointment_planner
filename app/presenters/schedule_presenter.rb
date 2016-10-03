@@ -2,9 +2,9 @@ class SchedulePresenter < SimpleDelegator
   def title
     format = '%d %B %Y'
     if end_at
-      "#{from.strftime(format)} to #{end_at.strftime(format)}"
+      "#{start_at.strftime(format)} to #{end_at.strftime(format)}"
     else
-      from.strftime(format)
+      start_at.strftime(format)
     end
   end
 

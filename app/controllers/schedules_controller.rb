@@ -4,7 +4,7 @@ class SchedulesController < ApplicationController
 
   def new
     @schedule = @guider.schedules.build(
-      from: 6.weeks.from_now
+      start_at: 6.weeks.from_now
     )
     @schedule_json = schedule_json
   end
@@ -61,7 +61,7 @@ class SchedulesController < ApplicationController
 
   def schedule_parameters
     pr = params.require(:schedule).permit(
-      :from,
+      :start_at,
       :slots
     )
     pr[:slots_attributes] = JSON.parse(pr.delete(:slots))

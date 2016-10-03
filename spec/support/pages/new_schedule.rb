@@ -6,6 +6,6 @@ module Pages
     element :error_summary, '.t-errors'
 
     element :save, '.t-save'
-    element :from, '.t-from'
+    element :start_at, '.t-start-at'
   end
 end

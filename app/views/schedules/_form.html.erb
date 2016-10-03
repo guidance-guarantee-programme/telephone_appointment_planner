@@ -14,9 +14,9 @@
 <%= form_for [@guider, @schedule], html: { class: "form-horizontal" } do |f| %>
   <div class="calendar">
     <div class="form-group">
-      <%= f.label :from, 'From', class: 'col-sm-1 control-label' %>
+      <%= f.label :start_at, 'From', class: 'col-sm-1 control-label' %>
       <div class="col-sm-2">
-        <%= f.text_field :from, value: @schedule.from.try(:strftime, '%-e %b %Y'), class: 'daterange form-control t-from' %>
+        <%= f.text_field :start_at, value: @schedule.start_at.try(:strftime, '%-e %b %Y'), class: 'daterange form-control t-start-at' %>
         <script>
         $(function() {
           $('.daterange').daterangepicker({

@@ -12,6 +12,6 @@ module Pages
     )
 
     element :save, '.t-save'
-    element :from, '.t-from'
+    element :start_at, '.t-start-at'
   end
 end
