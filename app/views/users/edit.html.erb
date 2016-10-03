@@ -37,7 +37,7 @@
               title: 'Delete Schedule',
               class: 'btn btn-danger t-delete',
               disabled: !schedule.destroyable?,
-              data: {confirm: 'Are you sure you want to delete this schedule?'}
+              data: { confirm: "Are you sure you want to delete the schedule \"#{schedule.title}\"?" }
             ) do %>
             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span><span class="sr-only">Delete Schedule</span>
           <% end %>
