@@ -12,7 +12,7 @@ class Schedule < ApplicationRecord
   end
 
   def self.with_end_at
-    select('*, LEAD(start_at, 1) OVER (ORDER BY start_at) AS end_at')
+    select('*, LEAD(start_at) OVER (ORDER BY start_at) AS end_at')
       .by_start_at
   end
 
