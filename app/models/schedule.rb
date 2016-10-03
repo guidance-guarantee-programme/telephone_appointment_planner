@@ -7,6 +7,10 @@ class Schedule < ApplicationRecord
   validates :from, presence: true
   validate :from_must_be_more_than_six_weeks_in_the_future
 
+  def destroyable?
+    from > 6.weeks.from_now
+  end
+
   private
 
   def from_must_be_more_than_six_weeks_in_the_future
