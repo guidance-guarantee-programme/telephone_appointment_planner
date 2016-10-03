@@ -10,7 +10,8 @@ class Schedule < ApplicationRecord
   private
 
   def from_must_be_more_than_six_weeks_in_the_future
-    too_soon = from && from < 6.weeks.from_now
-    errors.add(:from, 'must be more than six weeks from now') if too_soon
+    maximum_age = 6.weeks.from_now.beginning_of_day
+    older_than_six_weeks = from && from >= maximum_age
+    errors.add(:from, 'must be more than six weeks from now') unless older_than_six_weeks
   end
 end
