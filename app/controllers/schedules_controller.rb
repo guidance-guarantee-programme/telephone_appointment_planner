@@ -10,7 +10,7 @@ class SchedulesController < ApplicationController
   end
 
   def edit
-    @schedule = @guider.schedules.find(params[:id])
+    @schedule = SchedulePresenter.new(@guider.schedules.find(params[:id]))
     @schedule_json = schedule_json
   end
 
@@ -21,7 +21,7 @@ class SchedulesController < ApplicationController
   end
 
   def update
-    @schedule = @guider.schedules.find(params[:id])
+    @schedule = SchedulePresenter.new(@guider.schedules.find(params[:id]))
     ActiveRecord::Base.transaction do
       @schedule.slots.destroy_all
       if @schedule.update(schedule_parameters)

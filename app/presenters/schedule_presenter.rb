@@ -1,10 +1,11 @@
 class SchedulePresenter < SimpleDelegator
+  DATE_FORMAT = '%d %B %Y'.freeze
+
   def title
-    format = '%d %B %Y'
-    if end_at
-      "#{start_at.strftime(format)} to #{end_at.strftime(format)}"
-    else
-      start_at.strftime(format)
+    if start_at && end_at
+      "#{start_at.strftime(DATE_FORMAT)} to #{end_at.strftime(DATE_FORMAT)}"
+    elsif start_at
+      "#{start_at.strftime(DATE_FORMAT)} onwards"
     end
   end
 
