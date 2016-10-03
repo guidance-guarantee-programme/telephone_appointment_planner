@@ -2,6 +2,8 @@
 @import 'fullcalendar';
 @import 'daterangepicker-bs3';
 
+@import 'components/**/*';
+
 .fc-unthemed {
   .fc-today {
     background: #fff;
