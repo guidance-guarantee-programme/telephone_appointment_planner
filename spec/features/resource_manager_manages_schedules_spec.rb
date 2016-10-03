@@ -18,13 +18,32 @@ RSpec.feature 'Resource manager manages schedules' do
 
   scenario 'Successfully updates a schedule', js: true do
     given_the_user_is_a_resource_manager do
-      and_there_is_a_guider_with_a_schedule
+      and_there_is_a_guider
+      and_the_guider_has_a_schedule_that_can_be_modified
       and_they_edit_the_schedule
       and_they_change_the_from_date
       and_they_change_the_time_slots
       when_they_save_the_users_time_slots
       then_they_are_told_that_the_schedule_has_been_updated
       and_the_guider_has_the_changed_time_slots
+    end
+  end
+
+  scenario 'Successfully deletes a schedule', js: true do
+    given_the_user_is_a_resource_manager do
+      and_there_is_a_guider
+      and_the_guider_has_a_schedule_that_can_be_modified
+      and_they_delete_the_schedule
+      then_they_are_told_that_the_schedule_has_been_deleted
+      and_the_schedule_is_deleted
+    end
+  end
+
+  scenario 'Fails to delete a schedule' do
+    given_the_user_is_a_resource_manager do
+      and_there_is_a_guider
+      and_the_guider_has_a_schedule_that_can_not_be_modified
+      then_they_cant_delete_the_schedule
     end
   end
 
@@ -40,7 +59,8 @@ RSpec.feature 'Resource manager manages schedules' do
 
   scenario 'Fails to update a schedule with invalid from date' do
     given_the_user_is_a_resource_manager do
-      and_there_is_a_guider_with_a_schedule
+      and_there_is_a_guider
+      and_the_guider_has_a_schedule_that_can_be_modified
       and_they_edit_the_schedule
       and_they_enter_an_invalid_from_date
       when_they_save_the_users_time_slots
@@ -52,11 +72,17 @@ RSpec.feature 'Resource manager manages schedules' do
     @guider = create(:guider, name: 'Davey Daverson')
   end
 
-  def and_there_is_a_guider_with_a_schedule
-    @guider = create(:guider, name: 'Davey Daverson')
+  def and_the_guider_has_a_schedule_that_can_be_modified
     @schedule = @guider.schedules.create!(
       from: 7.weeks.from_now
     )
+  end
+
+  def and_the_guider_has_a_schedule_that_can_not_be_modified
+    @schedule = @guider.schedules.create!(
+      from: 7.weeks.from_now
+    )
+    @schedule.update_attribute(:from, 1.week.from_now)
   end
 
   def click_on_day_and_time(day, time)
@@ -88,18 +114,21 @@ RSpec.feature 'Resource manager manages schedules' do
   end
 
   def when_they_save_the_users_time_slots
-    @page.save_button.click
+    @page.save.click
   end
 
   def then_they_are_told_that_the_schedule_has_been_created
     @page = Pages::EditUser.new
     expect(@page).to have_flash_of_success
   end
-
-  def then_they_are_told_that_the_schedule_has_been_updated
-    @page = Pages::EditUser.new
-    expect(@page).to have_flash_of_success
-  end
+  alias_method(
+    :then_they_are_told_that_the_schedule_has_been_updated,
+    :then_they_are_told_that_the_schedule_has_been_created
+  )
+  alias_method(
+    :then_they_are_told_that_the_schedule_has_been_deleted,
+    :then_they_are_told_that_the_schedule_has_been_created
+  )
 
   def and_they_edit_the_schedule
     @page = Pages::EditSchedule.new
@@ -153,5 +182,21 @@ RSpec.feature 'Resource manager manages schedules' do
   def then_they_are_shown_an_error
     expect(@page).to have_error_summary
     expect(@page).to have_errors
+  end
+
+  def and_they_delete_the_schedule
+    @page = Pages::EditUser.new
+    @page.load(id: @guider.id)
+    @page.delete.click
+  end
+
+  def and_the_schedule_is_deleted
+    expect(@guider.reload.schedules).to be_empty
+  end
+
+  def then_they_cant_delete_the_schedule
+    @page = Pages::EditUser.new
+    @page.load(id: @guider.id)
+    expect(@page.delete).to be_disabled
   end
 end
