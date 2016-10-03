@@ -68,6 +68,14 @@ RSpec.feature 'Resource manager manages schedules' do
     end
   end
 
+  scenario 'Fails to edit a schedule' do
+    given_the_user_is_a_resource_manager do
+      and_there_is_a_guider
+      and_the_guider_has_a_schedule_that_can_not_be_modified
+      then_they_cant_edit_the_schedule
+    end
+  end
+
   def and_there_is_a_guider
     @guider = create(:guider, name: 'Davey Daverson')
   end
@@ -198,5 +206,11 @@ RSpec.feature 'Resource manager manages schedules' do
     @page = Pages::EditUser.new
     @page.load(id: @guider.id)
     expect(@page.delete).to be_disabled
+  end
+
+  def then_they_cant_edit_the_schedule
+    @page = Pages::EditUser.new
+    @page.load(id: @guider.id)
+    expect(@page).to_not have_edit
   end
 end
