@@ -2,17 +2,17 @@ require 'rails_helper'
 
 RSpec.describe Schedule, type: :model do
   describe 'validation' do
-    context '#from' do
+    context '#start_at' do
       context 'first schedule' do
         let(:user) do
           create(:user)
         end
 
-        def build_schedule(from)
-          build(:schedule, user: user, from: from)
+        def build_schedule(start_at)
+          build_stubbed(:schedule, user: user, start_at: start_at)
         end
 
-        it 'can have any from date' do
+        it 'can have any start_at date' do
           expect(build_schedule(Time.zone.now)).to be_valid
         end
 
@@ -29,8 +29,8 @@ RSpec.describe Schedule, type: :model do
           user
         end
 
-        def build_schedule(from)
-          build(:schedule, user: user, from: from)
+        def build_schedule(start_at)
+          build_stubbed(:schedule, user: user, start_at: start_at)
         end
 
         it 'is valid with valid attributes' do
@@ -51,14 +51,14 @@ RSpec.describe Schedule, type: :model do
     describe '#modifiable?' do
       context 'schedule starts less than six weeks from now' do
         it 'is false' do
-          schedule = build(:schedule, from: 5.weeks.from_now)
+          schedule = build_stubbed(:schedule, start_at: 5.weeks.from_now)
           expect(schedule).to_not be_modifiable
         end
       end
 
       context 'schedule starts more than six weeks from now' do
         it 'is true' do
-          schedule = build(:schedule, from: 7.weeks.from_now)
+          schedule = build_stubbed(:schedule, start_at: 7.weeks.from_now)
           expect(schedule).to be_modifiable
         end
       end

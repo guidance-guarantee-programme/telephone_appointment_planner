@@ -4,13 +4,13 @@ class SchedulesController < ApplicationController
 
   def new
     @schedule = @guider.schedules.build(
-      from: 6.weeks.from_now
+      start_at: 6.weeks.from_now
     )
     @schedule_json = schedule_json
   end
 
   def edit
-    @schedule = @guider.schedules.find(params[:id])
+    @schedule = SchedulePresenter.new(@guider.schedules.find(params[:id]))
     @schedule_json = schedule_json
   end
 
@@ -21,7 +21,7 @@ class SchedulesController < ApplicationController
   end
 
   def update
-    @schedule = @guider.schedules.find(params[:id])
+    @schedule = SchedulePresenter.new(@guider.schedules.find(params[:id]))
     ActiveRecord::Base.transaction do
       @schedule.slots.destroy_all
       if @schedule.update(schedule_parameters)
@@ -61,7 +61,7 @@ class SchedulesController < ApplicationController
 
   def schedule_parameters
     pr = params.require(:schedule).permit(
-      :from,
+      :start_at,
       :slots
     )
     pr[:slots_attributes] = JSON.parse(pr.delete(:slots))

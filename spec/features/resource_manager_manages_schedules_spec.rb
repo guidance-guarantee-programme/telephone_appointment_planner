@@ -8,7 +8,7 @@ RSpec.feature 'Resource manager manages schedules' do
     given_the_user_is_a_resource_manager do
       and_there_is_a_guider
       and_they_add_a_new_schedule
-      and_they_set_the_initial_from_date
+      and_they_set_the_initial_start_at_date
       and_they_add_some_time_slots
       when_they_save_the_users_time_slots
       then_they_are_told_that_the_schedule_has_been_created
@@ -21,7 +21,7 @@ RSpec.feature 'Resource manager manages schedules' do
       and_there_is_a_guider
       and_the_guider_has_a_schedule_that_can_be_modified
       and_they_edit_the_schedule
-      and_they_change_the_from_date
+      and_they_change_the_start_at_date
       and_they_change_the_time_slots
       when_they_save_the_users_time_slots
       then_they_are_told_that_the_schedule_has_been_updated
@@ -47,22 +47,22 @@ RSpec.feature 'Resource manager manages schedules' do
     end
   end
 
-  scenario 'Fails to create a schedule with invalid from date' do
+  scenario 'Fails to create a schedule with invalid start_at date' do
     given_the_user_is_a_resource_manager do
       and_there_is_a_guider
       and_they_add_a_new_schedule
-      and_they_enter_an_invalid_from_date
+      and_they_enter_an_invalid_start_at_date
       when_they_save_the_users_time_slots
       then_they_are_shown_an_error
     end
   end
 
-  scenario 'Fails to update a schedule with invalid from date' do
+  scenario 'Fails to update a schedule with invalid start_at date' do
     given_the_user_is_a_resource_manager do
       and_there_is_a_guider
       and_the_guider_has_a_schedule_that_can_be_modified
       and_they_edit_the_schedule
-      and_they_enter_an_invalid_from_date
+      and_they_enter_an_invalid_start_at_date
       when_they_save_the_users_time_slots
       then_they_are_shown_an_error
     end
@@ -82,15 +82,15 @@ RSpec.feature 'Resource manager manages schedules' do
 
   def and_the_guider_has_a_schedule_that_can_be_modified
     @schedule = @guider.schedules.create!(
-      from: 7.weeks.from_now
+      start_at: 7.weeks.from_now
     )
   end
 
   def and_the_guider_has_a_schedule_that_can_not_be_modified
     @schedule = @guider.schedules.create!(
-      from: 7.weeks.from_now
+      start_at: 7.weeks.from_now
     )
-    @schedule.update_attribute(:from, 1.week.from_now)
+    @schedule.update_attribute(:start_at, 1.week.from_now)
   end
 
   def click_on_day_and_time(day, time)
@@ -112,8 +112,8 @@ RSpec.feature 'Resource manager manages schedules' do
     @page.load(user_id: @guider.id)
   end
 
-  def and_they_set_the_initial_from_date
-    @page.from.set '30 Sep 2016'
+  def and_they_set_the_initial_start_at_date
+    @page.start_at.set '30 Sep 2016'
   end
 
   def and_they_add_some_time_slots
@@ -143,8 +143,8 @@ RSpec.feature 'Resource manager manages schedules' do
     @page.load(user_id: @guider.id, id: @schedule.id)
   end
 
-  def and_they_change_the_from_date
-    @page.from.set '23 Nov 2020'
+  def and_they_change_the_start_at_date
+    @page.start_at.set '23 Nov 2020'
   end
 
   def and_they_change_the_time_slots
@@ -183,8 +183,8 @@ RSpec.feature 'Resource manager manages schedules' do
     expect(second_slot.end_at).to eq '11:40'
   end
 
-  def and_they_enter_an_invalid_from_date
-    @page.from.set 'something not datey'
+  def and_they_enter_an_invalid_start_at_date
+    @page.start_at.set 'something not datey'
   end
 
   def then_they_are_shown_an_error
