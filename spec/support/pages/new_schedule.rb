@@ -5,7 +5,7 @@ module Pages
     elements :errors, '.field_with_errors'
     element :error_summary, '.t-errors'
 
-    element :save_button, '.t-save'
+    element :save, '.t-save'
     element :from, '.t-from'
   end
 end

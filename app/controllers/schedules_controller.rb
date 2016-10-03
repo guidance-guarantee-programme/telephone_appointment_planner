@@ -14,6 +14,12 @@ class SchedulesController < ApplicationController
     @schedule_json = schedule_json
   end
 
+  def destroy
+    @schedule = @guider.schedules.find(params[:id])
+    @schedule.destroy
+    redirect_to edit_user_path(@guider), success: 'Schedule has been deleted'
+  end
+
   def update
     @schedule = @guider.schedules.find(params[:id])
     ActiveRecord::Base.transaction do

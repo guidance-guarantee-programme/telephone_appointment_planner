@@ -11,7 +11,7 @@ module Pages
       text: 'Sorry, you don\'t seem to have the resource_manager permission for this app.'
     )
 
-    element :save_button, '.t-save'
+    element :save, '.t-save'
     element :from, '.t-from'
   end
 end
