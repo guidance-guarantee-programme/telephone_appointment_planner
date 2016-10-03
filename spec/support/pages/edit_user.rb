@@ -8,5 +8,6 @@ module Pages
     )
     element :flash_of_success, '.alert-success'
     element :delete, '.t-delete'
+    element :edit, '.t-edit'
   end
 end

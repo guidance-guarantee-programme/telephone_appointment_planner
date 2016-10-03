@@ -47,5 +47,21 @@ RSpec.describe Schedule, type: :model do
         end
       end
     end
+
+    describe '#modifiable?' do
+      context 'schedule starts less than six weeks from now' do
+        it 'is false' do
+          schedule = build(:schedule, from: 5.weeks.from_now)
+          expect(schedule).to_not be_modifiable
+        end
+      end
+
+      context 'schedule starts more than six weeks from now' do
+        it 'is true' do
+          schedule = build(:schedule, from: 7.weeks.from_now)
+          expect(schedule).to be_modifiable
+        end
+      end
+    end
   end
 end
