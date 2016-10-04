@@ -3,6 +3,7 @@ class User < ApplicationRecord
   serialize :permissions, Array
   RESOURCE_MANAGER_PERMISSION = 'resource_manager'.freeze
   GUIDER_PERMISSION = 'guider'.freeze
+  CONTACT_CENTRE_AGENT_PERMISSION = 'contact_centre_agent'.freeze
 
   has_many :schedules, dependent: :destroy
 
