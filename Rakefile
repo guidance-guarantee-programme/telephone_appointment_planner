@@ -5,4 +5,16 @@ require_relative 'config/application'
 
 Rails.application.load_tasks
 
-task default:  [:spec, :rubocop, :"js:lint"]
+default_tasks = [:spec]
+
+begin
+  # Rubocop is not available in envs other than development and test.
+  require 'rubocop/rake_task'
+  RuboCop::RakeTask.new
+  default_tasks << :rubocop
+rescue LoadError
+end
+
+default_tasks << :'js:lint'
+
+task default: default_tasks
