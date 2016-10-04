@@ -8,11 +8,34 @@
   <h1>Manage schedules for "<%=@guider.name %>"</h1>
 </div>
 
-<%= link_to new_user_schedule_path(@guider), class: 'btn btn-primary' do %>
-  <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Add schedule
+<div class="row">
+  <div class="col-md-4">
+    <%= link_to new_user_schedule_path(@guider), class: 'btn btn-primary' do %>
+      <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Add schedule
+    <% end %>
+  </div>
+  <div class="col-md-8 text-right">
+    <div class="guider-schedules-swatch guider-schedules-swatch--readonly-window" aria-hidden="true">Bookable appointment window</div>
+    <div class="guider-schedules-swatch guider-schedules-swatch--readonly" aria-hidden="true">Currently accepting appointments</div>
+    <div class="guider-schedules-swatch guider-schedules-swatch--editable" aria-hidden="true">Editable</div>
+  </div>
+</div>
+
+<% if @schedules.any? %>
+  <div class="guider-schedules" data-module="GuiderSchedulesCalendar" data-config='{"guiderScheduleDataSourceElementId": "guider-schedules"}' aria-hidden="true">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="guider-schedules__months"></div>
+        <div class="guider-schedules__schedules-outer">
+          <div class="guider-schedules__readonly-window"></div>
+          <div class="guider-schedules__schedules"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 <% end %>
 
-<table class="table table-striped table-bordered table-hover">
+<table class="table table-striped table-bordered table-hover" id="guider-schedules">
   <caption><span class="sr-only">List of schedules for <%= @guider.name %></span></caption>
   <colgroup>
     <col width="91%">
@@ -26,13 +49,13 @@
   </thead>
   <tbody>
   <% @schedules.each do |schedule| %>
-    <tr>
+    <tr data-schedule-start="<%= schedule.start_at %>" data-schedule-end="<%= schedule.end_at %>">
       <td>
         <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> <%= schedule.title %>
         <% unless schedule.modifiable? %>
           <p>
             <b>
-            This schedule cannot be modified as it starts less than six weeks from now.
+            This schedule cannot be modified as it is accepting appointments.
             Create a new schedule to change this guider's bookable slots.
             </b>
           </p>

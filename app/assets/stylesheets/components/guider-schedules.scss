@@ -1,0 +1,95 @@
+$guider-schedule-read-only-window-color: rgba(247, 242, 195, 0.8);
+$guider-schedules-read-only-color: #d9534f;
+$guider-schedules-editable-color: #8fdf82;
+
+@function schedule-repeating-gradient($background) {
+  @return $background repeating-linear-gradient(
+    -45deg,
+    $background,
+    $background 10px,
+    rgba(255, 255, 255, 0.2) 10px,
+    rgba(255, 255, 255, 0.2) 20px
+  );
+}
+
+.guider-schedules {
+  margin-top: 1em;
+  overflow: hidden;
+
+  .js & {
+    min-height: 100px;
+  }
+}
+
+.guider-schedules__months {
+  overflow: hidden;
+}
+
+.guider-schedules__month {
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+
+  &:first-child {
+    border-left: 1px solid #ddd;
+  }
+}
+
+.guider-schedules__readonly-window {
+  position: absolute;
+  background: $guider-schedule-read-only-window-color;
+  border: 1px dashed #ccc;
+}
+
+.guider-schedules__schedules-outer {
+  position: relative;
+}
+
+.guider-schedules__schedule {
+  height: 25px;
+  margin-top: 5px;
+}
+
+.guider-schedules__schedule--readonly {
+  background: schedule-repeating-gradient($guider-schedules-read-only-color);
+}
+
+.guider-schedules__schedule--editable {
+  background: schedule-repeating-gradient($guider-schedules-editable-color);
+}
+
+.guider-schedules-swatch {
+  display: none;
+
+  .js & {
+    display: inline-block;
+    margin-right: 5px;
+
+    &:before {
+      content: '';
+      display: inline-block;
+      height: 25px;
+      margin-right: 5px;
+      width: 25px;
+      vertical-align: middle;
+    }
+  }
+}
+
+.guider-schedules-swatch--readonly-window {
+  &:before {
+    background: $guider-schedule-read-only-window-color;
+    border: 1px dashed #ccc;
+  }
+}
+
+.guider-schedules-swatch--readonly {
+  &:before {
+    background: schedule-repeating-gradient($guider-schedules-read-only-color);
+  }
+}
+
+.guider-schedules-swatch--editable {
+  &:before {
+    background: schedule-repeating-gradient($guider-schedules-editable-color);
+  }
+}
