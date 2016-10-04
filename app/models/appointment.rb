@@ -28,11 +28,15 @@ class Appointment < ApplicationRecord
 
       next unless active_schedule.present?
 
-      available = active_schedule.slots.any? do |slot|
-        slot.valid_for_appointment(self)
-      end
+      slot = active_schedule.slots.find_by(
+        day_of_week: start_at.wday,
+        start_hour: start_at.hour,
+        start_minute: start_at.min,
+        end_hour: end_at.hour,
+        end_minute: end_at.min
+      )
 
-      if available
+      if slot.present?
         self.user = guider
         break
       end
