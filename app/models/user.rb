@@ -6,6 +6,7 @@ class User < ApplicationRecord
   CONTACT_CENTRE_AGENT_PERMISSION = 'contact_centre_agent'.freeze
 
   has_many :schedules, dependent: :destroy
+  has_many :appointments
 
   has_many :group_assignments
   has_many :groups, through: :group_assignments
@@ -23,5 +24,9 @@ class User < ApplicationRecord
 
   def resource_manager?
     permissions.include?(RESOURCE_MANAGER_PERMISSION)
+  end
+
+  def contact_centre_agent?
+    permissions.include?(CONTACT_CENTRE_AGENT_PERMISSION)
   end
 end

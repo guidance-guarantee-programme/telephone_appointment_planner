@@ -21,6 +21,7 @@ source 'https://rubygems.org' do
   gem 'bootstrap-daterangepicker-rails'
   gem 'active_link_to'
   gem 'foreman'
+  gem 'bh'
 
   group :development, :test do
     gem 'pry-byebug'

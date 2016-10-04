@@ -1,0 +1,60 @@
+require 'rails_helper'
+
+RSpec.feature 'Contact centre agent creates appointments' do
+  scenario 'Creates an appointment' do
+    given_the_user_is_a_contact_centre_agent do
+      and_there_is_a_guider_with_available_slots
+      when_they_create_a_new_appointment
+      then_that_appointment_is_stored
+    end
+  end
+
+  def and_there_is_a_guider_with_available_slots
+    @guider = create(:guider)
+    @slot = build(:slot, day: Date::DAYNAMES[Time.zone.now.wday], start_at: '09:30', end_at: '10:40')
+    @schedule = @guider.schedules.build(
+      start_at: Time.zone.now.beginning_of_day,
+      slots: [@slot]
+    )
+    @schedule.save!
+  end
+
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
+  def when_they_create_a_new_appointment
+    @page = Pages::NewAppointment.new
+    @page.load
+
+    @page.first_name.set 'Some'
+    @page.last_name.set 'Person'
+    @page.email.set 'email@example.org'
+    @page.phone.set '0000000'
+    @page.mobile.set '1111111'
+    @page.year_of_birth.set '1891'
+    @page.memorable_word.set 'lozenge'
+    @page.notes.set 'something'
+    @page.opt_out_of_market_research.set true
+    @page.start_at.set Time.zone.now.change(hour: 9, min: 30).to_s
+    @page.end_at.set Time.zone.now.change(hour: 10, min: 40).to_s
+
+    @page.save.click
+  end
+
+  def then_that_appointment_is_stored
+    @guider.reload
+    expect(@guider.appointments.count).to eq 1
+    appointment = @guider.appointments.first
+
+    expect(appointment.first_name).to eq 'Some'
+    expect(appointment.last_name).to eq 'Person'
+    expect(appointment.email).to eq 'email@example.org'
+    expect(appointment.phone).to eq '0000000'
+    expect(appointment.mobile).to eq '1111111'
+    expect(appointment.year_of_birth).to eq '1891'
+    expect(appointment.memorable_word).to eq 'lozenge'
+    expect(appointment.notes).to eq 'something'
+    expect(appointment.opt_out_of_market_research).to eq true
+    expect(appointment.start_at).to eq Time.zone.now.change(hour: 9, min: 30).to_s
+    expect(appointment.end_at).to eq Time.zone.now.change(hour: 10, min: 40).to_s
+  end
+end

@@ -9,4 +9,5 @@ Rails.application.routes.draw do
 
   resources :groups, only: %i(index create destroy)
   resources :appointments
+  resources :customers
 end
