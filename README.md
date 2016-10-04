@@ -1,24 +1,25 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# Getting started
 
-Things you may want to cover:
+```bash
+./bin/setup
+```
 
-* Ruby version
+# How to run the test suite
 
-* System dependencies
+```bash
+bundle exec rake
+```
 
-* Configuration
+# Deployment instructions
 
-* Database creation
+## Staging
 
-* Database initialization
+```bash
+# Add the heroku remote
+heroku git:remote -a staging-tap-pensionwise -r staging
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+# Deploy
+git push staging master
+```
