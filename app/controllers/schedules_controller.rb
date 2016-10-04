@@ -52,9 +52,11 @@ class SchedulesController < ApplicationController
   def schedule_json
     @schedule.slots.map do |slot|
       {
-        day: slot.day,
-        start_at: slot.start_at,
-        end_at: slot.end_at
+        day_of_week: slot.day_of_week,
+        start_hour: slot.start_hour,
+        start_minute: slot.start_minute,
+        end_hour: slot.end_hour,
+        end_minute: slot.end_minute
       }
     end.to_json
   end

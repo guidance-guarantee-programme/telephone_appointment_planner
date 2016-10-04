@@ -29,7 +29,7 @@ class Appointment < ApplicationRecord
       next unless active_schedule.present?
 
       available = active_schedule.slots.any? do |slot|
-        slot.valid_for(start_at, end_at)
+        slot.valid_for_appointment(self)
       end
 
       if available

@@ -1,7 +1,9 @@
 FactoryGirl.define do
   factory :slot do
-    day 'Wednesday'
-    start_at '09:00'
-    end_at '10:30'
+    day_of_week 3
+    start_hour 9
+    start_minute 0
+    end_hour 10
+    end_minute 30
   end
 end

@@ -71,10 +71,14 @@
       for (var currentDate = moment(calendarStartDate); currentDate < calendarEndDate; currentDate.add(1, 'days')) {
         for (var eventIndex in events) {
           var event = events[eventIndex];
-          if (event.day == currentDate.format('dddd')) {
+          if (event.day_of_week == currentDate.day()) {
+            event.start_hour = ('00' + event.start_hour).substr(-2,2);
+            event.start_minute = ('00' + event.start_minute).substr(-2,2);
+            event.end_hour = ('00' + event.end_hour).substr(-2,2);
+            event.end_minute = ('00' + event.end_minute).substr(-2,2);
             this.$el.fullCalendar('addEventSource', [{
-              start: `${currentDate.format('YYYY-MM-DD')}T${event.start_at}`,
-              end: `${currentDate.format('YYYY-MM-DD')}T${event.end_at}`
+              start: `${currentDate.format('YYYY-MM-DD')}T${event.start_hour}:${event.start_minute}`,
+              end: `${currentDate.format('YYYY-MM-DD')}T${event.end_hour}:${event.end_minute}`
             }]);
           }
         }
@@ -87,13 +91,13 @@
       eventsOutput = [];
 
       for (var eventIndex in events) {
-        var event = events[eventIndex],
-        eventStartDayWord = event.start.format('dddd');
-
+        var event = events[eventIndex];
         eventsOutput.push({
-          day: eventStartDayWord,
-          start_at: event.start.format('HH:mm'),
-          end_at: event.end.format('HH:mm')
+          day_of_week: event.start.day(),
+          start_hour: event.start.hour(),
+          start_minute: event.start.minute(),
+          end_hour: event.end.hour(),
+          end_minute: event.end.minute()
         });
       }
 

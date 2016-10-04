@@ -26,7 +26,14 @@ RSpec.describe Appointment, type: :model do
         guider_with_slot.schedules.build(
           start_at: Time.zone.now.beginning_of_day,
           slots: [
-            build(:slot, day: Date::DAYNAMES[Time.zone.now.wday], start_at: '09:00', end_at: '10:30')
+            build(
+              :slot,
+              day_of_week: Time.zone.now.wday,
+              start_hour: 9,
+              start_minute: 0,
+              end_hour: 10,
+              end_minute: 30
+            )
           ]
         )
         guider_with_slot.save!

@@ -28,7 +28,6 @@ class Schedule < ApplicationRecord
 
     User.guiders.each do |guider|
       from.upto(to).each do |date|
-        day_name = date.strftime('%A')
         available_slots_by_day[date] ||= []
         active_schedule = guider
                           .schedules
@@ -39,7 +38,7 @@ class Schedule < ApplicationRecord
 
         available_slots = active_schedule
                           .slots
-                          .where(day: day_name)
+                          .where(day_of_week: date.wday)
 
         available_slots.each do |available_slot|
           available_slots_by_day[date] << available_slot
@@ -58,13 +57,16 @@ class Schedule < ApplicationRecord
     available_slots_by_day(from, to).each do |day, slots|
       slots_with_counts = {}
       slots.each do |slot|
-        key = "#{slot.day} #{slot.start_at} #{slot.end_at}"
+        key = [
+          slot.day_of_week,
+          slot.start_hour,
+          slot.start_minute,
+          slot.end_hour,
+          slot.end_minute
+        ].join('-')
 
-        hour, minute = slot.start_at.split(':').map(&:to_i)
-        start_at = day.to_datetime.change(hour: hour, min: minute, sec: 0)
-
-        hour, minute = slot.end_at.split(':').map(&:to_i)
-        end_at = day.to_datetime.change(hour: hour, min: minute, sec: 0)
+        start_at = day.to_datetime.change(hour: slot.start_hour, min: slot.start_minute, sec: 0)
+        end_at = day.to_datetime.change(hour: slot.end_hour, min: slot.end_minute, sec: 0)
 
         slots_with_counts[key] ||= { guiders: 0, start: start_at, end: end_at }
         slots_with_counts[key][:guiders] += 1

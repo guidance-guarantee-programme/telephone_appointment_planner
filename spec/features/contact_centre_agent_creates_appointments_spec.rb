@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/MethodLength
 require 'rails_helper'
 
 RSpec.feature 'Contact centre agent creates appointments' do
@@ -11,7 +12,14 @@ RSpec.feature 'Contact centre agent creates appointments' do
 
   def and_there_is_a_guider_with_available_slots
     @guider = create(:guider)
-    @slot = build(:slot, day: Date::DAYNAMES[Time.zone.now.wday], start_at: '09:30', end_at: '10:40')
+    @slot = build(
+      :slot,
+      day_of_week: Time.zone.now.wday,
+      start_hour: 9,
+      start_minute: 30,
+      end_hour: 10,
+      end_minute: 40
+    )
     @schedule = @guider.schedules.build(
       start_at: Time.zone.now.beginning_of_day,
       slots: [@slot]
@@ -20,7 +28,6 @@ RSpec.feature 'Contact centre agent creates appointments' do
   end
 
   # rubocop:disable Metrics/AbcSize
-  # rubocop:disable Metrics/MethodLength
   def when_they_create_a_new_appointment
     @page = Pages::NewAppointment.new
     @page.load

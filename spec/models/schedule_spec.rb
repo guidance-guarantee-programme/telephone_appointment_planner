@@ -98,13 +98,27 @@ RSpec.describe Schedule, type: :model do
 
         schedule = build(:schedule, user: guider, start_at: monday_fifth_of_december)
         schedule.save!
-        slot = build(:slot, day: 'Thursday', start_at: '09:00', end_at: '10:00')
+        slot = build(
+          :slot,
+          day_of_week: 4,
+          start_hour: 9,
+          start_minute: 0,
+          end_hour: 10,
+          end_minute: 0
+        )
         schedule.slots << slot
         first_expected_slots << slot
 
         schedule = build(:schedule, user: guider, start_at: monday_twelth_of_december)
         schedule.save!
-        slot = build(:slot, day: 'Tuesday', start_at: '09:00', end_at: '10:00')
+        slot = build(
+          :slot,
+          day_of_week: 2,
+          start_hour: 9,
+          start_minute: 0,
+          end_hour: 10,
+          end_minute: 0
+        )
         schedule.slots << slot
         second_expected_slots << slot
       end
@@ -137,11 +151,25 @@ RSpec.describe Schedule, type: :model do
 
         schedule = build(:schedule, user: guider, start_at: monday_fifth_of_december)
         schedule.save!
-        schedule.slots << build(:slot, day: 'Thursday', start_at: '09:00', end_at: '10:00')
+        schedule.slots << build(
+          :slot,
+          day_of_week: 4,
+          start_hour: 9,
+          start_minute: 0,
+          end_hour: 10,
+          end_minute: 0
+        )
 
         schedule = build(:schedule, user: guider, start_at: monday_twelth_of_december)
         schedule.save!
-        schedule.slots << build(:slot, day: 'Tuesday', start_at: '09:00', end_at: '10:00')
+        schedule.slots << build(
+          :slot,
+          day_of_week: 2,
+          start_hour: 9,
+          start_minute: 0,
+          end_hour: 10,
+          end_minute: 0
+        )
       end
 
       result = Schedule.available_slots_with_guider_count(

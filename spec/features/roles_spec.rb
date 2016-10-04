@@ -82,11 +82,6 @@ RSpec.feature 'Roles' do
     @schedule = @guider.schedules.create!(
       start_at: 7.weeks.from_now
     )
-    @schedule.slots.create(
-      day: 'Monday',
-      start_at: '09:00',
-      end_at: '10:30'
-    )
   end
 
   def and_a_guider_exists

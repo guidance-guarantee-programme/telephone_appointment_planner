@@ -10,12 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161005131704) do
+ActiveRecord::Schema.define(version: 20161004151310) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "appointments", force: :cascade do |t|
+    t.integer  "user_id",                                    null: false
     t.datetime "start_at",                                   null: false
     t.datetime "end_at",                                     null: false
     t.string   "first_name",                                 null: false
@@ -58,13 +59,6 @@ ActiveRecord::Schema.define(version: 20161005131704) do
     t.integer  "start_minute", null: false
     t.integer  "end_hour",     null: false
     t.integer  "end_minute",   null: false
-  end
-
-  create_table "usable_slots", force: :cascade do |t|
-    t.integer  "user_id",        null: false
-    t.integer  "appointment_id"
-    t.datetime "start_at",       null: false
-    t.datetime "end_at",         null: false
   end
 
   create_table "users", force: :cascade do |t|
