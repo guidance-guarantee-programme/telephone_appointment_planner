@@ -16,4 +16,6 @@
 //= require listjs
 //= require daterangepicker
 //= require core.js/core.js
+//= require calendar
+//= require calendars/guider-slot-picker
 //= require_tree .
