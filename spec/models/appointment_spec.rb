@@ -25,6 +25,14 @@ RSpec.describe Appointment, type: :model do
   end
 
   describe '#assign_random_guider' do
+    let(:appointment_start_time) do
+      Time.zone.now.change(hour: 9, min: 0, second: 0)
+    end
+
+    let(:appointment_end_time) do
+      Time.zone.now.change(hour: 10, min: 30, second: 0)
+    end
+
     context 'with a guider who has a slot at the appointment time' do
       let!(:guider_with_slot) do
         guider_with_slot = create(:guider)
@@ -46,8 +54,8 @@ RSpec.describe Appointment, type: :model do
       end
 
       it 'assigns a guider' do
-        subject.start_at = Time.zone.now.change(hour: 9, min: 0)
-        subject.end_at = Time.zone.now.change(hour: 10, min: 30)
+        subject.start_at = appointment_start_time
+        subject.end_at = appointment_end_time
         subject.assign_random_guider
         expect(subject.user).to eq guider_with_slot
       end
@@ -56,14 +64,14 @@ RSpec.describe Appointment, type: :model do
         before do
           guider_with_slot.appointments << build(
             :appointment,
-            start_at: Time.zone.now.change(hour: 9, min: 0, sec: 0),
-            end_at: Time.zone.now.change(hour: 10, min: 30, sec: 0)
+            start_at: appointment_start_time,
+            end_at: appointment_end_time
           )
         end
 
         it 'does not assign a guider' do
-          subject.start_at = Time.zone.now.change(hour: 9, min: 0, sec: 0)
-          subject.end_at = Time.zone.now.change(hour: 10, min: 30, sec: 0)
+          subject.start_at = appointment_start_time
+          subject.end_at = appointment_end_time
           subject.assign_random_guider
           expect(subject.user).to eq nil
         end
