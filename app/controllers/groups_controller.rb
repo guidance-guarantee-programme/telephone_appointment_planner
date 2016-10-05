@@ -10,14 +10,23 @@ class GroupsController < ApplicationController
 
   def create
     CreateGroupAssignments.new(user_ids, group_params).call
+    go_back_with_success(:assigned)
+  end
 
-    redirect_back(
-      fallback_location: users_path,
-      success: 'The users were assigned to the specified groups'
-    )
+  def destroy
+    DestroyGroupAssignments.new(user_ids, params[:id]).call
+
+    go_back_with_success(:removed)
   end
 
   private
+
+  def go_back_with_success(action)
+    redirect_back(
+      fallback_location: users_path,
+      success: "The users were #{action} from the specified groups"
+    )
+  end
 
   def group_params
     params.require(:group).permit(:name)

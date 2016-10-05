@@ -34,7 +34,7 @@
             <div class="col-lg-12">
               <%= form_for Group.new, url: groups_path(user_ids: params[:user_ids]), class: 'js-form' do |f| %>
                 <div class="input-group">
-                  <%= f.text_field :name, class: 'form-control js-group-input t-group', placeholder: 'Add a new group' %>
+                  <%= f.text_field :name, class: 'form-control js-group-input t-name', placeholder: 'Add a new group' %>
                   <span class="input-group-btn">
                     <%= f.button class: 'btn btn-primary js-button t-add-group' do %>
                       <span class="glyphicon glyphicon-plus"></span>
@@ -48,14 +48,17 @@
         </td>
       </tr>
       <% @groups.each do |group| %>
-        <tr>
+        <tr class="t-group">
           <td class="lead">
             <span class="label label-info"><%= group.name %></span>
           </td>
           <td class="lead">
-            <a href="#" class="js-remove pull-right">
+            <%= link_to group_path(group, user_ids: params[:user_ids]),
+              class: 'js-remove pull-right t-remove',
+              method: :delete,
+              data: { confirm: "Are you sure you want to remove the group #{group.name} from these guiders?" } do %>
               <span class="glyphicon glyphicon-remove"></span>
-            </a>
+            <% end %>
           </td>
         </tr>
       <% end %>
