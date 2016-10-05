@@ -7,5 +7,5 @@ Rails.application.routes.draw do
     resources :schedules
   end
 
-  resources :groups, only: %i(index destroy)
+  resources :groups, only: %i(index create)
 end

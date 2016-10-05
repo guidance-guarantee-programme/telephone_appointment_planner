@@ -4,13 +4,26 @@ class GroupsController < ApplicationController
   end
 
   def index
-    @groups = Group.all
+    @guiders = User.find(user_ids)
+    @groups  = Group.assigned_to(user_ids)
   end
 
-  def destroy
-    @group = Group.find(params[:id])
-    @group.destroy
+  def create
+    CreateGroupAssignments.new(user_ids, group_params).call
 
-    redirect_to groups_path
+    redirect_back(
+      fallback_location: users_path,
+      success: 'The users were assigned to the specified groups'
+    )
+  end
+
+  private
+
+  def group_params
+    params.require(:group).permit(:name)
+  end
+
+  def user_ids
+    params[:user_ids].split(',')
   end
 end
