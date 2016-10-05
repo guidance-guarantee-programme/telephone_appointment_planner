@@ -3,6 +3,7 @@ class UsersController < ApplicationController
 
   def index
     @guiders = User.guiders
+    @groups = Group.all
   end
 
   def edit
