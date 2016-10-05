@@ -9,7 +9,7 @@ class GroupsController < ApplicationController
   end
 
   def create
-    CreateGroupAssignments.new(user_ids, group_params).call
+    CreateGroupAssignments.new(user_ids, group_params[:name]).call
     go_back_with_success(:assigned)
   end
 

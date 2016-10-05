@@ -1,12 +1,7 @@
 class CreateGroupAssignments
-  include ActiveModel::Model
-
-  attr_accessor :user_ids
-  attr_accessor :name
-
-  def initialize(user_ids, group_params)
+  def initialize(user_ids, name)
     @user_ids = user_ids
-    super(group_params)
+    @name = name
   end
 
   def call
@@ -22,4 +17,7 @@ class CreateGroupAssignments
   def users
     User.find(user_ids)
   end
+
+  attr_reader :user_ids
+  attr_reader :name
 end
