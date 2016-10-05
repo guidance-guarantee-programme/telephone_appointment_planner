@@ -8,6 +8,12 @@ class Schedule < ApplicationRecord
   validates :start_at, uniqueness: { scope: :user_id }
   validate :start_at_must_be_more_than_six_weeks_in_the_future, unless: :first_schedule?
 
+  def self.active(day)
+    order(:start_at)
+      .where('schedules.start_at < ?', day)
+      .last
+  end
+
   def end_at
     self[:end_at] - 1.second if self[:end_at]
   end
@@ -31,9 +37,7 @@ class Schedule < ApplicationRecord
         available_slots_by_day[date] ||= []
         active_schedule = guider
                           .schedules
-                          .order(:start_at)
-                          .where('schedules.start_at < ?', date)
-                          .last
+                          .active(date)
         next unless active_schedule.present?
 
         available_slots = active_schedule

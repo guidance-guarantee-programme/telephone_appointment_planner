@@ -21,9 +21,7 @@ class Appointment < ApplicationRecord
 
       active_schedule = guider
                         .schedules
-                        .order(:start_at)
-                        .where('schedules.start_at < ?', start_at)
-                        .last
+                        .active(start_at)
 
       next unless active_schedule.present?
 
