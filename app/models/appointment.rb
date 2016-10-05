@@ -13,7 +13,6 @@ class Appointment < ApplicationRecord
   # rubocop:disable Metrics/MethodLength
   def assign_random_guider
     User.guiders.shuffle.each do |guider|
-      day = start_at
       already_assigned = guider.appointments.any? do |appointment|
         appointment.start_at == start_at &&
           appointment.end_at == end_at
@@ -23,7 +22,7 @@ class Appointment < ApplicationRecord
       active_schedule = guider
                         .schedules
                         .order(:start_at)
-                        .where('schedules.start_at < ?', day)
+                        .where('schedules.start_at < ?', start_at)
                         .last
 
       next unless active_schedule.present?
