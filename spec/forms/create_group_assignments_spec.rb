@@ -5,7 +5,7 @@ RSpec.describe CreateGroupAssignments, '#call' do
   let(:user_ids) { users.map(&:id) }
   let(:group_params) { Hash[name: 'Another Group'] }
 
-  subject { described_class.new(user_ids, group_params) }
+  subject { described_class.new(user_ids, group_params[:name]) }
 
   context 'when the users are not already members' do
     it 'assigns the group to the given users' do
