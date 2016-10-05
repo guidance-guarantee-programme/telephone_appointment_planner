@@ -23,6 +23,30 @@ RSpec.feature 'Resource manager manages guiders' do
     end
   end
 
+  scenario 'Unassigning a group from multiple guiders', js: true do
+    given_the_user_is_a_resource_manager do
+      and_there_are_guiders_assigned_to_groups
+      when_they_visit_the_guiders_page
+      and_they_choose_to_remove_groups_from_multiple_guiders
+      then_they_see_the_guiders_they_will_affect
+      when_they_remove_a_group
+      then_the_group_is_unassigned_from_those_guiders
+    end
+  end
+
+  def and_they_choose_to_remove_groups_from_multiple_guiders
+    and_they_choose_to_add_groups_to_multiple_guiders
+  end
+
+  def when_they_remove_a_group
+    @page.groups.first.remove.click
+  end
+
+  def then_the_group_is_unassigned_from_those_guiders
+    expect(@page).to have_flash_of_success
+    expect(@page).to have_no_text(@team_one.name)
+  end
+
   def and_they_choose_to_add_groups_to_multiple_guiders
     @page.guiders.map(&:checkbox).each { |c| c.set(true) }
     @page.wait_for_action_panel
