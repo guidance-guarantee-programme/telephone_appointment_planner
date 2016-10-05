@@ -15,7 +15,7 @@ class User < ApplicationRecord
     # This can't really be made faster because we're storing
     # permissions as a serialized string. We only really should have a maximum of
     # 50 (guiders) + 3 (resource managers) in the database though.
-    User.includes(:groups).all.select(&:guider?)
+    select(&:guider?)
   end
 
   def guider?
