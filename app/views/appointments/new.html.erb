@@ -14,8 +14,10 @@
     <div class="calendar">
       <div data-module="AppointmentAvailabilityCalendar" data-events=".slots-data"></div>
       <input type="hidden" name="available-slots-json" class="slots-data" value="<%= @available_slots_json %>">
-      <%= f.text_field :start_at, data: { 'selected-start': true }, class: 't-start-at' %>
-      <%= f.text_field :end_at, data: { 'selected-end': true }, class: 't-end-at' %>
+      <div class="hide">
+        <%= f.text_field :start_at, data: { 'selected-start': true }, class: 't-start-at' %>
+        <%= f.text_field :end_at, data: { 'selected-end': true }, class: 't-end-at' %>
+      </div>
     </div>
   </div>
   <div class="col-md-12">
