@@ -15,4 +15,5 @@
 //= require fullcalendar
 //= require listjs
 //= require daterangepicker
+//= require core.js/core.js
 //= require_tree .

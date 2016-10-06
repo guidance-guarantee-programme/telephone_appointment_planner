@@ -2,8 +2,6 @@
 @import 'fullcalendar';
 @import 'daterangepicker-bs3';
 
-@import 'components/**/*';
-
 .fc-unthemed {
   .fc-today {
     background: #fff;
@@ -45,4 +43,18 @@
 
 .inline-button-to-container {
   display:inline-block;
+}
+
+.guider__action-panel {
+  background: #ddd;
+  border-top: 1px solid #000;
+  bottom: 0;
+  display: none;
+  font-size: 16px;
+  font-weight: bold;
+  left: 0;
+  padding: 1em;
+  position: fixed;
+  text-align: center;
+  width: 100%;
 }

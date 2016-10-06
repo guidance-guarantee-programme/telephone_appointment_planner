@@ -2,10 +2,10 @@
   <ol class="breadcrumb">
     <li><a href="<%= root_path %>">Home</a></li>
     <li><a href="<%= users_path %>">Manage Guiders</a></li>
-    <li class="active">Edit User &quot;<%=@guider.name %>&quot;</li>
+    <li class="active">Manage schedules for &quot;<%=@guider.name %>&quot;</li>
   </ol>
 
-  <h1>Edit User "<%=@guider.name %>"</h1>
+  <h1>Manage schedules for "<%=@guider.name %>"</h1>
 </div>
 
 <%= link_to new_user_schedule_path(@guider), class: 'btn btn-primary' do %>
