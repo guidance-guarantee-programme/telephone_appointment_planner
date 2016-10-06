@@ -9,11 +9,20 @@
 
       this.setupSortButtons();
       this.init();
+      this.bindEvents();
     }
 
     init() {
       // using listjs
-      new List(this.$el.attr('id'), this.config);
+      this.list = new List(this.$el.attr('id'), this.config);
+    }
+
+    bindEvents() {
+      this.list.on('searchComplete', this.handleSearchComplete.bind(this));
+    }
+
+    handleSearchComplete(list) {
+      $.publish('list-search-complete', list);
     }
 
     setupSortButtons() {

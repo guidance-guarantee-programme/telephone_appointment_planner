@@ -5,9 +5,8 @@
     constructor(el, config = {}) {
       this.$el = el;
       this.config = config;
-      this.itemCheckboxes = this.$el.find('[data-multi-checkbox="item"]');
       this.allCheckbox = this.$el.find('[data-multi-checkbox="all"]');
-
+      this.itemCheckboxes = this.$el.find('[data-multi-checkbox="item"]');
       this.bindEvents();
     }
 
@@ -22,6 +21,8 @@
 
       this.addRemoveClass($el, checked);
       this.allCheckbox.prop('checked', this.areAllItemsChecked());
+
+      this.publishChangeEvent();
     }
 
     handleAllChange(event) {
@@ -30,6 +31,12 @@
 
       this.itemCheckboxes.prop('checked', checked);
       this.addRemoveClass(this.itemCheckboxes, checked);
+
+      this.publishChangeEvent();
+    }
+
+    publishChangeEvent() {
+      $.publish('multi-checkbox-change', this.itemCheckboxes);
     }
 
     getCheckedStatus($el) {
