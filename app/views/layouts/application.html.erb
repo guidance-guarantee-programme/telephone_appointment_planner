@@ -13,7 +13,9 @@
 <% content_for :body_end do %>
   <script>
   var loadedModules = [];
-  $(document).on('turbolinks:load', function() {
+  var readyEvent = Turbolinks.supported ? 'turbolinks:load' : 'ready';
+
+  $(document).on(readyEvent, function() {
     var modules = $('[data-module]');
 
     if (loadedModules.length) {
