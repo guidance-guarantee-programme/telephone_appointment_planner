@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 20161005131704) do
   enable_extension "plpgsql"
 
   create_table "appointments", force: :cascade do |t|
+    t.integer  "user_id",                                    null: false
     t.datetime "start_at",                                   null: false
     t.datetime "end_at",                                     null: false
     t.string   "first_name",                                 null: false

@@ -9,7 +9,7 @@ class AppointmentsController < ApplicationController
 
   def create
     @appointment = Appointment.new(appointment_params)
-    @appointment.assign_random_usable_slot
+    @appointment.assign_to_guider
     if @appointment.save
       redirect_to appointment_path(@appointment), success: 'Appointment has been created!'
     else

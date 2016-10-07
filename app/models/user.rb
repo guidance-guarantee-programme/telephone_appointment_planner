@@ -7,6 +7,7 @@ class User < ApplicationRecord
 
   has_many :schedules, dependent: :destroy
   has_many :usable_slots
+  has_many :appointments
 
   has_many :group_assignments
   has_many :groups, through: :group_assignments

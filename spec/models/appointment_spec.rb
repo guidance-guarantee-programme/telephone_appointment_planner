@@ -23,7 +23,7 @@ RSpec.describe Appointment, type: :model do
     end
   end
 
-  describe '#assign_random_usable_slot' do
+  describe '#assign_to_guider' do
     let(:appointment_start_time) do
       Time.zone.now.change(hour: 9, min: 0, second: 0)
     end
@@ -61,34 +61,31 @@ RSpec.describe Appointment, type: :model do
         )
       end
 
-      it 'assigns a usable slot' do
+      it 'assigns to a guider' do
         subject.first_name = 'Andrew'
         subject.last_name = 'Something'
         subject.phone = '32424'
         subject.memorable_word = 'lozenge'
         subject.start_at = appointment_start_time
         subject.end_at = appointment_end_time
-        subject.save!
-        subject.assign_random_usable_slot
-        usable_slot.reload
-        expect(usable_slot.appointment).to eq subject
+        subject.assign_to_guider
+        expect(subject.user).to eq guider_with_slot
       end
 
       context 'and the guider already has an appointment at that time' do
         before do
-          appointment = create(
+          create(
             :appointment,
+            user: guider_with_slot,
             start_at: appointment_start_time,
             end_at: appointment_end_time
           )
-          usable_slot.appointment = appointment
-          usable_slot.save!
         end
 
-        it 'does not assign a usable slot' do
+        it 'does not assign to a guider' do
           subject.start_at = appointment_start_time
           subject.end_at = appointment_end_time
-          expect { subject.assign_random_usable_slot }.to_not change { usable_slot }
+          expect { subject.assign_to_guider }.to_not change { subject.user }
         end
       end
     end

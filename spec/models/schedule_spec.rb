@@ -142,5 +142,35 @@ RSpec.describe Schedule, type: :model do
         end: DateTime.new(2022, 12, 20, 10, 0, 0).in_time_zone
       )
     end
+
+    it 'excludes slots that are obscured by an appointment' do
+      monday_fifth_of_december = Date.new(2022, 12, 5)
+
+      guider = create(:guider)
+      create(
+        :usable_slot,
+        user: guider,
+        start_at: DateTime.new(2022, 12, 9, 10, 30, 0).in_time_zone,
+        end_at: DateTime.new(2022, 12, 9, 11, 30, 0).in_time_zone
+      )
+
+      result = Schedule.available_slots_with_guider_count(
+        monday_fifth_of_december,
+        monday_fifth_of_december + 20.days
+      )
+      expect(result).to_not be_empty
+
+      create(
+        :appointment,
+        user: guider,
+        start_at: DateTime.new(2022, 12, 9, 10, 30, 0).in_time_zone,
+        end_at: DateTime.new(2022, 12, 9, 11, 30, 0).in_time_zone
+      )
+      result = Schedule.available_slots_with_guider_count(
+        monday_fifth_of_december,
+        monday_fifth_of_december + 20.days
+      )
+      expect(result).to be_empty
+    end
   end
 end

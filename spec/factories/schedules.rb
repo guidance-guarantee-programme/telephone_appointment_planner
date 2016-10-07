@@ -3,19 +3,19 @@ FactoryGirl.define do
     user { build(:user) }
     start_at 6.weeks.from_now
 
-    days = %w(Monday Tuesday Wednesday Thursday Friday)
+    days = 1.upto(6)
 
     trait :with_early_shift do
       slots do
         days.map do |day|
           [
-            { start_at: '08:30', end_at: '09:40' },
-            { start_at: '09:50', end_at: '11:00' },
-            { start_at: '11:20', end_at: '12:30' },
-            { start_at: '13:30', end_at: '14:40' },
-            { start_at: '14:50', end_at: '16:00' }
+            { day_of_week: day, start_hour: 8, start_minute: 30, end_hour: 9, end_minute: 40 },
+            { day_of_week: day, start_hour: 9, start_minute: 50, end_hour: 11, end_minute: 0 },
+            { day_of_week: day, start_hour: 11, start_minute: 20, end_hour: 12, end_minute: 30 },
+            { day_of_week: day, start_hour: 13, start_minute: 30, end_hour: 14, end_minute: 40 },
+            { day_of_week: day, start_hour: 14, start_minute: 50, end_hour: 16, end_minute: 0 }
           ].map do |v|
-            build(:slot, day: day, start_at: v[:start_at], end_at: v[:end_at])
+            build(:slot, v)
           end
         end.flatten
       end
@@ -24,13 +24,13 @@ FactoryGirl.define do
       slots do
         days.map do |day|
           [
-            { start_at: '09:30', end_at: '10:40' },
-            { start_at: '10:50', end_at: '12:00' },
-            { start_at: '12:20', end_at: '13:30' },
-            { start_at: '14:30', end_at: '15:40' },
-            { start_at: '15:50', end_at: '17:00' }
+            { day_of_week: day, start_hour: 9, start_minute: 30, end_hour: 10, end_minute: 40 },
+            { day_of_week: day, start_hour: 10, start_minute: 50, end_hour: 12, end_minute: 0 },
+            { day_of_week: day, start_hour: 12, start_minute: 20, end_hour: 13, end_minute: 30 },
+            { day_of_week: day, start_hour: 14, start_minute: 30, end_hour: 15, end_minute: 40 },
+            { day_of_week: day, start_hour: 15, start_minute: 50, end_hour: 17, end_minute: 0 }
           ].map do |v|
-            build(:slot, day: day, start_at: v[:start_at], end_at: v[:end_at])
+            build(:slot, v)
           end
         end.flatten
       end
@@ -39,13 +39,13 @@ FactoryGirl.define do
       slots do
         days.map do |day|
           [
-            { start_at: '11:00', end_at: '12:10' },
-            { start_at: '12:20', end_at: '13:30' },
-            { start_at: '13:50', end_at: '15:00' },
-            { start_at: '16:00', end_at: '17:10' },
-            { start_at: '17:20', end_at: '18:30' }
+            { day_of_week: day, start_hour: 11, start_minute: 0, end_hour: 12, end_minute: 10 },
+            { day_of_week: day, start_hour: 12, start_minute: 20, end_hour: 13, end_minute: 30 },
+            { day_of_week: day, start_hour: 13, start_minute: 50, end_hour: 15, end_minute: 0 },
+            { day_of_week: day, start_hour: 16, start_minute: 0, end_hour: 17, end_minute: 10 },
+            { day_of_week: day, start_hour: 17, start_minute: 20, end_hour: 18, end_minute: 30 }
           ].map do |v|
-            build(:slot, day: day, start_at: v[:start_at], end_at: v[:end_at])
+            build(:slot, v)
           end
         end.flatten
       end

@@ -3,7 +3,7 @@
 </h1>
 
 <h2>
-  Guider: <%= UsableSlot.where(appointment: @appointment).first.user.name %>
+  Guider: <%= @appointment.user.name %>
 </h2>
 
 <h2>

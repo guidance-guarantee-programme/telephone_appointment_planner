@@ -53,7 +53,7 @@ RSpec.feature 'Contact centre agent creates appointments' do
     expect(Appointment.count).to eq 1
     appointment = Appointment.first
 
-    expect(appointment.usable_slot.user).to eq @guider
+    expect(appointment.user).to eq @guider
     expect(appointment.first_name).to eq 'Some'
     expect(appointment.last_name).to eq 'Person'
     expect(appointment.email).to eq 'email@example.org'

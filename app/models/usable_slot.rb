@@ -1,5 +1,4 @@
 class UsableSlot < ApplicationRecord
-  belongs_to :appointment, optional: true
   belongs_to :user
 
   def self.exact_match(start_at, end_at)
@@ -13,7 +12,7 @@ class UsableSlot < ApplicationRecord
   end
 
   def self.within_date_range(from, to)
-    where('start_at > ? AND end_at < ?', from, to)
+    where('usable_slots.start_at > ? AND usable_slots.end_at < ?', from, to)
   end
 
   def self.usable
