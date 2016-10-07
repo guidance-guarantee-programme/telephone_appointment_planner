@@ -1,0 +1,51 @@
+class UsableSlot < ApplicationRecord
+  belongs_to :appointment, optional: true
+  belongs_to :user
+
+  def self.exact_match(start_at, end_at)
+    where(start_at: start_at, end_at: end_at)
+  end
+
+  def self.regenerate_for_six_weeks
+    User.guiders.each do |user|
+      generate_for_guider(user)
+    end
+  end
+
+  def self.within_date_range(from, to)
+    where('start_at > ? AND end_at < ?', from, to)
+  end
+
+  def self.usable
+    where(appointment_id: nil)
+  end
+
+  private_class_method
+
+  def self.generate_for_guider(user)
+    (Time.zone.now.to_date..6.weeks.from_now.to_date).each do |day|
+      active_schedule = user.schedules.active(day)
+      next unless active_schedule
+
+      available_slots = active_schedule
+                        .slots
+                        .where(day_of_week: day.wday)
+
+      available_slots.each do |available_slot|
+        create_usable_slot_from_slot!(user, day, available_slot)
+      end
+    end
+  end
+
+  def self.create_usable_slot_from_slot!(user, day, slot)
+    start_at = day.in_time_zone.change(
+      hour: slot.start_hour,
+      min: slot.start_minute
+    )
+    end_at = day.in_time_zone.change(
+      hour: slot.end_hour,
+      min: slot.end_minute
+    )
+    find_or_create_by!(user: user, start_at: start_at, end_at: end_at)
+  end
+end

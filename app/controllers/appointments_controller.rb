@@ -2,13 +2,14 @@ class AppointmentsController < ApplicationController
   before_action :authorise_for_contact_centre_agents!
 
   def new
+    UsableSlot.regenerate_for_six_weeks
     @appointment = Appointment.new
     @available_slots_json = available_slots_json(Time.zone.now.to_date, 6.weeks.from_now.to_date)
   end
 
   def create
     @appointment = Appointment.new(appointment_params)
-    @appointment.assign_random_guider
+    @appointment.assign_random_usable_slot
     if @appointment.save
       redirect_to appointment_path(@appointment), success: 'Appointment has been created!'
     else

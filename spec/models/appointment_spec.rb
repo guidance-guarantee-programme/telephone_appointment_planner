@@ -8,7 +8,6 @@ RSpec.describe Appointment, type: :model do
     end
 
     required = [
-      :user,
       :start_at,
       :end_at,
       :first_name,
@@ -24,7 +23,7 @@ RSpec.describe Appointment, type: :model do
     end
   end
 
-  describe '#assign_random_guider' do
+  describe '#assign_random_usable_slot' do
     let(:appointment_start_time) do
       Time.zone.now.change(hour: 9, min: 0, second: 0)
     end
@@ -53,27 +52,43 @@ RSpec.describe Appointment, type: :model do
         guider_with_slot
       end
 
-      it 'assigns a guider' do
+      let!(:usable_slot) do
+        create(
+          :usable_slot,
+          user: guider_with_slot,
+          start_at: appointment_start_time,
+          end_at: appointment_end_time
+        )
+      end
+
+      it 'assigns a usable slot' do
+        subject.first_name = 'Andrew'
+        subject.last_name = 'Something'
+        subject.phone = '32424'
+        subject.memorable_word = 'lozenge'
         subject.start_at = appointment_start_time
         subject.end_at = appointment_end_time
-        subject.assign_random_guider
-        expect(subject.user).to eq guider_with_slot
+        subject.save!
+        subject.assign_random_usable_slot
+        usable_slot.reload
+        expect(usable_slot.appointment).to eq subject
       end
 
       context 'and the guider already has an appointment at that time' do
         before do
-          guider_with_slot.appointments << build(
+          appointment = create(
             :appointment,
             start_at: appointment_start_time,
             end_at: appointment_end_time
           )
+          usable_slot.appointment = appointment
+          usable_slot.save!
         end
 
-        it 'does not assign a guider' do
+        it 'does not assign a usable slot' do
           subject.start_at = appointment_start_time
           subject.end_at = appointment_end_time
-          subject.assign_random_guider
-          expect(subject.user).to eq nil
+          expect { subject.assign_random_usable_slot }.to_not change { usable_slot }
         end
       end
     end

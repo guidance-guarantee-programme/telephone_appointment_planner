@@ -6,7 +6,7 @@ class User < ApplicationRecord
   CONTACT_CENTRE_AGENT_PERMISSION = 'contact_centre_agent'.freeze
 
   has_many :schedules, dependent: :destroy
-  has_many :appointments
+  has_many :usable_slots
 
   has_many :group_assignments
   has_many :groups, through: :group_assignments

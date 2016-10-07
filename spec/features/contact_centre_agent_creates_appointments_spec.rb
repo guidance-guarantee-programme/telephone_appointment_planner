@@ -25,6 +25,7 @@ RSpec.feature 'Contact centre agent creates appointments' do
       slots: [@slot]
     )
     @schedule.save!
+    UsableSlot.regenerate_for_six_weeks
   end
 
   # rubocop:disable Metrics/AbcSize
@@ -49,9 +50,10 @@ RSpec.feature 'Contact centre agent creates appointments' do
 
   def then_that_appointment_is_stored
     @guider.reload
-    expect(@guider.appointments.count).to eq 1
-    appointment = @guider.appointments.first
+    expect(Appointment.count).to eq 1
+    appointment = Appointment.first
 
+    expect(appointment.usable_slot.user).to eq @guider
     expect(appointment.first_name).to eq 'Some'
     expect(appointment.last_name).to eq 'Person'
     expect(appointment.email).to eq 'email@example.org'
