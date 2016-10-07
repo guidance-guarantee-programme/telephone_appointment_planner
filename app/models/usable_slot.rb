@@ -19,10 +19,8 @@ class UsableSlot < ApplicationRecord
     where(appointment_id: nil)
   end
 
-  # rubocop:disable Metrics/MethodLength
-  def self.with_guider_count(from, to)
+  def self.without_appointments
     UsableSlot
-      .select('DISTINCT usable_slots.start_at, usable_slots.end_at, count(1) AS guiders')
       .joins(<<-SQL
               LEFT JOIN appointments ON
                 appointments.user_id = usable_slots.user_id AND
@@ -30,8 +28,14 @@ class UsableSlot < ApplicationRecord
                 appointments.end_at = usable_slots.end_at
               SQL
             )
-      .group('usable_slots.start_at, usable_slots.end_at')
       .where('appointments.start_at IS NULL')
+  end
+
+  def self.with_guider_count(from, to)
+    UsableSlot
+      .select('DISTINCT usable_slots.start_at, usable_slots.end_at, count(1) AS guiders')
+      .without_appointments
+      .group('usable_slots.start_at, usable_slots.end_at')
       .within_date_range(from, to)
       .map do |us|
       { guiders: us.attributes['guiders'], start: us.start_at, end: us.end_at }
