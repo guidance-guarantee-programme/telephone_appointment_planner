@@ -8,4 +8,5 @@ Rails.application.routes.draw do
   end
 
   resources :groups, only: %i(index create destroy)
+  resources :appointments
 end

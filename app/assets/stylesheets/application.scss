@@ -1,6 +1,8 @@
 @import 'govuk_admin_template';
 @import 'fullcalendar';
+@import 'fullcalendar-scheduler';
 @import 'daterangepicker-bs3';
+@import 'qTip2';
 
 .fc-unthemed {
   .fc-today {
@@ -42,7 +44,23 @@
 }
 
 .inline-button-to-container {
-  display:inline-block;
+  display: inline-block;
+}
+
+.guiders-appointments-calendar {
+  .fc-resource-cell {
+    height: 150px;
+    white-space: nowrap;
+  }
+
+  th {
+    border-width: 0;
+    overflow: hidden;
+  }
+
+  .fc-resource-cell > div {
+    transform: translateY(120px) rotate(-90deg);
+  }
 }
 
 .guider__action-panel {
