@@ -42,8 +42,8 @@ class AppointmentsController < ApplicationController
   end
 
   def available_slots_json(from, to)
-    Schedule
-      .available_slots_with_guider_count(from, to)
+    UsableSlot
+      .with_guider_count(from, to)
       .to_json
   end
 

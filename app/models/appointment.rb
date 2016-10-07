@@ -8,6 +8,7 @@ class Appointment < ApplicationRecord
   validates :phone, presence: true
   validates :memorable_word, presence: true
 
+  # rubocop:disable Metrics/MethodLength
   def assign_to_guider
     User.guiders.each do |user|
       next if user.appointments.where(start_at: start_at, end_at: end_at).any?
