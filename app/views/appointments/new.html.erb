@@ -1,26 +1,41 @@
+<h1>Create new appointment</h1>
+
 <%= form_for @appointment, layout: :basic do |f| %>
-  <div class="col-md-6">
-    <%= f.text_field :first_name, class: 't-first-name' %>
-    <%= f.text_field :last_name, class: 't-last-name' %>
-    <%= f.email_field :email, class: 't-email' %>
-    <%= f.telephone_field :phone, class: 't-phone' %>
-    <%= f.telephone_field :mobile, class: 't-mobile' %>
-    <%= f.text_field :year_of_birth, class: 't-year-of-birth' %>
-    <%= f.text_field :memorable_word, class: 't-memorable-word' %>
-    <%= f.text_area :notes, class: 't-notes' %>
-    <%= f.check_box :opt_out_of_market_research, class: 't-opt-out-of-market-research' %>
+  <div class="row form-group">
+    <div class="col-md-12">
+      <h2>Personal Details</h2>
+    </div>
+    <div class="col-md-6">
+      <%= f.text_field :first_name, class: 't-first-name' %>
+      <%= f.text_field :last_name, class: 't-last-name' %>
+      <%= f.email_field :email, class: 't-email' %>
+      <%= f.telephone_field :phone, class: 't-phone' %>
+    </div>
+    <div class="col-md-6">
+      <%= f.telephone_field :mobile, class: 't-mobile' %>
+      <%= f.text_field :year_of_birth, class: 't-year-of-birth' %>
+      <%= f.text_field :memorable_word, class: 't-memorable-word' %>
+      <%= f.text_area :notes, class: 't-notes' %>
+      <%= f.check_box :opt_out_of_market_research, class: 't-opt-out-of-market-research' %>
+    </div>
   </div>
-  <div class="col-md-6">
-    <div class="calendar">
-      <div data-module="AppointmentAvailabilityCalendar" data-events=".slots-data"></div>
-      <input type="hidden" name="available-slots-json" class="slots-data" value="<%= @available_slots_json %>">
-      <div class="hide">
-        <%= f.text_field :start_at, data: { 'selected-start': true }, class: 't-start-at' %>
-        <%= f.text_field :end_at, data: { 'selected-end': true }, class: 't-end-at' %>
+  <div class="row form-group">
+    <div class="col-md-12">
+      <h2>Choose available slot</h2>
+
+      <div class="calendar">
+        <div data-module="AppointmentAvailabilityCalendar" data-events=".slots-data"></div>
+        <input type="hidden" name="available-slots-json" class="slots-data" value="<%= @available_slots_json %>">
+        <div class="hide">
+          <%= f.text_field :start_at, data: { 'selected-start': true }, class: 't-start-at' %>
+          <%= f.text_field :end_at, data: { 'selected-end': true }, class: 't-end-at' %>
+        </div>
       </div>
     </div>
   </div>
-  <div class="col-md-12">
-    <%= f.submit "Save", class: 't-save' %>
+  <div class="row form-group">
+    <div class="col-md-12">
+      <%= f.submit "Save", class: 't-save' %>
+    </div>
   </div>
 <% end %>
