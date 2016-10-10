@@ -29,6 +29,8 @@ RSpec.feature 'Roles' do
   context 'Contact Centre Agents' do
     scenario 'Can book appointments' do
       given_the_user_is_a_contact_centre_agent do
+        when_they_try_to_book_an_appointment
+        then_they_are_allowed
       end
     end
   end
