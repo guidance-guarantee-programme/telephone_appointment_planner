@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Schedule, type: :model do
-  include ActiveSupport::Testing::TimeHelpers
-
   describe 'validation' do
     context '#start_at' do
       it 'is unique per user' do
