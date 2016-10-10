@@ -3,6 +3,26 @@ require 'rails_helper'
 RSpec.describe Schedule, type: :model do
   describe 'validation' do
     context '#start_at' do
+      it 'is unique per user' do
+        same_time = Time.zone.now
+        same_user = create(:guider)
+        create(
+          :schedule,
+          user: same_user,
+          start_at: same_time
+        )
+
+        schedule = build(
+          :schedule,
+          user: same_user,
+          start_at: same_time
+        )
+        expect(schedule).to_not be_valid
+
+        schedule.user = create(:guider)
+        expect(schedule).to be_valid
+      end
+
       context 'first schedule' do
         let(:user) do
           create(:user)
