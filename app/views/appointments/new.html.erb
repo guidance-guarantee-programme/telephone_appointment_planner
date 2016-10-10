@@ -10,12 +10,12 @@
       <%= f.text_field :last_name, class: 't-last-name' %>
       <%= f.email_field :email, class: 't-email' %>
       <%= f.telephone_field :phone, class: 't-phone' %>
+      <%= f.telephone_field :mobile, class: 't-mobile' %>
     </div>
     <div class="col-md-6">
-      <%= f.telephone_field :mobile, class: 't-mobile' %>
       <%= f.text_field :year_of_birth, class: 't-year-of-birth' %>
       <%= f.text_field :memorable_word, class: 't-memorable-word' %>
-      <%= f.text_area :notes, class: 't-notes' %>
+      <%= f.text_area :notes, class: 't-notes', rows: 6 %>
       <%= f.check_box :opt_out_of_market_research, class: 't-opt-out-of-market-research' %>
     </div>
   </div>
