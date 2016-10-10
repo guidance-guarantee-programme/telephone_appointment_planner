@@ -16,10 +16,4 @@ bundle exec rake
 
 ## Staging
 
-```bash
-# Add the heroku remote
-heroku git:remote -a staging-tap-pensionwise -r staging
-
-# Deploy
-git push staging master
-```
+View staging at [https://staging-tap-pensionwise.herokuapp.com](https://staging-tap-pensionwise.herokuapp.com)
