@@ -6,7 +6,7 @@
     constructor(el, config = {}) {
       const defaultConfig = {
         gridColumns: 12,
-        windowStartMonthsAgo: 3,
+        windowStartMonthsAgo: 1,
         windowLengthInMonths: 12,
         scheduleHeight: 30,
         scheduleMarginTop: 5,
