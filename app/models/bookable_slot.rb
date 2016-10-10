@@ -44,12 +44,12 @@ class BookableSlot < ApplicationRecord
                         .where(day_of_week: day.wday)
 
       available_slots.each do |available_slot|
-        create_bookable_slot_from_slot!(guider, day, available_slot)
+        create_from_slot!(guider, day, available_slot)
       end
     end
   end
 
-  def self.create_bookable_slot_from_slot!(guider, day, slot)
+  def self.create_from_slot!(guider, day, slot)
     start_at = day.in_time_zone.change(
       hour: slot.start_hour,
       min: slot.start_minute
