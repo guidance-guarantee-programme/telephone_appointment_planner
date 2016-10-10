@@ -8,16 +8,16 @@ class BookableSlot < ApplicationRecord
   end
 
   def self.within_date_range(from, to)
-    where('bookable_slots.start_at > ? AND bookable_slots.end_at < ?', from, to)
+    where("#{quoted_table_name}.start_at > ? AND #{quoted_table_name}.end_at < ?", from, to)
   end
 
   def self.without_appointments
     BookableSlot
       .joins(<<-SQL
               LEFT JOIN appointments ON
-                appointments.guider_id = bookable_slots.guider_id AND
-                appointments.start_at = bookable_slots.start_at AND
-                appointments.end_at = bookable_slots.end_at
+                appointments.guider_id = #{quoted_table_name}.guider_id AND
+                appointments.start_at = #{quoted_table_name}.start_at AND
+                appointments.end_at = #{quoted_table_name}.end_at
               SQL
             )
       .where('appointments.start_at IS NULL')
@@ -25,9 +25,9 @@ class BookableSlot < ApplicationRecord
 
   def self.with_guider_count(from, to)
     BookableSlot
-      .select('DISTINCT bookable_slots.start_at, bookable_slots.end_at, count(1) AS guiders')
+      .select("DISTINCT #{quoted_table_name}.start_at, #{quoted_table_name}.end_at, count(1) AS guiders")
       .without_appointments
-      .group('bookable_slots.start_at, bookable_slots.end_at')
+      .group("#{quoted_table_name}.start_at, #{quoted_table_name}.end_at")
       .within_date_range(from, to)
       .map do |us|
       { guiders: us.attributes['guiders'], start: us.start_at, end: us.end_at }
