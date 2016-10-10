@@ -8,7 +8,7 @@ class Schedule < ApplicationRecord
   validate :start_at_must_be_more_than_six_weeks_in_the_future, unless: :first_schedule?
 
   def end_at
-    self[:end_at] - 1.day if self[:end_at]
+    self[:end_at] - 1.second if self[:end_at]
   end
 
   def self.with_end_at
