@@ -36,4 +36,20 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe '#agent?' do
+    context 'normal user' do
+      it 'is false' do
+        user = build(:user)
+        expect(user).to_not be_agent
+      end
+    end
+
+    context 'user with agent permission' do
+      it 'is true' do
+        user = build(:agent)
+        expect(user).to be_agent
+      end
+    end
+  end
 end

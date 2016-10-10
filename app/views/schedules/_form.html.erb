@@ -60,6 +60,6 @@
       <div data-module="GuiderSlotPickerCalendar" data-events=".slots-data" data-events-common="calendar-common" data-config='{"slotDurationMinutes": 70}'></div>
     </div>
   </div>
-  <%= f.hidden_field :slots, class: 'slots-data', value: @schedule_json %>
+  <%= f.hidden_field :slots, class: 'slots-data', value: @slots_as_json %>
   <%= f.submit 'Save', class: 'btn btn-success t-save' %>
 <% end %>

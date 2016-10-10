@@ -26,15 +26,33 @@ RSpec.feature 'Roles' do
     end
   end
 
-  context 'Non-resource-managers' do
-    scenario 'Fail to manage guiders' do
+  context 'Agents' do
+    scenario 'Can book appointments' do
+      given_the_user_is_an_agent do
+        when_they_try_to_book_an_appointment
+        then_they_are_allowed
+      end
+    end
+  end
+
+  context 'Users who are not Agents' do
+    scenario 'Can not book appointments' do
+      given_the_user_has_no_permissions do
+        when_they_try_to_book_an_appointment
+        then_they_are_locked_out
+      end
+    end
+  end
+
+  context 'Users who are not Resource Managers' do
+    scenario 'Can not manage guiders' do
       given_the_user_has_no_permissions do
         when_they_try_to_manager_guiders
         then_they_are_locked_out
       end
     end
 
-    scenario 'Fail to manage guiders schedules' do
+    scenario 'Can not manage guiders schedules' do
       given_the_user_has_no_permissions do
         and_a_guider_exists
         when_they_try_to_edit_guiders_schedules
@@ -42,7 +60,7 @@ RSpec.feature 'Roles' do
       end
     end
 
-    scenario 'Fail to manage guiders slots' do
+    scenario 'Can not manage guiders slots' do
       given_the_user_has_no_permissions do
         and_a_guider_with_a_schedule_exists
         when_they_try_to_manage_guiders_slots
@@ -65,11 +83,6 @@ RSpec.feature 'Roles' do
     @guider = create(:guider)
     @schedule = @guider.schedules.create!(
       start_at: 7.weeks.from_now
-    )
-    @schedule.slots.create(
-      day: 'Monday',
-      start_at: '09:00',
-      end_at: '10:30'
     )
   end
 
@@ -94,5 +107,10 @@ RSpec.feature 'Roles' do
 
   def then_they_are_allowed
     expect(@page).to_not have_permission_error_message
+  end
+
+  def when_they_try_to_book_an_appointment
+    @page = Pages::NewAppointment.new
+    @page.load
   end
 end

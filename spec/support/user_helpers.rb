@@ -6,6 +6,13 @@ module UserHelpers
     GDS::SSO.test_user = nil
   end
 
+  def given_the_user_is_an_agent
+    GDS::SSO.test_user = create(:agent)
+    yield
+  ensure
+    GDS::SSO.test_user = nil
+  end
+
   def given_the_user_has_no_permissions
     GDS::SSO.test_user = create(:user)
     yield

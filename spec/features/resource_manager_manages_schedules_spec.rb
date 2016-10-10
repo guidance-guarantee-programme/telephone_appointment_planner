@@ -156,14 +156,22 @@ RSpec.feature 'Resource manager manages schedules' do
     @schedule.reload
 
     first_slot = @schedule.slots.first
-    expect(first_slot.day).to eq 'Wednesday'
-    expect(first_slot.start_at).to eq '11:00'
-    expect(first_slot.end_at).to eq '12:10'
+    expect(first_slot.attributes).to include(
+      'day_of_week' => 3,
+      'start_hour' => 11,
+      'start_minute' => 0,
+      'end_hour' => 12,
+      'end_minute' => 10
+    )
 
     second_slot = @schedule.slots.second
-    expect(second_slot.day).to eq 'Thursday'
-    expect(second_slot.start_at).to eq '10:30'
-    expect(second_slot.end_at).to eq '11:40'
+    expect(second_slot.attributes).to include(
+      'day_of_week' => 4,
+      'start_hour' => 10,
+      'start_minute' => 30,
+      'end_hour' => 11,
+      'end_minute' => 40
+    )
   end
 
   def and_the_guider_has_those_time_slots_available
@@ -172,15 +180,21 @@ RSpec.feature 'Resource manager manages schedules' do
 
     expect(schedule.slots.count).to eq 2
 
-    first_slot = schedule.slots.first
-    expect(first_slot.day).to eq 'Monday'
-    expect(first_slot.start_at).to eq '09:00'
-    expect(first_slot.end_at).to eq '10:10'
+    expect(schedule.slots.first).to have_attributes(
+      day_of_week: 1,
+      start_hour: 9,
+      start_minute: 0,
+      end_hour: 10,
+      end_minute: 10
+    )
 
-    second_slot = schedule.slots.second
-    expect(second_slot.day).to eq 'Tuesday'
-    expect(second_slot.start_at).to eq '10:30'
-    expect(second_slot.end_at).to eq '11:40'
+    expect(schedule.slots.second).to have_attributes(
+      day_of_week: 2,
+      start_hour: 10,
+      start_minute: 30,
+      end_hour: 11,
+      end_minute: 40
+    )
   end
 
   def and_they_enter_an_invalid_start_at_date

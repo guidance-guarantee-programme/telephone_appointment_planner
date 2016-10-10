@@ -10,10 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161004151310) do
+ActiveRecord::Schema.define(version: 20161010101704) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "appointments", force: :cascade do |t|
+    t.integer  "guider_id",                                  null: false
+    t.datetime "start_at",                                   null: false
+    t.datetime "end_at",                                     null: false
+    t.string   "first_name",                                 null: false
+    t.string   "last_name",                                  null: false
+    t.string   "email"
+    t.string   "phone",                                      null: false
+    t.string   "mobile"
+    t.string   "year_of_birth"
+    t.string   "memorable_word",                             null: false
+    t.text     "notes"
+    t.boolean  "opt_out_of_market_research", default: false, null: false
+  end
 
   create_table "group_assignments", id: false, force: :cascade do |t|
     t.integer "group_id", null: false
@@ -36,12 +51,21 @@ ActiveRecord::Schema.define(version: 20161004151310) do
   end
 
   create_table "slots", force: :cascade do |t|
-    t.integer  "schedule_id", null: false
-    t.string   "day",         null: false
-    t.string   "start_at",    null: false
-    t.string   "end_at",      null: false
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer  "schedule_id",  null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.integer  "day_of_week"
+    t.integer  "start_hour"
+    t.integer  "start_minute"
+    t.integer  "end_hour"
+    t.integer  "end_minute"
+  end
+
+  create_table "usable_slots", force: :cascade do |t|
+    t.integer  "guider_id", null: false
+    t.datetime "start_at",  null: false
+    t.datetime "end_at",    null: false
+    t.index ["guider_id"], name: "index_usable_slots_on_guider_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|

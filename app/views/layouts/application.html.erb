@@ -8,6 +8,9 @@
   <% if current_user.resource_manager? %>
     <%= active_link_to 'Manage guiders', users_path, wrap_tag: :li %>
   <% end %>
+  <% if current_user.agent? %>
+    <%= active_link_to 'Create appointments', new_appointment_path, wrap_tag: :li %>
+  <% end %>
 <% end %>
 
 <% content_for :body_end do %>
