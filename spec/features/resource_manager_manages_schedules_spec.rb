@@ -47,27 +47,6 @@ RSpec.feature 'Resource manager manages schedules' do
     end
   end
 
-  scenario 'Fails to create a schedule with invalid start_at date' do
-    given_the_user_is_a_resource_manager do
-      and_there_is_a_guider
-      and_they_add_a_new_schedule
-      and_they_enter_an_invalid_start_at_date
-      when_they_save_the_users_time_slots
-      then_they_are_shown_an_error
-    end
-  end
-
-  scenario 'Fails to update a schedule with invalid start_at date' do
-    given_the_user_is_a_resource_manager do
-      and_there_is_a_guider
-      and_the_guider_has_a_schedule_that_can_be_modified
-      and_they_edit_the_schedule
-      and_they_enter_an_invalid_start_at_date
-      when_they_save_the_users_time_slots
-      then_they_are_shown_an_error
-    end
-  end
-
   scenario 'Fails to edit a schedule' do
     given_the_user_is_a_resource_manager do
       and_there_is_a_guider
@@ -195,15 +174,6 @@ RSpec.feature 'Resource manager manages schedules' do
       end_hour: 11,
       end_minute: 40
     )
-  end
-
-  def and_they_enter_an_invalid_start_at_date
-    @page.start_at.set 'something not datey'
-  end
-
-  def then_they_are_shown_an_error
-    expect(@page).to have_error_summary
-    expect(@page).to have_errors
   end
 
   def and_they_delete_the_schedule

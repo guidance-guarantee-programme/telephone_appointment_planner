@@ -3,9 +3,7 @@ class SchedulesController < ApplicationController
   before_action :load_current_guider
 
   def new
-    @schedule = @guider.schedules.build(
-      start_at: 6.weeks.from_now
-    )
+    @schedule = @guider.schedules.build
     @slots_as_json = slots_as_json
   end
 

@@ -2,9 +2,6 @@ module Pages
   class EditSchedule < SitePrism::Page
     set_url '/users/{user_id}/schedules/{id}/edit'
 
-    elements :errors, '.field_with_errors'
-    element :error_summary, '.t-errors'
-
     element(
       :permission_error_message,
       'h1',
