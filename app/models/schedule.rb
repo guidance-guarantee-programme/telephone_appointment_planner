@@ -5,6 +5,7 @@ class Schedule < ApplicationRecord
   scope :by_start_at, -> { order(:start_at) }
 
   validates :start_at, presence: true
+  validates :start_at, uniqueness: { scope: :user_id }
   validate :start_at_must_be_more_than_six_weeks_in_the_future, unless: :first_schedule?
 
   def end_at
