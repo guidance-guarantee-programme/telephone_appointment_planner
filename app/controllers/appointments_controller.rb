@@ -2,7 +2,7 @@ class AppointmentsController < ApplicationController
   before_action :authorise_for_agents!
 
   def new
-    UsableSlot.regenerate_for_six_weeks
+    BookableSlot.regenerate_for_six_weeks
     @appointment = Appointment.new
     @available_slots_json = available_slots_json(Time.zone.now.to_date, 6.weeks.from_now.to_date)
   end
@@ -42,7 +42,7 @@ class AppointmentsController < ApplicationController
   end
 
   def available_slots_json(from, to)
-    UsableSlot
+    BookableSlot
       .with_guider_count(from, to)
       .to_json
   end

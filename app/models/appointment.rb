@@ -9,7 +9,7 @@ class Appointment < ApplicationRecord
   validates :memorable_word, presence: true
 
   def assign_to_guider
-    slot = UsableSlot
+    slot = BookableSlot
            .without_appointments
            .where(start_at: start_at, end_at: end_at)
            .sample(1)

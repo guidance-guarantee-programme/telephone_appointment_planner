@@ -1,14 +1,14 @@
 require 'rails_helper'
 
-RSpec.describe UsableSlot, type: :model do
+RSpec.describe BookableSlot, type: :model do
   describe '#with_guider_count' do
-    context 'three guiders with usable slots' do
+    context 'three guiders with bookable slots' do
       before do
         1.upto(3) do
           guider = create(:guider)
 
           create(
-            :usable_slot,
+            :bookable_slot,
             guider: guider,
             start_at: DateTime.new(2022, 12, 9, 10, 30, 0).in_time_zone,
             end_at: DateTime.new(2022, 12, 9, 11, 30, 0).in_time_zone
@@ -16,8 +16,8 @@ RSpec.describe UsableSlot, type: :model do
         end
       end
 
-      it 'returns usable slots' do
-        result = UsableSlot.with_guider_count(
+      it 'returns bookable slots' do
+        result = BookableSlot.with_guider_count(
           Date.new(2022, 12, 5),
           Date.new(2022, 12, 20)
         )
@@ -31,7 +31,7 @@ RSpec.describe UsableSlot, type: :model do
         )
       end
 
-      context 'one guider has a usable_slot obscured by an appointment' do
+      context 'one guider has a bookable slot obscured by an appointment' do
         it 'excludes the slot' do
           create(
             :appointment,
@@ -40,7 +40,7 @@ RSpec.describe UsableSlot, type: :model do
             end_at: DateTime.new(2022, 12, 9, 11, 30, 0).in_time_zone
           )
 
-          result = UsableSlot.with_guider_count(
+          result = BookableSlot.with_guider_count(
             Date.new(2022, 12, 5),
             Date.new(2022, 12, 20)
           )

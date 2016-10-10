@@ -52,9 +52,9 @@ RSpec.describe Appointment, type: :model do
         guider_with_slot
       end
 
-      let!(:usable_slot) do
+      let!(:bookable_slot) do
         create(
-          :usable_slot,
+          :bookable_slot,
           guider: guider_with_slot,
           start_at: appointment_start_time,
           end_at: appointment_end_time
