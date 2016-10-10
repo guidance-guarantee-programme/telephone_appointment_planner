@@ -6,7 +6,7 @@
     constructor(el, config = {}) {
       const defaultConfig = {
         gridColumns: 12,
-        windowStartMonthsAgo: 3,
+        windowStartMonthsAgo: 1,
         windowLengthInMonths: 12,
         scheduleHeight: 30,
         scheduleMarginTop: 5,
@@ -83,7 +83,7 @@
       let blockWidth = (monthsGoneEnd * percentageWindowMonthLength) + (percentageThroughMonthEnd * percentageWindowMonthLength) - percentageStart;
 
       if (!blockWidth) {
-        blockWidth = 100;
+        blockWidth = 100 - percentageStart;
       }
 
       return {
