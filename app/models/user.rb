@@ -8,7 +8,7 @@ class User < ApplicationRecord
   default_scope { order(:name) }
 
   has_many :schedules, dependent: :destroy
-  has_many :usable_slots
+  has_many :bookable_slots
   has_many :appointments
 
   has_many :group_assignments

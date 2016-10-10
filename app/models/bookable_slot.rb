@@ -1,4 +1,4 @@
-class UsableSlot < ApplicationRecord
+class BookableSlot < ApplicationRecord
   belongs_to :guider, class_name: 'User'
 
   def self.regenerate_for_six_weeks
@@ -8,26 +8,26 @@ class UsableSlot < ApplicationRecord
   end
 
   def self.within_date_range(from, to)
-    where('usable_slots.start_at > ? AND usable_slots.end_at < ?', from, to)
+    where('bookable_slots.start_at > ? AND bookable_slots.end_at < ?', from, to)
   end
 
   def self.without_appointments
-    UsableSlot
+    BookableSlot
       .joins(<<-SQL
               LEFT JOIN appointments ON
-                appointments.guider_id = usable_slots.guider_id AND
-                appointments.start_at = usable_slots.start_at AND
-                appointments.end_at = usable_slots.end_at
+                appointments.guider_id = bookable_slots.guider_id AND
+                appointments.start_at = bookable_slots.start_at AND
+                appointments.end_at = bookable_slots.end_at
               SQL
             )
       .where('appointments.start_at IS NULL')
   end
 
   def self.with_guider_count(from, to)
-    UsableSlot
-      .select('DISTINCT usable_slots.start_at, usable_slots.end_at, count(1) AS guiders')
+    BookableSlot
+      .select('DISTINCT bookable_slots.start_at, bookable_slots.end_at, count(1) AS guiders')
       .without_appointments
-      .group('usable_slots.start_at, usable_slots.end_at')
+      .group('bookable_slots.start_at, bookable_slots.end_at')
       .within_date_range(from, to)
       .map do |us|
       { guiders: us.attributes['guiders'], start: us.start_at, end: us.end_at }
@@ -44,12 +44,12 @@ class UsableSlot < ApplicationRecord
                         .where(day_of_week: day.wday)
 
       available_slots.each do |available_slot|
-        create_usable_slot_from_slot!(guider, day, available_slot)
+        create_bookable_slot_from_slot!(guider, day, available_slot)
       end
     end
   end
 
-  def self.create_usable_slot_from_slot!(guider, day, slot)
+  def self.create_bookable_slot_from_slot!(guider, day, slot)
     start_at = day.in_time_zone.change(
       hour: slot.start_hour,
       min: slot.start_minute

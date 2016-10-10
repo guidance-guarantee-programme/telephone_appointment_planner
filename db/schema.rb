@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161010101704) do
+ActiveRecord::Schema.define(version: 20161010135351) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,13 @@ ActiveRecord::Schema.define(version: 20161010101704) do
     t.string   "memorable_word",                             null: false
     t.text     "notes"
     t.boolean  "opt_out_of_market_research", default: false, null: false
+  end
+
+  create_table "bookable_slots", force: :cascade do |t|
+    t.integer  "guider_id", null: false
+    t.datetime "start_at",  null: false
+    t.datetime "end_at",    null: false
+    t.index ["guider_id"], name: "index_bookable_slots_on_guider_id", using: :btree
   end
 
   create_table "group_assignments", id: false, force: :cascade do |t|
@@ -59,13 +66,6 @@ ActiveRecord::Schema.define(version: 20161010101704) do
     t.integer  "start_minute"
     t.integer  "end_hour"
     t.integer  "end_minute"
-  end
-
-  create_table "usable_slots", force: :cascade do |t|
-    t.integer  "guider_id", null: false
-    t.datetime "start_at",  null: false
-    t.datetime "end_at",    null: false
-    t.index ["guider_id"], name: "index_usable_slots_on_guider_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
