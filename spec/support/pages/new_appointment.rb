@@ -5,7 +5,7 @@ module Pages
     element(
       :permission_error_message,
       'h1',
-      text: 'Sorry, you don\'t seem to have the contact_centre_agent permission for this app.'
+      text: 'Sorry, you don\'t seem to have the agent permission for this app.'
     )
 
     element :first_name,                 '.t-first-name'

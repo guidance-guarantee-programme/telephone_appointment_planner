@@ -1,9 +1,9 @@
 # rubocop:disable Metrics/MethodLength
 require 'rails_helper'
 
-RSpec.feature 'Contact centre agent creates appointments' do
+RSpec.feature 'Agent creates appointments' do
   scenario 'Creates an appointment' do
-    given_the_user_is_a_contact_centre_agent do
+    given_the_user_is_an_agent do
       and_there_is_a_guider_with_available_slots
       when_they_create_a_new_appointment
       then_that_appointment_is_stored

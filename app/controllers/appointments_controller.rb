@@ -1,5 +1,5 @@
 class AppointmentsController < ApplicationController
-  before_action :authorise_for_contact_centre_agents!
+  before_action :authorise_for_agents!
 
   def new
     UsableSlot.regenerate_for_six_weeks
@@ -47,7 +47,7 @@ class AppointmentsController < ApplicationController
       .to_json
   end
 
-  def authorise_for_contact_centre_agents!
-    authorise_user!(User::CONTACT_CENTRE_AGENT_PERMISSION)
+  def authorise_for_agents!
+    authorise_user!(User::AGENT_PERMISSION)
   end
 end

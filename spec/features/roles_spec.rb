@@ -26,16 +26,16 @@ RSpec.feature 'Roles' do
     end
   end
 
-  context 'Contact Centre Agents' do
+  context 'Agents' do
     scenario 'Can book appointments' do
-      given_the_user_is_a_contact_centre_agent do
+      given_the_user_is_an_agent do
         when_they_try_to_book_an_appointment
         then_they_are_allowed
       end
     end
   end
 
-  context 'Users who are not Contact Centre Agents' do
+  context 'Users who are not Agents' do
     scenario 'Can not book appointments' do
       given_the_user_has_no_permissions do
         when_they_try_to_book_an_appointment

@@ -3,7 +3,7 @@ class User < ApplicationRecord
   serialize :permissions, Array
   RESOURCE_MANAGER_PERMISSION = 'resource_manager'.freeze
   GUIDER_PERMISSION = 'guider'.freeze
-  CONTACT_CENTRE_AGENT_PERMISSION = 'contact_centre_agent'.freeze
+  AGENT_PERMISSION = 'agent'.freeze
 
   has_many :schedules, dependent: :destroy
   has_many :usable_slots
@@ -27,7 +27,7 @@ class User < ApplicationRecord
     permissions.include?(RESOURCE_MANAGER_PERMISSION)
   end
 
-  def contact_centre_agent?
-    permissions.include?(CONTACT_CENTRE_AGENT_PERMISSION)
+  def agent?
+    permissions.include?(AGENT_PERMISSION)
   end
 end

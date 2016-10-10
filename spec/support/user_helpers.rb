@@ -6,8 +6,8 @@ module UserHelpers
     GDS::SSO.test_user = nil
   end
 
-  def given_the_user_is_a_contact_centre_agent
-    GDS::SSO.test_user = create(:contact_centre_agent)
+  def given_the_user_is_an_agent
+    GDS::SSO.test_user = create(:agent)
     yield
   ensure
     GDS::SSO.test_user = nil
