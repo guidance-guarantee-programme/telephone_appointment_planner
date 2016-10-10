@@ -5,6 +5,8 @@ class User < ApplicationRecord
   GUIDER_PERMISSION = 'guider'.freeze
   AGENT_PERMISSION = 'agent'.freeze
 
+  default_scope { order(:name) }
+
   has_many :schedules, dependent: :destroy
   has_many :usable_slots
   has_many :appointments
