@@ -34,8 +34,6 @@ class UsableSlot < ApplicationRecord
     end
   end
 
-  private_class_method
-
   def self.generate_for_guider(user)
     (Time.zone.now.to_date..6.weeks.from_now.to_date).each do |day|
       active_schedule = user.schedules.active(day)
