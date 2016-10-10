@@ -4,6 +4,8 @@ class User < ApplicationRecord
   RESOURCE_MANAGER_PERMISSION = 'resource_manager'.freeze
   GUIDER_PERMISSION = 'guider'.freeze
 
+  default_scope { order(:name) }
+
   has_many :schedules, dependent: :destroy
 
   has_many :group_assignments
