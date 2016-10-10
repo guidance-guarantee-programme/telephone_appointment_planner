@@ -1,10 +1,6 @@
 class UsableSlot < ApplicationRecord
   belongs_to :user
 
-  def self.exact_match(start_at, end_at)
-    where(start_at: start_at, end_at: end_at)
-  end
-
   def self.regenerate_for_six_weeks
     User.guiders.each do |user|
       generate_for_guider(user)
@@ -13,10 +9,6 @@ class UsableSlot < ApplicationRecord
 
   def self.within_date_range(from, to)
     where('usable_slots.start_at > ? AND usable_slots.end_at < ?', from, to)
-  end
-
-  def self.usable
-    where(appointment_id: nil)
   end
 
   def self.without_appointments
