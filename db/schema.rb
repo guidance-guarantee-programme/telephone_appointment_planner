@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161010095745) do
+ActiveRecord::Schema.define(version: 20161010100424) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(version: 20161010095745) do
     t.integer  "user_id",  null: false
     t.datetime "start_at", null: false
     t.datetime "end_at",   null: false
+    t.index ["user_id"], name: "index_usable_slots_on_user_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
