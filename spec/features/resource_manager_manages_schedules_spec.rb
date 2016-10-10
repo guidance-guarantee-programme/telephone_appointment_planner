@@ -180,20 +180,20 @@ RSpec.feature 'Resource manager manages schedules' do
 
     expect(schedule.slots.count).to eq 2
 
-    expect(schedule.slots.first.attributes).to include(
-      'day_of_week' => 1,
-      'start_hour' => 9,
-      'start_minute' => 0,
-      'end_hour' => 10,
-      'end_minute' => 10
+    expect(schedule.slots.first).to have_attributes(
+      day_of_week: 1,
+      start_hour: 9,
+      start_minute: 0,
+      end_hour: 10,
+      end_minute: 10
     )
 
-    expect(schedule.slots.second.attributes).to include(
-      'day_of_week' => 2,
-      'start_hour' => 10,
-      'start_minute' => 30,
-      'end_hour' => 11,
-      'end_minute' => 40
+    expect(schedule.slots.second).to have_attributes(
+      day_of_week: 2,
+      start_hour: 10,
+      start_minute: 30,
+      end_hour: 11,
+      end_minute: 40
     )
   end
 
