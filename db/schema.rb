@@ -54,11 +54,11 @@ ActiveRecord::Schema.define(version: 20161005131704) do
     t.integer  "schedule_id",  null: false
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
-    t.integer  "day_of_week",  null: false
-    t.integer  "start_hour",   null: false
-    t.integer  "start_minute", null: false
-    t.integer  "end_hour",     null: false
-    t.integer  "end_minute",   null: false
+    t.integer  "day_of_week"
+    t.integer  "start_hour"
+    t.integer  "start_minute"
+    t.integer  "end_hour"
+    t.integer  "end_minute"
   end
 
   create_table "usable_slots", force: :cascade do |t|
