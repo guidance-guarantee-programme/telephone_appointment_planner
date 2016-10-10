@@ -83,7 +83,7 @@
       let blockWidth = (monthsGoneEnd * percentageWindowMonthLength) + (percentageThroughMonthEnd * percentageWindowMonthLength) - percentageStart;
 
       if (!blockWidth) {
-        blockWidth = 100;
+        blockWidth = 100 - percentageStart;
       }
 
       return {
