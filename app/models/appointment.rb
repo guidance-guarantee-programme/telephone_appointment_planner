@@ -1,5 +1,5 @@
 class Appointment < ApplicationRecord
-  belongs_to :user
+  belongs_to :guider, class_name: 'User'
 
   validates :start_at, presence: true
   validates :end_at, presence: true
@@ -14,6 +14,6 @@ class Appointment < ApplicationRecord
            .where(start_at: start_at, end_at: end_at)
            .sample(1)
            .first
-    self.user = slot.user if slot
+    self.guider = slot.guider if slot
   end
 end

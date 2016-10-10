@@ -1,9 +1,9 @@
 class UsableSlot < ApplicationRecord
-  belongs_to :user
+  belongs_to :guider, class_name: 'User'
 
   def self.regenerate_for_six_weeks
-    User.guiders.each do |user|
-      generate_for_guider(user)
+    User.guiders.each do |guider|
+      generate_for_guider(guider)
     end
   end
 
@@ -15,7 +15,7 @@ class UsableSlot < ApplicationRecord
     UsableSlot
       .joins(<<-SQL
               LEFT JOIN appointments ON
-                appointments.user_id = usable_slots.user_id AND
+                appointments.guider_id = usable_slots.guider_id AND
                 appointments.start_at = usable_slots.start_at AND
                 appointments.end_at = usable_slots.end_at
               SQL
@@ -34,9 +34,9 @@ class UsableSlot < ApplicationRecord
     end
   end
 
-  def self.generate_for_guider(user)
+  def self.generate_for_guider(guider)
     (Time.zone.now.to_date..6.weeks.from_now.to_date).each do |day|
-      active_schedule = user.schedules.active(day)
+      active_schedule = guider.schedules.active(day)
       next unless active_schedule
 
       available_slots = active_schedule
@@ -44,12 +44,12 @@ class UsableSlot < ApplicationRecord
                         .where(day_of_week: day.wday)
 
       available_slots.each do |available_slot|
-        create_usable_slot_from_slot!(user, day, available_slot)
+        create_usable_slot_from_slot!(guider, day, available_slot)
       end
     end
   end
 
-  def self.create_usable_slot_from_slot!(user, day, slot)
+  def self.create_usable_slot_from_slot!(guider, day, slot)
     start_at = day.in_time_zone.change(
       hour: slot.start_hour,
       min: slot.start_minute
@@ -58,6 +58,6 @@ class UsableSlot < ApplicationRecord
       hour: slot.end_hour,
       min: slot.end_minute
     )
-    find_or_create_by!(user: user, start_at: start_at, end_at: end_at)
+    find_or_create_by!(guider: guider, start_at: start_at, end_at: end_at)
   end
 end

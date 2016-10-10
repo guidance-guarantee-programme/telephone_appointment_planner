@@ -9,7 +9,7 @@ RSpec.describe UsableSlot, type: :model do
 
           create(
             :usable_slot,
-            user: guider,
+            guider: guider,
             start_at: DateTime.new(2022, 12, 9, 10, 30, 0).in_time_zone,
             end_at: DateTime.new(2022, 12, 9, 11, 30, 0).in_time_zone
           )
@@ -35,7 +35,7 @@ RSpec.describe UsableSlot, type: :model do
         it 'excludes the slot' do
           create(
             :appointment,
-            user: User.guiders.first,
+            guider: User.guiders.first,
             start_at: DateTime.new(2022, 12, 9, 10, 30, 0).in_time_zone,
             end_at: DateTime.new(2022, 12, 9, 11, 30, 0).in_time_zone
           )

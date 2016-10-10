@@ -55,7 +55,7 @@ RSpec.describe Appointment, type: :model do
       let!(:usable_slot) do
         create(
           :usable_slot,
-          user: guider_with_slot,
+          guider: guider_with_slot,
           start_at: appointment_start_time,
           end_at: appointment_end_time
         )
@@ -69,14 +69,14 @@ RSpec.describe Appointment, type: :model do
         subject.start_at = appointment_start_time
         subject.end_at = appointment_end_time
         subject.assign_to_guider
-        expect(subject.user).to eq guider_with_slot
+        expect(subject.guider).to eq guider_with_slot
       end
 
       context 'and the guider already has an appointment at that time' do
         before do
           create(
             :appointment,
-            user: guider_with_slot,
+            guider: guider_with_slot,
             start_at: appointment_start_time,
             end_at: appointment_end_time
           )
@@ -85,7 +85,7 @@ RSpec.describe Appointment, type: :model do
         it 'does not assign to a guider' do
           subject.start_at = appointment_start_time
           subject.end_at = appointment_end_time
-          expect { subject.assign_to_guider }.to_not change { subject.user }
+          expect { subject.assign_to_guider }.to_not change { subject.guider }
         end
       end
     end
