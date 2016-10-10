@@ -22,6 +22,7 @@ source 'https://rubygems.org' do
   gem 'active_link_to'
   gem 'foreman'
   gem 'bh'
+  gem 'active_model_serializers'
 
   group :development, :test do
     gem 'pry-byebug'

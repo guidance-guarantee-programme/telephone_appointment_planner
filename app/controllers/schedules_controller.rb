@@ -6,12 +6,12 @@ class SchedulesController < ApplicationController
     @schedule = @guider.schedules.build(
       start_at: 6.weeks.from_now
     )
-    @schedule_json = schedule_json
+    @slots_as_json = slots_as_json
   end
 
   def edit
     @schedule = SchedulePresenter.new(@guider.schedules.find(params[:id]))
-    @schedule_json = schedule_json
+    @slots_as_json = slots_as_json
   end
 
   def destroy
@@ -27,7 +27,7 @@ class SchedulesController < ApplicationController
       if @schedule.update(schedule_parameters)
         redirect_to edit_user_path(@guider), success: 'Schedule has been updated'
       else
-        @schedule_json = schedule_json
+        @slots_as_json = slots_as_json
         render :edit
       end
     end
@@ -38,7 +38,7 @@ class SchedulesController < ApplicationController
     if @schedule.save
       redirect_to edit_user_path(@guider), success: 'Schedule has been created'
     else
-      @schedule_json = schedule_json
+      @slots_as_json = slots_as_json
       render :new
     end
   end
@@ -49,16 +49,8 @@ class SchedulesController < ApplicationController
     @guider = User.find(params[:user_id])
   end
 
-  def schedule_json
-    @schedule.slots.map do |slot|
-      {
-        day_of_week: slot.day_of_week,
-        start_hour: slot.start_hour,
-        start_minute: slot.start_minute,
-        end_hour: slot.end_hour,
-        end_minute: slot.end_minute
-      }
-    end.to_json
+  def slots_as_json
+    ActiveModelSerializers::SerializableResource.new(@schedule.slots).to_json
   end
 
   def schedule_parameters
