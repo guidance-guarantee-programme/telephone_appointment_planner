@@ -28,26 +28,26 @@
             'max-width': '46%',
             'padding': '.2em',
             'box-sizing': 'border-box',
-            'cursor': 'pointer'
+            'cursor': 'pointer',
+            'background': this.getEventColour(event)
           });
         },
         eventClick: (event) => {
-          const events = this.$el.fullCalendar('clientEvents'),
-                currentBackgroundColor = event.backgroundColor;
+          const events = this.$el.fullCalendar('clientEvents');
 
           let start = '',
                 end = '';
 
           for (let eventIndex in events) {
             let currentEvent = events[eventIndex];
-            currentEvent.backgroundColor = this.defaultEventColour;
-          }
 
-          event.backgroundColor = (currentBackgroundColor == this.selectedEventColour) ? this.defaultEventColour : this.selectedEventColour;
-
-          if (event.backgroundColor == this.selectedEventColour) {
-            start = event.start.format();
-            end = event.end.format();
+            if (currentEvent === event && event.selected === false) {
+              start = currentEvent.start.format();
+              end = currentEvent.end.format();
+              currentEvent.selected = true;
+            } else {
+              currentEvent.selected = false;
+            }
           }
 
           this.$selectedStart.val(start);
@@ -59,19 +59,46 @@
 
       super(el, calendarConfig);
 
+      this.coloursConfig = [
+        { count: 30, colour: 'hsl(200, 50%, 25%)' },
+        { count: 20, colour: 'hsl(200, 50%, 35%)' },
+        { count: 10, colour: 'hsl(200, 50%, 45%)' },
+        { count: 5,  colour: 'hsl(200, 50%, 55%)' },
+        { count: 1,  colour: 'hsl(200, 50%, 65%)' }
+      ];
+
       this.init();
       this.addEvents();
+    }
+
+    getEventColour(event) {
+      if (event.selected === true) {
+        return this.selectedEventColour;
+      }
+
+      const colours = $.grep(this.coloursConfig, (configItem) => {
+        if (configItem.count >= event.guiders) {
+          return configItem.colour;
+        }
+      });
+
+      return colours.pop().colour;
     }
 
     init() {
       this.$selectedStart = $('[data-selected-start]');
       this.$selectedEnd = $('[data-selected-end]');
-      this.defaultEventColour = '#3a87ad';
       this.selectedEventColour = 'green';
     }
 
     addEvents() {
-      this.$el.fullCalendar('addEventSource', JSON.parse($(this.$el.data('events')).val()));
+      let events = JSON.parse($(this.$el.data('events')).val());
+
+      $.each(events, (index, event) => {
+        event.selected = false;
+      });
+
+      this.$el.fullCalendar('addEventSource', events);
     }
   }
 
