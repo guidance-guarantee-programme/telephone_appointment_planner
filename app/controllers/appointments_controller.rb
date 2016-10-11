@@ -2,7 +2,6 @@ class AppointmentsController < ApplicationController
   before_action :authorise_for_agents!
 
   def new
-    BookableSlot.regenerate_for_six_weeks
     @appointment = Appointment.new
     @available_slots_json = available_slots_json(Time.zone.now.to_date, 6.weeks.from_now.to_date)
   end

@@ -23,6 +23,8 @@ source 'https://rubygems.org' do
   gem 'foreman'
   gem 'bh'
   gem 'active_model_serializers'
+  gem 'sidekiq'
+  gem 'sinatra', require: false
 
   group :development, :test do
     gem 'pry-byebug'

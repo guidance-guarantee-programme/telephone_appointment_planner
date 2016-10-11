@@ -1,10 +1,4 @@
 if Rails.env.development?
-  User.first_or_initialize(name: 'Test User').tap do |user|
-    user.permissions << User::RESOURCE_MANAGER_PERMISSION
-    user.permissions << User::AGENT_PERMISSION
-    user.save!
-  end
-
   %w{early mid late}.each do |t|
     User
       .where(name: (1..15)
@@ -30,5 +24,11 @@ if Rails.env.development?
     schedule.save!(validate: false)
   end
 
-  BookableSlot.regenerate_for_six_weeks
+  BookableSlot.generate_for_six_weeks
+
+  User.first.tap do |user|
+    user.permissions << User::RESOURCE_MANAGER_PERMISSION
+    user.permissions << User::AGENT_PERMISSION
+    user.save!
+  end
 end
