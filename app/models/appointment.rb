@@ -7,6 +7,7 @@ class Appointment < ApplicationRecord
   validates :last_name, presence: true
   validates :phone, presence: true
   validates :memorable_word, presence: true
+  validates :where_did_you_hear_about_pension_wise, presence: true
 
   def assign_to_guider
     slot = BookableSlot

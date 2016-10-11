@@ -31,6 +31,17 @@
       <%= f.text_field :memorable_word, class: 't-memorable-word', placeholder: 'Pension Wise will use this each time the customer is called' %>
       <%= f.text_area :notes, class: 't-notes', rows: 6, placeholder: 'Is the customer hard of hearing? Is English their first language? etc.' %>
       <%= f.check_box :opt_out_of_market_research, class: 't-opt-out-of-market-research' %>
+      <%=
+        f.select(
+          :where_did_you_hear_about_pension_wise,
+          where_did_you_hear_about_pension_wise_options(@appointment),
+          {
+            label: 'Where did you hear about Pension Wise?',
+            include_blank: true
+          },
+          { class: 'select2 t-where-did-you-hear-about-pension-wise' }
+        )
+      %>
     </div>
   </div>
   <div class="row form-group">

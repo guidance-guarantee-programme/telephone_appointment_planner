@@ -10,24 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161010135351) do
+ActiveRecord::Schema.define(version: 20161011141405) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "appointments", force: :cascade do |t|
-    t.integer  "guider_id",                                  null: false
-    t.datetime "start_at",                                   null: false
-    t.datetime "end_at",                                     null: false
-    t.string   "first_name",                                 null: false
-    t.string   "last_name",                                  null: false
+    t.integer  "guider_id",                                             null: false
+    t.datetime "start_at",                                              null: false
+    t.datetime "end_at",                                                null: false
+    t.string   "first_name",                                            null: false
+    t.string   "last_name",                                             null: false
     t.string   "email"
-    t.string   "phone",                                      null: false
+    t.string   "phone",                                                 null: false
     t.string   "mobile"
     t.string   "year_of_birth"
-    t.string   "memorable_word",                             null: false
+    t.string   "memorable_word",                                        null: false
     t.text     "notes"
-    t.boolean  "opt_out_of_market_research", default: false, null: false
+    t.boolean  "opt_out_of_market_research",            default: false, null: false
+    t.string   "where_did_you_hear_about_pension_wise", default: "",    null: false
   end
 
   create_table "bookable_slots", force: :cascade do |t|
