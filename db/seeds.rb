@@ -30,5 +30,5 @@ if Rails.env.development?
     schedule.save!(validate: false)
   end
 
-  BookableSlot.regenerate_for_six_weeks
+  BookableSlot.generate_for_six_weeks
 end

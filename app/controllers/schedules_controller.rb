@@ -23,6 +23,7 @@ class SchedulesController < ApplicationController
     ActiveRecord::Base.transaction do
       @schedule.slots.destroy_all
       if @schedule.update(schedule_parameters)
+        GenerateBookableSlotsForUserJob.perform_later @guider
         redirect_to edit_user_path(@guider), success: 'Schedule has been updated'
       else
         @slots_as_json = slots_as_json
@@ -34,6 +35,7 @@ class SchedulesController < ApplicationController
   def create
     @schedule = @guider.schedules.build(schedule_parameters)
     if @schedule.save
+      GenerateBookableSlotsForUserJob.perform_later @guider
       redirect_to edit_user_path(@guider), success: 'Schedule has been created'
     else
       @slots_as_json = slots_as_json
