@@ -1,6 +1,7 @@
 class SchedulesController < ApplicationController
   before_action :authorise_for_managing_resources!
   before_action :load_current_guider
+  before_action :load_current_schedule, only: [:edit, :update]
 
   def new
     @schedule = @guider.schedules.build
@@ -19,7 +20,6 @@ class SchedulesController < ApplicationController
   end
 
   def update
-    @schedule = SchedulePresenter.new(@guider.schedules.find(params[:id]))
     ActiveRecord::Base.transaction do
       @schedule.slots.destroy_all
       if @schedule.update(schedule_parameters)
@@ -47,6 +47,10 @@ class SchedulesController < ApplicationController
 
   def load_current_guider
     @guider = User.find(params[:user_id])
+  end
+
+  def load_current_schedule
+    @schedule = SchedulePresenter.new(@guider.schedules.find(params[:id]))
   end
 
   def slots_as_json
