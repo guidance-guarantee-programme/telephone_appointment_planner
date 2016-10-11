@@ -14,6 +14,11 @@ class Schedule < ApplicationRecord
       .last
   end
 
+  after_initialize :set_default_start_at
+  def set_default_start_at
+    self.start_at ||= 6.weeks.from_now + 1.day
+  end
+
   def end_at
     self[:end_at] - 1.second if self[:end_at]
   end
