@@ -25,6 +25,7 @@ source 'https://rubygems.org' do
   gem 'active_model_serializers'
   gem 'sidekiq'
   gem 'sinatra', require: false
+  gem 'select2-rails'
 
   group :development, :test do
     gem 'pry-byebug'

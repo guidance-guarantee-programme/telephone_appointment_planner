@@ -13,7 +13,8 @@ RSpec.describe Appointment, type: :model do
       :first_name,
       :last_name,
       :phone,
-      :memorable_word
+      :memorable_word,
+      :where_did_you_hear_about_pension_wise
     ]
     required.each do |r|
       it "validate presence of #{r}" do
