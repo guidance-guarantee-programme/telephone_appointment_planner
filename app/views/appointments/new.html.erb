@@ -3,24 +3,6 @@
 <%= form_for @appointment, layout: :basic do |f| %>
   <div class="row form-group">
     <div class="col-md-12">
-      <h2>Personal Details</h2>
-    </div>
-    <div class="col-md-6">
-      <%= f.text_field :first_name, class: 't-first-name' %>
-      <%= f.text_field :last_name, class: 't-last-name' %>
-      <%= f.email_field :email, class: 't-email' %>
-      <%= f.telephone_field :phone, class: 't-phone' %>
-      <%= f.telephone_field :mobile, class: 't-mobile' %>
-    </div>
-    <div class="col-md-6">
-      <%= f.text_field :year_of_birth, class: 't-year-of-birth' %>
-      <%= f.text_field :memorable_word, class: 't-memorable-word' %>
-      <%= f.text_area :notes, class: 't-notes', rows: 6 %>
-      <%= f.check_box :opt_out_of_market_research, class: 't-opt-out-of-market-research' %>
-    </div>
-  </div>
-  <div class="row form-group">
-    <div class="col-md-12">
       <h2>Choose available slot</h2>
 
       <div class="calendar">
@@ -35,7 +17,25 @@
   </div>
   <div class="row form-group">
     <div class="col-md-12">
-      <%= f.submit "Save", class: 't-save' %>
+      <h2>Personal Details</h2>
+    </div>
+    <div class="col-md-6">
+      <%= f.text_field :first_name, class: 't-first-name' %>
+      <%= f.text_field :last_name, class: 't-last-name' %>
+      <%= f.email_field :email, class: 't-email' %>
+      <%= f.telephone_field :phone, class: 't-phone' %>
+      <%= f.telephone_field :mobile, class: 't-mobile' %>
+    </div>
+    <div class="col-md-6">
+      <%= f.text_field :year_of_birth, class: 't-year-of-birth' %>
+      <%= f.text_field :memorable_word, class: 't-memorable-word', placeholder: 'Pension Wise will use this each time the customer is called' %>
+      <%= f.text_area :notes, class: 't-notes', rows: 6, placeholder: 'Is the customer hard of hearing? Is English their first language? etc.' %>
+      <%= f.check_box :opt_out_of_market_research, class: 't-opt-out-of-market-research' %>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-md-12">
+      <%= f.submit "Confirm appointment", class: 't-save' %>
     </div>
   </div>
 <% end %>
