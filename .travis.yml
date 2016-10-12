@@ -10,17 +10,21 @@ cache:
   - $HOME/.yarn-cache
   - $HOME/yarn-bin
 node_js:
-- '0.10'
+- '4'
 before_install:
 - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
 before_script:
-- nvm install 4
-- nvm use 4
-- wget https://yarnpkg.com/latest.tar.gz
-- mkdir -p $HOME/yarn-bin
-- tar zxvf latest.tar.gz -C $HOME/yarn-bin > /dev/null 2>&1
-- export PATH="$PATH:$HOME/yarn-bin/dist/bin"
+# - nvm install 4
+# - nvm use 4
+# - wget https://yarnpkg.com/latest.tar.gz
+# - mkdir -p $HOME/yarn-bin
+# - tar zxvf latest.tar.gz -C $HOME/yarn-bin > /dev/null 2>&1
+# - export PATH="$PATH:$HOME/yarn-bin/dist/bin"
 # - $HOME/yarn-bin/dist/bin/yarn
+- apt-key adv --keyserver pgp.mit.edu --recv D101F7899D41F3C3
+- echo "deb http://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+- apt-get update -y
+- apt-get install -y yarn
 - yarn
 - gem update --system
 - bundle exec rake db:create db:migrate RAILS_ENV=test
