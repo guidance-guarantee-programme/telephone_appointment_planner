@@ -40,22 +40,26 @@ module AppointmentHelper
   ].freeze
 
   def where_did_you_hear_about_pension_wise_options(appointment)
-    options =
-      WHERE_DID_YOU_HEAR_ABOUT_PENSION_WISE_OPTIONS |
-      [appointment.where_did_you_hear_about_pension_wise]
-    options_for_select(
-      options.compact,
-      appointment.where_did_you_hear_about_pension_wise
+    select_options(
+      appointment.where_did_you_hear_about_pension_wise,
+      WHERE_DID_YOU_HEAR_ABOUT_PENSION_WISE_OPTIONS
     )
   end
 
   def who_is_your_pension_provider_options(appointment)
-    options =
-      WHO_IS_YOUR_PENSION_PROVIDER_OPTIONS |
-      [appointment.who_is_your_pension_provider]
+    select_options(
+      appointment.who_is_your_pension_provider,
+      WHO_IS_YOUR_PENSION_PROVIDER_OPTIONS
+    )
+  end
+
+  private
+
+  def select_options(current_value, options)
+    options |= [current_value]
     options_for_select(
       options.compact,
-      appointment.who_is_your_pension_provider
+      current_value
     )
   end
 end
