@@ -18,7 +18,7 @@ before_script:
 - nvm use 4
 - wget https://yarnpkg.com/latest.tar.gz
 - mkdir -p $HOME/yarn-bin
-- tar zxvf latest.tar.gz -C $HOME/yarn-bin > /dev/null 2>&1
+- tar zxf latest.tar.gz -C $HOME/yarn-bin 2>&1 | grep -v 'Ignoring unknown extended header'
 - env
 # - export PATH="$PATH:$HOME/yarn-bin/dist/bin"
 - ln -s $HOME/yarn-bin/dist/bin/yarn $HOME/bin
