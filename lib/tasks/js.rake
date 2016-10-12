@@ -1,6 +1,6 @@
 namespace :js do
   desc 'lint all js'
   task :lint do
-    system 'npm run js'
+    system 'yarn run js'
   end
 end

@@ -6,6 +6,10 @@
 ./bin/setup
 ```
 
+# Dependencies
+
+- [Yarn](https://yarnpkg.com/en/docs/install)
+
 # How to run the test suite
 
 ```bash

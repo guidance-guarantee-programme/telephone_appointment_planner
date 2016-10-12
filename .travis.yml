@@ -6,12 +6,20 @@ cache:
   bundler: true
   directories:
   - tmp/cache/assets/test
+  - $HOME/.nvm
+  - $HOME/.yarn-cache
+  - $HOME/yarn-bin
 node_js:
 - '0.10'
 before_install:
 - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
 before_script:
-- npm install
+- nvm install 4
+- nvm use 4
+- wget https://yarnpkg.com/latest.tar.gz
+- mkdir -p $HOME/yarn-bin
+- tar zxvf latest.tar.gz -C $HOME/yarn-bin > /dev/null 2>&1
+- $HOME/yarn-bin/dist/bin/yarn
 - gem update --system
 - bundle exec rake db:create db:migrate RAILS_ENV=test
 notifications:

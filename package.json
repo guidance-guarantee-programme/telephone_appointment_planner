@@ -11,7 +11,7 @@
   },
   "scripts": {
     "postinstall": "./node_modules/bower/bin/bower install",
-    "js": "npm run eslint",
+    "js": "yarn run eslint",
     "eslint": "eslint app/assets/javascripts/**/*.es6"
   }
 }
