@@ -19,10 +19,9 @@ before_script:
 - wget https://yarnpkg.com/latest.tar.gz
 - mkdir -p $HOME/yarn-bin
 - tar zxvf latest.tar.gz -C $HOME/yarn-bin > /dev/null 2>&1
-- ln -s $HOME/yarn-bin/dist/bin/yarn /usr/local/bin/yarn
+- env
 - export PATH="$PATH:$HOME/yarn-bin/dist/bin"
 # - $HOME/yarn-bin/dist/bin/yarn
-- env
 - yarn
 - gem update --system
 - bundle exec rake db:create db:migrate RAILS_ENV=test
