@@ -20,7 +20,8 @@ before_script:
 - mkdir -p $HOME/yarn-bin
 - tar zxvf latest.tar.gz -C $HOME/yarn-bin > /dev/null 2>&1
 - env
-- export PATH="$PATH:$HOME/yarn-bin/dist/bin"
+# - export PATH="$PATH:$HOME/yarn-bin/dist/bin"
+- ln -s $HOME/yarn-bin/dist/bin/yarn $HOME/bin
 # - $HOME/yarn-bin/dist/bin/yarn
 - yarn
 - gem update --system
