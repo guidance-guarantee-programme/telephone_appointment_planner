@@ -24,6 +24,7 @@ before_script:
 - ln -s $HOME/yarn-bin/dist/bin/yarn $HOME/bin
 # - $HOME/yarn-bin/dist/bin/yarn
 - yarn
+- which yarn
 - gem update --system
 - bundle exec rake db:create db:migrate RAILS_ENV=test
 notifications:
