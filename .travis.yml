@@ -7,8 +7,9 @@ cache:
   directories:
   - tmp/cache/assets/test
   - $HOME/.nvm
-  # - $HOME/.yarn-cache
-  # - $HOME/yarn-bin
+  - ~/.yarn
+  - ~/.nvm
+  - ~/.yarn-cache
 node_js:
 - '0.10'
 before_install:
@@ -16,15 +17,8 @@ before_install:
 before_script:
 - nvm install 4
 - nvm use 4
-- wget https://yarnpkg.com/latest.tar.gz
-- mkdir -p $HOME/yarn-bin
-- tar zxf latest.tar.gz -C $HOME/yarn-bin 2>&1 | grep -v 'Ignoring unknown extended header'
-- env
-# - export PATH="$PATH:$HOME/yarn-bin/dist/bin"
-- ln -s $HOME/yarn-bin/dist/bin/yarn $HOME/bin
-# - $HOME/yarn-bin/dist/bin/yarn
+- npm i -g yarn
 - yarn
-- which yarn
 - gem update --system
 - bundle exec rake db:create db:migrate RAILS_ENV=test
 notifications:
