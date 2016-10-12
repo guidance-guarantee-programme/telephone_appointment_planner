@@ -37,7 +37,8 @@ class AppointmentsController < ApplicationController
       :memorable_word,
       :notes,
       :opt_out_of_market_research,
-      :where_did_you_hear_about_pension_wise
+      :where_did_you_hear_about_pension_wise,
+      :who_is_your_pension_provider
     )
   end
 

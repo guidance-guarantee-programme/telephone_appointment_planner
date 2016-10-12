@@ -43,6 +43,7 @@ RSpec.feature 'Agent creates appointments' do
     @page.notes.set 'something'
     @page.opt_out_of_market_research.set true
     @page.where_did_you_hear_about_pension_wise.select 'Radio advert'
+    @page.who_is_your_pension_provider.select 'Scottish Widows'
     @page.start_at.set Time.zone.now.change(hour: 9, min: 30).to_s
     @page.end_at.set Time.zone.now.change(hour: 10, min: 40).to_s
 
@@ -65,6 +66,7 @@ RSpec.feature 'Agent creates appointments' do
     expect(appointment.notes).to eq 'something'
     expect(appointment.opt_out_of_market_research).to eq true
     expect(appointment.where_did_you_hear_about_pension_wise).to eq 'Radio advert'
+    expect(appointment.who_is_your_pension_provider).to eq 'Scottish Widows'
     expect(appointment.start_at).to eq Time.zone.now.change(hour: 9, min: 30).to_s
     expect(appointment.end_at).to eq Time.zone.now.change(hour: 10, min: 40).to_s
   end

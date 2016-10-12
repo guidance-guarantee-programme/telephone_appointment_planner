@@ -42,6 +42,17 @@
           { class: 'select2 t-where-did-you-hear-about-pension-wise' }
         )
       %>
+      <%=
+        f.select(
+          :who_is_your_pension_provider,
+          who_is_your_pension_provider_options(@appointment),
+          {
+            label: 'Who is your pension provider?',
+            include_blank: true
+          },
+          { class: 'select2 t-who-is-your-pension-provider' }
+        )
+      %>
     </div>
   </div>
   <div class="row form-group">
