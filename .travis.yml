@@ -6,12 +6,19 @@ cache:
   bundler: true
   directories:
   - tmp/cache/assets/test
+  - $HOME/.nvm
+  - ~/.yarn
+  - ~/.nvm
+  - ~/.yarn-cache
 node_js:
 - '0.10'
 before_install:
 - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
 before_script:
-- npm install
+- nvm install 4
+- nvm use 4
+- npm i -g yarn
+- yarn
 - gem update --system
 - bundle exec rake db:create db:migrate RAILS_ENV=test
 notifications:
