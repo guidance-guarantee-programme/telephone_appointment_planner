@@ -13,7 +13,6 @@
 //= require moment
 //= require fullcalendar
 //= require fullcalendar-scheduler
-//= require qTip2
 //= require listjs
 //= require daterangepicker
 //= require core.js/core.js
@@ -23,6 +22,8 @@
 //= require calendars/guider-slot-picker
 //= require calendars/guider-appointments
 //= require calendars/holidays
+//= require calendars/guiders-appointments
 //= require select2
 //= require advanced-select
+//= require qTip2
 //= require_tree .
