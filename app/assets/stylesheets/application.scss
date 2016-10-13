@@ -61,3 +61,11 @@
   text-align: center;
   width: 100%;
 }
+
+.appointment-availability-calendar {
+  min-height: 500px;
+}
+
+.fc-view-container.error {
+  border: 1px solid #a94442;
+}
