@@ -1,4 +1,4 @@
-/* global Calendar */
+/* global Calendar, moment */
 {
   'use strict';
 
@@ -10,6 +10,7 @@
         columnFormat: 'ddd D/M',
         slotDuration: '00:30:00',
         eventBorderColor: '#000',
+        defaultDate: moment(el.data('default-date')),
         header: {
           'right': 'agendaWeek agendaThreeDay agendaDay today prev,next'
         },

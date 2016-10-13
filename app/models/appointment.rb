@@ -26,14 +26,14 @@ class Appointment < ApplicationRecord
   def not_within_two_business_days
     return unless start_at
 
-    days_until = Time.zone.now.to_date.business_days_until(start_at)
-    errors.add(:start_at, 'must be more than two business days from now') if days_until <= 2
+    too_soon = start_at < BusinessDays.from_now(2)
+    errors.add(:start_at, 'must be more than two business days from now') if too_soon
   end
 
   def not_more_than_thirty_business_days_in_future
     return unless start_at
 
-    days_until = Time.zone.now.to_date.business_days_until(start_at)
-    errors.add(:start_at, 'must be less than thirty business days from now') if days_until >= 30
+    too_late = start_at > BusinessDays.from_now(30)
+    errors.add(:start_at, 'must be less than thirty business days from now') if too_late
   end
 end
