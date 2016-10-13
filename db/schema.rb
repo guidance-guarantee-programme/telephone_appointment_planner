@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161011141405) do
+ActiveRecord::Schema.define(version: 20161012115439) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(version: 20161011141405) do
     t.text     "notes"
     t.boolean  "opt_out_of_market_research",            default: false, null: false
     t.string   "where_did_you_hear_about_pension_wise", default: "",    null: false
+    t.string   "who_is_your_pension_provider",          default: "",    null: false
   end
 
   create_table "bookable_slots", force: :cascade do |t|
