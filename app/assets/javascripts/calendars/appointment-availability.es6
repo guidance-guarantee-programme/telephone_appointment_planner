@@ -64,7 +64,7 @@
         { count: 5,  colour: 'hsl(200, 50%, 55%)' },
         { count: 10, colour: 'hsl(200, 50%, 45%)' },
         { count: 20, colour: 'hsl(200, 50%, 35%)' },
-        { count: 30, colour: 'hsl(200, 50%, 25%)' },
+        { count: 30, colour: 'hsl(200, 50%, 25%)' }
       ];
 
       this.init();
