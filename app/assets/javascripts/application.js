@@ -20,5 +20,5 @@
 //= require calendars/appointment-availability
 //= require calendars/guider-slot-picker
 //= require select2
-//= require appointments
+//= require advanced-select
 //= require_tree .
