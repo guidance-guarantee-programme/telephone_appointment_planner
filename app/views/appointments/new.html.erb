@@ -25,9 +25,9 @@
       <%= f.email_field :email, class: 't-email' %>
       <%= f.telephone_field :phone, class: 't-phone' %>
       <%= f.telephone_field :mobile, class: 't-mobile' %>
+      <%= f.date_field :date_of_birth, class: 't-date-of-birth' %>
     </div>
     <div class="col-md-6">
-      <%= f.date_field :date_of_birth, class: 't-date-of-birth' %>
       <%= f.text_field :memorable_word, class: 't-memorable-word', placeholder: 'Pension Wise will use this each time the customer is called' %>
       <%= f.text_area :notes, class: 't-notes', rows: 6, placeholder: 'Is the customer hard of hearing? Is English their first language? etc.' %>
       <%= f.check_box :opt_out_of_market_research, class: 't-opt-out-of-market-research' %>
@@ -59,7 +59,16 @@
             label: 'Who is your pension provider?',
             include_blank: true
           },
-          { class: 'select2 t-who-is-your-pension-provider' }
+          {
+            class: 't-who-is-your-pension-provider',
+            data: {
+              module: 'AdvancedSelect',
+              config: {
+                tags: true,
+                placeholder: 'Type a value in here if it is not included in the list'
+              }
+            }
+          }
         )
       %>
     </div>
