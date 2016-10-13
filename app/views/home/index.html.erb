@@ -1,10 +1,29 @@
 Welcome
 
-<div data-module="GuiderAppointmentsCalendar"></div>
+<!-- <div data-module="GuiderAppointmentsCalendar"></div> -->
 
-<div data-module="GuidersAppointmentsCalendar" class="guiders-appointments-calendar"></div>
+<div data-module="GuidersAppointmentsCalendar" class="guiders-appointments-calendar" data-config='{"editable": true, "eventDurationEditable": true, "slotDuration": "00:10:00"}'></div>
 <style>
 [data-resource-id="guider_13"] {
   background: #fff87c !important;
 }
 </style>
+
+<div class="action-panel" data-action-panel>
+  <form method="post">
+    <button class="btn btn-primary" data-action-panel-go>
+      <span class="glyphicon glyphicon-save" aria-hidden="true"></span> Save changes to
+      <b>
+        <span data-action-panel-event-count>0 events</span>
+      </b>
+    </button>
+
+    <button class="btn btn-warning" data-action-panel-undo-one>
+      <span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span> Undo last change
+    </button>
+
+    <button class="btn btn-danger" data-action-panel-undo-all>
+      <span class="glyphicon glyphicon-erase" aria-hidden="true"></span> Undo <b>all</b> changes
+    </button>
+  </form>
+</div>

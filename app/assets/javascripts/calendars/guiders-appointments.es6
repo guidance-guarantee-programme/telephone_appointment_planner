@@ -1,4 +1,4 @@
-/* global Calendar */
+/* global Calendar, moment */
 {
   'use strict';
 
@@ -7,19 +7,49 @@
       const calendarConfig = $.extend(true, {
         columnFormat: 'ddd D/M',
         defaultView: 'agendaDay',
+        resourceLabelText: 'Guiders',
         header: {
-            right: 'today prev,next'
+            right: 'agendaDay timelineDay today prev,next'
+        },
+        buttonText: {
+          agendaDay: 'Agenda',
+          timelineDay: 'Timeline'
         },
         groupByDateAndResource: true,
         nowIndicator: true,
         slotDuration: '00:30:00',
         eventTextColor: '#fff',
-        resourceRender: (resourceObj, labelTds, bodyTds) => {
-          labelTds.html('');
-          $('<div>' + resourceObj.title + '</div>').prependTo(labelTds);
+        resourceRender: (resourceObj, labelTds, bodyTds, view) => {
+          if (view.type === 'agendaDay') {
+            labelTds.html('');
+            $(`<div>${resourceObj.title}</div>`).prependTo(labelTds);
+          } else {
+            $('<span aria-hidden="true" class="glyphicon glyphicon-user" style="margin-right: 5px;"></span>').prependTo(
+              labelTds.find('.fc-cell-text')
+            );
+          }
         },
-        eventRender: (event, element) => {
-          element.html('');
+        eventRender: (event, element, view) => {
+          if (view.type === 'agendaDay') {
+            element.find('.fc-content').remove();
+          } else {
+            $('<span class="glyphicon glyphicon-phone-alt" aria-hidden="true" style="margin-right: 5px;"></span>').prependTo(
+              element.find('.fc-content')
+            );
+          }
+
+          if (event.hasChanged) {
+            event.backgroundColor = 'red';
+            event.borderColor = '#c00';
+          } else {
+            delete event.backgroundColor;
+            delete event.borderColor;
+          }
+        },
+        eventAfterRender: (event, element) => {
+          if (event.rendering === 'background') {
+            return;
+          }
 
           var resource = el.fullCalendar('getResourceById', event.resourceId);
 
@@ -32,6 +62,12 @@
               `
             }
           });
+        },
+        eventDrop: (event, delta, revertFunc) => {
+          this.handleEventChange(event, revertFunc);
+        },
+        eventResize: (event, delta, revertFunc) => {
+          this.handleEventChange(event, revertFunc);
         },
         resources: (callback) => {
           var resources = [],
@@ -157,7 +193,8 @@
                 title: firstname + ' ' + surname,
                 start: eventStart,
                 end: eventEnd,
-                resourceId: 'guider_' + guiderId
+                resourceId: 'guider_' + guiderId,
+                rendering: Math.floor(Math.random() * 2) + 1 == 1 ? 'background' : ''
               });
             }
           }
@@ -167,6 +204,98 @@
       }, config);
 
       super(el, calendarConfig);
+
+      this.eventChanges = [];
+      this.actionPanel = $('[data-action-panel]');
+
+      this.setupUndo();
+    }
+
+    setupUndo() {
+      this.actionPanel.find('[data-action-panel-undo-all]').on('click', this.undoAllChanges.bind(this));
+      this.actionPanel.find('[data-action-panel-undo-one]').on('click', this.undoOneChange.bind(this));
+    }
+
+    handleEventChange(event, revertFunc) {
+      event.hasChanged = true;
+
+      this.eventChanges.push({
+        eventObj: event,
+        revertFunc: revertFunc
+      });
+
+      this.$el.fullCalendar('rerenderEvents');
+
+      this.checkToShowActionPanel();
+    }
+
+    undoOneChange(evt) {
+      evt.preventDefault();
+
+      const event = this.eventChanges.pop();
+
+      event.revertFunc();
+      event.eventObj.hasChanged = this.hasEventChanged(event.eventObj);
+
+      this.rerenderEvents();
+
+      this.checkToShowActionPanel();
+    }
+
+    hasEventChanged(event) {
+      for (let eventIndex in this.eventChanges) {
+        let currentEvent = this.eventChanges[eventIndex];
+        if (currentEvent.eventObj['_id'] === event['_id']) {
+          return true;
+        }
+      }
+    }
+
+    undoAllChanges(evt) {
+      evt.preventDefault();
+
+      for (let eventIndex in this.eventChanges.reverse()) {
+        let event = this.eventChanges[eventIndex];
+        event.revertFunc();
+        event.eventObj.hasChanged = false;
+      }
+
+      this.eventChanges = [];
+      this.rerenderEvents();
+
+      this.checkToShowActionPanel();
+    }
+
+    rerenderEvents() {
+      // Strange rendering issue where calling this twice seems to fix
+      // events who are left in red after event changes are undone
+      this.$el.fullCalendar('rerenderEvents');
+      this.$el.fullCalendar('rerenderEvents');
+    }
+
+    checkToShowActionPanel() {
+      const eventsChanged = this.uniqueEventsChanged();
+
+      if (eventsChanged > 0) {
+        this.actionPanel.find('[data-action-panel-event-count]').html(
+          `${eventsChanged} event${eventsChanged == 1 ? '':'s'}`
+        );
+
+        this.actionPanel.fadeIn();
+      } else {
+        this.actionPanel.fadeOut();
+      }
+    }
+
+    uniqueEventsChanged() {
+      let unique = {};
+
+      for (let eventIndex in this.eventChanges) {
+        let event = this.eventChanges[eventIndex];
+        unique[event.eventObj['_id']] = true;
+      }
+
+      return Object.keys(unique).length;
     }
   }
 
