@@ -9,6 +9,9 @@ class Appointment < ApplicationRecord
   validates :memorable_word, presence: true
   validates :where_did_you_hear_about_pension_wise, presence: true
 
+  validate :not_within_two_business_days
+  validate :not_more_than_thirty_business_days_in_future
+
   def assign_to_guider
     slot = BookableSlot
            .without_appointments
@@ -16,5 +19,21 @@ class Appointment < ApplicationRecord
            .sample(1)
            .first
     self.guider = slot.guider if slot
+  end
+
+  private
+
+  def not_within_two_business_days
+    return unless start_at
+
+    days_until = Time.zone.now.to_date.business_days_until(start_at)
+    errors.add(:start_at, 'must be more than two business days from now') if days_until <= 2
+  end
+
+  def not_more_than_thirty_business_days_in_future
+    return unless start_at
+
+    days_until = Time.zone.now.to_date.business_days_until(start_at)
+    errors.add(:start_at, 'must be less than thirty business days from now') if days_until >= 30
   end
 end

@@ -2,6 +2,8 @@
 require 'rails_helper'
 
 RSpec.feature 'Agent creates appointments' do
+  let(:day) { 5.business_days.from_now }
+
   scenario 'Creates an appointment' do
     given_the_user_is_an_agent do
       and_there_is_a_guider_with_available_slots
@@ -14,14 +16,14 @@ RSpec.feature 'Agent creates appointments' do
     @guider = create(:guider)
     @slot = build(
       :slot,
-      day_of_week: Time.zone.now.wday,
+      day_of_week: day.wday,
       start_hour: 9,
       start_minute: 30,
       end_hour: 10,
       end_minute: 40
     )
     @schedule = @guider.schedules.build(
-      start_at: Time.zone.now.beginning_of_day,
+      start_at: day.beginning_of_day,
       slots: [@slot]
     )
     @schedule.save!
@@ -44,8 +46,8 @@ RSpec.feature 'Agent creates appointments' do
     @page.opt_out_of_market_research.set true
     @page.where_did_you_hear_about_pension_wise.select 'Radio advert'
     @page.who_is_your_pension_provider.select 'Scottish Widows'
-    @page.start_at.set Time.zone.now.change(hour: 9, min: 30).to_s
-    @page.end_at.set Time.zone.now.change(hour: 10, min: 40).to_s
+    @page.start_at.set day.change(hour: 9, min: 30).to_s
+    @page.end_at.set day.change(hour: 10, min: 40).to_s
 
     @page.save.click
   end
@@ -67,7 +69,7 @@ RSpec.feature 'Agent creates appointments' do
     expect(appointment.opt_out_of_market_research).to eq true
     expect(appointment.where_did_you_hear_about_pension_wise).to eq 'Radio advert'
     expect(appointment.who_is_your_pension_provider).to eq 'Scottish Widows'
-    expect(appointment.start_at).to eq Time.zone.now.change(hour: 9, min: 30).to_s
-    expect(appointment.end_at).to eq Time.zone.now.change(hour: 10, min: 40).to_s
+    expect(appointment.start_at).to eq day.change(hour: 9, min: 30).to_s
+    expect(appointment.end_at).to eq day.change(hour: 10, min: 40).to_s
   end
 end

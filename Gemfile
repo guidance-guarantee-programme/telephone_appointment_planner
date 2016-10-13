@@ -26,6 +26,7 @@ source 'https://rubygems.org' do
   gem 'sidekiq'
   gem 'sinatra', require: false
   gem 'select2-rails'
+  gem 'business_time'
 
   group :development, :test do
     gem 'pry-byebug'
