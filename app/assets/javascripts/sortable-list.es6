@@ -15,6 +15,7 @@
     init() {
       // using listjs
       this.list = new List(this.$el.attr('id'), this.config);
+      this.orderList();
     }
 
     bindEvents() {
@@ -29,6 +30,14 @@
       this.$el.find('.sort').each(function() {
         $(this).replaceWith($(this)[0].outerHTML.replace('span', 'button'));
       });
+    }
+
+    orderList() {
+      const defaultOrder = this.$el.data('default-order');
+
+      if (defaultOrder) {
+        this.list.sort(defaultOrder.value, { order: defaultOrder.order });
+      }
     }
   }
 
