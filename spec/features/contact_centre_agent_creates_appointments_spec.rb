@@ -38,7 +38,7 @@ RSpec.feature 'Agent creates appointments' do
     @page.email.set 'email@example.org'
     @page.phone.set '0000000'
     @page.mobile.set '1111111'
-    @page.year_of_birth.set '1891'
+    @page.date_of_birth.set '1983-10-23'
     @page.memorable_word.set 'lozenge'
     @page.notes.set 'something'
     @page.opt_out_of_market_research.set true
@@ -61,7 +61,7 @@ RSpec.feature 'Agent creates appointments' do
     expect(appointment.email).to eq 'email@example.org'
     expect(appointment.phone).to eq '0000000'
     expect(appointment.mobile).to eq '1111111'
-    expect(appointment.year_of_birth).to eq '1891'
+    expect(appointment.date_of_birth.to_s).to eq '1983-10-23'
     expect(appointment.memorable_word).to eq 'lozenge'
     expect(appointment.notes).to eq 'something'
     expect(appointment.opt_out_of_market_research).to eq true

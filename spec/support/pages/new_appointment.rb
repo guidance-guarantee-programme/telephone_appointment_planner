@@ -13,7 +13,7 @@ module Pages
     element :email,                                 '.t-email'
     element :phone,                                 '.t-phone'
     element :mobile,                                '.t-mobile'
-    element :year_of_birth,                         '.t-year-of-birth'
+    element :date_of_birth,                         '.t-date-of-birth'
     element :memorable_word,                        '.t-memorable-word'
     element :notes,                                 '.t-notes'
     element :opt_out_of_market_research,            '.t-opt-out-of-market-research'

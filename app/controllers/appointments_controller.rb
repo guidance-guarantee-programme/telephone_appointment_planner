@@ -33,7 +33,7 @@ class AppointmentsController < ApplicationController
       :email,
       :phone,
       :mobile,
-      :year_of_birth,
+      :date_of_birth,
       :memorable_word,
       :notes,
       :opt_out_of_market_research,
