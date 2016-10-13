@@ -2,9 +2,12 @@ require 'rails_helper'
 
 RSpec.describe Appointment, type: :model do
   describe 'validations' do
+    let(:subject) do
+      build_stubbed(:appointment)
+    end
+
     it 'is valid with valid parameters' do
-      appointment = create(:appointment)
-      expect(appointment).to be_valid
+      expect(subject).to be_valid
     end
 
     required = [
@@ -16,32 +19,45 @@ RSpec.describe Appointment, type: :model do
       :memorable_word,
       :where_did_you_hear_about_pension_wise
     ]
-    required.each do |r|
-      it "validate presence of #{r}" do
+    required.each do |field|
+      it "validate presence of #{field}" do
+        subject.public_send("#{field}=", nil)
         subject.validate
-        expect(subject.errors[r]).to_not be_empty
+        expect(subject.errors[field]).to_not be_empty
       end
+    end
+
+    it 'cannot be booked within two working days' do
+      subject.start_at = 1.business_days.from_now
+      subject.validate
+      expect(subject.errors[:start_at]).to_not be_empty
+    end
+
+    it 'cannot be booked further ahead than thirty working days' do
+      subject.start_at = 40.business_days.from_now
+      subject.validate
+      expect(subject.errors[:start_at]).to_not be_empty
     end
   end
 
   describe '#assign_to_guider' do
     let(:appointment_start_time) do
-      Time.zone.now.change(hour: 9, min: 0, second: 0)
+      5.business_days.from_now.change(hour: 9, min: 0, second: 0)
     end
 
     let(:appointment_end_time) do
-      Time.zone.now.change(hour: 10, min: 30, second: 0)
+      5.business_days.from_now.change(hour: 10, min: 30, second: 0)
     end
 
     context 'with a guider who has a slot at the appointment time' do
       let!(:guider_with_slot) do
         guider_with_slot = create(:guider)
         guider_with_slot.schedules.build(
-          start_at: Time.zone.now.beginning_of_day,
+          start_at: appointment_start_time.beginning_of_day,
           slots: [
             build(
               :slot,
-              day_of_week: Time.zone.now.wday,
+              day_of_week: appointment_start_time.wday,
               start_hour: 9,
               start_minute: 0,
               end_hour: 10,

@@ -1,6 +1,20 @@
 require 'rails_helper'
 
 RSpec.describe BookableSlot, type: :model do
+  def make_time(hour, minute)
+    5
+      .business_days
+      .from_now
+      .change(hour: hour, min: minute)
+  end
+
+  def result
+    BookableSlot.with_guider_count(
+      5.business_days.ago,
+      10.business_day.from_now
+    )
+  end
+
   describe '#with_guider_count' do
     context 'three guiders with bookable slots' do
       before do
@@ -10,23 +24,18 @@ RSpec.describe BookableSlot, type: :model do
           create(
             :bookable_slot,
             guider: guider,
-            start_at: DateTime.new(2022, 12, 9, 10, 30, 0).in_time_zone,
-            end_at: DateTime.new(2022, 12, 9, 11, 30, 0).in_time_zone
+            start_at: make_time(10, 30),
+            end_at: make_time(11, 30)
           )
         end
       end
 
       it 'returns bookable slots' do
-        result = BookableSlot.with_guider_count(
-          Date.new(2022, 12, 5),
-          Date.new(2022, 12, 20)
-        )
-
         expect(result).to eq(
           [
             guiders: 3,
-            start: DateTime.new(2022, 12, 9, 10, 30, 0).in_time_zone,
-            end: DateTime.new(2022, 12, 9, 11, 30, 0).in_time_zone
+            start: make_time(10, 30),
+            end: make_time(11, 30)
           ]
         )
       end
@@ -36,20 +45,15 @@ RSpec.describe BookableSlot, type: :model do
           create(
             :appointment,
             guider: User.guiders.first,
-            start_at: DateTime.new(2022, 12, 9, 10, 30, 0).in_time_zone,
-            end_at: DateTime.new(2022, 12, 9, 11, 30, 0).in_time_zone
-          )
-
-          result = BookableSlot.with_guider_count(
-            Date.new(2022, 12, 5),
-            Date.new(2022, 12, 20)
+            start_at: make_time(10, 30),
+            end_at: make_time(11, 30)
           )
 
           expect(result).to eq(
             [
               guiders: 2,
-              start: DateTime.new(2022, 12, 9, 10, 30, 0).in_time_zone,
-              end: DateTime.new(2022, 12, 9, 11, 30, 0).in_time_zone
+              start: make_time(10, 30),
+              end: make_time(11, 30)
             ]
           )
         end
