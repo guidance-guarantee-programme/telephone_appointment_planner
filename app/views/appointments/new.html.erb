@@ -39,7 +39,16 @@
             label: 'Where did you hear about Pension Wise?',
             include_blank: true
           },
-          { class: 'select2 t-where-did-you-hear-about-pension-wise' }
+          {
+            class: 't-where-did-you-hear-about-pension-wise',
+            data: {
+              module: 'AdvancedSelect',
+              config: {
+                tags: true,
+                placeholder: 'Type a value in here if it is not included in the list'
+              }
+            }
+          }
         )
       %>
       <%=
