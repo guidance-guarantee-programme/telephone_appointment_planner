@@ -2,17 +2,27 @@ class AppointmentsController < ApplicationController
   before_action :authorise_for_agents!
 
   def new
-    @appointment = Appointment.new
-    @available_slots_json = available_slots_json(Time.zone.now.to_date, 6.weeks.from_now.to_date)
+    @appointment_attempt = AppointmentAttempt.find(params[:appointment_attempt_id])
+    @appointment = Appointment.new(
+      first_name: @appointment_attempt.first_name,
+      last_name: @appointment_attempt.last_name,
+      date_of_birth: @appointment_attempt.date_of_birth
+    )
+    load_available_slots
   end
 
+  # rubocop:disable Metrics/MethodLength
   def create
     @appointment = Appointment.new(appointment_params)
+    @appointment_attempt = AppointmentAttempt.find(params[:appointment_attempt_id])
     @appointment.assign_to_guider
     if @appointment.save
-      redirect_to appointment_path(@appointment), success: 'Appointment has been created!'
+      redirect_to(
+        appointment_attempt_appointment_path(@appointment_attempt, @appointment),
+        success: 'Appointment has been created!'
+      )
     else
-      @available_slots_json = available_slots_json(Time.zone.now.to_date, 6.weeks.from_now.to_date)
+      load_available_slots
       render :new
     end
   end
@@ -23,7 +33,6 @@ class AppointmentsController < ApplicationController
 
   private
 
-  # rubocop:disable Metrics/MethodLength
   def appointment_params
     params.require(:appointment).permit(
       :start_at,
@@ -42,10 +51,10 @@ class AppointmentsController < ApplicationController
     )
   end
 
-  def available_slots_json(from, to)
-    BookableSlot
-      .with_guider_count(from, to)
-      .to_json
+  def load_available_slots
+    @available_slots_json = BookableSlot
+                            .with_guider_count(Time.zone.now.to_date, 6.weeks.from_now.to_date)
+                            .to_json
   end
 
   def authorise_for_agents!

@@ -1,0 +1,9 @@
+<h1>Book an appointment</h1>
+
+<%= form_for @appointment_attempt, layout: :basic do |f| %>
+  <%= f.text_field :first_name, class: 't-first-name' %>
+  <%= f.text_field :last_name, class: 't-last-name' %>
+  <%= f.date_field :date_of_birth, class: 't-date-of-birth' %>
+  <%= f.check_box :defined_contribution_pot, class: 't-defined-contribution-pot' %>
+  <%= f.submit 'Next', class: 't-next' %>
+<% end %>

@@ -4,11 +4,23 @@ require 'rails_helper'
 RSpec.feature 'Agent creates appointments' do
   let(:day) { BusinessDays.from_now(5) }
 
-  scenario 'Creates an appointment' do
+  scenario 'Customer is not eligible for an appointment' do
+    given_the_user_is_an_agent do
+      when_they_want_to_book_an_appointment
+      and_the_customer_is_ineligible_for_an_appointment
+      when_they_try_to_create_an_appointment
+      then_they_are_told_that_the_customer_is_ineligible
+    end
+  end
+
+  scenario 'Customer is eligible for an appointment' do
     given_the_user_is_an_agent do
       and_there_is_a_guider_with_available_slots
-      when_they_create_a_new_appointment
-      then_that_appointment_is_stored
+      when_they_want_to_book_an_appointment
+      and_the_customer_is_eligible_for_an_appointment
+      when_they_try_to_create_an_appointment
+      and_they_fill_in_their_appointment_details
+      then_that_appointment_is_created
     end
   end
 
@@ -31,16 +43,12 @@ RSpec.feature 'Agent creates appointments' do
   end
 
   # rubocop:disable Metrics/AbcSize
-  def when_they_create_a_new_appointment
+  def and_they_fill_in_their_appointment_details
     @page = Pages::NewAppointment.new
-    @page.load
 
-    @page.first_name.set 'Some'
-    @page.last_name.set 'Person'
     @page.email.set 'email@example.org'
     @page.phone.set '0000000'
     @page.mobile.set '1111111'
-    @page.date_of_birth.set '1983-10-23'
     @page.memorable_word.set 'lozenge'
     @page.notes.set 'something'
     @page.opt_out_of_market_research.set true
@@ -52,7 +60,7 @@ RSpec.feature 'Agent creates appointments' do
     @page.save.click
   end
 
-  def then_that_appointment_is_stored
+  def then_that_appointment_is_created
     @guider.reload
     expect(Appointment.count).to eq 1
     appointment = Appointment.first
@@ -63,7 +71,7 @@ RSpec.feature 'Agent creates appointments' do
     expect(appointment.email).to eq 'email@example.org'
     expect(appointment.phone).to eq '0000000'
     expect(appointment.mobile).to eq '1111111'
-    expect(appointment.date_of_birth.to_s).to eq '1983-10-23'
+    expect(appointment.date_of_birth.to_s).to eq '1950-10-10'
     expect(appointment.memorable_word).to eq 'lozenge'
     expect(appointment.notes).to eq 'something'
     expect(appointment.opt_out_of_market_research).to eq true
@@ -71,5 +79,32 @@ RSpec.feature 'Agent creates appointments' do
     expect(appointment.who_is_your_pension_provider).to eq 'Scottish Widows'
     expect(appointment.start_at).to eq day.change(hour: 9, min: 30).to_s
     expect(appointment.end_at).to eq day.change(hour: 10, min: 40).to_s
+  end
+
+  def when_they_want_to_book_an_appointment
+    @page = Pages::NewAppointmentAttempt.new
+    @page.load
+  end
+
+  def and_the_customer_is_ineligible_for_an_appointment
+    @page.first_name.set 'First'
+    @page.last_name.set 'Last'
+    @page.date_of_birth.set '1983-10-10'
+    @page.defined_contribution_pot.set false
+  end
+
+  def and_the_customer_is_eligible_for_an_appointment
+    @page.first_name.set 'Some'
+    @page.last_name.set 'Person'
+    @page.date_of_birth.set '1950-10-10'
+    @page.defined_contribution_pot.set true
+  end
+
+  def when_they_try_to_create_an_appointment
+    @page.next.click
+  end
+
+  def then_they_are_told_that_the_customer_is_ineligible
+    expect(@page).to have_ineligible_message
   end
 end
