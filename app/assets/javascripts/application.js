@@ -17,6 +17,7 @@
 //= require daterangepicker
 //= require core.js/core.js
 //= require calendar
+//= require customer-age
 //= require calendars/appointment-availability
 //= require calendars/guider-slot-picker
 //= require select2
