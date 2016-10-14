@@ -26,7 +26,7 @@ source 'https://rubygems.org' do
   gem 'sidekiq'
   gem 'sinatra', require: false
   gem 'select2-rails'
-  gem 'business_time'
+  gem 'biz'
 
   group :development, :test do
     gem 'pry-byebug'
@@ -43,6 +43,7 @@ source 'https://rubygems.org' do
     gem 'poltergeist'
     gem 'phantomjs-binaries'
     gem 'database_cleaner'
+    gem 'chronic'
   end
 
   group :development do

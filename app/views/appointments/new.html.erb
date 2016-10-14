@@ -6,7 +6,7 @@
       <h2>Choose available slot</h2>
 
       <div class="calendar">
-        <div data-module="AppointmentAvailabilityCalendar" data-events=".slots-data"></div>
+        <div data-module="AppointmentAvailabilityCalendar" data-events=".slots-data" data-default-date="<%= BookableSlot.next_valid_start_date %>"></div>
         <input type="hidden" name="available-slots-json" class="slots-data" value="<%= @available_slots_json %>">
         <div class="hide">
           <%= f.text_field :start_at, data: { 'selected-start': true }, class: 't-start-at' %>

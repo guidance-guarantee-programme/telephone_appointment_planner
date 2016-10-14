@@ -2,7 +2,7 @@
 require 'rails_helper'
 
 RSpec.feature 'Agent creates appointments' do
-  let(:day) { 5.business_days.from_now }
+  let(:day) { BusinessDays.from_now(5) }
 
   scenario 'Creates an appointment' do
     given_the_user_is_an_agent do

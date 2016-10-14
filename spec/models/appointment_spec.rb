@@ -28,13 +28,13 @@ RSpec.describe Appointment, type: :model do
     end
 
     it 'cannot be booked within two working days' do
-      subject.start_at = 1.business_days.from_now
+      subject.start_at = BusinessDays.from_now(1)
       subject.validate
       expect(subject.errors[:start_at]).to_not be_empty
     end
 
     it 'cannot be booked further ahead than thirty working days' do
-      subject.start_at = 40.business_days.from_now
+      subject.start_at = BusinessDays.from_now(40)
       subject.validate
       expect(subject.errors[:start_at]).to_not be_empty
     end
@@ -42,11 +42,11 @@ RSpec.describe Appointment, type: :model do
 
   describe '#assign_to_guider' do
     let(:appointment_start_time) do
-      5.business_days.from_now.change(hour: 9, min: 0, second: 0)
+      BusinessDays.from_now(5).change(hour: 9, min: 0, second: 0)
     end
 
     let(:appointment_end_time) do
-      5.business_days.from_now.change(hour: 10, min: 30, second: 0)
+      BusinessDays.from_now(5).change(hour: 10, min: 30, second: 0)
     end
 
     context 'with a guider who has a slot at the appointment time' do
