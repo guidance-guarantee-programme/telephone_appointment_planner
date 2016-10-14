@@ -2,7 +2,9 @@
 @import 'select2';
 @import 'select2-bootstrap';
 @import 'fullcalendar';
+@import 'fullcalendar-scheduler';
 @import 'daterangepicker-bs3';
+@import 'qTip2';
 @import 'components/*';
 
 .fc-unthemed {
@@ -46,6 +48,22 @@
 
 .inline-button-to-container {
   display:inline-block;
+}
+
+.guiders-appointments-calendar {
+  .fc-resource-cell {
+    height: 150px;
+    white-space: nowrap;
+  }
+
+  th {
+    border-width: 0;
+    overflow: hidden;
+  }
+
+  .fc-resource-cell > div {
+    transform: translateY(120px) rotate(-90deg);
+  }
 }
 
 .guider__action-panel {

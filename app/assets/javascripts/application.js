@@ -13,12 +13,16 @@
 //= require turbolinks
 //= require moment
 //= require fullcalendar
+//= require fullcalendar-scheduler
 //= require listjs
 //= require daterangepicker
 //= require core.js/core.js
 //= require calendar
 //= require calendars/appointment-availability
 //= require calendars/guider-slot-picker
+//= require calendars/guiders-appointments
+//= require calendars/guider-appointments
 //= require select2
 //= require advanced-select
+//= require qTip2
 //= require_tree .
