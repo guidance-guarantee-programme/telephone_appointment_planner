@@ -27,7 +27,7 @@ RSpec.feature 'Agent creates appointments' do
       slots: [@slot]
     )
     @schedule.save!
-    BookableSlot.generate_for_six_weeks
+    BookableSlot.generate_for_guider(@guider)
   end
 
   # rubocop:disable Metrics/AbcSize
