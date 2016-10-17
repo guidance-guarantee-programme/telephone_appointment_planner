@@ -24,6 +24,13 @@ RSpec.feature 'Roles' do
         then_they_are_allowed
       end
     end
+
+    scenario 'Can manage holidays' do
+      given_the_user_is_a_resource_manager do
+        when_they_try_to_manage_holidays
+        then_they_are_allowed
+      end
+    end
   end
 
   context 'Agents' do
@@ -81,6 +88,13 @@ RSpec.feature 'Roles' do
         then_they_are_locked_out
       end
     end
+
+    scenario 'Can not manage holidays' do
+      given_the_user_has_no_permissions do
+        when_they_try_to_manage_holidays
+        then_they_are_locked_out
+      end
+    end
   end
 
   def when_they_try_to_manager_guiders
@@ -91,6 +105,11 @@ RSpec.feature 'Roles' do
   def when_they_try_to_manage_guiders_slots
     @page = Pages::EditSchedule.new
     @page.load(user_id: @guider.id, id: @schedule.id)
+  end
+
+  def when_they_try_to_manage_holidays
+    @page = Pages::Holidays.new
+    @page.load
   end
 
   def and_a_guider_with_a_schedule_exists
