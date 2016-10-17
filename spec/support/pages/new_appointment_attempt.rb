@@ -11,7 +11,9 @@ module Pages
 
     element :first_name,               '.t-first-name'
     element :last_name,                '.t-last-name'
-    element :date_of_birth,            '.t-date-of-birth'
+    element :date_of_birth_day,        '.t-date-of-birth-day'
+    element :date_of_birth_month,      '.t-date-of-birth-month'
+    element :date_of_birth_year,       '.t-date-of-birth-year'
     element :defined_contribution_pot, '.t-defined-contribution-pot'
     element :next,                     '.t-next'
   end
