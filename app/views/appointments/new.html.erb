@@ -1,12 +1,12 @@
 <h1>Book an appointment</h1>
-
+<p aria-hidden="true">Fields marked with <%= required_label %> are required.</p>
 <%= form_for [@appointment_attempt, @appointment], layout: :basic do |f| %>
   <div class="row form-group">
     <div class="col-md-12">
-      <h2>Choose available slot</h2>
-
+      <h2>Choose available slot <%= required_label %></h2>
+      <p class="text-danger hide" id="slot-error">Please choose a slot</p>
       <div class="calendar">
-        <div data-module="AppointmentAvailabilityCalendar" data-events=".slots-data" data-default-date="<%= BookableSlot.next_valid_start_date %>"></div>
+        <div class="appointment-availability-calendar" data-module="AppointmentAvailabilityCalendar" data-error-id="slot-error" data-events=".slots-data" data-default-date="<%= BookableSlot.next_valid_start_date %>"></div>
         <input type="hidden" name="available-slots-json" class="slots-data" value="<%= @available_slots_json %>">
         <div class="hide">
           <%= f.text_field :start_at, data: { 'selected-start': true }, class: 't-start-at' %>
@@ -20,7 +20,7 @@
       <h2>Personal Details</h2>
     </div>
     <div class="col-md-6">
-      <%= f.text_field :first_name, class: 't-first-name' %>
+      <%= f.text_field :first_name, class: 't-first-name', label: required_label(:first_name) %>
       <%= f.text_field :last_name, class: 't-last-name' %>
       <%= f.email_field :email, class: 't-email' %>
       <%= f.telephone_field :phone, class: 't-phone' %>

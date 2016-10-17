@@ -21,6 +21,7 @@
           }
         },
         eventRender: (event, element) => {
+          event.$div = $(element);
           element.html(`
             <div style="font-size:18px;">${event.start.format('HH:mm')}</div>
             <span class="glyphicon glyphicon-user" aria-hidden="true"></span> ${event.guiders}
@@ -70,6 +71,15 @@
 
       this.init();
       this.addEvents();
+      this.selectEvent();
+      this.checkError();
+    }
+
+    checkError() {
+      if (this.$selectedStart.parents('.field_with_errors').length) {
+        $(`#${this.$el.data('error-id')}`).removeClass('hide');
+        this.$el.find('.fc-view-container').addClass('error');
+      }
     }
 
     getEventColour(event) {
@@ -90,6 +100,26 @@
       this.$selectedStart = $('[data-selected-start]');
       this.$selectedEnd = $('[data-selected-end]');
       this.selectedEventColour = 'green';
+    }
+
+    selectEvent() {
+      const events = this.$el.fullCalendar('clientEvents'),
+      start = this.$selectedStart.val(),
+      end = this.$selectedEnd.val();
+
+      if ((!start && end)) {
+        return;
+      }
+
+      for (let eventIndex in events) {
+        let event = events[eventIndex];
+
+        if (moment(start).isSame(event.start) && moment(end).isSame(event.end)) {
+          this.$el.fullCalendar('gotoDate', start);
+          event.$div.trigger('click');
+          return;
+        }
+      }
     }
 
     addEvents() {
