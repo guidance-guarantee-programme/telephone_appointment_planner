@@ -1,6 +1,6 @@
 module Pages
   class NewAppointment < SitePrism::Page
-    set_url '/appointments/new'
+    set_url '/appointment_attempts/{appointment_attempt_id}/appointments/new'
 
     element(
       :permission_error_message,

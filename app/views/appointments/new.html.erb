@@ -1,6 +1,6 @@
-<h1>Create new appointment</h1>
+<h1>Book an appointment</h1>
 
-<%= form_for @appointment, layout: :basic do |f| %>
+<%= form_for [@appointment_attempt, @appointment], layout: :basic do |f| %>
   <div class="row form-group">
     <div class="col-md-12">
       <h2>Choose available slot</h2>
