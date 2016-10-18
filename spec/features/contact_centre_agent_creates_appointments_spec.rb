@@ -71,7 +71,7 @@ RSpec.feature 'Agent creates appointments' do
     expect(appointment.email).to eq 'email@example.org'
     expect(appointment.phone).to eq '0000000'
     expect(appointment.mobile).to eq '1111111'
-    expect(appointment.date_of_birth.to_s).to eq '1950-10-10'
+    expect(appointment.date_of_birth.to_s).to eq '1950-10-23'
     expect(appointment.memorable_word).to eq 'lozenge'
     expect(appointment.notes).to eq 'something'
     expect(appointment.opt_out_of_market_research).to eq true
@@ -89,14 +89,18 @@ RSpec.feature 'Agent creates appointments' do
   def and_the_customer_is_ineligible_for_an_appointment
     @page.first_name.set 'First'
     @page.last_name.set 'Last'
-    @page.date_of_birth.set '1983-10-10'
+    @page.date_of_birth_day.set '23'
+    @page.date_of_birth_month.set '10'
+    @page.date_of_birth_year.set '1983'
     @page.defined_contribution_pot.set false
   end
 
   def and_the_customer_is_eligible_for_an_appointment
     @page.first_name.set 'Some'
     @page.last_name.set 'Person'
-    @page.date_of_birth.set '1950-10-10'
+    @page.date_of_birth_day.set '23'
+    @page.date_of_birth_month.set '10'
+    @page.date_of_birth_year.set '1950'
     @page.defined_contribution_pot.set true
   end
 

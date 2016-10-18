@@ -24,14 +24,12 @@ class AppointmentAttemptsController < ApplicationController
   private
 
   def appointment_attempt_params
-    params
-      .require(:appointment_attempt)
-      .permit(
-        :first_name,
-        :last_name,
-        :date_of_birth,
-        :defined_contribution_pot
-      )
+    params.require(:appointment_attempt).permit(
+      :first_name,
+      :last_name,
+      :date_of_birth,
+      :defined_contribution_pot
+    )
   end
 
   def authorise_for_agents!

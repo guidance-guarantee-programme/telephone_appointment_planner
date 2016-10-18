@@ -25,7 +25,7 @@
       <%= f.email_field :email, class: 't-email' %>
       <%= f.telephone_field :phone, class: 't-phone' %>
       <%= f.telephone_field :mobile, class: 't-mobile' %>
-      <%= f.date_field :date_of_birth, class: 't-date-of-birth' %>
+      <%= render 'shared/date_of_birth_form_field', form: f %>
     </div>
     <div class="col-md-6">
       <%= f.text_field :memorable_word, class: 't-memorable-word', placeholder: 'Pension Wise will use this each time the customer is called' %>

@@ -69,3 +69,14 @@
 .fc-view-container.error {
   border: 1px solid #a94442;
 }
+
+.form-dob {
+  .form-group {
+    display: inline;
+    margin-bottom: 0;
+  }
+
+  .form-dob-label {
+    margin-bottom: 10px;
+  }
+}
