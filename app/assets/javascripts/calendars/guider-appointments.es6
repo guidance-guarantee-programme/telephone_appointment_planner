@@ -1,11 +1,10 @@
-/* global Calendar, moment */
+/* global Calendar */
 {
   'use strict';
 
   class GuiderAppointmentsCalendar extends Calendar {
     constructor(el, config = {}) {
       const calendarConfig = $.extend(true, {
-        defaultDate: moment(el.data('default-date')),
         columnFormat: 'ddd D/M',
         defaultView: 'agendaDay',
         header: {

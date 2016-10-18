@@ -1,3 +1,5 @@
+/* global moment */
+
 'use strict';
 
 class Calendar {
@@ -9,7 +11,7 @@ class Calendar {
       minTime: '08:30:00',
       height: 'auto',
       allDaySlot: false,
-      defaultDate: el.data('default-date')
+      defaultDate: moment(el.data('default-date'))
     };
 
     this.config = $.extend(true, defaultConfig, config);
