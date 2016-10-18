@@ -15,6 +15,7 @@ class Appointment < ApplicationRecord
   def assign_to_guider
     slot = BookableSlot
            .without_appointments
+           .without_holidays
            .where(start_at: start_at, end_at: end_at)
            .sample(1)
            .first

@@ -105,6 +105,39 @@ RSpec.describe Appointment, type: :model do
           expect { subject.assign_to_guider }.to_not change { subject.guider }
         end
       end
+
+      context 'and the guider already has a holiday at that time' do
+        before do
+          create(
+            :holiday,
+            user: guider_with_slot,
+            start_at: appointment_start_time.beginning_of_day,
+            end_at: appointment_end_time.end_of_day
+          )
+        end
+
+        it 'does not assign to a guider' do
+          subject.start_at = appointment_start_time
+          subject.end_at = appointment_end_time
+          expect { subject.assign_to_guider }.to_not change { subject.guider }
+        end
+      end
+
+      context 'and there is a bank holiday at that time' do
+        before do
+          create(
+            :holiday,
+            start_at: appointment_start_time.beginning_of_day,
+            end_at: appointment_end_time.end_of_day
+          )
+        end
+
+        it 'does not assign to a guider' do
+          subject.start_at = appointment_start_time
+          subject.end_at = appointment_end_time
+          expect { subject.assign_to_guider }.to_not change { subject.guider }
+        end
+      end
     end
   end
 end
