@@ -1,5 +1,16 @@
 class AppointmentsController < ApplicationController
-  before_action :authorise_for_agents!
+  before_action :authorise_for_agents!, except: %i(index edit)
+  before_action :authorise_for_guiders!, only: %i(index edit)
+
+  def index
+    @appointments = current_user.appointments.where(start_at: date_range_params)
+
+    render json: @appointments
+  end
+
+  def edit
+    render nothing: true
+  end
 
   def new
     @appointment_attempt = AppointmentAttempt.find(params[:appointment_attempt_id])
@@ -33,6 +44,13 @@ class AppointmentsController < ApplicationController
 
   private
 
+  def date_range_params
+    starts = params[:start].to_date.beginning_of_day
+    ends   = params[:end].to_date.beginning_of_day
+
+    starts..ends
+  end
+
   def appointment_params
     params.require(:appointment).permit(
       :start_at,
@@ -59,5 +77,9 @@ class AppointmentsController < ApplicationController
 
   def authorise_for_agents!
     authorise_user!(User::AGENT_PERMISSION)
+  end
+
+  def authorise_for_guiders!
+    authorise_user!(User::GUIDER_PERMISSION)
   end
 end

@@ -3,6 +3,9 @@ ruby IO.read('.ruby-version').strip
 source 'https://rails-assets.org' do
   gem 'rails-assets-listjs'
   gem 'rails-assets-zloirock--core-js'
+  gem 'rails-assets-fullcalendar'
+  gem 'rails-assets-fullcalendar-scheduler'
+  gem 'rails-assets-qTip2'
 end
 
 source 'https://rubygems.org' do
@@ -16,7 +19,6 @@ source 'https://rubygems.org' do
   gem 'sprockets-es6'
   gem 'gds-sso'
   gem 'plek'
-  gem 'fullcalendar-rails'
   gem 'momentjs-rails'
   gem 'bootstrap-daterangepicker-rails'
   gem 'active_link_to'

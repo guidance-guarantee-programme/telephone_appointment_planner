@@ -15,6 +15,8 @@ Rails.application.routes.draw do
     resources :appointments
   end
   resources :customers
+  resource :calendar, only: :show
+  resources :appointments, only: %i(index show edit)
 
   resources :groups, only: %i(index destroy)
 
