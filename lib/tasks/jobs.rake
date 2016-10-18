@@ -5,4 +5,11 @@ namespace :jobs do
       GenerateBookableSlotsJob.perform_now
     end
   end
+
+  namespace :bank_holidays do
+    desc 'generate bank holidays'
+    task generate: :environment do
+      GenerateBankHolidaysJob.perform_now
+    end
+  end
 end

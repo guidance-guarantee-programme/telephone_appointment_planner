@@ -35,6 +35,8 @@ if Rails.env.development?
     )
   end
 
+  GenerateBankHolidaysJob.new.perform_now
+
   BookableSlot.generate_for_six_weeks
 
   User.first.tap do |user|
