@@ -26,6 +26,17 @@ class BookableSlot < ApplicationRecord
       .where('appointments.start_at IS NULL')
   end
 
+  def self.without_holidays
+    joins(<<-SQL
+          LEFT JOIN holidays ON
+            holidays.user_id = #{quoted_table_name}.guider_id OR holidays.user_id IS NULL AND
+            holidays.start_at < #{quoted_table_name}.start_at AND
+            holidays.end_at > #{quoted_table_name}.end_at
+            SQL
+         )
+      .where('holidays.start_at IS NULL')
+  end
+
   def self.starting_after_two_business_days
     where("#{quoted_table_name}.start_at > ?", next_valid_start_date)
   end
@@ -33,6 +44,7 @@ class BookableSlot < ApplicationRecord
   def self.with_guider_count(from, to)
     select("DISTINCT #{quoted_table_name}.start_at, #{quoted_table_name}.end_at, count(1) AS guiders")
       .without_appointments
+      .without_holidays
       .starting_after_two_business_days
       .group("#{quoted_table_name}.start_at, #{quoted_table_name}.end_at")
       .within_date_range(from, to)
