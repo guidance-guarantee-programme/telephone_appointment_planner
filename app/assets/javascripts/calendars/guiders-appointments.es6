@@ -79,8 +79,8 @@
                   surname = surnames[Math.floor(Math.random() * surnames.length)];
 
             resources.push({
-              'id': 'guider_' + i,
-              'title': firstname + ' ' + surname
+              id: 'guider_' + i,
+              title: firstname + ' ' + surname
             });
           }
 
@@ -190,6 +190,7 @@
 
             if (!alreadyEvent) {
               events.push({
+                id: guiderId + '_' + i,
                 title: firstname + ' ' + surname,
                 start: eventStart,
                 end: eventEnd,
@@ -214,6 +215,7 @@
     setupUndo() {
       this.actionPanel.find('[data-action-panel-undo-all]').on('click', this.undoAllChanges.bind(this));
       this.actionPanel.find('[data-action-panel-undo-one]').on('click', this.undoOneChange.bind(this));
+      this.actionPanel.find('[data-action-panel-save]').on('click', this.save.bind(this));
     }
 
     handleEventChange(event, revertFunc) {
@@ -245,7 +247,7 @@
     hasEventChanged(event) {
       for (let eventIndex in this.eventChanges) {
         let currentEvent = this.eventChanges[eventIndex];
-        if (currentEvent.eventObj['_id'] === event['_id']) {
+        if (currentEvent.eventObj.id === event.id) {
           return true;
         }
       }
@@ -264,6 +266,36 @@
       this.rerenderEvents();
 
       this.checkToShowActionPanel();
+    }
+
+    save(evt) {
+      evt.preventDefault();
+      const $hiddenInput = $('#event-changes');
+      $hiddenInput.val(this.getEventChangesForForm());
+      $hiddenInput.parents('form').submit();
+    }
+
+    getEventChangesForForm() {
+      let output = [],
+      outputEventIds = [];
+
+      for (let eventIndex in this.eventChanges) {
+        let event = this.eventChanges[eventIndex],
+        eventObj = event.eventObj;
+
+        if (outputEventIds.indexOf(eventObj.id) === -1) {
+          output.push({
+            id: eventObj.id,
+            guider_id: eventObj.resourceId,
+            start: eventObj.start,
+            end: eventObj.end
+          });
+
+          outputEventIds.push(eventObj.id);
+        }
+      }
+
+      return JSON.stringify(output);
     }
 
     rerenderEvents() {
@@ -292,7 +324,7 @@
 
       for (let eventIndex in this.eventChanges) {
         let event = this.eventChanges[eventIndex];
-        unique[event.eventObj['_id']] = true;
+        unique[event.eventObj.id] = true;
       }
 
       return Object.keys(unique).length;
