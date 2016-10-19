@@ -4,7 +4,7 @@ class Holiday < ApplicationRecord
   def self.merged_for_calendar_view
     select(<<-SQL
       DISTINCT ON(holidays.start_at, holidays.end_at, holidays.title)
-        holidays.title, holidays.start_at, holidays.end_at, holidays.title || ' - ' || string_agg(users.name, ', ') AS title
+        holidays.title, holidays.start_at, holidays.end_at, holidays.title || COALESCE(' - ' || string_agg(users.name, ', '), '') AS title
     SQL
           )
       .joins('LEFT JOIN users ON users.id = holidays.user_id')
