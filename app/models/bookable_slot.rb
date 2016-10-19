@@ -54,17 +54,31 @@ class BookableSlot < ApplicationRecord
   end
 
   def self.generate_for_guider(guider)
-    (Time.zone.now.to_date..6.weeks.from_now.to_date).each do |day|
-      active_schedule = guider.schedules.active(day)
-      next unless active_schedule
+    BookableSlot.where(guider: guider).delete_all
+    bulk_insert do |worker|
+      (Time.zone.now.to_date..6.weeks.from_now.to_date).each do |day|
+        active_schedule = guider.schedules.active(day)
+        next unless active_schedule
 
-      available_slots = active_schedule
-                        .slots
-                        .where(day_of_week: day.wday)
+        available_slots = active_schedule
+                          .slots
+                          .where(day_of_week: day.wday)
 
-      available_slots.each do |available_slot|
-        create_from_slot!(guider, day, available_slot)
+        available_slots.each do |available_slot|
+          worker.add(
+            guider_id: guider.id,
+            start_at: day.in_time_zone.change(
+              hour: available_slot.start_hour,
+              min: available_slot.start_minute
+            ),
+            end_at: day.in_time_zone.change(
+              hour: available_slot.end_hour,
+              min: available_slot.end_minute
+            )
+          )
+        end
       end
+      worker.save!
     end
   end
 
