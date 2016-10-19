@@ -38,10 +38,12 @@ RSpec.describe BookableSlot, type: :model do
 
   describe '#with_guider_count' do
     context 'three guiders with bookable slots' do
-      before do
-        1.upto(3) do
-          guider = create(:guider)
+      let(:guiders) do
+        create_list(:guider, 3)
+      end
 
+      before do
+        guiders.each do |guider|
           create(
             :bookable_slot,
             guider: guider,
@@ -84,6 +86,38 @@ RSpec.describe BookableSlot, type: :model do
             guider: User.guiders.first,
             start_at: make_time(10, 30),
             end_at: make_time(11, 30)
+          )
+
+          expect(result).to eq(
+            [
+              guiders: 2,
+              start: make_time(10, 30),
+              end: make_time(11, 30)
+            ]
+          )
+        end
+      end
+
+      context 'there is a holiday obscuring a bookable slot' do
+        it 'excludes the slots' do
+          create(
+            :holiday,
+            start_at: make_time(6, 30),
+            end_at: make_time(18, 30)
+          )
+
+          expect(result).to eq([])
+        end
+      end
+
+      context 'there is a holiday for a single user' do
+        it 'excludes the slot' do
+          guider = guiders.first
+          create(
+            :holiday,
+            user: guider,
+            start_at: make_time(6, 30),
+            end_at: make_time(18, 30)
           )
 
           expect(result).to eq(

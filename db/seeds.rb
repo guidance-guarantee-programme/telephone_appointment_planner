@@ -24,6 +24,19 @@ if Rails.env.development?
     schedule.save!(validate: false)
   end
 
+  fake_holiday_title = Faker::Book.title
+  User.guiders.each do |guider|
+    date = Faker::Date.between(Date.today, 1.month.from_now)
+    Holiday.create!(
+      user: guider,
+      title: fake_holiday_title,
+      end_at: date.end_of_day,
+      start_at: date.beginning_of_day
+    )
+  end
+
+  GenerateBankHolidaysJob.new.perform_now
+
   BookableSlot.generate_for_six_weeks
 
   User.first.tap do |user|
