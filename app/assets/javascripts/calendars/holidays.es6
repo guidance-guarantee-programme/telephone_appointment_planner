@@ -10,6 +10,7 @@
         columnFormat: 'ddd D/M',
         slotDuration: '00:30:00',
         eventBorderColor: '#000',
+        events: '/holidays',
         header: {
           'right': 'agendaWeek agendaThreeDay agendaDay today prev,next'
         },
@@ -22,16 +23,6 @@
       }, config);
 
       super(el, calendarConfig);
-
-      this.init();
-    }
-
-    handleEventData(data) {
-      this.$el.fullCalendar('addEventSource', data);
-    }
-
-    init() {
-      $.getJSON('/holidays', this.handleEventData.bind(this));
     }
   }
 
