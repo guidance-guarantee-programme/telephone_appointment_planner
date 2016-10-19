@@ -16,22 +16,14 @@
 
 <% content_for :body_end do %>
   <script>
-  var loadedModules = [];
-  var readyEvent = Turbolinks.supported ? 'turbolinks:load' : 'ready';
-
-  $(document).on(readyEvent, function() {
-    var modules = $('[data-module]');
-
-    if (loadedModules.length) {
-      return;
-    }
-
-    modules.each(function() {
+  $(function() {
+    $('[data-module]:not([data-module-loaded])').each(function() {
       var $el = $(this),
       type = $el.data('module'),
       config = $el.data('config');
 
-      loadedModules.push(new PWTAP[type]($el, config));
+      new PWTAP[type]($el, config);
+      $el.attr('data-module-loaded', true);
     });
   });
   </script>

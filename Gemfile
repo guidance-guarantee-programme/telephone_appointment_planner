@@ -15,7 +15,6 @@ source 'https://rubygems.org' do
   gem 'sass-rails', '~> 5.0'
   gem 'uglifier', '>= 1.3.0'
   gem 'govuk_admin_template'
-  gem 'turbolinks', '~> 5'
   gem 'sprockets-es6'
   gem 'gds-sso'
   gem 'plek'
