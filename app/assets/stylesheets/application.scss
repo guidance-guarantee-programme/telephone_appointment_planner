@@ -78,6 +78,15 @@
     margin-bottom: 0;
   }
 
+  .field_with_errors {
+    label {
+      display:inline-block;
+    }
+    .form-dob-label {
+      color: $state-danger-text;
+    }
+  }
+
   .form-dob-label {
     margin-bottom: 10px;
   }
