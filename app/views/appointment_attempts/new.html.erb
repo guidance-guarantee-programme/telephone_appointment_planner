@@ -1,8 +1,9 @@
 <h1>Book an appointment</h1>
+<%= render 'shared/required_fields_note' %>
 
 <%= form_for @appointment_attempt, layout: :basic do |f| %>
-  <%= f.text_field :first_name, class: 't-first-name' %>
-  <%= f.text_field :last_name, class: 't-last-name' %>
+  <%= f.text_field :first_name, class: 't-first-name', label: required_label(:first_name) %>
+  <%= f.text_field :last_name, class: 't-last-name', label: required_label(:last_name) %>
   <%= render 'shared/date_of_birth_form_field', form: f %>
   <%= f.check_box :defined_contribution_pot, class: 't-defined-contribution-pot' %>
   <%= f.submit 'Next', class: 't-next' %>

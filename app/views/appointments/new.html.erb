@@ -1,5 +1,5 @@
 <h1>Book an appointment</h1>
-<p aria-hidden="true">Fields marked with <%= required_label %> are required.</p>
+<%= render 'shared/required_fields_note' %>
 <%= form_for [@appointment_attempt, @appointment], layout: :basic do |f| %>
   <div class="row form-group">
     <div class="col-md-12">
@@ -21,14 +21,14 @@
     </div>
     <div class="col-md-6">
       <%= f.text_field :first_name, class: 't-first-name', label: required_label(:first_name) %>
-      <%= f.text_field :last_name, class: 't-last-name' %>
+      <%= f.text_field :last_name, class: 't-last-name', label: required_label(:last_name) %>
       <%= f.email_field :email, class: 't-email' %>
-      <%= f.telephone_field :phone, class: 't-phone' %>
+      <%= f.telephone_field :phone, class: 't-phone', label: required_label(:phone) %>
       <%= f.telephone_field :mobile, class: 't-mobile' %>
       <%= render 'shared/date_of_birth_form_field', form: f %>
     </div>
     <div class="col-md-6">
-      <%= f.text_field :memorable_word, class: 't-memorable-word', placeholder: 'Pension Wise will use this each time the customer is called' %>
+      <%= f.text_field :memorable_word, class: 't-memorable-word', placeholder: 'Pension Wise will use this each time the customer is called', label: required_label(:memorable_word) %>
       <%= f.text_area :notes, class: 't-notes', rows: 6, placeholder: 'Is the customer hard of hearing? Is English their first language? etc.' %>
       <%= f.check_box :opt_out_of_market_research, class: 't-opt-out-of-market-research' %>
       <%=
@@ -36,7 +36,7 @@
           :where_did_you_hear_about_pension_wise,
           where_did_you_hear_about_pension_wise_options(@appointment),
           {
-            label: 'Where did you hear about Pension Wise?',
+            label: required_label('Where did you hear about Pension Wise?'),
             include_blank: true
           },
           {
