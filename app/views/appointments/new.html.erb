@@ -15,64 +15,7 @@
       </div>
     </div>
   </div>
-  <div class="row form-group">
-    <div class="col-md-12">
-      <h2>Personal Details</h2>
-    </div>
-    <div class="col-md-6">
-      <%= f.text_field :first_name, class: 't-first-name', label: required_label(:first_name) %>
-      <%= f.text_field :last_name, class: 't-last-name', label: required_label(:last_name) %>
-      <%= f.email_field :email, class: 't-email' %>
-      <%= f.telephone_field :phone, class: 't-phone', label: required_label(:phone) %>
-      <%= f.telephone_field :mobile, class: 't-mobile' %>
-      <%= render 'shared/date_of_birth_form_field', form: f, readonly: true %>
-    </div>
-    <div class="col-md-6">
-      <%= f.text_field :memorable_word, class: 't-memorable-word', placeholder: 'Pension Wise will use this each time the customer is called', label: required_label(:memorable_word) %>
-      <%= f.text_area :notes, class: 't-notes', rows: 6, placeholder: 'Is the customer hard of hearing? Is English their first language? etc.' %>
-      <%= f.check_box :opt_out_of_market_research, class: 't-opt-out-of-market-research' %>
-      <%=
-        f.select(
-          :where_did_you_hear_about_pension_wise,
-          where_did_you_hear_about_pension_wise_options(@appointment),
-          {
-            label: required_label('Where did you hear about Pension Wise?'),
-            include_blank: true
-          },
-          {
-            class: 't-where-did-you-hear-about-pension-wise',
-            data: {
-              module: 'AdvancedSelect',
-              config: {
-                tags: true,
-                placeholder: 'Type a value in here if it is not included in the list'
-              }
-            }
-          }
-        )
-      %>
-      <%=
-        f.select(
-          :who_is_your_pension_provider,
-          who_is_your_pension_provider_options(@appointment),
-          {
-            label: 'Who is your pension provider?',
-            include_blank: true
-          },
-          {
-            class: 't-who-is-your-pension-provider',
-            data: {
-              module: 'AdvancedSelect',
-              config: {
-                tags: true,
-                placeholder: 'Type a value in here if it is not included in the list'
-              }
-            }
-          }
-        )
-      %>
-    </div>
-  </div>
+  <%= render partial: 'personal_details_form', locals: { f: f } %>
   <div class="row form-group">
     <div class="col-md-12">
       <%= f.submit "Confirm appointment", class: 't-save' %>
