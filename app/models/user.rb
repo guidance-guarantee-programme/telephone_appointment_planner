@@ -23,14 +23,14 @@ class User < ApplicationRecord
   end
 
   def guider?
-    permissions.include?(GUIDER_PERMISSION)
+    has_permission?(GUIDER_PERMISSION)
   end
 
   def resource_manager?
-    permissions.include?(RESOURCE_MANAGER_PERMISSION)
+    has_permission?(RESOURCE_MANAGER_PERMISSION)
   end
 
   def agent?
-    permissions.include?(AGENT_PERMISSION)
+    has_permission?(AGENT_PERMISSION)
   end
 end
