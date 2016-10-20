@@ -1,0 +1,16 @@
+$action-panel-background: $color-alto;
+$action-panel-border-color: $color-black;
+
+.action-panel {
+  background: $action-panel-background;
+  border-top: 1px solid $action-panel-border-color;
+  bottom: 0;
+  display: none;
+  font-size: 16px;
+  font-weight: bold;
+  left: 0;
+  padding: 1em;
+  position: fixed;
+  text-align: center;
+  width: 100%;
+}

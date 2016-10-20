@@ -1,14 +1,15 @@
-$guider-schedule-read-only-window-color: rgba(247, 242, 195, 0.8);
-$guider-schedules-read-only-color: #d9534f;
-$guider-schedules-editable-color: #8fdf82;
+$guider-schedule-read-only-window-color: transparentize($color-givry, .2);
+$guider-schedules-read-only-color: $color-roman;
+$guider-schedules-editable-color: $color-feijoa;
+$guider-schedules-read-only-border-color: $color-silver;
 
 @function schedule-repeating-gradient($background) {
   @return $background repeating-linear-gradient(
     -45deg,
     $background,
     $background 10px,
-    rgba(255, 255, 255, 0.2) 10px,
-    rgba(255, 255, 255, 0.2) 20px
+    transparentize($color-white, .8) 10px,
+    transparentize($color-white, .8) 20px
   );
 }
 
@@ -26,18 +27,18 @@ $guider-schedules-editable-color: #8fdf82;
 }
 
 .guider-schedules__month {
-  border-right: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
+  border-right: 1px solid $table-border-color;
+  border-bottom: 1px solid $table-border-color;
 
   &:first-child {
-    border-left: 1px solid #ddd;
+    border-left: 1px solid $table-border-color;
   }
 }
 
 .guider-schedules__readonly-window {
   position: absolute;
   background: $guider-schedule-read-only-window-color;
-  border: 1px dashed #ccc;
+  border: 1px dashed $guider-schedules-read-only-border-color;
 }
 
 .guider-schedules__schedules-outer {
@@ -65,7 +66,7 @@ $guider-schedules-editable-color: #8fdf82;
     margin-right: 5px;
 
     &:before {
-      content: '';
+      content: "";
       display: inline-block;
       height: 25px;
       margin-right: 5px;
@@ -78,7 +79,7 @@ $guider-schedules-editable-color: #8fdf82;
 .guider-schedules-swatch--readonly-window {
   &:before {
     background: $guider-schedule-read-only-window-color;
-    border: 1px dashed #ccc;
+    border: 1px dashed $guider-schedules-read-only-border-color;
   }
 }
 
