@@ -4,9 +4,15 @@ FactoryGirl.define do
     end_at { start_at + 1.hour }
     first_name { Faker::Name.first_name }
     last_name { Faker::Name.last_name }
-    phone '932009320'
+    email 'someone@example.com'
+    phone '0208 252 4758'
+    mobile '07715 930 444'
+    notes 'This customer is very nice.'
+    opt_out_of_market_research true
     memorable_word 'lozenge'
+    date_of_birth '1945-01-01'
     guider { build(:user) }
     where_did_you_hear_about_pension_wise 'Somewhere'
+    who_is_your_pension_provider 'Someone'
   end
 end
