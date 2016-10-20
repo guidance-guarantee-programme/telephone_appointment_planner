@@ -1,4 +1,5 @@
 <% start_year = 120.years.ago %>
+<% readonly = local_assigns[:readonly] || false %>
 
 <div class="form-dob" data-module="CustomerAge" data-output-id="js-customer-age">
   <%= field_with_errors_wrapper(form, :date_of_birth) do %>
@@ -16,7 +17,8 @@
           pattern: '[0-9]*',
           min: 1,
           max: 31,
-          'aria-describedby': 'dob-hint'
+          'aria-describedby': 'dob-hint',
+          readonly: readonly
         )
       %>
     </label>
@@ -32,7 +34,8 @@
           class: 'js-dob-month t-date-of-birth-month',
           pattern: '[0-9]*',
           min: 1,
-          max: 12
+          max: 12,
+          readonly: readonly
         )
       %>
     </label>
@@ -48,7 +51,8 @@
           class: 'js-dob-year t-date-of-birth-year',
           pattern: '[0-9]*',
           min: start_year.year,
-          max: Date.today.year
+          max: Date.today.year,
+          readonly: readonly
         )
       %>
     </label>
