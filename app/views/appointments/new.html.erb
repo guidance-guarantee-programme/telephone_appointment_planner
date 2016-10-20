@@ -25,7 +25,7 @@
       <%= f.email_field :email, class: 't-email' %>
       <%= f.telephone_field :phone, class: 't-phone', label: required_label(:phone) %>
       <%= f.telephone_field :mobile, class: 't-mobile' %>
-      <%= render 'shared/date_of_birth_form_field', form: f %>
+      <%= render 'shared/date_of_birth_form_field', form: f, readonly: true %>
     </div>
     <div class="col-md-6">
       <%= f.text_field :memorable_word, class: 't-memorable-word', placeholder: 'Pension Wise will use this each time the customer is called', label: required_label(:memorable_word) %>
