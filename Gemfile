@@ -7,6 +7,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-fullcalendar-scheduler'
   gem 'rails-assets-qTip2'
   gem 'rails-assets-bootstrap-daterangepicker'
+  gem 'rails-assets-pusher'
 end
 
 source 'https://rubygems.org' do
@@ -29,6 +30,7 @@ source 'https://rubygems.org' do
   gem 'select2-rails'
   gem 'working_hours'
   gem 'font-awesome-rails'
+  gem 'pusher'
 
   group :development, :test do
     gem 'pry-byebug'

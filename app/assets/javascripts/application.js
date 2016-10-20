@@ -25,4 +25,5 @@
 //= require calendars/holidays
 //= require select2
 //= require advanced-select
+//= require pusher
 //= require_tree .

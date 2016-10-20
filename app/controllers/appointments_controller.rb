@@ -1,3 +1,4 @@
+# rubocop:disable ClassLength
 class AppointmentsController < ApplicationController
   before_action :authorise_for_agents!, except: %i(index edit update)
   before_action :authorise_for_guiders!, only: %i(index edit update)
@@ -16,6 +17,7 @@ class AppointmentsController < ApplicationController
     @appointment = current_user.appointments.find(params[:id])
 
     if @appointment.update(edit_params)
+      send_notification
       redirect_to calendar_path
     else
       render :edit
@@ -53,6 +55,32 @@ class AppointmentsController < ApplicationController
   end
 
   private
+
+  def send_notification
+    return unless ENV['PUSHER_KEY'] && ENV['PUSHER_SECRET']
+
+    pusher_client = Pusher::Client.new(
+      app_id: '261213',
+      key: ENV['PUSHER_KEY'],
+      secret: ENV['PUSHER_SECRET'],
+      cluster: 'eu',
+      encrypted: true
+    )
+
+    pusher_client.trigger(
+      'telephone_appointment_planner',
+      "appointment_update_guider_#{@appointment.guider_id}",
+      [
+        {
+          event_id: @appointment.id,
+          updated: {
+            customer_name: [@appointment.first_name, ' ', @appointment.last_name].join,
+            start: @appointment.start_at
+          }
+        }
+      ]
+    )
+  end
 
   def date_range_params
     starts = params[:start].to_date.beginning_of_day
