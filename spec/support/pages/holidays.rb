@@ -1,6 +1,6 @@
 module Pages
   class Holidays < SitePrism::Page
-    set_url 'holidays'
+    set_url '/holidays'
     element(
       :permission_error_message,
       'h1',
@@ -8,15 +8,17 @@ module Pages
     )
 
     element :next_week, '.fc-next-button'
+    element :create_holiday, '.fc-createHoliday-button'
+    elements :delete_holidays, '.t-delete-holiday'
 
-    sections :appointments, '.fc-event' do
+    sections :events, '.fc-event' do
       element :title, '.fc-title'
       element :time, '.fc-time'
     end
 
-    def all_appointments
-      wait_for_appointments
-      appointments.map do |a|
+    def all_events
+      wait_for_events
+      events.map do |a|
         {
           title: a.title.text,
           time: a.time.text
