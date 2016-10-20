@@ -50,7 +50,23 @@
   display:inline-block;
 }
 
-.guider__action-panel {
+.guiders-appointments-calendar {
+  .fc-resource-cell {
+    height: 150px;
+    white-space: nowrap;
+  }
+
+  th {
+    border-width: 0;
+    overflow: hidden;
+  }
+
+  .fc-resource-cell > div {
+    transform: translateY(120px) rotate(-90deg);
+  }
+}
+
+.action-panel {
   background: #ddd;
   border-top: 1px solid #000;
   bottom: 0;
@@ -62,6 +78,7 @@
   position: fixed;
   text-align: center;
   width: 100%;
+  z-index: 1;
 }
 
 .appointment-availability-calendar {
