@@ -73,18 +73,17 @@
             <span class="sr-only">Edit Schedule (Disabled)</span>
           </span>
         <% end %>
-        <div class="inline-button-to-container">
-          <%= button_to(
-              user_schedule_path(@guider, schedule),
-              method: :delete,
-              title: 'Delete Schedule',
-              class: 'btn btn-danger t-delete',
-              disabled: !schedule.modifiable?,
-              data: { confirm: "Are you sure you want to delete the schedule \"#{schedule.title}\"?" }
-            ) do %>
-            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span><span class="sr-only">Delete Schedule</span>
-          <% end %>
-        </div>
+        <%= button_to(
+            user_schedule_path(@guider, schedule),
+            method: :delete,
+            form_class: 'inline-block',
+            title: 'Delete Schedule',
+            class: 'btn btn-danger t-delete',
+            disabled: !schedule.modifiable?,
+            data: { confirm: "Are you sure you want to delete the schedule \"#{schedule.title}\"?" }
+          ) do %>
+          <span class="glyphicon glyphicon-remove" aria-hidden="true"></span><span class="sr-only">Delete Schedule</span>
+        <% end %>
       </td>
     </tr>
   <% end %>

@@ -15,6 +15,12 @@ begin
 rescue LoadError
 end
 
+begin
+  require 'scss_lint/rake_task'
+  SCSSLint::RakeTask.new(:default)
+rescue LoadError
+end
+
 default_tasks << :'js:lint'
 
 task default: default_tasks

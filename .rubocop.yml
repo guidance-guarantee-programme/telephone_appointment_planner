@@ -18,6 +18,10 @@ Metrics/LineLength:
 Rails:
   Enabled: true
 
+Style/FileName:
+  Exclude:
+    - bin/scss-lint
+
 Style/FrozenStringLiteralComment:
   Enabled: false
 
