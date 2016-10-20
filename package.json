@@ -1,7 +1,6 @@
 {
   "name": "telephone_appointment_planner",
   "dependencies": {
-    "bower": "*"
   },
   "devDependencies": {
     "babel-core": "^6.7.0",
@@ -10,7 +9,6 @@
     "eslint": "^1.10.3"
   },
   "scripts": {
-    "postinstall": "./node_modules/bower/bin/bower install",
     "js": "npm run eslint",
     "eslint": "eslint app/assets/javascripts/**/*.es6"
   }

@@ -16,6 +16,5 @@
 # Ignore Byebug command history file.
 .byebug_history
 
-# Node / Bower
-vendor/assets/bower_components
+# Node
 node_modules
