@@ -7,6 +7,7 @@ class AppointmentSerializer < ActiveModel::Serializer
   attribute :memorable_word
   attribute :phone
   attribute :url
+  attribute :status
 
   def title
     "#{object.first_name} #{object.last_name}"
