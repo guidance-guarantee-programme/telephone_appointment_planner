@@ -5,6 +5,15 @@ require 'gds-sso/lint/user_spec'
 RSpec.describe User, type: :model do
   it_behaves_like 'a gds-sso user class'
 
+  describe '.guiders' do
+    it 'filters users by the guider permission' do
+      create(:guider)
+      create(:resource_manager)
+
+      expect(described_class.guiders.all?(&:guider?)).to be_truthy
+    end
+  end
+
   describe '#guider?' do
     context 'normal user' do
       it 'is false' do
