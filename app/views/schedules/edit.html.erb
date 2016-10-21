@@ -1,12 +1,12 @@
 <div class="page-header">
   <ol class="breadcrumb">
     <li><a href="<%= root_path %>">Home</a></li>
-    <li><a href="<%= users_path %>">Manage Guiders</a></li>
-    <li><a href="<%= edit_user_path(@guider) %>">Edit User &quot;<%=@guider.name %>&quot;</a></li>
-    <li class="active">Edit Schedule</li>
+    <li><a href="<%= users_path %>">Manage guiders</a></li>
+    <li><a href="<%= edit_user_path(@guider) %>">Manage schedules for <%=@guider.name %></a></li>
+    <li class="active">Edit schedule <%=@schedule.title %> for <%=@guider.name %></li>
   </ol>
 
-  <h1>Edit User "<%=@guider.name %>" schedule "<%=@schedule.title %>"</h1>
+  <h1>Edit schedule <%=@schedule.title %> for <%=@guider.name %></h1>
 </div>
 
 <%= render "form" %>

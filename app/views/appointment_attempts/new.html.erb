@@ -1,4 +1,11 @@
-<h1>Book an appointment</h1>
+<div class="page-header">
+  <ol class="breadcrumb">
+    <li><a href="<%= root_path %>">Home</a></li>
+    <li class="active">Book an appointment</li>
+  </ol>
+
+  <h1>Book an appointment - Step 1</h1>
+</div>
 <%= render 'shared/required_fields_note' %>
 
 <%= form_for @appointment_attempt, layout: :basic do |f| %>
