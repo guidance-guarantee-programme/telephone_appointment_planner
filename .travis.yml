@@ -1,7 +1,10 @@
 sudo: false
 language: ruby
+addons:
+  postgresql: '9.4'
 services:
 - redis-server
+- postgresql
 cache:
   bundler: true
   directories:
