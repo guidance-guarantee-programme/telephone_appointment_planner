@@ -96,11 +96,11 @@ ActiveRecord::Schema.define(version: 20161021120409) do
     t.string   "uid"
     t.string   "organisation_slug"
     t.string   "organisation_content_id"
-    t.string   "permissions"
     t.boolean  "remotely_signed_out",     default: false
     t.boolean  "disabled",                default: false
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
+    t.jsonb    "permissions",             default: "[]",  null: false
   end
 
 end
