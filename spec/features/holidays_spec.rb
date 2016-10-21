@@ -10,7 +10,7 @@ RSpec.feature 'Holidays' do
     end
 
     let(:today) { BusinessDays.from_now(0).change(hour: 9, min: 0) }
-    let(:next_week) { BusinessDays.from_now(6).change(hour: 9, min: 0) }
+    let(:next_week) { BusinessDays.from_now(5).change(hour: 9, min: 0) }
 
     scenario 'displays all holidays', js: true do
       given_the_user_is_a_resource_manager do
