@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
-  before_action :authorise_for_managing_resources!
+  before_action do
+    authorise_user!(User::RESOURCE_MANAGER_PERMISSION)
+  end
 
   def index
     @guiders = User.guiders
@@ -13,11 +15,5 @@ class UsersController < ApplicationController
         .with_end_at
         .by_start_at
     )
-  end
-
-  private
-
-  def authorise_for_managing_resources!
-    authorise_user!(User::RESOURCE_MANAGER_PERMISSION)
   end
 end
