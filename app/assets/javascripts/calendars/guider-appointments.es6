@@ -21,6 +21,10 @@
                 ${event.title} | Phone: ${event.phone} | Memorable word: ${event.memorable_word}
                 `);
           }
+
+          if (event.status.indexOf('cancelled') > -1) {
+            element.addClass('cancelled');
+          }
         }
       }, config);
 

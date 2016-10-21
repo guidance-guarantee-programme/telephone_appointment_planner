@@ -23,3 +23,10 @@ $calendar-today-background: $color-white;
 .fc-view-container.error {
   border: 1px solid $state-danger-text;
 }
+
+.fc-event {
+  &.cancelled {
+    background: $brand-danger;
+    opacity: .8;
+  }
+}
