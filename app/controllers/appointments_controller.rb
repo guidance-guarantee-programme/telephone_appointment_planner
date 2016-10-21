@@ -79,7 +79,8 @@ class AppointmentsController < ApplicationController
       :notes,
       :opt_out_of_market_research,
       :where_did_you_hear_about_pension_wise,
-      :who_is_your_pension_provider
+      :who_is_your_pension_provider,
+      :status
     )
   end
 

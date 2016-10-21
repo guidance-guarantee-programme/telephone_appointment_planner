@@ -1,4 +1,14 @@
 class Appointment < ApplicationRecord
+  enum status: %i(
+    pending
+    completed
+    no_show
+    ineligible_age
+    ineligible_pension_type
+    cancelled_by_customer
+    cancelled_by_pension_wise
+  )
+
   belongs_to :guider, class_name: 'User'
 
   validates :start_at, presence: true
@@ -8,6 +18,7 @@ class Appointment < ApplicationRecord
   validates :phone, presence: true
   validates :memorable_word, presence: true
   validates :where_did_you_hear_about_pension_wise, presence: true
+  validates :status, presence: true
 
   validate :not_within_two_business_days
   validate :not_more_than_thirty_business_days_in_future

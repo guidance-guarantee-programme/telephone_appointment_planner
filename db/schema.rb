@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161017130509) do
+ActiveRecord::Schema.define(version: 20161021120409) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 20161017130509) do
     t.string   "where_did_you_hear_about_pension_wise", default: "",    null: false
     t.string   "who_is_your_pension_provider",          default: "",    null: false
     t.date     "date_of_birth"
+    t.integer  "status",                                default: 0,     null: false
   end
 
   create_table "bookable_slots", force: :cascade do |t|

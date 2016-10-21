@@ -54,5 +54,14 @@
         }
       )
     %>
+
+    <%=
+      f.select(
+        :status,
+        friendly_options(Appointment.statuses),
+        options = {},
+        { class: 't-status' }
+      ) if defined?(edit) && edit
+    %>
   </div>
 </div>
