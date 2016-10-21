@@ -10,9 +10,32 @@
         columnFormat: 'ddd D/M',
         slotDuration: '00:30:00',
         eventBorderColor: '#000',
-        events: '/holidays',
+        events: el.data('holidays-path'),
         header: {
-          'right': 'agendaWeek agendaThreeDay agendaDay today prev,next'
+          center: 'title',
+          right: 'createHoliday month,agendaWeek,agendaDay today prev,next'
+        },
+        customButtons: {
+          createHoliday: {
+            text: 'Create holiday',
+            click: () => {
+              window.location = this.$el.data('new-holiday-path');
+            }
+          }
+        },
+        eventRender: (event, element) => {
+          var $button = element.append('<button class="close t-delete-holiday"><span aria-hidden="true">X</span><span class="sr-only">Remove slot</span></button>');
+          $button.on('click', () => {
+            $.ajax({
+                type: "POST",
+                url: this.$el.data('holidays-path') + '/?holiday_ids=' + event.holiday_ids,
+                dataType: "json",
+                data: {"_method":"delete"},
+                complete: () => {
+                  this.$el.fullCalendar('removeEvents', event._id);
+                }
+            });
+          });
         },
         views: {
           agendaThreeDay: {
