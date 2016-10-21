@@ -11,7 +11,7 @@
   <% end %>
   <% if current_user.agent? %>
     <%= active_link_to 'Book appointment', new_appointment_attempt_path, wrap_tag: :li %>
-    <%= active_link_to 'Calendar', calendar_path, wrap_tag: :li %>
+    <%= active_link_to 'My appointments', calendar_path, wrap_tag: :li %>
   <% end %>
 <% end %>
 
