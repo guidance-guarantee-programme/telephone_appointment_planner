@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   include GDS::SSO::User
-  serialize :permissions, Array
+
   RESOURCE_MANAGER_PERMISSION = 'resource_manager'.freeze
   GUIDER_PERMISSION = 'guider'.freeze
   AGENT_PERMISSION = 'agent'.freeze
@@ -15,12 +15,7 @@ class User < ApplicationRecord
   has_many :group_assignments
   has_many :groups, through: :group_assignments
 
-  def self.guiders
-    # This can't really be made faster because we're storing
-    # permissions as a serialized string. We only really should have a maximum of
-    # 50 (guiders) + 3 (resource managers) in the database though.
-    select(&:guider?)
-  end
+  scope :guiders, -> { where('permissions @> ?', %(["#{GUIDER_PERMISSION}"])) }
 
   def guider?
     has_permission?(GUIDER_PERMISSION)
