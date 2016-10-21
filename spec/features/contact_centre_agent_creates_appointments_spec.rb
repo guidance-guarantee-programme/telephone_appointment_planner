@@ -78,6 +78,7 @@ RSpec.feature 'Agent creates appointments' do
     expect(appointment.where_did_you_hear_about_pension_wise).to eq 'Radio advert'
     expect(appointment.who_is_your_pension_provider).to eq 'Scottish Widows'
     expect(appointment.start_at).to eq day.change(hour: 9, min: 30).to_s
+    expect(appointment.status).to eq 'pending'
     expect(appointment.end_at).to eq day.change(hour: 10, min: 40).to_s
   end
 

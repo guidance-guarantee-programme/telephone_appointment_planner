@@ -6,6 +6,10 @@ RSpec.describe Appointment, type: :model do
       build_stubbed(:appointment)
     end
 
+    it 'defaults #status to `pending`' do
+      expect(described_class.new).to be_pending
+    end
+
     it 'is valid with valid parameters' do
       expect(subject).to be_valid
     end

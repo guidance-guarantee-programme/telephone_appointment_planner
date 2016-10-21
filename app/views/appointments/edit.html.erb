@@ -10,7 +10,7 @@
 
 <%= render 'shared/required_fields_note' %>
 <%= form_for @appointment, layout: :basic do |f| %>
-  <%= render partial: 'personal_details_form', locals: { f: f } %>
+  <%= render partial: 'personal_details_form', locals: { f: f, edit: true } %>
   <div class="row form-group">
     <div class="col-md-12">
       <%= f.submit "Update appointment", class: 't-save' %>

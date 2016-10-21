@@ -53,6 +53,10 @@ module AppointmentHelper
     )
   end
 
+  def friendly_options(statuses)
+    statuses.map { |k, _| [k.titleize, k] }.to_h
+  end
+
   private
 
   def select_options(current_value, options)
