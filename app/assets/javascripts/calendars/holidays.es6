@@ -6,7 +6,6 @@
     constructor(el, config = {}) {
       const calendarConfig = $.extend(true, {
         defaultView: 'agendaWeek',
-        weekends: false,
         columnFormat: 'ddd D/M',
         slotDuration: '00:30:00',
         eventBorderColor: '#000',
