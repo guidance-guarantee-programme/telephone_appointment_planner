@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   end
 
   def index
-    @guiders = User.guiders
+    @guiders = User.includes(:groups).guiders
     @groups = Group.all
   end
 
