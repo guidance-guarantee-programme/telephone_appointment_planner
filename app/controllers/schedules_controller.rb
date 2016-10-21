@@ -1,5 +1,7 @@
 class SchedulesController < ApplicationController
-  before_action :authorise_for_managing_resources!
+  before_action do
+    authorise_user!(User::RESOURCE_MANAGER_PERMISSION)
+  end
   before_action :load_current_guider
   before_action :load_current_schedule, only: [:edit, :update]
 
@@ -64,9 +66,5 @@ class SchedulesController < ApplicationController
     )
     pr[:slots_attributes] = JSON.parse(pr.delete(:slots))
     pr
-  end
-
-  def authorise_for_managing_resources!
-    authorise_user!(User::RESOURCE_MANAGER_PERMISSION)
   end
 end
