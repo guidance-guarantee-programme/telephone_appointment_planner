@@ -9,15 +9,17 @@ RSpec.feature 'Holidays' do
       ]
     end
 
-    let(:today) { BusinessDays.from_now(0).change(hour: 9, min: 0) }
+    let(:today) { Time.zone.parse('2016-10-18 09:00') }
     let(:next_week) { BusinessDays.from_now(5).change(hour: 9, min: 0) }
 
     scenario 'displays all holidays', js: true do
       given_the_user_is_a_resource_manager do
-        and_there_are_some_holidays
-        when_they_view_holidays
-        then_they_can_see_the_holidays_for_this_week
-        and_they_can_see_the_holidays_for_next_week
+        travel_to today do
+          and_there_are_some_holidays
+          when_they_view_holidays
+          then_they_can_see_the_holidays_for_this_week
+          and_they_can_see_the_holidays_for_next_week
+        end
       end
     end
 
