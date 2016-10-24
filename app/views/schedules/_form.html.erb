@@ -15,18 +15,20 @@
   <div class="form-group">
     <%= f.label :start_at, 'From', class: 'col-sm-1 control-label' %>
     <div class="col-sm-2">
-      <%= f.text_field :start_at, value: @schedule.start_at.try(:strftime, '%-e %b %Y'), class: 'daterange form-control t-start-at' %>
-      <script>
-      $(function() {
-        $('.daterange').daterangepicker({
-          singleDatePicker: true,
-          showDropdowns: true,
-          locale: {
-            format: 'D MMM YYYY'
-          }
-        });
-      });
-      </script>
+      <%=
+        f.text_field(
+          :start_at,
+          value: @schedule.start_at.try(:strftime, '%-e %b %Y'),
+          data: {
+            module: 'DateRangePicker',
+            config: {
+              singleDatePicker: true,
+              showDropdowns: true
+            }
+          },
+          class: 'form-control t-start-at'
+        )
+      %>
     </div>
     <div class="col-sm-9 text-right">
       <label aria-hidden="true">Add common slots:</label>

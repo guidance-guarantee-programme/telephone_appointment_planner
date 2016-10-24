@@ -7,6 +7,8 @@ class Calendar {
     const defaultConfig = {
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
       weekends: false,
+      timeFormat: 'H:mm',
+      slotLabelFormat: 'H:mm',
       maxTime: '19:00:00',
       minTime: '08:30:00',
       height: 'auto',

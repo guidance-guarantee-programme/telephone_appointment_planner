@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.feature 'Resouce manager manages holidays' do
+RSpec.feature 'Resource manager manages holidays' do
   let(:users) do
     [
       create(:guider, name: 'First Guider'),
@@ -100,7 +100,7 @@ RSpec.feature 'Resouce manager manages holidays' do
       },
       {
         title: 'Merged Holiday - First Guider, Second Guider',
-        time: '1:00 - 2:00'
+        time: '13:00 - 14:00'
       }
     ]
   end
@@ -110,11 +110,11 @@ RSpec.feature 'Resouce manager manages holidays' do
     expect(@page.all_events).to eq [
       {
         title: 'Christmas',
-        time: '9:00 - 11:59'
+        time: '9:00 - 23:59'
       },
       {
         title: 'Second user holiday - Second Guider',
-        time: '9:00 - 2:00'
+        time: '9:00 - 14:00'
       }
     ]
   end
@@ -145,7 +145,7 @@ RSpec.feature 'Resouce manager manages holidays' do
     expect(@page.all_events).to eq [
       {
         title: "Holiday Title - #{@guider.name}",
-        time: '2:00 - 4:00'
+        time: '14:00 - 16:00'
       }
     ]
   end

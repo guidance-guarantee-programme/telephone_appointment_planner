@@ -31,7 +31,7 @@ RSpec.describe CreateHolidays do
     end
 
     let(:range) do
-      '20/10/2016 08:00 AM - 20/10/2016 01:00 PM'
+      '20/10/2016 08:00 - 20/10/2016 13:00'
     end
 
     let(:results) do
