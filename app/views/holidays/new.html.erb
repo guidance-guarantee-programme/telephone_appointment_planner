@@ -10,7 +10,6 @@
 
 <%= form_for @holiday, layout: :basic do |f| %>
   <%= f.text_field :title, class: 't-title' %>
-  <% date_range = "#{@holiday.try(:start_at)} - #{@holiday.try(:end_at)}", 't-date-range' %>
   <%=
     f.text_field(
       :date_range,
@@ -20,9 +19,6 @@
         config: {
           timePicker: true,
           timePickerIncrement: 5,
-          dateLimit: {
-            days: 1
-          },
           locale: {
             format: 'DD/MM/YYYY HH:mm'
           }
