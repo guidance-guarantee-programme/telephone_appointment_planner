@@ -33,17 +33,6 @@ RSpec.feature 'Resource manager manages holidays' do
     end
   end
 
-  scenario 'Deletes a holiday', js: true do
-    given_the_user_is_a_resource_manager do
-      travel_to today do
-        and_there_is_a_holiday
-        when_they_view_holidays
-        and_they_delete_a_holiday
-        then_the_holiday_is_deleted
-      end
-    end
-  end
-
   # rubocop:disable Metrics/AbcSize
   # rubocop:disable Metrics/MethodLength
   def and_there_are_some_holidays
@@ -148,15 +137,5 @@ RSpec.feature 'Resource manager manages holidays' do
         time: '14:00 - 16:00'
       }
     ]
-  end
-
-  def and_they_delete_a_holiday
-    @page.wait_until_delete_holidays_visible
-    @page.delete_holidays.first.click
-  end
-
-  def then_the_holiday_is_deleted
-    @page.wait_until_events_invisible
-    expect(Holiday.count).to be_zero
   end
 end
