@@ -6,6 +6,7 @@ if Rails.env.development?
       .destroy_all
   end
 
+  puts 'Adding guiders...'
   1.upto(15) do |n|
     guider = FactoryGirl.create(:guider, name: "early shift #{n}")
     schedule = FactoryGirl.build(:schedule, :with_early_shift, start_at: Time.zone.now, user: guider)
@@ -24,9 +25,10 @@ if Rails.env.development?
     schedule.save!(validate: false)
   end
 
+  puts 'Generating holidays...'
   fake_holiday_title = Faker::Book.title
   User.guiders.each do |guider|
-    date = Faker::Date.between(Date.today, 1.month.from_now)
+    date = Faker::Date.between(Time.zone.today, 1.month.from_now)
     Holiday.create!(
       user: guider,
       title: fake_holiday_title,
@@ -35,10 +37,13 @@ if Rails.env.development?
     )
   end
 
+  puts 'Generating bank holidays...'
   GenerateBankHolidaysJob.new.perform_now
 
+  puts 'Generating bookable slots...'
   BookableSlot.generate_for_six_weeks
 
+  puts 'Making first user superuser...'
   User.first.tap do |user|
     user.permissions << User::RESOURCE_MANAGER_PERMISSION
     user.permissions << User::AGENT_PERMISSION

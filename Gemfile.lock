@@ -65,6 +65,8 @@ GEM
       sass (>= 3.3.0)
     bugsnag (5.0.1)
     builder (3.2.2)
+    bulk_insert (1.2.1)
+      activerecord (>= 4.1.0)
     byebug (9.0.6)
     capybara (2.10.1)
       addressable
@@ -323,6 +325,7 @@ DEPENDENCIES
   bh!
   bootstrap-daterangepicker-rails!
   bugsnag!
+  bulk_insert!
   capybara!
   chronic!
   database_cleaner!

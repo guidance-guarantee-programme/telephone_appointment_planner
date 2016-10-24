@@ -28,6 +28,7 @@ source 'https://rubygems.org' do
   gem 'sinatra', require: false
   gem 'select2-rails'
   gem 'working_hours'
+  gem 'bulk_insert'
 
   group :development, :test do
     gem 'pry-byebug'
