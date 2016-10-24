@@ -11,7 +11,6 @@
         eventBorderColor: '#000',
         events: el.data('holidays-path'),
         header: {
-          center: 'title',
           right: 'createHoliday month,agendaWeek,agendaDay today prev,next'
         },
         customButtons: {
