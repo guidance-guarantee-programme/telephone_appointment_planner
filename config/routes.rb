@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   root 'home#index'
 
+  resources :guiders, only: :index
   resources :users do
     resources :schedules
   end
@@ -21,6 +22,7 @@ Rails.application.routes.draw do
     get '/search', on: :collection, action: :search
     get :reschedule
   end
+  resource :resource_calendar, only: :show
   resources :holidays, only: %i(index new create) do
     delete '/', on: :collection, action: :destroy
   end

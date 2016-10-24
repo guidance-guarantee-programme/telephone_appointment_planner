@@ -1,0 +1,15 @@
+<div class="page-header">
+  <ol class="breadcrumb">
+    <li><a href="<%= root_path %>">Home</a></li>
+    <li class="active">Appointments</li>
+  </ol>
+
+  <h1>Appointments</h1>
+</div>
+
+<div
+  class="guiders-appointments-calendar"
+  data-config='{"editable": true, "eventDurationEditable": true, "slotDuration": "00:10:00"}'
+  data-module="GuidersAppointmentsCalendar"
+  data-default-date="<%= Time.zone.now %>">
+</div>
