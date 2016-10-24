@@ -28,6 +28,7 @@ source 'https://rubygems.org' do
   gem 'sinatra', require: false
   gem 'select2-rails'
   gem 'working_hours'
+  gem 'font-awesome-rails'
 
   group :development, :test do
     gem 'pry-byebug'

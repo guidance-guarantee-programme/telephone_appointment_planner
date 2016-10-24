@@ -7,9 +7,17 @@
   <h1>Holidays</h1>
 </div>
 
+<div class="row">
+  <div class="col-xs-12">
+    <%= link_to new_holiday_path, class: 'btn btn-primary' do %>
+    <span class="fa fa-calendar-times-o t-create-holiday" aria-hidden="true"></span> Add Holiday
+  <% end %>
+  </div>
+</div>
 <div
-   data-module="HolidaysCalendar"
-   data-holidays-path="<%= holidays_path %>"
-   data-new-holiday-path="<%= new_holiday_path %>"
-   data-default-date="<%= Time.zone.now %>"
+  class="holiday-calendar"
+  data-module="HolidaysCalendar"
+  data-holidays-path="<%= holidays_path %>"
+  data-new-holiday-path="<%= new_holiday_path %>"
+  data-default-date="<%= Time.zone.now %>"
  ></div>
