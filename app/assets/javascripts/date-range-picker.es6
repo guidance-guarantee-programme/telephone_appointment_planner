@@ -5,6 +5,7 @@
     constructor(el, config = {}) {
       this.$el = el;
       const defaultConfig = {
+        timePicker24Hour: true,
         locale: {
           format: 'D MMM YYYY'
         }

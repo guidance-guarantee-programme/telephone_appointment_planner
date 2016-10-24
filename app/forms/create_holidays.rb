@@ -6,7 +6,7 @@ class CreateHolidays
   attr_reader :date_range
   attr_reader :users
 
-  DATE_RANGE_PICKER_FORMAT = '%e/%m/%Y %l:%M %p'.freeze
+  DATE_RANGE_PICKER_FORMAT = '%e/%m/%Y %H:%M'.freeze
 
   validates :title, presence: true
   validates :date_range, presence: true
