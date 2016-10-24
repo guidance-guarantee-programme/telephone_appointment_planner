@@ -2,84 +2,51 @@ require 'rails_helper'
 
 RSpec.describe Schedule, type: :model do
   describe 'validation' do
-    context '#start_at' do
-      it 'is unique per user' do
-        same_time = Time.zone.now
-        same_user = create(:guider)
-        create(
-          :schedule,
-          user: same_user,
-          start_at: same_time
-        )
-
-        schedule = build(
-          :schedule,
-          user: same_user,
-          start_at: same_time
-        )
-        expect(schedule).to_not be_valid
-
-        schedule.user = create(:guider)
-        expect(schedule).to be_valid
+    context 'with valid attributes' do
+      it 'is valid' do
+        expect(build(:schedule)).to be_valid
       end
+    end
 
-      context 'first schedule' do
-        let(:user) do
-          create(:user)
-        end
+    it 'validates presence of start_at' do
+      expect(build(:schedule, start_at: nil)).to_not be_valid
+    end
 
-        def build_schedule(start_at)
-          build_stubbed(:schedule, user: user, start_at: start_at)
-        end
+    it 'has unique start_at, per user' do
+      same_time = Time.zone.now
+      same_user = create(:guider)
+      create(
+        :schedule,
+        user: same_user,
+        start_at: same_time
+      )
 
-        it 'can have any start_at date' do
-          expect(build_schedule(Time.zone.now)).to be_valid
-        end
+      schedule = build(
+        :schedule,
+        user: same_user,
+        start_at: same_time
+      )
+      expect(schedule).to_not be_valid
 
-        it 'is not nil' do
-          expect(build_schedule(nil)).to_not be_valid
-        end
-      end
-
-      context 'not first schedule' do
-        let(:user) do
-          user = create(:user)
-          user.schedules << build(:schedule)
-          user.reload
-          user
-        end
-
-        def build_schedule(start_at)
-          build_stubbed(:schedule, user: user, start_at: start_at)
-        end
-
-        it 'is valid with valid attributes' do
-          expect(build_schedule(6.weeks.from_now.beginning_of_day)).to be_valid
-        end
-
-        it 'is not nil' do
-          expect(build_schedule(nil)).to_not be_valid
-        end
-
-        it 'is a minimum of six weeks in the future' do
-          expect(build_schedule(1.day.ago.beginning_of_day)).to_not be_valid
-          expect(build_schedule(5.weeks.from_now.beginning_of_day)).to_not be_valid
-        end
-      end
+      schedule.user = create(:guider)
+      expect(schedule).to be_valid
     end
   end
 
   describe '#modifiable?' do
-    context 'schedule starts less than six weeks from now' do
+    context 'schedule has ended' do
       it 'is false' do
-        schedule = build_stubbed(:schedule, start_at: 5.weeks.from_now)
+        user = create(:user)
+        create(:schedule, user: user, start_at: 5.days.ago)
+        create(:schedule, user: user, start_at: 3.days.ago)
+        schedule = Schedule.with_end_at.first
         expect(schedule).to_not be_modifiable
       end
     end
 
-    context 'schedule starts more than six weeks from now' do
+    context 'schedule has not ended' do
       it 'is true' do
-        schedule = build_stubbed(:schedule, start_at: 7.weeks.from_now)
+        schedule = build_stubbed(:schedule, start_at: 1.day.from_now)
         expect(schedule).to be_modifiable
       end
     end

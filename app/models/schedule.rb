@@ -6,7 +6,6 @@ class Schedule < ApplicationRecord
 
   validates :start_at, presence: true
   validates :start_at, uniqueness: { scope: :user_id }
-  validate :start_at_must_be_more_than_six_weeks_in_the_future, unless: :first_schedule?
 
   def self.active(day)
     order(:start_at)
@@ -28,7 +27,8 @@ class Schedule < ApplicationRecord
   end
 
   def modifiable?
-    start_at > 6.weeks.from_now
+    return true unless end_at
+    end_at > Time.zone.now.end_of_day
   end
 
   private
@@ -37,11 +37,5 @@ class Schedule < ApplicationRecord
     user
       .schedules
       .none?(&:persisted?)
-  end
-
-  def start_at_must_be_more_than_six_weeks_in_the_future
-    maximum_age = 6.weeks.from_now.beginning_of_day
-    older_than_six_weeks = start_at && start_at >= maximum_age
-    errors.add(:start_at, 'must be more than six weeks from now') unless older_than_six_weeks
   end
 end

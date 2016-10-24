@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :schedule do
     user { build(:user) }
-    start_at 6.weeks.from_now
+    start_at { Time.zone.now.beginning_of_day }
 
     days = 1.upto(6)
 
