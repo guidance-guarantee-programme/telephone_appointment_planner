@@ -1,6 +1,6 @@
 module Pages
   class NewHoliday < SitePrism::Page
-    set_url 'holidays/new'
+    set_url '/holidays/new'
 
     element :title, '.t-title'
     element :date_range, '.t-date-range'

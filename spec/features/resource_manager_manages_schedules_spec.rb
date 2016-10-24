@@ -39,19 +39,12 @@ RSpec.feature 'Resource manager manages schedules' do
     end
   end
 
-  scenario 'Fails to delete a schedule' do
-    given_the_user_is_a_resource_manager do
-      and_there_is_a_guider
-      and_the_guider_has_a_schedule_that_can_not_be_modified
-      then_they_cant_delete_the_schedule
-    end
-  end
-
-  scenario 'Fails to edit a schedule' do
+  scenario 'Fails to modify an old schedule' do
     given_the_user_is_a_resource_manager do
       and_there_is_a_guider
       and_the_guider_has_a_schedule_that_can_not_be_modified
       then_they_cant_edit_the_schedule
+      and_they_cant_delete_the_schedule
     end
   end
 
@@ -66,10 +59,8 @@ RSpec.feature 'Resource manager manages schedules' do
   end
 
   def and_the_guider_has_a_schedule_that_can_not_be_modified
-    @schedule = @guider.schedules.create!(
-      start_at: 7.weeks.from_now
-    )
-    @schedule.update_attribute(:start_at, 1.week.from_now)
+    @schedule = @guider.schedules.create!(start_at: 5.days.ago)
+    @guider.schedules.create!(start_at: 3.days.ago)
   end
 
   def click_on_day_and_time(day, time)
@@ -179,22 +170,22 @@ RSpec.feature 'Resource manager manages schedules' do
   def and_they_delete_the_schedule
     @page = Pages::EditUser.new
     @page.load(id: @guider.id)
-    @page.delete.click
+    @page.schedules.first.delete.click
   end
 
   def and_the_schedule_is_deleted
     expect(@guider.reload.schedules).to be_empty
   end
 
-  def then_they_cant_delete_the_schedule
-    @page = Pages::EditUser.new
-    @page.load(id: @guider.id)
-    expect(@page.delete).to be_disabled
-  end
-
   def then_they_cant_edit_the_schedule
     @page = Pages::EditUser.new
     @page.load(id: @guider.id)
-    expect(@page).to_not have_edit
+    expect(@page.schedules.first).to have_no_edit
+  end
+
+  def and_they_cant_delete_the_schedule
+    @page = Pages::EditUser.new
+    @page.load(id: @guider.id)
+    expect(@page.schedules.first.delete).to be_disabled
   end
 end

@@ -49,7 +49,7 @@
   </thead>
   <tbody>
   <% @schedules.each do |schedule| %>
-    <tr data-schedule-start="<%= schedule.start_at %>" data-schedule-end="<%= schedule.end_at %>">
+    <tr class='t-schedule' data-schedule-start="<%= schedule.start_at %>" data-schedule-end="<%= schedule.end_at %>">
       <td>
         <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> <%= schedule.title %>
         <% unless schedule.modifiable? %>
