@@ -1,0 +1,35 @@
+<h1>Create a holiday</h1>
+<%= form_for @holiday, layout: :basic do |f| %>
+  <%= f.text_field :title, class: 't-title' %>
+  <% date_range = "#{@holiday.try(:start_at)} - #{@holiday.try(:end_at)}", 't-date-range' %>
+  <%=
+    f.text_field(
+      :date_range,
+      class: 't-date-range',
+      data: {
+        module: 'DateRangePicker',
+        config: {
+          timePicker: true,
+          timePickerIncrement: 5,
+          dateLimit: {
+            days: 1
+          },
+          locale: {
+            format: 'DD/MM/YYYY h:mm A'
+          }
+        }
+      }
+    )
+  %>
+  <%=
+    f.select(
+      :users,
+      grouped_options_for_select(guider_options),
+      {},
+      multiple: 'multiple',
+      class: 't-users',
+      data: { module: 'AdvancedSelect' },
+    )
+  %>
+  <%= f.submit 'Save', class: 't-save' %>
+<% end %>

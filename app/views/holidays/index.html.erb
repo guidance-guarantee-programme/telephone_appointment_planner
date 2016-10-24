@@ -7,4 +7,9 @@
   <h1>Holidays</h1>
 </div>
 
-<div data-module="HolidaysCalendar" data-default-date="<%= Time.zone.now %>"></div>
+<div
+   data-module="HolidaysCalendar"
+   data-holidays-path="<%= holidays_path %>"
+   data-new-holiday-path="<%= new_holiday_path %>"
+   data-default-date="<%= Time.zone.now %>"
+ ></div>

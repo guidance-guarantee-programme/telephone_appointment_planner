@@ -11,4 +11,41 @@ class HolidaysController < ApplicationController
       end
     end
   end
+
+  def new
+    @holiday = CreateHolidays.new
+  end
+
+  def create
+    @holiday = CreateHolidays.new(
+      create_params[:title],
+      create_params[:date_range],
+      user_ids
+    )
+
+    if @holiday.call
+      redirect_to holidays_path, success: 'Holiday has been created.'
+    else
+      render :new
+    end
+  end
+
+  def destroy
+    holiday_ids = params[:holiday_ids].split(',')
+    Holiday
+      .where(id: holiday_ids)
+      .destroy_all
+  end
+
+  private
+
+  def create_params
+    params
+      .require(:holiday)
+      .permit(:title, :date_range)
+  end
+
+  def user_ids
+    params[:holiday][:users] || []
+  end
 end

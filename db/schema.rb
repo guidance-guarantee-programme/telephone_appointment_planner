@@ -101,6 +101,7 @@ ActiveRecord::Schema.define(version: 20161021120409) do
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
     t.jsonb    "permissions",             default: "[]",  null: false
+    t.index ["permissions"], name: "index_users_on_permissions", using: :gin
   end
 
 end
