@@ -13,6 +13,7 @@ class Calendar {
       minTime: '08:30:00',
       height: 'auto',
       allDaySlot: false,
+      firstDay: 1,
       defaultDate: moment(el.data('default-date'))
     };
 
