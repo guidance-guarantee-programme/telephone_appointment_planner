@@ -8,7 +8,7 @@ module Pages
     )
 
     element :next_week, '.fc-next-button'
-    element :create_holiday, '.fc-createHoliday-button'
+    element :create_holiday, '.t-create-holiday'
     elements :delete_holidays, '.t-delete-holiday'
 
     sections :events, '.fc-event' do

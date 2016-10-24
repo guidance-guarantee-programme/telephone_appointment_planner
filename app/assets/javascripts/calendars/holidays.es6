@@ -11,23 +11,15 @@
         eventBorderColor: '#000',
         events: el.data('holidays-path'),
         header: {
-          center: 'title',
-          right: 'createHoliday month,agendaWeek,agendaDay today prev,next'
-        },
-        customButtons: {
-          createHoliday: {
-            text: 'Create holiday',
-            click: () => {
-              window.location = this.$el.data('new-holiday-path');
-            }
-          }
+          right: 'month, agendaWeek, agendaDay today prev,next'
         },
         eventRender: (event, element) => {
-          var $button = element.append(
-            '<button class="close t-delete-holiday">' +
-            '<span aria-hidden="true">X</span><span class="sr-only">Remove slot</span>' +
-            '</button>'
-          );
+          const $button = $(`
+            <button class="close t-delete-holiday">
+              <span aria-hidden="true">X</span><span class="sr-only">Remove slot</span>
+            </button>
+          `);
+
           $button.on('click', () => {
             if (confirm("Are you sure you want to delete this event?")) {
               $.ajax({
@@ -40,6 +32,8 @@
               });
             }
           });
+
+          element.append($button);
         },
         views: {
           agendaThreeDay: {
