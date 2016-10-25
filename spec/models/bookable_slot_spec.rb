@@ -102,11 +102,29 @@ RSpec.describe BookableSlot, type: :model do
         it 'excludes the slots' do
           create(
             :holiday,
+            user: nil,
             start_at: make_time(6, 30),
             end_at: make_time(18, 30)
           )
 
           expect(result).to eq([])
+        end
+      end
+
+      context 'there is a holiday for a single user that doesn\'t obscure any bookable slots' do
+        it 'does not exclude the slots' do
+          create(
+            :holiday,
+            user: guiders.first,
+            start_at: make_time(19, 30),
+            end_at: make_time(20, 30)
+          )
+
+          expect(result).to eq [
+            guiders: 3,
+            start: make_time(10, 30),
+            end: make_time(11, 30)
+          ]
         end
       end
 
