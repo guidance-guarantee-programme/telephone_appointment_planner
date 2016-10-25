@@ -14,11 +14,12 @@
       <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Add schedule
     <% end %>
   </div>
+  <% if @schedules.any? %>
   <div class="col-md-8 text-right">
-    <div class="guider-schedules-swatch guider-schedules-swatch--readonly-window" aria-hidden="true">Bookable appointment window</div>
-    <div class="guider-schedules-swatch guider-schedules-swatch--readonly" aria-hidden="true">Currently accepting appointments</div>
-    <div class="guider-schedules-swatch guider-schedules-swatch--editable" aria-hidden="true">Editable</div>
+    <div class="guider-schedules-swatch guider-schedules-swatch--bookable-window" aria-hidden="true">Bookable appointment window</div>
+    <div class="guider-schedules-swatch guider-schedules-swatch" aria-hidden="true">Schedule</div>
   </div>
+  <% end %>
 </div>
 
 <% if @schedules.any? %>
@@ -27,7 +28,7 @@
       <div class="col-xs-12">
         <div class="guider-schedules__months"></div>
         <div class="guider-schedules__schedules-outer">
-          <div class="guider-schedules__readonly-window"></div>
+          <div class="guider-schedules__bookable-window"></div>
           <div class="guider-schedules__schedules"></div>
         </div>
       </div>

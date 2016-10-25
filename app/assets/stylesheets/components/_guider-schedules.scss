@@ -1,7 +1,6 @@
-$guider-schedule-read-only-window-color: transparentize($color-givry, .2);
-$guider-schedules-read-only-color: $color-roman;
-$guider-schedules-editable-color: $color-feijoa;
-$guider-schedules-read-only-border-color: $color-silver;
+$guider-schedules-bookable-window-color: transparentize($color-givry, .2);
+$guider-schedules-bookable-window-border-color: $color-silver;
+$guider-schedules-bookable-color: $color-feijoa;
 
 @function schedule-repeating-gradient($background) {
   @return $background repeating-linear-gradient(
@@ -11,6 +10,15 @@ $guider-schedules-read-only-border-color: $color-silver;
     transparentize($color-white, .8) 10px,
     transparentize($color-white, .8) 20px
   );
+}
+
+@mixin bookable-window-style {
+  background: $guider-schedules-bookable-window-color;
+  border: 1px dashed $guider-schedules-bookable-window-border-color;
+}
+
+@mixin schedule-style {
+  background: schedule-repeating-gradient($guider-schedules-bookable-color);
 }
 
 .guider-schedules {
@@ -35,10 +43,9 @@ $guider-schedules-read-only-border-color: $color-silver;
   }
 }
 
-.guider-schedules__readonly-window {
+.guider-schedules__bookable-window {
+  @include bookable-window-style;
   position: absolute;
-  background: $guider-schedule-read-only-window-color;
-  border: 1px dashed $guider-schedules-read-only-border-color;
 }
 
 .guider-schedules__schedules-outer {
@@ -46,20 +53,17 @@ $guider-schedules-read-only-border-color: $color-silver;
 }
 
 .guider-schedules__schedule {
+  @include schedule-style;
   height: 25px;
   margin-top: 5px;
 }
 
-.guider-schedules__schedule--readonly {
-  background: schedule-repeating-gradient($guider-schedules-read-only-color);
-}
-
-.guider-schedules__schedule--editable {
-  background: schedule-repeating-gradient($guider-schedules-editable-color);
-}
-
 .guider-schedules-swatch {
   display: none;
+
+  &::before {
+    @include schedule-style;
+  }
 
   .js & {
     display: inline-block;
@@ -76,21 +80,8 @@ $guider-schedules-read-only-border-color: $color-silver;
   }
 }
 
-.guider-schedules-swatch--readonly-window {
+.guider-schedules-swatch--bookable-window {
   &::before {
-    background: $guider-schedule-read-only-window-color;
-    border: 1px dashed $guider-schedules-read-only-border-color;
-  }
-}
-
-.guider-schedules-swatch--readonly {
-  &::before {
-    background: schedule-repeating-gradient($guider-schedules-read-only-color);
-  }
-}
-
-.guider-schedules-swatch--editable {
-  &::before {
-    background: schedule-repeating-gradient($guider-schedules-editable-color);
+    @include bookable-window-style;
   }
 }
