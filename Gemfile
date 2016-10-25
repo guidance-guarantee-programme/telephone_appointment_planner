@@ -46,7 +46,7 @@ source 'https://rubygems.org' do
     gem 'phantomjs-binaries'
     gem 'database_cleaner'
     gem 'chronic'
-    gem 'scss-lint', '~> 0.30'
+    gem 'scss_lint', require: false
   end
 
   group :development do

@@ -65,7 +65,7 @@ $guider-schedules-read-only-border-color: $color-silver;
     display: inline-block;
     margin-right: 5px;
 
-    &:before {
+    &::before {
       content: "";
       display: inline-block;
       height: 25px;
@@ -77,20 +77,20 @@ $guider-schedules-read-only-border-color: $color-silver;
 }
 
 .guider-schedules-swatch--readonly-window {
-  &:before {
+  &::before {
     background: $guider-schedule-read-only-window-color;
     border: 1px dashed $guider-schedules-read-only-border-color;
   }
 }
 
 .guider-schedules-swatch--readonly {
-  &:before {
+  &::before {
     background: schedule-repeating-gradient($guider-schedules-read-only-color);
   }
 }
 
 .guider-schedules-swatch--editable {
-  &:before {
+  &::before {
     background: schedule-repeating-gradient($guider-schedules-editable-color);
   }
 }

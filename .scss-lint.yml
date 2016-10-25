@@ -1,6 +1,6 @@
 # Default application configuration that all configurations inherit from.
 
-scss_files: 'app/assets/stylesheets/**/.scss'
+scss_files: 'app/assets/stylesheets/**/*.scss'
 
 exclude:
   - 'node_modules/**/*'
