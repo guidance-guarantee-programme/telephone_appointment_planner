@@ -1,7 +1,8 @@
 rackup      DefaultRackup
 daemonize   false
+
 environment ENV.fetch('RACK_ENV', 'development')
-workers     ENV.fetch('WEB_CONCURRENCY', 2)
+workers     ENV.fetch('WEB_CONCURRENCY', 1)
 threads     ENV.fetch('MAX_THREADS', 5), ENV.fetch('MAX_THREADS', 5)
 port        ENV.fetch('PORT', 3000)
 
