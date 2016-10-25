@@ -8,7 +8,7 @@ class User < ApplicationRecord
   default_scope { order(:name) }
 
   has_many :schedules, dependent: :destroy
-  has_many :bookable_slots
+  has_many :bookable_slots, dependent: :destroy, foreign_key: :guider_id
   has_many :appointments, foreign_key: :guider_id
   has_many :holidays
 

@@ -61,4 +61,13 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe '#bookable_slots' do
+    it 'destroys them when the user is destroyed' do
+      guider = create(:user)
+      create(:bookable_slot, guider: guider)
+      create(:bookable_slot, guider: guider)
+      expect { guider.destroy }.to change { BookableSlot.count }.by(-2)
+    end
+  end
 end
