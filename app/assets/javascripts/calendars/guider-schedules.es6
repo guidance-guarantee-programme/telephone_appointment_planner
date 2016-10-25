@@ -10,11 +10,11 @@
         windowLengthInMonths: 12,
         scheduleHeight: 30,
         scheduleMarginTop: 5,
-        readOnlyPeriodInWeeks: 6,
+        bookablePeriodInWeeks: 6,
         monthFormat: 'MMM',
         classes: {
           months: 'guider-schedules__months',
-          readyOnlyWindow: 'guider-schedules__readonly-window',
+          bookableWindow: 'guider-schedules__bookable-window',
           schedules: 'guider-schedules__schedules',
           schedule: 'guider-schedules__schedule'
         }
@@ -26,7 +26,7 @@
 
       this.displayMonths();
       this.setupScheduleData();
-      this.displayReadyOnlyWindow();
+      this.displayBookableWindow();
       this.displaySchedules();
     }
 
@@ -54,21 +54,21 @@
       });
     }
 
-    displayReadyOnlyWindow() {
-      let blockConfig = this.getReadOnlyWindowBlockConfig(),
+    displayBookableWindow() {
+      let blockConfig = this.getBookableWindowBlockConfig(),
       height = (this.config.scheduleHeight * this.schedules.length) - this.config.scheduleMarginTop + 'px';
 
-      this.$el.find(`.${this.config.classes.readyOnlyWindow}`).css({
+      this.$el.find(`.${this.config.classes.bookableWindow}`).css({
         'margin-left': `${blockConfig.offsetPercentage}%`,
         'width': `${blockConfig.lengthPercentage}%`,
         'height': height
       });
     }
 
-    getReadOnlyWindowBlockConfig() {
+    getBookableWindowBlockConfig() {
       return this.getPercentagesForBlock(
         moment(this.today),
-        moment(this.today).add(this.config.readOnlyPeriodInWeeks, 'weeks')
+        moment(this.today).add(this.config.bookablePeriodInWeeks, 'weeks')
       );
     }
 
@@ -95,18 +95,13 @@
 
     displaySchedules() {
       for (let schedule in this.schedules) {
-        let status = 'editable',
-        currentSchedule = this.schedules[schedule],
+        let currentSchedule = this.schedules[schedule],
         startDate = moment(currentSchedule.start),
         endDate = moment(currentSchedule.end),
         blockConfig = this.getPercentagesForBlock(startDate, endDate);
 
-        if (blockConfig.offsetPercentage < this.getReadOnlyWindowBlockConfig().endPercentage) {
-          status = 'readonly';
-        }
-
         this.$el.find(`.${this.config.classes.schedules}`).append(
-          $(`<div class="${this.config.classes.schedule} ${this.config.classes.schedule}--${status}">`
+          $(`<div class="${this.config.classes.schedule} ${this.config.classes.schedule}">`
         ).css({
           'margin-left': `${blockConfig.offsetPercentage}%`,
           'width': `${blockConfig.lengthPercentage}%`
