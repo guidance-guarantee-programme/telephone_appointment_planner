@@ -1,3 +1,4 @@
+/* global moment */
 {
   'use strict';
 
@@ -8,7 +9,8 @@
         timePicker24Hour: true,
         locale: {
           format: 'D MMM YYYY'
-        }
+        },
+        maxDate: moment().add(10, 'years')
       };
 
       this.config = $.extend(true, defaultConfig, config);
