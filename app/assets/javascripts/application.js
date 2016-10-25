@@ -15,7 +15,7 @@
 //= require fullcalendar-scheduler
 //= require qTip2
 //= require listjs
-//= require daterangepicker
+//= require bootstrap-daterangepicker
 //= require core.js/core.js
 //= require calendar
 //= require customer-age
