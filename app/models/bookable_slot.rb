@@ -15,6 +15,7 @@ class BookableSlot < ApplicationRecord
     BusinessDays.from_now(3)
   end
 
+  # rubocop:disable Metrics/MethodLength
   def self.without_appointments
     joins(<<-SQL
             LEFT JOIN appointments ON
@@ -23,7 +24,14 @@ class BookableSlot < ApplicationRecord
               appointments.end_at = #{quoted_table_name}.end_at
             SQL
          )
-      .where('appointments.start_at IS NULL')
+      .where(<<-SQL
+              appointments.start_at IS NULL OR
+              appointments.status IN (
+                #{Appointment.statuses['cancelled_by_customer']},
+                #{Appointment.statuses['cancelled_by_pension_wise']}
+              )
+              SQL
+            )
   end
 
   def self.without_holidays
