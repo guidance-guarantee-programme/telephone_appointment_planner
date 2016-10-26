@@ -109,6 +109,7 @@ GEM
       jquery-rails (~> 4.1.1)
       rails (>= 3.2.0)
     hashie (3.4.6)
+    httpclient (2.8.2.4)
     i18n (0.7.0)
     jquery-rails (4.1.1)
       rails-dom-testing (>= 1, < 3)
@@ -177,6 +178,11 @@ GEM
       byebug (~> 9.0)
       pry (~> 0.10)
     puma (3.6.0)
+    pusher (1.3.0)
+      httpclient (~> 2.7)
+      multi_json (~> 1.0)
+      pusher-signature (~> 0.1.8)
+    pusher-signature (0.1.8)
     rack (2.0.1)
     rack-protection (1.5.3)
       rack
@@ -210,6 +216,7 @@ GEM
     rails-assets-jquery (3.1.1)
     rails-assets-listjs (1.2.0)
     rails-assets-moment (2.15.1)
+    rails-assets-pusher (3.2.1)
     rails-assets-qTip2 (3.0.2)
       rails-assets-imagesloaded (>= 3.0.0)
       rails-assets-jquery (>= 1.6.0)
@@ -343,11 +350,13 @@ DEPENDENCIES
   poltergeist!
   pry-byebug!
   puma (~> 3.0)!
+  pusher!
   rails (~> 5.0.0, >= 5.0.0.1)!
   rails-assets-bootstrap-daterangepicker!
   rails-assets-fullcalendar!
   rails-assets-fullcalendar-scheduler!
   rails-assets-listjs!
+  rails-assets-pusher!
   rails-assets-qTip2!
   rails-assets-zloirock--core-js!
   rails_12factor!

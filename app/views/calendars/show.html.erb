@@ -7,4 +7,19 @@
   <h1>My appointments</h1>
 </div>
 
-<div data-module="GuiderAppointmentsCalendar" data-default-date="<%= Time.zone.now %>"></div>
+<div data-module="GuiderAppointmentsCalendar" data-pusher-key="<%= ENV['PUSHER_KEY'] %>" data-guider-id="<%= current_user.id %>" data-default-date="<%= Time.zone.now %>"></div>
+
+<div class="modal fade" id="guider-appointment-calendar-update" tabindex="-1" role="dialog" aria-labelledby="guider-appointment-calendar-update-label">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="guider-appointment-calendar-update-label">Appointment update</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
