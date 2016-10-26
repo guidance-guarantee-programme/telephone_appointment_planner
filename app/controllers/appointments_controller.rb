@@ -1,6 +1,7 @@
 class AppointmentsController < ApplicationController
   before_action :authorise_for_agents!, except: %i(index edit update)
-  before_action :authorise_for_guiders!, only: %i(index edit update)
+  before_action :authorise_for_guiders!, only: :index
+  before_action :authenticate_user!, only: %i(edit update)
 
   def index
     @appointments = current_user.appointments.where(start_at: date_range_params)
@@ -9,11 +10,11 @@ class AppointmentsController < ApplicationController
   end
 
   def edit
-    @appointment = current_user.appointments.find(params[:id])
+    @appointment = Appointment.find(params[:id])
   end
 
   def update
-    @appointment = current_user.appointments.find(params[:id])
+    @appointment = Appointment.find(params[:id])
 
     if @appointment.update(edit_params)
       redirect_to calendar_path

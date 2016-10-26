@@ -8,7 +8,13 @@
   <h1>Edit appointment</h1>
 </div>
 
-<%= render 'shared/required_fields_note' %>
+<%=
+  render(
+    partial: 'activities/activity_feed',
+    locals: { appointment: @appointment }
+  )
+%>
+
 <%= form_for @appointment, layout: :basic do |f| %>
   <%= render partial: 'personal_details_form', locals: { f: f, edit: true } %>
   <div class="row form-group">

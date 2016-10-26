@@ -45,4 +45,6 @@ if Rails.env.development?
     user.permissions << User::AGENT_PERMISSION
     user.save!
   end
+
+  FactoryGirl.create(:appointment, guider: User.first)
 end

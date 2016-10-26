@@ -23,6 +23,7 @@
 //= require calendars/guider-slot-picker
 //= require calendars/guider-appointments
 //= require calendars/holidays
+//= require activity-feed-poller
 //= require select2
 //= require advanced-select
 //= require_tree .

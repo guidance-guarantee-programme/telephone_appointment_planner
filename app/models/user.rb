@@ -1,9 +1,11 @@
 class User < ApplicationRecord
   include GDS::SSO::User
 
-  RESOURCE_MANAGER_PERMISSION = 'resource_manager'.freeze
-  GUIDER_PERMISSION = 'guider'.freeze
-  AGENT_PERMISSION = 'agent'.freeze
+  ALL_PERMISSIONS = [
+    RESOURCE_MANAGER_PERMISSION = 'resource_manager'.freeze,
+    GUIDER_PERMISSION = 'guider'.freeze,
+    AGENT_PERMISSION = 'agent'.freeze
+  ].freeze
 
   default_scope { order(:name) }
 

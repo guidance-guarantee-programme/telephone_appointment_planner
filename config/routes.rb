@@ -16,7 +16,9 @@ Rails.application.routes.draw do
   end
   resources :customers
   resource :calendar, only: :show
-  resources :appointments, only: %i(index show edit update)
+  resources :appointments, only: %i(index show edit update) do
+    resources :activities, only: %i(index create)
+  end
   resources :holidays, only: %i(index new create) do
     delete '/', on: :collection, action: :destroy
   end

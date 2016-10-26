@@ -14,5 +14,21 @@ module Pages
     element :who_is_your_pension_provider,          '.t-who-is-your-pension-provider'
     element :status, '.t-status'
     element :submit, '.t-save'
+    element(
+      :permission_error_message,
+      'h1',
+      text: 'Sorry, you don\'t seem to have the resource_manager, guider, or agent permission for this app.'
+    )
+
+    section :activity_feed, '.t-activity-feed' do
+      elements :activities, '.t-activity'
+      elements :dynamically_loaded_activities, '.t-dynamically-loaded-activity'
+
+      element :message, '.t-message'
+      element :submit, '.t-submit-message'
+
+      element :further_activities, '.t-further-activities'
+      element :hidden_activities, '.t-hidden-activities'
+    end
   end
 end
