@@ -60,7 +60,7 @@ class AppointmentsController < ApplicationController
     return unless ENV['PUSHER_KEY'] && ENV['PUSHER_SECRET']
 
     pusher_client = Pusher::Client.new(
-      app_id: '261213',
+      app_id: ENV['PUSHER_APP_ID'],
       key: ENV['PUSHER_KEY'],
       secret: ENV['PUSHER_SECRET'],
       cluster: 'eu',
