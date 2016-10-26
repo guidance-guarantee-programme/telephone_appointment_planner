@@ -79,18 +79,47 @@ RSpec.describe BookableSlot, type: :model do
         )
       end
 
-      context 'one guider has a bookable slot obscured by an appointment' do
+      context 'one guider has a bookable slot obscured by a non cancelled appointment' do
         it 'excludes the slot' do
           create(
             :appointment,
             guider: User.guiders.first,
             start_at: make_time(10, 30),
-            end_at: make_time(11, 30)
+            end_at: make_time(11, 30),
+            status: :pending
           )
 
           expect(result).to eq(
             [
               guiders: 2,
+              start: make_time(10, 30),
+              end: make_time(11, 30)
+            ]
+          )
+        end
+      end
+
+      context 'two guiders have bookable slots not obscured by cancelled appointments' do
+        it 'does not exclude the slot' do
+          create(
+            :appointment,
+            guider: User.guiders.first,
+            start_at: make_time(10, 30),
+            end_at: make_time(11, 30),
+            status: :cancelled_by_customer
+          )
+
+          create(
+            :appointment,
+            guider: User.guiders.last,
+            start_at: make_time(10, 30),
+            end_at: make_time(11, 30),
+            status: :cancelled_by_pension_wise
+          )
+
+          expect(result).to eq(
+            [
+              guiders: 3,
               start: make_time(10, 30),
               end: make_time(11, 30)
             ]
