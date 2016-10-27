@@ -1,12 +1,16 @@
 class AppointmentsController < ApplicationController
-  before_action :authorise_for_agents!, except: %i(index edit update)
-  before_action :authorise_for_guiders!, only: :index
-  before_action :authenticate_user!, only: %i(edit update)
+  before_action :authenticate_user!
 
   def index
-    @appointments = current_user.appointments.where(start_at: date_range_params)
+    scope = if current_user.resource_manager?
+              Appointment.unscoped
+            elsif current_user.guider?
+              current_user.appointments
+            end
 
-    render json: @appointments
+    @appointments = scope.where(start_at: date_range_params)
+
+    render json: @appointments, include_links: include_links?
   end
 
   def edit
@@ -71,6 +75,10 @@ class AppointmentsController < ApplicationController
 
   def search_params
     params.fetch(:search, {}).permit(:q, :date_range)
+  end
+
+  def include_links?
+    params.fetch(:include_links, 'true') == 'true'
   end
 
   def date_range_params

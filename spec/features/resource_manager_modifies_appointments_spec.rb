@@ -8,6 +8,7 @@ RSpec.feature 'Resource manager modifies appointments' do
         when_they_view_the_appointments
         then_they_see_appointments_for_multiple_guiders
         when_they_reschedule_an_appointment
+        and_commit_their_modifications
         then_the_appointment_is_modified
       end
     end
@@ -28,12 +29,19 @@ RSpec.feature 'Resource manager modifies appointments' do
 
   def then_they_see_appointments_for_multiple_guiders
     @page.wait_for_guiders
-
     expect(@page).to have_guiders(count: 2)
+    expect(@page.guiders.first).to have_text('Ben Lovell')
+
+    @page.wait_for_appointments
+    expect(@page).to have_appointments(count: 2)
   end
 
   def when_they_reschedule_an_appointment
-    skip
+    @page.reschedule(@page.appointments.first, hours: 8, minutes: 30)
+  end
+
+  def and_commit_their_modifications
+    @page.wait_for_action_panel
   end
 
   def then_the_appointment_is_modified

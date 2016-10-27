@@ -1,4 +1,4 @@
-/* global Calendar, moment */
+/* global Calendar */
 {
   'use strict';
 
@@ -22,7 +22,7 @@
         resourceRender: (resourceObj, labelTds, bodyTds, view) => {
           if (view.type === 'agendaDay') {
             labelTds.html('');
-            $(`<div>${resourceObj.name}</div>`).prependTo(labelTds);
+            $(`<div>${resourceObj.title}</div>`).prependTo(labelTds);
           } else {
             $('<span aria-hidden="true" class="glyphicon glyphicon-user" style="margin-right: 5px;"></span>').prependTo(
               labelTds.find('.fc-cell-text')
@@ -30,6 +30,8 @@
           }
         },
         eventRender: (event, element, view) => {
+          $(element).attr('id', event.id);
+
           if (view.type === 'agendaDay') {
             element.find('.fc-content').remove();
           } else {
@@ -51,7 +53,7 @@
             return;
           }
 
-          var resource = el.fullCalendar('getResourceById', event.guider_id);
+          var resource = el.fullCalendar('getResourceById', event.resourceId);
 
           element.qtip({
             content: {
@@ -70,7 +72,7 @@
           this.handleEventChange(event, revertFunc);
         },
         resources: '/guiders',
-        events: '/appointments'
+        events: '/appointments?include_links=false'
       }, config);
 
       super(el, calendarConfig);

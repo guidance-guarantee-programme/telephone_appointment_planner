@@ -4,15 +4,15 @@ $calendar-today-background: $color-white;
   .fc-resource-cell {
     height: 150px;
     white-space: nowrap;
+
+    div {
+      transform: translateY(120px) rotate(-90deg);
+    }
   }
 
   th {
     border-width: 0;
     overflow: hidden;
-  }
-
-  .fc-resource-cell > div {
-    transform: translateY(120px) rotate(-90deg);
   }
 }
 
