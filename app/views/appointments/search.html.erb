@@ -39,6 +39,7 @@
       <th><span class="sort" data-sort="last_name">Last Name</span></th>
       <th><span class="sort" data-sort="date">Date</span></th>
       <th><span class="sort" data-sort="status">Status</span></th>
+      <th width="1%"></th>
     </tr>
   </thead>
   <tbody class="list">
@@ -50,6 +51,7 @@
         <td><span class="last_name"><%= result.last_name %></span></td>
         <td><span class="date"><%= result.date %></span></td>
         <td><span class="status"><%= result.status %></span></td>
+        <td><a href="<%= url_for(edit_appointment_path(result.id)) %>" class="btn  btn-primary">Edit</a></td>
       </tr>
     <% end %>
   </tbody>
