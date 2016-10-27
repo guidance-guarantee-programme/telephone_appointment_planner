@@ -31,6 +31,7 @@ source 'https://rubygems.org' do
   gem 'font-awesome-rails'
   gem 'audited'
   gem 'rails-observers', github: 'rails/rails-observers'
+  gem 'pg_search'
 
   group :development, :test do
     gem 'pry-byebug'

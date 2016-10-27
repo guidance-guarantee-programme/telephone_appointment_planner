@@ -144,4 +144,43 @@ RSpec.describe Appointment, type: :model do
       end
     end
   end
+
+  describe '#full_search' do
+    before do
+      @appointments = create_list(:appointment, 3)
+    end
+
+    def results(q, start_at, end_at)
+      Appointment.full_search(q, start_at, end_at)
+    end
+
+    it 'returns all results' do
+      expect(results(nil, nil, nil)).to eq @appointments
+    end
+
+    it 'returns results for appointment ID' do
+      results = results(@appointments.second.id.to_s, nil, nil)
+      expect(results).to eq [@appointments.second]
+    end
+
+    it 'returns results for customer first_name' do
+      results = results(@appointments.third.first_name.downcase, nil, nil)
+      expect(results).to eq [@appointments.third]
+    end
+
+    it 'returns results for customer last_name' do
+      results = results(@appointments.second.last_name.downcase, nil, nil)
+      expect(results).to eq [@appointments.second]
+    end
+
+    it 'returns results for a date range' do
+      date_range_start = 20.days.from_now.to_date
+      date_range_end = 30.days.from_now.to_date
+      start_at = date_range_start + 5.hours
+      end_at = start_at + 1.hour
+      appointment = create(:appointment, start_at: start_at, end_at: end_at)
+      results = results(nil, date_range_start, date_range_end)
+      expect(results).to eq [appointment]
+    end
+  end
 end

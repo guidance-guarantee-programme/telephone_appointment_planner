@@ -53,6 +53,14 @@ class AppointmentsController < ApplicationController
     @appointment = Appointment.find(params[:id])
   end
 
+  def search
+    search_params = params[:search] || {}
+    @search = Search.new(
+      search_params[:q],
+      search_params[:date_range]
+    )
+  end
+
   private
 
   def date_range_params

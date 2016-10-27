@@ -1,4 +1,8 @@
 class Appointment < ApplicationRecord
+  include PgSearch
+
+  pg_search_scope :search, against: [:id, :first_name, :last_name]
+
   enum status: %i(
     pending
     completed
@@ -26,6 +30,17 @@ class Appointment < ApplicationRecord
   has_many :activities, -> { order('created_at DESC') }
 
   audited on: :update
+
+  def self.full_search(query, start_at, end_at)
+    results = all
+    results = results.search(query) if query.present?
+    if start_at && end_at
+      results = results
+                .where('start_at > ?', start_at)
+                .where('end_at < ?', end_at)
+    end
+    results
+  end
 
   def assign_to_guider
     slot = BookableSlot

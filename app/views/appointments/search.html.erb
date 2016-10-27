@@ -1,0 +1,55 @@
+<div class="page-header">
+  <ol class="breadcrumb">
+    <li><a href="<%= root_path %>">Home</a></li>
+    <li class="active">Search</li>
+  </ol>
+  <h1>Search</h1>
+</div>
+
+<div class="row form-group">
+  <div class="col-md-12">
+    <%= form_for @search, layout: :basic, method: 'GET', url: {action: :search} do |f| %>
+      <%= f.text_field :q, label: 'Search', class: 't-q', placeholder: 'Search by first name, last name, or booking reference.' %>
+      <%=
+        f.text_field(
+          :date_range,
+          class: 't-date-range',
+          data: {
+            module: 'DateRangePicker',
+            config: {
+              autoUpdateInput: false,
+              locale: {
+                cancelLabel: 'Clear',
+                format: 'DD/MM/YYYY'
+              }
+            }
+          }
+        )
+      %>
+      <%= f.submit 'Search', class: 't-search' %>
+    <% end %>
+  </div>
+</div>
+
+<table class="table table-striped table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>Reference</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Date</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @search.results.each do |result| %>
+      <tr class='t-result'>
+        <td class='t-id'><%= result.id %></td>
+        <td><%= result.first_name %></td>
+        <td><%= result.last_name %></td>
+        <td><%= result.start_at %></td>
+        <td><%= result.status %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
