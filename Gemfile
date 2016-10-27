@@ -29,6 +29,8 @@ source 'https://rubygems.org' do
   gem 'select2-rails'
   gem 'working_hours'
   gem 'font-awesome-rails'
+  gem 'audited'
+  gem 'rails-observers', github: 'rails/rails-observers'
 
   group :development, :test do
     gem 'pry-byebug'

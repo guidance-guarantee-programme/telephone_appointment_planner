@@ -6,6 +6,8 @@ FactoryGirl.define do
     name { Faker::Name.name }
     email 'some-name@example.org'
 
+    permissions ['signin']
+
     factory :resource_manager do
       permissions { Array(User::RESOURCE_MANAGER_PERMISSION) }
     end

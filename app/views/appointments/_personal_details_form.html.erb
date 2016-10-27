@@ -1,6 +1,7 @@
 <div class="row form-group">
   <div class="col-md-12">
     <h2>Personal Details</h2>
+    <%= render 'shared/required_fields_note' %>
   </div>
   <div class="col-md-6">
     <%= f.text_field :first_name, class: 't-first-name', label: required_label(:first_name) %>

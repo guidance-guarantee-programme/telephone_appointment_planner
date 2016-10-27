@@ -1,0 +1,37 @@
+<div class="row t-activity-feed">
+  <div class="col-md-12 border-bottom">
+    <h2>Recent activity</h2>
+
+    <div class="activity-feed">
+      <div class="well js-message-form">
+        <%= form_for MessageActivity.new(appointment: appointment), url: appointment_activities_path(appointment), remote: true do |f| %>
+          <div class="input-group">
+            <%= f.text_field :message, placeholder: 'Add an action to keep others in the loop', class: 'form-control js-message t-message' %>
+            <span class="input-group-btn">
+              <%= f.button class: 'btn btn-primary btn-block t-submit-message', data: { disable_with: 'Adding message...' } do %>
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                Add message
+              <% end %>
+            </span>
+          </div>
+        <% end %>
+      </div>
+      <ul class="activity-feed__list"
+        data-module='ActivityFeedPoller'
+        data-interval="<%= poll_interval_milliseconds %>"
+        data-url="<%= appointment_activities_path(appointment) %>">
+        <%= render appointment.activities.first if appointment.activities.present? %>
+      </ul>
+
+      <% if appointment.activities.count > 1 %>
+        <ul class="activity-feed__list t-hidden-activities collapse" id="collapse">
+          <%= render(appointment.activities - Array(appointment.activities.first)) %>
+        </ul>
+        <button class="activity-feed__btn btn btn-default t-further-activities" data-target="#collapse" data-toggle="collapse" aria-expanded="false" aria-controls="collapse">
+          <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+          All activity
+        </button>
+      <% end %>
+    </div>
+  </div>
+</div>

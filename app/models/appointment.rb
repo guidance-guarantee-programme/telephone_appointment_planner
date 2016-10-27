@@ -23,6 +23,10 @@ class Appointment < ApplicationRecord
   validate :not_within_two_business_days
   validate :not_more_than_thirty_business_days_in_future
 
+  has_many :activities, -> { order('created_at DESC') }
+
+  audited on: :update
+
   def assign_to_guider
     slot = BookableSlot
            .without_appointments
@@ -34,6 +38,10 @@ class Appointment < ApplicationRecord
   end
 
   private
+
+  def after_audit
+    AuditActivity.from(audits.last, self)
+  end
 
   def not_within_two_business_days
     return unless start_at

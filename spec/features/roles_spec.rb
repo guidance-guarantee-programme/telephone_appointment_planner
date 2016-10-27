@@ -49,7 +49,7 @@ RSpec.feature 'Roles' do
     end
   end
 
-  context 'Users who are not Agents' do
+  context 'Users who are not Resource Managers, Agents, or Guiders' do
     scenario 'Can not attempt appointments' do
       given_the_user_has_no_permissions do
         when_they_try_to_attempt_an_appointment
@@ -63,9 +63,14 @@ RSpec.feature 'Roles' do
         then_they_are_locked_out
       end
     end
-  end
 
-  context 'Users who are not Resource Managers' do
+    scenario 'Can edit appointments' do
+      given_the_user_has_no_permissions do
+        when_they_try_to_edit_appointments
+        then_they_are_allowed
+      end
+    end
+
     scenario 'Can not manage guiders' do
       given_the_user_has_no_permissions do
         when_they_try_to_manager_guiders
@@ -151,5 +156,11 @@ RSpec.feature 'Roles' do
     appointment_attempt = create(:appointment_attempt)
     @page = Pages::NewAppointment.new
     @page.load(appointment_attempt_id: appointment_attempt.id)
+  end
+
+  def when_they_try_to_edit_appointments
+    appointment = create(:appointment)
+    @page = Pages::EditAppointment.new
+    @page.load(id: appointment.id)
   end
 end
