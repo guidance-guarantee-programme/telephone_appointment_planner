@@ -31,6 +31,9 @@ source 'https://rubygems.org' do
   gem 'font-awesome-rails'
   gem 'audited'
   gem 'rails-observers', github: 'rails/rails-observers'
+  gem 'pg_search'
+  gem 'kaminari'
+  gem 'bootstrap-kaminari-views'
 
   group :development, :test do
     gem 'pry-byebug'
