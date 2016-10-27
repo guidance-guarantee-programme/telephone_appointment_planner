@@ -1,12 +1,9 @@
 require 'rails_helper'
 
 RSpec.feature 'Agent searches for appointments' do
-  before do
-    @appointments = create_list(:appointment, 3)
-  end
-
   scenario 'searches for nothing' do
     given_the_user_is_an_agent do
+      and_appointments_exist
       when_they_search_for_nothing
       then_they_can_see_all_appointments
     end
@@ -14,6 +11,7 @@ RSpec.feature 'Agent searches for appointments' do
 
   scenario 'searches for a first name' do
     given_the_user_is_an_agent do
+      and_appointments_exist
       when_they_search_for_a_first_name
       then_they_can_see_only_that_result
     end
@@ -21,10 +19,15 @@ RSpec.feature 'Agent searches for appointments' do
 
   scenario 'searches for date range' do
     given_the_user_is_an_agent do
+      and_appointments_exist
       and_there_is_an_appointment_in_the_future
       when_they_search_for_a_date_range
       then_they_can_see_only_that_result
     end
+  end
+
+  def and_appointments_exist
+    @appointments = create_list(:appointment, 3)
   end
 
   def when_they_search_for_nothing
@@ -52,8 +55,7 @@ RSpec.feature 'Agent searches for appointments' do
   def and_there_is_an_appointment_in_the_future
     @expected_appointment = create(
       :appointment,
-      start_at: 20.days.from_now,
-      end_at: 20.days.from_now + 1.hour
+      start_at: 20.days.from_now
     )
   end
 

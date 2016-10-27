@@ -1,7 +1,7 @@
 class Appointment < ApplicationRecord
   include PgSearch
 
-  pg_search_scope :search, against: [:id, :first_name, :last_name]
+  pg_search_scope :search, against: %i(id first_name last_name)
 
   enum status: %i(
     pending

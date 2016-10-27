@@ -54,14 +54,18 @@ class AppointmentsController < ApplicationController
   end
 
   def search
-    search_params = params[:search] || {}
     @search = Search.new(
       search_params[:q],
       search_params[:date_range]
     )
+    @results = @search.results.page(params[:page])
   end
 
   private
+
+  def search_params
+    params.fetch(:search, {}).permit(:q, :date_range)
+  end
 
   def date_range_params
     starts = params[:start].to_date.beginning_of_day
