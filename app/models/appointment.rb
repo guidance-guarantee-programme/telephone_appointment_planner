@@ -49,6 +49,7 @@ class Appointment < ApplicationRecord
            .where(start_at: start_at, end_at: end_at)
            .sample(1)
            .first
+    self.guider = nil
     self.guider = slot.guider if slot
   end
 

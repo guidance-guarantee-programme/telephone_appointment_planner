@@ -1,42 +1,49 @@
 # rubocop:disable Metrics/MethodLength
 require 'rails_helper'
 
-RSpec.feature 'Agent creates appointments' do
+RSpec.feature 'Agent manages appointments' do
   let(:day) { BusinessDays.from_now(5) }
 
-  scenario 'Customer is not eligible for an appointment' do
-    given_the_user_is_an_agent do
-      when_they_want_to_book_an_appointment
-      and_the_customer_is_ineligible_for_an_appointment
-      when_they_try_to_create_an_appointment
-      then_they_are_told_that_the_customer_is_ineligible
+  describe 'Agent creates appointments' do
+    scenario 'Customer is not eligible for an appointment' do
+      given_the_user_is_an_agent do
+        when_they_want_to_book_an_appointment
+        and_the_customer_is_ineligible_for_an_appointment
+        when_they_try_to_create_an_appointment
+        then_they_are_told_that_the_customer_is_ineligible
+      end
+    end
+
+    scenario 'Customer is eligible for an appointment' do
+      given_the_user_is_an_agent do
+        and_there_is_a_guider_with_available_slots
+        when_they_want_to_book_an_appointment
+        and_the_customer_is_eligible_for_an_appointment
+        when_they_try_to_create_an_appointment
+        and_they_fill_in_their_appointment_details
+        then_that_appointment_is_created
+      end
     end
   end
 
-  scenario 'Customer is eligible for an appointment' do
+  scenario 'Agent reschedules an appointment' do
     given_the_user_is_an_agent do
       and_there_is_a_guider_with_available_slots
-      when_they_want_to_book_an_appointment
-      and_the_customer_is_eligible_for_an_appointment
-      when_they_try_to_create_an_appointment
-      and_they_fill_in_their_appointment_details
-      then_that_appointment_is_created
+      and_there_is_an_appointment
+      when_the_agent_reschedules_the_appointment
+      then_the_appointment_is_rescheduled
     end
   end
 
   def and_there_is_a_guider_with_available_slots
     @guider = create(:guider)
-    @slot = build(
-      :slot,
-      day_of_week: day.wday,
-      start_hour: 9,
-      start_minute: 30,
-      end_hour: 10,
-      end_minute: 40
-    )
+    slots = [
+      build(:nine_thirty_slot, day_of_week: day.wday),
+      build(:four_fifteen_slot, day_of_week: day.wday)
+    ]
     @schedule = @guider.schedules.build(
       start_at: day.beginning_of_day,
-      slots: [@slot]
+      slots: slots
     )
     @schedule.save!
     BookableSlot.generate_for_guider(@guider)
@@ -111,5 +118,23 @@ RSpec.feature 'Agent creates appointments' do
 
   def then_they_are_told_that_the_customer_is_ineligible
     expect(@page).to have_ineligible_message
+  end
+
+  def and_there_is_an_appointment
+    @appointment = create(:appointment)
+  end
+
+  def when_the_agent_reschedules_the_appointment
+    @page = Pages::RescheduleAppointment.new
+    @page.load(id: @appointment.id)
+    @page.start_at.set day.change(hour: 16, min: 15).to_s
+    @page.end_at.set day.change(hour: 17, min: 15).to_s
+    @page.reschedule.click
+  end
+
+  def then_the_appointment_is_rescheduled
+    appointment = Appointment.first
+    expect(appointment.start_at).to eq day.change(hour: 16, min: 15).to_s
+    expect(appointment.end_at).to eq day.change(hour: 17, min: 15).to_s
   end
 end

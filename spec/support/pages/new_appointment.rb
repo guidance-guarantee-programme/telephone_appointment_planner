@@ -19,8 +19,8 @@ module Pages
     element :opt_out_of_market_research,            '.t-opt-out-of-market-research'
     element :where_did_you_hear_about_pension_wise, '.t-where-did-you-hear-about-pension-wise'
     element :who_is_your_pension_provider,          '.t-who-is-your-pension-provider'
-    element :start_at,                              '.t-start-at'
-    element :end_at,                                '.t-end-at'
+    element :start_at,                              '.t-start-at', visible: false
+    element :end_at,                                '.t-end-at', visible: false
     element :save,                                  '.t-save'
   end
 end
