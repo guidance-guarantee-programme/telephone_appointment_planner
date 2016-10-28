@@ -1,5 +1,12 @@
+# rubocop:disable Metrics/ClassLength
 class AppointmentsController < ApplicationController
   before_action :authenticate_user!
+
+  def batch_update
+    BatchAppointmentUpdate.new(params[:changes]).call
+
+    redirect_to resource_calendar_path
+  end
 
   def index
     scope = if current_user.resource_manager?

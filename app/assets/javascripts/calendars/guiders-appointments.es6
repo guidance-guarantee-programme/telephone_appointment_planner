@@ -157,8 +157,8 @@
           output.push({
             id: eventObj.id,
             guider_id: eventObj.resourceId,
-            start: eventObj.start,
-            end: eventObj.end
+            start_at: eventObj.start,
+            end_at: eventObj.end
           });
 
           outputEventIds.push(eventObj.id);

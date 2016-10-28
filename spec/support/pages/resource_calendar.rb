@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/MethodLength
 module Pages
   class ResourceCalendar < SitePrism::Page
     set_url '/resource_calendar'
@@ -21,6 +22,7 @@ module Pages
           event.end.hours(#{hours + 1}).minutes(#{minutes});
 
           calendar.fullCalendar('updateEvent', event);
+          calendar.data('loaded-module').handleEventChange(event, function() {});
         }();
       JS
     end

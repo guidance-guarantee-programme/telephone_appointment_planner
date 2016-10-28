@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/AbcSize
 require 'rails_helper'
 
 RSpec.feature 'Resource manager modifies appointments' do
@@ -41,10 +42,17 @@ RSpec.feature 'Resource manager modifies appointments' do
   end
 
   def and_commit_their_modifications
-    @page.wait_for_action_panel
+    @page.wait_until_action_panel_visible
+    @page.action_panel.save.click
   end
 
   def then_the_appointment_is_modified
-    skip
+    @appointment.reload
+
+    expect(@appointment.start_at.hour).to eq(8)
+    expect(@appointment.start_at.min).to eq(30)
+
+    expect(@appointment.end_at.hour).to eq(9)
+    expect(@appointment.end_at.min).to eq(30)
   end
 end
