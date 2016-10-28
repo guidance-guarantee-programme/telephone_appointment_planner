@@ -58,7 +58,8 @@ RSpec.describe BookableSlot, type: :model do
           [
             guiders: 3,
             start: make_time(10, 30),
-            end: make_time(11, 30)
+            end: make_time(11, 30),
+            selected: false
           ]
         )
       end
@@ -74,7 +75,8 @@ RSpec.describe BookableSlot, type: :model do
           [
             guiders: 3,
             start: make_time(10, 30),
-            end: make_time(11, 30)
+            end: make_time(11, 30),
+            selected: false
           ]
         )
       end
@@ -93,7 +95,8 @@ RSpec.describe BookableSlot, type: :model do
             [
               guiders: 2,
               start: make_time(10, 30),
-              end: make_time(11, 30)
+              end: make_time(11, 30),
+              selected: false
             ]
           )
         end
@@ -121,7 +124,8 @@ RSpec.describe BookableSlot, type: :model do
             [
               guiders: 3,
               start: make_time(10, 30),
-              end: make_time(11, 30)
+              end: make_time(11, 30),
+              selected: false
             ]
           )
         end
@@ -152,7 +156,8 @@ RSpec.describe BookableSlot, type: :model do
           expect(result).to eq [
             guiders: 3,
             start: make_time(10, 30),
-            end: make_time(11, 30)
+            end: make_time(11, 30),
+            selected: false
           ]
         end
       end
@@ -171,7 +176,8 @@ RSpec.describe BookableSlot, type: :model do
             [
               guiders: 2,
               start: make_time(10, 30),
-              end: make_time(11, 30)
+              end: make_time(11, 30),
+              selected: false
             ]
           )
         end
