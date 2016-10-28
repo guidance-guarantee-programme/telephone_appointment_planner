@@ -31,8 +31,4 @@ class AppointmentAttemptsController < ApplicationController
       :defined_contribution_pot
     )
   end
-
-  def authorise_for_agents!
-    authorise_user!(User::AGENT_PERMISSION)
-  end
 end

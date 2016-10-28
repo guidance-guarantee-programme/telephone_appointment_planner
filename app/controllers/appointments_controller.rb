@@ -105,14 +105,6 @@ class AppointmentsController < ApplicationController
                             .to_json
   end
 
-  def authorise_for_agents!
-    authorise_user!(User::AGENT_PERMISSION)
-  end
-
-  def authorise_for_guiders!
-    authorise_user!(User::GUIDER_PERMISSION)
-  end
-
   def redirect_after_successful_update
     if current_user.agent?
       redirect_to search_appointments_path, success: 'Appointment has been rescheduled'
