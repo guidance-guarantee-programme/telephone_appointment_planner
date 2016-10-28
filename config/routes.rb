@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   resources :appointments, only: %i(index show edit update) do
     resources :activities, only: %i(index create)
     get '/search', on: :collection, action: :search
+    get :reschedule
   end
   resources :holidays, only: %i(index new create) do
     delete '/', on: :collection, action: :destroy

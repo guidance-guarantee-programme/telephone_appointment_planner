@@ -1,7 +1,5 @@
 class UsersController < ApplicationController
-  before_action do
-    authorise_user!(User::RESOURCE_MANAGER_PERMISSION)
-  end
+  before_action :authorise_for_resource_managers!
 
   def index
     @guiders = User.includes(:groups).guiders

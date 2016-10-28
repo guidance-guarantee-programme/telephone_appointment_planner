@@ -13,11 +13,17 @@ class AppointmentsController < ApplicationController
     @appointment = Appointment.find(params[:id])
   end
 
+  def reschedule
+    @appointment = Appointment.find(params[:appointment_id])
+    load_available_slots
+  end
+
   def update
     @appointment = Appointment.find(params[:id])
-
-    if @appointment.update(edit_params)
-      redirect_to calendar_path
+    @appointment.assign_attributes(appointment_params)
+    @appointment.assign_to_guider if appointment_params[:start_at] && appointment_params[:end_at]
+    if @appointment.save
+      redirect_after_successful_update
     else
       render :edit
     end
@@ -74,10 +80,6 @@ class AppointmentsController < ApplicationController
     starts..ends
   end
 
-  def edit_params
-    appointment_params.except(:start_at, :end_at)
-  end
-
   def appointment_params
     params.require(:appointment).permit(
       :start_at,
@@ -103,11 +105,11 @@ class AppointmentsController < ApplicationController
                             .to_json
   end
 
-  def authorise_for_agents!
-    authorise_user!(User::AGENT_PERMISSION)
-  end
-
-  def authorise_for_guiders!
-    authorise_user!(User::GUIDER_PERMISSION)
+  def redirect_after_successful_update
+    if current_user.agent?
+      redirect_to search_appointments_path, success: 'Appointment has been rescheduled'
+    else
+      redirect_to calendar_path, success: 'Appointment has been rescheduled'
+    end
   end
 end

@@ -47,6 +47,13 @@ RSpec.feature 'Roles' do
         then_they_are_allowed
       end
     end
+
+    scenario 'Can reschedule appointments' do
+      given_the_user_is_an_agent do
+        when_they_try_to_reschedule_an_appoinment
+        then_they_are_allowed
+      end
+    end
   end
 
   context 'Users who are not Resource Managers, Agents, or Guiders' do
@@ -68,6 +75,13 @@ RSpec.feature 'Roles' do
       given_the_user_has_no_permissions do
         when_they_try_to_edit_appointments
         then_they_are_allowed
+      end
+    end
+
+    scenario 'Can not reschedule appointments' do
+      given_the_user_has_no_permissions do
+        when_they_try_to_reschedule_an_appoinment
+        then_they_are_locked_out
       end
     end
 
@@ -161,6 +175,12 @@ RSpec.feature 'Roles' do
   def when_they_try_to_edit_appointments
     appointment = create(:appointment)
     @page = Pages::EditAppointment.new
+    @page.load(id: appointment.id)
+  end
+
+  def when_they_try_to_reschedule_an_appoinment
+    appointment = create(:appointment)
+    @page = Pages::RescheduleAppointment.new
     @page.load(id: appointment.id)
   end
 end

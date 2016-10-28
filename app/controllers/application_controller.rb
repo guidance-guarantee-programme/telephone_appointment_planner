@@ -12,4 +12,16 @@ class ApplicationController < ActionController::Base
     Integer(ENV.fetch(Activity::POLLING_KEY, 5000))
   end
   helper_method :poll_interval_milliseconds
+
+  def authorise_for_agents!
+    authorise_user!(User::AGENT_PERMISSION)
+  end
+
+  def authorise_for_guiders!
+    authorise_user!(User::GUIDER_PERMISSION)
+  end
+
+  def authorise_for_resource_managers!
+    authorise_user!(User::RESOURCE_MANAGER_PERMISSION)
+  end
 end
