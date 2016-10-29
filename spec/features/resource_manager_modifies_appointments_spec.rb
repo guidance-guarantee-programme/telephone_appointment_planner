@@ -2,6 +2,19 @@
 require 'rails_helper'
 
 RSpec.feature 'Resource manager modifies appointments' do
+  scenario 'Reassigning the chosen guider', js: true do
+    given_the_user_is_a_resource_manager do
+      and_there_are_appointments_for_multiple_guiders
+      travel_to @appointment.start_at do
+        when_they_view_the_appointments
+        then_they_see_appointments_for_multiple_guiders
+        when_they_change_the_guider
+        and_commit_their_modifications
+        then_the_guider_is_modified
+      end
+    end
+  end
+
   scenario 'Rescheduling an appointment', js: true do
     perform_enqueued_jobs do
       given_the_user_is_a_resource_manager do
@@ -56,6 +69,14 @@ RSpec.feature 'Resource manager modifies appointments' do
       start_at: start_at,
       end_at: start_at + 1.hour
     )
+  end
+
+  def when_they_change_the_guider
+    @page.reassign(@page.appointments.first, guider: @jan)
+  end
+
+  def then_the_guider_is_modified
+    expect(@appointment.reload.guider_id).to eq(@jan.id)
   end
 
   def and_there_are_appointments_for_multiple_guiders
