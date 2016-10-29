@@ -31,10 +31,14 @@ RSpec.describe Appointment, type: :model do
       end
     end
 
-    it 'cannot be booked within two working days' do
-      subject.start_at = BusinessDays.from_now(1)
-      subject.validate
-      expect(subject.errors[:start_at]).to_not be_empty
+    context 'when not persisted' do
+      before { allow(subject).to receive(:new_record?).and_return(true) }
+
+      it 'cannot be booked within two working days' do
+        subject.start_at = BusinessDays.from_now(1)
+        subject.validate
+        expect(subject.errors[:start_at]).to_not be_empty
+      end
     end
 
     it 'cannot be booked further ahead than thirty working days' do

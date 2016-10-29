@@ -1,0 +1,35 @@
+<div class="page-header">
+  <ol class="breadcrumb">
+    <li><a href="<%= root_path %>">Home</a></li>
+    <li class="active">Appointments</li>
+  </ol>
+
+  <h1>Appointments</h1>
+</div>
+
+<div
+  class="guiders-appointments-calendar js-calendar"
+  data-config='{"editable": true, "eventDurationEditable": true, "slotDuration": "00:10:00"}'
+  data-module="GuidersAppointmentsCalendar"
+  data-default-date="<%= Time.zone.now %>">
+</div>
+
+<div class="action-panel t-action-panel" data-action-panel>
+  <%= form_tag batch_update_appointments_path, method: :patch do %>
+    <button class="btn btn-primary t-save" data-action-panel-save>
+      <span class="glyphicon glyphicon-save" aria-hidden="true"></span> Save changes to
+      <b>
+        <span data-action-panel-event-count>0 events</span>
+      </b>
+    </button>
+
+    <button class="btn btn-warning" data-action-panel-undo-one>
+      <span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span> Undo last change
+    </button>
+
+    <button class="btn btn-danger" data-action-panel-undo-all>
+      <span class="glyphicon glyphicon-erase" aria-hidden="true"></span> Undo <b>all</b> changes
+    </button>
+    <input type="hidden" name="changes" id="event-changes">
+  <% end %>
+</div>

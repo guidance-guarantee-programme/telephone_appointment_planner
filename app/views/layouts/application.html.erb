@@ -24,7 +24,7 @@
       type = $el.data('module'),
       config = $el.data('config');
 
-      new PWTAP[type]($el, config);
+      $el.data('loaded-module', new PWTAP[type]($el, config));
       $el.attr('data-module-loaded', true);
     });
   });

@@ -1,5 +1,29 @@
 $calendar-today-background: $color-white;
 
+.guiders-appointments-calendar {
+  .fc-resource-cell {
+    height: 150px;
+    white-space: nowrap;
+    position: relative;
+
+    div {
+      box-sizing: border-box;
+      left: 50%;
+      padding-left: 5px;
+      position: absolute;
+      text-align: left;
+      top: 50%;
+      transform: translateX(-50%) translateY(-50%) rotate(-90deg);
+      width: 150px;
+    }
+  }
+
+  th {
+    border-width: 0;
+    overflow: hidden;
+  }
+}
+
 .fc-unthemed {
   .fc-today {
     background: $calendar-today-background;

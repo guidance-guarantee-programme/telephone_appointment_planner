@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   root 'home#index'
 
+  resources :guiders, only: :index
   resources :users do
     resources :schedules
   end
@@ -17,10 +18,13 @@ Rails.application.routes.draw do
   resources :customers
   resource :calendar, only: :show
   resources :appointments, only: %i(index show edit update) do
+    patch :batch_update, on: :collection
+
     resources :activities, only: %i(index create)
     get '/search', on: :collection, action: :search
     get :reschedule
   end
+  resource :resource_calendar, only: :show
   resources :holidays, only: %i(index new create) do
     delete '/', on: :collection, action: :destroy
   end
