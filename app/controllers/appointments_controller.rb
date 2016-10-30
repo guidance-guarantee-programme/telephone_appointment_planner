@@ -26,7 +26,6 @@ class AppointmentsController < ApplicationController
 
   def reschedule
     @appointment = Appointment.find(params[:appointment_id])
-    load_available_slots
   end
 
   def update
@@ -47,7 +46,6 @@ class AppointmentsController < ApplicationController
       last_name: @appointment_attempt.last_name,
       date_of_birth: @appointment_attempt.date_of_birth
     )
-    load_available_slots
   end
 
   # rubocop:disable Metrics/MethodLength
@@ -61,7 +59,6 @@ class AppointmentsController < ApplicationController
         success: 'Appointment has been created!'
       )
     else
-      load_available_slots
       render :new
     end
   end
@@ -112,12 +109,6 @@ class AppointmentsController < ApplicationController
       :who_is_your_pension_provider,
       :status
     )
-  end
-
-  def load_available_slots
-    @available_slots_json = BookableSlot
-                            .with_guider_count(Time.zone.now.to_date, 6.weeks.from_now.to_date)
-                            .to_json
   end
 
   def redirect_after_successful_update

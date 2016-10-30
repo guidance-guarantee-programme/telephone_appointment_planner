@@ -10,6 +10,7 @@
         columnFormat: 'ddd D/M',
         slotDuration: '00:30:00',
         eventBorderColor: '#000',
+        events: el.data('available-slots-path'),
         defaultDate: moment(el.data('default-date')),
         header: {
           'right': 'agendaWeek agendaThreeDay agendaDay today prev,next'
@@ -70,7 +71,6 @@
       ];
 
       this.init();
-      this.addEvents();
       this.selectEvent();
       this.checkError();
     }
@@ -120,16 +120,6 @@
           return;
         }
       }
-    }
-
-    addEvents() {
-      let events = JSON.parse($(this.$el.data('events')).val());
-
-      $.each(events, (index, event) => {
-        event.selected = false;
-      });
-
-      this.$el.fullCalendar('addEventSource', events);
     }
   }
 

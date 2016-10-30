@@ -57,7 +57,7 @@ class BookableSlot < ApplicationRecord
       .group("#{quoted_table_name}.start_at, #{quoted_table_name}.end_at")
       .within_date_range(from, to)
       .map do |us|
-        { guiders: us.attributes['guiders'], start: us.start_at, end: us.end_at }
+        { guiders: us.attributes['guiders'], start: us.start_at, end: us.end_at, selected: false }
       end
   end
 

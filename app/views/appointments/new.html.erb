@@ -12,7 +12,13 @@
     <div class="col-md-12">
       <h2>Choose available slot <%= required_label %></h2>
       <p class="text-danger hide" id="slot-error">Please choose a slot</p>
-      <div class="appointment-availability-calendar" data-module="AppointmentAvailabilityCalendar" data-error-id="slot-error" data-events=".slots-data" data-default-date="<%= BookableSlot.next_valid_start_date %>"></div>
+      <div
+          class="appointment-availability-calendar"
+          data-module="AppointmentAvailabilityCalendar"
+          data-error-id="slot-error"
+          data-available-slots-path="<%= bookable_slots_available_path %>"
+          data-default-date="<%= BookableSlot.next_valid_start_date %>"
+      ></div>
       <input type="hidden" name="available-slots-json" class="slots-data" value="<%= @available_slots_json %>">
       <%= f.hidden_field :start_at, data: { 'selected-start': true }, class: 't-start-at' %>
       <%= f.hidden_field :end_at, data: { 'selected-end': true }, class: 't-end-at' %>

@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   resources :holidays, only: %i(index new create) do
     delete '/', on: :collection, action: :destroy
   end
+  get '/bookable_slots/available', to: 'bookable_slots#available'
 
   resources :groups, only: %i(index destroy)
 
