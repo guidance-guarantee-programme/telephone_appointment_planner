@@ -1,4 +1,3 @@
-# rubocop:disable Metrics/ClassLength
 class AppointmentsController < ApplicationController
   before_action :authenticate_user!
 
