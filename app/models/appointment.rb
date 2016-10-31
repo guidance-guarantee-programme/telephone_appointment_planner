@@ -42,6 +42,10 @@ class Appointment < ApplicationRecord
     results
   end
 
+  def name
+    "#{first_name} #{last_name}"
+  end
+
   def assign_to_guider
     slot = BookableSlot
            .without_appointments

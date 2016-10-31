@@ -2,10 +2,10 @@
   <ol class="breadcrumb">
     <li><a href="<%= root_path %>">Home</a></li>
     <li><a href="<%= search_appointments_path %>">Search</a></li>
-    <li class="active">Edit appointment</li>
+    <li class="active">Edit appointment for <%= @appointment.name %></li>
   </ol>
 
-  <h1>Edit appointment</h1>
+  <h1>Edit appointment for <%= @appointment.name %></h1>
 </div>
 
 <%=

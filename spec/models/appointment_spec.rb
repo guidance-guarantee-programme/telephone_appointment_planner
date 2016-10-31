@@ -187,4 +187,12 @@ RSpec.describe Appointment, type: :model do
       expect(results).to eq [appointment]
     end
   end
+
+  describe '#name' do
+    subject { build_stubbed(:appointment, first_name: 'Joe', last_name: 'Bloggs') }
+
+    it 'returns the combination of first name and last name' do
+      expect(subject.name).to eq 'Joe Bloggs'
+    end
+  end
 end
