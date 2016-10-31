@@ -5,14 +5,30 @@
 <% end %>
 
 <% content_for :navbar_items do %>
-  <% if current_user.resource_manager? %>
-    <%= active_link_to 'Manage guiders', users_path, wrap_tag: :li %>
-    <%= active_link_to 'Holidays', holidays_path, wrap_tag: :li %>
-  <% end %>
-  <% if current_user.agent? %>
-    <%= active_link_to 'Book appointment', new_appointment_attempt_path, wrap_tag: :li %>
+  <li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Appointments <span class="caret"></span></a>
+    <ul class="dropdown-menu">
+      <%= active_link_to 'Search', search_appointments_path, wrap_tag: :li %>
+      <%= active_link_to 'Book appointment', new_appointment_attempt_path, wrap_tag: :li %>
+
+      <% if current_user.resource_manager? %>
+        <%= active_link_to 'Allocations', resource_calendar_path, wrap_tag: :li %>
+      <% end %>
+    </ul>
+  </li>
+
+  <% if current_user.guider? %>
     <%= active_link_to 'My appointments', calendar_path, wrap_tag: :li %>
-    <%= active_link_to 'Search', search_appointments_path, wrap_tag: :li %>
+  <% end %>
+
+  <% if current_user.resource_manager? %>
+    <li class="dropdown">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Availability <span class="caret"></span></a>
+      <ul class="dropdown-menu">
+        <%= active_link_to 'Groups & schedules', users_path, wrap_tag: :li %>
+        <%= active_link_to 'Holidays & unavailability', holidays_path, wrap_tag: :li %>
+      </ul>
+    </li>
   <% end %>
 <% end %>
 
