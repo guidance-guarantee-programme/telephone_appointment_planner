@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   resource :resource_calendar, only: :show
   resources :holidays, only: %i(index new create) do
     delete '/', on: :collection, action: :destroy
+    get 'merged', on: :collection
   end
   get '/bookable_slots/available', to: 'bookable_slots#available'
 

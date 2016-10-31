@@ -26,5 +26,14 @@ module Pages
         }();
       JS
     end
+
+    def find_holiday(holiday)
+      page.evaluate_script(<<-JS).with_indifferent_access
+        function() {
+          return $('.js-calendar')
+            .fullCalendar('clientEvents', #{holiday.id})[0];
+        }();
+      JS
+    end
   end
 end
