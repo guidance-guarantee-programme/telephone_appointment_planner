@@ -16,6 +16,13 @@ class Holiday < ApplicationRecord
       .order(:start_at)
   end
 
+  def self.overlapping_or_inside(start_at, end_at)
+    range = start_at..end_at
+    where(start_at: range)
+      .or(where(end_at: range))
+      .or(where('(start_at < ? AND end_at > ?)', start_at, end_at))
+  end
+
   def holiday_ids
     attributes['holiday_ids']
   end

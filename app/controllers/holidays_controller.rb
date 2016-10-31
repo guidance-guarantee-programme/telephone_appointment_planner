@@ -1,11 +1,17 @@
 class HolidaysController < ApplicationController
   before_action :authorise_for_resource_managers!
 
+  def merged
+    render json: Holiday.merged_for_calendar_view
+  end
+
   def index
     respond_to do |format|
       format.html
       format.json do
-        render json: Holiday.merged_for_calendar_view
+        starts = params[:start].to_date.beginning_of_day
+        ends   = params[:end].to_date.beginning_of_day
+        render json: Holiday.overlapping_or_inside(starts, ends)
       end
     end
   end

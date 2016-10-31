@@ -49,13 +49,18 @@
           }
         },
         eventAfterRender: (event, element) => {
-          if (event.rendering === 'background') {
+          if (event.rendering === 'background' || event.source.rendering == 'background') {
             return;
           }
 
           var resource = el.fullCalendar('getResourceById', event.resourceId);
-
           element.qtip({
+            position: {
+              target: 'mouse',
+              adjust: {
+                x: 10, y: 10
+              }
+            },
             content: {
               text: `
               <p>${event.start.format('HH:mm')} - ${event.end.format('HH:mm')}</p>
@@ -72,7 +77,17 @@
           this.handleEventChange(event, revertFunc);
         },
         resources: '/guiders',
-        events: '/appointments?include_links=false'
+        eventSources: [
+          {
+            url: '/appointments?include_links=false'
+          },
+          {
+            url: '/holidays',
+            color: 'red',
+            rendering: 'background'
+          }
+        ]
+
       }, config);
 
       super(el, calendarConfig);

@@ -52,4 +52,66 @@ RSpec.describe Holiday, type: :model do
       expect(results.first.end_at.to_s).to eq christmas.end_at.to_s
     end
   end
+
+  describe '#overlapping_or_inside' do
+    let(:start_at) do
+      Time.zone.now + 5.days
+    end
+
+    let(:end_at) do
+      start_at + 5.days
+    end
+
+    let!(:holiday_starting_in_range) do
+      create(
+        :holiday,
+        start_at: start_at + 3.days,
+        end_at: end_at + 5.days
+      )
+    end
+
+    let!(:holiday_ending_in_range) do
+      create(
+        :holiday,
+        start_at: start_at - 10.days,
+        end_at: start_at + 1.day
+      )
+    end
+
+    let!(:holiday_overlapping_range) do
+      create(
+        :holiday,
+        start_at: start_at - 10.days,
+        end_at: end_at + 10.days
+      )
+    end
+
+    let!(:holiday_not_overlapping_or_inside) do
+      create(
+        :holiday,
+        start_at: start_at + 10.days,
+        end_at: end_at + 20.days
+      )
+    end
+
+    let(:result) do
+      described_class.overlapping_or_inside(start_at, end_at)
+    end
+
+    it 'does not list holidays not overlapping or inside the range' do
+      expect(result).to_not include holiday_not_overlapping_or_inside
+    end
+
+    it 'lists holidays starting inside the range' do
+      expect(result).to include holiday_starting_in_range
+    end
+
+    it 'lists holidays ending inside the range' do
+      expect(result).to include holiday_ending_in_range
+    end
+
+    it 'lists holidays overlapping the range' do
+      expect(result).to include holiday_overlapping_range
+    end
+  end
 end

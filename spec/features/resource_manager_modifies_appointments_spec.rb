@@ -15,12 +15,64 @@ RSpec.feature 'Resource manager modifies appointments' do
     end
   end
 
+  scenario 'Viewing holidays for one guider', js: true do
+    given_the_user_is_a_resource_manager do
+      and_there_is_a_holiday_for_one_guider
+      travel_to @holiday.start_at do
+        when_they_view_the_appointments
+        then_they_see_the_holiday_for_one_guider
+      end
+    end
+  end
+
+  scenario 'Viewing holidays for all guiders', js: true do
+    given_the_user_is_a_resource_manager do
+      and_there_is_a_holiday_for_all_guiders
+      travel_to @holiday.start_at do
+        when_they_view_the_appointments
+        then_they_see_the_holiday_for_all_guiders
+      end
+    end
+  end
+
+  def and_there_is_a_holiday_for_one_guider
+    start_at = BusinessDays.from_now(2).change(hour: 9)
+    @holiday = create(
+      :holiday,
+      user: create(:guider),
+      start_at: start_at,
+      end_at: start_at + 1.hour
+    )
+  end
+
+  def and_there_is_a_holiday_for_all_guiders
+    start_at = BusinessDays.from_now(3).change(hour: 9)
+    @holiday = create(
+      :holiday,
+      user: nil,
+      start_at: start_at,
+      end_at: start_at + 1.hour
+    )
+  end
+
   def and_there_are_appointments_for_multiple_guiders
     @ben = create(:guider, name: 'Ben Lovell')
     @jan = create(:guider, name: 'Jan Schwifty')
 
     @appointment = create(:appointment, guider: @ben)
     @other_appointment = create(:appointment, guider: @jan)
+  end
+
+  def then_they_see_the_holiday_for_one_guider
+    holiday = @page.find_holiday(@holiday)
+    expect(holiday[:title]).to eq @holiday.title
+    expect(holiday[:resourceId]).to eq @holiday.user.id
+  end
+
+  def then_they_see_the_holiday_for_all_guiders
+    holiday = @page.find_holiday(@holiday)
+    expect(holiday[:title]).to eq @holiday.title
+    expect(holiday[:resourceId]).to be_nil
   end
 
   def when_they_view_the_appointments
