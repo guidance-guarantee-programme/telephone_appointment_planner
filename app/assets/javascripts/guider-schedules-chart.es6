@@ -2,7 +2,7 @@
 {
   'use strict';
 
-  class GuiderSchedulesCalendar {
+  class GuiderSchedulesChart {
     constructor(el, config = {}) {
       const defaultConfig = {
         gridColumns: 12,
@@ -111,5 +111,5 @@
   }
 
   window.PWTAP = window.PWTAP || {};
-  window.PWTAP.GuiderSchedulesCalendar = GuiderSchedulesCalendar;
+  window.PWTAP.GuiderSchedulesChart = GuiderSchedulesChart;
 }
