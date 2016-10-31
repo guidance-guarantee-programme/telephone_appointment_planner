@@ -112,9 +112,9 @@ class AppointmentsController < ApplicationController
 
   def redirect_after_successful_update
     if current_user.agent?
-      redirect_to search_appointments_path, success: 'Appointment has been rescheduled'
+      redirect_to search_appointments_path, success: 'Appointment has been modified'
     else
-      redirect_to calendar_path, success: 'Appointment has been rescheduled'
+      redirect_to calendar_path, success: 'Appointment has been modified'
     end
   end
 end
