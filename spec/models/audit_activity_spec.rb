@@ -13,9 +13,8 @@ RSpec.describe AuditActivity do
       end
     end
 
-    let(:audit) { @appointment.audits.last }
-
-    subject { @appointment.activities.last }
+    let(:audit) { @appointment.audits.first }
+    subject { @appointment.activities.first }
 
     it 'creates an audit activity from the given audit' do
       expect(subject).to be_a(described_class)

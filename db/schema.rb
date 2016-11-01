@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(version: 20161101163901) do
     t.integer  "status",                     default: 0,     null: false
     t.datetime "created_at",                                 null: false
     t.datetime "updated_at",                                 null: false
+    t.integer  "agent_id",                                   null: false
   end
 
   create_table "audits", force: :cascade do |t|

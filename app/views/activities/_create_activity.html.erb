@@ -1,0 +1,4 @@
+<li class="activity-feed__item t-activity" id="activity-<%= create_activity.id %>">
+  <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+  <b><%= create_activity.owner_name %></b> <%= create_activity.message %> <em class="badge"><%= time_ago_in_words(create_activity.created_at) %> ago</em>
+</li>
