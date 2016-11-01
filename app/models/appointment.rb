@@ -2,6 +2,7 @@ class Appointment < ApplicationRecord
   include PgSearch
 
   pg_search_scope :search, against: %i(id first_name last_name)
+  belongs_to :agent, class_name: 'User'
 
   enum status: %i(
     pending
@@ -15,6 +16,7 @@ class Appointment < ApplicationRecord
 
   belongs_to :guider, class_name: 'User'
 
+  validates :agent, presence: true
   validates :start_at, presence: true
   validates :end_at, presence: true
   validates :first_name, presence: true

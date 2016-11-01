@@ -72,6 +72,7 @@ RSpec.feature 'Agent manages appointments' do
     expect(Appointment.count).to eq 1
     appointment = Appointment.first
 
+    expect(appointment.agent).to eq current_user
     expect(appointment.guider).to eq @guider
     expect(appointment.first_name).to eq 'Some'
     expect(appointment.last_name).to eq 'Person'

@@ -1,5 +1,6 @@
 FactoryGirl.define do
   factory :appointment do
+    agent { create(:agent) }
     start_at { BusinessDays.from_now(3).at_midday }
     end_at { start_at + 1.hour }
     first_name { Faker::Name.first_name }

@@ -50,6 +50,7 @@ class AppointmentsController < ApplicationController
   # rubocop:disable Metrics/MethodLength
   def create
     @appointment = Appointment.new(appointment_params)
+    @appointment.agent = current_user
     @appointment_attempt = AppointmentAttempt.find(params[:appointment_attempt_id])
     @appointment.assign_to_guider
     if @appointment.save

@@ -59,4 +59,5 @@ RSpec.configure do |config|
 
   config.include UserHelpers
   config.include ActiveSupport::Testing::TimeHelpers
+  config.include ActionView::Helpers::DateHelper
 end
