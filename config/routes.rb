@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   end
   resources :customers
   resource :calendar, only: :show
+  resource :company_calendar, only: :show
   resources :appointments, only: %i(index show edit update) do
     patch :batch_update, on: :collection
 

@@ -33,6 +33,15 @@ RSpec.feature 'Roles' do
     end
   end
 
+  context 'Guiders' do
+    scenario 'Can view company calendar' do
+      given_the_user_is_a_guider do
+        when_they_try_to_view_the_company_calendar
+        then_they_are_allowed
+      end
+    end
+  end
+
   context 'Users who are not Resource Managers, Agents, or Guiders' do
     scenario 'Can attempt appointments' do
       given_the_user_has_no_permissions do
@@ -81,6 +90,13 @@ RSpec.feature 'Roles' do
     scenario 'Can not manage holidays' do
       given_the_user_has_no_permissions do
         when_they_try_to_manage_holidays
+        then_they_are_locked_out
+      end
+    end
+
+    scenario 'Can not view the company calendar' do
+      given_the_user_has_no_permissions do
+        when_they_try_to_view_the_company_calendar
         then_they_are_locked_out
       end
     end
@@ -152,5 +168,9 @@ RSpec.feature 'Roles' do
     appointment = create(:appointment)
     @page = Pages::RescheduleAppointment.new
     @page.load(id: appointment.id)
+  end
+
+  def when_they_try_to_view_the_company_calendar
+    @page = Pages::CompanyCalendar.new.tap(&:load)
   end
 end
