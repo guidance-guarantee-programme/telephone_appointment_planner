@@ -58,3 +58,16 @@ $calendar-today-background: $color-white;
 .holiday-calendar {
   margin-top: 1em;
 }
+
+.fc-right {
+  position: relative;
+}
+
+.jump-to-date {
+  border: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+  right: 150px;
+  top: 20px;
+}

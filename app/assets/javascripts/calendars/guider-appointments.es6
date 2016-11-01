@@ -8,7 +8,7 @@
         columnFormat: 'ddd D/M',
         defaultView: 'agendaDay',
         header: {
-          right: 'agendaDay agendaWeek month today prev,next'
+          right: 'agendaDay agendaWeek month today jumpToDate prev,next'
         },
         nowIndicator: true,
         slotDuration: '00:30:00',
