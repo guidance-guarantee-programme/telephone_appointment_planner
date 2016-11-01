@@ -1,6 +1,4 @@
 class AppointmentAttemptsController < ApplicationController
-  before_action :authorise_for_agents!
-
   def new
     @appointment_attempt = AppointmentAttempt.new
   end

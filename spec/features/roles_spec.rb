@@ -33,30 +33,28 @@ RSpec.feature 'Roles' do
     end
   end
 
-  context 'Agents' do
+  context 'Users who are not Resource Managers, Agents, or Guiders' do
     scenario 'Can attempt appointments' do
-      given_the_user_is_an_agent do
+      given_the_user_has_no_permissions do
         when_they_try_to_attempt_an_appointment
         then_they_are_allowed
       end
     end
 
     scenario 'Can book appointments' do
-      given_the_user_is_an_agent do
+      given_the_user_has_no_permissions do
         when_they_try_to_book_an_appointment
         then_they_are_allowed
       end
     end
 
     scenario 'Can reschedule appointments' do
-      given_the_user_is_an_agent do
+      given_the_user_has_no_permissions do
         when_they_try_to_reschedule_an_appoinment
         then_they_are_allowed
       end
     end
-  end
 
-  context 'Users who are not Resource Managers, Agents, or Guiders' do
     scenario 'Can not manage guiders' do
       given_the_user_has_no_permissions do
         when_they_try_to_manager_guiders
