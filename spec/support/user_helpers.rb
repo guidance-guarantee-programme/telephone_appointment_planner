@@ -3,6 +3,17 @@ module UserHelpers
     GDS::SSO.test_user
   end
 
+  def given_a_browser_session_for(user)
+    existing_session      = Capybara.session_name
+    Capybara.session_name = user.to_param
+    GDS::SSO.test_user    = user
+
+    yield
+  ensure
+    Capybara.session_name = existing_session
+    GDS::SSO.test_user    = nil
+  end
+
   def given_the_user_is_a_guider
     GDS::SSO.test_user = create(:guider)
     yield

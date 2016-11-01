@@ -7,6 +7,8 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-fullcalendar-scheduler'
   gem 'rails-assets-qTip2'
   gem 'rails-assets-bootstrap-daterangepicker'
+  gem 'rails-assets-cookie'
+  gem 'rails-assets-pusher'
 end
 
 source 'https://rubygems.org' do
@@ -34,6 +36,7 @@ source 'https://rubygems.org' do
   gem 'pg_search'
   gem 'kaminari'
   gem 'bootstrap-kaminari-views'
+  gem 'pusher'
 
   group :development, :test do
     gem 'pry-byebug'
@@ -44,6 +47,7 @@ source 'https://rubygems.org' do
     gem 'launchy'
     gem 'site_prism'
     gem 'rubocop'
+    gem 'pusher-fake'
   end
 
   group :test do

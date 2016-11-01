@@ -41,6 +41,9 @@ Rails.application.configure do
   # Precompile in travis to resolve poltergeist timeouts
   config.assets.compile = ENV['TRAVIS'] ? false : true
 
+  # work off jobs inline
+  config.active_job.queue_adapter = :inline
+
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 end

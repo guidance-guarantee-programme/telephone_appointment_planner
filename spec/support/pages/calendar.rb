@@ -8,5 +8,11 @@ module Pages
       element :title, '.fc-title'
       element :time, '.fc-time'
     end
+
+    section :notification, '.t-notification' do
+      element :customer, '.t-customer'
+      element :start, '.t-start'
+      element :guider, '.t-guider'
+    end
   end
 end
