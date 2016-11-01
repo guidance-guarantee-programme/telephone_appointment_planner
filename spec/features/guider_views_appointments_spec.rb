@@ -15,6 +15,19 @@ RSpec.feature 'Guider views appointments' do
     end
   end
 
+  scenario 'Guider views all appointments', js: true do
+    given_the_user_is_a_guider do
+      and_there_are_appointments_for_multiple_guiders
+      travel_to @appointment.start_at do
+        when_they_view_the_company_calendar
+        then_they_see_the_appointments_for_today
+        when_they_advance_a_working_day
+        then_they_see_the_appointments_for_that_day
+        and_they_cannot_edit_the_appointment
+      end
+    end
+  end
+
   def and_there_are_appointments_for_multiple_guiders
     # this would appear 'today'
     @appointment = create(:appointment, guider: current_user)
@@ -26,6 +39,10 @@ RSpec.feature 'Guider views appointments' do
 
   def when_they_view_their_calendar
     @page = Pages::Calendar.new.tap(&:load)
+  end
+
+  def when_they_view_the_company_calendar
+    @page = Pages::CompanyCalendar.new.tap(&:load)
   end
 
   def then_they_see_the_appointment_for_today
@@ -40,6 +57,15 @@ RSpec.feature 'Guider views appointments' do
     end
   end
 
+  def then_they_see_the_appointments_for_today
+    @page.wait_for_appointments
+    expect(@page).to have_appointments(count: 1)
+
+    actual = @page.appointments.first['id']
+
+    expect(actual).to eq(@appointment.id.to_s)
+  end
+
   def when_they_advance_a_working_day
     @page.next_working_day.click
   end
@@ -51,7 +77,20 @@ RSpec.feature 'Guider views appointments' do
     expect(@page.appointments.first.text).to include(@tomorrow.first_name)
   end
 
+  def then_they_see_the_appointments_for_that_day
+    @page.wait_for_appointments
+    expect(@page).to have_appointments(count: 1)
+
+    actual = @page.appointments.first['id']
+
+    expect(actual).to eq(@tomorrow.id.to_s)
+  end
+
   def and_they_can_edit_the_appointment
     expect(@page.appointments.first.root_element['href']).to end_with(edit_appointment_path(@tomorrow))
+  end
+
+  def and_they_cannot_edit_the_appointment
+    expect(@page.appointments.first['href']).to be_nil
   end
 end
