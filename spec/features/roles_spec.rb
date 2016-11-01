@@ -4,7 +4,7 @@ RSpec.feature 'Roles' do
   context 'Resource Managers' do
     scenario 'Can manage guiders' do
       given_the_user_is_a_resource_manager do
-        when_they_try_to_manager_guiders
+        when_they_try_to_manage_guiders
         then_they_are_allowed
       end
     end
@@ -57,7 +57,7 @@ RSpec.feature 'Roles' do
 
     scenario 'Can not manage guiders' do
       given_the_user_has_no_permissions do
-        when_they_try_to_manager_guiders
+        when_they_try_to_manage_guiders
         then_they_are_locked_out
       end
     end
@@ -84,11 +84,21 @@ RSpec.feature 'Roles' do
         then_they_are_locked_out
       end
     end
+
+    scenario 'Can not view reports' do
+      given_the_user_has_no_permissions do
+        when_they_try_to_view_reports
+        then_they_are_locked_out
+      end
+    end
   end
 
-  def when_they_try_to_manager_guiders
-    @page = Pages::Users.new
-    @page.load
+  def when_they_try_to_view_reports
+    @page = Pages::NewReport.new.tap(&:load)
+  end
+
+  def when_they_try_to_manage_guiders
+    @page = Pages::Users.new.tap(&:load)
   end
 
   def when_they_try_to_manage_guiders_slots
