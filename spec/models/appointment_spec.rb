@@ -20,8 +20,7 @@ RSpec.describe Appointment, type: :model do
       :first_name,
       :last_name,
       :phone,
-      :memorable_word,
-      :where_did_you_hear_about_pension_wise
+      :memorable_word
     ]
     required.each do |field|
       it "validate presence of #{field}" do

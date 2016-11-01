@@ -4,11 +4,15 @@
     <li class="active">Book an appointment</li>
   </ol>
 
-  <h1>Book an appointment - Step 2</h1>
+  <h1>Book an appointment</h1>
 </div>
 <%= render 'shared/required_fields_note' %>
-<%= form_for [@appointment_attempt, @appointment], layout: :basic do |f| %>
+<%= form_for @appointment, layout: :basic do |f| %>
   <div class="row form-group">
+    <div class="col-md-12">
+      <h2>Date of birth</h2>
+      <%= render 'shared/date_of_birth_form_field', form: f %>
+    </div>
     <div class="col-md-12">
       <h2>Choose available slot <%= required_label %></h2>
       <p class="text-danger hide" id="slot-error">Please choose a slot</p>

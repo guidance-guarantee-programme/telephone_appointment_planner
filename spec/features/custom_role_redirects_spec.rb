@@ -36,5 +36,5 @@ def then_they_see_the_calendar_page
 end
 
 def then_they_see_the_new_appointments_page
-  expect(current_path).to eq new_appointment_attempt_path
+  expect(current_path).to eq new_appointment_path
 end
