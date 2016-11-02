@@ -11,7 +11,7 @@
         eventBorderColor: '#000',
         events: el.data('holidays-path'),
         header: {
-          right: 'month, agendaWeek, agendaDay today jumpToDate prev,next'
+          right: 'agendaDay agendaWeek month today jumpToDate prev,next'
         },
         eventRender: (event, element) => {
           const $button = $(`
