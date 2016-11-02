@@ -2,6 +2,7 @@ class Appointment < ApplicationRecord
   include PgSearch
 
   pg_search_scope :search, against: %i(id first_name last_name)
+  belongs_to :agent, class_name: 'User'
 
   enum status: %i(
     pending
@@ -15,6 +16,7 @@ class Appointment < ApplicationRecord
 
   belongs_to :guider, class_name: 'User'
 
+  validates :agent, presence: true
   validates :start_at, presence: true
   validates :end_at, presence: true
   validates :first_name, presence: true
@@ -30,7 +32,7 @@ class Appointment < ApplicationRecord
 
   has_many :activities, -> { order('created_at DESC') }
 
-  audited on: :update
+  audited on: %i(create update)
 
   def self.full_search(query, start_at, end_at)
     results = all
@@ -61,7 +63,12 @@ class Appointment < ApplicationRecord
   private
 
   def after_audit
-    AuditActivity.from(audits.last, self)
+    audit = audits.last
+    if audit.action == 'create'
+      CreateActivity.from(audit, self)
+    else
+      AuditActivity.from(audit, self)
+    end
   end
 
   def not_within_two_business_days

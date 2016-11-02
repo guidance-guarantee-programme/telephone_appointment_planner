@@ -76,8 +76,8 @@ RSpec.feature 'User views appointment activities' do
     @page.activity_feed.tap do |feed|
       feed.wait_for_hidden_activities
 
-      expect(feed).to have_activities(count: 2)
-      expect(feed.activities.last).to have_text('name')
+      expect(feed).to have_activities(count: 3)
+      expect(feed.activities.last).to have_text('created')
     end
   end
 

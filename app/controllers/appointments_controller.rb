@@ -53,7 +53,7 @@ class AppointmentsController < ApplicationController
   end
 
   def create
-    @appointment = Appointment.new(create_params)
+    @appointment = Appointment.new(create_params.merge(agent: current_user))
     @appointment.assign_to_guider
     if @appointment.save
       redirect_to(
