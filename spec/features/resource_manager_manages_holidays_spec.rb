@@ -119,8 +119,8 @@ RSpec.feature 'Resource manager manages holidays' do
     @page = Pages::NewHoliday.new
 
     @page.title.set 'Holiday Title'
-    start_at = Time.zone.now.beginning_of_day.change(hour: 14).strftime(CreateHolidays::DATE_RANGE_PICKER_FORMAT)
-    end_at = Time.zone.now.beginning_of_day.change(hour: 16).strftime(CreateHolidays::DATE_RANGE_PICKER_FORMAT)
+    start_at = I18n.l(Time.zone.now.beginning_of_day.change(hour: 14), format: :date_range_picker)
+    end_at = I18n.l(Time.zone.now.beginning_of_day.change(hour: 16), format: :date_range_picker)
     @page.date_range.set "#{start_at} - #{end_at}"
     page.execute_script '$(".daterangepicker").hide();'
     @page.select_all_users

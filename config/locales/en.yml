@@ -20,4 +20,9 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  date:
+    formats:
+      date_range_picker: '%e/%m/%Y'
+  time:
+    formats:
+      date_range_picker: "%e/%m/%Y %H:%M"

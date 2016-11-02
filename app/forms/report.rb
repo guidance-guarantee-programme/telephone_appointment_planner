@@ -7,7 +7,6 @@ class Report
   attr_reader :where
   attr_reader :date_range
 
-  DATE_RANGE_PICKER_FORMAT = '%e/%m/%Y'.freeze
   EXPORTABLE_ATTRIBUTES = [
     :created_at,
     :booked_by,
@@ -54,7 +53,7 @@ class Report
 
   def range
     start_at, end_at = date_range.split(' - ').map do |d|
-      Time.zone.strptime(d, DATE_RANGE_PICKER_FORMAT)
+      Time.zone.strptime(d, I18n.t('date.formats.date_range_picker'))
     end
     start_at..end_at if start_at && end_at
   end
