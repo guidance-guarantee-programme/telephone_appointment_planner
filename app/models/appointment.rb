@@ -35,8 +35,8 @@ class Appointment < ApplicationRecord
   audited on: %i(create update)
 
   def self.full_search(query, start_at, end_at)
-    results = all
-    results = results.search(query) if query.present?
+    results = query.present? ? search(query) : order(created_at: :desc)
+
     if start_at && end_at
       results = results
                 .where('start_at > ?', start_at)

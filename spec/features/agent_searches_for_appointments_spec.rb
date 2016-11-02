@@ -27,7 +27,13 @@ RSpec.feature 'Agent searches for appointments' do
   end
 
   def and_appointments_exist
-    @appointments = create_list(:appointment, 3)
+    from = BusinessDays.from_now(3).at_midday
+
+    @appointments = [
+      create(:appointment, created_at: from + 2.seconds),
+      create(:appointment, created_at: from + 1.second),
+      create(:appointment, created_at: from)
+    ]
   end
 
   def when_they_search_for_nothing
