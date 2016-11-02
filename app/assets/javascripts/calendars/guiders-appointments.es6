@@ -9,11 +9,7 @@
         defaultView: 'agendaDay',
         resourceLabelText: 'Guiders',
         header: {
-            right: 'agendaDay timelineDay today jumpToDate prev,next'
-        },
-        buttonText: {
-          agendaDay: 'Agenda',
-          timelineDay: 'Timeline'
+          right: 'agendaDay timelineDay today jumpToDate prev,next'
         },
         groupByDateAndResource: true,
         nowIndicator: true,

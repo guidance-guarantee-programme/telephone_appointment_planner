@@ -13,7 +13,7 @@
         events: el.data('available-slots-path'),
         defaultDate: moment(el.data('default-date')),
         header: {
-          'right': 'agendaWeek agendaThreeDay agendaDay today jumpToDate prev,next'
+          'right': 'agendaDay agendaThreeDay agendaWeek today jumpToDate prev,next'
         },
         views: {
           agendaThreeDay: {

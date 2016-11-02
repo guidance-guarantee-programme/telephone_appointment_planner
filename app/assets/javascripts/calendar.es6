@@ -17,6 +17,13 @@ class Calendar {
           click: this.jumpToDateClick.bind(this)
         }
       },
+      buttonText: {
+        agendaDay: 'Day',
+        timelineDay: 'Timeline',
+        today: 'Today',
+        month: 'Month',
+        week: 'Week'
+      },
       defaultDate: moment(this.$el.data('default-date')),
       firstDay: 1,
       height: 'auto',
