@@ -22,5 +22,6 @@ module Pages
     element :start_at,                              '.t-start-at', visible: false
     element :end_at,                                '.t-end-at', visible: false
     element :save,                                  '.t-save'
+    element :slot_unavailable_message,              '.t-slot-unavailable-message'
   end
 end

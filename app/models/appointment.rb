@@ -23,6 +23,7 @@ class Appointment < ApplicationRecord
   validates :date_of_birth, presence: true
   validates :memorable_word, presence: true
   validates :status, presence: true
+  validates :guider, presence: true
 
   validate :not_within_two_business_days
   validate :not_more_than_thirty_business_days_in_future
