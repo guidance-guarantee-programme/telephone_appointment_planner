@@ -3,6 +3,7 @@ require 'csv'
 class Report
   include ActiveModel::Model
   include ActionView::Helpers::DateHelper
+  include DateRangePickerHelper
 
   attr_reader :where
   attr_reader :date_range
@@ -53,7 +54,7 @@ class Report
 
   def range
     start_at, end_at = date_range.split(' - ').map do |d|
-      Time.zone.strptime(d, I18n.t('date.formats.date_range_picker'))
+      strp_date_range_picker_date(d)
     end
     start_at..end_at if start_at && end_at
   end
