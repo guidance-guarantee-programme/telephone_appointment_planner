@@ -11,14 +11,10 @@ Rails.application.routes.draw do
   end
 
   resources :groups, only: %i(index create destroy)
-  resources :appointment_attempts do
-    get 'ineligible', on: :collection
-    resources :appointments
-  end
   resources :customers
   resource :calendar, only: :show
   resource :company_calendar, only: :show
-  resources :appointments, only: %i(index show edit update) do
+  resources :appointments, only: %i(new index show edit update create) do
     patch :batch_update, on: :collection
 
     resources :activities, only: %i(index create)

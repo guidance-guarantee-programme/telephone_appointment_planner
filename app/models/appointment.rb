@@ -20,8 +20,8 @@ class Appointment < ApplicationRecord
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :phone, presence: true
+  validates :date_of_birth, presence: true
   validates :memorable_word, presence: true
-  validates :where_did_you_hear_about_pension_wise, presence: true
   validates :status, presence: true
 
   validate :not_within_two_business_days

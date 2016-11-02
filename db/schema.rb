@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161027165515) do
+ActiveRecord::Schema.define(version: 20161101163901) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,33 +26,22 @@ ActiveRecord::Schema.define(version: 20161027165515) do
     t.index ["type"], name: "index_activities_on_type", using: :btree
   end
 
-  create_table "appointment_attempts", force: :cascade do |t|
-    t.string   "first_name",               null: false
-    t.string   "last_name",                null: false
-    t.date     "date_of_birth",            null: false
-    t.boolean  "defined_contribution_pot", null: false
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-  end
-
   create_table "appointments", force: :cascade do |t|
-    t.integer  "guider_id",                                             null: false
-    t.datetime "start_at",                                              null: false
-    t.datetime "end_at",                                                null: false
-    t.string   "first_name",                                            null: false
-    t.string   "last_name",                                             null: false
+    t.integer  "guider_id",                                  null: false
+    t.datetime "start_at",                                   null: false
+    t.datetime "end_at",                                     null: false
+    t.string   "first_name",                                 null: false
+    t.string   "last_name",                                  null: false
     t.string   "email"
-    t.string   "phone",                                                 null: false
+    t.string   "phone",                                      null: false
     t.string   "mobile"
-    t.string   "memorable_word",                                        null: false
+    t.string   "memorable_word",                             null: false
     t.text     "notes"
-    t.boolean  "opt_out_of_market_research",            default: false, null: false
-    t.string   "where_did_you_hear_about_pension_wise", default: "",    null: false
-    t.string   "who_is_your_pension_provider",          default: "",    null: false
+    t.boolean  "opt_out_of_market_research", default: false, null: false
     t.date     "date_of_birth"
-    t.integer  "status",                                default: 0,     null: false
-    t.datetime "created_at",                                            null: false
-    t.datetime "updated_at",                                            null: false
+    t.integer  "status",                     default: 0,     null: false
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
   end
 
   create_table "audits", force: :cascade do |t|

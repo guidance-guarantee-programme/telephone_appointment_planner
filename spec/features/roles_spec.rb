@@ -43,13 +43,6 @@ RSpec.feature 'Roles' do
   end
 
   context 'Users who are not Resource Managers, Agents, or Guiders' do
-    scenario 'Can attempt appointments' do
-      given_the_user_has_no_permissions do
-        when_they_try_to_attempt_an_appointment
-        then_they_are_allowed
-      end
-    end
-
     scenario 'Can book appointments' do
       given_the_user_has_no_permissions do
         when_they_try_to_book_an_appointment
@@ -147,15 +140,9 @@ RSpec.feature 'Roles' do
     expect(@page).to_not have_permission_error_message
   end
 
-  def when_they_try_to_attempt_an_appointment
-    @page = Pages::NewAppointmentAttempt.new
-    @page.load
-  end
-
   def when_they_try_to_book_an_appointment
-    appointment_attempt = create(:appointment_attempt)
     @page = Pages::NewAppointment.new
-    @page.load(appointment_attempt_id: appointment_attempt.id)
+    @page.load
   end
 
   def when_they_try_to_edit_appointments

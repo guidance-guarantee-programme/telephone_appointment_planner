@@ -1,5 +1,4 @@
 # rubocop:disable Metrics/AbcSize
-# rubocop:disable Metrics/MethodLength
 require 'rails_helper'
 
 RSpec.feature 'Guider edits an appointment' do
@@ -31,8 +30,6 @@ RSpec.feature 'Guider edits an appointment' do
     expect(@page.memorable_word.value).to eq(@appointment.memorable_word)
     expect(@page.notes.value).to eq(@appointment.notes)
     expect(@page.opt_out_of_market_research.value).to eq('1')
-    expect(@page.where_did_you_hear_about_pension_wise.value).to eq(@appointment.where_did_you_hear_about_pension_wise)
-    expect(@page.who_is_your_pension_provider.value).to eq(@appointment.who_is_your_pension_provider)
     expect(@page.status.value).to eq(@appointment.status)
   end
 

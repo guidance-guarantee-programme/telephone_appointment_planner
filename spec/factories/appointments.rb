@@ -12,7 +12,5 @@ FactoryGirl.define do
     memorable_word 'lozenge'
     date_of_birth '1945-01-01'
     guider { build(:user) }
-    where_did_you_hear_about_pension_wise 'Somewhere'
-    who_is_your_pension_provider 'Someone'
   end
 end

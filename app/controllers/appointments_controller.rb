@@ -39,31 +39,21 @@ class AppointmentsController < ApplicationController
   end
 
   def new
-    @appointment_attempt = AppointmentAttempt.find(params[:appointment_attempt_id])
-    @appointment = Appointment.new(
-      first_name: @appointment_attempt.first_name,
-      last_name: @appointment_attempt.last_name,
-      date_of_birth: @appointment_attempt.date_of_birth
-    )
+    @appointment = Appointment.new
   end
 
   # rubocop:disable Metrics/MethodLength
   def create
     @appointment = Appointment.new(appointment_params)
-    @appointment_attempt = AppointmentAttempt.find(params[:appointment_attempt_id])
     @appointment.assign_to_guider
     if @appointment.save
       redirect_to(
-        appointment_attempt_appointment_path(@appointment_attempt, @appointment),
+        search_appointments_path,
         success: 'Appointment has been created!'
       )
     else
       render :new
     end
-  end
-
-  def show
-    @appointment = Appointment.find(params[:id])
   end
 
   def search
@@ -104,8 +94,6 @@ class AppointmentsController < ApplicationController
       :memorable_word,
       :notes,
       :opt_out_of_market_research,
-      :where_did_you_hear_about_pension_wise,
-      :who_is_your_pension_provider,
       :status
     )
   end
