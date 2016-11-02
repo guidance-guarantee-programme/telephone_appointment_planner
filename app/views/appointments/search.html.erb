@@ -31,13 +31,14 @@
   </div>
 </div>
 
-<table id="results" class="table table-striped table-bordered table-hover" data-module="SortableList" data-config='{"valueNames": ["id", "first_name", "last_name", "date", "status"]}' data-default-order='{"value": "id", "order": "asc"}'>
+<table id="results" class="table table-striped table-bordered table-hover" data-module="SortableList" data-config='{"valueNames": ["id", "created", "first_name", "last_name", "appointment_date", "status"]}' data-default-order='{"value": "created", "order": "desc"}'>
   <thead>
     <tr>
       <th><span class="sort" data-sort="id">Reference</span></th>
+      <th><span class="sort" data-sort="created">Created</span></th>
       <th><span class="sort" data-sort="first_name">First Name</span></th>
       <th><span class="sort" data-sort="last_name">Last Name</span></th>
-      <th><span class="sort" data-sort="date">Date</span></th>
+      <th><span class="sort" data-sort="appointment_date">Appointment Date/Time</span></th>
       <th><span class="sort" data-sort="status">Status</span></th>
       <th width="1%">Actions</th>
     </tr>
@@ -47,9 +48,10 @@
       <% result = AppointmentPresenter.new(result) %>
       <tr class='t-result'>
         <td class='t-id'><span class="id"><%= result.id %></span></td>
+        <td><span class="created"><%= result.created_at %></span></td>
         <td><span class="first_name"><%= result.first_name %></span></td>
         <td><span class="last_name"><%= result.last_name %></span></td>
-        <td><span class="date"><%= result.date %></span></td>
+        <td><span class="appointment_date"><%= result.date %></span></td>
         <td><span class="status"><%= result.status %></span></td>
         <td nowrap="true">
           <%= link_to edit_appointment_path(result), title: 'Edit appointment', class: 'btn btn-info' do %>

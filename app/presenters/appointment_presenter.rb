@@ -5,6 +5,10 @@ class AppointmentPresenter < SimpleDelegator
     super.titleize
   end
 
+  def created_at
+    super.strftime(DATE_FORMAT)
+  end
+
   def date
     start_at.strftime(DATE_FORMAT)
   end

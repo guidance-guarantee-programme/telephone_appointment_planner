@@ -152,7 +152,13 @@ RSpec.describe Appointment, type: :model do
 
   describe '#full_search' do
     before do
-      @appointments = create_list(:appointment, 3)
+      from = BusinessDays.from_now(3).at_midday
+
+      @appointments = [
+        create(:appointment, created_at: from + 2.seconds),
+        create(:appointment, created_at: from + 1.second),
+        create(:appointment, created_at: from)
+      ]
     end
 
     def results(q, start_at, end_at)
