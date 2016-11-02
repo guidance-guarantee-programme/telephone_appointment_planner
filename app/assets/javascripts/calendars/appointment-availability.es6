@@ -57,6 +57,11 @@
           this.$selectedEnd.val(end);
 
           this.$el.fullCalendar('rerenderEvents');
+        },
+        loading: (isLoading) => {
+          if (!isLoading) {
+            this.selectEvent();
+          }
         }
       }, config);
 
@@ -71,7 +76,6 @@
       ];
 
       this.init();
-      this.selectEvent();
       this.displayErrorBorder();
     }
 
