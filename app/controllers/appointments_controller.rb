@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 class AppointmentsController < ApplicationController
   before_action :authenticate_user!
 
@@ -27,11 +28,20 @@ class AppointmentsController < ApplicationController
     @appointment = Appointment.find(params[:appointment_id])
   end
 
+  def update_reschedule
+    @appointment = Appointment.find(params[:appointment_id])
+    @appointment.assign_attributes(update_reschedule_params)
+    @appointment.assign_to_guider
+    if @appointment.save
+      redirect_after_successful_update
+    else
+      render :reschedule
+    end
+  end
+
   def update
     @appointment = Appointment.find(params[:id])
-    @appointment.assign_attributes(appointment_params)
-    @appointment.assign_to_guider if appointment_params[:start_at] && appointment_params[:end_at]
-    if @appointment.save
+    if @appointment.update_attributes(update_params)
       redirect_after_successful_update
     else
       render :edit
@@ -42,9 +52,8 @@ class AppointmentsController < ApplicationController
     @appointment = Appointment.new
   end
 
-  # rubocop:disable Metrics/MethodLength
   def create
-    @appointment = Appointment.new(appointment_params)
+    @appointment = Appointment.new(create_params)
     @appointment.assign_to_guider
     if @appointment.save
       redirect_to(
@@ -81,10 +90,9 @@ class AppointmentsController < ApplicationController
     starts..ends
   end
 
-  def appointment_params
-    params.require(:appointment).permit(
-      :start_at,
-      :end_at,
+  # rubocop:disable Metrics/MethodLength
+  def updateable_params
+    [
       :first_name,
       :last_name,
       :email,
@@ -95,7 +103,22 @@ class AppointmentsController < ApplicationController
       :notes,
       :opt_out_of_market_research,
       :status
+    ]
+  end
+  # rubocop:enable Metrics/MethodLength
+
+  def update_params
+    params.require(:appointment).permit(updateable_params)
+  end
+
+  def create_params
+    params.require(:appointment).permit(
+      updateable_params.concat([:start_at, :end_at])
     )
+  end
+
+  def update_reschedule_params
+    params.require(:appointment).permit(:start_at, :end_at)
   end
 
   def redirect_after_successful_update

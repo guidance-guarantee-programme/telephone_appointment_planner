@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   resource :company_calendar, only: :show
   resources :appointments, only: %i(new index show edit update create) do
     patch :batch_update, on: :collection
+    patch :update_reschedule
 
     resources :activities, only: %i(index create)
     get '/search', on: :collection, action: :search

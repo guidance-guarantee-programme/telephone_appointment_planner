@@ -72,14 +72,7 @@
 
       this.init();
       this.selectEvent();
-      this.checkError();
-    }
-
-    checkError() {
-      if (this.$selectedStart.parents('.field_with_errors').length) {
-        $(`#${this.$el.data('error-id')}`).removeClass('hide');
-        this.$el.find('.fc-view-container').addClass('error');
-      }
+      this.displayErrorBorder();
     }
 
     getEventColour(event) {
@@ -119,6 +112,12 @@
           event.$div.trigger('click');
           return;
         }
+      }
+    }
+
+    displayErrorBorder() {
+      if ($('.js-slot-unavailable-message').length > 0) {
+        this.$el.find('.fc-view-container').addClass('error');
       }
     }
   }

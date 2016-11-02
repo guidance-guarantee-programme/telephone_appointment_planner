@@ -10,16 +10,19 @@
 
 <%= render 'shared/required_fields_note' %>
 
-<%= form_for [@appointment], layout: :basic do |f| %>
+<%= form_for [@appointment], url: appointment_update_reschedule_path(@appointment), layout: :basic do |f| %>
   <div class="row form-group">
     <div class="col-md-12">
       <h2>Choose available slot <%= required_label %></h2>
-      <p class="text-danger hide" id="slot-error">Please choose a slot</p>
+      <% if @appointment.errors[:guider].any? %>
+        <p class="text-danger js-slot-unavailable-message t-slot-unavailable-message">
+          Unable to assign appointment to a slot, please chooose a slot.
+        </p>
+      <% end %>
       <div
         id="AppointmentAvailabilityCalendar"
         class="appointment-availability-calendar"
         data-module="AppointmentAvailabilityCalendar"
-        data-error-id="slot-error"
         data-available-slots-path="<%= bookable_slots_available_path %>"
         data-default-date="<%= BookableSlot.next_valid_start_date %>"
       ></div>

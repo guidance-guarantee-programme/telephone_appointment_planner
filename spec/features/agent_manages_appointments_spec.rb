@@ -13,12 +13,34 @@ RSpec.feature 'Agent manages appointments' do
     end
   end
 
+  scenario 'Agent fails to create an appointment' do
+    given_the_user_is_an_agent do
+      and_there_is_a_guider_with_available_slots
+      when_they_want_to_book_an_appointment
+      and_all_slots_suddenly_become_unavailable
+      and_they_fill_in_their_appointment_details
+      then_they_are_told_that_the_slot_is_unavailable
+    end
+  end
+
   scenario 'Agent reschedules an appointment' do
     given_the_user_is_an_agent do
       and_there_is_a_guider_with_available_slots
       and_there_is_an_appointment
+      and_the_agent_wants_to_reschedule_the_appointment
       when_the_agent_reschedules_the_appointment
       then_the_appointment_is_rescheduled
+    end
+  end
+
+  scenario 'Agent fails to reschedule an appointment' do
+    given_the_user_is_an_agent do
+      and_there_is_a_guider_with_available_slots
+      and_there_is_an_appointment
+      and_the_agent_wants_to_reschedule_the_appointment
+      and_all_slots_suddenly_become_unavailable
+      when_the_agent_reschedules_the_appointment
+      then_they_are_told_that_the_slot_is_unavailable
     end
   end
 
@@ -38,8 +60,6 @@ RSpec.feature 'Agent manages appointments' do
 
   # rubocop:disable Metrics/AbcSize
   def and_they_fill_in_their_appointment_details
-    @page = Pages::NewAppointment.new
-
     @page.first_name.set 'Some'
     @page.last_name.set 'Person'
     @page.email.set 'email@example.org'
@@ -78,17 +98,19 @@ RSpec.feature 'Agent manages appointments' do
   end
 
   def when_they_want_to_book_an_appointment
-    @page = Pages::NewAppointment.new
-    @page.load
+    @page = Pages::NewAppointment.new.tap(&:load)
   end
 
   def and_there_is_an_appointment
     @appointment = create(:appointment)
   end
 
-  def when_the_agent_reschedules_the_appointment
+  def and_the_agent_wants_to_reschedule_the_appointment
     @page = Pages::RescheduleAppointment.new
     @page.load(id: @appointment.id)
+  end
+
+  def when_the_agent_reschedules_the_appointment
     @page.start_at.set day.change(hour: 16, min: 15).to_s
     @page.end_at.set day.change(hour: 17, min: 15).to_s
     @page.reschedule.click
@@ -98,5 +120,13 @@ RSpec.feature 'Agent manages appointments' do
     appointment = Appointment.first
     expect(appointment.start_at).to eq day.change(hour: 16, min: 15).to_s
     expect(appointment.end_at).to eq day.change(hour: 17, min: 15).to_s
+  end
+
+  def and_all_slots_suddenly_become_unavailable
+    BookableSlot.delete_all
+  end
+
+  def then_they_are_told_that_the_slot_is_unavailable
+    expect(@page).to have_slot_unavailable_message
   end
 end
