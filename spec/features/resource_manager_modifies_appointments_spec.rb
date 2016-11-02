@@ -81,11 +81,11 @@ RSpec.feature 'Resource manager modifies appointments' do
   end
 
   def then_they_see_appointments_for_multiple_guiders
-    @page.wait_for_guiders
+    @page.wait_until_guiders_visible
     expect(@page).to have_guiders(count: 2)
     expect(@page.guiders.first).to have_text('Ben Lovell')
 
-    @page.wait_for_appointments
+    @page.wait_until_appointments_visible
     expect(@page).to have_appointments(count: 2)
   end
 
