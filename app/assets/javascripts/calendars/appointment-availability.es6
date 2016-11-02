@@ -20,48 +20,6 @@
             type: 'agenda',
             duration: { days: 3 }
           }
-        },
-        eventRender: (event, element) => {
-          event.$div = $(element);
-          element.html(`
-            <div style="font-size:18px;">${event.start.format('HH:mm')}</div>
-            <span class="glyphicon glyphicon-user" aria-hidden="true"></span> ${event.guiders}
-          `);
-          element.css({
-            'max-width': '46%',
-            'padding': '.2em',
-            'box-sizing': 'border-box',
-            'cursor': 'pointer',
-            'background': this.getEventColour(event)
-          });
-        },
-        eventClick: (event) => {
-          const events = this.$el.fullCalendar('clientEvents');
-
-          let start = '',
-                end = '';
-
-          for (let eventIndex in events) {
-            let currentEvent = events[eventIndex];
-
-            if (currentEvent === event && event.selected === false) {
-              start = currentEvent.start.format();
-              end = currentEvent.end.format();
-              currentEvent.selected = true;
-            } else {
-              currentEvent.selected = false;
-            }
-          }
-
-          this.$selectedStart.val(start);
-          this.$selectedEnd.val(end);
-
-          this.$el.fullCalendar('rerenderEvents');
-        },
-        loading: (isLoading) => {
-          if (!isLoading) {
-            this.selectEvent();
-          }
         }
       }, config);
 
@@ -77,6 +35,45 @@
 
       this.init();
       this.displayErrorBorder();
+    }
+
+    eventClick(event) {
+      const events = this.$el.fullCalendar('clientEvents');
+
+      let start = '',
+            end = '';
+
+      for (let eventIndex in events) {
+        let currentEvent = events[eventIndex];
+
+        if (currentEvent === event && event.selected === false) {
+          start = currentEvent.start.format();
+          end = currentEvent.end.format();
+          currentEvent.selected = true;
+        } else {
+          currentEvent.selected = false;
+        }
+      }
+
+      this.$selectedStart.val(start);
+      this.$selectedEnd.val(end);
+
+      this.$el.fullCalendar('rerenderEvents');
+    }
+
+    eventRender(event, element) {
+      event.$div = $(element);
+
+      element.html(`
+        <div style="font-size:18px;">${event.start.format('HH:mm')}</div>
+        <span class="glyphicon glyphicon-user" aria-hidden="true"></span> ${event.guiders}
+      `).css({
+        'max-width': '46%',
+        'padding': '.2em',
+        'box-sizing': 'border-box',
+        'cursor': 'pointer',
+        'background': this.getEventColour(event)
+      });
     }
 
     getEventColour(event) {
@@ -122,6 +119,12 @@
     displayErrorBorder() {
       if ($('.js-slot-unavailable-message').length > 0) {
         this.$el.find('.fc-view-container').addClass('error');
+      }
+    }
+
+    loading(isLoading) {
+      if (!isLoading) {
+        this.selectEvent();
       }
     }
   }

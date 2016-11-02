@@ -17,30 +17,7 @@
         selectable: true,
         selectHelper: true,
         slotDuration: '00:10:00',
-        slotEventOverlap: false,
-        select: (start) => {
-          const event = {
-            start: start,
-            end: moment(start).add(this.config.slotDurationMinutes, 'minutes')
-          };
-
-          if (!this.isOverlapping(event)) {
-            this.$el.fullCalendar('renderEvent', event, true);
-            this.generateJSON();
-          }
-
-          this.$el.fullCalendar('unselect');
-        },
-        eventRender: (event, element) => {
-          element.append('<button class="close"><span aria-hidden="true">X</span><span class="sr-only">Remove slot</span></button>');
-          element.find('.close').on('click', () => {
-            this.$el.fullCalendar('removeEvents', event._id);
-            this.generateJSON();
-          });
-        },
-        eventDrop: () => {
-          this.generateJSON();
-        }
+        slotEventOverlap: false
       }, config);
 
       super(el, calendarConfig);
@@ -48,6 +25,32 @@
       this.addEvents();
       this.generateJSON();
       this.setupEvents();
+    }
+
+    eventDrop() {
+      this.generateJSON();
+    }
+
+    select(start) {
+      const event = {
+        start: start,
+        end: moment(start).add(this.config.slotDurationMinutes, 'minutes')
+      };
+
+      if (!this.isOverlapping(event)) {
+        this.$el.fullCalendar('renderEvent', event, true);
+        this.generateJSON();
+      }
+
+      this.$el.fullCalendar('unselect');
+    }
+
+    eventRender(event, element) {
+      element.append('<button class="close"><span aria-hidden="true">X</span><span class="sr-only">Remove slot</span></button>');
+      element.find('.close').on('click', () => {
+        this.$el.fullCalendar('removeEvents', event._id);
+        this.generateJSON();
+      });
     }
 
     isOverlapping(event) {

@@ -15,63 +15,6 @@
         nowIndicator: true,
         slotDuration: '00:30:00',
         eventTextColor: '#fff',
-        resourceRender: (resourceObj, labelTds, bodyTds, view) => {
-          if (view.type === 'agendaDay') {
-            labelTds.html('');
-            $(`<div>${resourceObj.title}</div>`).prependTo(labelTds);
-          } else {
-            $('<span aria-hidden="true" class="glyphicon glyphicon-user" style="margin-right: 5px;"></span>').prependTo(
-              labelTds.find('.fc-cell-text')
-            );
-          }
-        },
-        eventRender: (event, element, view) => {
-          $(element).attr('id', event.id);
-
-          if (view.type === 'agendaDay') {
-            element.find('.fc-content').remove();
-          } else {
-            $('<span class="glyphicon glyphicon-phone-alt" aria-hidden="true" style="margin-right: 5px;"></span>').prependTo(
-              element.find('.fc-content')
-            );
-          }
-
-          if (event.hasChanged) {
-            event.backgroundColor = 'red';
-            event.borderColor = '#c00';
-          } else {
-            delete event.backgroundColor;
-            delete event.borderColor;
-          }
-        },
-        eventAfterRender: (event, element) => {
-          if (event.rendering === 'background' || event.source.rendering == 'background') {
-            return;
-          }
-
-          var resource = el.fullCalendar('getResourceById', event.resourceId);
-          element.qtip({
-            position: {
-              target: 'mouse',
-              adjust: {
-                x: 10, y: 10
-              }
-            },
-            content: {
-              text: `
-              <p>${event.start.format('HH:mm')} - ${event.end.format('HH:mm')}</p>
-              <p><span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span> ${event.title}</p>
-              <p><span class="glyphicon glyphicon-user" aria-hidden="true"></span> ${resource.title}</p>
-              `
-            }
-          });
-        },
-        eventDrop: (event, delta, revertFunc) => {
-          this.handleEventChange(event, revertFunc);
-        },
-        eventResize: (event, delta, revertFunc) => {
-          this.handleEventChange(event, revertFunc);
-        },
         resources: '/guiders',
         eventSources: [
           {
@@ -83,7 +26,6 @@
             rendering: 'background'
           }
         ]
-
       }, config);
 
       super(el, calendarConfig);
@@ -92,6 +34,69 @@
       this.actionPanel = $('[data-action-panel]');
 
       this.setupUndo();
+    }
+
+    eventResize(event, delta, revertFunc) {
+      this.handleEventChange(event, revertFunc);
+    }
+
+    eventDrop(event, delta, revertFunc) {
+      this.handleEventChange(event, revertFunc);
+    }
+
+    eventAfterRender(event, element) {
+      if (event.rendering === 'background' || event.source.rendering == 'background') {
+        return;
+      }
+
+      var resource = this.$el.fullCalendar('getResourceById', event.resourceId);
+
+      element.qtip({
+        position: {
+          target: 'mouse',
+          adjust: {
+            x: 10, y: 10
+          }
+        },
+        content: {
+          text: `
+          <p>${event.start.format('HH:mm')} - ${event.end.format('HH:mm')}</p>
+          <p><span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span> ${event.title}</p>
+          <p><span class="glyphicon glyphicon-user" aria-hidden="true"></span> ${resource.title}</p>
+          `
+        }
+      });
+    }
+
+    resourceRender(resourceObj, labelTds, bodyTds, view) {
+      if (view.type === 'agendaDay') {
+        labelTds.html('');
+        $(`<div>${resourceObj.title}</div>`).prependTo(labelTds);
+      } else {
+        $('<span aria-hidden="true" class="glyphicon glyphicon-user" style="margin-right: 5px;"></span>').prependTo(
+          labelTds.find('.fc-cell-text')
+        );
+      }
+    }
+
+    eventRender(event, element, view) {
+      $(element).attr('id', event.id);
+
+      if (view.type === 'agendaDay') {
+        element.find('.fc-content').remove();
+      } else {
+        $('<span class="glyphicon glyphicon-phone-alt" aria-hidden="true" style="margin-right: 5px;"></span>').prependTo(
+          element.find('.fc-content')
+        );
+      }
+
+      if (event.hasChanged) {
+        event.backgroundColor = 'red';
+        event.borderColor = '#c00';
+      } else {
+        delete event.backgroundColor;
+        delete event.borderColor;
+      }
     }
 
     setupUndo() {
