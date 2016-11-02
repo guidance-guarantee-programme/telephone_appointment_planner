@@ -46,7 +46,7 @@ RSpec.feature 'Guider views appointments' do
   end
 
   def then_they_see_the_appointment_for_today
-    @page.wait_for_appointments
+    @page.wait_until_appointments_visible
     expect(@page).to have_appointments(count: 1)
 
     @page.appointments.first do |appointment|
@@ -58,7 +58,7 @@ RSpec.feature 'Guider views appointments' do
   end
 
   def then_they_see_the_appointments_for_today
-    @page.wait_for_appointments
+    @page.wait_until_appointments_visible
     expect(@page).to have_appointments(count: 1)
 
     actual = @page.appointments.first['id']
@@ -71,14 +71,14 @@ RSpec.feature 'Guider views appointments' do
   end
 
   def then_they_see_the_appointment_for_that_day
-    @page.wait_for_appointments
+    @page.wait_until_appointments_visible
     expect(@page).to have_appointments(count: 1)
 
     expect(@page.appointments.first.text).to include(@tomorrow.first_name)
   end
 
   def then_they_see_the_appointments_for_that_day
-    @page.wait_for_appointments
+    @page.wait_until_appointments_visible
     expect(@page).to have_appointments(count: 1)
 
     actual = @page.appointments.first['id']

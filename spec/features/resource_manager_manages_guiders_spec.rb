@@ -49,7 +49,7 @@ RSpec.feature 'Resource manager manages guiders' do
 
   def and_they_choose_to_add_groups_to_multiple_guiders
     @page.guiders.map(&:checkbox).each { |c| c.set(true) }
-    @page.wait_for_action_panel
+    @page.wait_until_action_panel_visible
 
     @page.action_panel.go.click
   end

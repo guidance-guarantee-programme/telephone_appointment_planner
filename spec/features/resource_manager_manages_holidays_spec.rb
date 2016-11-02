@@ -113,7 +113,7 @@ RSpec.feature 'Resource manager manages holidays' do
   end
 
   def and_they_create_a_holiday
-    @page.wait_for_create_holiday
+    @page.wait_until_create_holiday_visible
 
     @page.create_holiday.click
     @page = Pages::NewHoliday.new

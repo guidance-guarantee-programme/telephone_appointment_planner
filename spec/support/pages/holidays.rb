@@ -17,7 +17,7 @@ module Pages
     end
 
     def all_events
-      wait_for_events
+      wait_until_events_visible
       events.map do |a|
         {
           title: a.title.text,
