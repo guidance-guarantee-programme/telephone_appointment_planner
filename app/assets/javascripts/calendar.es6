@@ -25,8 +25,16 @@ class Calendar {
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
       slotLabelFormat: 'H:mm',
       timeFormat: 'H:mm',
-      viewRender: (view, element) => this.viewRender(view, element),
-      weekends: false
+      weekends: false,
+      select: (...args) => this.select(...args),
+      viewRender: (...args) => this.viewRender(...args),
+      eventRender: (...args) => this.eventRender(...args),
+      resourceRender: (...args) => this.resourceRender(...args),
+      eventAfterRender: (...args) => this.eventAfterRender(...args),
+      eventClick: (...args) => this.eventClick(...args),
+      eventDrop: (...args) => this.eventDrop(...args),
+      eventResize: (...args) => this.eventResize(...args),
+      loading: (...args) => this.loading(...args)
     };
 
     this.config = $.extend(
@@ -103,5 +111,33 @@ class Calendar {
     }
 
     return {};
+  }
+
+  loading(isLoading) {
+
+  }
+
+  eventDrop(event, delta, revertFunc) {
+
+  }
+
+  select(start) {
+
+  }
+
+  eventRender(event, element, view) {
+
+  }
+
+  eventAfterRender(event, element) {
+
+  }
+
+  resourceRender(resourceObj, labelTds, bodyTds, view) {
+
+  }
+
+  eventClick(event) {
+
   }
 }
