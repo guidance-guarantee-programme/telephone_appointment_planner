@@ -38,7 +38,7 @@ RSpec.describe BookableSlot, type: :model do
 
   describe '#without_appointments' do
     let(:guider) do
-      create(:user)
+      create(:guider)
     end
 
     let!(:slot) do
@@ -79,7 +79,7 @@ RSpec.describe BookableSlot, type: :model do
 
   describe '#without_holidays' do
     let(:guider) do
-      create(:user)
+      create(:guider)
     end
 
     let!(:slot) do
@@ -101,11 +101,11 @@ RSpec.describe BookableSlot, type: :model do
 
     it 'excludes slots with bank holidays' do
       create(
-        :holiday,
-        user: nil,
+        :bank_holiday,
         start_at: make_time(6, 30),
         end_at: make_time(18, 30)
       )
+
       expect(subject).to_not include slot
     end
 
