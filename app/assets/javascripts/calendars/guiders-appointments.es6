@@ -30,13 +30,16 @@
 
       super(el, calendarConfig);
 
-      this.alterHeight();
-      $(window).on('resize', this.debounce(this.alterHeight.bind(this), 20));
-
       this.eventChanges = [];
       this.actionPanel = $('[data-action-panel]');
 
+      this.setCalendarToCorrectHeight();
       this.setupUndo();
+    }
+
+    setCalendarToCorrectHeight() {
+      this.alterHeight();
+      $(window).on('resize', this.debounce(this.alterHeight.bind(this), 20));
     }
 
     debounce(func, wait, immediate) {
@@ -57,7 +60,13 @@
     }
 
     getHeight() {
-      return $(window).height() - this.$el.offset().top - $('.page-footer').outerHeight(true);
+      let height = $(window).height() - this.$el.offset().top - $('.page-footer').outerHeight(true);
+
+      if (this.actionPanel.is(':visible')) {
+        height -= this.actionPanel.height();
+      }
+
+      return height;
     }
 
     alterHeight() {
@@ -222,15 +231,19 @@
     checkToShowActionPanel() {
       const eventsChanged = this.uniqueEventsChanged();
 
+      let fadeAction = 'fadeIn';
+
       if (eventsChanged > 0) {
         this.actionPanel.find('[data-action-panel-event-count]').html(
           `${eventsChanged} event${eventsChanged == 1 ? '':'s'}`
         );
-
-        this.actionPanel.fadeIn();
       } else {
-        this.actionPanel.fadeOut();
+        fadeAction = 'fadeOut';
       }
+
+      this.actionPanel[fadeAction]({
+        complete: this.alterHeight.bind(this)
+      });
     }
 
     uniqueEventsChanged() {
