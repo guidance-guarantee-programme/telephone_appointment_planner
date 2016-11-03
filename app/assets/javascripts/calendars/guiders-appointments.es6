@@ -30,10 +30,38 @@
 
       super(el, calendarConfig);
 
+      this.alterHeight();
+      $(window).on('resize', this.debounce(this.alterHeight.bind(this), 20));
+
       this.eventChanges = [];
       this.actionPanel = $('[data-action-panel]');
 
       this.setupUndo();
+    }
+
+    debounce(func, wait, immediate) {
+      let timeout;
+
+      return () => {
+        const context = this, args = arguments,
+        later = () => {
+          timeout = null;
+          if (!immediate) func.apply(context, args);
+        };
+
+        const callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+      };
+    }
+
+    getHeight() {
+      return $(window).height() - this.$el.offset().top - $('.page-footer').outerHeight(true);
+    }
+
+    alterHeight() {
+      this.$el.fullCalendar('option', 'height', this.getHeight());
     }
 
     eventResize(event, delta, revertFunc) {
