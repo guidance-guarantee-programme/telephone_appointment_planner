@@ -10,6 +10,16 @@ RSpec.feature 'Agent manages appointments' do
       when_they_want_to_book_an_appointment
       and_they_fill_in_their_appointment_details
       then_that_appointment_is_created
+      and_the_customer_gets_an_email_confirmation
+    end
+  end
+
+  scenario 'Agent creates appointment without an email' do
+    given_the_user_is_an_agent do
+      and_there_is_a_guider_with_available_slots
+      when_they_want_to_book_an_appointment
+      and_they_fill_in_their_appointment_details_without_an_email
+      then_the_customer_does_not_get_an_email_confirmation
     end
   end
 
@@ -59,10 +69,10 @@ RSpec.feature 'Agent manages appointments' do
   end
 
   # rubocop:disable Metrics/AbcSize
-  def and_they_fill_in_their_appointment_details
+  def fill_in_appointment_details(options = {})
     @page.first_name.set 'Some'
     @page.last_name.set 'Person'
-    @page.email.set 'email@example.org'
+    @page.email.set options[:email] || 'email@example.org'
     @page.phone.set '0000000'
     @page.mobile.set '1111111'
     @page.memorable_word.set 'lozenge'
@@ -75,6 +85,14 @@ RSpec.feature 'Agent manages appointments' do
     @page.end_at.set day.change(hour: 10, min: 40).to_s
 
     @page.save.click
+  end
+
+  def and_they_fill_in_their_appointment_details
+    fill_in_appointment_details
+  end
+
+  def and_they_fill_in_their_appointment_details_without_an_email
+    fill_in_appointment_details email: ''
   end
 
   def then_that_appointment_is_created
@@ -96,6 +114,16 @@ RSpec.feature 'Agent manages appointments' do
     expect(appointment.start_at).to eq day.change(hour: 9, min: 30).to_s
     expect(appointment.status).to eq 'pending'
     expect(appointment.end_at).to eq day.change(hour: 10, min: 40).to_s
+  end
+
+  def and_the_customer_gets_an_email_confirmation
+    deliveries = ActionMailer::Base.deliveries
+    expect(deliveries.count).to eq 1
+    expect(deliveries.first.subject).to eq 'Your Pension Wise Appointment'
+  end
+
+  def then_the_customer_does_not_get_an_email_confirmation
+    expect(ActionMailer::Base.deliveries).to be_empty
   end
 
   def when_they_want_to_book_an_appointment

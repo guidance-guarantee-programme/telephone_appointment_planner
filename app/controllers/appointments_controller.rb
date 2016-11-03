@@ -56,10 +56,8 @@ class AppointmentsController < ApplicationController
     @appointment = Appointment.new(create_params.merge(agent: current_user))
     @appointment.assign_to_guider
     if @appointment.save
-      redirect_to(
-        search_appointments_path,
-        success: 'Appointment has been created!'
-      )
+      AppointmentMailer.confirmation(@appointment).deliver_now if @appointment.email.present?
+      redirect_to(search_appointments_path, success: 'Appointment has been created')
     else
       render :new
     end
