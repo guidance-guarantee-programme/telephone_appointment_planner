@@ -7,6 +7,7 @@ class BatchAppointmentUpdate
     changes.each do |change|
       appointment = Appointment.find(change['id'])
       appointment.update!(permitted_attributes(change))
+      AppointmentMailer.updated(appointment).deliver_later if appointment.email.present?
     end
   end
 

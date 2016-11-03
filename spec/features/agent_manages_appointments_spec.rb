@@ -5,21 +5,25 @@ RSpec.feature 'Agent manages appointments' do
   let(:day) { BusinessDays.from_now(5) }
 
   scenario 'Agent creates appointments' do
-    given_the_user_is_an_agent do
-      and_there_is_a_guider_with_available_slots
-      when_they_want_to_book_an_appointment
-      and_they_fill_in_their_appointment_details
-      then_that_appointment_is_created
-      and_the_customer_gets_an_email_confirmation
+    perform_enqueued_jobs do
+      given_the_user_is_an_agent do
+        and_there_is_a_guider_with_available_slots
+        when_they_want_to_book_an_appointment
+        and_they_fill_in_their_appointment_details
+        then_that_appointment_is_created
+        and_the_customer_gets_an_email_confirmation
+      end
     end
   end
 
   scenario 'Agent creates appointment without an email' do
-    given_the_user_is_an_agent do
-      and_there_is_a_guider_with_available_slots
-      when_they_want_to_book_an_appointment
-      and_they_fill_in_their_appointment_details_without_an_email
-      then_the_customer_does_not_get_an_email_confirmation
+    perform_enqueued_jobs do
+      given_the_user_is_an_agent do
+        and_there_is_a_guider_with_available_slots
+        when_they_want_to_book_an_appointment
+        and_they_fill_in_their_appointment_details_without_an_email
+        then_the_customer_does_not_get_an_email_confirmation
+      end
     end
   end
 
@@ -34,12 +38,27 @@ RSpec.feature 'Agent manages appointments' do
   end
 
   scenario 'Agent reschedules an appointment' do
-    given_the_user_is_an_agent do
-      and_there_is_a_guider_with_available_slots
-      and_there_is_an_appointment
-      and_the_agent_wants_to_reschedule_the_appointment
-      when_the_agent_reschedules_the_appointment
-      then_the_appointment_is_rescheduled
+    perform_enqueued_jobs do
+      given_the_user_is_an_agent do
+        and_there_is_a_guider_with_available_slots
+        and_there_is_an_appointment
+        and_they_want_to_reschedule_the_appointment
+        when_they_reschedule_the_appointment
+        then_the_appointment_is_rescheduled
+        and_the_customer_gets_an_updated_email_confirmation
+      end
+    end
+  end
+
+  scenario 'Agent reschedules an appointment without an email' do
+    perform_enqueued_jobs do
+      given_the_user_is_an_agent do
+        and_there_is_a_guider_with_available_slots
+        and_there_is_an_appointment_without_an_email
+        and_they_want_to_reschedule_the_appointment
+        when_they_reschedule_the_appointment
+        then_the_customer_does_not_get_an_updated_email_confirmation
+      end
     end
   end
 
@@ -47,9 +66,9 @@ RSpec.feature 'Agent manages appointments' do
     given_the_user_is_an_agent do
       and_there_is_a_guider_with_available_slots
       and_there_is_an_appointment
-      and_the_agent_wants_to_reschedule_the_appointment
+      and_they_want_to_reschedule_the_appointment
       and_all_slots_suddenly_become_unavailable
-      when_the_agent_reschedules_the_appointment
+      when_they_reschedule_the_appointment
       then_they_are_told_that_the_slot_is_unavailable
     end
   end
@@ -122,7 +141,18 @@ RSpec.feature 'Agent manages appointments' do
     expect(deliveries.first.subject).to eq 'Your Pension Wise Appointment'
   end
 
+  def and_the_customer_gets_an_updated_email_confirmation
+    deliveries = ActionMailer::Base.deliveries
+    expect(deliveries.count).to eq 1
+    expect(deliveries.first.subject).to eq 'Your Pension Wise Appointment'
+    expect(deliveries.first.body.encoded).to include 'Your appointment details were updated'
+  end
+
   def then_the_customer_does_not_get_an_email_confirmation
+    expect(ActionMailer::Base.deliveries).to be_empty
+  end
+
+  def then_the_customer_does_not_get_an_updated_email_confirmation
     expect(ActionMailer::Base.deliveries).to be_empty
   end
 
@@ -134,12 +164,16 @@ RSpec.feature 'Agent manages appointments' do
     @appointment = create(:appointment)
   end
 
-  def and_the_agent_wants_to_reschedule_the_appointment
+  def and_there_is_an_appointment_without_an_email
+    @appointment = create(:appointment, email: nil)
+  end
+
+  def and_they_want_to_reschedule_the_appointment
     @page = Pages::RescheduleAppointment.new
     @page.load(id: @appointment.id)
   end
 
-  def when_the_agent_reschedules_the_appointment
+  def when_they_reschedule_the_appointment
     @page.start_at.set day.change(hour: 16, min: 15).to_s
     @page.end_at.set day.change(hour: 17, min: 15).to_s
     @page.reschedule.click
