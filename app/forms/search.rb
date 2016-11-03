@@ -1,7 +1,6 @@
 class Search
   include ActiveModel::Model
-
-  DATE_RANGE_PICKER_FORMAT = '%e/%m/%Y'.freeze
+  include DateRangePickerHelper
 
   attr_reader :q
   attr_reader :date_range
@@ -15,7 +14,7 @@ class Search
     range = date_range
             .to_s
             .split(' - ')
-            .map { |d| Time.zone.strptime(d, DATE_RANGE_PICKER_FORMAT) }
+            .map { |d| strp_date_range_picker_date(d) }
     Appointment.full_search(
       q,
       range.first.try(:beginning_of_day),

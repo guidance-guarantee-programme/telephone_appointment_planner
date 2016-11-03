@@ -67,8 +67,8 @@ RSpec.feature 'Agent searches for appointments' do
 
   def when_they_search_for_a_date_range
     @page = Pages::Search.new.tap(&:load)
-    start_at = 18.days.from_now.to_date.strftime(Search::DATE_RANGE_PICKER_FORMAT)
-    end_at   = 23.days.from_now.to_date.strftime(Search::DATE_RANGE_PICKER_FORMAT)
+    start_at = I18n.l(18.days.from_now.to_date, format: :date_range_picker)
+    end_at   = I18n.l(23.days.from_now.to_date, format: :date_range_picker)
     @page.date_range.set("#{start_at} - #{end_at}")
     @page.search.click
   end

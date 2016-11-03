@@ -26,11 +26,11 @@ RSpec.feature 'Resource manager views reports' do
   end
 
   let(:start_at) do
-    BusinessDays.from_now(10)
+    BusinessDays.from_now(10).to_date
   end
 
   let(:created_at) do
-    BusinessDays.from_now(20)
+    BusinessDays.from_now(20).to_date
   end
 
   def and_there_are_data
@@ -40,8 +40,8 @@ RSpec.feature 'Resource manager views reports' do
 
   def date_range_enclosing(date)
     [
-      (date - 1.day).strftime(Report::DATE_RANGE_PICKER_FORMAT),
-      (date + 1.day).strftime(Report::DATE_RANGE_PICKER_FORMAT)
+      I18n.l(date - 1.day, format: :date_range_picker),
+      I18n.l(date + 1.day, format: :date_range_picker)
     ].join(' - ')
   end
 

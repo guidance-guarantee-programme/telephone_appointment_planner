@@ -1,12 +1,11 @@
 class CreateHolidays
   include ActiveModel::Model
   extend ActiveModel::Naming
+  include DateRangePickerHelper
 
   attr_reader :title
   attr_reader :date_range
   attr_reader :users
-
-  DATE_RANGE_PICKER_FORMAT = '%e/%m/%Y %H:%M'.freeze
 
   validates :title, presence: true
   validates :date_range, presence: true
@@ -25,7 +24,7 @@ class CreateHolidays
   def call
     return false unless valid?
     start_at, end_at = date_range.split(' - ').map do |d|
-      Time.zone.strptime(d, DATE_RANGE_PICKER_FORMAT)
+      strp_date_range_picker_time(d)
     end
     User.where(id: users).each do |user|
       Holiday.create!(title: title, user: user, start_at: start_at, end_at: end_at)
