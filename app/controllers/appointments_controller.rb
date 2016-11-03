@@ -33,6 +33,7 @@ class AppointmentsController < ApplicationController
     @appointment.assign_attributes(update_reschedule_params)
     @appointment.assign_to_guider
     if @appointment.save
+      AppointmentMailer.updated(@appointment).deliver_now if @appointment.email.present?
       redirect_after_successful_update
     else
       render :reschedule

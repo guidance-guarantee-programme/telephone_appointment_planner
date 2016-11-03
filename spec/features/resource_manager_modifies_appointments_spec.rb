@@ -11,6 +11,7 @@ RSpec.feature 'Resource manager modifies appointments' do
         when_they_reschedule_an_appointment
         and_commit_their_modifications
         then_the_appointment_is_modified
+        and_the_customer_is_notified_of_the_appointment_change
       end
     end
   end
@@ -106,5 +107,13 @@ RSpec.feature 'Resource manager modifies appointments' do
 
     expect(@appointment.end_at.hour).to eq(9)
     expect(@appointment.end_at.min).to eq(30)
+  end
+
+  def and_the_customer_is_notified_of_the_appointment_change
+    deliveries = ActionMailer::Base.deliveries
+    expect(deliveries.count).to eq 1
+    expect(deliveries.first.to).to eq [@appointment.email]
+    expect(deliveries.first.subject).to eq 'Your Pension Wise Appointment'
+    expect(deliveries.first.body.encoded).to include 'Your appointment details were updated'
   end
 end

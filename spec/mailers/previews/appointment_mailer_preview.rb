@@ -4,4 +4,9 @@ class AppointmentMailerPreview < ActionMailer::Preview
     appointment = FactoryGirl.create(:appointment)
     AppointmentMailer.confirmation(appointment)
   end
+
+  def updated
+    appointment = FactoryGirl.create(:appointment)
+    AppointmentMailer.updated(appointment)
+  end
 end
