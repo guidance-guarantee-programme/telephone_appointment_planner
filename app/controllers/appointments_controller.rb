@@ -33,7 +33,7 @@ class AppointmentsController < ApplicationController
     @appointment.assign_attributes(update_reschedule_params)
     @appointment.assign_to_guider
     if @appointment.save
-      AppointmentMailer.updated(@appointment).deliver_now if @appointment.email.present?
+      AppointmentMailer.updated(@appointment).deliver_later if @appointment.email.present?
       redirect_after_successful_update
     else
       render :reschedule
@@ -57,7 +57,7 @@ class AppointmentsController < ApplicationController
     @appointment = Appointment.new(create_params.merge(agent: current_user))
     @appointment.assign_to_guider
     if @appointment.save
-      AppointmentMailer.confirmation(@appointment).deliver_now if @appointment.email.present?
+      AppointmentMailer.confirmation(@appointment).deliver_later if @appointment.email.present?
       redirect_to(search_appointments_path, success: 'Appointment has been created')
     else
       render :new

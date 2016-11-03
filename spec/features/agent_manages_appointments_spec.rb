@@ -5,21 +5,25 @@ RSpec.feature 'Agent manages appointments' do
   let(:day) { BusinessDays.from_now(5) }
 
   scenario 'Agent creates appointments' do
-    given_the_user_is_an_agent do
-      and_there_is_a_guider_with_available_slots
-      when_they_want_to_book_an_appointment
-      and_they_fill_in_their_appointment_details
-      then_that_appointment_is_created
-      and_the_customer_gets_an_email_confirmation
+    perform_enqueued_jobs do
+      given_the_user_is_an_agent do
+        and_there_is_a_guider_with_available_slots
+        when_they_want_to_book_an_appointment
+        and_they_fill_in_their_appointment_details
+        then_that_appointment_is_created
+        and_the_customer_gets_an_email_confirmation
+      end
     end
   end
 
   scenario 'Agent creates appointment without an email' do
-    given_the_user_is_an_agent do
-      and_there_is_a_guider_with_available_slots
-      when_they_want_to_book_an_appointment
-      and_they_fill_in_their_appointment_details_without_an_email
-      then_the_customer_does_not_get_an_email_confirmation
+    perform_enqueued_jobs do
+      given_the_user_is_an_agent do
+        and_there_is_a_guider_with_available_slots
+        when_they_want_to_book_an_appointment
+        and_they_fill_in_their_appointment_details_without_an_email
+        then_the_customer_does_not_get_an_email_confirmation
+      end
     end
   end
 
@@ -34,23 +38,27 @@ RSpec.feature 'Agent manages appointments' do
   end
 
   scenario 'Agent reschedules an appointment' do
-    given_the_user_is_an_agent do
-      and_there_is_a_guider_with_available_slots
-      and_there_is_an_appointment
-      and_they_want_to_reschedule_the_appointment
-      when_they_reschedule_the_appointment
-      then_the_appointment_is_rescheduled
-      and_the_customer_gets_an_updated_email_confirmation
+    perform_enqueued_jobs do
+      given_the_user_is_an_agent do
+        and_there_is_a_guider_with_available_slots
+        and_there_is_an_appointment
+        and_they_want_to_reschedule_the_appointment
+        when_they_reschedule_the_appointment
+        then_the_appointment_is_rescheduled
+        and_the_customer_gets_an_updated_email_confirmation
+      end
     end
   end
 
   scenario 'Agent reschedules an appointment without an email' do
-    given_the_user_is_an_agent do
-      and_there_is_a_guider_with_available_slots
-      and_there_is_an_appointment_without_an_email
-      and_they_want_to_reschedule_the_appointment
-      when_they_reschedule_the_appointment
-      then_the_customer_does_not_get_an_updated_email_confirmation
+    perform_enqueued_jobs do
+      given_the_user_is_an_agent do
+        and_there_is_a_guider_with_available_slots
+        and_there_is_an_appointment_without_an_email
+        and_they_want_to_reschedule_the_appointment
+        when_they_reschedule_the_appointment
+        then_the_customer_does_not_get_an_updated_email_confirmation
+      end
     end
   end
 

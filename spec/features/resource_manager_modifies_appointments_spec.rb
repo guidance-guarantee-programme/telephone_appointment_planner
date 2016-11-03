@@ -3,15 +3,17 @@ require 'rails_helper'
 
 RSpec.feature 'Resource manager modifies appointments' do
   scenario 'Rescheduling an appointment', js: true do
-    given_the_user_is_a_resource_manager do
-      and_there_are_appointments_for_multiple_guiders
-      travel_to @appointment.start_at do
-        when_they_view_the_appointments
-        then_they_see_appointments_for_multiple_guiders
-        when_they_reschedule_an_appointment
-        and_commit_their_modifications
-        then_the_appointment_is_modified
-        and_the_customer_is_notified_of_the_appointment_change
+    perform_enqueued_jobs do
+      given_the_user_is_a_resource_manager do
+        and_there_are_appointments_for_multiple_guiders
+        travel_to @appointment.start_at do
+          when_they_view_the_appointments
+          then_they_see_appointments_for_multiple_guiders
+          when_they_reschedule_an_appointment
+          and_commit_their_modifications
+          then_the_appointment_is_modified
+          and_the_customer_is_notified_of_the_appointment_change
+        end
       end
     end
   end
