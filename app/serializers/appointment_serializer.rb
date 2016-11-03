@@ -9,6 +9,7 @@ class AppointmentSerializer < ActiveModel::Serializer
   attribute :phone
   attribute :url, if: -> { instance_options[:include_links] }
   attribute :status
+  attribute :cancelled
   attribute :guider_id, key: :resourceId
 
   def title
@@ -17,5 +18,9 @@ class AppointmentSerializer < ActiveModel::Serializer
 
   def url
     edit_appointment_path(object)
+  end
+
+  def cancelled
+    object.cancelled?
   end
 end
