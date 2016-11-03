@@ -77,7 +77,7 @@
         return;
       }
 
-      var resource = this.$el.fullCalendar('getResourceById', event.resourceId);
+      const resource = this.$el.fullCalendar('getResourceById', event.resourceId);
 
       element.qtip({
         position: {
@@ -90,7 +90,7 @@
           text: `
           <p>${event.start.format('HH:mm')} - ${event.end.format('HH:mm')}</p>
           <p><span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span> ${event.title}</p>
-          <p><span class="glyphicon glyphicon-user" aria-hidden="true"></span> ${resource.title}</p>
+          <p><span class="glyphicon glyphicon-user" aria-hidden="true"></span> ${resource && resource.title ? resource.title : 'Unknown guider'}</p>
           `
         }
       });
