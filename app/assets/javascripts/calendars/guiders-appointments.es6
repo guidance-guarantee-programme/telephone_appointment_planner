@@ -118,12 +118,12 @@
         );
       }
 
+      element.removeClass('fc-event--moved fc-event--cancelled');
+
       if (event.hasChanged) {
-        event.backgroundColor = 'red';
-        event.borderColor = '#c00';
-      } else {
-        delete event.backgroundColor;
-        delete event.borderColor;
+        element.addClass('fc-event--moved');
+      } else if(event.cancelled) {
+        element.addClass('fc-event--cancelled');
       }
     }
 

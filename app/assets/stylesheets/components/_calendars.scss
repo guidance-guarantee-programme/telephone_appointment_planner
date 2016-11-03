@@ -1,4 +1,6 @@
 $calendar-today-background: $color-white;
+$calendar-cancelled-background: $color-guardsman-red;
+$calendar-moved-background: $color-green;
 
 .guiders-appointments-calendar {
   .fc-resource-cell {
@@ -70,4 +72,13 @@ $calendar-today-background: $color-white;
   position: absolute;
   right: 150px;
   top: 20px;
+}
+
+.fc-event--cancelled {
+  background: $calendar-cancelled-background;
+  opacity: .5;
+}
+
+.fc-event--moved {
+  background: $calendar-moved-background;
 }
