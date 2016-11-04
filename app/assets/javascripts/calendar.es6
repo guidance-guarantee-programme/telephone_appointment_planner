@@ -1,4 +1,4 @@
-/* global moment, cookie */
+/* global moment */
 
 'use strict';
 
@@ -94,14 +94,14 @@ class Calendar {
   }
 
   viewRender(view) {
-    cookie.set(
+    GOVUKAdmin.cookie(
       this.config.cookieName,
       JSON.stringify({
         defaultView: view.name,
         defaultDate: view.calendar.getDate()
       }),
       {
-        expires: 7
+        days: 7
       }
     );
   }
@@ -111,7 +111,7 @@ class Calendar {
   }
 
   getCookieConfig(cookieName) {
-    const cookieValue = cookie(cookieName);
+    const cookieValue = GOVUKAdmin.cookie(cookieName);
 
     if (cookieValue) {
       return JSON.parse(cookieValue);
