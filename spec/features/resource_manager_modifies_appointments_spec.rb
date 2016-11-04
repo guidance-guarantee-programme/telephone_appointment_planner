@@ -51,8 +51,7 @@ RSpec.feature 'Resource manager modifies appointments' do
   def and_there_is_a_holiday_for_all_guiders
     start_at = BusinessDays.from_now(3).change(hour: 9)
     @holiday = create(
-      :holiday,
-      user: nil,
+      :bank_holiday,
       start_at: start_at,
       end_at: start_at + 1.hour
     )

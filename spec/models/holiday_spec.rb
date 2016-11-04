@@ -41,7 +41,7 @@ RSpec.describe Holiday, type: :model do
         end_at: Date.new(2014, 12, 25).end_of_day
       )
       christmas = create(
-        :holiday,
+        :bank_holiday,
         title: 'christmas',
         start_at: Date.new(2010, 12, 25).beginning_of_day,
         end_at: Date.new(2010, 12, 25).end_of_day
@@ -64,7 +64,7 @@ RSpec.describe Holiday, type: :model do
 
     let!(:holiday_starting_in_range) do
       create(
-        :holiday,
+        :bank_holiday,
         start_at: start_at + 3.days,
         end_at: end_at + 5.days
       )
@@ -72,7 +72,7 @@ RSpec.describe Holiday, type: :model do
 
     let!(:holiday_ending_in_range) do
       create(
-        :holiday,
+        :bank_holiday,
         start_at: start_at - 10.days,
         end_at: start_at + 1.day
       )
@@ -80,7 +80,7 @@ RSpec.describe Holiday, type: :model do
 
     let!(:holiday_overlapping_range) do
       create(
-        :holiday,
+        :bank_holiday,
         start_at: start_at - 10.days,
         end_at: end_at + 10.days
       )
@@ -88,7 +88,7 @@ RSpec.describe Holiday, type: :model do
 
     let!(:holiday_not_overlapping_or_inside) do
       create(
-        :holiday,
+        :bank_holiday,
         start_at: start_at + 10.days,
         end_at: end_at + 20.days
       )

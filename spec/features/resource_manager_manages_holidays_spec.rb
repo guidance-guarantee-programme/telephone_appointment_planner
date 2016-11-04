@@ -33,6 +33,17 @@ RSpec.feature 'Resource manager manages holidays' do
     end
   end
 
+  scenario 'Deletes a holiday', js: true do
+    given_the_user_is_a_resource_manager do
+      travel_to today do
+        and_there_are_guiders_with_holidays
+        when_they_view_holidays
+        when_they_delete_a_holiday
+        then_it_is_deleted
+      end
+    end
+  end
+
   # rubocop:disable Metrics/AbcSize
   # rubocop:disable Metrics/MethodLength
   def and_there_are_some_holidays
@@ -60,7 +71,7 @@ RSpec.feature 'Resource manager manages holidays' do
       )
     end
     create(
-      :holiday,
+      :bank_holiday,
       title: 'Christmas',
       start_at: next_week,
       end_at: next_week.end_of_day
@@ -137,5 +148,23 @@ RSpec.feature 'Resource manager manages holidays' do
         time: '14:00 - 16:00'
       }
     ]
+  end
+
+  def and_there_are_guiders_with_holidays
+    @guiders = create_list(:guider, 2)
+    @guiders.each do |guider|
+      create(:holiday, title: 'Shared Holiday', user: guider, start_at: today + 2.hours)
+    end
+  end
+
+  def when_they_delete_a_holiday
+    @page.events.first.content.click
+    @page = Pages::EditHoliday.new
+    expect(@page).to be_displayed
+    @page.delete.click
+  end
+
+  def then_it_is_deleted
+    expect(Holiday.all).to be_empty
   end
 end

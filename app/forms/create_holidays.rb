@@ -27,7 +27,7 @@ class CreateHolidays
       strp_date_range_picker_time(d)
     end
     User.where(id: users).each do |user|
-      Holiday.create!(title: title, user: user, start_at: start_at, end_at: end_at)
+      Holiday.create!(title: title, bank_holiday: false, user: user, start_at: start_at, end_at: end_at)
     end
     true
   end

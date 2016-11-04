@@ -34,11 +34,18 @@ class HolidaysController < ApplicationController
     end
   end
 
+  def edit
+    holidays = Holiday.where(id: params[:id]).includes(:user)
+    @users = holidays.map(&:user)
+    @title = holidays.first.title
+  end
+
   def destroy
     holiday_ids = params[:holiday_ids].split(',')
     Holiday
       .where(id: holiday_ids)
       .destroy_all
+    redirect_to holidays_path, success: 'Holiday has been deleted'
   end
 
   private
