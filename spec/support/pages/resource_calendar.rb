@@ -44,7 +44,7 @@ module Pages
           #{yield}
 
           calendar.fullCalendar('updateEvent', event);
-          calendar.data('loaded-module').handleEventChange(event, function() {});
+          calendar.data('fullCalendar').view.triggerEventDrop(event, moment(), function() {}, $('.fc-event'));
         }();
       JS
     end

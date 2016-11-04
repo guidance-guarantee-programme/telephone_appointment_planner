@@ -2,10 +2,9 @@
 {
   'use strict';
 
-  class CustomerAge {
-    constructor(el, config = {}) {
-      this.$el = el;
-      this.config = config;
+  class CustomerAge extends TapBase {
+    start(el) {
+      super.start(el);
 
       this.$day = this.$el.find('.js-dob-day');
       this.$month = this.$el.find('.js-dob-month');
@@ -47,6 +46,5 @@
     }
   }
 
-  window.PWTAP = window.PWTAP || {};
-  window.PWTAP.CustomerAge = CustomerAge;
+  window.GOVUKAdmin.Modules.CustomerAge = CustomerAge;
 }

@@ -2,15 +2,11 @@
 
 'use strict';
 
-window.PWTAP = window.PWTAP || {};
-
-class Calendar {
-  constructor(el, config = {}) {
-    this.$el = el;
-
+class Calendar extends TapBase {
+  start(el) {
     const defaultConfig = {
       allDaySlot: false,
-      cookieName: this.$el.attr('id') || 'calendar',
+      cookieName: el.attr('id') || 'calendar',
       customButtons: {
         jumpToDate: {
           text: 'Jump to date',
@@ -24,7 +20,7 @@ class Calendar {
         month: 'Month',
         week: 'Week'
       },
-      defaultDate: moment(this.$el.data('default-date')),
+      defaultDate: moment(el.data('default-date')),
       firstDay: 1,
       height: 'auto',
       maxTime: '19:00:00',
@@ -47,9 +43,10 @@ class Calendar {
     this.config = $.extend(
       true,
       defaultConfig,
-      config,
-      this.getCookieConfig(defaultConfig.cookieName)
+      this.config
     );
+
+    super.start(el);
 
     this.$el.fullCalendar(this.config);
 
@@ -108,16 +105,6 @@ class Calendar {
 
   getCurrentDate(format = 'YYYY-MM-DD') {
     return this.$el.fullCalendar('getDate').format(format);
-  }
-
-  getCookieConfig(cookieName) {
-    const cookieValue = GOVUKAdmin.cookie(cookieName);
-
-    if (cookieValue) {
-      return JSON.parse(cookieValue);
-    }
-
-    return {};
   }
 
   loading(isLoading) {

@@ -3,8 +3,8 @@
   'use strict';
 
   class GuiderSlotPickerCalendar extends Calendar {
-    constructor(el, config = {}) {
-      const calendarConfig = $.extend(true, {
+    start(el) {
+      this.config = {
         columnFormat: 'dddd',
         defaultView: 'agendaWeek',
         editable: true,
@@ -18,9 +18,9 @@
         selectHelper: true,
         slotDuration: '00:10:00',
         slotEventOverlap: false
-      }, config);
+      };
 
-      super(el, calendarConfig);
+      super.start(el);
 
       this.addEvents();
       this.generateJSON();
@@ -138,6 +138,5 @@
     }
   }
 
-  window.PWTAP = window.PWTAP || {};
-  window.PWTAP.GuiderSlotPickerCalendar = GuiderSlotPickerCalendar;
+  window.GOVUKAdmin.Modules.GuiderSlotPickerCalendar = GuiderSlotPickerCalendar;
 }

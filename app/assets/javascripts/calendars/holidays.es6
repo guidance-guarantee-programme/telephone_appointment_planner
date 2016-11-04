@@ -3,8 +3,8 @@
   'use strict';
 
   class HolidaysCalendar extends Calendar {
-    constructor(el, config = {}) {
-      const calendarConfig = $.extend(true, {
+    start(el) {
+      this.config = {
         defaultView: 'agendaWeek',
         columnFormat: 'ddd D/M',
         slotDuration: '00:30:00',
@@ -19,9 +19,9 @@
             duration: { days: 3 }
           }
         }
-      }, config);
+      };
 
-      super(el, calendarConfig);
+      super.start(el);
     }
 
     eventRender(event, element) {
@@ -48,6 +48,5 @@
     }
   }
 
-  window.PWTAP = window.PWTAP || {};
-  window.PWTAP.HolidaysCalendar = HolidaysCalendar;
+  window.GOVUKAdmin.Modules.HolidaysCalendar = HolidaysCalendar;
 }

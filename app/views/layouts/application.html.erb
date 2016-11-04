@@ -34,19 +34,4 @@
   <% end %>
 <% end %>
 
-<% content_for :body_end do %>
-  <script>
-  $(function() {
-    $('[data-module]:not([data-module-loaded])').each(function() {
-      var $el = $(this),
-      type = $el.data('module'),
-      config = $el.data('config');
-
-      $el.data('loaded-module', new PWTAP[type]($el, config));
-      $el.attr('data-module-loaded', true);
-    });
-  });
-  </script>
-<% end %>
-
 <%= render template: 'layouts/govuk_admin_template' %>

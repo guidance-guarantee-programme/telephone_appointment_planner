@@ -3,8 +3,8 @@
   'use strict';
 
   class AppointmentAvailabilityCalendar extends Calendar {
-    constructor(el, config = {}) {
-      const calendarConfig = $.extend(true, {
+    start(el) {
+      this.config = {
         defaultView: 'agendaWeek',
         weekends: false,
         columnFormat: 'ddd D/M',
@@ -21,9 +21,9 @@
             duration: { days: 3 }
           }
         }
-      }, config);
+      };
 
-      super(el, calendarConfig);
+      super.start(el);
 
       this.coloursConfig = [
         { count: 1,  colour: 'hsl(200, 50%, 65%)' },
@@ -129,6 +129,5 @@
     }
   }
 
-  window.PWTAP = window.PWTAP || {};
-  window.PWTAP.AppointmentAvailabilityCalendar = AppointmentAvailabilityCalendar;
+  window.GOVUKAdmin.Modules.AppointmentAvailabilityCalendar = AppointmentAvailabilityCalendar;
 }

@@ -1,14 +1,13 @@
 'use strict';
 
-class AdvancedSelect {
-  constructor(el, config = {}) {
-    const defaultConfig = {
+class AdvancedSelect extends TapBase {
+  start(el) {
+    this.config = {
       theme: 'bootstrap',
       templateResult: this.renderTemplate.bind(this)
     };
 
-    this.config = $.extend(true, defaultConfig, config);
-    this.$el = el;
+    super.start(el);
 
     this.$el.select2(this.config);
     this.$el.on('select2:select', this.handleSelect.bind(this));
@@ -41,5 +40,4 @@ class AdvancedSelect {
   }
 }
 
-window.PWTAP = window.PWTAP || {};
-window.PWTAP.AdvancedSelect = AdvancedSelect;
+window.GOVUKAdmin.Modules.AdvancedSelect = AdvancedSelect;

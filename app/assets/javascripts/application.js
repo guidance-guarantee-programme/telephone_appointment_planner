@@ -17,6 +17,7 @@
 //= require listjs
 //= require bootstrap-daterangepicker
 //= require core.js/core.js
+//= require tap-base
 //= require calendar
 //= require customer-age
 //= require calendars/appointment-availability

@@ -1,13 +1,14 @@
 {
   'use strict';
 
-  class GuidersMultiAction {
-    constructor(el, config = {}) {
-      this.$el = el;
-      this.config = config;
+  class GuidersMultiAction extends TapBase {
+    start(el) {
+      super.start(el);
+
       this.$actionPanel = this.$el.find('[data-action-panel]');
       this.$actionsSelect = this.$actionPanel.find('[data-action-panel-actions]');
       this.$goButton = this.$actionPanel.find('[data-action-panel-go]');
+
       this.bindEvents();
       this.hideActionPanel();
     }
@@ -69,6 +70,5 @@
     }
   }
 
-  window.PWTAP = window.PWTAP || {};
-  window.PWTAP.GuidersMultiAction = GuidersMultiAction;
+  window.GOVUKAdmin.Modules.GuidersMultiAction = GuidersMultiAction;
 }

@@ -3,8 +3,8 @@
   'use strict';
 
   class GuiderAppointmentsCalendar extends Calendar {
-    constructor(el, config = {}) {
-      const calendarConfig = $.extend(true, {
+    start(el) {
+      this.config = {
         columnFormat: 'ddd D/M',
         defaultView: 'agendaDay',
         header: {
@@ -14,16 +14,16 @@
         slotDuration: '00:30:00',
         eventTextColor: '#fff',
         events: '/appointments'
-      }, config);
+      };
 
-      super(el, calendarConfig);
+      super.start(el);
 
       this.guiderId = this.$el.data('guider-id');
       this.setupPusher();
     }
 
     setupPusher() {
-      var channel = Pusher.instance.subscribe('telephone_appointment_planner');
+      const channel = Pusher.instance.subscribe('telephone_appointment_planner');
       channel.bind(`${this.guiderId}`, this.handlePushEvent.bind(this));
     }
 
@@ -56,6 +56,5 @@
     }
   }
 
-  window.PWTAP = window.PWTAP || {};
-  window.PWTAP.GuiderAppointmentsCalendar = GuiderAppointmentsCalendar;
+  window.GOVUKAdmin.Modules.GuiderAppointmentsCalendar = GuiderAppointmentsCalendar;
 }

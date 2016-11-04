@@ -1,12 +1,13 @@
 {
   'use strict';
 
-  class MultiCheckbox {
-    constructor(el, config = {}) {
-      this.$el = el;
-      this.config = config;
+  class MultiCheckbox extends TapBase {
+    start(el) {
+      super.start(el);
+
       this.allCheckbox = this.$el.find('[data-multi-checkbox="all"]');
       this.itemCheckboxes = this.$el.find('[data-multi-checkbox="item"]');
+
       this.bindEvents();
     }
 
@@ -54,6 +55,5 @@
     }
   }
 
-  window.PWTAP = window.PWTAP || {};
-  window.PWTAP.MultiCheckbox = MultiCheckbox;
+  window.GOVUKAdmin.Modules.MultiCheckbox = MultiCheckbox;
 }
