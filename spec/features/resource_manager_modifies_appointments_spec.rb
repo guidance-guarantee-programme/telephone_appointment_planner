@@ -41,10 +41,18 @@ RSpec.feature 'Resource manager modifies appointments' do
     end
   end
 
-  scenario 'Rescheduling an appointment', js: true do
-    perform_enqueued_jobs do
-      given_the_user_is_a_resource_manager do
-        when_there_are_appointments_for_multiple_guiders
+  scenario 'Rescheduling an appointment notifies the guider and customer', js: true do
+    # create the guiders and appointments up front
+    when_there_are_appointments_for_multiple_guiders
+
+    # start Ben's session to subscribe on the pusher channel
+    given_a_browser_session_for(@ben) do
+      when_they_view_their_appointments
+    end
+
+    # reschedule the appointment
+    given_the_user_is_a_resource_manager do
+      perform_enqueued_jobs do
         travel_to @appointment.start_at do
           when_they_view_the_appointments
           then_they_see_appointments_for_multiple_guiders
@@ -54,6 +62,11 @@ RSpec.feature 'Resource manager modifies appointments' do
           and_the_customer_is_notified_of_the_appointment_change
         end
       end
+    end
+
+    # go back to Ben and check for notifications
+    given_a_browser_session_for(@ben) do
+      then_they_are_notified_of_the_rescheduling
     end
   end
 
@@ -111,6 +124,15 @@ RSpec.feature 'Resource manager modifies appointments' do
 
     expect(@page.notification.customer.text).to include(@appointment.name)
     expect(@page.notification.guider.text).to include(@jan.name)
+  end
+
+  def then_they_are_notified_of_the_rescheduling
+    @page = Pages::Calendar.new
+    @page.wait_until_notification_visible
+
+    expect(@page.notification.customer.text).to include(@appointment.name)
+    expect(@page.notification.guider.text).to include(@ben.name)
+    expect(@page.notification.start.text).to include(@appointment.start_at.strftime('%d %B %Y %H:%M'))
   end
 
   def when_they_change_the_guider

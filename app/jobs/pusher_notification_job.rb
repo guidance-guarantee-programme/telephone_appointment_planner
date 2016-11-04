@@ -6,7 +6,7 @@ class PusherNotificationJob < ApplicationJob
       'telephone_appointment_planner',
       guider_id.to_s,
       customer_name: appointment.name,
-      start: appointment.start_at,
+      start: appointment.start_at.strftime('%d %B %Y %H:%M'),
       guider_name: appointment.guider.name
     )
   end

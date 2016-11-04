@@ -1,4 +1,4 @@
-/* global Calendar, Pusher, moment */
+/* global Calendar, Pusher */
 {
   'use strict';
 
@@ -33,7 +33,7 @@
       modal.find('.modal-body').html(`
         <p><b>Appointment updated</b></p>
         <p class="t-customer">Customer: ${payload['customer_name']}</p>
-        <p class="t-start">Date/Time: ${moment(payload['start']).format('dddd D MMM YYYY H.mma')}</p>
+        <p class="t-start">Date/Time: ${payload['start']}</p>
         <p class="t-guider">Guider: ${payload['guider_name']}</p>
       `);
 
