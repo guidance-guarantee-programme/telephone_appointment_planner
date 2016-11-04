@@ -1,4 +1,4 @@
-class CreateHolidays
+class UpdateHolidays
   include ActiveModel::Model
   extend ActiveModel::Naming
   include DateRangePickerHelper
@@ -12,10 +12,11 @@ class CreateHolidays
   validates :users, presence: true
 
   def to_model
-    Holiday.new
+    @holiday ||= Holiday.find(@holiday_ids).first
   end
 
-  def initialize(title = nil, date_range = nil, users = [])
+  def initialize(holiday_ids, title = nil, date_range = nil, users = [])
+    @holiday_ids = holiday_ids
     @title = title
     @date_range = date_range
     @users = users
@@ -23,6 +24,7 @@ class CreateHolidays
 
   def call
     return false unless valid?
+    Holiday.where(id: @holiday_ids).destroy_all
     start_at, end_at = date_range.split(' - ').map do |d|
       strp_date_range_picker_time(d)
     end

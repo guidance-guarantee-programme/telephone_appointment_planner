@@ -14,6 +14,7 @@ module Pages
     sections :events, '.fc-event' do
       element :title, '.fc-title'
       element :time, '.fc-time'
+      element :content, '.fc-content'
     end
 
     def all_events

@@ -1,4 +1,6 @@
 class HolidaySerializer < ActiveModel::Serializer
+  include Rails.application.routes.url_helpers
+
   attribute :id
   attribute :title
   attribute :start_at, key: :start
@@ -8,4 +10,10 @@ class HolidaySerializer < ActiveModel::Serializer
   attribute :resourceId do
     object.try(:user_id)
   end
+
+  attribute :url, unless: :bank_holiday? do
+    edit_holiday_path(object.holiday_ids || object.id)
+  end
+
+  delegate :bank_holiday?, to: :object
 end

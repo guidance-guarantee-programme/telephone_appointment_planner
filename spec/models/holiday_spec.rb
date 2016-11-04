@@ -1,6 +1,22 @@
 require 'rails_helper'
 
 RSpec.describe Holiday, type: :model do
+  describe 'validations' do
+    context 'bank holiday' do
+      it 'does not require a user' do
+        holiday = build_stubbed(:bank_holiday, user: nil)
+        expect(holiday).to be_valid
+      end
+    end
+
+    context 'user holidays' do
+      it 'requires a user' do
+        holiday = build_stubbed(:holiday, user: nil)
+        expect(holiday).to_not be_valid
+      end
+    end
+  end
+
   describe '#merge_for_calendar_view' do
     let(:results) do
       subject.class.merged_for_calendar_view
@@ -41,7 +57,7 @@ RSpec.describe Holiday, type: :model do
         end_at: Date.new(2014, 12, 25).end_of_day
       )
       christmas = create(
-        :holiday,
+        :bank_holiday,
         title: 'christmas',
         start_at: Date.new(2010, 12, 25).beginning_of_day,
         end_at: Date.new(2010, 12, 25).end_of_day
@@ -64,7 +80,7 @@ RSpec.describe Holiday, type: :model do
 
     let!(:holiday_starting_in_range) do
       create(
-        :holiday,
+        :bank_holiday,
         start_at: start_at + 3.days,
         end_at: end_at + 5.days
       )
@@ -72,7 +88,7 @@ RSpec.describe Holiday, type: :model do
 
     let!(:holiday_ending_in_range) do
       create(
-        :holiday,
+        :bank_holiday,
         start_at: start_at - 10.days,
         end_at: start_at + 1.day
       )
@@ -80,7 +96,7 @@ RSpec.describe Holiday, type: :model do
 
     let!(:holiday_overlapping_range) do
       create(
-        :holiday,
+        :bank_holiday,
         start_at: start_at - 10.days,
         end_at: end_at + 10.days
       )
@@ -88,7 +104,7 @@ RSpec.describe Holiday, type: :model do
 
     let!(:holiday_not_overlapping_or_inside) do
       create(
-        :holiday,
+        :bank_holiday,
         start_at: start_at + 10.days,
         end_at: end_at + 20.days
       )

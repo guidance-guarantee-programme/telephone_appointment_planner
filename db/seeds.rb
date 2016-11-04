@@ -30,6 +30,7 @@ if Rails.env.development?
     date = Faker::Date.between(Date.today, 1.month.from_now)
     Holiday.create!(
       user: guider,
+      bank_holiday: false,
       title: Faker::Book.title,
       end_at: date.end_of_day,
       start_at: date.beginning_of_day

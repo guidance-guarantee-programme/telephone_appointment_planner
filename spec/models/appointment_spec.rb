@@ -135,7 +135,7 @@ RSpec.describe Appointment, type: :model do
       context 'and there is a bank holiday at that time' do
         before do
           create(
-            :holiday,
+            :bank_holiday,
             start_at: appointment_start_time.beginning_of_day,
             end_at: appointment_end_time.end_of_day
           )
