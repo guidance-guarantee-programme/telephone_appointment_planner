@@ -1,0 +1,23 @@
+<div class="page-header">
+  <ol class="breadcrumb">
+    <li><a href="<%= root_path %>">Home</a></li>
+    <li><a href="<%= holidays_path %>">Holidays & unavailability</a></li>
+    <li class="active">Edit holiday</li>
+  </ol>
+
+  <h1>Edit holiday</h1>
+</div>
+
+<h2>Title: <%= @title %></h2>
+<p>
+  Users: <%= @users.map(&:name).join(', ') %>
+</p>
+<%=
+  button_to(
+    'Delete holiday',
+    holidays_path,
+    method: :delete,
+    params: { holiday_ids: params[:id] },
+    class: 'btn btn-danger t-delete'
+  )
+%>
