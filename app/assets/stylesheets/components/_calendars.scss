@@ -2,6 +2,16 @@ $calendar-today-background: $color-white;
 $calendar-cancelled-background: $color-guardsman-red;
 $calendar-moved-background: $color-green;
 
+.holiday-calendar {
+  margin-top: 1em;
+
+  .fc-event {
+    &:visited {
+      color: $color-white;
+    }
+  }
+}
+
 .guiders-appointments-calendar {
   .fc-resource-cell {
     height: 150px;
@@ -55,10 +65,6 @@ $calendar-moved-background: $color-green;
     background: $brand-danger;
     opacity: .8;
   }
-}
-
-.holiday-calendar {
-  margin-top: 1em;
 }
 
 .fc-right {
