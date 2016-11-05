@@ -27,4 +27,6 @@
 //= require activity-feed-poller
 //= require select2
 //= require advanced-select
+//= require cookie
+//= require pusher
 //= require_tree .

@@ -2,10 +2,57 @@
 require 'rails_helper'
 
 RSpec.feature 'Resource manager modifies appointments' do
-  scenario 'Rescheduling an appointment', js: true do
-    perform_enqueued_jobs do
-      given_the_user_is_a_resource_manager do
-        and_there_are_appointments_for_multiple_guiders
+  scenario 'Reassigning the chosen guider alerts both guiders', js: true do
+    # create the guiders and appointments up front
+    when_there_are_appointments_for_multiple_guiders
+
+    # start Ben's session to subscribe on the pusher channel
+    given_a_browser_session_for(@ben) do
+      when_they_view_their_appointments
+    end
+
+    # start Jan's session too
+    given_a_browser_session_for(@jan) do
+      when_they_view_their_appointments
+    end
+
+    # start resource manager's session and reassign the appointment
+    given_the_user_is_a_resource_manager do
+      perform_enqueued_jobs do
+        travel_to @appointment.start_at do
+          when_they_view_the_appointments
+          then_they_see_appointments_for_multiple_guiders
+          when_they_change_the_guider
+          and_commit_their_modifications
+          then_the_guider_is_modified
+          and_no_customer_notifications_are_sent
+        end
+      end
+    end
+
+    # go back to Ben's session and check for the notification
+    given_a_browser_session_for(@ben) do
+      then_they_are_notified_of_the_change
+    end
+
+    # check Jan's session for the notification too
+    given_a_browser_session_for(@jan) do
+      then_they_are_notified_of_the_change
+    end
+  end
+
+  scenario 'Rescheduling an appointment notifies the guider and customer', js: true do
+    # create the guiders and appointments up front
+    when_there_are_appointments_for_multiple_guiders
+
+    # start Ben's session to subscribe on the pusher channel
+    given_a_browser_session_for(@ben) do
+      when_they_view_their_appointments
+    end
+
+    # reschedule the appointment
+    given_the_user_is_a_resource_manager do
+      perform_enqueued_jobs do
         travel_to @appointment.start_at do
           when_they_view_the_appointments
           then_they_see_appointments_for_multiple_guiders
@@ -15,6 +62,11 @@ RSpec.feature 'Resource manager modifies appointments' do
           and_the_customer_is_notified_of_the_appointment_change
         end
       end
+    end
+
+    # go back to Ben and check for notifications
+    given_a_browser_session_for(@ben) do
+      then_they_are_notified_of_the_rescheduling
     end
   end
 
@@ -58,7 +110,40 @@ RSpec.feature 'Resource manager modifies appointments' do
     )
   end
 
-  def and_there_are_appointments_for_multiple_guiders
+  def and_no_customer_notifications_are_sent
+    expect(ActionMailer::Base.deliveries).to be_empty
+  end
+
+  def when_they_view_their_appointments
+    @page = Pages::Calendar.new.tap(&:load)
+  end
+
+  def then_they_are_notified_of_the_change
+    @page = Pages::Calendar.new
+    @page.wait_until_notification_visible
+
+    expect(@page.notification.customer.text).to include(@appointment.name)
+    expect(@page.notification.guider.text).to include(@jan.name)
+  end
+
+  def then_they_are_notified_of_the_rescheduling
+    @page = Pages::Calendar.new
+    @page.wait_until_notification_visible
+
+    expect(@page.notification.customer.text).to include(@appointment.name)
+    expect(@page.notification.guider.text).to include(@ben.name)
+    expect(@page.notification.start.text).to include(@appointment.start_at.strftime('%d %B %Y %H:%M'))
+  end
+
+  def when_they_change_the_guider
+    @page.reassign(@page.appointments.first, guider: @jan)
+  end
+
+  def then_the_guider_is_modified
+    expect(@appointment.reload.guider_id).to eq(@jan.id)
+  end
+
+  def when_there_are_appointments_for_multiple_guiders
     @ben = create(:guider, name: 'Ben Lovell')
     @jan = create(:guider, name: 'Jan Schwifty')
 
