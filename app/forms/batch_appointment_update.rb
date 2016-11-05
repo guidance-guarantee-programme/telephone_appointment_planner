@@ -32,7 +32,7 @@ class BatchAppointmentUpdate
   def notify_customer(appointment)
     return unless appointment.previous_changes.slice('start_at', 'end_at').present?
 
-    AppointmentMailer.updated(appointment).deliver_later if appointment.email.present?
+    AppointmentMailer.updated(appointment).deliver_later
   end
 
   def update_appointment(change)
