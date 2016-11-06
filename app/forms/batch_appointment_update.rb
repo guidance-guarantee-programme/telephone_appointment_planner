@@ -36,10 +36,7 @@ class BatchAppointmentUpdate
   end
 
   def update_appointment(change)
-    Appointment.find(change['id']).tap do |appointment|
-      appointment.assign_attributes(permitted_attributes(change))
-      appointment.save!
-    end
+    Appointment.update(change['id'], permitted_attributes(change))
   end
 
   def permitted_attributes(change)
