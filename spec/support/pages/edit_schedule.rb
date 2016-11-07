@@ -8,6 +8,8 @@ module Pages
       text: 'Sorry, you don\'t seem to have the resource_manager permission for this app.'
     )
 
+    elements :events, '.fc-event'
+
     element :save, '.t-save'
     element :start_at, '.t-start-at'
   end

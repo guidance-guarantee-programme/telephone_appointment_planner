@@ -89,6 +89,7 @@ RSpec.feature 'Resource manager manages schedules' do
   def and_they_add_some_time_slots
     click_on_day_and_time 'Monday', '09:00'
     click_on_day_and_time 'Tuesday', '10:30'
+    expect(@page).to have_events(count: 2)
   end
 
   def when_they_save_the_users_time_slots
@@ -97,16 +98,21 @@ RSpec.feature 'Resource manager manages schedules' do
 
   def then_they_are_told_that_the_schedule_has_been_created
     @page = Pages::EditUser.new
-    expect(@page).to have_flash_of_success
+    expect(@page).to be_displayed
+    expect(@page).to have_flash_of_success(text: 'Schedule has been created')
   end
-  alias_method(
-    :then_they_are_told_that_the_schedule_has_been_updated,
-    :then_they_are_told_that_the_schedule_has_been_created
-  )
-  alias_method(
-    :then_they_are_told_that_the_schedule_has_been_deleted,
-    :then_they_are_told_that_the_schedule_has_been_created
-  )
+
+  def then_they_are_told_that_the_schedule_has_been_updated
+    @page = Pages::EditUser.new
+    expect(@page).to be_displayed
+    expect(@page).to have_flash_of_success(text: 'Schedule has been updated')
+  end
+
+  def then_they_are_told_that_the_schedule_has_been_deleted
+    @page = Pages::EditUser.new
+    expect(@page).to be_displayed
+    expect(@page).to have_flash_of_success(text: 'Schedule has been deleted')
+  end
 
   def and_they_edit_the_schedule
     @page = Pages::EditSchedule.new
@@ -120,27 +126,26 @@ RSpec.feature 'Resource manager manages schedules' do
   def and_they_change_the_time_slots
     click_on_day_and_time 'Wednesday', '11:00'
     click_on_day_and_time 'Thursday', '10:30'
+    expect(@page).to have_events(count: 2)
   end
 
   def and_the_guider_has_the_changed_time_slots
-    @schedule.reload
-
-    first_slot = @schedule.slots.first
-    expect(first_slot.attributes).to include(
-      'day_of_week' => 3,
-      'start_hour' => 11,
-      'start_minute' => 0,
-      'end_hour' => 12,
-      'end_minute' => 10
+    first_slot = @schedule.slots.where(day_of_week: 3).first
+    expect(first_slot).to have_attributes(
+      day_of_week: 3,
+      start_hour: 11,
+      start_minute: 0,
+      end_hour: 12,
+      end_minute: 10
     )
 
-    second_slot = @schedule.slots.second
-    expect(second_slot.attributes).to include(
-      'day_of_week' => 4,
-      'start_hour' => 10,
-      'start_minute' => 30,
-      'end_hour' => 11,
-      'end_minute' => 40
+    second_slot = @schedule.slots.where(day_of_week: 4).first
+    expect(second_slot).to have_attributes(
+      day_of_week: 4,
+      start_hour: 10,
+      start_minute: 30,
+      end_hour: 11,
+      end_minute: 40
     )
   end
 
