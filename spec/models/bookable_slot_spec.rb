@@ -134,8 +134,7 @@ RSpec.describe BookableSlot, type: :model do
       context 'there is a holiday obscuring a bookable slot' do
         it 'excludes the slots' do
           create(
-            :holiday,
-            user: nil,
+            :bank_holiday,
             start_at: make_time(6, 30),
             end_at: make_time(18, 30)
           )

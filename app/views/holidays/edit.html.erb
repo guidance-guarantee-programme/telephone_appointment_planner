@@ -1,0 +1,49 @@
+<div class="page-header">
+  <ol class="breadcrumb">
+    <li><a href="<%= root_path %>">Home</a></li>
+    <li><a href="<%= holidays_path %>">Holidays &amp; unavailability</a></li>
+    <li class="active">Edit holiday</li>
+  </ol>
+
+  <h1>Edit holiday</h1>
+</div>
+
+<%= form_for @holiday, url: holiday_path(params[:id]), layout: :basic do |f| %>
+  <%= f.text_field :title, class: 't-title' %>
+  <%=
+    f.text_field(
+      :date_range,
+      class: 't-date-range',
+      data: {
+        module: 'DateRangePicker',
+        config: {
+          timePicker: true,
+          timePickerIncrement: 5,
+          locale: {
+            format: 'DD/MM/YYYY HH:mm'
+          }
+        }
+      }
+    )
+  %>
+  <%=
+    f.select(
+      :users,
+      grouped_options_for_select(guider_options, @holiday.users),
+      {},
+      multiple: 'multiple',
+      class: 't-users',
+      data: { module: 'AdvancedSelect' },
+    )
+  %>
+  <%= f.submit 'Save', class: 't-save' %>
+  <%=
+    link_to(
+      'Delete holiday',
+      holidays_path(holiday_ids: params[:id]),
+      method: :delete,
+      class: 'btn btn-danger t-delete',
+      data: { confirm: 'Are you sure you want to delete this holiday?' }
+    )
+  %>
+<% end %>

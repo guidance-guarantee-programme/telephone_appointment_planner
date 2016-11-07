@@ -33,6 +33,28 @@ RSpec.feature 'Resource manager manages holidays' do
     end
   end
 
+  scenario 'Updates a holiday', js: true do
+    given_the_user_is_a_resource_manager do
+      travel_to today do
+        and_there_are_guiders_with_holidays
+        when_they_view_holidays
+        and_they_edit_the_holiday
+        then_they_can_see_the_updated_holiday
+      end
+    end
+  end
+
+  scenario 'Deletes a holiday', js: true do
+    given_the_user_is_a_resource_manager do
+      travel_to today do
+        and_there_are_guiders_with_holidays
+        when_they_view_holidays
+        when_they_delete_a_holiday
+        then_it_is_deleted
+      end
+    end
+  end
+
   # rubocop:disable Metrics/AbcSize
   # rubocop:disable Metrics/MethodLength
   def and_there_are_some_holidays
@@ -60,7 +82,7 @@ RSpec.feature 'Resource manager manages holidays' do
       )
     end
     create(
-      :holiday,
+      :bank_holiday,
       title: 'Christmas',
       start_at: next_week,
       end_at: next_week.end_of_day
@@ -137,5 +159,56 @@ RSpec.feature 'Resource manager manages holidays' do
         time: '14:00 - 16:00'
       }
     ]
+  end
+
+  def and_there_are_guiders_with_holidays
+    @guiders = [
+      create(:guider, name: 'a'),
+      create(:guider, name: 'b')
+    ]
+    @guiders.each do |guider|
+      create(
+        :holiday,
+        title: 'Shared Holiday',
+        user: guider,
+        start_at: today + 2.hours,
+        end_at: today + 1.day
+      )
+    end
+  end
+
+  def and_they_edit_the_holiday
+    @page.events.first.content.click
+    @page = Pages::EditHoliday.new
+    expect(@page).to be_displayed
+    @page.title.set 'Some other holiday title'
+    start_at = I18n.l(Time.zone.now.beginning_of_day.change(hour: 12), format: :date_range_picker)
+    end_at = I18n.l(Time.zone.now.beginning_of_day.change(hour: 18), format: :date_range_picker)
+    @page.date_range.set "#{start_at} - #{end_at}"
+    page.execute_script '$(".daterangepicker").hide();'
+    @page.select_user(@guiders.first)
+    @page.save.click
+  end
+
+  def then_they_can_see_the_updated_holiday
+    @page = Pages::Holidays.new
+    expect(@page).to be_displayed
+    expect(@page.all_events).to eq [
+      {
+        title: "Some other holiday title - #{@guiders.map(&:name).join(', ')}",
+        time: '12:00 - 18:00'
+      }
+    ]
+  end
+
+  def when_they_delete_a_holiday
+    @page.events.first.content.click
+    @page = Pages::EditHoliday.new
+    expect(@page).to be_displayed
+    @page.delete.click
+  end
+
+  def then_it_is_deleted
+    expect(Holiday.all).to be_empty
   end
 end

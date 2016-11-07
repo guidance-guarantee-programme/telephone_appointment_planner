@@ -1,4 +1,5 @@
 class HolidaysController < ApplicationController
+  include DateRangePickerHelper
   before_action :authorise_for_resource_managers!
 
   def merged
@@ -28,9 +29,28 @@ class HolidaysController < ApplicationController
     )
 
     if @holiday.call
-      redirect_to holidays_path, success: 'Holiday has been created.'
+      redirect_to holidays_path, success: 'Holiday has been created'
     else
       render :new
+    end
+  end
+
+  def edit
+    holidays = Holiday.where(id: holiday_ids).includes(:user)
+    @holiday = UpdateHolidays.new(
+      holiday_ids,
+      holidays.first.title,
+      build_date_range_picker_range(holidays.first.start_at, holidays.first.end_at),
+      holidays.map(&:user).map(&:id)
+    )
+  end
+
+  def update
+    @holiday = UpdateHolidays.new(holiday_ids, update_params[:title], update_params[:date_range], user_ids)
+    if @holiday.call
+      redirect_to holidays_path, success: 'Holiday has been updated'
+    else
+      render :edit
     end
   end
 
@@ -39,9 +59,20 @@ class HolidaysController < ApplicationController
     Holiday
       .where(id: holiday_ids)
       .destroy_all
+    redirect_to holidays_path, success: 'Holiday has been deleted'
   end
 
   private
+
+  def holiday_ids
+    params[:id].split(',')
+  end
+
+  def update_params
+    params
+      .require(:holiday)
+      .permit(:title, :date_range)
+  end
 
   def create_params
     params
