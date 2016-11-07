@@ -123,7 +123,7 @@ RSpec.feature 'Resource manager manages schedules' do
   end
 
   def and_the_guider_has_the_changed_time_slots
-    @schedule.reload
+    expect(@schedule.slots.count).to eq 2
 
     first_slot = @schedule.slots.first
     expect(first_slot.attributes).to include(
