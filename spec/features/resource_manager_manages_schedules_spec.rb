@@ -64,11 +64,11 @@ RSpec.feature 'Resource manager manages schedules' do
   end
 
   def click_on_day_and_time(day, time)
-    page.find('[data-module="GuiderSlotPickerCalendar"]')
+    page.find('[data-module="guider-slot-picker-calendar"]')
     time = "#{time}:00"
     x, y = page.driver.evaluate_script <<-JS
       function() {
-        var $calendar = $('[data-module="GuiderSlotPickerCalendar"]');
+        var $calendar = $('[data-module="guider-slot-picker-calendar"]');
         var $header = $calendar.find(".fc-day-header:contains('#{day}')");
         var $row = $calendar.find('[data-time="#{time}"]');
         return [$header.offset().left + 10, $row.offset().top + 10];

@@ -17,7 +17,7 @@
         <% end %>
       </div>
       <ul class="activity-feed__list"
-        data-module='ActivityFeedPoller'
+        data-module='activity-feed-poller'
         data-interval="<%= poll_interval_milliseconds %>"
         data-url="<%= appointment_activities_path(appointment) %>">
         <%= render appointment.activities.first if appointment.activities.present? %>

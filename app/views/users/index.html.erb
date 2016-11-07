@@ -7,15 +7,15 @@
   <h1>Manage guiders</h1>
 </div>
 
-<div data-module="GuidersMultiAction">
-  <div id="guiders" data-module="SortableList" data-default-order='{"value": "name", "order": "asc"}' data-config='<%= sortable_list_config(@groups) %>'>
+<div data-module="guiders-multi-action">
+  <div id="guiders" data-module="sortable-list" data-default-order='{"value": "name", "order": "asc"}' data-config='<%= sortable_list_config(@groups) %>'>
     <form class="form-inline">
       <div class="form-group">
         <label for="user-search">Search</label>
         <input class="search form-control t-search" name="user-search" id="user-search" placeholder="Search">
       </div>
     </form>
-    <table class="table table-striped table-bordered table-hover" data-module="MultiCheckbox" data-config='{"selectedClassName":"info"}'>
+    <table class="table table-striped table-bordered table-hover" data-module="multi-checkbox" data-config='{"selectedClassName":"info"}'>
       <caption><span class="sr-only">List of guiders</span></caption>
       <colgroup>
         <col width="1%">

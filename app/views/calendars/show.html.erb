@@ -8,7 +8,8 @@
 </div>
 
 <div
-  data-module="GuiderAppointmentsCalendar"
+  id="GuiderAppointmentsCalendar"
+  data-module="guider-appointments-calendar"
   data-default-date="<%= Time.zone.now %>"
   data-guider-id="<%= current_user.id %>"
 ></div>
@@ -30,15 +31,13 @@
 
 <% content_for :body_end do %>
   <script>
-    $(function() {
-      <% if defined?(PusherFake) %>
-          Pusher.instance = <%= raw PusherFake.javascript %>;
-      <% else %>
-          Pusher.instance = new Pusher('<%= ENV['PUSHER_KEY'] %>', {
-            cluster: 'eu',
-            encrypted: true
-          });
-      <% end %>
-    });
+  <% if defined?(PusherFake) %>
+      Pusher.instance = <%= raw PusherFake.javascript %>;
+  <% else %>
+      Pusher.instance = new Pusher('<%= ENV['PUSHER_KEY'] %>', {
+        cluster: 'eu',
+        encrypted: true
+      });
+  <% end %>
   </script>
 <% end %>

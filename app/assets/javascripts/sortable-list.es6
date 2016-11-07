@@ -2,10 +2,9 @@
 {
   'use strict';
 
-  class SortableList {
-    constructor(el, config = {}) {
-      this.$el = el;
-      this.config = config;
+  class SortableList extends TapBase {
+    start(el) {
+      super.start(el);
 
       this.setupSortButtons();
       this.init();
@@ -41,6 +40,5 @@
     }
   }
 
-  window.PWTAP = window.PWTAP || {};
-  window.PWTAP.SortableList = SortableList;
+  window.GOVUKAdmin.Modules.SortableList = SortableList;
 }

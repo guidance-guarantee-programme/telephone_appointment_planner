@@ -1,18 +1,12 @@
 'use strict';
 
-class ActivityFeedPoller {
-  constructor(el, config = {}) {
-    const defaultConfig = { };
-    this.config = $.extend(true, defaultConfig, config);
+class ActivityFeedPoller extends TapBase {
+  start(el) {
+    super.start(el);
 
-    this.$el = el;
     this.$messageForm = this.$el.find('.js-message-form');
 
     this.setLastTimestamp(this.timestamp());
-    this.start();
-  }
-
-  start() {
     setInterval(() => this.poll(), this.$el.data('interval'));
   }
 
@@ -47,5 +41,4 @@ class ActivityFeedPoller {
   }
 }
 
-window.PWTAP = window.PWTAP || {};
-window.PWTAP.ActivityFeedPoller = ActivityFeedPoller;
+window.GOVUKAdmin.Modules.ActivityFeedPoller = ActivityFeedPoller;

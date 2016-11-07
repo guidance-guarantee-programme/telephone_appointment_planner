@@ -20,7 +20,7 @@
           :start_at,
           value: @schedule.start_at.try(:strftime, '%-e %b %Y'),
           data: {
-            module: 'DateRangePicker',
+            module: 'date-range-picker',
             config: {
               singleDatePicker: true,
               showDropdowns: true
@@ -58,7 +58,7 @@
     </div>
   </div>
   <div class="form-group">
-    <div id="GuiderSlotPickerCalendar" data-module="GuiderSlotPickerCalendar" data-events=".slots-data" data-events-common="calendar-common" data-config='{"slotDurationMinutes": 70}'></div>
+    <div id="GuiderSlotPickerCalendar" data-module="guider-slot-picker-calendar" data-events=".slots-data" data-events-common="calendar-common" data-config='{"slotDurationMinutes": 70}'></div>
   </div>
 
   <%= f.hidden_field :slots, class: 'slots-data', value: @slots_as_json %>

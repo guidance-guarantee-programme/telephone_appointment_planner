@@ -2,9 +2,9 @@
 {
   'use strict';
 
-  class GuiderSchedulesChart {
-    constructor(el, config = {}) {
-      const defaultConfig = {
+  class GuiderSchedulesChart extends TapBase {
+    start(el) {
+      this.config = {
         gridColumns: 12,
         windowStartMonthsAgo: 1,
         windowLengthInMonths: 12,
@@ -20,8 +20,8 @@
         }
       };
 
-      this.config = $.extend(true, defaultConfig, config);
-      this.$el = el;
+      super.start(el);
+
       this.today = moment().startOf('day');
 
       this.displayMonths();
@@ -110,6 +110,5 @@
     }
   }
 
-  window.PWTAP = window.PWTAP || {};
-  window.PWTAP.GuiderSchedulesChart = GuiderSchedulesChart;
+  window.GOVUKAdmin.Modules.GuiderSchedulesChart = GuiderSchedulesChart;
 }

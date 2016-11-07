@@ -3,8 +3,8 @@
   'use strict';
 
   class GuidersAppointmentsCalendar extends Calendar {
-    constructor(el, config = {}) {
-      const calendarConfig = $.extend(true, {
+    start(el) {
+      this.config = {
         columnFormat: 'ddd D/M',
         defaultView: 'agendaDay',
         resourceLabelText: 'Guiders',
@@ -26,9 +26,9 @@
             rendering: 'background'
           }
         ]
-      }, config);
+      };
 
-      super(el, calendarConfig);
+      super.start(el);
 
       this.eventChanges = [];
       this.actionPanel = $('[data-action-panel]');
@@ -258,6 +258,5 @@
     }
   }
 
-  window.PWTAP = window.PWTAP || {};
-  window.PWTAP.GuidersAppointmentsCalendar = GuidersAppointmentsCalendar;
+  window.GOVUKAdmin.Modules.GuidersAppointmentsCalendar = GuidersAppointmentsCalendar;
 }
