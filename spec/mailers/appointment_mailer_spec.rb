@@ -12,6 +12,12 @@ RSpec.describe AppointmentMailer, type: :mailer do
   describe 'Confirmation' do
     subject(:mail) { described_class.confirmation(appointment) }
 
+    it 'guards against the absence of a recipient' do
+      appointment.email = ''
+
+      expect(mail.message).to be_an(ActionMailer::Base::NullMail)
+    end
+
     it 'renders the headers' do
       expect(mail.subject).to eq('Your Pension Wise Appointment')
       expect(mail.to).to eq([appointment.email])
@@ -34,6 +40,12 @@ RSpec.describe AppointmentMailer, type: :mailer do
 
   describe 'Updated' do
     subject(:mail) { described_class.updated(appointment) }
+
+    it 'guards against the absence of a recipient' do
+      appointment.email = ''
+
+      expect(mail.message).to be_an(ActionMailer::Base::NullMail)
+    end
 
     it 'renders the headers' do
       expect(mail.subject).to eq('Your Pension Wise Appointment')
