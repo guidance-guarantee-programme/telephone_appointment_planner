@@ -1,11 +1,10 @@
-<div class="page-header">
-  <ol class="breadcrumb">
-    <li><a href="<%= root_path %>">Home</a></li>
-    <li class="active">Book an appointment</li>
-  </ol>
+<ol class="breadcrumb">
+  <li><a href="<%= root_path %>">Home</a></li>
+  <li class="active">Book an appointment</li>
+</ol>
 
-  <h1>Book an appointment</h1>
-</div>
+<h1>Book an appointment</h1>
+
 <%= render 'shared/required_fields_note' %>
 <%= form_for @appointment, layout: :basic do |f| %>
   <div class="row form-group">

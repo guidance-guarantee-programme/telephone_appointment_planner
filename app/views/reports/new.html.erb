@@ -1,11 +1,9 @@
-<div class="page-header">
-  <ol class="breadcrumb">
-    <li><a href="<%= root_path %>">Home</a></li>
-    <li class="active">Reports</li>
-  </ol>
+<ol class="breadcrumb">
+  <li><a href="<%= root_path %>">Home</a></li>
+  <li class="active">Reports</li>
+</ol>
 
-  <h1>Generate a report</h1>
-</div>
+<h1>Generate a report</h1>
 
 <%= form_for @report, method: 'GET', target: '_blank', 'data-disable-with': nil, layout: :basic do |f| %>
   <%=

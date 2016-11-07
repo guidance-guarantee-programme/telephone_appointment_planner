@@ -1,11 +1,9 @@
-<div class="page-header">
-  <ol class="breadcrumb">
-    <li><a href="<%= root_path %>">Home</a></li>
-    <li class="active">Manage guiders</li>
-  </ol>
+<ol class="breadcrumb">
+  <li><a href="<%= root_path %>">Home</a></li>
+  <li class="active">Manage guiders</li>
+</ol>
 
-  <h1>Manage guiders</h1>
-</div>
+<h1>Manage guiders</h1>
 
 <div data-module="guiders-multi-action">
   <div id="guiders" data-module="sortable-list" data-default-order='{"value": "name", "order": "asc"}' data-config='<%= sortable_list_config(@groups) %>'>
