@@ -7,7 +7,6 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-fullcalendar-scheduler'
   gem 'rails-assets-qTip2'
   gem 'rails-assets-bootstrap-daterangepicker'
-  gem 'rails-assets-cookie'
   gem 'rails-assets-pusher'
 end
 
