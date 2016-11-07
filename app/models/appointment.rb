@@ -73,6 +73,7 @@ class Appointment < ApplicationRecord
     else
       AuditActivity.from(audit, self)
     end
+    AssignmentActivity.from(audit, self)
   end
 
   def not_within_two_business_days

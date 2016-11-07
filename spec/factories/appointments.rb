@@ -12,6 +12,6 @@ FactoryGirl.define do
     opt_out_of_market_research true
     memorable_word 'lozenge'
     date_of_birth '1945-01-01'
-    guider { create(:user) }
+    guider { create(:guider) }
   end
 end

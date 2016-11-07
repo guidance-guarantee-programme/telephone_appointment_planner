@@ -76,7 +76,7 @@ RSpec.feature 'User views appointment activities' do
     @page.activity_feed.tap do |feed|
       feed.wait_until_hidden_activities_visible
 
-      expect(feed).to have_activities(count: 3)
+      expect(feed).to have_activities(count: 4)
       expect(feed.activities.last).to have_text('created')
     end
   end
@@ -89,7 +89,7 @@ RSpec.feature 'User views appointment activities' do
   def then_it_appears_dynamically
     @page.activity_feed.wait_for_dynamically_loaded_activities(3)
     activity = @page.activity_feed.dynamically_loaded_activities.first
-    expect(activity.text).to include(@activity.owner_name)
+    expect(activity.text).to include(@activity.user_name)
     expect(activity.text).to include(@activity.message)
   end
 

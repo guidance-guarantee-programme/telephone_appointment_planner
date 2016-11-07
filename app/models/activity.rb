@@ -3,10 +3,13 @@ class Activity < ApplicationRecord
 
   belongs_to :appointment
   belongs_to :user
+  belongs_to :owner, class_name: User
+  belongs_to :prior_owner, class_name: User
+  validates :owner, presence: true
 
   scope :since, -> (since) { where('created_at > ?', since) }
 
-  def owner_name
+  def user_name
     user.try(:name) || 'Someone'
   end
 

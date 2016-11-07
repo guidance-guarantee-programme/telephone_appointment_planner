@@ -16,6 +16,7 @@ RSpec.describe CreateActivity do
       expect(subject).to have_attributes(
         user_id: audit.user_id,
         appointment_id: @appointment.id,
+        owner_id: @appointment.guider.id,
         message: 'created this appointment'
       )
     end

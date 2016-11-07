@@ -3,7 +3,8 @@ class CreateActivity < Activity
     create!(
       user_id: audit.user_id,
       message: 'created this appointment',
-      appointment_id: appointment.id
+      appointment_id: appointment.id,
+      owner_id: appointment.guider.id
     )
   end
 end
