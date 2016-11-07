@@ -21,6 +21,7 @@ RSpec.describe AuditActivity do
 
       expect(subject).to have_attributes(
         user_id: audit.user_id,
+        owner_id: @appointment.guider.id,
         appointment_id: @appointment.id,
         message: 'first name, email, and phone'
       )

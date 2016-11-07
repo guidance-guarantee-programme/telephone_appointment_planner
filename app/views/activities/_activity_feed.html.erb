@@ -4,7 +4,7 @@
 
     <div class="activity-feed">
       <div class="well js-message-form">
-        <%= form_for MessageActivity.new(appointment: appointment), url: appointment_activities_path(appointment), remote: true do |f| %>
+        <%= form_for MessageActivity.new(appointment: appointment, owner: appointment.guider), url: appointment_activities_path(appointment), remote: true do |f| %>
           <div class="input-group">
             <%= f.text_field :message, placeholder: 'Add an action to keep others in the loop', class: 'form-control js-message t-message' %>
             <span class="input-group-btn">

@@ -10,6 +10,7 @@ class ActivitiesController < ApplicationController
   end
 
   def create
+    @appointment = Appointment.find(params[:appointment_id])
     @activity = MessageActivity.create(message_params)
 
     respond_to do |format|
@@ -25,6 +26,7 @@ class ActivitiesController < ApplicationController
       .permit(:message)
       .merge(
         user: current_user,
+        owner: appointment.guider,
         appointment: appointment
       )
   end
