@@ -16,7 +16,7 @@ class Calendar extends TapBase {
       buttonText: {
         agendaDay: 'Day',
         timelineDay: 'Timeline',
-        today: 'Today',
+        today: 'Jump to today',
         month: 'Month',
         week: 'Week'
       },
