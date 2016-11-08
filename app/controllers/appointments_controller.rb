@@ -43,6 +43,7 @@ class AppointmentsController < ApplicationController
   def update
     @appointment = Appointment.find(params[:id])
     if @appointment.update_attributes(update_params)
+      Notifier.new(@appointment).call
       redirect_after_successful_update
     else
       render :edit
