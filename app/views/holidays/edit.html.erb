@@ -1,12 +1,10 @@
-<div class="page-header">
-  <ol class="breadcrumb">
-    <li><a href="<%= root_path %>">Home</a></li>
-    <li><a href="<%= holidays_path %>">Holidays &amp; unavailability</a></li>
-    <li class="active">Edit holiday</li>
-  </ol>
+<ol class="breadcrumb">
+  <li><a href="<%= root_path %>">Home</a></li>
+  <li><a href="<%= holidays_path %>">Holidays &amp; unavailability</a></li>
+  <li class="active">Edit holiday</li>
+</ol>
 
-  <h1>Edit holiday</h1>
-</div>
+<h1>Edit holiday</h1>
 
 <%= form_for @holiday, url: holiday_path(params[:id]), layout: :basic do |f| %>
   <%= f.text_field :title, class: 't-title' %>

@@ -1,12 +1,10 @@
-<div class="page-header">
-  <ol class="breadcrumb">
-    <li><a href="<%= root_path %>">Home</a></li>
-    <li><a href="<%= search_appointments_path %>">Search</a></li>
-    <li class="active">Reschedule an appointment for <%= @appointment.name %></li>
-  </ol>
+<ol class="breadcrumb">
+  <li><a href="<%= root_path %>">Home</a></li>
+  <li><a href="<%= search_appointments_path %>">Search</a></li>
+  <li class="active">Reschedule an appointment for <%= @appointment.name %></li>
+</ol>
 
-  <h1>Reschedule an appointment for <%= @appointment.name %></h1>
-</div>
+<h1>Reschedule an appointment for <%= @appointment.name %></h1>
 
 <%= render 'shared/required_fields_note' %>
 
