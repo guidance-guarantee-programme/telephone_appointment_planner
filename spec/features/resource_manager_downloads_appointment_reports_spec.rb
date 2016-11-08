@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.feature 'Resource manager views reports' do
+RSpec.feature 'Resource manager downloads appointment reports' do
   scenario 'by appointment creation date' do
     given_the_user_is_a_resource_manager do
       travel_to now do
@@ -47,9 +47,9 @@ RSpec.feature 'Resource manager views reports' do
 
   def when_they_download_reports_by_appointment_created_at
     @page = Pages::NewReport.new.tap(&:load)
-    @page.where.select 'Appointment creation date'
-    @page.is_within.set date_range_enclosing(created_at)
-    @page.download.click
+    @page.appointment_report.where.select 'Appointment creation date'
+    @page.appointment_report.is_within.set date_range_enclosing(created_at)
+    @page.appointment_report.download.click
   end
 
   def then_they_get_reports_by_appointment_created_at
@@ -60,9 +60,9 @@ RSpec.feature 'Resource manager views reports' do
 
   def when_they_download_reports_by_appointment_start_at
     @page = Pages::NewReport.new.tap(&:load)
-    @page.where.select 'Appointment start'
-    @page.is_within.set date_range_enclosing(start_at)
-    @page.download.click
+    @page.appointment_report.where.select 'Appointment start'
+    @page.appointment_report.is_within.set date_range_enclosing(start_at)
+    @page.appointment_report.download.click
   end
 
   def then_they_get_reports_by_appointment_start_at
@@ -79,7 +79,7 @@ RSpec.feature 'Resource manager views reports' do
   # rubocop:disable Metrics/AbcSize
   def expect_appointment_csv(appointment)
     expect(@page.csv.count).to eq 2
-    expect(@page.csv.first).to eq Report::EXPORTABLE_ATTRIBUTES
+    expect(@page.csv.first).to eq AppointmentReport::EXPORTABLE_ATTRIBUTES
     expect(@page.csv.second).to match_array [
       appointment.created_at.to_s,
       appointment.agent.name,

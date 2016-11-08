@@ -36,6 +36,91 @@ RSpec.describe BookableSlot, type: :model do
     end
   end
 
+  describe '#without_appointments' do
+    let(:guider) do
+      create(:guider)
+    end
+
+    let!(:slot) do
+      create(
+        :bookable_slot,
+        guider: guider,
+        start_at: make_time(10, 30),
+        end_at: make_time(11, 30)
+      )
+    end
+
+    subject do
+      BookableSlot.without_appointments
+    end
+
+    it 'excludes slots with appointments' do
+      create(
+        :appointment,
+        guider: guider,
+        start_at: make_time(10, 30),
+        end_at: make_time(11, 30),
+        status: :pending
+      )
+      expect(subject).to_not include slot
+    end
+
+    it 'includes slots with cancelled appointments' do
+      create(
+        :appointment,
+        guider: guider,
+        start_at: make_time(10, 30),
+        end_at: make_time(11, 30),
+        status: :cancelled_by_customer
+      )
+      expect(subject).to include slot
+    end
+  end
+
+  describe '#without_holidays' do
+    let(:guider) do
+      create(:guider)
+    end
+
+    let!(:slot) do
+      create(
+        :bookable_slot,
+        guider: guider,
+        start_at: make_time(10, 30),
+        end_at: make_time(11, 30)
+      )
+    end
+
+    subject do
+      BookableSlot.without_holidays
+    end
+
+    it 'does not exclude everything' do
+      expect(subject).to include slot
+    end
+
+    it 'excludes slots with bank holidays' do
+      create(
+        :bank_holiday,
+        start_at: make_time(6, 30),
+        end_at: make_time(18, 30)
+      )
+
+      expect(subject).to_not include slot
+    end
+
+    it 'excludes slots with user holidays' do
+      create(
+        :holiday,
+        user: guider,
+        start_at: make_time(5, 30),
+        end_at: make_time(20, 30)
+      )
+
+      expect(subject).to_not include slot
+    end
+  end
+
   describe '#with_guider_count' do
     context 'three guiders with bookable slots' do
       let(:guiders) do

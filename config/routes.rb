@@ -31,9 +31,9 @@ Rails.application.routes.draw do
 
   resources :groups, only: %i(index destroy)
 
-  resources :reports, only: %i(new) do
-    get 'create', on: :collection
-  end
+  resources :reports, only: %i(new)
+  get :appointment_reports, to: 'appointment_reports#create'
+  get :utilisation_reports, to: 'utilisation_reports#create'
 
   mount Sidekiq::Web, at: '/sidekiq', constraint: AuthenticatedUser.new
 end
