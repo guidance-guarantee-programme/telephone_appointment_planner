@@ -5,10 +5,13 @@
     "browser": true,
     "jquery": true
   },
-  "globals": {
-    PWPG: true
-  },
   "rules": {
-    "strict": 1
+    "strict": ["error", "global"],
+    "no-var": "error",
+    "one-var": ["error", "always"],
+    "no-template-curly-in-string": "error",
+    "array-callback-return": "error",
+    "prefer-template": "error",
+    "template-curly-spacing": ["error", "never"]
   }
 }

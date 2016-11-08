@@ -1,4 +1,4 @@
-/* global List */
+/* global List, TapBase */
 {
   'use strict';
 

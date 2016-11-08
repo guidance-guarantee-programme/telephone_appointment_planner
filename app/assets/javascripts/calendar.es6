@@ -1,8 +1,8 @@
-/* global moment */
+/* global moment, TapBase, GOVUKAdmin */
 
-'use strict';
-
+/*eslint-disable no-unused-vars*/
 class Calendar extends TapBase {
+/*eslint-enable no-unused-vars*/
   start(el) {
     const defaultConfig = {
       allDaySlot: false,
@@ -107,31 +107,31 @@ class Calendar extends TapBase {
     return this.$el.fullCalendar('getDate').format(format);
   }
 
-  loading(isLoading) {
+  loading() {
 
   }
 
-  eventDrop(event, delta, revertFunc) {
+  eventDrop() {
 
   }
 
-  select(start) {
+  select() {
 
   }
 
-  eventRender(event, element, view) {
+  eventRender() {
 
   }
 
-  eventAfterRender(event, element) {
+  eventAfterRender() {
 
   }
 
-  resourceRender(resourceObj, labelTds, bodyTds, view) {
+  resourceRender() {
 
   }
 
-  eventClick(event) {
+  eventClick() {
 
   }
 }

@@ -71,14 +71,14 @@
       calendarStartDate = calendarView.intervalStart,
       calendarEndDate = calendarView.intervalEnd;
 
-      for (var currentDate = moment(calendarStartDate); currentDate < calendarEndDate; currentDate.add(1, 'days')) {
-        for (var eventIndex in events) {
-          var event = events[eventIndex];
+      for (let currentDate = moment(calendarStartDate); currentDate < calendarEndDate; currentDate.add(1, 'days')) {
+        for (let eventIndex in events) {
+          let event = events[eventIndex];
           if (event.day_of_week == currentDate.day()) {
-            event.start_hour = ('00' + event.start_hour).substr(-2,2);
-            event.start_minute = ('00' + event.start_minute).substr(-2,2);
-            event.end_hour = ('00' + event.end_hour).substr(-2,2);
-            event.end_minute = ('00' + event.end_minute).substr(-2,2);
+            event.start_hour = (`00${event.start_hour}`).substr(-2,2);
+            event.start_minute = (`00${event.start_minute}`).substr(-2,2);
+            event.end_hour = (`00${event.end_hour}`).substr(-2,2);
+            event.end_minute = (`00${event.end_minute}`).substr(-2,2);
             this.$el.fullCalendar('addEventSource', [{
               start: `${currentDate.format('YYYY-MM-DD')}T${event.start_hour}:${event.start_minute}`,
               end: `${currentDate.format('YYYY-MM-DD')}T${event.end_hour}:${event.end_minute}`
@@ -89,12 +89,14 @@
     }
 
     generateJSON() {
-      var dataElement = $(this.$el.data('events')),
-      events = this.$el.fullCalendar('clientEvents'),
-      eventsOutput = [];
+      const dataElement = $(this.$el.data('events')),
+      events = this.$el.fullCalendar('clientEvents');
 
-      for (var eventIndex in events) {
-        var event = events[eventIndex];
+      let eventsOutput = [];
+
+      for (let eventIndex in events) {
+        let event = events[eventIndex];
+
         eventsOutput.push({
           day_of_week: event.start.day(),
           start_hour: event.start.hour(),
@@ -123,8 +125,8 @@
       calendarStartDate = calendarView.intervalStart,
       calendarEndDate = calendarView.intervalEnd;
 
-      for (var currentDate = moment(calendarStartDate); currentDate < calendarEndDate; currentDate.add(1, 'days')) {
-        for (var eventIndex in events) {
+      for (let currentDate = moment(calendarStartDate); currentDate < calendarEndDate; currentDate.add(1, 'days')) {
+        for (let eventIndex in events) {
           event = events[eventIndex];
 
           this.$el.fullCalendar('addEventSource', [{

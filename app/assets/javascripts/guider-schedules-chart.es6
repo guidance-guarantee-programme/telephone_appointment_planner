@@ -1,4 +1,4 @@
-/* global moment */
+/* global moment, TapBase */
 {
   'use strict';
 
@@ -55,13 +55,13 @@
     }
 
     displayBookableWindow() {
-      let blockConfig = this.getBookableWindowBlockConfig(),
-      height = (this.config.scheduleHeight * this.schedules.length) - this.config.scheduleMarginTop + 'px';
+      const blockConfig = this.getBookableWindowBlockConfig(),
+      height = (this.config.scheduleHeight * this.schedules.length) - this.config.scheduleMarginTop;
 
       this.$el.find(`.${this.config.classes.bookableWindow}`).css({
         'margin-left': `${blockConfig.offsetPercentage}%`,
         'width': `${blockConfig.lengthPercentage}%`,
-        'height': height
+        'height': `${height}px`
       });
     }
 

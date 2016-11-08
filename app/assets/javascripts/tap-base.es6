@@ -1,6 +1,7 @@
-'use strict';
-
+/* global GOVUKAdmin */
+/*eslint-disable no-unused-vars*/
 class TapBase {
+/*eslint-enable no-unused-vars*/
   start(el) {
     this.$el = el;
 
