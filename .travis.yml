@@ -10,11 +10,9 @@ cache:
   directories:
   - tmp/cache/assets/test
   - tmp/cache/assets/sprockets
-node_js:
-- '0.10'
-before_install:
-- if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
 before_script:
+- nvm install 7
+- nvm use 7
 - npm install
 - gem update --system
 - bundle exec rails assets:precompile RAILS_ENV=test

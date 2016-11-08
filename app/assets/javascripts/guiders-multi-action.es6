@@ -1,3 +1,4 @@
+/* global TapBase */
 {
   'use strict';
 
@@ -48,7 +49,7 @@
 
     handleGoClick(e) {
       e.preventDefault();
-      location.href = this.$actionsSelect.val() + '?user_ids=' + $.makeArray(this.checkboxValuesOfSelected()).join();
+      location.href = `${this.$actionsSelect.val()}?user_ids=${$.makeArray(this.checkboxValuesOfSelected()).join()}`;
     }
 
     checkboxesSelected() {

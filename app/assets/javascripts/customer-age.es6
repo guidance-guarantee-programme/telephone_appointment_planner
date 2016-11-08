@@ -1,4 +1,4 @@
-/* global moment */
+/* global moment, TapBase */
 {
   'use strict';
 
@@ -23,8 +23,8 @@
 
     renderCustomerAge() {
       const year = parseInt(this.$year.val()),
-      month = ('00' + this.$month.val()).substr(-2, 2),
-      day = ('00' + this.$day.val()).substr(-2, 2);
+      month = (`00${this.$month.val()}`).substr(-2, 2),
+      day = (`00${this.$day.val()}`).substr(-2, 2);
 
       if (year >= this.$year.attr('min')) {
         const today = moment(),

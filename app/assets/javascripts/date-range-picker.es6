@@ -1,4 +1,4 @@
-/* global moment */
+/* global TapBase */
 {
   'use strict';
 
@@ -24,9 +24,9 @@
     bindEvents() {
       if (this.config.autoUpdateInput == false) {
         this.$el.on('apply.daterangepicker', (ev, picker) => {
-          this.$el.val(picker.startDate.format(this.config.locale.format) + ' - ' + picker.endDate.format(this.config.locale.format));
+          this.$el.val(`${picker.startDate.format(this.config.locale.format)} - ${picker.endDate.format(this.config.locale.format)}`);
         });
-        this.$el.on('cancel.daterangepicker', (ev, picker) => {
+        this.$el.on('cancel.daterangepicker', () => {
           this.$el.val('');
         });
       }
