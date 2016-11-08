@@ -15,7 +15,7 @@ class Schedule < ApplicationRecord
 
   after_initialize :set_default_start_at
   def set_default_start_at
-    self.start_at ||= 6.weeks.from_now + 1.day
+    self.start_at ||= Time.zone.today
   end
 
   def end_at
