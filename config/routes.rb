@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   resources :users do
     resources :schedules
   end
+  resources :activities, only: %i(index create)
 
   resources :groups, only: %i(index create destroy)
   resources :customers
@@ -17,8 +18,6 @@ Rails.application.routes.draw do
   resources :appointments, only: %i(new index show edit update create) do
     patch :batch_update, on: :collection
     patch :update_reschedule
-
-    resources :activities, only: %i(index create)
     get '/search', on: :collection, action: :search
     get :reschedule
   end

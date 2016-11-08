@@ -8,21 +8,25 @@ class AssignmentActivity < Activity
   end
 
   def self.create_assignment(audit, appointment)
-    create!(
+    activity = create!(
       user_id: audit.user_id,
       message: 'assigned',
       appointment: appointment,
       owner: appointment.guider
     )
+    PusherActivityNotificationJob.perform_later(appointment.guider, activity)
   end
 
   def self.create_reassignment(audit, appointment)
-    create!(
+    prior_owner = User.find(audit.audited_changes['guider_id'].first)
+    activity = create!(
       user_id: audit.user_id,
       message: 'reassigned',
       appointment: appointment,
       owner: appointment.guider,
-      prior_owner_id: audit.audited_changes['guider_id'].first
+      prior_owner_id: prior_owner.id
     )
+    PusherActivityNotificationJob.perform_later(appointment.guider, activity)
+    PusherActivityNotificationJob.perform_later(prior_owner, activity)
   end
 end

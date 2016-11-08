@@ -20,6 +20,7 @@
   <% if current_user.guider? %>
     <%= active_link_to 'My appointments', calendar_path, wrap_tag: :li %>
     <%= active_link_to 'Company', company_calendar_path, wrap_tag: :li %>
+    <%= active_link_to 'Activities', activities_path, wrap_tag: :li %>
   <% end %>
 
   <% if current_user.resource_manager? %>
@@ -35,3 +36,14 @@
 <% end %>
 
 <%= render template: 'layouts/govuk_admin_template' %>
+
+<script>
+<% if defined?(PusherFake) %>
+    Pusher.instance = <%= raw PusherFake.javascript %>;
+<% else %>
+    Pusher.instance = new Pusher('<%= ENV['PUSHER_KEY'] %>', {
+      cluster: 'eu',
+      encrypted: true
+    });
+<% end %>
+</script>

@@ -3,28 +3,24 @@ require 'rails_helper'
 RSpec.feature 'User views appointment activities' do
   scenario 'User creates a message activity', js: true do
     given_the_user_has_no_permissions do
-      with_configured_polling(milliseconds: 2000) do
-        and_there_is_an_appointment
-        when_they_view_the_appointment
-        and_they_leave_a_message
-        then_they_see_their_new_message
-        and_the_message_field_is_cleared
-      end
+      and_there_is_an_appointment
+      when_they_view_the_appointment
+      and_they_leave_a_message
+      then_they_see_their_new_message
+      and_the_message_field_is_cleared
     end
   end
 
   scenario 'User views activities', js: true do
     given_the_user_has_no_permissions do
-      with_configured_polling(milliseconds: 2000) do
-        and_there_is_an_appointment
-        and_the_appointment_was_updated_multiple_times
-        when_they_view_the_appointment
-        then_they_see_the_last_activity
-        when_they_request_further_activities
-        then_they_see_all_the_activities
-        when_somebody_else_adds_an_activity
-        then_it_appears_dynamically
-      end
+      and_there_is_an_appointment
+      and_the_appointment_was_updated_multiple_times
+      when_they_view_the_appointment
+      then_they_see_the_last_activity
+      when_they_request_further_activities
+      then_they_see_all_the_activities
+      when_somebody_else_adds_an_activity
+      then_it_appears_dynamically
     end
   end
 
@@ -82,23 +78,19 @@ RSpec.feature 'User views appointment activities' do
   end
 
   def when_somebody_else_adds_an_activity
-    @activity = create(:activity, user: create(:user), appointment: @appointment)
+    AuditActivity.from(
+      OpenStruct.new(
+        user_id: current_user.id,
+        audited_changes: { 'thing' => nil },
+        appointment_id: @appointment.id
+      ),
+      @appointment
+    )
   end
 
-  # rubocop:disable Metrics/AbcSize
   def then_it_appears_dynamically
     @page.activity_feed.wait_for_dynamically_loaded_activities(3)
     activity = @page.activity_feed.dynamically_loaded_activities.first
-    expect(activity.text).to include(@activity.user_name)
-    expect(activity.text).to include(@activity.message)
-  end
-
-  def with_configured_polling(milliseconds:)
-    previous = ENV[Activity::POLLING_KEY]
-    ENV[Activity::POLLING_KEY] = milliseconds.to_s
-
-    yield
-  ensure
-    ENV[Activity::POLLING_KEY] = previous
+    expect(activity.text).to eq "#{current_user.name} changed the thing less than a minute ago"
   end
 end

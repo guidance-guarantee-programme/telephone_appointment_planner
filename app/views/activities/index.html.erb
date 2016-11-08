@@ -1,0 +1,11 @@
+<div class="row t-activity-feed">
+  <div class="col-md-12 border-bottom">
+    <h2>My activity</h2>
+
+    <div class="activity-feed">
+      <ul class="activity-feed__list" data-module="activity-feed" data-config='{"event": "guider_activity_<%= current_user.id %>"}'>
+        <%= render(@activities) %>
+      </ul>
+    </div>
+  </div>
+</div>

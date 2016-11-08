@@ -16,6 +16,7 @@ class User < ApplicationRecord
 
   has_many :group_assignments
   has_many :groups, through: :group_assignments
+  has_many :activities, -> { order('created_at DESC') }, foreign_key: :owner_id
 
   scope :guiders, -> { where('permissions @> ?', %(["#{GUIDER_PERMISSION}"])) }
 

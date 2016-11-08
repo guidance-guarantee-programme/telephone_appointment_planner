@@ -1,18 +1,11 @@
 class ActivitiesController < ApplicationController
   def index
-    @activities = appointment.activities.since(since)
-
-    if @activities.present?
-      render partial: @activities
-    else
-      head :not_modified
-    end
+    @activities = current_user.activities
   end
 
   def create
-    @appointment = Appointment.find(params[:appointment_id])
     @activity = MessageActivity.create(message_params)
-
+    PusherActivityNotificationJob.perform_later(appointment.guider, @activity)
     respond_to do |format|
       format.js { render @activity }
     end
@@ -29,11 +22,6 @@ class ActivitiesController < ApplicationController
         owner: appointment.guider,
         appointment: appointment
       )
-  end
-
-  def since
-    timestamp = params[:timestamp].to_i / 1000
-    Time.zone.at(timestamp)
   end
 
   def appointment
