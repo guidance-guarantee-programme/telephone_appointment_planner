@@ -1,23 +1,16 @@
-class BatchAppointmentUpdate
-  def initialize(changes)
-    @changes = JSON.parse(changes)
+class Notifier
+  def initialize(appointment)
+    @appointment = appointment
   end
 
   def call
-    changes.each do |change|
-      appointment = update_appointment(change)
-      send_notifications(appointment)
-    end
-  end
-
-  private
-
-  def send_notifications(appointment)
     return unless appointment.previous_changes
 
     notify_customer(appointment)
     notify_guiders(appointment)
   end
+
+  private
 
   def notify_guiders(appointment)
     guiders_to_notify(appointment).each do |guider_id|
@@ -35,13 +28,5 @@ class BatchAppointmentUpdate
     AppointmentMailer.updated(appointment).deliver_later
   end
 
-  def update_appointment(change)
-    Appointment.update(change['id'], permitted_attributes(change))
-  end
-
-  def permitted_attributes(change)
-    change.slice('guider_id', 'start_at', 'end_at')
-  end
-
-  attr_reader :changes
+  attr_reader :appointment
 end
