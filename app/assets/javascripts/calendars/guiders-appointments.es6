@@ -11,6 +11,10 @@
         header: {
           right: 'agendaDay timelineDay today jumpToDate prev,next'
         },
+        buttonText: {
+          agendaDay: 'Horizontal',
+          timelineDay: 'Vertical'
+        },
         groupByDateAndResource: true,
         nowIndicator: true,
         slotDuration: '00:30:00',
