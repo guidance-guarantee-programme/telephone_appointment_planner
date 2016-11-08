@@ -22,7 +22,7 @@
         resources: '/guiders',
         eventSources: [
           {
-            url: '/appointments?include_links=false'
+            url: '/appointments'
           },
           {
             url: '/holidays',
@@ -39,6 +39,20 @@
 
       this.setCalendarToCorrectHeight();
       this.setupUndo();
+
+      var self = this;
+
+      window.onbeforeunload = function(e) {
+        e = e || window.event;
+        if (self.actionPanel.is(':visible')) {
+          // For IE and Firefox
+          if (e) {
+            e.returnValue = "You have unsaved changes.";
+          }
+          // For Safari
+          return "You have unsaved changes.";
+        }
+      };
     }
 
     setCalendarToCorrectHeight() {
