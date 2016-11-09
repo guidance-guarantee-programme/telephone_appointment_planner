@@ -91,6 +91,10 @@ class Calendar extends TapBase {
   }
 
   viewRender(view) {
+    this.setCookieConfig(view);
+  }
+
+  setCookieConfig(view) {
     GOVUKAdmin.cookie(
       this.config.cookieName,
       JSON.stringify({

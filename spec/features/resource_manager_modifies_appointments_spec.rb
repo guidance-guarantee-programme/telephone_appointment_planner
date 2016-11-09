@@ -1,4 +1,3 @@
-# rubocop:disable Metrics/AbcSize
 require 'rails_helper'
 
 RSpec.feature 'Resource manager modifies appointments' do
@@ -138,7 +137,7 @@ RSpec.feature 'Resource manager modifies appointments' do
     )
   end
 
-  def then_they_can_see_the_bookable_slot
+  def then_they_can_see_the_bookable_slot # rubocop:disable Metrics/AbcSize
     event = @page.calendar.background_events.first
     expect(Time.zone.parse(event[:start])).to eq @bookable_slot.start_at
     expect(Time.zone.parse(event[:end])).to eq @bookable_slot.end_at
@@ -152,7 +151,7 @@ RSpec.feature 'Resource manager modifies appointments' do
     @page = Pages::Calendar.new.tap(&:load)
   end
 
-  def then_they_are_notified_of_the_change
+  def then_they_are_notified_of_the_change # rubocop:disable Metrics/AbcSize
     @page = Pages::Calendar.new
     @page.wait_until_notification_visible
 
@@ -160,7 +159,7 @@ RSpec.feature 'Resource manager modifies appointments' do
     expect(@page.notification.guider.text).to include(@jan.name)
   end
 
-  def then_they_are_notified_of_the_rescheduling
+  def then_they_are_notified_of_the_rescheduling # rubocop:disable Metrics/AbcSize
     @page = Pages::Calendar.new
     @page.wait_until_notification_visible
 
@@ -185,6 +184,15 @@ RSpec.feature 'Resource manager modifies appointments' do
     @other_appointment = create(:appointment, guider: @jan)
   end
 
+  def then_they_see_todays_date_shown
+    @page.wait_until_date_visible
+    expect(@page.date.text).to eq Time.zone.now.strftime('%B %e, %Y')
+  end
+
+  def when_they_click_the_next_day_button
+    @page.next_button.click
+  end
+
   def then_they_see_the_holiday_for_one_guider
     holiday = @page.find_holiday(@holiday)
     expect(holiday[:title]).to eq @holiday.title
@@ -198,6 +206,11 @@ RSpec.feature 'Resource manager modifies appointments' do
   end
 
   def when_they_view_the_appointments
+    @page = Pages::ResourceCalendar.new.tap(&:load)
+    expect(@page).to be_displayed
+  end
+
+  def and_they_view_the_appointments_again
     @page = Pages::ResourceCalendar.new.tap(&:load)
     expect(@page).to be_displayed
   end

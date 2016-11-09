@@ -2,8 +2,10 @@ module Pages
   class ResourceCalendar < SitePrism::Page
     set_url '/resource_calendar'
 
+    element :date, '.fc-left h2'
     elements :guiders, '.fc-resource-cell'
     elements :appointments, '.fc-event'
+    element :next_button, '.fc-next-button'
 
     section :action_panel, '.t-action-panel' do
       element :save, '.t-save'
