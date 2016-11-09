@@ -11,3 +11,9 @@
   data-module="guiders-appointments-calendar"
   data-default-date="<%= Time.zone.now %>">
 </div>
+
+<style>
+[data-resource-id="<%= current_user.id %>"] {
+  background: #fff87c !important;
+}
+</style>
