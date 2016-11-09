@@ -7,7 +7,7 @@ class AppointmentSerializer < ActiveModel::Serializer
   attribute :title
   attribute :memorable_word
   attribute :phone
-  attribute :url, if: -> { instance_options[:include_links] }
+  attribute :url
   attribute :status
   attribute :cancelled
   attribute :guider_id, key: :resourceId

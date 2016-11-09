@@ -17,7 +17,7 @@ class AppointmentsController < ApplicationController
 
     @appointments = scope.where(start_at: date_range_params)
 
-    render json: @appointments, include_links: include_links?
+    render json: @appointments
   end
 
   def edit
@@ -77,10 +77,6 @@ class AppointmentsController < ApplicationController
 
   def search_params
     params.fetch(:search, {}).permit(:q, :date_range)
-  end
-
-  def include_links?
-    params.fetch(:include_links, 'true') == 'true'
   end
 
   def date_range_params

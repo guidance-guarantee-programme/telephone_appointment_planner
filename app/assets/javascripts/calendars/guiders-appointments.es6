@@ -22,7 +22,7 @@
         resources: '/guiders',
         eventSources: [
           {
-            url: '/appointments?include_links=false'
+            url: '/appointments'
           },
           {
             url: '/holidays',
