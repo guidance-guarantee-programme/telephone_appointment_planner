@@ -4,14 +4,12 @@ require 'rails_helper'
 RSpec.feature 'Guider edits an appointment' do
   scenario 'Successfully editing an appointment' do
     given_the_user_is_a_guider do
-      perform_enqueued_jobs do
-        and_they_have_an_appointment
-        when_they_attempt_to_edit_the_appointment
-        then_they_see_the_existing_details
-        when_they_modify_the_appointment
-        then_the_appointment_is_changed
-        and_the_customer_is_not_notified
-      end
+      and_they_have_an_appointment
+      when_they_attempt_to_edit_the_appointment
+      then_they_see_the_existing_details
+      when_they_modify_the_appointment
+      then_the_appointment_is_changed
+      and_the_customer_is_not_notified
     end
   end
 

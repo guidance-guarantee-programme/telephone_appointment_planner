@@ -18,15 +18,13 @@ RSpec.feature 'Resource manager modifies appointments' do
 
     # start resource manager's session and reassign the appointment
     given_the_user_is_a_resource_manager do
-      perform_enqueued_jobs do
-        travel_to @appointment.start_at do
-          when_they_view_the_appointments
-          then_they_see_appointments_for_multiple_guiders
-          when_they_change_the_guider
-          and_commit_their_modifications
-          then_the_guider_is_modified
-          and_no_customer_notifications_are_sent
-        end
+      travel_to @appointment.start_at do
+        when_they_view_the_appointments
+        then_they_see_appointments_for_multiple_guiders
+        when_they_change_the_guider
+        and_commit_their_modifications
+        then_the_guider_is_modified
+        and_no_customer_notifications_are_sent
       end
     end
 
@@ -52,15 +50,13 @@ RSpec.feature 'Resource manager modifies appointments' do
 
     # reschedule the appointment
     given_the_user_is_a_resource_manager do
-      perform_enqueued_jobs do
-        travel_to @appointment.start_at do
-          when_they_view_the_appointments
-          then_they_see_appointments_for_multiple_guiders
-          when_they_reschedule_an_appointment
-          and_commit_their_modifications
-          then_the_appointment_is_modified
-          and_the_customer_is_notified_of_the_appointment_change
-        end
+      travel_to @appointment.start_at do
+        when_they_view_the_appointments
+        then_they_see_appointments_for_multiple_guiders
+        when_they_reschedule_an_appointment
+        and_commit_their_modifications
+        then_the_appointment_is_modified
+        and_the_customer_is_notified_of_the_appointment_change
       end
     end
 

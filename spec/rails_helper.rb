@@ -62,7 +62,6 @@ RSpec.configure do |config|
   config.include UserHelpers
   config.include ActiveSupport::Testing::TimeHelpers
   config.include ActionView::Helpers::DateHelper
-  config.include ActiveJob::TestHelper
 
   config.before(:each) { ActionMailer::Base.deliveries.clear }
 end
