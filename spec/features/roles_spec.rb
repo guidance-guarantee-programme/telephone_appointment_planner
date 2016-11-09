@@ -40,6 +40,13 @@ RSpec.feature 'Roles' do
         then_they_are_allowed
       end
     end
+
+    scenario 'Can view their activities' do
+      given_the_user_is_a_guider do
+        when_they_try_to_view_their_activities
+        then_they_are_allowed
+      end
+    end
   end
 
   context 'Users who are not Resource Managers, Agents, or Guiders' do
@@ -169,5 +176,10 @@ RSpec.feature 'Roles' do
 
   def when_they_try_to_view_the_company_calendar
     @page = Pages::CompanyCalendar.new.tap(&:load)
+  end
+
+  def when_they_try_to_view_their_activities
+    @page = Pages::Activities.new.tap(&:load)
+    @page.load
   end
 end

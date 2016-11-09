@@ -26,16 +26,3 @@
     </div>
   </div>
 </div>
-
-<% content_for :body_end do %>
-  <script>
-  <% if defined?(PusherFake) %>
-      Pusher.instance = <%= raw PusherFake.javascript %>;
-  <% else %>
-      Pusher.instance = new Pusher('<%= ENV['PUSHER_KEY'] %>', {
-        cluster: 'eu',
-        encrypted: true
-      });
-  <% end %>
-  </script>
-<% end %>

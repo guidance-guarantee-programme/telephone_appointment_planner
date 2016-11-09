@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe CreateActivity do
   describe '.from' do
     before do
+      allow(PusherActivityNotificationJob).to receive(:perform_later)
       # this will trigger the `after_audit` hook on `Appointment`
       @appointment = create(:appointment)
     end
@@ -19,6 +20,12 @@ RSpec.describe CreateActivity do
         owner_id: @appointment.guider.id,
         message: 'created this appointment'
       )
+    end
+
+    it 'pushes an activity update' do
+      expect(PusherActivityNotificationJob)
+        .to have_received(:perform_later)
+        .with(@appointment.guider, subject)
     end
   end
 end

@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :activity do
+  factory :activity, class: 'AuditActivity' do
     user
     appointment
     owner { create(:guider) }

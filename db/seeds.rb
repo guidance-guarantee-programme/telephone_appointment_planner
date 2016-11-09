@@ -44,6 +44,7 @@ if Rails.env.development?
   User.first.tap do |user|
     user.permissions << User::RESOURCE_MANAGER_PERMISSION
     user.permissions << User::AGENT_PERMISSION
+    user.permissions << User::GUIDER_PERMISSION
     user.save!
   end
 
