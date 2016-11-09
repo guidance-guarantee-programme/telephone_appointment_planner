@@ -33,7 +33,7 @@ class AppointmentsController < ApplicationController
     @appointment.assign_attributes(update_reschedule_params)
     @appointment.assign_to_guider
     if @appointment.save
-      AppointmentMailer.updated(@appointment).deliver_later
+      Notifier.new(@appointment).call
       redirect_after_successful_update
     else
       render :reschedule
@@ -43,6 +43,7 @@ class AppointmentsController < ApplicationController
   def update
     @appointment = Appointment.find(params[:id])
     if @appointment.update_attributes(update_params)
+      Notifier.new(@appointment).call
       redirect_after_successful_update
     else
       render :edit

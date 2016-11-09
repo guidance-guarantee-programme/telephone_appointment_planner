@@ -16,6 +16,6 @@ class PusherNotificationJob < ApplicationJob
   private
 
   def current?(appointment)
-    appointment.start_at.to_date == Time.zone.today.to_date
+    appointment.start_at.to_date == Time.zone.today
   end
 end
