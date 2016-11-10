@@ -16,15 +16,16 @@
           </div>
         <% end %>
       </div>
-      <ul class="activity-feed__list" data-module="activity-feed" data-config='{"event": "appointment_activity_<%= appointment.id %>"}'>
+
+      <ul class="list-group" data-module="activity-feed" data-config='{"event": "appointment_activity_<%= appointment.id %>"}'>
         <%= render appointment.activities.first if appointment.activities.present? %>
       </ul>
 
       <% if appointment.activities.count > 1 %>
-        <ul class="activity-feed__list t-hidden-activities collapse" id="collapse">
+        <ul class="list-group t-hidden-activities collapse" id="collapse">
           <%= render(appointment.activities - Array(appointment.activities.first)) %>
         </ul>
-        <button class="activity-feed__btn btn btn-default t-further-activities" data-target="#collapse" data-toggle="collapse" aria-expanded="false" aria-controls="collapse">
+        <button class="btn btn-default t-further-activities" data-target="#collapse" data-toggle="collapse" aria-expanded="false" aria-controls="collapse">
           <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
           All activity
         </button>

@@ -1,4 +1,5 @@
-<li class="activity-feed__item t-activity" id="activity-<%= create_activity.id %>">
+<% appointment = serialize_resource(create_activity.appointment) %>
+<li class="list-group-item js-activity t-activity" id="activity-<%= create_activity.id %>" data-appointment="<%= appointment %>">
   <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
   <b><%= create_activity.user_name %></b> <%= create_activity.message %> <em class="badge"><%= time_ago_in_words(create_activity.created_at) %> ago</em>
 </li>
