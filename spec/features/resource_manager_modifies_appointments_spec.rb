@@ -2,6 +2,19 @@
 require 'rails_helper'
 
 RSpec.feature 'Resource manager modifies appointments' do
+  scenario 'Avoid navigating away with unsaved modifications', js: true do
+    given_the_user_is_a_resource_manager do
+      when_there_are_appointments_for_multiple_guiders
+      travel_to @appointment.start_at do
+        when_they_view_the_appointments
+        then_they_see_appointments_for_multiple_guiders
+        when_they_change_the_guider
+        and_click_the_appointment_while_dismissing_the_warning
+        then_they_do_not_navigate_away
+      end
+    end
+  end
+
   scenario 'Reassigning the chosen guider alerts both guiders', js: true do
     # create the guiders and appointments up front
     when_there_are_appointments_for_multiple_guiders
@@ -197,5 +210,18 @@ RSpec.feature 'Resource manager modifies appointments' do
     expect(deliveries.first.to).to eq [@appointment.email]
     expect(deliveries.first.subject).to eq 'Your Pension Wise Appointment'
     expect(deliveries.first.body.encoded).to include 'Your appointment details were updated'
+  end
+
+  def and_click_the_appointment_while_dismissing_the_warning
+    dismiss_confirm('You have unsaved changes - Save, or undo the changes.') do
+      @page.appointments.first.click
+    end
+  end
+
+  def then_they_do_not_navigate_away
+    expect(@page.url).to eq(page.current_path)
+
+    # force 'reset' for poltergeist after dismissal of a JS prompt
+    visit 'about:blank'
   end
 end
