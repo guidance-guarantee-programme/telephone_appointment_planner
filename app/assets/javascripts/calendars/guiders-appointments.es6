@@ -22,7 +22,7 @@
         resources: '/guiders',
         eventSources: [
           {
-            url: '/appointments?include_links=false'
+            url: '/appointments'
           },
           {
             url: '/holidays',
@@ -36,6 +36,7 @@
 
       this.eventChanges = [];
       this.actionPanel = $('[data-action-panel]');
+      this.saveWarningMessage = 'You have unsaved changes - Save, or undo the changes.';
 
       this.setCalendarToCorrectHeight();
       this.setupUndo();
@@ -201,6 +202,7 @@
       const $hiddenInput = $('#event-changes');
       evt.preventDefault();
       $hiddenInput.val(this.getEventChangesForForm());
+      this.clearUnloadEvent();
       $hiddenInput.parents('form').submit();
     }
 
@@ -243,12 +245,28 @@
         this.actionPanel.find('[data-action-panel-event-count]').html(
           `${eventsChanged} event${eventsChanged == 1 ? '':'s'}`
         );
+        this.setUnloadEvent();
       } else {
         fadeAction = 'fadeOut';
+        this.clearUnloadEvent();
       }
 
       this.actionPanel[fadeAction]({
         complete: this.alterHeight.bind(this)
+      });
+    }
+
+    clearUnloadEvent() {
+      $(window).off('beforeunload unload');
+    }
+
+    setUnloadEvent() {
+      $(window).on('beforeunload', () => {
+        return this.saveWarningMessage;
+      });
+
+      $(window).on('unload', () => {
+        alert(this.saveWarningMessage);
       });
     }
 

@@ -23,7 +23,7 @@ RSpec.feature 'Guider views appointments' do
         then_they_see_the_appointments_for_today
         when_they_advance_a_working_day
         then_they_see_the_appointments_for_that_day
-        and_they_cannot_edit_the_appointment
+        and_they_can_edit_an_appointment
       end
     end
   end
@@ -90,7 +90,7 @@ RSpec.feature 'Guider views appointments' do
     expect(@page.appointments.first.root_element['href']).to end_with(edit_appointment_path(@tomorrow))
   end
 
-  def and_they_cannot_edit_the_appointment
-    expect(@page.appointments.first['href']).to be_nil
+  def and_they_can_edit_an_appointment
+    expect(@page.appointments.first['href']).to end_with(edit_appointment_path(@tomorrow))
   end
 end
