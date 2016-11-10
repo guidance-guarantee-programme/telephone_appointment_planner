@@ -14,6 +14,13 @@ module UserHelpers
     GDS::SSO.test_user    = nil
   end
 
+  def given_the_user_is_both_guider_and_manager
+    GDS::SSO.test_user = create(:guider_and_resource_manager)
+    yield
+  ensure
+    GDS::SSO.test_user = nil
+  end
+
   def given_the_user_is_a_guider
     GDS::SSO.test_user = create(:guider)
     yield

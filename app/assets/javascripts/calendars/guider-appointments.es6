@@ -13,7 +13,7 @@
         nowIndicator: true,
         slotDuration: '00:30:00',
         eventTextColor: '#fff',
-        events: '/appointments'
+        events: '/appointments?mine'
       };
 
       super.start(el);

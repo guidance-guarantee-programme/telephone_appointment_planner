@@ -9,13 +9,7 @@ class AppointmentsController < ApplicationController
   end
 
   def index
-    scope = if current_user.resource_manager?
-              Appointment.unscoped
-            elsif current_user.guider?
-              current_user.appointments
-            end
-
-    @appointments = scope.where(start_at: date_range_params)
+    @appointments = appointment_scope.where(start_at: date_range_params)
 
     render json: @appointments
   end
@@ -74,6 +68,20 @@ class AppointmentsController < ApplicationController
   end
 
   private
+
+  def appointment_scope
+    if scoped_to_me?
+      current_user.appointments
+    elsif current_user.resource_manager?
+      Appointment.unscoped
+    else
+      current_user.appointments
+    end
+  end
+
+  def scoped_to_me?
+    params.key?(:mine)
+  end
 
   def search_params
     params.fetch(:search, {}).permit(:q, :date_range)
