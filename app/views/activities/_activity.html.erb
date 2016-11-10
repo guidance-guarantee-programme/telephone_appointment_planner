@@ -1,0 +1,7 @@
+<a class="list-group-item t-activity" href="<%= edit_appointment_path(activity.appointment) %>">
+  <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+  <b><%= activity.user_name %></b>
+  <%= content_for(:activity_message) %>
+  <%= render('activities/details', appointment: activity.appointment) if details %>
+  <em class="badge"><%= time_ago_in_words(activity.created_at) %> ago</em>
+</a>

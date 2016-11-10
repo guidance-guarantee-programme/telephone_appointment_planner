@@ -35,10 +35,10 @@ RSpec.feature 'Guider views their activities' do
 
   def then_they_see_all_activities
     expect(@page.activities.map(&:text)).to match_array [
-      "Someone assigned to #{current_user.name} less than a minute ago",
-      "Someone assigned to #{current_user.name} less than a minute ago",
-      'Someone created this appointment less than a minute ago',
-      'Someone created this appointment less than a minute ago'
+      a_string_including('assigned'),
+      a_string_including('assigned'),
+      a_string_including('created'),
+      a_string_including('created')
     ]
   end
 
@@ -50,9 +50,9 @@ RSpec.feature 'Guider views their activities' do
   end
 
   def then_they_see_the_new_activities
-    expect(@page).to have_dynamically_loaded_activities(count: 1, wait: 10)
-    expect(@page.dynamically_loaded_activities.first.text).to eq(
-      "#{someone.name} said Hello mate less than a minute ago"
+    expect(@page).to have_activities(count: 5, wait: 10)
+    expect(@page.activities.first.text).to eq(
+      "#{someone.name} said Hello mate appointment \##{@appointments.first.id} less than a minute ago"
     )
   end
 end

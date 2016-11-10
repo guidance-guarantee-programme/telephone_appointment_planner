@@ -20,7 +20,7 @@
   <% if current_user.guider? %>
     <%= active_link_to 'My appointments', calendar_path, wrap_tag: :li %>
     <%= active_link_to 'Company', company_calendar_path, wrap_tag: :li %>
-    <%= active_link_to 'Activities', activities_path, wrap_tag: :li %>
+    <%= active_link_to 'My activity', activities_path, wrap_tag: :li %>
   <% end %>
 
   <% if current_user.resource_manager? %>

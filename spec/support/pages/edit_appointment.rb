@@ -20,7 +20,6 @@ module Pages
 
     section :activity_feed, '.t-activity-feed' do
       elements :activities, '.t-activity'
-      elements :dynamically_loaded_activities, '.t-dynamically-loaded-activity'
 
       element :message, '.t-message'
       element :submit, '.t-submit-message'

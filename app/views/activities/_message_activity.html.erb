@@ -1,4 +1,4 @@
-<li class="activity-feed__item t-activity" id="activity-<%= message_activity.id %>">
-  <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-  <b><%= message_activity.user_name %></b> said <em><%= message_activity.message %></em> <em class="badge"><%= time_ago_in_words(message_activity.created_at) %> ago</em>
-</li>
+<% content_for(:activity_message, flush: true) do %>
+  said <em><%= message_activity.message %></em>
+<% end %>
+<%= render 'activities/activity', activity: message_activity, details: details %>
