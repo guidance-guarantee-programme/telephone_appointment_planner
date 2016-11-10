@@ -14,38 +14,30 @@ module UserHelpers
     GDS::SSO.test_user    = nil
   end
 
-  def given_the_user_is_both_guider_and_manager
-    GDS::SSO.test_user = create(:guider_and_resource_manager)
+  def given_the_user(type)
+    GDS::SSO.test_user = create(type)
     yield
   ensure
     GDS::SSO.test_user = nil
   end
 
-  def given_the_user_is_a_guider
-    GDS::SSO.test_user = create(:guider)
-    yield
-  ensure
-    GDS::SSO.test_user = nil
+  def given_the_user_is_both_guider_and_manager(&block)
+    given_the_user(:guider_and_resource_manager, &block)
   end
 
-  def given_the_user_is_a_resource_manager
-    GDS::SSO.test_user = create(:resource_manager)
-    yield
-  ensure
-    GDS::SSO.test_user = nil
+  def given_the_user_is_a_guider(&block)
+    given_the_user(:guider, &block)
   end
 
-  def given_the_user_is_an_agent
-    GDS::SSO.test_user = create(:agent)
-    yield
-  ensure
-    GDS::SSO.test_user = nil
+  def given_the_user_is_a_resource_manager(&block)
+    given_the_user(:resource_manager, &block)
   end
 
-  def given_the_user_has_no_permissions
-    GDS::SSO.test_user = create(:user)
-    yield
-  ensure
-    GDS::SSO.test_user = nil
+  def given_the_user_is_an_agent(&block)
+    given_the_user(:agent, &block)
+  end
+
+  def given_the_user_has_no_permissions(&block)
+    given_the_user(:user, &block)
   end
 end
