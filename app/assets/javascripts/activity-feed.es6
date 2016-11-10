@@ -16,8 +16,8 @@
     handlePushEvent(payload) {
       let $element = $(payload.body);
       $element
-        .addClass('t-dynamically-loaded-activity')
         .hide()
+        .addClass('t-dynamically-loaded-activity')
         .prependTo(this.$el)
         .fadeIn();
     }

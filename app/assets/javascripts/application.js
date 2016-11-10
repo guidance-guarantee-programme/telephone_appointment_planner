@@ -26,6 +26,7 @@
 //= require calendars/guiders-appointments
 //= require calendars/holidays
 //= require activity-feed
+//= require activities
 //= require select2
 //= require advanced-select
 //= require pusher

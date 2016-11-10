@@ -1,4 +1,5 @@
-<li class="activity-feed__item t-activity" id="activity-<%= assignment_activity.id %>">
+<% appointment = serialize_resource(assignment_activity.appointment) %>
+<li class="list-group-item js-activity t-activity" id="activity-<%= assignment_activity.id %>" data-appointment="<%= appointment %>">
   <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
   <b><%= assignment_activity.user_name %></b>
   <%= assignment_activity.message %> to <%= assignment_activity.owner.name %>
