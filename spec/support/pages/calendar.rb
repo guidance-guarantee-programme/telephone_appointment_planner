@@ -14,5 +14,7 @@ module Pages
       element :start, '.t-start'
       element :guider, '.t-guider'
     end
+
+    section :calendar, Pages::CalendarSection, '.t-calendar'
   end
 end

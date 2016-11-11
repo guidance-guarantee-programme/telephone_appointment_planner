@@ -21,7 +21,7 @@
         id="AppointmentAvailabilityCalendar"
         class="appointment-availability-calendar"
         data-module="appointment-availability-calendar"
-        data-available-slots-path="<%= bookable_slots_available_path %>"
+        data-available-slots-path="<%= available_bookable_slots_path %>"
         data-default-date="<%= BookableSlot.next_valid_start_date %>"
       ></div>
       <input type="hidden" name="available-slots-json" class="slots-data" value="<%= @available_slots_json %>">

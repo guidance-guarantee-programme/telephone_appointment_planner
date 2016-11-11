@@ -26,7 +26,9 @@ Rails.application.routes.draw do
     delete '/', on: :collection, action: :destroy
     get 'merged', on: :collection
   end
-  get '/bookable_slots/available', to: 'bookable_slots#available'
+  resources :bookable_slots, only: :index do
+    get 'available', on: :collection
+  end
 
   resources :groups, only: %i(index destroy)
 

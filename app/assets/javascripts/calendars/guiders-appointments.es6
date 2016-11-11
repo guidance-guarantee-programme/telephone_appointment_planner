@@ -28,6 +28,11 @@
             url: '/holidays',
             color: 'red',
             rendering: 'background'
+          },
+          {
+            url: '/bookable_slots',
+            color: 'green',
+            rendering: 'background'
           }
         ]
       };
