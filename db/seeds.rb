@@ -1,46 +1,25 @@
+USER_COUNT = 45
+HOLIDAY_COUNT = 100
+APPOINTMENT_COUNT = 1000
+
 if Rails.env.development?
-  SEEDERS_PER_SHIFT = 4
-
-  %w{early mid late}.each do |t|
-    User
-      .where(name: (1..SEEDERS_PER_SHIFT)
-      .map {|i| "#{t} shift #{i}"})
-      .destroy_all
+  Rails.application.eager_load!
+  ApplicationRecord.descendants.each do |d|
+    puts "Deleting #{d}..."
+    d.delete_all
   end
 
-  1.upto(SEEDERS_PER_SHIFT) do |n|
-    guider = FactoryGirl.create(:guider, name: "early shift #{n}")
-    schedule = FactoryGirl.build(:schedule, :with_early_shift, start_at: Time.zone.now, user: guider)
-    schedule.save!(validate: false)
+  print "Seeding #{USER_COUNT} users"
+  schedules = [:with_early_shift, :with_mid_shift, :with_late_shift].cycle
+  USER_COUNT.times do |n|
+    guider = FactoryGirl.create(:guider)
+    schedule = FactoryGirl.build(:schedule, schedules.next, start_at: Time.zone.now, user: guider)
+    schedule.save!
+    print '.'
   end
+  puts
 
-  1.upto(SEEDERS_PER_SHIFT) do |n|
-    guider = FactoryGirl.create(:guider, name: "mid shift #{n}")
-    schedule = FactoryGirl.build(:schedule, :with_mid_shift, start_at: Time.zone.now, user: guider)
-    schedule.save!(validate: false)
-  end
-
-  1.upto(SEEDERS_PER_SHIFT) do |n|
-    guider = FactoryGirl.create(:guider, name: "late shift #{n}")
-    schedule = FactoryGirl.build(:schedule, :with_late_shift, start_at: Time.zone.now, user: guider)
-    schedule.save!(validate: false)
-  end
-
-  User.guiders.each do |guider|
-    date = Faker::Date.between(Date.today, 1.month.from_now)
-    Holiday.create!(
-      user: guider,
-      bank_holiday: false,
-      title: Faker::Book.title,
-      end_at: date.end_of_day,
-      start_at: date.beginning_of_day
-    )
-  end
-
-  GenerateBankHolidaysJob.new.perform_now
-
-  BookableSlot.generate_for_six_weeks
-
+  puts "Assigning all permissions to #{User.first.name}..."
   User.first.tap do |user|
     user.permissions << User::RESOURCE_MANAGER_PERMISSION
     user.permissions << User::AGENT_PERMISSION
@@ -48,5 +27,38 @@ if Rails.env.development?
     user.save!
   end
 
-  FactoryGirl.create(:appointment, guider: User.first)
+  print "Adding #{HOLIDAY_COUNT} holidays to guiders"
+  holiday_guiders = User.guiders.cycle
+  HOLIDAY_COUNT.times do
+    date = Faker::Date.between(Time.zone.today, 1.month.from_now)
+    FactoryGirl.create(
+      :holiday,
+      user: holiday_guiders.next,
+      end_at: date.end_of_day,
+      start_at: date.beginning_of_day
+    )
+    print '.'
+  end
+  puts
+
+  puts 'Generating bank holidays...'
+  GenerateBankHolidaysJob.new.perform_now
+
+  puts 'Generating bookable slots...'
+  BookableSlot.generate_for_six_weeks
+
+  print "Adding #{APPOINTMENT_COUNT} appointments"
+  slots = BookableSlot
+          .within_date_range(BusinessDays.from_now(3), BusinessDays.from_now(20))
+          .sample(APPOINTMENT_COUNT)
+          .cycle(1)
+  slots.each do |slot|
+    appointment = FactoryGirl.build(:appointment, guider: User.first)
+    appointment.start_at = slot.start_at
+    appointment.end_at = slot.end_at
+    appointment.assign_to_guider
+    appointment.save!
+    print '.'
+  end
+  puts
 end

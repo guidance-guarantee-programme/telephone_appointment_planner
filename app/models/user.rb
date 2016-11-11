@@ -12,7 +12,7 @@ class User < ApplicationRecord
   has_many :schedules, dependent: :destroy
   has_many :bookable_slots, dependent: :destroy, foreign_key: :guider_id
   has_many :appointments, foreign_key: :guider_id
-  has_many :holidays
+  has_many :holidays, dependent: :destroy
 
   has_many :group_assignments
   has_many :groups, through: :group_assignments
