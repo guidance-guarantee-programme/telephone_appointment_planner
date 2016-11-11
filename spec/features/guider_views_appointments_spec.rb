@@ -3,7 +3,7 @@ require 'rails_helper'
 
 RSpec.feature 'Guider views appointments' do
   scenario 'Guider views their own appointments', js: true do
-    given_the_user_is_a_guider do
+    given_the_user_is_both_guider_and_manager do
       and_there_are_appointments_for_multiple_guiders
       travel_to @appointment.start_at do
         when_they_view_their_calendar

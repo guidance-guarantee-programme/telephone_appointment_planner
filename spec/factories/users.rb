@@ -8,6 +8,10 @@ FactoryGirl.define do
 
     permissions ['signin']
 
+    factory :guider_and_resource_manager do
+      permissions { [User::RESOURCE_MANAGER_PERMISSION, User::GUIDER_PERMISSION] }
+    end
+
     factory :resource_manager do
       permissions { Array(User::RESOURCE_MANAGER_PERMISSION) }
     end
