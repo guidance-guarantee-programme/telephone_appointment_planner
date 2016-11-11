@@ -1,6 +1,6 @@
 class ActivitiesController < ApplicationController
   def index
-    @activities = current_user.activities
+    @activities = current_user.activities.includes(:user, :appointment)
   end
 
   def create

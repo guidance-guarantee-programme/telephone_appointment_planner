@@ -9,6 +9,5 @@ module Pages
     )
 
     elements :activities, '.t-activity'
-    elements :dynamically_loaded_activities, '.t-dynamically-loaded-activity'
   end
 end

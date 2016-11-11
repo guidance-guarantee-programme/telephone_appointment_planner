@@ -89,8 +89,8 @@ RSpec.feature 'User views appointment activities' do
   end
 
   def then_it_appears_dynamically
-    @page.activity_feed.wait_for_dynamically_loaded_activities(3)
-    activity = @page.activity_feed.dynamically_loaded_activities.first
+    expect(@page.activity_feed).to have_activities(count: 5, wait: 10)
+    activity = @page.activity_feed.activities.first
     expect(activity.text).to eq "#{current_user.name} changed the thing less than a minute ago"
   end
 end

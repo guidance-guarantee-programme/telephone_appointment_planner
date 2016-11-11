@@ -1,6 +1,4 @@
-<li class="activity-feed__item t-activity" id="activity-<%= assignment_activity.id %>">
-  <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-  <b><%= assignment_activity.user_name %></b>
+<% content_for(:activity_message, flush: true) do %>
   <%= assignment_activity.message %> to <%= assignment_activity.owner.name %>
-  <em class="badge"><%= time_ago_in_words(assignment_activity.created_at) %> ago</em>
-</li>
+<% end %>
+<%= render 'activities/activity', activity: assignment_activity, details: details %>
