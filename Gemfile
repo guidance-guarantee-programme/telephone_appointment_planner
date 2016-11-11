@@ -50,6 +50,7 @@ source 'https://rubygems.org' do
   end
 
   group :test do
+    gem 'coveralls', require: false
     gem 'poltergeist'
     gem 'phantomjs-binaries'
     gem 'database_cleaner'
