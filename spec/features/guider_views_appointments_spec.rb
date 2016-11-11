@@ -49,7 +49,7 @@ RSpec.feature 'Guider views appointments' do
     @page.wait_until_appointments_visible
     expect(@page).to have_appointments(count: 1)
 
-    @page.appointments.first do |appointment|
+    @page.appointments.first.tap do |appointment|
       expect(appointment.title.text).to include(@appointment.first_name)
       expect(appointment.title.text).to include(@appointment.last_name)
       expect(appointment.title.text).to include(@appointment.memorable_word)

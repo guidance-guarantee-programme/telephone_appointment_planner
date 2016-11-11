@@ -48,10 +48,6 @@ RSpec.feature 'User views appointment activities' do
     expect(@page.activity_feed.message.value).to eq('')
   end
 
-  def and_there_is_an_appointment_for_their_location
-    @appointment = create(:appointment)
-  end
-
   def and_the_appointment_was_updated_multiple_times
     @appointment.update(first_name: 'Mortimer')
     @appointment.update(email: 'mortimer@example.com')

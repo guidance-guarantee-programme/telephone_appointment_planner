@@ -138,12 +138,6 @@ RSpec.feature 'Roles' do
     @guider = create(:guider)
   end
 
-  def then_they_can_manage_guiders_slots
-    @page = Pages::EditSchedule.new
-    @page.load(user_id: @guider.id, id: @schedule.id)
-    expect(@page).to be_displayed
-  end
-
   def when_they_try_to_edit_guiders_schedules
     @page = Pages::EditUser.new
     @page.load(id: @guider.id)
@@ -160,12 +154,6 @@ RSpec.feature 'Roles' do
   def when_they_try_to_book_an_appointment
     @page = Pages::NewAppointment.new
     @page.load
-  end
-
-  def when_they_try_to_edit_appointments
-    appointment = create(:appointment)
-    @page = Pages::EditAppointment.new
-    @page.load(id: appointment.id)
   end
 
   def when_they_try_to_reschedule_an_appoinment

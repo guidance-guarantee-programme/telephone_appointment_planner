@@ -89,16 +89,6 @@ RSpec.feature 'Resource manager manages holidays' do
     )
   end
 
-  def and_there_is_a_holiday
-    @holiday = create(
-      :holiday,
-      user: create(:guider),
-      title: 'Some Holiday',
-      start_at: today,
-      end_at: today + 2.hours
-    )
-  end
-
   def when_they_view_holidays
     @page = Pages::Holidays.new.tap(&:load)
   end
