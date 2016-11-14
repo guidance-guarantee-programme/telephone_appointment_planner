@@ -25,6 +25,7 @@
         nowIndicator: true,
         slotDuration: '00:30:00',
         eventTextColor: '#fff',
+        eventDragStop: this.eventDragStop,
         eventSources: [
           {
             url: '/appointments'
@@ -215,6 +216,32 @@
       } else if(event.cancelled) {
         element.addClass('fc-event--cancelled');
       }
+
+      if (event.className.indexOf('fc-helper') > -1) {
+        this.highlightResource(event);
+      }
+    }
+
+    highlightResource(event) {
+      let eventStartSelector = event.start.format('HH:mm:ss');
+
+      this.$el.find(`.fc-resource-cell`)
+        .removeClass('active')
+        .filter(`[data-resource-id="${event.resourceId}"]`)
+        .addClass('active');
+
+      this.$el.find(`tr[data-time]`)
+        .find('.fc-time')
+        .removeClass('active')
+        .parents(`tr`)
+        .filter(`[data-time="${eventStartSelector}"]`)
+        .find('.fc-time')
+        .addClass('active');
+    }
+
+    eventDragStop() {
+      $(`.fc-resource-cell`).removeClass('active');
+      $(`tr[data-time]`).find('.fc-time').removeClass('active');
     }
 
     setupUndo() {
