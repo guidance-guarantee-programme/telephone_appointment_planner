@@ -13,7 +13,16 @@
         nowIndicator: true,
         slotDuration: '00:30:00',
         eventTextColor: '#fff',
-        events: '/appointments?mine'
+        eventSources: [
+          {
+            url: '/appointments?mine'
+          },
+          {
+            url: '/bookable_slots?mine',
+            color: 'green',
+            rendering: 'background'
+          }
+        ]
       };
 
       super.start(el);
@@ -43,6 +52,10 @@
     }
 
     eventRender(event, element, view) {
+      if (event.source.rendering == 'background') {
+        return;
+      }
+
       if (view.type === 'agendaDay') {
         element.find('.fc-title').html(`
             <span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span>

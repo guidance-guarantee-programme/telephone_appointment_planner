@@ -99,6 +99,16 @@ RSpec.feature 'Resource manager modifies appointments' do
     end
   end
 
+  scenario 'Viewing bookable slots', js: true do
+    given_the_user_is_a_resource_manager do
+      and_there_is_a_bookable_slot_for_a_guider
+      travel_to @bookable_slot.start_at do
+        when_they_view_the_appointments
+        then_they_can_see_the_bookable_slot
+      end
+    end
+  end
+
   def and_there_is_a_holiday_for_one_guider
     start_at = BusinessDays.from_now(2).change(hour: 9)
     @holiday = create(
@@ -116,6 +126,22 @@ RSpec.feature 'Resource manager modifies appointments' do
       start_at: start_at,
       end_at: start_at + 1.hour
     )
+  end
+
+  def and_there_is_a_bookable_slot_for_a_guider
+    guider = create(:guider)
+    today = BusinessDays.from_now(3)
+
+    @bookable_slot = guider.bookable_slots.create(
+      start_at: today.change(hour: 11, min: 0),
+      end_at: today.change(hour: 12, min: 10)
+    )
+  end
+
+  def then_they_can_see_the_bookable_slot
+    event = @page.calendar.background_events.first
+    expect(Time.zone.parse(event[:start])).to eq @bookable_slot.start_at
+    expect(Time.zone.parse(event[:end])).to eq @bookable_slot.end_at
   end
 
   def and_no_customer_notifications_are_sent

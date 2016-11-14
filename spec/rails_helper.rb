@@ -9,6 +9,7 @@ require 'capybara/rails'
 require 'capybara/rspec'
 require 'database_cleaner'
 require 'pusher-fake/support/rspec'
+require_relative 'support/pages/calendar_section'
 
 if ENV['TRAVIS']
   require 'coveralls'

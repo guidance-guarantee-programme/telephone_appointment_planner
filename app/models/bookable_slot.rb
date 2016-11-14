@@ -1,6 +1,8 @@
 class BookableSlot < ApplicationRecord
   belongs_to :guider, class_name: 'User'
 
+  scope :for_guider, -> (guider) { where(guider: guider) }
+
   def self.generate_for_six_weeks
     User.guiders.each do |guider|
       generate_for_guider(guider)

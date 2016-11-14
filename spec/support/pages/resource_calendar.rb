@@ -9,6 +9,8 @@ module Pages
       element :save, '.t-save'
     end
 
+    section :calendar, Pages::CalendarSection, '.t-calendar'
+
     def reassign(appointment, guider:)
       with_script_context(appointment['id']) do
         "event.resourceId = #{guider.id};"
