@@ -101,16 +101,27 @@ RSpec.feature 'Roles' do
       end
     end
 
-    scenario 'Can not view reports' do
+    scenario 'Can not view appointment reports' do
       given_the_user_has_no_permissions do
-        when_they_try_to_view_reports
+        when_they_try_to_view_appointment_reports
+        then_they_are_locked_out
+      end
+    end
+
+    scenario 'Can not view utilisation reports' do
+      given_the_user_has_no_permissions do
+        when_they_try_to_view_utilisation_reports
         then_they_are_locked_out
       end
     end
   end
 
-  def when_they_try_to_view_reports
-    @page = Pages::NewReport.new.tap(&:load)
+  def when_they_try_to_view_appointment_reports
+    @page = Pages::NewAppointmentReport.new.tap(&:load)
+  end
+
+  def when_they_try_to_view_utilisation_reports
+    @page = Pages::NewUtilisationReport.new.tap(&:load)
   end
 
   def when_they_try_to_manage_guiders

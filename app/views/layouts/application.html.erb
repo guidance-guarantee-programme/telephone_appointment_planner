@@ -29,7 +29,16 @@
       <ul class="dropdown-menu">
         <%= active_link_to 'Groups & schedules', users_path, wrap_tag: :li %>
         <%= active_link_to 'Holidays & unavailability', holidays_path, wrap_tag: :li %>
-        <%= active_link_to 'Generate a report', new_report_path, wrap_tag: :li %>
+      </ul>
+    </li>
+  <% end %>
+
+  <% if current_user.resource_manager? %>
+    <li class="dropdown">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reports <span class="caret"></span></a>
+      <ul class="dropdown-menu">
+        <%= active_link_to 'Appointment report', new_appointment_report_path, wrap_tag: :li %>
+        <%= active_link_to 'Utilisation report', new_utilisation_report_path, wrap_tag: :li %>
       </ul>
     </li>
   <% end %>

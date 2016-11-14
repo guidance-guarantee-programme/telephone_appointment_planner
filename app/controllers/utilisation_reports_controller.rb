@@ -1,4 +1,10 @@
 class UtilisationReportsController < ApplicationController
+  before_action :authorise_for_resource_managers!
+
+  def new
+    @utilisation_report = UtilisationReport.new
+  end
+
   def create
     @utilisation_report = UtilisationReport.new(params.require(:utilisation_report).permit(:date_range))
     send_data(

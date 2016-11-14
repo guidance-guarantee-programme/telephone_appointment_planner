@@ -1,0 +1,28 @@
+<ol class="breadcrumb">
+  <li><a href="<%= root_path %>">Home</a></li>
+  <li class="active">Generate a utilisation report</li>
+</ol>
+
+<h1>Generate a utilisation report</h1>
+
+<%= form_for @utilisation_report, method: 'GET', target: '_blank', 'data-disable-with': nil, layout: :basic do |f| %>
+  <%=
+    f.text_field(
+      :date_range,
+      class: 't-date-range',
+      label: 'In date range',
+      data: {
+	module: 'date-range-picker',
+	config: {
+	  autoUpdateInput: false,
+	  locale: {
+	    cancelLabel: 'Clear',
+	    format: 'DD/MM/YYYY'
+	  }
+	}
+      }
+    )
+  %>
+  <% # Use manual html here so that data-disable-with isn't added. %>
+  <input type="submit" name="commit" value="Download" class="t-download btn btn-primary">
+<% end %>
