@@ -9,7 +9,13 @@
         defaultView: 'agendaDay',
         resourceLabelText: 'Guiders',
         header: {
-          right: 'agendaDay timelineDay today jumpToDate prev,next'
+          right: 'filter agendaDay timelineDay today jumpToDate prev,next'
+        },
+        customButtons: {
+          filter: {
+            text: 'Filter',
+            click: this.filterClick.bind(this)
+          }
         },
         buttonText: {
           agendaDay: 'Horizontal',
@@ -19,7 +25,6 @@
         nowIndicator: true,
         slotDuration: '00:30:00',
         eventTextColor: '#fff',
-        resources: '/guiders',
         eventSources: [
           {
             url: '/appointments'
@@ -34,17 +39,81 @@
             color: 'green',
             rendering: 'background'
           }
-        ]
+        ],
+        resources: (...args) => this.resources(...args)
       };
 
       super.start(el);
 
       this.eventChanges = [];
+      this.filterList = [];
       this.actionPanel = $('[data-action-panel]');
       this.saveWarningMessage = 'You have unsaved changes - Save, or undo the changes.';
+      this.filterButton = $('.fc-filter-button');
+      this.filterPanel = $('.resource-calendar-filter');
 
+      this.bindEvents();
       this.setCalendarToCorrectHeight();
       this.setupUndo();
+    }
+
+    resources(callback) {
+      $.get('/guiders', this.handleResources.bind(this, callback));
+    }
+
+    handleResources(callback, resources) {
+      const filteredResources = resources.filter(this.filterResources.bind(this));
+
+      if (filteredResources.length === 0) {
+        return callback(resources);
+      }
+
+      callback(filteredResources);
+    }
+
+    filterResources(resource) {
+      return $.inArray(resource.id, this.filterList) > -1;
+    }
+
+    bindEvents() {
+      $(`#${this.$el.data('filter-select-id')}`).on('change', this.setFilterList.bind(this));
+
+      $(document).click(this.hideFilterPanel.bind(this));
+    }
+
+    setFilterList(event) {
+      this.filterList = $.map($(event.currentTarget).val(), (id) => {
+        return parseInt(id);
+      });
+
+      this.$el.fullCalendar('refetchResources');
+    }
+
+    hideFilterPanel(event) {
+      if (
+        !this.filterButton.is(event.target) &&
+        !this.filterPanel.is(event.target) &&
+        this.filterPanel.has(event.target).length === 0 &&
+        !$(event.target).hasClass('select2-selection__choice__remove')
+      ) {
+        this.filterPanel.addClass('hide');
+        this.filterButton.removeClass('fc-state-active');
+      }
+    }
+
+    showFilterPanel() {
+      this.filterPanel.toggleClass('hide');
+      this.filterButton.toggleClass('fc-state-active');
+      $('.select2-search__field').focus();
+    }
+
+    filterClick() {
+      this.filterPanel.css({
+        top: this.filterButton.offset().top + this.filterButton.height(),
+        left: this.filterButton.offset().left - (this.filterPanel.width() / 4)
+      });
+
+      this.showFilterPanel();
     }
 
     setCalendarToCorrectHeight() {
