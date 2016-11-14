@@ -16,6 +16,7 @@ class SchedulesController < ApplicationController
   def destroy
     @schedule = @guider.schedules.find(params[:id])
     @schedule.destroy
+    generate_bookable_slots_for_guider
     redirect_to edit_user_path(@guider), success: 'Schedule has been deleted'
   end
 
@@ -23,7 +24,7 @@ class SchedulesController < ApplicationController
     ActiveRecord::Base.transaction do
       @schedule.slots.destroy_all
       if @schedule.update(schedule_parameters)
-        GenerateBookableSlotsForUserJob.perform_later @guider
+        generate_bookable_slots_for_guider
         redirect_to edit_user_path(@guider), success: 'Schedule has been updated'
       else
         @slots_as_json = slots_as_json
@@ -35,7 +36,7 @@ class SchedulesController < ApplicationController
   def create
     @schedule = @guider.schedules.build(schedule_parameters)
     if @schedule.save
-      GenerateBookableSlotsForUserJob.perform_later @guider
+      generate_bookable_slots_for_guider
       redirect_to edit_user_path(@guider), success: 'Schedule has been created'
     else
       @slots_as_json = slots_as_json
@@ -44,6 +45,10 @@ class SchedulesController < ApplicationController
   end
 
   private
+
+  def generate_bookable_slots_for_guider
+    GenerateBookableSlotsForUserJob.perform_later @guider
+  end
 
   def load_current_guider
     @guider = User.find(params[:user_id])
