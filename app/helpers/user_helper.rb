@@ -1,4 +1,4 @@
-module HolidayHelper
+module UserHelper
   def guider_options
     groups = Group.includes(:users)
     {

@@ -6,7 +6,8 @@
     start(el) {
       this.config = {
         theme: 'bootstrap',
-        templateResult: this.renderTemplate.bind(this)
+        templateResult: this.renderTemplate.bind(this),
+        allowClear: true
       };
 
       super.start(el);
