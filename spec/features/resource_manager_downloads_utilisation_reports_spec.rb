@@ -65,9 +65,9 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
   # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
   def when_they_download_utilisation_reports_for_a_date_range
-    @page = Pages::NewReport.new.tap(&:load)
-    @page.utilisation_report.is_within.set date_range
-    @page.utilisation_report.download.click
+    @page = Pages::NewUtilisationReport.new.tap(&:load)
+    @page.date_range.set date_range
+    @page.download.click
   end
 
   def then_they_get_utilisation_reports_in_that_range
