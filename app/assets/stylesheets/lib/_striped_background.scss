@@ -1,0 +1,13 @@
+@function striped-background($background) {
+  @return $background repeating-linear-gradient(
+    -45deg,
+    $background,
+    $background 10px,
+    transparentize($color-white, .8) 10px,
+    transparentize($color-white, .8) 20px
+  );
+}
+
+@mixin striped($bg-colour) {
+  background: striped-background($bg-colour);
+}

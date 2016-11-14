@@ -2,23 +2,9 @@ $guider-schedules-bookable-window-color: transparentize($color-givry, .2);
 $guider-schedules-bookable-window-border-color: $color-silver;
 $guider-schedules-bookable-color: $color-feijoa;
 
-@function schedule-repeating-gradient($background) {
-  @return $background repeating-linear-gradient(
-    -45deg,
-    $background,
-    $background 10px,
-    transparentize($color-white, .8) 10px,
-    transparentize($color-white, .8) 20px
-  );
-}
-
 @mixin bookable-window-style {
   background: $guider-schedules-bookable-window-color;
   border: 1px dashed $guider-schedules-bookable-window-border-color;
-}
-
-@mixin schedule-style {
-  background: schedule-repeating-gradient($guider-schedules-bookable-color);
 }
 
 .guider-schedules {
@@ -53,7 +39,7 @@ $guider-schedules-bookable-color: $color-feijoa;
 }
 
 .guider-schedules__schedule {
-  @include schedule-style;
+  @include striped($guider-schedules-bookable-color);
   height: 25px;
   margin-top: 5px;
 }
@@ -62,7 +48,7 @@ $guider-schedules-bookable-color: $color-feijoa;
   display: none;
 
   &::before {
-    @include schedule-style;
+    @include striped($guider-schedules-bookable-color);
   }
 
   .js & {

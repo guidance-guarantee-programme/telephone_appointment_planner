@@ -4,13 +4,17 @@ $calendar-moved-background: $color-green;
 $calendar-filter-box-shadow: transparentize($color-black, .825);
 $calendar-filter-arrow-border: transparentize($color-black, .8);
 $calendar-dragging-highlight: $color-givry;
+$calendar-appointment-background: $color-boston-blue;
+$calendar-appointment-cancelled-background: $color-muddy-waters;
+$calendar-appointment-moved-background: $color-green;
+$calendar-holiday-anchor-visited: $color-white;
 
 .holiday-calendar {
   margin-top: 1em;
 
   .fc-event {
     &:visited {
-      color: $color-white;
+      color: $calendar-holiday-anchor-visited;
     }
   }
 }
@@ -79,13 +83,6 @@ $calendar-dragging-highlight: $color-givry;
   border: 1px solid $state-danger-text;
 }
 
-.fc-event {
-  &.cancelled {
-    background: $brand-danger;
-    opacity: .8;
-  }
-}
-
 .fc-right {
   position: relative;
 }
@@ -99,13 +96,20 @@ $calendar-dragging-highlight: $color-givry;
   top: 20px;
 }
 
+.fc-event {
+  @include striped($calendar-appointment-background);
+}
+
 .fc-event--cancelled {
-  background: $calendar-cancelled-background;
-  opacity: .5;
+  @include striped($calendar-appointment-cancelled-background);
 }
 
 .fc-event--moved {
-  background: $calendar-moved-background;
+  @include striped($calendar-appointment-moved-background);
+}
+
+.fc-bgevent {
+  opacity: 1;
 }
 
 .resource-calendar-filter {
