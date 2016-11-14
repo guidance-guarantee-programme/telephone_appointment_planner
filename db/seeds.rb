@@ -13,19 +13,15 @@ if Rails.env.development?
   schedules = [:with_early_shift, :with_mid_shift, :with_late_shift].cycle
   USER_COUNT.times do |n|
     guider = FactoryGirl.create(:guider)
-    schedule = FactoryGirl.build(:schedule, schedules.next, start_at: Time.zone.now, user: guider)
-    schedule.save!
+    schedule = FactoryGirl.create(
+      :schedule,
+      schedules.next,
+      start_at: Time.zone.now,
+      user: guider
+    )
     print '.'
   end
   puts
-
-  puts "Assigning all permissions to #{User.first.name}..."
-  User.first.tap do |user|
-    user.permissions << User::RESOURCE_MANAGER_PERMISSION
-    user.permissions << User::AGENT_PERMISSION
-    user.permissions << User::GUIDER_PERMISSION
-    user.save!
-  end
 
   print "Adding #{HOLIDAY_COUNT} holidays to guiders"
   holiday_guiders = User.guiders.cycle
@@ -61,4 +57,12 @@ if Rails.env.development?
     print '.'
   end
   puts
+
+  puts "Assigning all permissions to #{User.first.name}..."
+  User.first.tap do |user|
+    user.permissions << User::RESOURCE_MANAGER_PERMISSION
+    user.permissions << User::AGENT_PERMISSION
+    user.permissions << User::GUIDER_PERMISSION
+    user.save!
+  end
 end
