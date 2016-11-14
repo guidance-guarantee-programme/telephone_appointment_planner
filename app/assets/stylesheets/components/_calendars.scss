@@ -3,6 +3,7 @@ $calendar-cancelled-background: $color-guardsman-red;
 $calendar-moved-background: $color-green;
 $calendar-filter-box-shadow: transparentize($color-black, .825);
 $calendar-filter-arrow-border: transparentize($color-black, .8);
+$calendar-dragging-highlight: $color-givry;
 
 .holiday-calendar {
   margin-top: 1em;
@@ -35,6 +36,22 @@ $calendar-filter-arrow-border: transparentize($color-black, .8);
   th {
     border-width: 0;
     overflow: hidden;
+  }
+
+  .active {
+    background-color: $calendar-dragging-highlight;
+  }
+}
+
+.calendar-row-highlighter {
+  display: none;
+
+  &.active {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    background: $calendar-dragging-highlight;
   }
 }
 
