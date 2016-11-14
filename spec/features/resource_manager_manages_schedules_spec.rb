@@ -4,6 +4,10 @@
 require 'rails_helper'
 
 RSpec.feature 'Resource manager manages schedules' do
+  before do
+    allow(GenerateBookableSlotsForUserJob).to receive(:perform_later)
+  end
+
   scenario 'Successfully adds a new schedule', js: true do
     given_the_user_is_a_resource_manager do
       and_there_is_a_guider
@@ -13,6 +17,7 @@ RSpec.feature 'Resource manager manages schedules' do
       when_they_save_the_users_time_slots
       then_they_are_told_that_the_schedule_has_been_created
       and_the_guider_has_those_time_slots_available
+      and_the_guider_bookable_slots_are_regenerated
     end
   end
 
@@ -26,6 +31,7 @@ RSpec.feature 'Resource manager manages schedules' do
       when_they_save_the_users_time_slots
       then_they_are_told_that_the_schedule_has_been_updated
       and_the_guider_has_the_changed_time_slots
+      and_the_guider_bookable_slots_are_regenerated
     end
   end
 
@@ -36,6 +42,7 @@ RSpec.feature 'Resource manager manages schedules' do
       and_they_delete_the_schedule
       then_they_are_told_that_the_schedule_has_been_deleted
       and_the_schedule_is_deleted
+      and_the_guider_bookable_slots_are_regenerated
     end
   end
 
@@ -45,6 +52,7 @@ RSpec.feature 'Resource manager manages schedules' do
       and_the_guider_has_a_schedule_that_can_not_be_modified
       then_they_cant_edit_the_schedule
       and_they_cant_delete_the_schedule
+      and_the_guider_bookable_slots_are_not_regenerated
     end
   end
 
@@ -192,5 +200,13 @@ RSpec.feature 'Resource manager manages schedules' do
     @page = Pages::EditUser.new
     @page.load(id: @guider.id)
     expect(@page.schedules.first.delete).to be_disabled
+  end
+
+  def and_the_guider_bookable_slots_are_regenerated
+    expect(GenerateBookableSlotsForUserJob).to have_received(:perform_later).with(@guider)
+  end
+
+  def and_the_guider_bookable_slots_are_not_regenerated
+    expect(GenerateBookableSlotsForUserJob).to_not have_received(:perform_later)
   end
 end
