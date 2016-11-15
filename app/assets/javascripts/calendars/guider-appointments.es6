@@ -19,7 +19,7 @@
           },
           {
             url: '/bookable_slots?mine',
-            color: '#e1f5e1',
+            className: 'fc-bgevent--bookable-slot',
             rendering: 'background'
           }
         ]

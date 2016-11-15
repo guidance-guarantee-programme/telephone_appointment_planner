@@ -28,12 +28,12 @@ class CompanyCalendar extends Calendar {
         },
         {
           url: '/holidays',
-          color: '#ebebeb',
+          className: 'fc-bgevent--holiday',
           rendering: 'background'
         },
         {
           url: '/bookable_slots',
-          color: '#e1f5e1',
+          className: 'fc-bgevent--bookable-slot',
           rendering: 'background'
         }
       ],
