@@ -9,6 +9,7 @@ $calendar-appointment-cancelled-background: $color-muddy-waters;
 $calendar-appointment-moved-background: $color-green;
 $calendar-holiday-anchor-visited: $color-white;
 $calendar-holiday-background: $color-gallery;
+$calendar-schedule-background: $color-xanadu;
 $calendar-bookable-slot-background: $color-peppermint;
 
 .holiday-calendar {
@@ -114,6 +115,10 @@ $calendar-bookable-slot-background: $color-peppermint;
 .fc-event--holiday,
 .fc-bgevent--holiday {
   background: $calendar-holiday-background;
+}
+
+.fc-event--bookable-slot {
+  background: $calendar-schedule-background;
 }
 
 .fc-bgevent--bookable-slot {
