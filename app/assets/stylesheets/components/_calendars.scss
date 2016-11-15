@@ -3,7 +3,7 @@ $calendar-cancelled-background: $color-guardsman-red;
 $calendar-moved-background: $color-green;
 $calendar-filter-box-shadow: transparentize($color-black, .825);
 $calendar-filter-arrow-border: transparentize($color-black, .8);
-$calendar-dragging-highlight: $color-givry;
+$calendar-dragging-highlight: transparentize($color-givry, .1);
 $calendar-appointment-background: $color-boston-blue;
 $calendar-appointment-cancelled-background: $color-muddy-waters;
 $calendar-appointment-moved-background: $color-green;
@@ -49,6 +49,7 @@ $calendar-holiday-anchor-visited: $color-white;
 
 .calendar-row-highlighter {
   display: none;
+  z-index: 1;
 
   &.active {
     display: block;
