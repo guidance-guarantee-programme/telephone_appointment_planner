@@ -138,4 +138,8 @@ class Calendar extends TapBase {
   eventClick() {
 
   }
+
+  eventResize() {
+
+  }
 }

@@ -6,6 +6,7 @@ module Pages
     elements :guiders, '.fc-resource-cell'
     elements :appointments, '.fc-event'
     element :next_button, '.fc-next-button'
+    element :saved_changes_message, '.t-saved-changes'
 
     section :action_panel, '.t-action-panel' do
       element :save, '.t-save'

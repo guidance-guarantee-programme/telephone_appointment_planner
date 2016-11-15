@@ -5,6 +5,10 @@
 
 <h1 class="sr-only">Allocations</h1>
 
+<div class="alert alert-success js-saved-changes t-saved-changes" role="alert" style="display:none;">
+  Your changes have been saved
+</div>
+
 <%= render 'shared/calendar_filter' %>
 
 <div
@@ -16,7 +20,7 @@
 </div>
 
 <div class="action-panel t-action-panel" data-action-panel>
-  <%= form_tag batch_update_appointments_path, method: :patch do %>
+  <%= form_tag batch_update_appointments_path, method: :patch, remote: true, class: 'js-changes-form' do %>
     <button class="btn btn-primary t-save" data-action-panel-save>
       <span class="glyphicon glyphicon-save" aria-hidden="true"></span> Save changes to
       <b>

@@ -184,15 +184,6 @@ RSpec.feature 'Resource manager modifies appointments' do
     @other_appointment = create(:appointment, guider: @jan)
   end
 
-  def then_they_see_todays_date_shown
-    @page.wait_until_date_visible
-    expect(@page.date.text).to eq Time.zone.now.strftime('%B %e, %Y')
-  end
-
-  def when_they_click_the_next_day_button
-    @page.next_button.click
-  end
-
   def then_they_see_the_holiday_for_one_guider
     holiday = @page.find_holiday(@holiday)
     expect(holiday[:title]).to eq @holiday.title
@@ -206,11 +197,6 @@ RSpec.feature 'Resource manager modifies appointments' do
   end
 
   def when_they_view_the_appointments
-    @page = Pages::ResourceCalendar.new.tap(&:load)
-    expect(@page).to be_displayed
-  end
-
-  def and_they_view_the_appointments_again
     @page = Pages::ResourceCalendar.new.tap(&:load)
     expect(@page).to be_displayed
   end
@@ -231,9 +217,10 @@ RSpec.feature 'Resource manager modifies appointments' do
   def and_commit_their_modifications
     @page.wait_until_action_panel_visible
     @page.action_panel.save.click
+    @page.wait_until_saved_changes_message_visible
   end
 
-  def then_the_appointment_is_modified
+  def then_the_appointment_is_modified # rubocop:disable Metrics/AbcSize
     @appointment.reload
 
     expect(@appointment.start_at.hour).to eq(8)
@@ -243,7 +230,7 @@ RSpec.feature 'Resource manager modifies appointments' do
     expect(@appointment.end_at.min).to eq(30)
   end
 
-  def and_the_customer_is_notified_of_the_appointment_change
+  def and_the_customer_is_notified_of_the_appointment_change # rubocop:disable Metrics/AbcSize
     deliveries = ActionMailer::Base.deliveries
     expect(deliveries.count).to eq 1
     expect(deliveries.first.to).to eq [@appointment.email]
