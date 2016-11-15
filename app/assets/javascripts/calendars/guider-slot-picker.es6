@@ -8,8 +8,6 @@
         columnFormat: 'dddd',
         defaultView: 'agendaWeek',
         editable: true,
-        eventColor: '#8fdf82',
-        eventTextColor: '#000',
         eventDurationEditable: false,
         eventOverlap: false,
         header: false,
@@ -46,6 +44,7 @@
     }
 
     eventRender(event, element) {
+      element.addClass('fc-event--bookable-slot');
       element.append('<button class="close"><span aria-hidden="true">X</span><span class="sr-only">Remove slot</span></button>');
       element.find('.close').on('click', () => {
         this.$el.fullCalendar('removeEvents', event._id);
