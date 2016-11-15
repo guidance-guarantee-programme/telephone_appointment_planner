@@ -4,8 +4,7 @@ class AppointmentsController < ApplicationController
 
   def batch_update
     BatchAppointmentUpdate.new(params[:changes]).call
-
-    redirect_to resource_calendar_path
+    head :ok
   end
 
   def index

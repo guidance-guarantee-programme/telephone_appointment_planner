@@ -14,12 +14,37 @@
       this.eventChanges = [];
       this.actionPanel = $('[data-action-panel]');
       this.saveWarningMessage = 'You have unsaved changes - Save, or undo the changes.';
+      this.$savedChanges = $('.js-saved-changes');
+      this.$form = $('.js-changes-form');
 
       super.start(el);
 
       this.$rowHighlighter = $(`<div class="calendar-row-highlighter"/>`).insertAfter(this.$el);
+
       this.setCalendarToCorrectHeight();
       this.setupUndo();
+    }
+
+    bindEvents() {
+      super.bindEvents();
+
+      this.$form.on('ajax:success', this.afterChangesSaved.bind(this));
+    }
+
+    afterChangesSaved() {
+      this.eventChanges = [];
+      this.clearUnloadEvent();
+      this.checkToShowActionPanel();
+      this.$el.fullCalendar('refetchEvents');
+      this.$savedChanges.show();
+    }
+
+    getCookieConfig() {
+
+    }
+
+    setCookieConfig() {
+
     }
 
     setCalendarToCorrectHeight() {
@@ -172,11 +197,11 @@
     }
 
     save(evt) {
-      const $hiddenInput = $('#event-changes');
+      const $hiddenInput = this.$form.find('#event-changes');
       evt.preventDefault();
+      this.$savedChanges.hide();
       $hiddenInput.val(this.getEventChangesForForm());
-      this.clearUnloadEvent();
-      $hiddenInput.parents('form').submit();
+      this.$form.submit();
     }
 
     getEventChangesForForm() {

@@ -1,4 +1,3 @@
-# rubocop:disable Metrics/AbcSize
 require 'rails_helper'
 
 RSpec.feature 'Resource manager modifies appointments' do
@@ -138,7 +137,7 @@ RSpec.feature 'Resource manager modifies appointments' do
     )
   end
 
-  def then_they_can_see_the_bookable_slot
+  def then_they_can_see_the_bookable_slot # rubocop:disable Metrics/AbcSize
     event = @page.calendar.background_events.first
     expect(Time.zone.parse(event[:start])).to eq @bookable_slot.start_at
     expect(Time.zone.parse(event[:end])).to eq @bookable_slot.end_at
@@ -152,7 +151,7 @@ RSpec.feature 'Resource manager modifies appointments' do
     @page = Pages::Calendar.new.tap(&:load)
   end
 
-  def then_they_are_notified_of_the_change
+  def then_they_are_notified_of_the_change # rubocop:disable Metrics/AbcSize
     @page = Pages::Calendar.new
     @page.wait_until_notification_visible
 
@@ -160,7 +159,7 @@ RSpec.feature 'Resource manager modifies appointments' do
     expect(@page.notification.guider.text).to include(@jan.name)
   end
 
-  def then_they_are_notified_of_the_rescheduling
+  def then_they_are_notified_of_the_rescheduling # rubocop:disable Metrics/AbcSize
     @page = Pages::Calendar.new
     @page.wait_until_notification_visible
 
@@ -218,9 +217,10 @@ RSpec.feature 'Resource manager modifies appointments' do
   def and_commit_their_modifications
     @page.wait_until_action_panel_visible
     @page.action_panel.save.click
+    @page.wait_until_saved_changes_message_visible
   end
 
-  def then_the_appointment_is_modified
+  def then_the_appointment_is_modified # rubocop:disable Metrics/AbcSize
     @appointment.reload
 
     expect(@appointment.start_at.hour).to eq(8)
@@ -230,7 +230,7 @@ RSpec.feature 'Resource manager modifies appointments' do
     expect(@appointment.end_at.min).to eq(30)
   end
 
-  def and_the_customer_is_notified_of_the_appointment_change
+  def and_the_customer_is_notified_of_the_appointment_change # rubocop:disable Metrics/AbcSize
     deliveries = ActionMailer::Base.deliveries
     expect(deliveries.count).to eq 1
     expect(deliveries.first.to).to eq [@appointment.email]
