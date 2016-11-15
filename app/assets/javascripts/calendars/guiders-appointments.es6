@@ -32,12 +32,12 @@
           },
           {
             url: '/holidays',
-            color: 'red',
+            color: '#ebebeb',
             rendering: 'background'
           },
           {
             url: '/bookable_slots',
-            color: 'green',
+            color: '#e1f5e1',
             rendering: 'background'
           }
         ],

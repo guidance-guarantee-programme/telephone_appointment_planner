@@ -19,7 +19,7 @@
           },
           {
             url: '/bookable_slots?mine',
-            color: 'green',
+            color: '#e1f5e1',
             rendering: 'background'
           }
         ]
@@ -64,7 +64,7 @@
       }
 
       if (event.status.indexOf('cancelled') > -1) {
-        element.addClass('cancelled');
+        element.addClass('fc-event--cancelled');
       }
     }
   }
