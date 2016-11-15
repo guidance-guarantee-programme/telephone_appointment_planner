@@ -25,6 +25,7 @@
         nowIndicator: true,
         slotDuration: '00:30:00',
         eventTextColor: '#fff',
+        eventDragStop: (...args) => this.eventDragStop(...args),
         eventSources: [
           {
             url: '/appointments'
@@ -51,6 +52,7 @@
       this.saveWarningMessage = 'You have unsaved changes - Save, or undo the changes.';
       this.filterButton = $('.fc-filter-button');
       this.filterPanel = $('.resource-calendar-filter');
+      this.$rowHighlighter = $(`<div class="calendar-row-highlighter"/>`).insertAfter(this.$el);
 
       this.bindEvents();
       this.setCalendarToCorrectHeight();
@@ -215,6 +217,41 @@
       } else if(event.cancelled) {
         element.addClass('fc-event--cancelled');
       }
+
+      if (event.className.indexOf('fc-helper') > -1) {
+        this.highlightResource(event);
+      }
+    }
+
+    highlightResource(event) {
+      let eventStartSelector = event.start.format('HH:mm:ss'),
+        $timeRow = this.$el.find(`[data-time="${eventStartSelector}"]`),
+        eventPosition = $timeRow.offset();
+
+      this.$rowHighlighter.css({
+        top: eventPosition.top,
+        left: eventPosition.left,
+        width: $timeRow.width()
+      }).addClass('active');
+
+      this.$el.find(`.fc-resource-cell`)
+        .removeClass('active')
+        .filter(`[data-resource-id="${event.resourceId}"]`)
+        .addClass('active');
+
+      this.$el.find(`tr[data-time]`)
+        .find('.fc-time')
+        .removeClass('active')
+        .parents(`tr`)
+        .filter(`[data-time="${eventStartSelector}"]`)
+        .find('.fc-time')
+        .addClass('active');
+    }
+
+    eventDragStop() {
+      this.$rowHighlighter.removeClass('active');
+      $(`.fc-resource-cell`).removeClass('active');
+      $(`tr[data-time]`).find('.fc-time').removeClass('active');
     }
 
     setupUndo() {
