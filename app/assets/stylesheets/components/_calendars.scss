@@ -19,7 +19,7 @@ $calendar-holiday-anchor-visited: $color-white;
   }
 }
 
-.guiders-appointments-calendar {
+.company-calendar {
   .fc-resource-cell {
     height: 150px;
     white-space: nowrap;
@@ -150,7 +150,8 @@ $calendar-holiday-anchor-visited: $color-white;
 }
 
 // scss-lint:disable ImportantRule
-.select2-container {
+.select2-container,
+.select2-search__field {
   width: 100% !important;
 }
 // scss-lint:enable ImportantRule
