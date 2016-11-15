@@ -14,9 +14,10 @@
       this.eventChanges = [];
       this.actionPanel = $('[data-action-panel]');
       this.saveWarningMessage = 'You have unsaved changes - Save, or undo the changes.';
-      this.$rowHighlighter = $(`<div class="calendar-row-highlighter"/>`).insertAfter(this.$el);
 
       super.start(el);
+
+      this.$rowHighlighter = $(`<div class="calendar-row-highlighter"/>`).insertAfter(this.$el);
       this.setCalendarToCorrectHeight();
       this.setupUndo();
     }
@@ -83,14 +84,7 @@
 
     highlightResource(event) {
       let eventStartSelector = event.start.format('HH:mm:ss'),
-        $timeRow = this.$el.find(`[data-time="${eventStartSelector}"]`),
-        eventPosition = $timeRow.offset();
-
-      this.$rowHighlighter.css({
-        top: eventPosition.top,
-        left: eventPosition.left,
-        width: $timeRow.width()
-      }).addClass('active');
+        $timeRow = this.$el.find(`[data-time="${eventStartSelector}"]`);
 
       this.$el.find(`.fc-resource-cell`)
         .removeClass('active')
@@ -104,6 +98,16 @@
         .filter(`[data-time="${eventStartSelector}"]`)
         .find('.fc-time')
         .addClass('active');
+
+      if ($timeRow.length) {
+        let eventPosition = $timeRow.offset();
+
+        this.$rowHighlighter.css({
+          top: eventPosition.top,
+          left: eventPosition.left,
+          width: $timeRow.width()
+        }).addClass('active');
+      }
     }
 
     eventDragStop() {
