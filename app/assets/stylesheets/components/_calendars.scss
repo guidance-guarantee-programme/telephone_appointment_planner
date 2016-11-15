@@ -53,6 +53,14 @@ $calendar-bookable-slot-background: $color-peppermint;
   }
 }
 
+.company-calendar--fullscreen {
+  margin-top: 10px;
+}
+
+.container--fullscreen {
+  width: 100%;
+}
+
 .calendar-row-highlighter {
   display: none;
   z-index: 1;

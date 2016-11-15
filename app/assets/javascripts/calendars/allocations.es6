@@ -8,10 +8,20 @@
         slotDuration: '00:10:00',
         editable: true,
         eventDurationEditable: true,
-        eventDragStop: (...args) => this.eventDragStop(...args)
+        eventDragStop: (...args) => this.eventDragStop(...args),
+        header: {
+          right: 'fullscreen sort filter agendaDay timelineDay today jumpToDate prev,next'
+        },
+        customButtons: {
+          fullscreen: {
+            text: 'Fullscreen',
+            click: this.fullscreenClick.bind(this)
+          }
+        }
       };
 
       this.eventChanges = [];
+      this.isFullscreen = false;
       this.actionPanel = $('[data-action-panel]');
       this.$savedChanges = $('.js-saved-changes');
       this.$form = $('.js-changes-form');
@@ -86,7 +96,13 @@
     }
 
     getHeight() {
-      let height = $(window).height() - this.$el.offset().top - $('.page-footer').outerHeight(true);
+      let height = $(window).height();
+
+      if (this.isFullscreen === false) {
+        height -= (this.$el.offset().top + $('.page-footer').outerHeight(true));
+      } else {
+        height -= 20;
+      }
 
       if (this.actionPanel.is(':visible')) {
         height -= this.actionPanel.height();
@@ -291,6 +307,24 @@
       }
 
       return Object.keys(unique).length;
+    }
+
+    fullscreenClick(event) {
+      let method = 'show';
+
+      this.isFullscreen = this.isFullscreen ? false : true;
+
+      this.$el.toggleClass('company-calendar--fullscreen');
+      $('.container').toggleClass('container--fullscreen');
+      $(event.currentTarget).toggleClass('fc-state-active');
+
+      if (this.isFullscreen) {
+        method = 'hide';
+      }
+
+      $('.page-footer, .breadcrumb, .navbar')[method]();
+
+      this.alterHeight();
     }
   }
 
