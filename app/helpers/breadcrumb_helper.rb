@@ -11,13 +11,17 @@ module BreadcrumbHelper
 
   private
 
-  def path_and_title_from_referer
+  def path_and_title_from_referer # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     if request_uri.start_with?(search_appointments_path)
       [request_uri, 'Search']
-    elsif request.start_with?(activities_path)
+    elsif request_uri.start_with?(activities_path)
       [request_uri, 'My activity']
     elsif request_uri.start_with?(calendar_path)
       [request_uri, 'My appointments']
+    elsif request_uri.start_with?(company_calendar_path)
+      [request_uri, 'Company']
+    elsif request_uri.start_with?(resource_calendar_path)
+      [request_uri, 'Allocations']
     end
   end
 

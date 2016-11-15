@@ -35,7 +35,11 @@ RSpec.feature 'Guider views appointments' do
     # this would appear 'today'
     @appointment = create(:appointment, guider: current_user)
     # this would appear 'tomorrow'
-    @appointment_tomorrow = create(:appointment, guider: current_user, start_at: BusinessDays.from_now(4))
+    @appointment_tomorrow = create(
+      :appointment,
+      guider: current_user,
+      start_at: BusinessDays.from_now(4).at_midday
+    )
     # this won't appear for the current user
     create(:appointment)
   end
