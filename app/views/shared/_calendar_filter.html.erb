@@ -1,0 +1,12 @@
+<div id="resource-calendar-filter" class="resource-calendar-filter hide">
+  <%= label_tag(:filter_users, 'Filter by guider/group') %>
+  <%=
+    select_tag(
+      :filter_guiders,
+      grouped_options_for_select(guider_options),
+      multiple: 'multiple',
+      class: 't-users',
+      data: { module: 'advanced-select', placeholder: 'Guider or Group' }
+    )
+  %>
+</div>

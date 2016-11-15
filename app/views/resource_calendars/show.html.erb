@@ -5,24 +5,12 @@
 
 <h1 class="sr-only">Allocations</h1>
 
-<div id="resource-calendar-filter" class="resource-calendar-filter hide">
-  <%= label_tag(:filter_users, 'Filter by guider/group') %>
-  <%=
-    select_tag(
-      :filter_guiders,
-      grouped_options_for_select(guider_options),
-      multiple: 'multiple',
-      class: 't-users',
-      data: { module: 'advanced-select' }
-    )
-  %>
-</div>
+<%= render 'shared/calendar_filter' %>
 
 <div
-  id="GuidersAppointmentsCalendar"
-  class="guiders-appointments-calendar js-calendar t-calendar"
-  data-config='{"editable": true, "eventDurationEditable": true, "slotDuration": "00:10:00"}'
-  data-module="guiders-appointments-calendar"
+  id="AllocationsCalendar"
+  class="company-calendar js-calendar t-calendar"
+  data-module="allocations-calendar"
   data-default-date="<%= Time.zone.now %>"
   data-filter-select-id="filter_guiders">
 </div>

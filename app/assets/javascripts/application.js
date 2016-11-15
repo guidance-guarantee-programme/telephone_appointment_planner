@@ -23,7 +23,8 @@
 //= require calendars/appointment-availability
 //= require calendars/guider-slot-picker
 //= require calendars/guider-appointments
-//= require calendars/guiders-appointments
+//= require calendars/company
+//= require calendars/allocations
 //= require calendars/holidays
 //= require activity-feed
 //= require select2
