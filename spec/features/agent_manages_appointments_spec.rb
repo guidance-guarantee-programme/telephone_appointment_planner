@@ -79,7 +79,6 @@ RSpec.feature 'Agent manages appointments' do
     BookableSlot.generate_for_six_weeks
   end
 
-  # rubocop:disable Metrics/AbcSize
   def fill_in_appointment_details(options = {})
     @page.first_name.set 'Some'
     @page.last_name.set 'Person'

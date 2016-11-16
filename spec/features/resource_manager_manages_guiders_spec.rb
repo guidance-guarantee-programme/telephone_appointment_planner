@@ -1,4 +1,3 @@
-# rubocop:disable Metrics/AbcSize
 require 'rails_helper'
 
 RSpec.feature 'Resource manager manages guiders' do

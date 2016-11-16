@@ -76,7 +76,6 @@ RSpec.feature 'Resource manager downloads appointment reports' do
   end
 
   # rubocop:disable Metrics/MethodLength
-  # rubocop:disable Metrics/AbcSize
   def expect_appointment_csv(appointment)
     expect(@page.csv.count).to eq 2
     expect(@page.csv.first).to eq AppointmentReport::EXPORTABLE_ATTRIBUTES
