@@ -1,5 +1,3 @@
-# rubocop:disable Metrics/MethodLength
-
 require 'rails_helper'
 
 RSpec.feature 'Resource manager manages schedules' do
