@@ -31,7 +31,6 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
     ].join(' - ')
   end
 
-  # rubocop:disable Metrics/MethodLength
   def and_there_are_data
     guider = create(:guider)
 
@@ -62,7 +61,6 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
     holiday = create(:holiday, user: guider, start_at: start_at + 10.days, end_at: start_at + 11.days)
     create(:bookable_slot, guider: guider, start_at: holiday.start_at + 1.hour)
   end
-  # rubocop:enable Metrics/MethodLength
 
   def when_they_download_utilisation_reports_for_a_date_range
     @page = Pages::NewUtilisationReport.new.tap(&:load)

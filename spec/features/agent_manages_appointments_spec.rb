@@ -1,4 +1,3 @@
-# rubocop:disable Metrics/MethodLength
 require 'rails_helper'
 
 RSpec.feature 'Agent manages appointments' do

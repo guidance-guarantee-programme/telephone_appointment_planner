@@ -43,7 +43,6 @@ RSpec.feature 'Guider views appointments' do
     create(:appointment)
   end
 
-  # rubocop:disable Metrics/MethodLength
   def and_the_user_has_a_schedule
     today    = BusinessDays.from_now(3).beginning_of_day
     tomorrow = BusinessDays.from_now(4).beginning_of_day
@@ -60,7 +59,6 @@ RSpec.feature 'Guider views appointments' do
       )
     ]
   end
-  # rubocop:enable Metrics/MethodLength
 
   def when_they_view_their_calendar
     @page = Pages::Calendar.new.tap(&:load)
