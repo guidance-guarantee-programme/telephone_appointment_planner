@@ -1,0 +1,25 @@
+<ol class="breadcrumb">
+  <li><a href="<%= root_path %>">Home</a></li>
+  <li><a href="<%= sort_users_path %>">Sort guiders</a></li>
+</ol>
+
+<h1>Sort guiders</h1>
+
+<p>
+  Drag guiders around to sort them for your calendars.
+</p>
+
+<%= form_for :order_users, layout: :basic do |f| %>
+  <div class="list-group sortable-guiders" data-module="sortable-guiders">
+    <% @guiders.each do |guider| %>
+      <button type="button" class="list-group-item t-guider">
+        <%= guider.name %>
+        <% guider.groups.each do |group| %>
+          <span class="label label-info <%= dom_id(group) %> t-group"><%= group.name %></span>
+        <% end %>
+        <%= f.hidden_field :guider_order, value: guider.id, multiple: true %>
+      </button>
+    <% end %>
+  </div>
+  <%= f.submit 'Save', class: 't-save' %>
+<% end %>

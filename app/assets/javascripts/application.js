@@ -30,4 +30,5 @@
 //= require select2
 //= require advanced-select
 //= require pusher
+//= require sortable-rails
 //= require_tree .

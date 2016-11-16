@@ -7,7 +7,7 @@ class User < ApplicationRecord
     AGENT_PERMISSION = 'agent'.freeze
   ].freeze
 
-  default_scope { order(:name) }
+  default_scope { order(:position, :name) }
 
   has_many :schedules, dependent: :destroy
   has_many :bookable_slots, dependent: :destroy, foreign_key: :guider_id
