@@ -155,9 +155,9 @@ RSpec.describe Appointment, type: :model do
       from = BusinessDays.from_now(3).at_midday
 
       @appointments = [
-        create(:appointment, created_at: from + 2.seconds),
-        create(:appointment, created_at: from + 1.second),
-        create(:appointment, created_at: from)
+        create(:appointment, first_name: 'Stefan', last_name: 'Löfven', created_at: from + 2.seconds),
+        create(:appointment, first_name: 'Angela', last_name: 'Merkel', created_at: from + 1.second),
+        create(:appointment, first_name: 'Adrian', last_name: 'Hasler', created_at: from)
       ]
     end
 
