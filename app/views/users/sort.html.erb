@@ -1,18 +1,19 @@
 <ol class="breadcrumb">
   <li><a href="<%= root_path %>">Home</a></li>
-  <li><a href="<%= sort_users_path %>">Sort guiders</a></li>
+  <li><a href="<%= sort_users_path %>">Guider display order</a></li>
 </ol>
 
-<h1>Sort guiders</h1>
+<h1>Guider display order</h1>
 
 <p>
-  Drag guiders around to sort them for your calendars.
+  Drag guiders around to control the order they are displayed on the <a href="<%= resource_calendar_path %>">Allocations Calendar</a>.
 </p>
 
 <%= form_for :order_users, layout: :basic do |f| %>
   <div class="list-group sortable-guiders" data-module="sortable-guiders">
     <% @guiders.each do |guider| %>
       <button type="button" class="list-group-item t-guider">
+        <span class="glyphicon glyphicon-option-vertical"></span>
         <%= guider.name %>
         <% guider.groups.each do |group| %>
           <span class="label label-info <%= dom_id(group) %> t-group"><%= group.name %></span>
