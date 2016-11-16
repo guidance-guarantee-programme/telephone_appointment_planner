@@ -26,8 +26,6 @@
 
       this.addExistingEventsToCalendar();
 
-      this.eventsAtPageLoad = this.getJSON();
-
       this.saveData();
       this.bindEvents();
     }
@@ -57,6 +55,7 @@
       }
 
       this.$el.fullCalendar('addEventSource', eventsToAdd);
+      this.originalFingerprint = this.createFingerprint(this.getJSON());
     }
 
     bindEvents() {
@@ -126,12 +125,33 @@
     }
 
     saveData() {
-      this.hiddenDataInput.val(this.getJSON());
+      let events = this.getJSON();
+      this.hiddenDataInput.val(JSON.stringify(events));
       this.clearUnloadEvent();
-
-      if (this.hiddenDataInput.val() !== this.eventsAtPageLoad) {
+      if (this.anyChanges(events)) {
         this.setUnloadEvent();
       }
+    }
+
+    createFingerprint(events) {
+      let fingerPrint = [];
+      for (let eventIndex in events) {
+        fingerPrint.push(JSON.stringify(events[eventIndex]));
+      }
+      return fingerPrint.sort();
+    }
+
+    anyChanges(events) {
+      let fingerprint = this.createFingerprint(events);
+      if (this.originalFingerprint.length != fingerprint.length) {
+        return true;
+      }
+      for (let i in this.originalFingerprint) {
+        if (this.originalFingerprint[i] != fingerprint[i]) {
+          return true;
+        }
+      }
+      return false;
     }
 
     getJSON() {
@@ -151,27 +171,7 @@
         });
       }
 
-      return JSON.stringify(eventsOutput.sort(this.sortEvents.bind(this)));
-    }
-
-    calculateSortFingerprint(event) {
-      const minutes = (event.start_hour * 60) + event.start_minute;
-      return minutes * (event.day_of_week + 1); // add 1 here as Sunday = 0
-    }
-
-    sortEvents(event1, event2) {
-      const a = this.calculateSortFingerprint(event1),
-      b = this.calculateSortFingerprint(event2);
-
-      if (a < b) {
-        return -1;
-      }
-
-      if (a > b) {
-        return 1;
-      }
-
-      return 0;
+      return eventsOutput;
     }
 
     handleEvent(event) {
