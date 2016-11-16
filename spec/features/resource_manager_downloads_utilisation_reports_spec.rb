@@ -31,7 +31,7 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
     ].join(' - ')
   end
 
-  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
   def and_there_are_data
     guider = create(:guider)
 
@@ -62,7 +62,7 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
     holiday = create(:holiday, user: guider, start_at: start_at + 10.days, end_at: start_at + 11.days)
     create(:bookable_slot, guider: guider, start_at: holiday.start_at + 1.hour)
   end
-  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
+  # rubocop:enable Metrics/MethodLength
 
   def when_they_download_utilisation_reports_for_a_date_range
     @page = Pages::NewUtilisationReport.new.tap(&:load)
@@ -80,11 +80,9 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
     expect(@page.content_disposition).to eq "attachment; filename=#{file_name}"
   end
 
-  # rubocop:disable Metrics/AbcSize
   def expect_utilisation_csv(utilisation)
     expect(@page.csv.count).to eq 2
     expect(@page.csv.first).to eq [:booked_appointments, :bookable_slots, :blocked_slots]
     expect(@page.csv.second.map(&:to_i)).to eq utilisation
   end
-  # rubocop:enable Metrics/AbcSize
 end

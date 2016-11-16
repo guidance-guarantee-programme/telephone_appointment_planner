@@ -1,4 +1,3 @@
-# rubocop:disable Metrics/AbcSize
 # rubocop:disable Metrics/MethodLength
 
 require 'rails_helper'

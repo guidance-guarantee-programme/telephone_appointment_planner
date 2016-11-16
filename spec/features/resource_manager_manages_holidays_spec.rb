@@ -54,8 +54,6 @@ RSpec.feature 'Resource manager manages holidays' do
       end
     end
   end
-
-  # rubocop:disable Metrics/AbcSize
   # rubocop:disable Metrics/MethodLength
   def and_there_are_some_holidays
     create(
