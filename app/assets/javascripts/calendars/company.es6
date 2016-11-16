@@ -50,6 +50,7 @@ class CompanyCalendar extends Calendar {
 
     this.filterList = [];
     this.filterButton = $('.fc-filter-button');
+    this.filterButtonLabel = this.filterButton.text();
     this.filterPanel = $('.resource-calendar-filter');
 
     this.bindEvents();
@@ -84,7 +85,17 @@ class CompanyCalendar extends Calendar {
       return parseInt(id);
     });
 
+    this.refreshFilterButtonLabel();
     this.$el.fullCalendar('refetchResources');
+  }
+
+  refreshFilterButtonLabel() {
+    let filterButtonLabel = this.filterButtonLabel;
+    if (this.filterList.length) {
+      filterButtonLabel += ` (${this.filterList.length})`;
+    }
+
+    this.filterButton.text(filterButtonLabel);
   }
 
   hideFilterPanel(event) {
