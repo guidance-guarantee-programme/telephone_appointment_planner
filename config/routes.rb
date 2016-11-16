@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   resources :guiders, only: :index
   resources :users do
     resources :schedules
+    get 'sort', on: :collection
+    post 'sort', on: :collection, action: :sort_update
   end
   resources :activities, only: %i(index create)
 

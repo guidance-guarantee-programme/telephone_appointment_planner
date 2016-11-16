@@ -31,6 +31,13 @@ RSpec.feature 'Roles' do
         then_they_are_allowed
       end
     end
+
+    scenario 'Can sort guiders' do
+      given_the_user_is_a_resource_manager do
+        when_they_try_to_sort_guiders
+        then_they_are_allowed
+      end
+    end
   end
 
   context 'Guiders' do
@@ -114,6 +121,13 @@ RSpec.feature 'Roles' do
         then_they_are_locked_out
       end
     end
+
+    scenario 'Can not sort guiders' do
+      given_the_user_has_no_permissions do
+        when_they_try_to_sort_guiders
+        then_they_are_locked_out
+      end
+    end
   end
 
   def when_they_try_to_view_appointment_reports
@@ -179,6 +193,9 @@ RSpec.feature 'Roles' do
 
   def when_they_try_to_view_their_activities
     @page = Pages::Activities.new.tap(&:load)
-    @page.load
+  end
+
+  def when_they_try_to_sort_guiders
+    @page = Pages::SortGuiders.new.tap(&:load)
   end
 end

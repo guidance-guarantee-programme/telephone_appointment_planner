@@ -6,12 +6,16 @@ class CompanyCalendar extends Calendar {
       defaultView: 'agendaDay',
       resourceLabelText: 'Guiders',
       header: {
-        right: 'filter agendaDay timelineDay today jumpToDate prev,next'
+        right: 'sort filter agendaDay timelineDay today jumpToDate prev,next'
       },
       customButtons: {
         filter: {
           text: 'Filter',
           click: this.filterClick.bind(this)
+        },
+        sort: {
+          text: 'Sort',
+          click: this.sortClick.bind(this)
         }
       },
       buttonText: {
@@ -112,6 +116,10 @@ class CompanyCalendar extends Calendar {
     });
 
     this.showFilterPanel();
+  }
+
+  sortClick() {
+    window.location = '/users/sort';
   }
 
   eventAfterRender(event, element) {
