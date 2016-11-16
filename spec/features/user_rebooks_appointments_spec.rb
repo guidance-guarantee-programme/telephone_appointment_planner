@@ -21,7 +21,7 @@ RSpec.feature 'Agent rebooks appointments' do
     expect(@page).to be_displayed
   end
 
-  def then_the_details_are_copied_over # rubocop:disable Metrics/MethodLength
+  def then_the_details_are_copied_over
     expect(@page.first_name.value).to eq @appointment.first_name
     expect(@page.last_name.value).to eq @appointment.last_name
     expect(@page.email.value).to eq @appointment.email
