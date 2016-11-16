@@ -16,7 +16,6 @@
       this.saveWarningMessage = 'You have unsaved changes - Save, or undo the changes.';
       this.$savedChanges = $('.js-saved-changes');
       this.$form = $('.js-changes-form');
-      this.$alert = $('.alert');
 
       super.start(el);
 
@@ -30,6 +29,7 @@
       super.bindEvents();
 
       this.$form.on('ajax:success', this.afterChangesSaved.bind(this));
+      this.$form.on('ajax:error', this.afterChangesFailed.bind(this));
     }
 
     afterChangesSaved() {
@@ -38,7 +38,20 @@
       this.checkToShowActionPanel();
       this.$el.fullCalendar('refetchEvents');
       this.$savedChanges.show();
-      this.$alert.delay(3000).fadeOut('slow');
+      this.showAlert('.alert-success');
+    }
+
+    afterChangesFailed() {
+      this.showAlert('.alert-danger');
+    }
+
+    showAlert(alertClass) {
+      $('.alert')
+        .hide()
+        .filter(alertClass)
+        .show()
+        .delay(3000)
+        .fadeOut('slow');
     }
 
     getCookieConfig() {
