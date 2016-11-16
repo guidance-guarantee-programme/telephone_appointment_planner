@@ -12,10 +12,6 @@ class CompanyCalendar extends Calendar {
         filter: {
           text: 'Filter',
           click: this.filterClick.bind(this)
-        },
-        sort: {
-          text: 'Sort',
-          click: this.sortClick.bind(this)
         }
       },
       buttonText: {
@@ -116,10 +112,6 @@ class CompanyCalendar extends Calendar {
     });
 
     this.showFilterPanel();
-  }
-
-  sortClick() {
-    window.location = '/users/sort';
   }
 
   eventAfterRender(event, element) {
