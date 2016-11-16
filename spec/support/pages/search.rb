@@ -5,6 +5,7 @@ module Pages
     element :q,          '.t-q'
     element :date_range, '.t-date-range'
     element :search,     '.t-search'
+    element :rebook,     '.t-rebook'
 
     sections :results, '.t-result' do
       element :id, '.t-id'
