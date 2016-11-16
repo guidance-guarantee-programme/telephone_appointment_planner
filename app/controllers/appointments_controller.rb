@@ -44,7 +44,7 @@ class AppointmentsController < ApplicationController
   end
 
   def new
-    @appointment = Appointment.new
+    @appointment = copy_appointment || Appointment.new
   end
 
   def create
@@ -130,5 +130,13 @@ class AppointmentsController < ApplicationController
     else
       redirect_to calendar_path, success: 'Appointment has been modified'
     end
+  end
+
+  def copy_appointment
+    return nil unless params[:copy_from].present?
+    appointment = Appointment.find(params[:copy_from]).dup
+    appointment.start_at = nil
+    appointment.end_at = nil
+    appointment
   end
 end
