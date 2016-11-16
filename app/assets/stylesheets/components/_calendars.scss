@@ -102,6 +102,7 @@ $calendar-bookable-slot-background: $color-peppermint;
 
 .fc-event {
   @include striped($calendar-appointment-background);
+  z-index: 3;
 }
 
 .fc-event--cancelled {
@@ -112,17 +113,22 @@ $calendar-bookable-slot-background: $color-peppermint;
   @include striped($calendar-appointment-moved-background);
 }
 
-.fc-event--holiday,
-.fc-bgevent--holiday {
-  background: $calendar-holiday-background;
-}
+.fc-time-grid,
+.fc-time-area {
+  .fc-event--holiday,
+  .fc-bgevent--holiday {
+    background: $calendar-holiday-background;
+    z-index: 2;
+  }
 
-.fc-event--bookable-slot {
-  background: $calendar-schedule-background;
-}
+  .fc-event--bookable-slot {
+    background: $calendar-schedule-background;
+  }
 
-.fc-bgevent--bookable-slot {
-  background: $calendar-bookable-slot-background;
+  .fc-bgevent--bookable-slot {
+    background: $calendar-bookable-slot-background;
+    z-index: 1;
+  }
 }
 
 .fc-bgevent {
