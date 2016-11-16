@@ -29,6 +29,7 @@
       super.bindEvents();
 
       this.$form.on('ajax:success', this.afterChangesSaved.bind(this));
+      this.$form.on('ajax:error', this.afterChangesFailed.bind(this));
     }
 
     afterChangesSaved() {
@@ -37,6 +38,20 @@
       this.checkToShowActionPanel();
       this.$el.fullCalendar('refetchEvents');
       this.$savedChanges.show();
+      this.showAlert('.alert-success');
+    }
+
+    afterChangesFailed() {
+      this.showAlert('.alert-danger');
+    }
+
+    showAlert(alertClass) {
+      $('.alert')
+        .hide()
+        .filter(alertClass)
+        .show()
+        .delay(3000)
+        .fadeOut('slow');
     }
 
     getCookieConfig() {
