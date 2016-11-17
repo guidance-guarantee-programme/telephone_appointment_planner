@@ -10,9 +10,9 @@ class HolidaysController < ApplicationController
     respond_to do |format|
       format.html
       format.json do
-        starts = params[:start].to_date.beginning_of_day
-        ends   = params[:end].to_date.beginning_of_day
-        render json: Holiday.overlapping_or_inside(starts, ends)
+        holidays = Holiday.overlapping_or_inside(starts, ends)
+        holidays = holidays.scoped_for_user_including_bank_holidays(current_user) if scoped_to_me?
+        render json: holidays
       end
     end
   end
@@ -82,5 +82,17 @@ class HolidaysController < ApplicationController
 
   def user_ids
     params[:holiday][:users] || []
+  end
+
+  def starts
+    params[:start].to_date.beginning_of_day
+  end
+
+  def ends
+    params[:end].to_date.beginning_of_day
+  end
+
+  def scoped_to_me?
+    params.key?(:mine)
   end
 end

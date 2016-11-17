@@ -18,6 +18,10 @@ class Holiday < ApplicationRecord
       .order(:start_at)
   end
 
+  def self.scoped_for_user_including_bank_holidays(user)
+    where('(user_id = ? OR bank_holiday = true)', user.id)
+  end
+
   def self.overlapping_or_inside(start_at, end_at)
     range = start_at..end_at
     where(start_at: range)

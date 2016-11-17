@@ -23,7 +23,14 @@
           {
             url: '/bookable_slots?mine',
             className: 'fc-bgevent--bookable-slot',
-            rendering: 'background'
+            rendering: 'background',
+            eventType: 'slot'
+          },
+          {
+            url: '/holidays?mine',
+            className: 'fc-bgevent--holiday',
+            rendering: 'background',
+            eventType: 'holiday'
           }
         ]
       };

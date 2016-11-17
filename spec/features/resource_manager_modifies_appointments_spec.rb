@@ -138,7 +138,7 @@ RSpec.feature 'Resource manager modifies appointments' do
   end
 
   def then_they_can_see_the_bookable_slot
-    event = @page.calendar.background_events.first
+    event = @page.calendar.slots.first
     expect(Time.zone.parse(event[:start])).to eq @bookable_slot.start_at
     expect(Time.zone.parse(event[:end])).to eq @bookable_slot.end_at
   end
