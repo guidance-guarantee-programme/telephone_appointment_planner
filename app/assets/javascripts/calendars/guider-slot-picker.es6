@@ -20,13 +20,71 @@
 
       super.start(el);
 
-      this.addEvents();
-      this.generateJSON();
-      this.setupEvents();
+      this.saveWarningMessage = 'You have unsaved changes - Save, or undo the changes.';
+      this.hiddenDataInput = $(this.$el.data('events'));
+      this.saveButton = $('.js-button-save');
+
+      this.addExistingEventsToCalendar();
+
+      this.saveData();
+      this.bindEvents();
+    }
+
+    addExistingEventsToCalendar() {
+      const events = JSON.parse($(this.$el.data('events')).val()),
+      calendarView = this.$el.fullCalendar('getView'),
+      calendarStartDate = calendarView.intervalStart,
+      calendarEndDate = calendarView.intervalEnd.subtract(2, 'days'),
+      eventsToAdd = [];
+
+      for (let currentDate = moment(calendarStartDate); currentDate < calendarEndDate; currentDate.add(1, 'days')) {
+        for (let eventIndex in events) {
+          let event = events[eventIndex];
+          if (event.day_of_week == currentDate.day()) {
+            event.start_hour = (`00${event.start_hour}`).substr(-2, 2);
+            event.start_minute = (`00${event.start_minute}`).substr(-2, 2);
+            event.end_hour = (`00${event.end_hour}`).substr(-2, 2);
+            event.end_minute = (`00${event.end_minute}`).substr(-2, 2);
+
+            eventsToAdd.push({
+              start: `${currentDate.format('YYYY-MM-DD')}T${event.start_hour}:${event.start_minute}`,
+              end: `${currentDate.format('YYYY-MM-DD')}T${event.end_hour}:${event.end_minute}`
+            });
+          }
+        }
+      }
+
+      this.$el.fullCalendar('addEventSource', eventsToAdd);
+      this.originalFingerprint = this.createFingerprint(this.getJSON());
+    }
+
+    bindEvents() {
+      $(`#${this.$el.data('events-common')}`).find('button').on(
+        'click',
+        this.handleEvent.bind(this)
+      );
+
+      this.saveButton.on('click', () => {
+        this.clearUnloadEvent();
+      });
+    }
+
+    setUnloadEvent() {
+      $(window).on('beforeunload', () => {
+        return this.saveWarningMessage;
+      });
+
+      $(window).on('unload', () => {
+        alert(this.saveWarningMessage);
+      });
+    }
+
+    clearUnloadEvent() {
+      $(window).off('beforeunload unload');
     }
 
     eventDrop() {
-      this.generateJSON();
+      this.saveData();
     }
 
     select(start) {
@@ -37,19 +95,10 @@
 
       if (!this.isOverlapping(event)) {
         this.$el.fullCalendar('renderEvent', event, true);
-        this.generateJSON();
+        this.saveData();
       }
 
       this.$el.fullCalendar('unselect');
-    }
-
-    eventRender(event, element) {
-      element.addClass('fc-event--bookable-slot');
-      element.append('<button class="close"><span aria-hidden="true">X</span><span class="sr-only">Remove slot</span></button>');
-      element.find('.close').on('click', () => {
-        this.$el.fullCalendar('removeEvents', event._id);
-        this.generateJSON();
-      });
     }
 
     isOverlapping(event) {
@@ -64,32 +113,49 @@
       return false;
     }
 
-    addEvents() {
-      const events = JSON.parse($(this.$el.data('events')).val()),
-      calendarView = this.$el.fullCalendar('getView'),
-      calendarStartDate = calendarView.intervalStart,
-      calendarEndDate = calendarView.intervalEnd;
+    eventRender(event, element) {
+      element.addClass('fc-event--bookable-slot');
+      element.append('<button class="close"><span aria-hidden="true">X</span><span class="sr-only">Remove slot</span></button>');
+      element.find('.close').on('click', this.removeEvent.bind(this, event));
+    }
 
-      for (let currentDate = moment(calendarStartDate); currentDate < calendarEndDate; currentDate.add(1, 'days')) {
-        for (let eventIndex in events) {
-          let event = events[eventIndex];
-          if (event.day_of_week == currentDate.day()) {
-            event.start_hour = (`00${event.start_hour}`).substr(-2,2);
-            event.start_minute = (`00${event.start_minute}`).substr(-2,2);
-            event.end_hour = (`00${event.end_hour}`).substr(-2,2);
-            event.end_minute = (`00${event.end_minute}`).substr(-2,2);
-            this.$el.fullCalendar('addEventSource', [{
-              start: `${currentDate.format('YYYY-MM-DD')}T${event.start_hour}:${event.start_minute}`,
-              end: `${currentDate.format('YYYY-MM-DD')}T${event.end_hour}:${event.end_minute}`
-            }]);
-          }
-        }
+    removeEvent(event) {
+      this.$el.fullCalendar('removeEvents', event._id);
+      this.saveData();
+    }
+
+    saveData() {
+      let events = this.getJSON();
+      this.hiddenDataInput.val(JSON.stringify(events));
+      this.clearUnloadEvent();
+      if (this.anyChanges(events)) {
+        this.setUnloadEvent();
       }
     }
 
-    generateJSON() {
-      const dataElement = $(this.$el.data('events')),
-      events = this.$el.fullCalendar('clientEvents');
+    createFingerprint(events) {
+      let fingerPrint = [];
+      for (let eventIndex in events) {
+        fingerPrint.push(JSON.stringify(events[eventIndex]));
+      }
+      return fingerPrint.sort();
+    }
+
+    anyChanges(events) {
+      let fingerprint = this.createFingerprint(events);
+      if (this.originalFingerprint.length != fingerprint.length) {
+        return true;
+      }
+      for (let i in this.originalFingerprint) {
+        if (this.originalFingerprint[i] != fingerprint[i]) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    getJSON() {
+      const events = this.$el.fullCalendar('clientEvents');
 
       let eventsOutput = [];
 
@@ -105,11 +171,7 @@
         });
       }
 
-      dataElement.val(JSON.stringify(eventsOutput, null, 2));
-    }
-
-    setupEvents() {
-      $(`#${this.$el.data('events-common')}`).find('button').on('click', this.handleEvent.bind(this));
+      return eventsOutput;
     }
 
     handleEvent(event) {
@@ -122,20 +184,23 @@
       const events = $(event.currentTarget).data('events'),
       calendarView = this.$el.fullCalendar('getView'),
       calendarStartDate = calendarView.intervalStart,
-      calendarEndDate = calendarView.intervalEnd;
+      calendarEndDate = calendarView.intervalEnd.subtract(2, 'days'),
+      eventsToAdd = [];
 
       for (let currentDate = moment(calendarStartDate); currentDate < calendarEndDate; currentDate.add(1, 'days')) {
         for (let eventIndex in events) {
           event = events[eventIndex];
 
-          this.$el.fullCalendar('addEventSource', [{
+          eventsToAdd.push({
             start: `${currentDate.format('YYYY-MM-DD')}T${event.start}`,
             end: `${currentDate.format('YYYY-MM-DD')}T${event.end}`
-          }]);
+          });
         }
       }
 
-      this.generateJSON();
+      this.$el.fullCalendar('addEventSource', eventsToAdd);
+
+      this.saveData();
     }
   }
 

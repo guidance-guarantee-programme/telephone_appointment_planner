@@ -53,6 +53,16 @@ RSpec.feature 'Resource manager manages schedules' do
     end
   end
 
+  scenario 'Avoid navigating away with unsaved modifications', js: true do
+    given_the_user_is_a_resource_manager do
+      and_there_is_a_guider
+      and_they_add_a_new_schedule
+      and_they_add_some_time_slots
+      when_they_try_to_navigate_away
+      then_they_do_not_navigate_away
+    end
+  end
+
   def and_there_is_a_guider
     @guider = create(:guider, name: 'Davey Daverson')
   end
@@ -205,5 +215,20 @@ RSpec.feature 'Resource manager manages schedules' do
 
   def and_the_guider_bookable_slots_are_not_regenerated
     expect(GenerateBookableSlotsForUserJob).to_not have_received(:perform_later)
+  end
+
+  def when_they_try_to_navigate_away
+    @expected_path = page.current_path
+
+    dismiss_confirm('You have unsaved changes - Save, or undo the changes.') do
+      page.find('a', match: :first).click
+    end
+  end
+
+  def then_they_do_not_navigate_away
+    expect(page.current_path).to eq(@expected_path)
+
+    # force 'reset' for poltergeist after dismissal of a JS prompt
+    visit 'about:blank'
   end
 end
