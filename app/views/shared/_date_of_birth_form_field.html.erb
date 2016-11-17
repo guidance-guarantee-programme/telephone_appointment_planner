@@ -1,7 +1,7 @@
 <% start_year = 120.years.ago %>
 
-<div class="form-dob" data-module="customer-age" data-output-id="js-customer-age">
-  <%= field_with_errors_wrapper(form, :date_of_birth) do %>
+<div class="form-dob clearfix" data-module="customer-age" data-output-id="js-customer-age">
+  <%= field_with_errors_wrapper(form, :date_of_birth, 'form-dob__inputs-container') do %>
     <label>
       <span class="sr-only">Date of birth</span> <%= required_label(:day) %>
       <%=
@@ -51,7 +51,7 @@
         )
       %>
     </label>
-    <span class="bg-info" id="js-customer-age"></span>
-    <span class="help-block" id="dob-hint">For example, 31 3 1950</span>
   <% end %>
+  <span class="bg-info form-dob__age" id="js-customer-age"></span>
 </div>
+<div class="help-block" id="dob-hint">For example, 31 3 1950</div>
