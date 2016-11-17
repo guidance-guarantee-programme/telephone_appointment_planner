@@ -11,6 +11,8 @@ class HolidaySerializer < ActiveModel::Serializer
     object.try(:user_id)
   end
 
+  attribute :all_day, key: :allDay
+
   attribute :url, unless: :bank_holiday? do
     edit_holiday_path(object.holiday_ids || object.id)
   end

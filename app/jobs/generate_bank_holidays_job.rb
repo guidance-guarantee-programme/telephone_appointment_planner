@@ -9,7 +9,8 @@ class GenerateBankHolidaysJob < ApplicationJob
         title: holiday[:title],
         start_at: date.beginning_of_day,
         end_at: date.end_of_day,
-        bank_holiday: true
+        bank_holiday: true,
+        all_day: true
       )
     end
   end

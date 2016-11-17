@@ -7,14 +7,14 @@ class Holiday < ApplicationRecord
   def self.merged_for_calendar_view
     select(
       <<-SQL
-        DISTINCT ON(holidays.bank_holiday, holidays.start_at, holidays.end_at, holidays.title)
-        holidays.bank_holiday, holidays.title, holidays.start_at, holidays.end_at,
+        DISTINCT ON(holidays.all_day, holidays.bank_holiday, holidays.start_at, holidays.end_at, holidays.title)
+        holidays.all_day, holidays.bank_holiday, holidays.title, holidays.start_at, holidays.end_at,
         holidays.title || COALESCE(' - ' || string_agg(users.name, ', '), '') AS title,
         string_agg(holidays.id::text, ',') as holiday_ids
       SQL
     )
       .joins('LEFT JOIN users ON users.id = holidays.user_id')
-      .group(:bank_holiday, :start_at, :end_at, :title)
+      .group(:all_day, :bank_holiday, :start_at, :end_at, :title)
       .order(:start_at)
   end
 

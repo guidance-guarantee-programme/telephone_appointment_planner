@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161116103731) do
+ActiveRecord::Schema.define(version: 20161117154114) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -97,6 +97,7 @@ ActiveRecord::Schema.define(version: 20161116103731) do
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.boolean  "bank_holiday", null: false
+    t.boolean  "all_day"
     t.index ["user_id"], name: "index_holidays_on_user_id", using: :btree
   end
 
