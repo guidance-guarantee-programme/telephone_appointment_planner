@@ -21,7 +21,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
     it 'renders the headers' do
       expect(mail.subject).to eq('Your Pension Wise Appointment')
       expect(mail.to).to eq([appointment.email])
-      expect(mail.from).to eq(['appointments@pensionwise.gov.uk'])
+      expect(mail.from).to eq(['booking@pensionwise.gov.uk'])
     end
 
     describe 'rendering the body' do
@@ -50,7 +50,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
     it 'renders the headers' do
       expect(mail.subject).to eq('Your Pension Wise Appointment')
       expect(mail.to).to eq([appointment.email])
-      expect(mail.from).to eq(['appointments@pensionwise.gov.uk'])
+      expect(mail.from).to eq(['booking@pensionwise.gov.uk'])
     end
 
     describe 'rendering the body' do
