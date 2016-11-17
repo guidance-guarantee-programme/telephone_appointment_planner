@@ -24,6 +24,10 @@ RSpec.describe AppointmentMailer, type: :mailer do
       expect(mail.from).to eq(['booking@pensionwise.gov.uk'])
     end
 
+    it 'renders the mailgun specific headers' do
+      expect(mail['X-Mailgun-Variables'].value).to include('"message_type":"booking_created"')
+    end
+
     describe 'rendering the body' do
       let(:body) { subject.body.encoded }
 
@@ -51,6 +55,10 @@ RSpec.describe AppointmentMailer, type: :mailer do
       expect(mail.subject).to eq('Your Pension Wise Appointment')
       expect(mail.to).to eq([appointment.email])
       expect(mail.from).to eq(['booking@pensionwise.gov.uk'])
+    end
+
+    it 'renders the mailgun specific headers' do
+      expect(mail['X-Mailgun-Variables'].value).to include('"message_type":"booking_updated"')
     end
 
     describe 'rendering the body' do
