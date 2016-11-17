@@ -29,13 +29,16 @@ $calendar-bookable-slot-background: $color-peppermint;
     position: relative;
 
     div {
+      bottom: 0;
       box-sizing: border-box;
       left: 50%;
+      line-height: 1em;
+      margin-left: -.5em;
       padding-left: 5px;
       position: absolute;
       text-align: left;
-      top: 50%;
-      transform: translateX(-50%) translateY(-50%) rotate(-90deg);
+      transform-origin: .5em .5em;
+      transform: rotate(-90deg);
       width: 150px;
     }
   }
