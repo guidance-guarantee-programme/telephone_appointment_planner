@@ -116,6 +116,7 @@ $calendar-bookable-slot-background: $color-peppermint;
   @include striped($calendar-appointment-moved-background);
 }
 
+.fc-day-grid,
 .fc-time-grid,
 .fc-time-area {
   .fc-event--holiday,
