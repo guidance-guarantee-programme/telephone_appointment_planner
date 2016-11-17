@@ -20,13 +20,34 @@
 
       super.start(el);
 
+      this.initialEventTimestamps = [];
+
       this.addEvents();
       this.generateJSON();
-      this.setupEvents();
+      this.bindEvents();
+    }
+
+    bindEvents() {
+      $(`#${this.$el.data('events-common')}`).find('button').on('click', this.handleEvent.bind(this));
     }
 
     eventDrop() {
+      this.clearUnloadEvent();
       this.generateJSON();
+    }
+
+    setUnloadEvent() {
+      $(window).on('beforeunload', () => {
+        return this.saveWarningMessage;
+      });
+
+      $(window).on('unload', () => {
+        alert(this.saveWarningMessage);
+      });
+    }
+
+    clearUnloadEvent() {
+      $(window).off('beforeunload unload');
     }
 
     select(start) {
@@ -36,6 +57,7 @@
       };
 
       if (!this.isOverlapping(event)) {
+        this.clearUnloadEvent();
         this.$el.fullCalendar('renderEvent', event, true);
         this.generateJSON();
       }
@@ -44,9 +66,14 @@
     }
 
     eventRender(event, element) {
+      if ($.inArray(event.start.unix(), this.initialEventTimestamps) === -1) {
+        this.setUnloadEvent();
+      }
+
       element.addClass('fc-event--bookable-slot');
       element.append('<button class="close"><span aria-hidden="true">X</span><span class="sr-only">Remove slot</span></button>');
       element.find('.close').on('click', () => {
+        this.clearUnloadEvent();
         this.$el.fullCalendar('removeEvents', event._id);
         this.generateJSON();
       });
@@ -68,23 +95,32 @@
       const events = JSON.parse($(this.$el.data('events')).val()),
       calendarView = this.$el.fullCalendar('getView'),
       calendarStartDate = calendarView.intervalStart,
-      calendarEndDate = calendarView.intervalEnd;
+      calendarEndDate = calendarView.intervalEnd,
+      eventsToAdd = [];
 
       for (let currentDate = moment(calendarStartDate); currentDate < calendarEndDate; currentDate.add(1, 'days')) {
         for (let eventIndex in events) {
           let event = events[eventIndex];
           if (event.day_of_week == currentDate.day()) {
-            event.start_hour = (`00${event.start_hour}`).substr(-2,2);
-            event.start_minute = (`00${event.start_minute}`).substr(-2,2);
-            event.end_hour = (`00${event.end_hour}`).substr(-2,2);
-            event.end_minute = (`00${event.end_minute}`).substr(-2,2);
-            this.$el.fullCalendar('addEventSource', [{
-              start: `${currentDate.format('YYYY-MM-DD')}T${event.start_hour}:${event.start_minute}`,
-              end: `${currentDate.format('YYYY-MM-DD')}T${event.end_hour}:${event.end_minute}`
-            }]);
+            event.start_hour = (`00${event.start_hour}`).substr(-2, 2);
+            event.start_minute = (`00${event.start_minute}`).substr(-2, 2);
+            event.end_hour = (`00${event.end_hour}`).substr(-2, 2);
+            event.end_minute = (`00${event.end_minute}`).substr(-2, 2);
+
+            let start = `${currentDate.format('YYYY-MM-DD')}T${event.start_hour}:${event.start_minute}`,
+            end = `${currentDate.format('YYYY-MM-DD')}T${event.end_hour}:${event.end_minute}`;
+
+            eventsToAdd.push({
+              start: start,
+              end: end
+            });
+
+            this.initialEventTimestamps.push(moment(start).unix());
           }
         }
       }
+
+      this.$el.fullCalendar('addEventSource', eventsToAdd);
     }
 
     generateJSON() {
@@ -108,10 +144,6 @@
       dataElement.val(JSON.stringify(eventsOutput, null, 2));
     }
 
-    setupEvents() {
-      $(`#${this.$el.data('events-common')}`).find('button').on('click', this.handleEvent.bind(this));
-    }
-
     handleEvent(event) {
       if (!window.confirm('Are you sure you want to replace all slots with these common slots?')) {
         return;
@@ -122,18 +154,23 @@
       const events = $(event.currentTarget).data('events'),
       calendarView = this.$el.fullCalendar('getView'),
       calendarStartDate = calendarView.intervalStart,
-      calendarEndDate = calendarView.intervalEnd;
+      calendarEndDate = calendarView.intervalEnd,
+      eventsToAdd = [];
 
       for (let currentDate = moment(calendarStartDate); currentDate < calendarEndDate; currentDate.add(1, 'days')) {
         for (let eventIndex in events) {
           event = events[eventIndex];
 
-          this.$el.fullCalendar('addEventSource', [{
+          eventsToAdd.push({
             start: `${currentDate.format('YYYY-MM-DD')}T${event.start}`,
             end: `${currentDate.format('YYYY-MM-DD')}T${event.end}`
-          }]);
+          });
         }
       }
+
+      this.clearUnloadEvent();
+
+      this.$el.fullCalendar('addEventSource', eventsToAdd);
 
       this.generateJSON();
     }

@@ -13,7 +13,6 @@
 
       this.eventChanges = [];
       this.actionPanel = $('[data-action-panel]');
-      this.saveWarningMessage = 'You have unsaved changes - Save, or undo the changes.';
       this.$savedChanges = $('.js-saved-changes');
       this.$form = $('.js-changes-form');
 

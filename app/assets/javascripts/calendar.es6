@@ -46,6 +46,8 @@ class Calendar extends TapBase {
       this.config
     );
 
+    this.saveWarningMessage = 'You have unsaved changes - Save, or undo the changes.';
+
     super.start(el);
 
     this.$el.fullCalendar(this.config);
