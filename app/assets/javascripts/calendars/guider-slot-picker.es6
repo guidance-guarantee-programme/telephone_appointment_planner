@@ -76,11 +76,22 @@
 
       element.addClass('fc-event--bookable-slot');
       element.append('<button class="close"><span aria-hidden="true">X</span><span class="sr-only">Remove slot</span></button>');
-      element.find('.close').on('click', () => {
-        this.clearUnloadEvent();
-        this.$el.fullCalendar('removeEvents', event._id);
-        this.generateJSON();
-      });
+      element.find('.close').on('click', this.handleCloseEvent.bind(this));
+    }
+
+    handleCloseEvent() {
+      this.clearUnloadEvent();
+
+      this.$el.fullCalendar('removeEvents', event._id);
+
+      if (
+        this.$el.fullCalendar('clientEvents').length === 0 &&
+        this.initialEventTimestamps.length !== 0
+      ) {
+        this.setUnloadEvent();
+      }
+
+      this.generateJSON();
     }
 
     isOverlapping(event) {
