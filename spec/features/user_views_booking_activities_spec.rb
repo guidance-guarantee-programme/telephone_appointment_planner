@@ -87,6 +87,6 @@ RSpec.feature 'User views appointment activities' do
   def then_it_appears_dynamically
     expect(@page.activity_feed).to have_activities(count: 5, wait: 10)
     activity = @page.activity_feed.activities.first
-    expect(activity.text).to eq "#{current_user.name} changed the thing less than a minute ago"
+    expect(activity.text).to include "#{current_user.name} changed the thing"
   end
 end

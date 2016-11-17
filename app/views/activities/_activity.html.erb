@@ -3,5 +3,5 @@
   <b><%= activity.user_name %></b>
   <%= content_for(:activity_message) %>
   <%= render('activities/details', appointment: activity.appointment) if details %>
-  <em class="badge"><%= time_ago_in_words(activity.created_at) %> ago</em>
+  <em class="badge"><%= activity.created_at.to_s(:govuk_date_short) %> (<%= time_ago_in_words(activity.created_at)%> ago)</em>
 </a>

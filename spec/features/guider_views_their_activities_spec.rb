@@ -51,8 +51,8 @@ RSpec.feature 'Guider views their activities' do
 
   def then_they_see_the_new_activities
     expect(@page).to have_activities(count: 5, wait: 10)
-    expect(@page.activities.first.text).to eq(
-      "#{someone.name} said Hello mate appointment \##{@appointments.first.id} less than a minute ago"
+    expect(@page.activities.first.text).to include(
+      "#{someone.name} said Hello mate appointment \##{@appointments.first.id}"
     )
   end
 end
