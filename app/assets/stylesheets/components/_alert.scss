@@ -1,9 +1,12 @@
 .alert {
   border-width: 5px;
   font-size: 130%;
-  position: fixed;
-  margin-top: 120px;
   min-width: 33%;
   top: 0;
+}
+
+.alert--fixed {
+  margin-top: 120px;
+  position: fixed;
   z-index: 1000;
 }
