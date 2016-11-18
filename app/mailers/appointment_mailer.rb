@@ -4,7 +4,7 @@ class AppointmentMailer < ApplicationMailer
   def confirmation(appointment)
     return unless appointment.email?
 
-    mailgun_headers('booking_created')
+    mailgun_headers('booking_created', appointment.id)
     @appointment = appointment
     mail to: @appointment.email
   end
@@ -12,7 +12,7 @@ class AppointmentMailer < ApplicationMailer
   def updated(appointment)
     return unless appointment.email?
 
-    mailgun_headers('booking_updated')
+    mailgun_headers('booking_updated', appointment.id)
     @appointment = appointment
     mail to: @appointment.email
   end

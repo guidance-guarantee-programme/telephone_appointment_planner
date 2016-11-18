@@ -11,6 +11,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
 
   describe 'Confirmation' do
     subject(:mail) { described_class.confirmation(appointment) }
+    let(:mailgun_headers) { JSON.parse(mail['X-Mailgun-Variables'].value) }
 
     it 'guards against the absence of a recipient' do
       appointment.email = ''
@@ -25,7 +26,10 @@ RSpec.describe AppointmentMailer, type: :mailer do
     end
 
     it 'renders the mailgun specific headers' do
-      expect(mail['X-Mailgun-Variables'].value).to include('"message_type":"booking_created"')
+      expect(mailgun_headers).to include(
+        'message_type'   => 'booking_created',
+        'appointment_id' => appointment.id
+      )
     end
 
     describe 'rendering the body' do
@@ -44,6 +48,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
 
   describe 'Updated' do
     subject(:mail) { described_class.updated(appointment) }
+    let(:mailgun_headers) { JSON.parse(mail['X-Mailgun-Variables'].value) }
 
     it 'guards against the absence of a recipient' do
       appointment.email = ''
@@ -58,7 +63,10 @@ RSpec.describe AppointmentMailer, type: :mailer do
     end
 
     it 'renders the mailgun specific headers' do
-      expect(mail['X-Mailgun-Variables'].value).to include('"message_type":"booking_updated"')
+      expect(mailgun_headers).to include(
+        'message_type'   => 'booking_updated',
+        'appointment_id' => appointment.id
+      )
     end
 
     describe 'rendering the body' do
