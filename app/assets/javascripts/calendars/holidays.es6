@@ -11,6 +11,7 @@
         eventBorderColor: '#666',
         eventTextColor: '#000',
         events: el.data('holidays-path'),
+        allDaySlot: true,
         header: {
           right: 'agendaDay agendaWeek month today jumpToDate prev,next'
         },

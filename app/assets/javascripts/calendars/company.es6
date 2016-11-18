@@ -5,6 +5,7 @@ class CompanyCalendar extends Calendar {
       columnFormat: 'ddd D/M',
       defaultView: 'agendaDay',
       resourceLabelText: 'Guiders',
+      allDaySlot: true,
       header: {
         right: 'sort filter agendaDay timelineDay today jumpToDate prev,next'
       },
