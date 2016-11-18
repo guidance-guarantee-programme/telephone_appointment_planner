@@ -22,7 +22,7 @@
 //= require customer-age
 //= require calendars/appointment-availability
 //= require calendars/guider-slot-picker
-//= require calendars/guider-appointments
+//= require calendars/my-appointments
 //= require calendars/company
 //= require calendars/allocations
 //= require calendars/holidays

@@ -2,7 +2,7 @@
 {
   'use strict';
 
-  class GuiderAppointmentsCalendar extends Calendar {
+  class MyAppointmentsCalendar extends Calendar {
     start(el) {
       this.config = {
         columnFormat: 'ddd D/M',
@@ -47,7 +47,7 @@
     }
 
     handlePushEvent(payload) {
-      const modal = $('#guider-appointment-calendar-update');
+      const modal = $('#my-appointments-calendar-update');
 
       modal.find('.modal-body').html(`
         <p><b>Appointment updated</b></p>
@@ -79,5 +79,5 @@
     }
   }
 
-  window.GOVUKAdmin.Modules.GuiderAppointmentsCalendar = GuiderAppointmentsCalendar;
+  window.GOVUKAdmin.Modules.MyAppointmentsCalendar = MyAppointmentsCalendar;
 }
