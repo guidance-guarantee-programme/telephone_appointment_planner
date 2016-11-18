@@ -5,10 +5,12 @@ RSpec.feature 'Guider views appointments' do
     given_the_user_is_both_guider_and_manager do
       and_there_are_appointments_for_multiple_guiders
       and_the_user_has_a_schedule
+      and_the_user_has_a_holiday
       travel_to @appointment.start_at do
         when_they_view_their_calendar
         then_they_see_the_appointment_for_today
         and_they_see_their_schedule_for_today
+        and_they_can_see_their_holiday_for_today
         when_they_advance_a_working_day
         then_they_see_the_appointment_for_that_day
         and_they_see_their_schedule_for_tomorrow
@@ -60,6 +62,16 @@ RSpec.feature 'Guider views appointments' do
     ]
   end
 
+  def and_the_user_has_a_holiday
+    today = BusinessDays.from_now(3).beginning_of_day
+    @holiday = create(
+      :holiday,
+      user: current_user,
+      start_at: today.change(hour: 17),
+      end_at: today.change(hour: 18)
+    )
+  end
+
   def when_they_view_their_calendar
     @page = Pages::Calendar.new.tap(&:load)
   end
@@ -81,9 +93,15 @@ RSpec.feature 'Guider views appointments' do
   end
 
   def and_they_see_their_schedule_for_today
-    event = @page.calendar.background_events.first
+    event = @page.calendar.slots.first
     expect(Time.zone.parse(event[:start])).to eq @bookable_slots.first.start_at
     expect(Time.zone.parse(event[:end])).to eq @bookable_slots.first.end_at
+  end
+
+  def and_they_can_see_their_holiday_for_today
+    event = @page.calendar.holidays.first
+    expect(Time.zone.parse(event[:start])).to eq @holiday.start_at
+    expect(Time.zone.parse(event[:end])).to eq @holiday.end_at
   end
 
   def then_they_see_the_appointments_for_today
@@ -107,7 +125,7 @@ RSpec.feature 'Guider views appointments' do
   end
 
   def and_they_see_their_schedule_for_tomorrow
-    event = @page.calendar.background_events.first
+    event = @page.calendar.slots.first
     expect(Time.zone.parse(event[:start])).to eq @bookable_slots.second.start_at
     expect(Time.zone.parse(event[:end])).to eq @bookable_slots.second.end_at
   end

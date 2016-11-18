@@ -29,12 +29,14 @@ class CompanyCalendar extends Calendar {
         {
           url: '/holidays',
           className: 'fc-bgevent--holiday',
-          rendering: 'background'
+          rendering: 'background',
+          eventType: 'holiday'
         },
         {
           url: '/bookable_slots',
           className: 'fc-bgevent--bookable-slot',
-          rendering: 'background'
+          rendering: 'background',
+          eventType: 'slot'
         }
       ],
       resources: (...args) => this.resources(...args)
