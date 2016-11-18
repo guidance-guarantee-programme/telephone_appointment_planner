@@ -14,7 +14,7 @@ class BookableSlot < ApplicationRecord
   end
 
   def self.next_valid_start_date
-    BusinessDays.from_now(3)
+    BusinessDays.from_now(2)
   end
 
   # rubocop:disable Metrics/MethodLength
