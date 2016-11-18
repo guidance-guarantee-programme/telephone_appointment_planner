@@ -5,6 +5,10 @@ Rails.application.routes.draw do
 
   root 'home#index'
 
+  namespace :mail_gun do
+    resources :drops, only: :create
+  end
+
   resources :guiders, only: :index
   resources :users do
     resources :schedules
