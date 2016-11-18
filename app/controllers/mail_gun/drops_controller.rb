@@ -13,7 +13,6 @@ module MailGun
       params.permit(
         :event,
         :description,
-        :environment,
         :appointment_id,
         :timestamp,
         :token,
