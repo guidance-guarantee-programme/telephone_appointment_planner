@@ -1,7 +1,8 @@
 class Appointment < ApplicationRecord
   include PgSearch
 
-  pg_search_scope :search, against: %i(id first_name last_name)
+  pg_search_scope :search, against: %i(id first_name last_name), associated_against: { guider: :name }
+
   belongs_to :agent, class_name: 'User'
 
   enum status: %i(

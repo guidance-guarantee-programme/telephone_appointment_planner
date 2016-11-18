@@ -12,4 +12,6 @@ class AppointmentPresenter < SimpleDelegator
   def date
     start_at.strftime(DATE_FORMAT)
   end
+
+  delegate :name, to: :guider, prefix: true
 end
