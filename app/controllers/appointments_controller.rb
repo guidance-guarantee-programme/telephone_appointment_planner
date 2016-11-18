@@ -128,7 +128,7 @@ class AppointmentsController < ApplicationController
     if current_user.agent?
       redirect_to search_appointments_path, success: 'Appointment has been modified'
     else
-      redirect_to calendar_path, success: 'Appointment has been modified'
+      redirect_to my_appointments_path, success: 'Appointment has been modified'
     end
   end
 

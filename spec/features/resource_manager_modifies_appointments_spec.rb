@@ -148,11 +148,11 @@ RSpec.feature 'Resource manager modifies appointments' do
   end
 
   def when_they_view_their_appointments
-    @page = Pages::Calendar.new.tap(&:load)
+    @page = Pages::MyAppointments.new.tap(&:load)
   end
 
   def then_they_are_notified_of_the_change
-    @page = Pages::Calendar.new
+    @page = Pages::MyAppointments.new
     @page.wait_until_notification_visible
 
     expect(@page.notification.customer.text).to include(@appointment.name)
@@ -160,7 +160,7 @@ RSpec.feature 'Resource manager modifies appointments' do
   end
 
   def then_they_are_notified_of_the_rescheduling
-    @page = Pages::Calendar.new
+    @page = Pages::MyAppointments.new
     @page.wait_until_notification_visible
 
     expect(@page.notification.customer.text).to include(@appointment.name)

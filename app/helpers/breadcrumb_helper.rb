@@ -16,7 +16,7 @@ module BreadcrumbHelper
       [request_uri, 'Search']
     elsif request_uri.start_with?(activities_path)
       [request_uri, 'My activity']
-    elsif request_uri.start_with?(calendar_path)
+    elsif request_uri.start_with?(my_appointments_path)
       [request_uri, 'My appointments']
     elsif request_uri.start_with?(company_calendar_path)
       [request_uri, 'Company']

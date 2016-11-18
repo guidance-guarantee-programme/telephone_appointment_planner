@@ -73,7 +73,7 @@ RSpec.feature 'Guider views appointments' do
   end
 
   def when_they_view_their_calendar
-    @page = Pages::Calendar.new.tap(&:load)
+    @page = Pages::MyAppointments.new.tap(&:load)
   end
 
   def when_they_view_the_company_calendar

@@ -18,7 +18,7 @@
   </li>
 
   <% if current_user.guider? %>
-    <%= active_link_to 'My appointments', calendar_path, wrap_tag: :li %>
+    <%= active_link_to 'My appointments', my_appointments_path, wrap_tag: :li %>
     <%= active_link_to 'Company', company_calendar_path, wrap_tag: :li %>
     <%= active_link_to 'My activity', activities_path, wrap_tag: :li %>
   <% end %>
