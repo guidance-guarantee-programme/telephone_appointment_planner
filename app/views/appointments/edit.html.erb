@@ -4,7 +4,7 @@
   <li class="active">Edit appointment for <%= @appointment.name %></li>
 </ol>
 
-<h1>Edit appointment for <%= @appointment.name %></h1>
+<h1>Edit appointment for <%= @appointment.name %> <span class="text-muted"><span class="sr-only">Booking reference </span>#<%= @appointment.id %></span></h1>
 
 <%=
   render(
