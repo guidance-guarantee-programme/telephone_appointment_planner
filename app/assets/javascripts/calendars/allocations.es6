@@ -5,7 +5,6 @@
   class AllocationsCalendar extends CompanyCalendar {
     start(el) {
       this.config = {
-        slotDuration: '00:10:00',
         editable: true,
         eventDurationEditable: true,
         eventDragStop: (...args) => this.eventDragStop(...args),
