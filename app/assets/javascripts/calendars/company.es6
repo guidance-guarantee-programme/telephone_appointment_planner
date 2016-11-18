@@ -20,7 +20,8 @@ class CompanyCalendar extends Calendar {
       },
       groupByDateAndResource: true,
       nowIndicator: true,
-      slotDuration: '00:30:00',
+      slotDuration: '00:10:00',
+      slotLabelInterval: { 'minutes': 60 },
       eventTextColor: '#fff',
       eventSources: [
         {
@@ -137,9 +138,8 @@ class CompanyCalendar extends Calendar {
     element.qtip({
       position: {
         target: 'mouse',
-        adjust: {
-          x: 10, y: 10
-        }
+        my: 'top right',
+        at: 'bottom left'
       },
       content: {
         text: `

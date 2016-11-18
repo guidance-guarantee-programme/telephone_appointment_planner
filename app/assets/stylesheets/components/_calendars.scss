@@ -12,6 +12,8 @@ $calendar-holiday-background: $color-alto;
 $calendar-schedule-background: $color-xanadu;
 $calendar-bookable-slot-background: $color-madang;
 
+$guider-row-height: 120px;
+
 .holiday-calendar {
   margin-top: 1em;
 
@@ -24,13 +26,14 @@ $calendar-bookable-slot-background: $color-madang;
 
 .company-calendar {
   .fc-resource-cell {
-    height: 150px;
+    height: $guider-row-height;
     white-space: nowrap;
     position: relative;
 
     div {
       bottom: 0;
       box-sizing: border-box;
+      font-size: .9em;
       left: 50%;
       line-height: 1em;
       margin-left: -.5em;
@@ -39,7 +42,7 @@ $calendar-bookable-slot-background: $color-madang;
       text-align: left;
       transform-origin: .5em .5em;
       transform: rotate(-90deg);
-      width: 150px;
+      width: $guider-row-height;
     }
   }
 
@@ -50,6 +53,34 @@ $calendar-bookable-slot-background: $color-madang;
 
   .active {
     background-color: $calendar-dragging-highlight;
+  }
+
+  .fc-slats table {
+    font-size: 8px;
+  }
+
+  .fc-time {
+    position: relative;
+
+    span {
+      background: $color-white;
+      box-sizing: border-box;
+      font-size: 1.5em;
+      height: 6em;
+      left: 0;
+      padding: 0 5px;
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+  }
+
+  .fc-axis {
+    width: 35px !important; // scss-lint:disable ImportantRule
+
+    &:empty {
+      border-style: none !important; // scss-lint:disable ImportantRule
+    }
   }
 }
 
@@ -63,6 +94,7 @@ $calendar-bookable-slot-background: $color-madang;
 
 .calendar-row-highlighter {
   display: none;
+  pointer-events: none;
   z-index: 1;
 
   &.active {
