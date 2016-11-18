@@ -27,6 +27,7 @@ class Calendar extends TapBase {
       minTime: '08:30:00',
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
       slotLabelFormat: 'H:mm',
+      slotEventOverlap: false,
       timeFormat: 'H:mm',
       weekends: false,
       select: (...args) => this.select(...args),
