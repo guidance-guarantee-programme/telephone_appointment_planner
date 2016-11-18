@@ -7,6 +7,7 @@
       this.config = {
         columnFormat: 'ddd D/M',
         defaultView: 'agendaDay',
+        minTime: '08:00:00',
         header: {
           right: 'listWeek agendaDay agendaWeek month today jumpToDate prev,next'
         },
