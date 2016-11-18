@@ -6,19 +6,18 @@
 <h1>My appointments</h1>
 
 <div
-  id="GuiderAppointmentsCalendar"
   class="t-calendar"
-  data-module="guider-appointments-calendar"
+  data-module="my-appointments-calendar"
   data-default-date="<%= Time.zone.now %>"
   data-guider-id="<%= current_user.id %>"
 ></div>
 
-<div class="modal fade t-notification" id="guider-appointment-calendar-update" tabindex="-1" role="dialog" aria-labelledby="guider-appointment-calendar-update-label">
+<div class="modal fade t-notification" id="my-appointments-calendar-update" tabindex="-1" role="dialog" aria-labelledby="my-appointments-calendar-update-label">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="guider-appointment-calendar-update-label">Appointment update</h4>
+        <h4 class="modal-title" id="my-appointments-calendar-update-label">Appointment update</h4>
       </div>
       <div class="modal-body"></div>
       <div class="modal-footer">
