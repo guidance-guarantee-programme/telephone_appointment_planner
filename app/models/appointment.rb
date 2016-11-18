@@ -6,8 +6,9 @@ class Appointment < ApplicationRecord
 
   enum status: %i(
     pending
-    completed
+    complete
     no_show
+    incomplete
     ineligible_age
     ineligible_pension_type
     cancelled_by_customer
