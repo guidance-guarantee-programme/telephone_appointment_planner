@@ -1,6 +1,6 @@
 module Pages
-  class ResourceCalendar < SitePrism::Page
-    set_url '/resource_calendar'
+  class Allocations < SitePrism::Page
+    set_url '/allocations'
 
     element :date, '.fc-left h2'
     elements :guiders, '.fc-resource-cell'

@@ -15,7 +15,7 @@ Rails.application.routes.draw do
 
   resources :groups, only: %i(index create destroy)
   resources :customers
-  resource :calendar, only: :show
+  resource :my_appointments, only: :show
   resource :company_calendar, only: :show
   resources :appointments, only: %i(new index show edit update create) do
     patch :batch_update, on: :collection
@@ -23,7 +23,7 @@ Rails.application.routes.draw do
     get '/search', on: :collection, action: :search
     get :reschedule
   end
-  resource :resource_calendar, only: :show
+  resource :allocations, only: :show
   resources :holidays, only: %i(index new create edit update) do
     delete '/', on: :collection, action: :destroy
     get 'merged', on: :collection

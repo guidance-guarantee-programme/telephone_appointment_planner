@@ -1,6 +1,6 @@
 module Pages
-  class Calendar < SitePrism::Page
-    set_url '/calendar'
+  class MyAppointments < SitePrism::Page
+    set_url '/my_appointments'
 
     element :next_working_day, '.fc-next-button'
 
