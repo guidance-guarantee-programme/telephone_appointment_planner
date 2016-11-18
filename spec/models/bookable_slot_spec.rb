@@ -16,13 +16,13 @@ RSpec.describe BookableSlot, type: :model do
 
   describe '#next_valid_start_date' do
     {
-      'Monday'    => 'Thursday',
-      'Tuesday'   => 'Friday',
-      'Wednesday' => 'Monday',
-      'Thursday'  => 'Tuesday',
-      'Friday'    => 'Wednesday',
-      'Saturday'  => 'Wednesday',
-      'Sunday'    => 'Wednesday'
+      'Monday'    => 'Wednesday',
+      'Tuesday'   => 'Thursday',
+      'Wednesday' => 'Friday',
+      'Thursday'  => 'Monday',
+      'Friday'    => 'Tuesday',
+      'Saturday'  => 'Tuesday',
+      'Sunday'    => 'Tuesday'
     }.each do |day, expected_day|
       context "Day is #{day}" do
         it "next valid start date is #{expected_day}" do
