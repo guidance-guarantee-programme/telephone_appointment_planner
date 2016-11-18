@@ -17,18 +17,12 @@
 //= require listjs
 //= require bootstrap-daterangepicker
 //= require core.js/core.js
-//= require tap-base
-//= require calendar
-//= require customer-age
-//= require calendars/appointment-availability
-//= require calendars/guider-slot-picker
-//= require calendars/my-appointments
-//= require calendars/company
-//= require calendars/allocations
-//= require calendars/holidays
-//= require activity-feed
 //= require select2
-//= require advanced-select
-//= require pusher
 //= require sortable-rails
+//= require pusher
+
+//= require tap-base
+//= require modules/calendar
+//= require modules/calendars/company
+
 //= require_tree .
