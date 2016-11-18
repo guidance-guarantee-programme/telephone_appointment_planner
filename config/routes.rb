@@ -23,7 +23,7 @@ Rails.application.routes.draw do
     get '/search', on: :collection, action: :search
     get :reschedule
   end
-  resource :resource_calendar, only: :show
+  resource :allocations, only: :show
   resources :holidays, only: %i(index new create edit update) do
     delete '/', on: :collection, action: :destroy
     get 'merged', on: :collection

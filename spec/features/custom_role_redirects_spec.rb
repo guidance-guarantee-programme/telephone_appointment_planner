@@ -4,7 +4,7 @@ RSpec.feature 'Custom Role Redirects' do
   scenario 'Views the root path as a resource manager' do
     given_the_user_is_a_resource_manager do
       when_they_visit_the_home_page
-      then_they_see_the_resource_calendar_page
+      then_they_see_the_allocations_page
     end
   end
 
@@ -27,8 +27,8 @@ def when_they_visit_the_home_page
   @page = Pages::Home.new.tap(&:load)
 end
 
-def then_they_see_the_resource_calendar_page
-  expect(current_path).to eq resource_calendar_path
+def then_they_see_the_allocations_page
+  expect(current_path).to eq allocations_path
 end
 
 def then_they_see_the_calendar_page

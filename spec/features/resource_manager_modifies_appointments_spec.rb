@@ -197,7 +197,7 @@ RSpec.feature 'Resource manager modifies appointments' do
   end
 
   def when_they_view_the_appointments
-    @page = Pages::ResourceCalendar.new.tap(&:load)
+    @page = Pages::Allocations.new.tap(&:load)
     expect(@page).to be_displayed
   end
 

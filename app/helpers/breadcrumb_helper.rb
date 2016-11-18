@@ -20,7 +20,7 @@ module BreadcrumbHelper
       [request_uri, 'My appointments']
     elsif request_uri.start_with?(company_calendar_path)
       [request_uri, 'Company']
-    elsif request_uri.start_with?(resource_calendar_path)
+    elsif request_uri.start_with?(allocations_path)
       [request_uri, 'Allocations']
     end
   end
