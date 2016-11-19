@@ -76,18 +76,15 @@
 
       element.addClass('fc-event--bookable-slot');
       element.append('<button class="close"><span aria-hidden="true">X</span><span class="sr-only">Remove slot</span></button>');
-      element.find('.close').on('click', this.handleCloseEvent.bind(this));
+      element.find('.close').on('click', this.handleCloseEvent.bind(this, event));
     }
 
-    handleCloseEvent() {
+    handleCloseEvent(event) {
       this.clearUnloadEvent();
 
       this.$el.fullCalendar('removeEvents', event._id);
 
-      if (
-        this.$el.fullCalendar('clientEvents').length === 0 &&
-        this.initialEventTimestamps.length !== 0
-      ) {
+      if (this.$el.fullCalendar('clientEvents').length < this.initialEventTimestamps.length) {
         this.setUnloadEvent();
       }
 
