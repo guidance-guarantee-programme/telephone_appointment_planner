@@ -69,13 +69,7 @@ class Appointment < ApplicationRecord
   private
 
   def after_audit
-    audit = audits.last
-    if audit.action == 'create'
-      CreateActivity.from(audit, self)
-    else
-      AuditActivity.from(audit, self)
-    end
-    AssignmentActivity.from(audit, self)
+    Activity.from(audits.last, self)
   end
 
   def not_within_two_business_days
