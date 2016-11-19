@@ -193,6 +193,15 @@ RSpec.describe Appointment, type: :model do
       results = results(nil, date_range_start, date_range_end)
       expect(results).to eq [appointment]
     end
+
+    it 'returns results for guider name' do
+      guider = create(:guider, name: 'Kate Bush')
+      appointment = @appointments.first
+      appointment.guider = guider
+      appointment.save!
+      results = results('kate bush', nil, nil)
+      expect(results).to eq [appointment]
+    end
   end
 
   describe '#name' do

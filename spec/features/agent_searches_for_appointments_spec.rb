@@ -41,8 +41,8 @@ RSpec.feature 'Agent searches for appointments' do
   end
 
   def then_they_can_see_all_appointments
-    expected = @appointments.map(&:id)
-    actual = @page.results.map(&:id).map(&:text).map(&:to_i)
+    expected = @appointments.map { |a| "##{a.id}" }
+    actual = @page.results.map(&:id).map(&:text)
     expect(actual).to eq expected
   end
 
@@ -55,7 +55,7 @@ RSpec.feature 'Agent searches for appointments' do
 
   def then_they_can_see_only_that_result
     expect(@page).to have_results(count: 1)
-    expect(@page.results.first.id.text.to_i).to eq @expected_appointment.id
+    expect(@page.results.first.id.text).to eq "##{@expected_appointment.id}"
   end
 
   def and_there_is_an_appointment_in_the_future
