@@ -27,5 +27,15 @@ module Pages
       element :further_activities, '.t-further-activities'
       element :hidden_activities, '.t-hidden-activities'
     end
+
+    section :breadcrumb, '.t-breadcrumb' do
+      elements :links, 'a'
+    end
+
+    def breadcrumb_links
+      breadcrumb.links.map do |link|
+        { link.text => link['href'] }
+      end
+    end
   end
 end
