@@ -6,6 +6,7 @@
       <div class="well js-message-form">
         <%= form_for MessageActivity.new(appointment: appointment, owner: appointment.guider), url: activities_path(appointment_id: appointment.id), remote: true do |f| %>
           <div class="input-group">
+            <label for="message_activity_message"><span class="sr-only">Activity message</span></label>
             <%= f.text_field :message, placeholder: 'Add an action to keep others in the loop', class: 'form-control js-message t-message' %>
             <span class="input-group-btn">
               <%= f.button class: 'btn btn-primary btn-block t-submit-message', data: { disable_with: 'Adding message...' } do %>
