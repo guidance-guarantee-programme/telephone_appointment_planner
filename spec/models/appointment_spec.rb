@@ -22,7 +22,8 @@ RSpec.describe Appointment, type: :model do
       :phone,
       :memorable_word,
       :guider,
-      :agent
+      :agent,
+      :date_of_birth
     ]
     required.each do |field|
       it "validate presence of #{field}" do
@@ -46,6 +47,14 @@ RSpec.describe Appointment, type: :model do
       subject.start_at = BusinessDays.from_now(40)
       subject.validate
       expect(subject.errors[:start_at]).to_not be_empty
+    end
+
+    context 'with an invalid date of birth' do
+      it 'is invalid' do
+        subject.date_of_birth = { 1 => 2016, 2 => 2, 3 => 31 }
+        subject.validate
+        expect(subject.errors[:date_of_birth]).to eq ['must be valid']
+      end
     end
   end
 
