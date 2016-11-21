@@ -1,4 +1,6 @@
 class ActivitiesController < ApplicationController
+  store_previous_page_on :index
+
   def index
     @activities = current_user.activities.includes(:user, :appointment)
   end

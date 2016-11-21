@@ -1,6 +1,7 @@
 # rubocop:disable Metrics/ClassLength
 class AppointmentsController < ApplicationController
   before_action :authenticate_user!
+  store_previous_page_on :search
 
   def batch_update
     BatchAppointmentUpdate.new(params[:changes]).call
@@ -27,7 +28,7 @@ class AppointmentsController < ApplicationController
     @appointment.assign_to_guider
     if @appointment.save
       Notifier.new(@appointment).call
-      redirect_after_successful_update
+      redirect_to search_appointments_path, success: 'Appointment has been rescheduled'
     else
       render :reschedule
     end
@@ -37,7 +38,7 @@ class AppointmentsController < ApplicationController
     @appointment = Appointment.find(params[:id])
     if @appointment.update_attributes(update_params)
       Notifier.new(@appointment).call
-      redirect_after_successful_update
+      render :edit, success: 'Appointment has been modified'
     else
       render :edit
     end
@@ -122,13 +123,5 @@ class AppointmentsController < ApplicationController
 
   def update_reschedule_params
     params.require(:appointment).permit(:start_at, :end_at)
-  end
-
-  def redirect_after_successful_update
-    if current_user.agent?
-      redirect_to search_appointments_path, success: 'Appointment has been modified'
-    else
-      redirect_to my_appointments_path, success: 'Appointment has been modified'
-    end
   end
 end

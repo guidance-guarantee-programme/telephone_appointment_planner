@@ -1,4 +1,3 @@
 class MyAppointmentsController < ApplicationController
-  def show
-  end
+  store_previous_page_on :show
 end

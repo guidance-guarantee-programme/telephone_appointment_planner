@@ -6,6 +6,13 @@ class ApplicationController < ActionController::Base
 
   add_flash_types :success
 
+  def self.store_previous_page_on(actions)
+    before_action only: actions do |controller|
+      session[:previous_controller] = controller.controller_name
+      session[:previous_action]     = controller.action_name
+    end
+  end
+
   protected
 
   def authorise_for_guiders!
