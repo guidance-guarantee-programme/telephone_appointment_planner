@@ -20,7 +20,8 @@
 
       super.start(el);
 
-      this.initialEventTimestamps = [];
+      this.initialEventDateTimes = [];
+      this.initialDateTimeFormat = 'YYYYMMDDHHmm';
       this.saveButton = $('.js-save');
 
       this.addEvents();
@@ -30,9 +31,18 @@
 
     bindEvents() {
       $(`#${this.$el.data('events-common')}`).find('button').on('click', this.handleEvent.bind(this));
+
       this.saveButton.on('click', () => {
         this.clearUnloadEvent();
       });
+    }
+
+    getCookieConfig() {
+
+    }
+
+    setCookieConfig() {
+
     }
 
     eventDrop() {
@@ -44,14 +54,10 @@
       $(window).on('beforeunload', () => {
         return this.saveWarningMessage;
       });
-
-      $(window).on('unload', () => {
-        alert(this.saveWarningMessage);
-      });
     }
 
     clearUnloadEvent() {
-      $(window).off('beforeunload unload');
+      $(window).off('beforeunload');
     }
 
     select(start) {
@@ -70,7 +76,7 @@
     }
 
     eventRender(event, element) {
-      if ($.inArray(event.start.unix(), this.initialEventTimestamps) === -1) {
+      if ($.inArray(event.start.format(this.initialDateTimeFormat), this.initialEventDateTimes) === -1) {
         this.setUnloadEvent();
       }
 
@@ -84,7 +90,7 @@
 
       this.$el.fullCalendar('removeEvents', event._id);
 
-      if (this.$el.fullCalendar('clientEvents').length < this.initialEventTimestamps.length) {
+      if (this.$el.fullCalendar('clientEvents').length < this.initialEventDateTimes.length) {
         this.setUnloadEvent();
       }
 
@@ -127,7 +133,7 @@
               end: end
             });
 
-            this.initialEventTimestamps.push(moment(start).unix());
+            this.initialEventDateTimes.push(moment(start).format(this.initialDateTimeFormat));
           }
         }
       }
