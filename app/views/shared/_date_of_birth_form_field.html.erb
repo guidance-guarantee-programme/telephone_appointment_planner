@@ -51,6 +51,9 @@
         )
       %>
     </label>
+    <% form.object.errors[:date_of_birth].each do |message| %>
+      <div class="text-danger"><%= message %></div>
+    <% end %>
   <% end %>
   <span class="bg-info form-dob__age" id="js-customer-age"></span>
 </div>

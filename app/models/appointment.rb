@@ -33,6 +33,7 @@ class Appointment < ApplicationRecord
 
   validate :not_within_two_business_days
   validate :not_more_than_thirty_business_days_in_future
+  validate :date_of_birth_valid
 
   has_many :activities, -> { order('created_at DESC') }
 
@@ -78,6 +79,16 @@ class Appointment < ApplicationRecord
     self.guider = slot.guider if slot
   end
 
+  def date_of_birth=(value)
+    if value.is_a?(Hash)
+      super(Date.new(value[1], value[2], value[3]))
+    else
+      super(value)
+    end
+  rescue ArgumentError
+    @date_of_birth_invalid = true
+  end
+
   private
 
   def after_audit
@@ -96,5 +107,9 @@ class Appointment < ApplicationRecord
 
     too_late = start_at > BusinessDays.from_now(30)
     errors.add(:start_at, 'must be less than thirty business days from now') if too_late
+  end
+
+  def date_of_birth_valid
+    errors.add(:date_of_birth, 'must be valid') if @date_of_birth_invalid
   end
 end
