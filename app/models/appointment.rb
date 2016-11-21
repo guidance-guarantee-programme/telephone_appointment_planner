@@ -36,6 +36,15 @@ class Appointment < ApplicationRecord
 
   audited on: %i(create update)
 
+  def self.copy_or_new_by(id)
+    return new unless id
+
+    find(id).dup.tap do |appointment|
+      appointment.start_at = nil
+      appointment.end_at   = nil
+    end
+  end
+
   def self.full_search(query, start_at, end_at)
     results = query.present? ? search(query) : order(created_at: :desc)
 
