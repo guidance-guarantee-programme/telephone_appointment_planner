@@ -45,30 +45,32 @@
   <% end %>
 <% end %>
 
-<%= render template: 'layouts/govuk_admin_template' %>
-
-<script>
-<% if defined?(PusherFake) %>
-    Pusher.instance = <%= raw PusherFake.javascript %>;
-<% else %>
-    Pusher.instance = new Pusher('<%= ENV['PUSHER_KEY'] %>', {
-      cluster: 'eu',
-      encrypted: true
-    });
-<% end %>
-</script>
-
-<% if Rails.env.development? || Rails.env.staging? %>
-  <script type="text/javascript">
-    var bugmuncher_options = {
-      api_key: "fe678532af029a3c85a2"
-    };
-    (function(){
-      var e = document.createElement("script");
-      e.setAttribute("type", "text/javascript");
-      var d = new Date(); var n = '?'+d.getFullYear()+(d.getMonth()+1)+d.getDate()+d.getHours();
-      e.setAttribute("src", "//cdn.bugmuncher.com/bugmuncher.js"+n);
-      document.getElementsByTagName("head")[0].appendChild(e);
-    })();
+<% content_for :body_end do %>
+  <script>
+  <% if defined?(PusherFake) %>
+      Pusher.instance = <%= raw PusherFake.javascript %>;
+  <% else %>
+      Pusher.instance = new Pusher('<%= ENV['PUSHER_KEY'] %>', {
+        cluster: 'eu',
+        encrypted: true
+      });
+  <% end %>
   </script>
+
+  <% if Rails.env.development? || Rails.env.staging? %>
+    <script type="text/javascript">
+      var bugmuncher_options = {
+        api_key: "fe678532af029a3c85a2"
+      };
+      (function(){
+        var e = document.createElement("script");
+        e.setAttribute("type", "text/javascript");
+        var d = new Date(); var n = '?'+d.getFullYear()+(d.getMonth()+1)+d.getDate()+d.getHours();
+        e.setAttribute("src", "//cdn.bugmuncher.com/bugmuncher.js"+n);
+        document.getElementsByTagName("head")[0].appendChild(e);
+      })();
+    </script>
+  <% end %>
 <% end %>
+
+<%= render template: 'layouts/govuk_admin_template' %>
