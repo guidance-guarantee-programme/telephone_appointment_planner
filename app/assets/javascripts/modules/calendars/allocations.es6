@@ -16,7 +16,8 @@
             text: 'Fullscreen',
             click: this.fullscreenClick.bind(this)
           }
-        }
+        },
+        selectable: true
       };
 
       this.eventChanges = [];
@@ -31,6 +32,28 @@
 
       this.setCalendarToCorrectHeight();
       this.setupUndo();
+    }
+
+    select(start, end, jsEvent, view, resource) {
+      let title;
+
+      if (title = prompt(`Name of holiday period for ${resource.title}?`)) {
+        console.log('Holiday title', title);
+        console.log('Holiday start', start.format());
+        console.log('Holiday end', end.format());
+        console.log('Holiday guider id', resource.id);
+        console.log('Holiday guider name', resource.title);
+
+        // @todo Jquery ajax request to POST a new holiday
+        // in the onsuccess method we will need to call
+        // this.$el.fullCalendar('refetchEvents');
+        // this.showAlert('.alert-success');
+        //
+        // or call this.showAlert('.alert-danger');
+        // on failure
+      }
+
+      this.$el.fullCalendar('unselect');
     }
 
     bindEvents() {

@@ -51,6 +51,8 @@ class Calendar extends TapBase {
 
     super.start(el);
 
+    console.log(this.config);
+
     this.$el.fullCalendar(this.config);
 
     this.insertJumpToDate();
