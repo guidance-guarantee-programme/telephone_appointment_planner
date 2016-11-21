@@ -7,6 +7,7 @@ RSpec.feature 'Agent rebooks appointments' do
       and_they_rebook_an_appointment
       then_the_details_are_copied_over
       and_the_start_and_end_date_are_not_copied_over
+      and_the_appointment_is_associated_with_the_original
     end
   end
 
@@ -38,5 +39,9 @@ RSpec.feature 'Agent rebooks appointments' do
   def and_the_start_and_end_date_are_not_copied_over
     expect(@page.start_at.value).to be_blank
     expect(@page.end_at.value).to be_blank
+  end
+
+  def and_the_appointment_is_associated_with_the_original
+    expect(@page.original_appointment.text).to eq("Rebooked from ##{@appointment.id}")
   end
 end

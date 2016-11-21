@@ -5,6 +5,7 @@
 </ol>
 
 <h1>Edit appointment for <%= @appointment.name %> <span class="text-muted"><span class="sr-only">Booking reference </span>#<%= @appointment.id %></span></h1>
+<%= rebooked_from_heading(@appointment) %>
 
 <%=
   render(
