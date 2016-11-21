@@ -23,5 +23,6 @@ module Pages
     element :end_at,                                '.t-end-at', visible: false
     element :save,                                  '.t-save'
     element :slot_unavailable_message,              '.t-slot-unavailable-message'
+    element :original_appointment,                  '.t-original-appointment'
   end
 end

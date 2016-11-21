@@ -18,6 +18,8 @@ class Appointment < ApplicationRecord
 
   belongs_to :guider, class_name: 'User'
 
+  belongs_to :rebooked_from, class_name: Appointment
+
   validates :agent, presence: true
   validates :start_at, presence: true
   validates :end_at, presence: true
@@ -42,6 +44,7 @@ class Appointment < ApplicationRecord
     find(id).dup.tap do |appointment|
       appointment.start_at = nil
       appointment.end_at   = nil
+      appointment.rebooked_from_id = id
     end
   end
 

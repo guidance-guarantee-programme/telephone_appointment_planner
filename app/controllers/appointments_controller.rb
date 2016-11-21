@@ -116,7 +116,7 @@ class AppointmentsController < ApplicationController
 
   def create_params
     params.require(:appointment).permit(
-      updateable_params.concat([:start_at, :end_at])
+      updateable_params.concat(%i(start_at end_at rebooked_from_id))
     )
   end
 
