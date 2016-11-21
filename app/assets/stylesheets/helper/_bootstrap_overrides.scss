@@ -1,0 +1,7 @@
+.breadcrumb > .active {
+  color: $color-black;
+}
+
+.breadcrumb > li + li::before {
+  color: $color-black;
+}

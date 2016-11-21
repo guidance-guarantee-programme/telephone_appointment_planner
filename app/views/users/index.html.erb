@@ -23,7 +23,7 @@
       </colgroup>
       <thead>
         <tr>
-          <th><label for="select-all"><input type="checkbox" class="select-all" data-multi-checkbox="all"> <span class="sr-only">Select All</span></label></th>
+          <th><label for="select-all"><input type="checkbox" id="select-all" class="select-all" data-multi-checkbox="all"> <span class="sr-only">Select All</span></label></th>
           <th><span class="sort" data-sort="name">Name</span></th>
           <th>Groups</th>
           <th>Actions</th>
@@ -52,9 +52,12 @@
   </div>
   <div class="action-panel t-action-panel" data-action-panel>
     With the <span class="guider__number-selected t-selected" data-action-panel-selected-count>0</span> <span data-action-panel-selected-guiders></span> selected
-    <select name="action" class="t-action" data-action-panel-actions>
-      <option value="/groups">Add/remove groups</option>
-    </select>
+    <label for="action-panel-select">
+      <span class="sr-only">Action to perform</span>
+      <select name="action" id="action-panel-select" class="t-action" data-action-panel-actions>
+        <option value="/groups">Add/remove groups</option>
+      </select>
+    </label>
     <button class="btn btn-primary t-go" data-action-panel-go>Go</button>
   </div>
 </div>

@@ -166,7 +166,7 @@ class CompanyCalendar extends Calendar {
     $(element).attr('id', event.id);
 
     if (view.type === 'agendaDay') {
-      element.find('.fc-content').remove();
+      element.find('.fc-content').addClass('sr-only');
     } else {
       $('<span class="glyphicon glyphicon-phone-alt" aria-hidden="true" style="margin-right: 5px;"></span>').prependTo(
         element.find('.fc-content')

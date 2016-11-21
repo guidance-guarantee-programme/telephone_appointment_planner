@@ -54,6 +54,12 @@ class Calendar extends TapBase {
     this.$el.fullCalendar(this.config);
 
     this.insertJumpToDate();
+    this.addAccessibilityImprovements();
+  }
+
+  addAccessibilityImprovements() {
+    $('.fc-prev-button').append('<span class="sr-only">Previous Date</span>');
+    $('.fc-next-button').append('<span class="sr-only">Next Date</span>');
   }
 
   jumpToDateClick() {
