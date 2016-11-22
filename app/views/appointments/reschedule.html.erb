@@ -1,8 +1,7 @@
-<ol class="breadcrumb">
-  <li><a href="<%= root_path %>">Home</a></li>
-  <li><a href="<%= search_appointments_path %>">Search</a></li>
-  <li class="active">Reschedule an appointment for <%= @appointment.name %></li>
-</ol>
+<%= breadcrumb(
+  { title: 'Appointment search', path: search_appointments_path },
+  { title: "Edit appointment for #{@appointment.name}" })
+%>
 
 <h1>Reschedule an appointment for <%= @appointment.name %></h1>
 

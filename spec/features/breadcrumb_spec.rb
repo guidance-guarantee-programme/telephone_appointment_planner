@@ -1,7 +1,18 @@
 require 'rails_helper'
 
 RSpec.feature 'Breadcrumb' do
-  describe 'Edit appointment after viewing Edit appointments' do
+  describe 'Edit appointment after viewing allocations' do
+    it 'shows the correct breadcrumb link' do
+      given_the_user_is_a_guider do
+        and_an_appointment_exists
+        and_they_view_the_allocations
+        and_they_edit_the_appointment
+        then_they_see_a_breadcrumb_pointing_to_allocations
+      end
+    end
+  end
+
+  describe 'Navigates directly to edit appointments page' do
     it 'shows the correct breadcrumb link' do
       given_the_user_is_a_guider do
         and_an_appointment_exists
@@ -80,15 +91,25 @@ RSpec.feature 'Breadcrumb' do
     Pages::Activities.new.tap(&:load)
   end
 
+  def and_they_view_the_allocations
+    Pages::Allocations.new.tap(&:load)
+  end
+
+  def then_they_see_a_breadcrumb_pointing_to_allocations
+    expect(@page.breadcrumb_links.second).to eq(
+      'Allocations' => allocations_path
+    )
+  end
+
   def then_they_see_a_breadcrumb_pointing_to_search
     expect(@page.breadcrumb_links.second).to eq(
-      'Search' => search_appointments_path
+      'Appointment search' => search_appointments_path
     )
   end
 
   def then_they_see_a_breadcrumb_pointing_to_the_company_calendar
     expect(@page.breadcrumb_links.second).to eq(
-      'Company' => company_calendar_path
+      'Company appointments' => company_calendar_path
     )
   end
 

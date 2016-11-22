@@ -1,10 +1,10 @@
 module BreadcrumbHelper
+  def breadcrumb(*crumbs)
+    render 'shared/breadcrumb', breadcrumb: crumbs
+  end
+
   def breadcrumb_part_for_previous_page
-    content_tag(:li) do
-      content_tag(:a, href: previous_page_path) do
-        previous_page_title
-      end
-    end
+    { path: previous_page_path, title: previous_page_title }
   end
 
   private
@@ -23,16 +23,20 @@ module BreadcrumbHelper
     search_appointments_path
   end
 
+  # rubocop:disable Metrics/MethodLength
   def previous_page_title
     case "#{previous_controller}##{previous_action}"
+    when 'allocations#show'
+      'Allocations'
     when 'activities#index'
       'My activity'
     when 'my_appointments#show'
       'My appointments'
     when 'company_calendars#show'
-      'Company'
+      'Company appointments'
     else
-      'Search'
+      'Appointment search'
     end
   end
+  # rubocop:enable Metrics/MethodLength
 end

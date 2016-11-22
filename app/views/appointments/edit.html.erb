@@ -1,8 +1,7 @@
-<ol class="breadcrumb t-breadcrumb">
-  <li><a href="<%= root_path %>">Home</a></li>
-  <%= breadcrumb_part_for_previous_page %>
-  <li class="active">Edit appointment for <%= @appointment.name %></li>
-</ol>
+<%= breadcrumb(
+  breadcrumb_part_for_previous_page,
+  { title: "Edit appointment for #{@appointment.name}" }
+) %>
 
 <h1>Edit appointment for <%= @appointment.name %> <span class="text-muted"><span class="sr-only">Booking reference </span>#<%= @appointment.id %></span></h1>
 <%= rebooked_from_heading(@appointment) %>
