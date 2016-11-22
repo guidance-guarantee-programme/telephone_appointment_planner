@@ -7,11 +7,11 @@
 
 <div class="row t-activity-feed">
   <div class="col-md-12 border-bottom">
-
-    <div class="activity-feed">
-      <ul class="list-group" data-module="activity-feed" data-config='{"event": "guider_activity_<%= current_user.id %>"}'>
+    <div class="activity-feed activity-feed--with-links">
+      <div class="list-group" data-module="activity-feed" data-config='{"event": "guider_activity_<%= current_user.id %>"}'>
         <%= render(@activities, details: true) %>
-      </ul>
+      </div>
     </div>
   </div>
 </div>
+
