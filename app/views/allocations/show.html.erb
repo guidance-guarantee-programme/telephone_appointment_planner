@@ -20,6 +20,13 @@
   data-filter-select-id="filter_guiders">
 </div>
 
+<%= form_for(Holiday.new, remote: true, html: { class: 'js-holiday-form' }) do |f| %>
+  <%= f.hidden_field :user_id, class: 'js-user-id' %>
+  <%= f.hidden_field :title, class: 'js-title' %>
+  <%= f.hidden_field :start_at, class: 'js-start-at' %>
+  <%= f.hidden_field :end_at, class: 'js-end-at' %>
+<% end %>
+
 <div class="action-panel t-action-panel" data-action-panel>
   <%= form_tag batch_update_appointments_path, method: :patch, remote: true, class: 'js-changes-form' do %>
     <button class="btn btn-primary t-save" data-action-panel-save>

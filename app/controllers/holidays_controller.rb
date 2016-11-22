@@ -22,9 +22,13 @@ class HolidaysController < ApplicationController
   end
 
   def create
+    Holiday.create!(create_params)
+  end
+
+  def batch_create
     @holiday = CreateHolidays.new(
-      create_params[:title],
-      create_params[:date_range],
+      batch_create_params[:title],
+      batch_create_params[:date_range],
       user_ids
     )
 
@@ -75,6 +79,13 @@ class HolidaysController < ApplicationController
   end
 
   def create_params
+    params
+      .require(:holiday)
+      .permit(:title, :user_id, :start_at, :end_at)
+      .merge(bank_holiday: false)
+  end
+
+  def batch_create_params
     params
       .require(:holiday)
       .permit(:title, :date_range)
