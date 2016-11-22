@@ -19,6 +19,7 @@
           pattern: '(0?[1-9]|(1|2)[0-9]|3[0-1])',
           maxlength: 2,
           required: true,
+          title: 'Must be numeric eg 01',
           'aria-describedby': 'dob-hint'
         )
       %>
@@ -35,6 +36,7 @@
           class: 'form-dob__input js-dob-month t-date-of-birth-month',
           pattern: '(0?[1-9]|1[0-2])',
           maxlength: 2,
+          title: 'Must be numeric eg 01',
           required: true
         )
       %>
@@ -51,6 +53,7 @@
           class: 'form-dob__input form-dob__input--year js-dob-year t-date-of-birth-year',
           pattern: '(19)[0-9]{2}',
           maxlength: 4,
+          title: 'Must be numeric eg 1955',
           required: true
         )
       %>
