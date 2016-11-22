@@ -20,6 +20,8 @@ class AppointmentsController < ApplicationController
 
   def reschedule
     @appointment = Appointment.find(params[:appointment_id])
+    @appointment.start_at = nil
+    @appointment.end_at = nil
   end
 
   def update_reschedule
