@@ -1,5 +1,4 @@
 <%
-  start_year = 120.years.ago
   form_element_day_id = "#{form.object_name}_date_of_birth_3i"
   form_element_month_id = "#{form.object_name}_date_of_birth_2i"
   form_element_year_id = "#{form.object_name}_date_of_birth_1i"
@@ -10,16 +9,17 @@
     <label for="<%= form_element_day_id %>">
       <span class="sr-only">Date of birth</span> <%= required_label(:day) %>
       <%=
-        form.number_field(
+        form.text_field(
           'date_of_birth(3i)',
           id: form_element_day_id,
           use_label: false,
           value: form.object.date_of_birth.try(:day),
           placeholder: 'DD',
           class: 'form-dob__input js-dob-day t-date-of-birth-day',
-          pattern: '[0-9]*',
-          min: 1,
-          max: 31,
+          pattern: '(0?[1-9]|(1|2)[0-9]|3[0-1])',
+          maxlength: 2,
+          required: true,
+          title: 'Must be numeric eg 01',
           'aria-describedby': 'dob-hint'
         )
       %>
@@ -27,32 +27,34 @@
     <label for="<%= form_element_month_id %>">
       <span class="sr-only">Date of birth</span> <%= required_label(:month) %>
       <%=
-        form.number_field(
+        form.text_field(
           'date_of_birth(2i)',
           id: form_element_month_id,
           use_label: false,
           value: form.object.date_of_birth.try(:month),
           placeholder: 'MM',
           class: 'form-dob__input js-dob-month t-date-of-birth-month',
-          pattern: '[0-9]*',
-          min: 1,
-          max: 12
+          pattern: '(0?[1-9]|1[0-2])',
+          maxlength: 2,
+          title: 'Must be numeric eg 01',
+          required: true
         )
       %>
     </label>
     <label for="<%= form_element_year_id %>">
       <span class="sr-only">Date of birth</span> <%= required_label(:year) %>
       <%=
-        form.number_field(
+        form.text_field(
           'date_of_birth(1i)',
           id: form_element_year_id,
           use_label: false,
           value: form.object.date_of_birth.try(:year),
           placeholder: 'YYYY',
           class: 'form-dob__input form-dob__input--year js-dob-year t-date-of-birth-year',
-          pattern: '[0-9]*',
-          min: start_year.year,
-          max: Date.today.year
+          pattern: '(19)[0-9]{2}',
+          maxlength: 4,
+          title: 'Must be numeric eg 1955',
+          required: true
         )
       %>
     </label>
