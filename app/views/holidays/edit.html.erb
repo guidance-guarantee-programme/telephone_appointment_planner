@@ -1,8 +1,8 @@
-<ol class="breadcrumb">
-  <li><a href="<%= root_path %>">Home</a></li>
-  <li><a href="<%= holidays_path %>">Holidays &amp; unavailability</a></li>
-  <li class="active">Edit holiday</li>
-</ol>
+<%= breadcrumb(
+  { title: 'Holidays', path: holidays_path },
+  { title: 'Edit holiday' }
+)
+%>
 
 <h1>Edit holiday</h1>
 

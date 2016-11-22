@@ -1,7 +1,4 @@
-<ol class="breadcrumb">
-  <li><a href="<%= root_path %>">Home</a></li>
-  <li class="active">Book an appointment</li>
-</ol>
+<%= breadcrumb({ title: 'Book an appointment' }) %>
 
 <h1>Book an appointment</h1>
 <%= rebooked_from_heading(@appointment) %>

@@ -1,8 +1,8 @@
-<ol class="breadcrumb">
-  <li><a href="<%= root_path %>">Home</a></li>
-  <li><a href="<%= users_path %>">Manage guiders</a></li>
-  <li class="active">Manage groups</li>
-</ol>
+<%= breadcrumb(
+  { title: 'Manage guiders', path: users_path },
+  { title: 'Manage groups' }
+)
+%>
 
 <h1>Manage groups</h1>
 
