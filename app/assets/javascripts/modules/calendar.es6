@@ -82,7 +82,7 @@ class Calendar extends TapBase {
     }
 
     this.$jumpToDateEl = $(`
-      <input type="text" class="jump-to-date" name="jump-to-date" value="${this.getCurrentDate()}">
+      <input type="text" class="jump-to-date" name="jump-to-date" id="jump-to-date" value="${this.getCurrentDate()}">
     `).daterangepicker({
       singleDatePicker: true,
       showDropdowns: true,
@@ -93,6 +93,8 @@ class Calendar extends TapBase {
       'change',
       this.jumpToDateElChange.bind(this)
     ).insertAfter($jumpToDateButton);
+
+    $('<label for="jump-to-date"><span class="sr-only">Jump to date</span></label>').insertAfter($jumpToDateButton);
   }
 
   jumpToDateElChange(el) {
