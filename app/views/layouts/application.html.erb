@@ -14,12 +14,15 @@
       <% if current_user.resource_manager? %>
         <%= active_link_to 'Allocations', allocations_path, wrap_tag: :li %>
       <% end %>
+
+      <% if current_user.guider? %>
+        <%= active_link_to 'My appointments', my_appointments_path, wrap_tag: :li %>
+        <%= active_link_to 'Company appointments', company_calendar_path, wrap_tag: :li %>
+      <% end %>
     </ul>
   </li>
 
   <% if current_user.guider? %>
-    <%= active_link_to 'My appointments', my_appointments_path, wrap_tag: :li %>
-    <%= active_link_to 'Company', company_calendar_path, wrap_tag: :li %>
     <%= active_link_to 'My activity', activities_path, wrap_tag: :li %>
   <% end %>
 
@@ -32,9 +35,6 @@
         <%= active_link_to 'Display order', sort_users_path, wrap_tag: :li %>
       </ul>
     </li>
-  <% end %>
-
-  <% if current_user.resource_manager? %>
     <li class="dropdown">
       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reports <span class="caret"></span></a>
       <ul class="dropdown-menu">
