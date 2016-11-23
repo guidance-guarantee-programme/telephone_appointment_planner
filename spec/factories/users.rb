@@ -23,5 +23,9 @@ FactoryGirl.define do
     factory :agent do
       permissions { Array(User::AGENT_PERMISSION) }
     end
+
+    factory :contact_centre_team_leader do
+      permissions { Array(User::CONTACT_CENTRE_TEAM_LEADER_PERMISSION) }
+    end
   end
 end

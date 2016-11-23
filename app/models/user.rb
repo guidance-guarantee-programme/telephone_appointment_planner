@@ -3,8 +3,9 @@ class User < ApplicationRecord
 
   ALL_PERMISSIONS = [
     RESOURCE_MANAGER_PERMISSION = 'resource_manager'.freeze,
-    GUIDER_PERMISSION = 'guider'.freeze,
-    AGENT_PERMISSION = 'agent'.freeze
+    GUIDER_PERMISSION           = 'guider'.freeze,
+    AGENT_PERMISSION            = 'agent'.freeze,
+    CONTACT_CENTRE_TEAM_LEADER_PERMISSION = 'contact_centre_team_leader'.freeze
   ].freeze
 
   default_scope { order(:position, :name) }
@@ -30,5 +31,9 @@ class User < ApplicationRecord
 
   def agent?
     has_permission?(AGENT_PERMISSION)
+  end
+
+  def contact_centre_team_leader?
+    has_permission?(CONTACT_CENTRE_TEAM_LEADER_PERMISSION)
   end
 end
