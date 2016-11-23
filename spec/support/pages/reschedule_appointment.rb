@@ -8,7 +8,7 @@ module Pages
     element(
       :permission_error_message,
       'h1',
-      text: 'Sorry, you don\'t seem to have the agent permission for this app.'
+      text: /Sorry/
     )
 
     element :slot_unavailable_message, '.t-slot-unavailable-message'

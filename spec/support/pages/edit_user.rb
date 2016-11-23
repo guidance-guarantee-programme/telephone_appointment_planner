@@ -4,7 +4,7 @@ module Pages
     element(
       :permission_error_message,
       'h1',
-      text: 'Sorry, you don\'t seem to have the resource_manager permission for this app.'
+      text: /Sorry/
     )
     element :flash_of_success, '.alert-success'
 

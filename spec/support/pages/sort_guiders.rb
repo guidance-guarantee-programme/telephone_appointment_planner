@@ -5,7 +5,7 @@ module Pages
     element(
       :permission_error_message,
       'h1',
-      text: /Sorry, you don\'t seem to have the \w+ permission for this app./
+      text: /Sorry/
     )
 
     element :save, '.t-save'
