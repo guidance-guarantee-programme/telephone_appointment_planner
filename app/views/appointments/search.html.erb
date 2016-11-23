@@ -42,13 +42,13 @@
   </thead>
   <tbody class="list">
     <% @results.each do |result| %>
-      <% result = AppointmentPresenter.new(result) %>
+      <% result = AppointmentSearchResultPresenter.new(result) %>
       <tr class="t-result">
-        <td class="t-id"><span class="id">#<%= result.id %></span></td>
+        <td class="t-id"><span class="id">#<%= result.id.html_safe %></span></td>
         <td><%= result.created_at %></td>
-        <td class="t-first-name"><%= result.first_name %></td>
-        <td><%= result.last_name %></td>
-        <td><%= result.guider_name %></td>
+        <td class="t-first-name"><%= result.first_name.html_safe %></td>
+        <td><%= result.last_name.html_safe %></td>
+        <td><%= result.guider_name.html_safe %></td>
         <td><%= result.date %></td>
         <td><%= result.status %></td>
         <td nowrap="true">
