@@ -82,6 +82,11 @@ $guider-row-height: 120px;
       border-style: none !important; // scss-lint:disable ImportantRule
     }
   }
+
+  .fc-highlight {
+    background: $calendar-holiday-background;
+    opacity: 1;
+  }
 }
 
 .company-calendar--fullscreen {

@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   end
   resource :allocations, only: :show
   resources :holidays, only: %i(index new create edit update) do
+    post 'batch_create', on: :collection
     delete '/', on: :collection, action: :destroy
     get 'merged', on: :collection
   end

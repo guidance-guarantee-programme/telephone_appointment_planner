@@ -16,7 +16,8 @@
             text: 'Fullscreen',
             click: this.fullscreenClick.bind(this)
           }
-        }
+        },
+        selectable: true
       };
 
       this.eventChanges = [];
@@ -24,6 +25,9 @@
       this.actionPanel = $('[data-action-panel]');
       this.$savedChanges = $('.js-saved-changes');
       this.$form = $('.js-changes-form');
+      this.$holidayForm = $('.js-holiday-form');
+      $(this.$holidayForm).on('ajax:success', this.afterHolidayCreateSuccess.bind(this));
+      $(this.$holidayForm).on('ajax:error', this.afterHolidayCreateError.bind(this));
 
       super.start(el);
 
@@ -31,6 +35,20 @@
 
       this.setCalendarToCorrectHeight();
       this.setupUndo();
+    }
+
+    select(start, end, jsEvent, view, resource) {
+      let title = prompt(`Name of holiday period for ${resource.title}?`);
+
+      if (title) {
+        this.$holidayForm.find('.js-user-id').val(resource.id);
+        this.$holidayForm.find('.js-title').val(title);
+        this.$holidayForm.find('.js-start-at').val(start.format());
+        this.$holidayForm.find('.js-end-at').val(end.format());
+        this.$holidayForm.submit();
+      }
+
+      this.$el.fullCalendar('unselect');
     }
 
     bindEvents() {
@@ -50,6 +68,14 @@
     }
 
     afterChangesFailed() {
+      this.showAlert('.alert-danger');
+    }
+
+    afterHolidayCreateSuccess() {
+      this.$el.fullCalendar('refetchEvents');
+      this.showAlert('.alert-success');
+    }
+    afterHolidayCreateError() {
       this.showAlert('.alert-danger');
     }
 

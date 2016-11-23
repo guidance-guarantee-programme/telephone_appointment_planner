@@ -98,6 +98,15 @@ RSpec.feature 'Resource manager modifies appointments' do
     end
   end
 
+  scenario 'Creating a holiday for one guider', js: true do
+    given_the_user_is_a_resource_manager do
+      and_there_is_a_guider
+      when_they_view_the_appointments
+      and_they_create_a_holiday_for_the_guider
+      then_there_is_a_holiday_for_that_guider
+    end
+  end
+
   scenario 'Viewing bookable slots', js: true do
     given_the_user_is_a_resource_manager do
       and_there_is_a_bookable_slot_for_a_guider
@@ -135,6 +144,10 @@ RSpec.feature 'Resource manager modifies appointments' do
       start_at: today.change(hour: 11, min: 0),
       end_at: today.change(hour: 12, min: 10)
     )
+  end
+
+  def and_there_is_a_guider
+    @guider = create(:guider)
   end
 
   def then_they_can_see_the_bookable_slot
@@ -185,6 +198,7 @@ RSpec.feature 'Resource manager modifies appointments' do
   end
 
   def then_they_see_the_holiday_for_one_guider
+    @page.calendar.wait_until_background_events_visible
     holiday = @page.find_holiday(@holiday)
     expect(holiday[:title]).to eq @holiday.title
     expect(holiday[:resourceId]).to eq @holiday.user.id
@@ -249,5 +263,35 @@ RSpec.feature 'Resource manager modifies appointments' do
 
     # force 'reset' for poltergeist after dismissal of a JS prompt
     visit 'about:blank'
+  end
+
+  def and_they_create_a_holiday_for_the_guider
+    title = 'Holiday Title'
+    stub_prompt_to_return(title)
+    x, y = page.driver.evaluate_script <<-JS
+      function() {
+        var $calendar = $('.js-calendar');
+        var $header = $calendar.find(".fc-resource-cell:contains('#{@guider.name}')");
+        var $row = $calendar.find('[data-time="09:00:00"]');
+        return [$header.offset().left + 5, $row.offset().top + 5];
+      }();
+    JS
+
+    page.driver.click(x, y)
+
+    @page.wait_until_saved_changes_message_visible
+  end
+
+  def then_there_is_a_holiday_for_that_guider
+    @page.calendar.wait_until_background_events_visible
+
+    date = Time.zone.now.strftime('%Y-%m-%d')
+    holiday = @page.calendar.holidays.first
+    expect(holiday[:resourceId]).to eq @guider.id
+    expect(holiday[:title]).to eq 'Holiday Title'
+    expect(holiday[:start]).to eq "#{date}T09:00:00.000Z"
+    expect(holiday[:end]).to eq "#{date}T09:10:00.000Z"
+
+    expect(Holiday.count).to eq 1
   end
 end

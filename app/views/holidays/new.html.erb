@@ -6,7 +6,7 @@
 
 <h1>Create a holiday</h1>
 
-<%= form_for @holiday, layout: :basic do |f| %>
+<%= form_for @holiday, url: batch_create_holidays_path, layout: :basic do |f| %>
   <%= f.text_field :title, class: 't-title' %>
   <%=
     f.text_field(

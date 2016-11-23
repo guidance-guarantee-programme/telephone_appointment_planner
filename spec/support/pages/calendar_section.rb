@@ -1,5 +1,8 @@
 module Pages
   class CalendarSection < SitePrism::Section
+    elements :background_events, '.fc-bgevent'
+    elements :events, '.fc-event'
+
     def holidays
       background_events('holiday')
     end
