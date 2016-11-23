@@ -21,18 +21,31 @@
       this.renderCustomerAge();
     }
 
+    padNumber(val) {
+      return (`00${val}`).substr(-2, 2);
+    }
+
     renderCustomerAge() {
-      const year = parseInt(this.$year.val()),
-        month = (`00${this.$month.val()}`).substr(-2, 2),
-        day = (`00${this.$day.val()}`).substr(-2, 2),
+      this.emptyAge();
+
+      let day = parseInt(this.$day.val()),
+        month = parseInt(this.$month.val()),
+        year = parseInt(this.$year.val()),
         today = moment(),
-        inputDate = moment(`${year}-${month}-${day}`),
-        age = Math.floor(today.diff(inputDate, 'year'));
+        inputDate = null,
+        age = null;
+
+      if (!day || !month || !year || year < 1900 || year >= today.format('Y')) {
+        return;
+      }
+
+      day = this.padNumber(day);
+      month = this.padNumber(month);
+      inputDate = moment(`${year}-${month}-${day}`);
+      age = Math.floor(today.diff(inputDate, 'year'));
 
       if (age) {
         this.$output.html(`Customer is <b>${age}</b> years old`);
-      } else {
-        this.emptyAge();
       }
     }
 
