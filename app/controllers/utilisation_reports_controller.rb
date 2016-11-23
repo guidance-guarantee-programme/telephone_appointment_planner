@@ -1,5 +1,10 @@
 class UtilisationReportsController < ApplicationController
-  before_action :authorise_for_resource_managers!
+  before_action do
+    authorise_user! any_of: [
+      User::RESOURCE_MANAGER_PERMISSION,
+      User::CONTACT_CENTRE_TEAM_LEADER_PERMISSION
+    ]
+  end
 
   def new
     @utilisation_report = UtilisationReport.new
