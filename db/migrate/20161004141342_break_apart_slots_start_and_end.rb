@@ -1,6 +1,6 @@
 class BreakApartSlotsStartAndEnd < ActiveRecord::Migration[5.0]
   def up
-    Slot.destroy_all
+    Slot.unscoped.destroy_all
 
     add_column :slots, :day_of_week, :integer
     add_column :slots, :start_hour, :integer
@@ -14,7 +14,7 @@ class BreakApartSlotsStartAndEnd < ActiveRecord::Migration[5.0]
   end
 
   def down
-    Slot.destroy_all
+    Slot.unscoped.destroy_all
 
     add_column :slots, :day, :string
     add_column :slots, :start_at, :string
