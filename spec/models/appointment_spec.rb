@@ -163,11 +163,9 @@ RSpec.describe Appointment, type: :model do
     before do
       from = BusinessDays.from_now(3).at_midday
 
-      @appointments = [
-        create(:appointment, first_name: 'Stefan', last_name: 'Löfven', created_at: from + 2.seconds),
-        create(:appointment, first_name: 'Angela', last_name: 'Merkel', created_at: from + 1.second),
-        create(:appointment, first_name: 'Adrian', last_name: 'Hasler', created_at: from)
-      ]
+      @stefan = create(:appointment, first_name: 'Stefan', last_name: 'Löfven', created_at: from + 2.seconds)
+      @angela = create(:appointment, first_name: 'Angela', last_name: 'Merkel', created_at: from + 1.second)
+      @adrian = create(:appointment, first_name: 'Adrian', last_name: 'Hasler', created_at: from)
     end
 
     def results(q, start_at, end_at)
@@ -175,27 +173,32 @@ RSpec.describe Appointment, type: :model do
     end
 
     it 'returns all results' do
-      expect(results(nil, nil, nil)).to eq @appointments
+      expect(results(nil, nil, nil)).to eq [@stefan, @angela, @adrian]
     end
 
     it 'returns results for appointment ID' do
-      results = results(@appointments.second.id.to_s, nil, nil)
-      expect(results).to eq [@appointments.second]
+      results = results(@angela.id, nil, nil)
+      expect(results).to eq [@angela]
     end
 
     it 'returns results for customer first_name' do
-      results = results(@appointments.third.first_name.downcase, nil, nil)
-      expect(results).to eq [@appointments.third]
+      results = results('adrian', nil, nil)
+      expect(results).to eq [@adrian]
     end
 
     it 'returns results for customer last_name' do
-      results = results(@appointments.second.last_name.downcase, nil, nil)
-      expect(results).to eq [@appointments.second]
+      results = results('merkel', nil, nil)
+      expect(results).to eq [@angela]
     end
 
-    it 'returns matches for prefixes' do
-      results = results(@appointments.first.last_name[0..3], nil, nil)
-      expect(results).to eq [@appointments.first]
+    it 'returns results for prefixes' do
+      results = results('Ange', nil, nil)
+      expect(results).to eq [@angela]
+    end
+
+    it 'returns partial matches for words' do
+      results = results('efan', nil, nil)
+      expect(results).to eq [@angela]
     end
 
     it 'returns results for a date range' do
@@ -210,11 +213,10 @@ RSpec.describe Appointment, type: :model do
 
     it 'returns results for guider name' do
       guider = create(:guider, name: 'Kate Bush')
-      appointment = @appointments.first
-      appointment.guider = guider
-      appointment.save!
+      @angela.guider = guider
+      @angela.save!
       results = results('kate bush', nil, nil)
-      expect(results).to eq [appointment]
+      expect(results).to eq [@angela]
     end
   end
 
