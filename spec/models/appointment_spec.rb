@@ -193,6 +193,11 @@ RSpec.describe Appointment, type: :model do
       expect(results).to eq [@appointments.second]
     end
 
+    it 'returns matches for prefixes' do
+      results = results(@appointments.first.last_name[0..3], nil, nil)
+      expect(results).to eq [@appointments.first]
+    end
+
     it 'returns results for a date range' do
       date_range_start = 20.days.from_now.to_date
       date_range_end = 30.days.from_now.to_date
