@@ -12,22 +12,7 @@
       <%= render 'shared/date_of_birth_form_field', form: f %>
     </div>
     <div class="col-md-12">
-      <h2>Choose available slot <%= required_label %></h2>
-      <% if @appointment.errors[:guider].any? %>
-        <p class="text-danger js-slot-unavailable-message t-slot-unavailable-message">
-          Unable to assign appointment to a slot, please chooose a slot.
-        </p>
-      <% end %>
-      <div
-          id="AppointmentAvailabilityCalendar"
-          class="appointment-availability-calendar"
-          data-module="appointment-availability-calendar"
-          data-available-slots-path="<%= available_bookable_slots_path %>"
-          data-default-date="<%= BookableSlot.next_valid_start_date %>"
-      ></div>
-      <input type="hidden" name="available-slots-json" class="slots-data" value="<%= @available_slots_json %>">
-      <%= f.hidden_field :start_at, data: { 'selected-start': true }, class: 't-start-at' %>
-      <%= f.hidden_field :end_at, data: { 'selected-end': true }, class: 't-end-at' %>
+      <%= render 'availability_calendar', form: f %>
     </div>
   </div>
   <%= render partial: 'personal_details_form', locals: { f: f } %>
