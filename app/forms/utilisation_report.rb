@@ -11,31 +11,35 @@ class UtilisationReport
   end
 
   def generate
-    bookable, blocked = bookable_and_blocked
     CSV.generate do |csv|
       csv << [:booked_appointments, :bookable_slots, :blocked_slots]
-      csv << [Appointment.where(start_at: range).count, bookable, blocked]
+      range.each do |day|
+        csv << generate_for_day(day)
+      end
     end
   end
 
   def file_name
-    integer_range = range ? "#{range.begin.to_i}-#{range.end.to_i}" : nil
-    "utilisation-report-#{integer_range}.csv"
+    "utilisation-report-#{range_title}.csv"
   end
 
   private
 
-  def bookable_and_blocked
-    bookable = slots_within_range.without_appointments.without_holidays.count
-    blocked = slots_within_range.count - bookable
-    [bookable, blocked]
+  def generate_for_day(day)
+    day_range = (day.beginning_of_day..day.end_of_day)
+    bookable, blocked = bookable_and_blocked(day_range)
+    [
+      day,
+      Appointment.where(start_at: day_range).count,
+      bookable,
+      blocked
+    ]
   end
 
-  def slots_within_range
-    if range.present?
-      BookableSlot.within_date_range(range.begin, range.end)
-    else
-      BookableSlot.all
-    end
+  def bookable_and_blocked(day_range)
+    slots = BookableSlot.within_date_range(day_range.begin, day_range.end)
+    bookable = slots.without_appointments.without_holidays.count
+    blocked = slots.count - bookable
+    [bookable, blocked]
   end
 end

@@ -45,7 +45,6 @@ class AppointmentReport
   end
 
   def file_name
-    integer_range = range ? "#{range.begin.to_i}-#{range.end.to_i}" : nil
-    "report-#{integer_range}#{where}.csv"
+    "report-#{range_title}#{where}.csv"
   end
 end
