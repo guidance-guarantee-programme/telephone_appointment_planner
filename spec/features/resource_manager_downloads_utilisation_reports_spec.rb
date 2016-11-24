@@ -73,7 +73,7 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
     expect_csv_content_disposition('utilisation-report-1479168000-1481587200.csv')
     expect(@page.csv).to eq(
       [
-        [:booked_appointments, :bookable_slots, :blocked_slots],
+        [:date, :booked_appointments, :bookable_slots, :blocked_slots],
         ['2016-11-15', '0', '0', '0'],
         ['2016-11-16', '1', '0', '0'],
         ['2016-11-17', '1', '0', '0'],

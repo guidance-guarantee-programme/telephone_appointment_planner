@@ -12,7 +12,7 @@ class UtilisationReport
 
   def generate
     CSV.generate do |csv|
-      csv << [:booked_appointments, :bookable_slots, :blocked_slots]
+      csv << [:date, :booked_appointments, :bookable_slots, :blocked_slots]
       range.each do |day|
         csv << generate_for_day(day)
       end
