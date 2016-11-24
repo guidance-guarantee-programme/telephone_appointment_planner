@@ -9,6 +9,7 @@ module Pages
 
     sections :results, '.t-result' do
       element :id, '.t-id'
+      element :first_name, '.t-first-name'
     end
   end
 end

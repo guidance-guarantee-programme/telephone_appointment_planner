@@ -30,7 +30,7 @@ class AppointmentsController < ApplicationController
     @appointment.assign_to_guider
     if @appointment.save
       Notifier.new(@appointment).call
-      redirect_to search_appointments_path, success: 'Appointment has been rescheduled'
+      redirect_to edit_appointment_path(@appointment), success: 'Appointment has been rescheduled'
     else
       render :reschedule
     end
@@ -66,10 +66,17 @@ class AppointmentsController < ApplicationController
       search_params[:q],
       search_params[:date_range]
     )
+
+    return redirect_on_exact_match(@search.results.first) if @search.results.one?
+
     @results = @search.results.page(params[:page])
   end
 
   private
+
+  def redirect_on_exact_match(result)
+    redirect_to(edit_appointment_path(result))
+  end
 
   def appointment_scope
     if scoped_to_me?
