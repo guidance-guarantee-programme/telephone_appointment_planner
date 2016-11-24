@@ -30,6 +30,12 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe '#contact_centre_team_leader?' do
+    it 'is true' do
+      expect(build_stubbed(:contact_centre_team_leader)).to be_contact_centre_team_leader
+    end
+  end
+
   describe '#resource_manager?' do
     context 'normal user' do
       it 'is false' do

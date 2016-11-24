@@ -15,7 +15,7 @@ module Pages
     element(
       :permission_error_message,
       'h1',
-      text: 'Sorry, you don\'t seem to have the resource_manager, guider, or agent permission for this app.'
+      text: /Sorry/
     )
 
     section :activity_feed, '.t-activity-feed' do

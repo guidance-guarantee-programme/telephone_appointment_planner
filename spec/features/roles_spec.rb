@@ -1,6 +1,18 @@
 require 'rails_helper'
 
 RSpec.feature 'Roles' do
+  context 'Team Leaders' do
+    scenario 'Can run reports' do
+      given_the_user_is_a_contact_centre_team_leader do
+        when_they_try_to_view_appointment_reports
+        then_they_are_allowed
+
+        when_they_try_to_view_utilisation_reports
+        then_they_are_allowed
+      end
+    end
+  end
+
   context 'Resource Managers' do
     scenario 'Can manage guiders' do
       given_the_user_is_a_resource_manager do
