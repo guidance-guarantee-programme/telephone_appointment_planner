@@ -71,16 +71,43 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
   def then_they_get_utilisation_reports_in_that_range
     @page = Pages::ReportCsv.new
     expect_csv_content_disposition('utilisation-report-1479168000-1481587200.csv')
-    expect_utilisation_csv([2, 3, 3])
+    expect(@page.csv).to eq(
+      [
+        [:booked_appointments, :bookable_slots, :blocked_slots],
+        ['2016-11-15', '0', '0', '0'],
+        ['2016-11-16', '1', '0', '0'],
+        ['2016-11-17', '1', '0', '0'],
+        ['2016-11-18', '0', '0', '0'],
+        ['2016-11-19', '0', '0', '0'],
+        ['2016-11-20', '0', '0', '0'],
+        ['2016-11-21', '0', '0', '0'],
+        ['2016-11-22', '0', '0', '0'],
+        ['2016-11-23', '0', '0', '1'],
+        ['2016-11-24', '0', '0', '0'],
+        ['2016-11-25', '0', '0', '1'],
+        ['2016-11-26', '0', '0', '0'],
+        ['2016-11-27', '0', '0', '0'],
+        ['2016-11-28', '0', '0', '0'],
+        ['2016-11-29', '0', '0', '0'],
+        ['2016-11-30', '0', '0', '0'],
+        ['2016-12-01', '0', '0', '0'],
+        ['2016-12-02', '0', '0', '0'],
+        ['2016-12-03', '0', '0', '0'],
+        ['2016-12-04', '0', '0', '0'],
+        ['2016-12-05', '0', '0', '0'],
+        ['2016-12-06', '0', '0', '0'],
+        ['2016-12-07', '0', '0', '0'],
+        ['2016-12-08', '0', '0', '0'],
+        ['2016-12-09', '0', '0', '0'],
+        ['2016-12-10', '0', '0', '0'],
+        ['2016-12-11', '0', '0', '0'],
+        ['2016-12-12', '0', '0', '0'],
+        ['2016-12-13', '0', '0', '0']
+      ]
+    )
   end
 
   def expect_csv_content_disposition(file_name)
     expect(@page.content_disposition).to eq "attachment; filename=#{file_name}"
-  end
-
-  def expect_utilisation_csv(utilisation)
-    expect(@page.csv.count).to eq 2
-    expect(@page.csv.first).to eq [:booked_appointments, :bookable_slots, :blocked_slots]
-    expect(@page.csv.second.map(&:to_i)).to eq utilisation
   end
 end
