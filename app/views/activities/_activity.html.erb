@@ -1,13 +1,17 @@
 <% if details %>
-  <a class="list-group-item t-activity" href="<%= edit_appointment_path(activity.appointment) %>">
+  <a class="activity list-group-item t-activity" href="<%= edit_appointment_path(activity.appointment) %>">
 <% else %>
-  <li class="list-group-item t-activity">
+  <li class="activity list-group-item t-activity">
 <% end %>
-    <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-    <b><%= activity.user_name %></b>
-    <%= content_for(:activity_message) %>
-    <%= render('activities/details', appointment: activity.appointment) if details %>
-    <em class="badge"><%= activity.created_at.to_s(:govuk_date_short) %> (<%= time_ago_in_words(activity.created_at)%> ago)</em>
+    <div class="activity-details">
+      <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+      <b><%= activity.user_name %></b>
+      <%= content_for(:activity_message) %>
+      <%= render('activities/details', appointment: activity.appointment) if details %>
+    </div>
+    <div class="activity-badge">
+      <em class="badge"><%= activity.created_at.to_s(:govuk_date_short) %> (<%= time_ago_in_words(activity.created_at)%> ago)</em>
+    </div>
 <% if details %>
   </a>
 <% else %>

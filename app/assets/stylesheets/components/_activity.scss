@@ -1,0 +1,13 @@
+.activity {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.activity-details {
+  flex-basis: 75%;
+}
+
+.activity-badge {
+  flex-basis: 25%;
+  text-align: right;
+}
