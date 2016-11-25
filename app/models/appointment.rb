@@ -1,13 +1,4 @@
 class Appointment < ApplicationRecord
-  include PgSearch
-
-  pg_search_scope(
-    :search,
-    against: %i(id first_name last_name),
-    associated_against: { guider: :name },
-    using: { tsearch: { prefix: true } }
-  )
-
   belongs_to :agent, class_name: 'User'
 
   enum status: %i(
@@ -52,17 +43,6 @@ class Appointment < ApplicationRecord
       appointment.end_at   = nil
       appointment.rebooked_from_id = id
     end
-  end
-
-  def self.full_search(query, start_at, end_at)
-    results = query.present? ? search(query) : order(created_at: :desc)
-
-    if start_at && end_at
-      results = results
-                .where('start_at > ?', start_at)
-                .where('end_at < ?', end_at)
-    end
-    results
   end
 
   def name
