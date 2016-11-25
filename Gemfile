@@ -18,7 +18,7 @@ source 'https://rubygems.org' do
   gem 'uglifier', '>= 1.3.0'
   gem 'govuk_admin_template'
   gem 'sprockets-es6'
-  gem 'gds-sso', github: 'guidance-guarantee-programme/gds-sso'
+  gem 'gds-sso'
   gem 'plek'
   gem 'momentjs-rails'
   gem 'active_link_to'
