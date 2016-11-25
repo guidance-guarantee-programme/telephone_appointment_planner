@@ -1,0 +1,15 @@
+$quick-search-panel-width: 233px;
+
+.quick-search__dropdown {
+  box-sizing: border-box;
+  padding: 8px;
+  width: $quick-search-panel-width;
+}
+
+.quick-search__input {
+  font-weight: normal;
+}
+
+.quick-search__label {
+  margin-bottom: 0;
+}

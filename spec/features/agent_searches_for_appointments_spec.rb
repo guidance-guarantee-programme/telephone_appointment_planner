@@ -13,7 +13,7 @@ RSpec.feature 'Agent searches for appointments' do
     given_the_user_is_an_agent do
       and_appointments_exist
       when_they_search_for_a_first_name
-      then_they_can_see_only_that_result
+      then_they_see_that_appointment
     end
   end
 
@@ -22,7 +22,15 @@ RSpec.feature 'Agent searches for appointments' do
       and_appointments_exist
       and_there_is_an_appointment_in_the_future
       when_they_search_for_a_date_range
-      then_they_can_see_only_that_result
+      then_they_see_that_appointment
+    end
+  end
+
+  scenario 'searches for a first name with multiple results' do
+    given_the_user_is_an_agent do
+      and_appointments_exist_with_the_same_first_name
+      when_they_search_for_a_first_name
+      then_they_can_see_those_filtered_appointments_only
     end
   end
 
@@ -36,6 +44,14 @@ RSpec.feature 'Agent searches for appointments' do
     ]
   end
 
+  def and_appointments_exist_with_the_same_first_name
+    @appointments = [
+      create(:appointment, first_name: 'Joe'),
+      create(:appointment, first_name: 'Joe'),
+      create(:appointment, first_name: 'Susan')
+    ]
+  end
+
   def when_they_search_for_nothing
     @page = Pages::Search.new.tap(&:load)
   end
@@ -46,6 +62,12 @@ RSpec.feature 'Agent searches for appointments' do
     expect(actual).to eq expected
   end
 
+  def then_they_can_see_those_filtered_appointments_only
+    expected = @appointments.select { |a| a.first_name == @expected_appointment.first_name }.map(&:first_name)
+    actual = @page.results.map(&:first_name).map(&:text)
+    expect(actual).to eq expected
+  end
+
   def when_they_search_for_a_first_name
     @page = Pages::Search.new.tap(&:load)
     @expected_appointment = @appointments.second
@@ -53,9 +75,8 @@ RSpec.feature 'Agent searches for appointments' do
     @page.search.click
   end
 
-  def then_they_can_see_only_that_result
-    expect(@page).to have_results(count: 1)
-    expect(@page.results.first.id.text).to eq "##{@expected_appointment.id}"
+  def then_they_see_that_appointment
+    expect(@page).to have_text(@expected_appointment.name)
   end
 
   def and_there_is_an_appointment_in_the_future

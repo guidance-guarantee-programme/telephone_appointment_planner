@@ -3,8 +3,22 @@
   { title: "Edit appointment for #{@appointment.name}" }
 ) %>
 
-<h1>Edit appointment for <%= @appointment.name %> <span class="text-muted"><span class="sr-only">Booking reference </span>#<%= @appointment.id %></span></h1>
-<%= rebooked_from_heading(@appointment) %>
+<div class="row">
+  <div class="col-md-9">
+    <h1>Edit appointment for <%= @appointment.name %> <span class="text-muted"><span class="sr-only">Booking reference </span>#<%= @appointment.id %></span></h1>
+    <%= rebooked_from_heading(@appointment) %>
+  </div>
+  <div class="col-md-3 action-buttons">
+    <%= link_to appointment_reschedule_path(@appointment), title: 'Reschedule appointment', class: 'btn btn-info' do %>
+      <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+      <span>Reschedule</span>
+    <% end %>
+    <%= link_to new_appointment_path(copy_from: @appointment), title: 'Rebook appointment', class: 'btn btn-info t-rebook' do %>
+      <span class="glyphicon glyphicon-copy" aria-hidden="true"></span>
+      <span>Rebook</span>
+    <% end %>
+  </div>
+</div>
 
 <%=
   render(
