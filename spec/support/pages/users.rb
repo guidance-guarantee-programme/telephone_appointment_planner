@@ -1,10 +1,5 @@
 module Pages
-  class Users < SitePrism::Page
+  class Users < Base
     set_url '/users'
-    element(
-      :permission_error_message,
-      'h1',
-      text: /Sorry/
-    )
   end
 end

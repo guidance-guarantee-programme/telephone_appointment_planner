@@ -1,5 +1,5 @@
 module Pages
-  class NewHoliday < SitePrism::Page
+  class NewHoliday < Base
     set_url '/holidays/new'
 
     element :title, '.t-title'

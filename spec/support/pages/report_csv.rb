@@ -1,5 +1,5 @@
 module Pages
-  class ReportCsv < SitePrism::Page
+  class ReportCsv < Base
     def csv
       results = CSV.parse(page.body)
       results[0] = results[0].map(&:to_sym)

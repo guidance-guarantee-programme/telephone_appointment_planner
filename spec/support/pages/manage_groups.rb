@@ -1,5 +1,5 @@
 module Pages
-  class ManageGroups < SitePrism::Page
+  class ManageGroups < Base
     set_url '/groups'
 
     element :affected, '.t-affected'

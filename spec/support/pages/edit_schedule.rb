@@ -1,12 +1,6 @@
 module Pages
-  class EditSchedule < SitePrism::Page
+  class EditSchedule < Base
     set_url '/users/{user_id}/schedules/{id}/edit'
-
-    element(
-      :permission_error_message,
-      'h1',
-      text: /Sorry/
-    )
 
     elements :events, '.fc-event'
 

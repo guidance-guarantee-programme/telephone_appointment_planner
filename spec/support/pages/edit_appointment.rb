@@ -1,5 +1,5 @@
 module Pages
-  class EditAppointment < SitePrism::Page
+  class EditAppointment < Base
     set_url '/appointments/{id}/edit'
 
     element :first_name,                            '.t-first-name'
@@ -12,11 +12,6 @@ module Pages
     element :opt_out_of_market_research,            '.t-opt-out-of-market-research'
     element :status, '.t-status'
     element :submit, '.t-save'
-    element(
-      :permission_error_message,
-      'h1',
-      text: /Sorry/
-    )
 
     section :activity_feed, '.t-activity-feed' do
       elements :activities, '.t-activity'

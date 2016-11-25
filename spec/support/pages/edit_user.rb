@@ -1,11 +1,7 @@
 module Pages
-  class EditUser < SitePrism::Page
+  class EditUser < Base
     set_url '/users/{id}/edit'
-    element(
-      :permission_error_message,
-      'h1',
-      text: /Sorry/
-    )
+
     element :flash_of_success, '.alert-success'
 
     sections :schedules, '.t-schedule' do

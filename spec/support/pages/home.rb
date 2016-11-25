@@ -1,5 +1,5 @@
 module Pages
-  class Home < SitePrism::Page
+  class Home < Base
     set_url '/'
   end
 end

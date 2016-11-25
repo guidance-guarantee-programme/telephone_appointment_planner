@@ -1,5 +1,5 @@
 module Pages
-  class Search < SitePrism::Page
+  class Search < Base
     set_url '/appointments/search'
 
     element :q,          '.t-q'
