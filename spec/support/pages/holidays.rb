@@ -1,11 +1,6 @@
 module Pages
-  class Holidays < SitePrism::Page
+  class Holidays < Base
     set_url '/holidays'
-    element(
-      :permission_error_message,
-      'h1',
-      text: /Sorry/
-    )
 
     element :next_week, '.fc-next-button'
     element :create_holiday, '.t-create-holiday'

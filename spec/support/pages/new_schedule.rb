@@ -1,5 +1,5 @@
 module Pages
-  class NewSchedule < SitePrism::Page
+  class NewSchedule < Base
     set_url '/users/{user_id}/schedules/new'
 
     elements :events, '.fc-event'

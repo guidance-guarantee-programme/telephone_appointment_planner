@@ -1,5 +1,5 @@
 module Pages
-  class ManageGuiders < SitePrism::Page
+  class ManageGuiders < Base
     set_url '/users'
 
     element :search, '.t-search'

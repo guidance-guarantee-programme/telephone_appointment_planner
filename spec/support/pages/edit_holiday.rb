@@ -1,5 +1,5 @@
 module Pages
-  class EditHoliday < SitePrism::Page
+  class EditHoliday < Base
     set_url '/holidays/{ids*}/edit'
     element :title, '.t-title'
     element :date_range, '.t-date-range'

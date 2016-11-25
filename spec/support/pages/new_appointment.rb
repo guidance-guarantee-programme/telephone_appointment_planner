@@ -1,12 +1,6 @@
 module Pages
-  class NewAppointment < SitePrism::Page
+  class NewAppointment < Base
     set_url '/appointments/new'
-
-    element(
-      :permission_error_message,
-      'h1',
-      text: /Sorry/
-    )
 
     element :first_name,                            '.t-first-name'
     element :last_name,                             '.t-last-name'

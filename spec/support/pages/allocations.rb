@@ -1,5 +1,5 @@
 module Pages
-  class Allocations < SitePrism::Page
+  class Allocations < Base
     set_url '/allocations'
 
     element :date, '.fc-left h2'

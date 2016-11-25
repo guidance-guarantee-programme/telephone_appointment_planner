@@ -1,5 +1,5 @@
 module Pages
-  class MyAppointments < SitePrism::Page
+  class MyAppointments < Base
     set_url '/my_appointments'
 
     element :next_working_day, '.fc-next-button'

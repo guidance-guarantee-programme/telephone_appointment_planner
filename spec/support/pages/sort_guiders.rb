@@ -1,12 +1,6 @@
 module Pages
-  class SortGuiders < SitePrism::Page
+  class SortGuiders < Base
     set_url '/users/sort'
-
-    element(
-      :permission_error_message,
-      'h1',
-      text: /Sorry/
-    )
 
     element :save, '.t-save'
 
