@@ -37,6 +37,7 @@ source 'https://rubygems.org' do
   gem 'bootstrap-kaminari-views'
   gem 'pusher'
   gem 'sortable-rails'
+  gem 'newrelic_rpm'
 
   group :development, :test do
     gem 'pry-byebug'
