@@ -5,7 +5,10 @@ class Appointment < ApplicationRecord
     :search,
     against: %i(id first_name last_name),
     associated_against: { guider: :name },
-    using: { tsearch: { prefix: true } }
+    using: {
+      tsearch: { prefix: true },
+      trigram: { threshold: 0.1 }
+    }
   )
 
   belongs_to :agent, class_name: 'User'
