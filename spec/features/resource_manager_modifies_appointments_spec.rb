@@ -100,10 +100,12 @@ RSpec.feature 'Resource manager modifies appointments' do
 
   scenario 'Creating a holiday for one guider', js: true do
     given_the_user_is_a_resource_manager do
-      and_there_is_a_guider
-      when_they_view_the_appointments
-      and_they_create_a_holiday_for_the_guider
-      then_there_is_a_holiday_for_that_guider
+      travel_to BusinessDays.from_now(1) do
+        and_there_is_a_guider
+        when_they_view_the_appointments
+        and_they_create_a_holiday_for_the_guider
+        then_there_is_a_holiday_for_that_guider
+      end
     end
   end
 
