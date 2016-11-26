@@ -2,30 +2,36 @@
 
 <h1>Appointment search</h1>
 
-<div class="row form-group">
-  <div class="col-md-12">
-    <%= form_for @search, layout: :basic, method: 'GET', url: { action: :search } do |f| %>
-      <%= f.text_field :q, label: 'Search', class: 't-q', placeholder: 'Search by first name, last name, or booking reference.' %>
-      <%=
-        f.text_field(
-          :date_range,
-          class: 't-date-range',
-          data: {
-            module: 'date-range-picker',
-            config: {
-              autoUpdateInput: false,
-              locale: {
-                cancelLabel: 'Clear',
-                format: 'DD/MM/YYYY'
-              }
+<%= form_for @search, method: 'GET', url: { action: :search }, html: { class: 'appointment-search form-inline' } do |f| %>
+  <div class="form-group">
+    <%= f.label :q, 'Search term' %>
+    <%= f.text_field :q, use_label: false, class: 't-q appointment-search__term form-control', placeholder: 'Reference, name or guider' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :date_range, 'Date range' %>
+    <%=
+      f.text_field(
+        :date_range,
+        class: 't-date-range appointment-search__date-range form-control',
+        use_label: false,
+        placeholder: 'Appointment date range',
+        data: {
+          module: 'date-range-picker',
+          config: {
+            autoUpdateInput: false,
+            locale: {
+              cancelLabel: 'Clear',
+              format: 'DD/MM/YYYY'
             }
           }
-        )
-      %>
-      <%= f.submit 'Search', class: 't-search' %>
-    <% end %>
+        }
+      )
+    %>
   </div>
-</div>
+  <div class="form-group">
+    <%= f.submit 'Search', class: 't-search btn btn-primary' %>
+  </div>
+<% end %>
 
 <table id="results" class="table table-striped table-bordered table-hover">
   <thead>
