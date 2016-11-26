@@ -66,5 +66,6 @@ source 'https://rubygems.org' do
   group :staging, :production do
     gem 'bugsnag'
     gem 'rails_12factor'
+    gem 'lograge'
   end
 end
