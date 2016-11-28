@@ -3,7 +3,9 @@ module Pages
     set_url '/appointments/{id}/edit'
 
     element :flash_of_success, '.alert-success'
-
+    element :guider,                                '.t-guider'
+    element :date_time,                             '.t-appointment-date-time'
+    element :created_date,                          '.t-created-date'
     element :first_name,                            '.t-first-name'
     element :last_name,                             '.t-last-name'
     element :email,                                 '.t-email'
