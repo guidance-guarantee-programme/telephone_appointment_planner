@@ -7,7 +7,7 @@
 </p>
 
 <%= form_for :order_users, layout: :basic do |f| %>
-  <div class="list-group sortable-guiders" data-module="sortable-guiders">
+  <div class="list-group sortable-guiders t-sortable-guiders" data-module="sortable-guiders">
     <% @guiders.each do |guider| %>
       <button type="button" class="list-group-item t-guider">
         <span class="glyphicon glyphicon-option-vertical"></span>
@@ -19,5 +19,7 @@
       </button>
     <% end %>
   </div>
-  <%= f.submit 'Save', class: 't-save' %>
+  <div class="action-panel t-action-panel js-action-panel">
+    <%= f.submit 'Save Changes', class: 't-save js-save' %>
+  </div>
 <% end %>

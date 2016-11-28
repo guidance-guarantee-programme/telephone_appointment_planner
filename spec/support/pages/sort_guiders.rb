@@ -11,6 +11,8 @@ module Pages
         $(".t-guider").each(function() {
           $(this).prependTo(this.parentNode);
         });
+
+        $.publish('sortable-guiders-update');
       JS
     end
   end

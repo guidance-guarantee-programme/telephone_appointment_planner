@@ -11,6 +11,8 @@ class TapBase {
       this.getElementConfig(),
       this.getCookieConfig()
     );
+
+    this.saveWarningMessage = 'You have unsaved changes - Save, or undo the changes.';
   }
 
   getElementConfig() {
