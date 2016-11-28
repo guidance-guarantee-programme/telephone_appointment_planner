@@ -20,10 +20,10 @@
   <% end %>
   </script>
 
-  <% if Rails.env.development? || Rails.env.staging? %>
+  <% if ENV['BUGMUNCHER_KEY'] %>
     <script type="text/javascript">
       var bugmuncher_options = {
-        api_key: "fe678532af029a3c85a2"
+        api_key: '<%= ENV['BUGMUNCHER_KEY'] %>'
       };
       (function(){
         var e = document.createElement("script");
