@@ -2,6 +2,8 @@ module Pages
   class EditAppointment < Base
     set_url '/appointments/{id}/edit'
 
+    element :flash_of_success, '.alert-success'
+
     element :first_name,                            '.t-first-name'
     element :last_name,                             '.t-last-name'
     element :email,                                 '.t-email'

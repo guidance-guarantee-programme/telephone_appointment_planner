@@ -9,6 +9,7 @@ RSpec.feature 'Guider edits an appointment' do
       when_they_modify_the_appointment
       then_the_appointment_is_changed
       and_the_customer_is_not_notified
+      and_they_see_a_success_message
     end
   end
 
@@ -44,5 +45,9 @@ RSpec.feature 'Guider edits an appointment' do
 
   def and_the_customer_is_not_notified
     expect(ActionMailer::Base.deliveries).to be_empty
+  end
+
+  def and_they_see_a_success_message
+    expect(@page).to have_flash_of_success
   end
 end

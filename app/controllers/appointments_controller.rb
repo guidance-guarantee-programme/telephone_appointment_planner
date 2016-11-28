@@ -40,7 +40,7 @@ class AppointmentsController < ApplicationController
     @appointment = Appointment.find(params[:id])
     if @appointment.update_attributes(update_params)
       Notifier.new(@appointment).call
-      render :edit, success: 'Appointment has been modified'
+      redirect_to edit_appointment_path(@appointment), success: 'Appointment has been modified'
     else
       render :edit
     end
