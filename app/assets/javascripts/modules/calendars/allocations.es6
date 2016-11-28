@@ -309,20 +309,6 @@
       });
     }
 
-    clearUnloadEvent() {
-      $(window).off('beforeunload unload');
-    }
-
-    setUnloadEvent() {
-      $(window).on('beforeunload', () => {
-        return this.saveWarningMessage;
-      });
-
-      $(window).on('unload', () => {
-        alert(this.saveWarningMessage);
-      });
-    }
-
     uniqueEventsChanged() {
       let unique = {};
 

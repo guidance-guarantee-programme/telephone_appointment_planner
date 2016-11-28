@@ -50,16 +50,6 @@
       this.generateJSON();
     }
 
-    setUnloadEvent() {
-      $(window).on('beforeunload', () => {
-        return this.saveWarningMessage;
-      });
-    }
-
-    clearUnloadEvent() {
-      $(window).off('beforeunload');
-    }
-
     select(start) {
       const event = {
         start: start,

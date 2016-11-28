@@ -30,4 +30,14 @@ class TapBase {
 
     return {};
   }
+
+  clearUnloadEvent() {
+    $(window).off('beforeunload');
+  }
+
+  setUnloadEvent() {
+    $(window).on('beforeunload', () => {
+      return this.saveWarningMessage;
+    });
+  }
 }

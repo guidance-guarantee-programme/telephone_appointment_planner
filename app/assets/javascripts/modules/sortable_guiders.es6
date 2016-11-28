@@ -45,16 +45,6 @@
         this.actionPanel.fadeOut();
       }
     }
-
-    setUnloadEvent() {
-      $(window).on('beforeunload', () => {
-        return this.saveWarningMessage;
-      });
-    }
-
-    clearUnloadEvent() {
-      $(window).off('beforeunload');
-    }
   }
 
   window.GOVUKAdmin.Modules.SortableGuiders = SortableGuiders;
