@@ -28,8 +28,11 @@ Rails.application.routes.draw do
     get :reschedule
   end
   resource :allocations, only: :show
-  resources :holidays, only: %i(index new create edit update) do
-    post 'batch_create', on: :collection
+  resources :holidays, only: %i(index new create edit) do
+    collection do
+      post 'batch_create'
+      patch 'batch_upsert'
+    end
     delete '/', on: :collection, action: :destroy
     get 'merged', on: :collection
   end

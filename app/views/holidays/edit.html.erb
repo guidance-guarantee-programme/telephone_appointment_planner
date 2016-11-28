@@ -6,42 +6,66 @@
 
 <h1>Edit holiday</h1>
 
-<%= form_for @holiday, url: holiday_path(params[:id]), layout: :basic do |f| %>
-  <%= f.text_field :title, class: 't-title' %>
-  <%=
-    f.text_field(
-      :date_range,
-      class: 't-date-range',
-      data: {
-        module: 'date-range-picker',
-        config: {
-          timePicker: true,
-          timePickerIncrement: 5,
-          locale: {
-            format: 'DD/MM/YYYY HH:mm'
+<%= form_for @holiday, url: batch_upsert_holidays_path(id: params[:id]), layout: :basic do |f| %>
+  <div data-module="holiday-types">
+    <%= f.radio_button :all_day, true, label: 'Create a multiple day holiday', class: 'js-show-all-day t-create-a-multiple-day-holiday' %>
+    <%= f.radio_button :all_day, false, label: 'Create a single day holiday', class: 'js-show-one-day t-create-a-single-day-holiday' %>
+
+    <%= f.text_field :title, class: 't-title' %>
+    <%=
+      f.text_field(
+        :date_range,
+        class: 't-all-day-date-range js-all-day',
+        data: {
+          module: 'date-range-picker',
+          config: {
+            locale: {
+              format: 'DD/MM/YYYY'
+            }
           }
         }
-      }
-    )
-  %>
-  <%=
-    f.select(
-      :users,
-      grouped_options_for_select(guider_options, @holiday.users),
-      {},
-      multiple: 'multiple',
-      class: 't-users',
-      data: { module: 'advanced-select' },
-    )
-  %>
-  <%= f.submit 'Save', class: 't-save' %>
-  <%=
-    link_to(
-      'Delete holiday',
-      holidays_path(holiday_ids: params[:id]),
-      method: :delete,
-      class: 'btn btn-danger t-delete',
-      data: { confirm: 'Are you sure you want to delete this holiday?' }
-    )
-  %>
+      )
+    %>
+
+    <%=
+      f.text_field(
+        :date_range,
+        class: 't-one-day-date-range js-one-day',
+        data: {
+          module: 'date-range-picker',
+          config: {
+            timePicker: true,
+            timePickerIncrement: 5,
+            dateLimit: {
+              hours: 12
+            },
+            locale: {
+              format: 'DD/MM/YYYY HH:mm'
+            }
+          }
+        }
+      )
+    %>
+
+    <%=
+      f.select(
+        :users,
+        grouped_options_for_select(guider_options, @holiday.users),
+        {},
+        multiple: 'multiple',
+        class: 't-users',
+        data: { module: 'advanced-select' },
+      )
+    %>
+    <%= f.submit 'Save', class: 't-save' %>
+    <%=
+      link_to(
+        'Delete holiday',
+        holidays_path(holiday_ids: params[:id]),
+        method: :delete,
+        class: 'btn btn-danger t-delete',
+        data: { confirm: 'Are you sure you want to delete this holiday?' }
+      )
+    %>
+  </div>
 <% end %>

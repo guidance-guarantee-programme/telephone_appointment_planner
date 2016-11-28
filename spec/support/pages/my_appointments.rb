@@ -15,6 +15,6 @@ module Pages
       element :guider, '.t-guider'
     end
 
-    section :calendar, Pages::CalendarSection, '.t-calendar'
+    section :calendar, Sections::Calendar, '.t-calendar'
   end
 end

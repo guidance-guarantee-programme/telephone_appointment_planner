@@ -1,12 +1,14 @@
 FactoryGirl.define do
   factory :holiday do
     title { Faker::Book.title }
-    bank_holiday false
     user { create(:guider) }
+    bank_holiday false
+    all_day false
 
     factory :bank_holiday do
-      bank_holiday true
       user nil
+      bank_holiday true
+      all_day true
     end
   end
 end

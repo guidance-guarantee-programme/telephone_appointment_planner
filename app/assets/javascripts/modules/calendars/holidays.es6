@@ -8,9 +8,16 @@
         defaultView: 'agendaWeek',
         columnFormat: 'ddd D/M',
         slotDuration: '00:30:00',
+        allDaySlot: true,
         eventBorderColor: '#666',
         eventTextColor: '#000',
-        events: el.data('holidays-path'),
+        eventSources: [
+          {
+            url: '/holidays/merged',
+            className: 'fc-event--holiday',
+            eventType: 'holiday'
+          }
+        ],
         header: {
           right: 'agendaDay agendaWeek month today jumpToDate prev,next'
         },
@@ -23,10 +30,6 @@
       };
 
       super.start(el);
-    }
-
-    eventRender(event, element) {
-      element.addClass('fc-event--holiday');
     }
   }
 

@@ -18,44 +18,51 @@ class HolidaysController < ApplicationController
   end
 
   def new
-    @holiday = CreateHolidays.new
+    @holiday = BatchUpsertHolidays.new
   end
 
   def create
     Holiday.create!(create_params)
   end
 
+  # rubocop:disable Metrics/MethodLength
   def batch_create
-    @holiday = CreateHolidays.new(
-      batch_create_params[:title],
-      batch_create_params[:date_range],
-      user_ids
+    @holiday = BatchUpsertHolidays.new(
+      title: batch_create_params[:title],
+      all_day: batch_create_params[:all_day],
+      date_range: batch_create_params[:date_range],
+      users: user_ids
     )
 
     if @holiday.call
-      redirect_to holidays_path, success: 'Holiday has been created'
+      redirect_to(holidays_path, success: 'Holiday has been created')
     else
       render :new
     end
   end
+  # rubocop:enable Metrics/MethodLength
 
   def edit
-    holidays = Holiday.where(id: holiday_ids).includes(:user)
-    @holiday = UpdateHolidays.new(
-      holiday_ids,
-      holidays.first.title,
-      build_date_range_picker_range(holidays.first.start_at, holidays.first.end_at),
-      holidays.map(&:user).map(&:id)
+    holidays = Holiday.where(id: holiday_ids)
+    @holiday = BatchUpsertHolidays.new(
+      previous_holidays: holiday_ids,
+      title: holidays.first.title,
+      all_day: holidays.first.all_day,
+      date_range: build_date_range_picker_range(holidays.first.start_at, holidays.first.end_at),
+      users: holidays.pluck(:user_id)
     )
   end
 
-  def update
-    @holiday = UpdateHolidays.new(holiday_ids, update_params[:title], update_params[:date_range], user_ids)
-    if @holiday.call
-      redirect_to holidays_path, success: 'Holiday has been updated'
-    else
-      render :edit
-    end
+  def batch_upsert
+    @holiday = BatchUpsertHolidays.new(
+      previous_holidays: holiday_ids,
+      title: batch_create_params[:title],
+      all_day: batch_create_params[:all_day],
+      date_range: batch_create_params[:date_range],
+      users: user_ids
+    )
+    return redirect_to(holidays_path, success: 'Holiday has been updated') if @holiday.call
+    render :edit
   end
 
   def destroy
@@ -72,12 +79,6 @@ class HolidaysController < ApplicationController
     params[:id].split(',')
   end
 
-  def update_params
-    params
-      .require(:holiday)
-      .permit(:title, :date_range)
-  end
-
   def create_params
     params
       .require(:holiday)
@@ -88,7 +89,7 @@ class HolidaysController < ApplicationController
   def batch_create_params
     params
       .require(:holiday)
-      .permit(:title, :date_range)
+      .permit(:title, :all_day, :date_range)
   end
 
   def user_ids
