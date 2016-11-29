@@ -13,9 +13,13 @@ class AppointmentSearch
   private
 
   def ilike(columns)
-    columns.map do |c|
-      ActiveRecord::Base.send(:sanitize_sql_array, ["#{c}::text ILIKE ?", "%#{@query}%"])
-    end.join(' OR ')
+    query_parts = @query.split(' ')
+    conditions = columns.map do |column|
+      query_parts.map do |query_part|
+        ActiveRecord::Base.send(:sanitize_sql_array, ["#{column}::text ILIKE ?", "%#{query_part}%"])
+      end
+    end
+    conditions.flatten.join(' OR ')
   end
 
   def within_date_range(results)

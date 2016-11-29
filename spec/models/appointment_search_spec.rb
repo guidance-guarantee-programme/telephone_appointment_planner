@@ -40,6 +40,11 @@ RSpec.describe AppointmentSearch, type: :model do
       expect(results).to eq [@appointments.first]
     end
 
+    it 'returns matches for multiple words' do
+      results = results("#{@appointments.first.first_name} #{@appointments.first.last_name}", nil, nil)
+      expect(results).to eq [@appointments.first]
+    end
+
     it 'returns results for a date range' do
       date_range_start = 20.days.from_now.to_date
       date_range_end = 30.days.from_now.to_date
