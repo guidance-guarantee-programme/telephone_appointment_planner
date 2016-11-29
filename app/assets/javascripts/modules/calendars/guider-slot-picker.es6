@@ -167,11 +167,11 @@
 
       for (let currentDate = moment(calendarStartDate); currentDate < calendarEndDate; currentDate.add(1, 'days')) {
         for (let eventIndex in events) {
-          event = events[eventIndex];
+          let currentEvent = events[eventIndex];
 
           eventsToAdd.push({
-            start: `${currentDate.format('YYYY-MM-DD')}T${event.start}`,
-            end: `${currentDate.format('YYYY-MM-DD')}T${event.end}`
+            start: `${currentDate.format('YYYY-MM-DD')}T${currentEvent.start}`,
+            end: `${currentDate.format('YYYY-MM-DD')}T${currentEvent.end}`
           });
         }
       }
