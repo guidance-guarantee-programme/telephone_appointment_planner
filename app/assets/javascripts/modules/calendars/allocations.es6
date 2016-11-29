@@ -17,7 +17,8 @@
             click: this.fullscreenClick.bind(this)
           }
         },
-        selectable: true
+        selectable: true,
+        selectOverlap: this.selectOverlap
       };
 
       this.eventChanges = [];
@@ -49,6 +50,10 @@
       }
 
       this.$el.fullCalendar('unselect');
+    }
+
+    selectOverlap(event) {
+      return (event.source.eventType != 'holiday');
     }
 
     bindEvents() {
