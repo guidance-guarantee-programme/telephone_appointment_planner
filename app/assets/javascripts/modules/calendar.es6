@@ -62,7 +62,7 @@ class Calendar extends TapBase {
 
   jumpToDateClick() {
     const dateRangePicker = this.$jumpToDateEl.data('daterangepicker'),
-    currentDate = this.getCurrentDate();
+      currentDate = this.getCurrentDate();
 
     this.$jumpToDateEl.val(currentDate);
 

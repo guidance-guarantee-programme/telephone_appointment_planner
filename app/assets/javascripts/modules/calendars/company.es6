@@ -94,6 +94,7 @@ class CompanyCalendar extends Calendar {
 
   refreshFilterButtonLabel() {
     let filterButtonLabel = this.filterButtonLabel;
+
     if (this.filterList.length) {
       filterButtonLabel += ` (${this.filterList.length})`;
     }

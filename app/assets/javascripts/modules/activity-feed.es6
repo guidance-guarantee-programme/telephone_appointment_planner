@@ -10,11 +10,13 @@
 
     setupPusher() {
       const channel = Pusher.instance.subscribe('telephone_appointment_planner');
+
       channel.bind(this.config.event, this.handlePushEvent.bind(this));
     }
 
     handlePushEvent(payload) {
       let $element = $(payload.body);
+
       $element
         .hide()
         .prependTo(this.$el)

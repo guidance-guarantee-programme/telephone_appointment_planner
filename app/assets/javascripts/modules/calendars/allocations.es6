@@ -105,12 +105,13 @@
       let timeout;
 
       return () => {
-        const context = this, args = arguments,
-        later = () => {
-          timeout = null;
-          if (!immediate) func.apply(context, args);
-        },
-        callNow = immediate && !timeout;
+        const context = this,
+          args = arguments,
+          later = () => {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+          },
+          callNow = immediate && !timeout;
 
         clearTimeout(timeout);
 
@@ -217,6 +218,7 @@
 
     undoOneChange(evt) {
       const event = this.eventChanges.pop();
+
       evt.preventDefault();
 
       event.revertFunc();
@@ -253,6 +255,7 @@
 
     save(evt) {
       const $hiddenInput = this.$form.find('#event-changes');
+
       evt.preventDefault();
       this.$savedChanges.hide();
       $hiddenInput.val(this.getEventChangesForForm());
@@ -261,7 +264,7 @@
 
     getEventChangesForForm() {
       let output = [],
-      outputEventIds = [];
+        outputEventIds = [];
 
       for (let eventIndex in this.eventChanges) {
         let event = this.eventChanges[eventIndex],

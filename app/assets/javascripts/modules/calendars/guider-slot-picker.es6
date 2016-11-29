@@ -101,10 +101,10 @@
 
     addEvents() {
       const events = JSON.parse($(this.$el.data('events')).val()),
-      calendarView = this.$el.fullCalendar('getView'),
-      calendarStartDate = calendarView.intervalStart,
-      calendarEndDate = calendarView.intervalEnd,
-      eventsToAdd = [];
+        calendarView = this.$el.fullCalendar('getView'),
+        calendarStartDate = calendarView.intervalStart,
+        calendarEndDate = calendarView.intervalEnd,
+        eventsToAdd = [];
 
       for (let currentDate = moment(calendarStartDate); currentDate < calendarEndDate; currentDate.add(1, 'days')) {
         for (let eventIndex in events) {
@@ -133,7 +133,7 @@
 
     generateJSON() {
       const dataElement = $(this.$el.data('events')),
-      events = this.$el.fullCalendar('clientEvents');
+        events = this.$el.fullCalendar('clientEvents');
 
       let eventsOutput = [];
 
@@ -160,10 +160,10 @@
       this.$el.fullCalendar('removeEvents');
 
       const events = $(event.currentTarget).data('events'),
-      calendarView = this.$el.fullCalendar('getView'),
-      calendarStartDate = calendarView.intervalStart,
-      calendarEndDate = calendarView.intervalEnd,
-      eventsToAdd = [];
+        calendarView = this.$el.fullCalendar('getView'),
+        calendarStartDate = calendarView.intervalStart,
+        calendarEndDate = calendarView.intervalEnd,
+        eventsToAdd = [];
 
       for (let currentDate = moment(calendarStartDate); currentDate < calendarEndDate; currentDate.add(1, 'days')) {
         for (let eventIndex in events) {
