@@ -12,6 +12,10 @@
       const channel = Pusher.instance.subscribe('telephone_appointment_planner');
 
       channel.bind(this.config.event, this.handlePushEvent.bind(this));
+
+      $(window).on('beforeunload', () => {
+        channel.unbind(this.config.event, this.handlePushEvent.bind(this));
+      });
     }
 
     handlePushEvent(payload) {
