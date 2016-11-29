@@ -6,8 +6,8 @@
     start(el) {
       super.start(el);
 
-      this.actionPanel = $('.js-action-panel');
-      this.saveButton = $('.js-save');
+      this.$actionPanel = $('.js-action-panel');
+      this.$saveButton = $('.js-save');
 
       this.init();
       this.bindEvents();
@@ -22,7 +22,7 @@
     }
 
     bindEvents() {
-      this.saveButton.on('click', () => {
+      this.$saveButton.on('click', () => {
         this.clearUnloadEvent();
       });
 
@@ -40,9 +40,9 @@
 
       if (this.pageOrder !== currentOrder) {
         this.setUnloadEvent();
-        this.actionPanel.fadeIn();
+        this.$actionPanel.fadeIn();
       } else {
-        this.actionPanel.fadeOut();
+        this.$actionPanel.fadeOut();
       }
     }
   }
