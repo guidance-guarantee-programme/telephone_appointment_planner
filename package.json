@@ -10,6 +10,6 @@
   },
   "scripts": {
     "js": "npm run eslint",
-    "eslint": "eslint app/assets/javascripts/*.es6 app/assets/javascripts/**/*.es6"
+    "eslint": "eslint --ext .es6 app/assets/javascripts"
   }
 }
