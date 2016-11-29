@@ -12,17 +12,6 @@ class AppointmentSearch
 
   private
 
-  def ts_headline(table, column)
-    sql = <<-SQL
-      ts_headline(#{table}.#{column}::text,
-        plainto_tsquery('english', ?),
-        'StartSel=<mark>, StopSel=</mark>, ShortWord=3, HighlightAll=TRUE'
-      )
-      AS highlighted_#{column}
-    SQL
-    ActiveRecord::Base.send(:sanitize_sql_array, [sql, @query])
-  end
-
   def ilike(columns)
     columns.map do |c|
       ActiveRecord::Base.send(:sanitize_sql_array, ["#{c}::text ILIKE ?", "%#{@query}%"])
@@ -45,10 +34,6 @@ class AppointmentSearch
 
   def search_with_query
     Appointment.select('appointments.*')
-               .select(ts_headline(:appointments, :id))
-               .select(ts_headline(:appointments, :first_name))
-               .select(ts_headline(:appointments, :last_name))
-               .select(ts_headline(:users, :name))
                .where(ilike(%w(appointments.id appointments.first_name appointments.last_name users.name)))
                .joins(:guider)
   end
