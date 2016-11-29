@@ -22,7 +22,7 @@
 
       this.initialEventDateTimes = [];
       this.initialDateTimeFormat = 'YYYYMMDDHHmm';
-      this.saveButton = $('.js-save');
+      this.$saveButton = $('.js-save');
 
       this.addEvents();
       this.generateJSON();
@@ -32,7 +32,7 @@
     bindEvents() {
       $(`#${this.$el.data('events-common')}`).find('button').on('click', this.handleEvent.bind(this));
 
-      this.saveButton.on('click', () => {
+      this.$saveButton.on('click', () => {
         this.clearUnloadEvent();
       });
     }

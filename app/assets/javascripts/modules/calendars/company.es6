@@ -52,9 +52,9 @@ class CompanyCalendar extends Calendar {
     super.start(el);
 
     this.filterList = [];
-    this.filterButton = $('.fc-filter-button');
-    this.filterButtonLabel = this.filterButton.text();
-    this.filterPanel = $('.resource-calendar-filter');
+    this.$filterButton = $('.fc-filter-button');
+    this.filterButtonLabel = this.$filterButton.text();
+    this.$filterPanel = $('.resource-calendar-filter');
 
     this.bindEvents();
   }
@@ -99,31 +99,31 @@ class CompanyCalendar extends Calendar {
       filterButtonLabel += ` (${this.filterList.length})`;
     }
 
-    this.filterButton.text(filterButtonLabel);
+    this.$filterButton.text(filterButtonLabel);
   }
 
   hideFilterPanel(event) {
     if (
-      !this.filterButton.is(event.target) &&
-      !this.filterPanel.is(event.target) &&
-      this.filterPanel.has(event.target).length === 0 &&
+      !this.$filterButton.is(event.target) &&
+      !this.$filterPanel.is(event.target) &&
+      this.$filterPanel.has(event.target).length === 0 &&
       !$(event.target).hasClass('select2-selection__choice__remove')
     ) {
-      this.filterPanel.addClass('hide');
-      this.filterButton.removeClass('fc-state-active');
+      this.$filterPanel.addClass('hide');
+      this.$filterButton.removeClass('fc-state-active');
     }
   }
 
   showFilterPanel() {
-    this.filterPanel.toggleClass('hide');
-    this.filterButton.toggleClass('fc-state-active');
+    this.$filterPanel.toggleClass('hide');
+    this.$filterButton.toggleClass('fc-state-active');
     $('.select2-search__field').focus();
   }
 
   filterClick() {
-    this.filterPanel.css({
-      top: this.filterButton.offset().top + this.filterButton.height(),
-      left: this.filterButton.offset().left - (this.filterPanel.width() / 4)
+    this.$filterPanel.css({
+      top: this.$filterButton.offset().top + this.$filterButton.height(),
+      left: this.$filterButton.offset().left - (this.$filterPanel.width() / 4)
     });
 
     this.showFilterPanel();

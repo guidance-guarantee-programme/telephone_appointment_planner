@@ -49,9 +49,9 @@
     }
 
     handlePushEvent(payload) {
-      const modal = $('#my-appointments-calendar-update');
+      const $modal = $('#my-appointments-calendar-update');
 
-      modal.find('.modal-body').html(`
+      $modal.find('.modal-body').html(`
         <p><b>Appointment updated</b></p>
         <p class="t-customer">Customer: ${payload['customer_name']}</p>
         <p class="t-start">Date/Time: ${payload['start']}</p>
@@ -60,7 +60,7 @@
 
       this.$el.fullCalendar('removeEvents');
       this.$el.fullCalendar('refetchEvents');
-      modal.modal('show');
+      $modal.modal('show');
     }
 
     eventRender(event, element, view) {

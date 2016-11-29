@@ -18,10 +18,10 @@
 
     handleSelect() {
       let itemsToSelect = [];
-      const selectedOptions = this.$el.find(':selected[data-children-to-select]');
+      const $selectedOptions = this.$el.find(':selected[data-children-to-select]');
 
-      for (let i = 0; i < selectedOptions.length; i++) {
-        const $option = $(selectedOptions[i]);
+      for (let i = 0; i < $selectedOptions.length; i++) {
+        const $option = $($selectedOptions[i]);
 
         $option.prop('selected', false);
         itemsToSelect = itemsToSelect.concat($option.data('childrenToSelect'));

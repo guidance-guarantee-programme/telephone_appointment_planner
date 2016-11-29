@@ -22,7 +22,7 @@
 
       this.eventChanges = [];
       this.isFullscreen = false;
-      this.actionPanel = $('[data-action-panel]');
+      this.$actionPanel = $('[data-action-panel]');
       this.$savedChanges = $('.js-saved-changes');
       this.$form = $('.js-changes-form');
       this.$holidayForm = $('.js-holiday-form');
@@ -130,8 +130,8 @@
         height -= 20;
       }
 
-      if (this.actionPanel.is(':visible')) {
-        height -= this.actionPanel.height();
+      if (this.$actionPanel.is(':visible')) {
+        height -= this.$actionPanel.height();
       }
 
       return height;
@@ -198,9 +198,9 @@
     }
 
     setupUndo() {
-      this.actionPanel.find('[data-action-panel-undo-all]').on('click', this.undoAllChanges.bind(this));
-      this.actionPanel.find('[data-action-panel-undo-one]').on('click', this.undoOneChange.bind(this));
-      this.actionPanel.find('[data-action-panel-save]').on('click', this.save.bind(this));
+      this.$actionPanel.find('[data-action-panel-undo-all]').on('click', this.undoAllChanges.bind(this));
+      this.$actionPanel.find('[data-action-panel-undo-one]').on('click', this.undoOneChange.bind(this));
+      this.$actionPanel.find('[data-action-panel-save]').on('click', this.save.bind(this));
     }
 
     handleEventChange(event, revertFunc) {
@@ -298,7 +298,7 @@
       let fadeAction = 'fadeIn';
 
       if (eventsChanged > 0) {
-        this.actionPanel.find('[data-action-panel-event-count]').html(
+        this.$actionPanel.find('[data-action-panel-event-count]').html(
           `${eventsChanged} event${eventsChanged == 1 ? '':'s'}`
         );
         this.setUnloadEvent();
@@ -307,7 +307,7 @@
         this.clearUnloadEvent();
       }
 
-      this.actionPanel[fadeAction]({
+      this.$actionPanel[fadeAction]({
         complete: this.alterHeight.bind(this)
       });
     }
