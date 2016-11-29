@@ -19,12 +19,13 @@
           }
         ],
         header: {
-          right: 'agendaDay agendaWeek month today jumpToDate prev,next'
+          right: 'agendaDay agendaWeek listCustom month today jumpToDate prev,next'
         },
         views: {
-          agendaThreeDay: {
-            type: 'agenda',
-            duration: { days: 3 }
+          listCustom: {
+            type: 'list',
+            duration: { years: 1 },
+            buttonText: 'List'
           }
         }
       };
