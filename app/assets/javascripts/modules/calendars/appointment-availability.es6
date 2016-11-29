@@ -37,6 +37,12 @@
       this.displayErrorBorder();
     }
 
+    init() {
+      this.$selectedStart = $('[data-selected-start]');
+      this.$selectedEnd = $('[data-selected-end]');
+      this.selectedEventColour = 'green';
+    }
+
     eventClick(event) {
       const events = this.$el.fullCalendar('clientEvents');
 
@@ -88,12 +94,6 @@
       });
 
       return colours.pop().colour;
-    }
-
-    init() {
-      this.$selectedStart = $('[data-selected-start]');
-      this.$selectedEnd = $('[data-selected-end]');
-      this.selectedEventColour = 'green';
     }
 
     selectEvent() {
