@@ -17,10 +17,18 @@
     handlePushEvent(payload) {
       let $element = $(payload.body);
 
-      $element
-        .hide()
-        .prependTo(this.$el)
-        .fadeIn();
+      if (this.isUnique($element)) {
+        $element
+          .hide()
+          .prependTo(this.$el)
+          .fadeIn();
+      }
+    }
+
+    isUnique($element) {
+      const activityID = $element.attr('data-activity-id');
+
+      return !$(`.activity[data-activity-id='${activityID}']`).length;
     }
   }
 
