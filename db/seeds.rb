@@ -46,6 +46,7 @@ if Rails.env.development?
   print "Adding #{APPOINTMENT_COUNT} appointments"
   slots = BookableSlot
           .within_date_range(BusinessDays.from_now(3), BusinessDays.from_now(20))
+          .without_holidays
           .sample(APPOINTMENT_COUNT)
           .cycle(1)
   slots.each do |slot|
