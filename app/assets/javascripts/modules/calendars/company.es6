@@ -18,6 +18,7 @@ class CompanyCalendar extends Calendar {
         agendaDay: 'Horizontal',
         timelineDay: 'Vertical'
       },
+      eventDataTransform: this.eventDataTransform,
       groupByDateAndResource: true,
       nowIndicator: true,
       slotDuration: '00:10:00',
@@ -175,6 +176,11 @@ class CompanyCalendar extends Calendar {
     }
 
     this.styleEvents(event, element);
+  }
+
+  eventDataTransform(json) {
+    json.allDay = false;
+    return json;
   }
 
   styleEvents(event, element) {

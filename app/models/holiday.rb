@@ -4,7 +4,6 @@ class Holiday < ApplicationRecord
   validates :user, presence: true, unless: :bank_holiday?
   validates :all_day, inclusion: [true, false]
 
-  # rubocop:disable Metrics/MethodLength
   def self.merged_for_calendar_view
     select(
       <<-SQL

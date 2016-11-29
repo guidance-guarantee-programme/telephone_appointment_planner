@@ -17,6 +17,7 @@
         nowIndicator: true,
         slotDuration: '00:30:00',
         eventTextColor: '#fff',
+        eventDataTransform: this.eventDataTransform,
         eventSources: [
           {
             url: '/appointments?mine'
@@ -78,6 +79,11 @@
       if (event.status.indexOf('cancelled') > -1) {
         element.addClass('fc-event--cancelled');
       }
+    }
+
+    eventDataTransform(json) {
+      json.allDay = false;
+      return json;
     }
   }
 
