@@ -9,6 +9,13 @@
         <%= render(@activities, details: true) %>
       </div>
     </div>
+    <% if @activities.empty? %>
+      <div class="panel panel-default">
+        <div class="panel-body t-no-activity">
+          You have no activity
+        </div>
+      </div>
+    <% end %>
   </div>
 </div>
 
