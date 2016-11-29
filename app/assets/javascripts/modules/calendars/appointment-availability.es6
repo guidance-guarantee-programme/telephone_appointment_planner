@@ -41,7 +41,7 @@
       const events = this.$el.fullCalendar('clientEvents');
 
       let start = '',
-            end = '';
+        end = '';
 
       for (let eventIndex in events) {
         let currentEvent = events[eventIndex];
@@ -98,8 +98,8 @@
 
     selectEvent() {
       const events = this.$el.fullCalendar('clientEvents'),
-      start = this.$selectedStart.val(),
-      end = this.$selectedEnd.val();
+        start = this.$selectedStart.val(),
+        end = this.$selectedEnd.val();
 
       if ((!start && end)) {
         return;

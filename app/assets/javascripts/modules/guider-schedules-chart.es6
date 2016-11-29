@@ -56,7 +56,7 @@
 
     displayBookableWindow() {
       const blockConfig = this.getBookableWindowBlockConfig(),
-      height = (this.config.scheduleHeight * this.schedules.length) - this.config.scheduleMarginTop;
+        height = (this.config.scheduleHeight * this.schedules.length) - this.config.scheduleMarginTop;
 
       this.$el.find(`.${this.config.classes.bookableWindow}`).css({
         'margin-left': `${blockConfig.offsetPercentage}%`,
@@ -74,11 +74,11 @@
 
     getPercentagesForBlock(start, end) {
       const percentageWindowMonthLength = 100 / this.config.windowLengthInMonths,
-      monthsGoneStart = start.diff(this.startWindowDate, 'months'),
-      percentageThroughMonthStart = ((start.date() - 1) / start.daysInMonth()),
-      percentageStart = (monthsGoneStart * percentageWindowMonthLength) + (percentageThroughMonthStart * percentageWindowMonthLength),
-      monthsGoneEnd = end.diff(this.startWindowDate, 'months'),
-      percentageThroughMonthEnd = (end.date() / end.daysInMonth());
+        monthsGoneStart = start.diff(this.startWindowDate, 'months'),
+        percentageThroughMonthStart = ((start.date() - 1) / start.daysInMonth()),
+        percentageStart = (monthsGoneStart * percentageWindowMonthLength) + (percentageThroughMonthStart * percentageWindowMonthLength),
+        monthsGoneEnd = end.diff(this.startWindowDate, 'months'),
+        percentageThroughMonthEnd = (end.date() / end.daysInMonth());
 
       let blockWidth = (monthsGoneEnd * percentageWindowMonthLength) + (percentageThroughMonthEnd * percentageWindowMonthLength) - percentageStart;
 
@@ -96,9 +96,9 @@
     displaySchedules() {
       for (let schedule in this.schedules) {
         let currentSchedule = this.schedules[schedule],
-        startDate = moment(currentSchedule.start),
-        endDate = moment(currentSchedule.end),
-        blockConfig = this.getPercentagesForBlock(startDate, endDate);
+          startDate = moment(currentSchedule.start),
+          endDate = moment(currentSchedule.end),
+          blockConfig = this.getPercentagesForBlock(startDate, endDate);
 
         this.$el.find(`.${this.config.classes.schedules}`).append(
           $(`<div class="${this.config.classes.schedule} ${this.config.classes.schedule}">`

@@ -22,6 +22,7 @@
 
       for (let i = 0; i < selectedOptions.length; i++) {
         const $option = $(selectedOptions[i]);
+
         $option.prop('selected', false);
         itemsToSelect = itemsToSelect.concat($option.data('childrenToSelect'));
       }

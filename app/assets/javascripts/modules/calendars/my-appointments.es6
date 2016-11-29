@@ -44,6 +44,7 @@
 
     setupPusher() {
       const channel = Pusher.instance.subscribe('telephone_appointment_planner');
+
       channel.bind(`${this.guiderId}`, this.handlePushEvent.bind(this));
     }
 
