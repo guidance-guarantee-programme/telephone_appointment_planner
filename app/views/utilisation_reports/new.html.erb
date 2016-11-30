@@ -3,21 +3,29 @@
 <h1>Generate a utilisation report</h1>
 
 <%= form_for @utilisation_report, method: 'GET', target: '_blank', 'data-disable-with': nil, layout: :basic do |f| %>
-  <%=
-    f.text_field(
-      :date_range,
-      class: 't-date-range',
-      label: 'In date range',
-      data: {
-	module: 'date-range-picker',
-	config: {
-	  locale: {
-	    format: 'DD/MM/YYYY'
-	  }
-	}
-      }
-    )
-  %>
-  <% # Use manual html here so that data-disable-with isn't added. %>
-  <input type="submit" name="commit" value="Download" class="t-download btn btn-primary">
+  <div class="row">
+    <div class="col-md-4">
+      <%=
+        f.text_field(
+          :date_range,
+          class: 't-date-range',
+          label: 'In date range',
+          data: {
+            module: 'date-range-picker',
+            config: {
+              locale: {
+                format: 'DD/MM/YYYY'
+              }
+            }
+          }
+        )
+      %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <% # Use manual html here so that data-disable-with isn't added. %>
+      <input type="submit" name="commit" value="Download" class="t-download btn btn-primary">
+    </div>
+  </div>
 <% end %>
