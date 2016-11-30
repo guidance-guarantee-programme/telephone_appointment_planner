@@ -53,6 +53,20 @@ class Calendar extends TapBase {
 
     this.insertJumpToDate();
     this.addAccessibilityImprovements();
+    this.insertLoadingView();
+  }
+
+  insertLoadingView() {
+    this.calendarLoadingView = $(`
+      <div class="calendar-loading hide">
+        <div class="calendar-loading-spinner">
+          <div class="calendar-loading-spinner__bounce calendar-loading-spinner__bounce--1"></div>
+          <div class="calendar-loading-spinner__bounce calendar-loading-spinner__bounce--2"></div>
+          <div class="calendar-loading-spinner__bounce"></div>
+        </div>
+      </div>`);
+
+    this.calendarLoadingView.appendTo($('.fc-view-container'));
   }
 
   addAccessibilityImprovements() {
@@ -120,8 +134,12 @@ class Calendar extends TapBase {
     return this.$el.fullCalendar('getDate').format(format);
   }
 
-  loading() {
-
+  loading(isLoading) {
+    if (isLoading && this.calendarLoadingView) {
+      this.calendarLoadingView.removeClass('hide');
+    } else if(this.calendarLoadingView) {
+      this.calendarLoadingView.addClass('hide');
+    }
   }
 
   eventDrop() {

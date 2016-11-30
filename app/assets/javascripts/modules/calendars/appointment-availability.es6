@@ -123,6 +123,8 @@
     }
 
     loading(isLoading) {
+      super.loading(isLoading);
+
       if (!isLoading) {
         this.selectEvent();
       }
