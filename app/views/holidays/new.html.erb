@@ -8,57 +8,90 @@
 
 <%= form_for @holiday, url: batch_create_holidays_path, layout: :basic do |f| %>
   <div data-module="holiday-types">
-    <%= f.radio_button :all_day, true, label: 'Create a multiple day holiday', class: 'js-show-all-day t-create-a-multiple-day-holiday' %>
-    <%= f.radio_button :all_day, false, label: 'Create a single day holiday', class: 'js-show-one-day t-create-a-single-day-holiday' %>
-
-    <%= f.text_field :title, class: 't-title' %>
-
-    <%=
-      f.text_field(
-        :date_range,
-        class: 't-all-day-date-range js-all-day',
-        data: {
-          module: 'date-range-picker',
-          config: {
-            locale: {
-              format: 'DD/MM/YYYY'
+    <div class="row">
+      <div class="col-md-6">
+        <%= f.text_field :title, class: 't-title' %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <%=
+          f.select(
+            :users,
+            grouped_options_for_select(guider_options),
+            {},
+            multiple: 'multiple',
+            class: 't-users',
+            data: { module: 'advanced-select' },
+          )
+        %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label for="multi-day-checkbox">Multi day?</label>
+          <input type="checkbox" id="multi-day-checkbox" value="1" class="js-multi-day-checkbox" checked>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <%=
+          f.text_field(
+            :date_range,
+            class: 't-all-day-date-range js-date-from',
+            label: 'Date from',
+            data: {
+              module: 'date-range-picker',
+              config: {
+                singleDatePicker: true,
+                autoApply: true,
+                locale: {
+                  format: 'DD/MM/YYYY'
+                }
+              }
             }
-          }
-        }
-      )
-    %>
-
-    <%=
-      f.text_field(
-        :date_range,
-        class: 't-one-day-date-range js-one-day',
-        data: {
-          module: 'date-range-picker',
-          config: {
-            timePicker: true,
-            timePickerIncrement: 5,
-            dateLimit: {
-              hours: 12
-            },
-            locale: {
-              format: 'DD/MM/YYYY HH:mm'
+          )
+        %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 js-one-day">
+        <%=
+          f.text_field(
+            :date_range,
+            label: 'Date to',
+            class: 't-one-day-date-range',
+            data: {
+              module: 'date-range-picker',
+              config: {
+                singleDatePicker: true,
+                autoApply: true,
+                locale: {
+                  format: 'DD/MM/YYYY'
+                }
+              }
             }
-          }
-        }
-      )
-    %>
+          )
+        %>
+      </div>
+    </div>
+    <div class="row js-times">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label>Start</label>
+          <%= f.time_select :date_range, { minute_step: 5 }, class: 'form-control', style: 'width: 50px; display: inline-block;' %>
 
-    <%=
-      f.select(
-        :users,
-        grouped_options_for_select(guider_options),
-        {},
-        multiple: 'multiple',
-        class: 't-users',
-        data: { module: 'advanced-select' },
-      )
-    %>
-
-    <%= f.submit 'Save', class: 't-save' %>
+          <label style="margin-left: 10px">End</label>
+          <%= f.time_select :date_range, { minute_step: 5 }, class: 'form-control', style: 'width: 50px; display: inline-block;' %>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <%= f.submit 'Save', class: 't-save' %>
+      </div>
+    </div>
   </div>
 <% end %>
