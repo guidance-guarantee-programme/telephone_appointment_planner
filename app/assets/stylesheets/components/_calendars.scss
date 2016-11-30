@@ -11,8 +11,66 @@ $calendar-holiday-anchor-visited: $color-white;
 $calendar-holiday-background: $color-alto;
 $calendar-schedule-background: $color-xanadu;
 $calendar-bookable-slot-background: $color-madang;
+$calendar-loading-view-background: transparentize($color-white, .2);
 
 $guider-row-height: 120px;
+
+.fc-view-container {
+  position: relative;
+
+  &.error {
+    border: 1px solid $state-danger-text;
+  }
+}
+
+.calendar-loading {
+  align-items: center;
+  background: $calendar-loading-view-background;
+  bottom: 0;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+  z-index: 5;
+}
+
+.calendar-loading-spinner {
+  height: 25px;
+  max-width: 50%;
+  text-align: center;
+  width: 100px;
+}
+
+.calendar-loading-spinner__bounce {
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  background-color: $color-black;
+  border-radius: 100%;
+  display: inline-block;
+  height: 25px;
+  width: 25px;
+}
+
+.calendar-loading-spinner__bounce--1 {
+  animation-delay: -.32s;
+}
+
+.calendar-loading-spinner__bounce--2 {
+  animation-delay: -.16s;
+}
+
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% {
+    transform: scale(0);
+  }
+
+  40% {
+    transform: scale(1);
+  }
+}
 
 .holiday-calendar {
   margin-top: 1em;
@@ -129,10 +187,6 @@ $guider-row-height: 120px;
 
 .appointment-availability-calendar {
   min-height: 500px;
-}
-
-.fc-view-container.error {
-  border: 1px solid $state-danger-text;
 }
 
 .fc-right {
