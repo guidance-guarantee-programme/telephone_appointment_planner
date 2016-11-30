@@ -64,6 +64,30 @@ RSpec.feature 'Agent manages appointments' do
     end
   end
 
+  scenario 'Agent cancels an appointment' do
+    given_the_user_is_an_agent do
+      and_there_is_an_appointment
+      when_they_cancel_the_appointment
+      then_the_customer_gets_a_cancellation_email
+    end
+  end
+
+  scenario 'Agent cancels an appointment by order of the customer' do
+    given_the_user_is_an_agent do
+      and_there_is_an_appointment
+      when_they_cancel_the_appointment_by_order_of_the_customer
+      then_the_customer_gets_a_cancellation_email
+    end
+  end
+
+  scenario 'Agent changes appointment status' do
+    given_the_user_is_an_agent do
+      and_there_is_an_appointment
+      and_they_change_the_appointment_status
+      then_the_customer_does_not_get_a_cancellation_email
+    end
+  end
+
   def and_there_is_a_guider_with_available_slots
     @guider = create(:guider)
     slots = [
@@ -181,5 +205,37 @@ RSpec.feature 'Agent manages appointments' do
 
   def then_they_are_told_that_the_slot_is_unavailable
     expect(@page).to have_slot_unavailable_message
+  end
+
+  def when_they_cancel_the_appointment
+    @page = Pages::EditAppointment.new
+    @page.load(id: @appointment.id)
+    @page.status.select('Cancelled By Pension Wise')
+    @page.submit.click
+  end
+
+  def when_they_cancel_the_appointment_by_order_of_the_customer
+    @page = Pages::EditAppointment.new
+    @page.load(id: @appointment.id)
+    @page.status.select('Cancelled By Customer')
+    @page.submit.click
+  end
+
+  def and_they_change_the_appointment_status
+    @page = Pages::EditAppointment.new
+    @page.load(id: @appointment.id)
+    @page.status.select('No Show')
+    @page.submit.click
+  end
+
+  def then_the_customer_gets_a_cancellation_email
+    deliveries = ActionMailer::Base.deliveries
+    expect(deliveries.count).to eq 1
+    expect(deliveries.first.subject).to eq 'Your Pension Wise Appointment'
+    expect(deliveries.first.body.encoded).to include 'Your appointment has been cancelled'
+  end
+
+  def then_the_customer_does_not_get_a_cancellation_email
+    expect(ActionMailer::Base.deliveries).to be_empty
   end
 end
