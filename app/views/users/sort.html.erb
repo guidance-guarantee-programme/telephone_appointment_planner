@@ -9,7 +9,7 @@
 <%= form_for :order_users, layout: :basic do |f| %>
   <div class="list-group sortable-guiders t-sortable-guiders" data-module="sortable-guiders">
     <% @guiders.each do |guider| %>
-      <button type="button" class="list-group-item t-guider">
+      <button type="button" class="sortable-guiders__guider list-group-item t-guider">
         <span class="glyphicon glyphicon-option-vertical"></span>
         <%= guider.name %>
         <% guider.groups.each do |group| %>
