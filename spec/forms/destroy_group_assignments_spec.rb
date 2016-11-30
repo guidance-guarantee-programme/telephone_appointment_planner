@@ -16,4 +16,18 @@ RSpec.describe DestroyGroupAssignments, '#call' do
       expect { subject.call }.to change { GroupAssignment.count }.by(-2)
     end
   end
+
+  context 'the group is still assigned to someone' do
+    it 'does not destroy the group' do
+      user = create(:user)
+      user.groups << group
+      expect { subject.call }.to_not change { Group.count }
+    end
+  end
+
+  context 'the group is not assigned to anyone' do
+    it 'destroys the group' do
+      expect { subject.call }.to change { Group.count }.by(-1)
+    end
+  end
 end
