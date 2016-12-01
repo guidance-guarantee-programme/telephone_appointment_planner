@@ -5,6 +5,7 @@ RSpec.feature 'Pension Wise imports historical data' do
     given_a_valid_csv_to_import
     when_the_csv_is_imported
     the_appointments_are_imported_successfully
+    and_no_activities_are_created
   end
 
   def given_a_valid_csv_to_import
@@ -40,5 +41,9 @@ RSpec.feature 'Pension Wise imports historical data' do
         opt_out_of_market_research: true
       )
     end
+  end
+
+  def and_no_activities_are_created
+    expect(Appointment.first.activities).to be_empty
   end
 end

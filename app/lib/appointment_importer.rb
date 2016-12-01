@@ -8,23 +8,25 @@ class AppointmentImporter
   def call # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     return if Appointment.exists?(row.booking_reference)
 
-    Appointment.new(
-      id: row.booking_reference,
-      start_at: row.start_at,
-      end_at: row.end_at,
-      first_name: row.first_name,
-      last_name: row.last_name,
-      email: row.email,
-      phone: row.phone,
-      mobile: row.mobile,
-      date_of_birth: FAKE_DATE_OF_BIRTH,
-      memorable_word: row.memorable_word,
-      status: row.pension_wise_status,
-      opt_out_of_market_research: row.opt_out_of_market_research,
-      notes: row.notes,
-      agent: agent,
-      guider: guider
-    ).save(validate: false)
+    Appointment.without_auditing do
+      Appointment.new(
+        id: row.booking_reference,
+        start_at: row.start_at,
+        end_at: row.end_at,
+        first_name: row.first_name,
+        last_name: row.last_name,
+        email: row.email,
+        phone: row.phone,
+        mobile: row.mobile,
+        date_of_birth: FAKE_DATE_OF_BIRTH,
+        memorable_word: row.memorable_word,
+        status: row.pension_wise_status,
+        opt_out_of_market_research: row.opt_out_of_market_research,
+        notes: row.notes,
+        agent: agent,
+        guider: guider
+      ).save(validate: false)
+    end
   end
 
   private
