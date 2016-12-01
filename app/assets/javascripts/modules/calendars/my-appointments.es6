@@ -69,14 +69,20 @@
         return;
       }
 
+      const cancelled = event.status.indexOf('cancelled') > -1 ? true : false;
+
       if (view.type === 'agendaDay') {
         element.find('.fc-title').html(`
-            <span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span>
-            ${event.title} | Phone: ${event.phone} | Memorable word: ${event.memorable_word}
-            `);
+          <span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span>
+          ${event.title} | Phone: ${event.phone} | Memorable word: ${event.memorable_word}
+          `);
       }
 
-      if (event.status.indexOf('cancelled') > -1) {
+      if (cancelled) {
+        element.find('.fc-title, .fc-list-item-title').append(`
+          ${cancelled ? '<span aria-hidden="true">(C)</span><span class="sr-only">Cancelled</span>' : ''}
+        `);
+
         element.addClass('fc-event--cancelled');
       }
     }
