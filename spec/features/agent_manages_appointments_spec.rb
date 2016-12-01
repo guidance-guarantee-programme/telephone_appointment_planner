@@ -159,7 +159,7 @@ RSpec.feature 'Agent manages appointments' do
     deliveries = ActionMailer::Base.deliveries
     expect(deliveries.count).to eq 1
     expect(deliveries.first.subject).to eq 'Your Pension Wise Appointment'
-    expect(deliveries.first.body.encoded).to include 'Your appointment details were updated'
+    expect(deliveries.first.body.encoded).to include 'Your appointment has been changed'
   end
 
   def then_the_customer_does_not_get_an_email_confirmation
