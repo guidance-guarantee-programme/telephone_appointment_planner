@@ -23,9 +23,20 @@ class Notifier
   end
 
   def notify_customer(appointment)
-    return unless appointment.previous_changes.slice('start_at', 'end_at').present?
+    if appointment_time_changed?(appointment)
+      AppointmentMailer.updated(appointment).deliver_later
+    elsif appointment_cancelled?(appointment)
+      AppointmentMailer.cancelled(appointment).deliver_later
+    end
+  end
 
-    AppointmentMailer.updated(appointment).deliver_later
+  def appointment_time_changed?(appointment)
+    appointment.previous_changes.slice('start_at', 'end_at').present?
+  end
+
+  def appointment_cancelled?(appointment)
+    appointment.previous_changes.slice('status').present? &&
+      appointment.cancelled?
   end
 
   attr_reader :appointment

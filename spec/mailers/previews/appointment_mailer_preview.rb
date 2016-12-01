@@ -1,12 +1,20 @@
 # Preview all emails at http://localhost:3000/rails/mailers/appointment_mailer
 class AppointmentMailerPreview < ActionMailer::Preview
   def confirmation
-    appointment = FactoryGirl.create(:appointment)
-    AppointmentMailer.confirmation(appointment)
+    AppointmentMailer.confirmation(random_appointment)
   end
 
   def updated
-    appointment = FactoryGirl.create(:appointment)
-    AppointmentMailer.updated(appointment)
+    AppointmentMailer.updated(random_appointment)
+  end
+
+  def cancelled
+    AppointmentMailer.cancelled(random_appointment)
+  end
+
+  private
+
+  def random_appointment
+    Appointment.all.sample(1).first || FactoryGirl.create(:appointment)
   end
 end
