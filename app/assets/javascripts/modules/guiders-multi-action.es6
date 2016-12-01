@@ -6,9 +6,9 @@
     start(el) {
       super.start(el);
 
-      this.$actionPanel = this.$el.find('[data-action-panel]');
-      this.$actionsSelect = this.$actionPanel.find('[data-action-panel-actions]');
-      this.$goButton = this.$actionPanel.find('[data-action-panel-go]');
+      this.$actionPanel = this.$el.find('.js-action-panel');
+      this.$actionsSelect = this.$actionPanel.find('.js-action-panel-actions');
+      this.$goButton = this.$actionPanel.find('.js-action-panel-go');
 
       this.bindEvents();
       this.hideActionPanel();
@@ -21,7 +21,7 @@
     }
 
     handleSearchComplete(event, list) {
-      this.handleSelection(event, ...$(list.list).find('[data-multi-checkbox="item"]'));
+      this.handleSelection(event, ...$(list.list).find('.js-multi-checkbox-item'));
     }
 
     hideActionPanel() {
@@ -37,8 +37,8 @@
 
       const selectedCheckboxCount = this.checkboxSelectedLength();
 
-      this.$el.find('[data-action-panel-selected-count]').html(selectedCheckboxCount);
-      this.$el.find('[data-action-panel-selected-guiders]').html(selectedCheckboxCount === 1 ? 'guider' : 'guiders');
+      this.$el.find('.js-action-panel-selected-count').html(selectedCheckboxCount);
+      this.$el.find('.js-action-panel-selected-guiders').html(selectedCheckboxCount === 1 ? 'guider' : 'guiders');
 
       if (selectedCheckboxCount === 0) {
         this.hideActionPanel();

@@ -38,8 +38,8 @@
     }
 
     init() {
-      this.$selectedStart = $('[data-selected-start]');
-      this.$selectedEnd = $('[data-selected-end]');
+      this.$selectedStart = $('.js-selected-start');
+      this.$selectedEnd = $('.js-selected-end');
       this.selectedEventColour = 'green';
     }
 

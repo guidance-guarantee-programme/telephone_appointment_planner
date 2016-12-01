@@ -4,7 +4,7 @@
   form_element_year_id = "#{form.object_name}_date_of_birth_1i"
 %>
 
-<div class="form-dob clearfix" data-module="customer-age" data-output-id="js-customer-age">
+<div class="form-dob clearfix" data-module="customer-age" data-output-id="customer-age">
   <%= field_with_errors_wrapper(form, :date_of_birth, 'form-dob__inputs-container') do %>
     <label for="<%= form_element_day_id %>">
       <span class="sr-only">Date of birth</span> <%= required_label(:day) %>
@@ -62,6 +62,6 @@
       <div class="text-danger"><%= message %></div>
     <% end %>
   <% end %>
-  <span class="bg-info form-dob__age" id="js-customer-age"></span>
+  <span class="bg-info form-dob__age" id="customer-age"></span>
 </div>
 <div class="help-block" id="dob-hint">For example, 31 3 1950</div>

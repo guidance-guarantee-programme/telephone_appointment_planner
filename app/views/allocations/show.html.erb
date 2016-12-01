@@ -27,20 +27,20 @@
   <%= f.hidden_field :end_at, class: 'js-end-at' %>
 <% end %>
 
-<div class="action-panel t-action-panel" data-action-panel>
+<div class="action-panel t-action-panel js-action-panel">
   <%= form_tag batch_update_appointments_path, method: :patch, remote: true, class: 'js-changes-form' do %>
-    <button class="btn btn-primary t-save" data-action-panel-save>
+    <button class="btn btn-primary t-save js-action-panel-save">
       <span class="glyphicon glyphicon-save" aria-hidden="true"></span> Save changes to
       <b>
-        <span data-action-panel-event-count>0 events</span>
+        <span class="js-action-panel-event-count">0 events</span>
       </b>
     </button>
 
-    <button class="btn btn-warning" data-action-panel-undo-one>
+    <button class="btn btn-warning js-action-panel-undo-one">
       <span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span> Undo last change
     </button>
 
-    <button class="btn btn-danger" data-action-panel-undo-all>
+    <button class="btn btn-danger js-action-panel-undo-all">
       <span class="glyphicon glyphicon-erase" aria-hidden="true"></span> Undo <b>all</b> changes
     </button>
     <input type="hidden" name="changes" id="event-changes">
