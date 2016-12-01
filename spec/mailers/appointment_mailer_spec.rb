@@ -5,7 +5,8 @@ RSpec.describe AppointmentMailer, type: :mailer do
     build_stubbed(
       :appointment,
       email: 'test@example.org',
-      start_at: DateTime.new(2016, 10, 23).in_time_zone
+      start_at: DateTime.new(2016, 10, 23).in_time_zone,
+      memorable_word: 'mailertest'
     )
   end
 
@@ -72,13 +73,28 @@ RSpec.describe AppointmentMailer, type: :mailer do
     describe 'rendering the body' do
       let(:body) { subject.body.encoded }
 
-      it 'includes the appointment particulars' do
-        expect(body).to include('12:00am, 23 October 2016')
-        expect(body).to include("reference number, ##{appointment.id}")
+      it 'includes the date' do
+        expect(body).to include('23 October 2016')
       end
 
-      it 'includes the guider' do
-        expect(body).to include(appointment.guider.name)
+      it 'includes the time' do
+        expect(body).to include('12:00am')
+      end
+
+      it 'includes the duration' do
+        expect(body).to include('60 minutes')
+      end
+
+      it 'includes the contact number' do
+        expect(body).to include(appointment.phone)
+      end
+
+      it 'includes the memorable word' do
+        expect(body).to include('m********t')
+      end
+
+      it 'includes the reference number' do
+        expect(body).to include("##{appointment.id}")
       end
     end
   end

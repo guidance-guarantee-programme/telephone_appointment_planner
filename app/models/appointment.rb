@@ -74,6 +74,12 @@ class Appointment < ApplicationRecord
     @date_of_birth_invalid = true
   end
 
+  def memorable_word(obscure: false)
+    return super() unless obscure
+
+    super().to_s.gsub(/(?!\A).(?!\Z)/, '*')
+  end
+
   private
 
   def after_audit
