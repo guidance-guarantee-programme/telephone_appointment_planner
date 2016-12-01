@@ -15,6 +15,12 @@ $calendar-loading-view-background: transparentize($color-white, .2);
 
 $guider-row-height: 120px;
 
+.fc {
+  a:visited {
+    color: $color-black;
+  }
+}
+
 .fc-view-container {
   position: relative;
 
@@ -209,6 +215,10 @@ $guider-row-height: 120px;
 
 .fc-event--cancelled {
   @include striped($calendar-appointment-cancelled-background);
+
+  &:hover td {
+    @include striped($calendar-appointment-cancelled-background);
+  }
 }
 
 .fc-event--moved {
