@@ -30,6 +30,7 @@ if Rails.env.development?
     FactoryGirl.create(
       :holiday,
       user: holiday_guiders.next,
+      all_day: false,
       end_at: date.end_of_day,
       start_at: date.beginning_of_day
     )

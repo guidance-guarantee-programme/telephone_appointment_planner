@@ -3,6 +3,7 @@ class HolidaySerializer < ActiveModel::Serializer
 
   attribute :id
   attribute :title
+  attribute :all_day, key: :allDay
   attribute :start_at, key: :start
   attribute :end_at, key: :end
   attribute :holiday_ids

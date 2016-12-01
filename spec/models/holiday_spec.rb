@@ -2,7 +2,17 @@ require 'rails_helper'
 
 RSpec.describe Holiday, type: :model do
   describe 'validations' do
+    it 'requires all_day' do
+      holiday = build_stubbed(:holiday, all_day: nil)
+      expect(holiday).to_not be_valid
+    end
+
     context 'bank holiday' do
+      it 'is valid with valid attributes' do
+        holiday = build_stubbed(:holiday)
+        expect(holiday).to be_valid
+      end
+
       it 'does not require a user' do
         holiday = build_stubbed(:bank_holiday, user: nil)
         expect(holiday).to be_valid
@@ -10,6 +20,11 @@ RSpec.describe Holiday, type: :model do
     end
 
     context 'user holidays' do
+      it 'is valid with valid attributes' do
+        holiday = build_stubbed(:bank_holiday)
+        expect(holiday).to be_valid
+      end
+
       it 'requires a user' do
         holiday = build_stubbed(:holiday, user: nil)
         expect(holiday).to_not be_valid
@@ -39,11 +54,11 @@ RSpec.describe Holiday, type: :model do
       create(:holiday, user: user2, title: same_title, start_at: same_start, end_at: same_end)
       create(:holiday, user: user3, title: different_title, start_at: different_start, end_at: different_end)
 
-      expect(results.first.title).to eq "#{same_title} - #{user1.name}, #{user2.name}"
+      expect(results.first.title).to eq same_title
       expect(results.first.start_at.to_s).to eq same_start.to_s
       expect(results.first.end_at.to_s).to eq same_end.to_s
 
-      expect(results.second.title).to eq "#{different_title} - #{user3.name}"
+      expect(results.second.title).to eq different_title
       expect(results.second.start_at.to_s).to eq different_start.to_s
       expect(results.second.end_at.to_s).to eq different_end.to_s
     end

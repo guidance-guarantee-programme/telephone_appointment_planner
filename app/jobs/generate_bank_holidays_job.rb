@@ -5,16 +5,25 @@ class GenerateBankHolidaysJob < ApplicationJob
     retrieve_holidays.each do |holiday|
       date = Date.parse(holiday[:date])
       logger.info "Adding holiday '#{holiday[:title]}' on '#{date}'"
-      Holiday.find_or_create_by!(
-        title: holiday[:title],
-        start_at: date.beginning_of_day,
-        end_at: date.end_of_day,
-        bank_holiday: true
+      create_bank_holiday(
+        holiday[:title],
+        date.beginning_of_day,
+        date.end_of_day
       )
     end
   end
 
   private
+
+  def create_bank_holiday(title, start_at, end_at)
+    Holiday.find_or_create_by!(
+      title: title,
+      start_at: start_at,
+      end_at: end_at,
+      all_day: true,
+      bank_holiday: true
+    )
+  end
 
   def retrieve_holidays
     require 'open-uri'

@@ -12,6 +12,8 @@ module Pages
       element :content, '.fc-content'
     end
 
+    section :calendar, Sections::Calendar, '.t-calendar'
+
     def all_events
       wait_until_events_visible
       events.map do |a|
