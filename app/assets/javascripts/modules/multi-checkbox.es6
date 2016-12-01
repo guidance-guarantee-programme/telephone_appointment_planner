@@ -6,8 +6,8 @@
     start(el) {
       super.start(el);
 
-      this.$allCheckbox = this.$el.find('[data-multi-checkbox="all"]');
-      this.$itemCheckboxes = this.$el.find('[data-multi-checkbox="item"]');
+      this.$allCheckbox = this.$el.find('.js-multi-checkbox-all');
+      this.$itemCheckboxes = this.$el.find('.js-multi-checkbox-item');
 
       this.bindEvents();
     }
@@ -46,7 +46,7 @@
     }
 
     addRemoveClass($el, checked) {
-      $el.parents('[data-multi-checkbox-group]')[checked ? 'addClass' : 'removeClass'](this.config.selectedClassName);
+      $el.parents('.js-multi-checkbox-group')[checked ? 'addClass' : 'removeClass'](this.config.selectedClassName);
     }
 
     areAllItemsChecked() {

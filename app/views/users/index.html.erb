@@ -20,7 +20,7 @@
       </colgroup>
       <thead>
         <tr>
-          <th><label for="select-all"><input type="checkbox" id="select-all" class="select-all" data-multi-checkbox="all"> <span class="sr-only">Select All</span></label></th>
+          <th><label for="select-all"><input type="checkbox" id="select-all" class="select-all js-multi-checkbox-all"> <span class="sr-only">Select All</span></label></th>
           <th><span class="sort" data-sort="name">Name</span></th>
           <th>Groups</th>
           <th>Actions</th>
@@ -28,10 +28,10 @@
       </thead>
       <tbody class="list">
         <% @guiders.each do |guider| %>
-          <tr data-multi-checkbox-group class="t-guider guider">
+          <tr class="t-guider guider js-multi-checkbox-group">
             <td>
               <label for="guider_<%= guider.id %>">
-                <input data-multi-checkbox="item" type="checkbox" name="guider_<%= guider.id %>" id="guider_<%= guider.id %>" value="<%= guider.id %>" class="guider__checkbox t-checkbox">
+                <input type="checkbox" name="guider_<%= guider.id %>" id="guider_<%= guider.id %>" value="<%= guider.id %>" class="guider__checkbox t-checkbox js-multi-checkbox-item">
                 <span class="sr-only">Select <%= guider.name %></span>
               </label>
             </td>
@@ -47,14 +47,14 @@
       </tbody>
     </table>
   </div>
-  <div class="action-panel t-action-panel" data-action-panel>
-    With the <span class="guider__number-selected t-selected" data-action-panel-selected-count>0</span> <span data-action-panel-selected-guiders></span> selected
+  <div class="js-action-panel action-panel t-action-panel">
+    With the <span class="guider__number-selected t-selected js-action-panel-selected-count">0</span> <span class="js-action-panel-selected-guiders"></span> selected
     <label for="action-panel-select">
       <span class="sr-only">Action to perform</span>
-      <select name="action" id="action-panel-select" class="t-action" data-action-panel-actions>
+      <select name="action" id="action-panel-select" class="js-action-panel-actions t-action">
         <option value="/groups">Add/remove groups</option>
       </select>
     </label>
-    <button class="btn btn-primary t-go" data-action-panel-go>Go</button>
+    <button class="btn btn-primary t-go js-action-panel-go">Go</button>
   </div>
 </div>
