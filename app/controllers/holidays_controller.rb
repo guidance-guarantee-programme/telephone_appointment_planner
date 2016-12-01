@@ -1,5 +1,4 @@
 class HolidaysController < ApplicationController
-  include DateRangePickerHelper
   before_action :authorise_for_resource_managers!
 
   def merged
@@ -25,14 +24,8 @@ class HolidaysController < ApplicationController
     Holiday.create!(create_params)
   end
 
-  # rubocop:disable Metrics/MethodLength
   def batch_create
-    @holiday = BatchUpsertHolidays.new(
-      title: batch_create_params[:title],
-      all_day: batch_create_params[:all_day],
-      date_range: batch_create_params[:date_range],
-      users: user_ids
-    )
+    @holiday = BatchUpsertHolidays.new(batch_create_params)
 
     if @holiday.call
       redirect_to(holidays_path, success: 'Holiday has been created')
@@ -40,29 +33,29 @@ class HolidaysController < ApplicationController
       render :new
     end
   end
-  # rubocop:enable Metrics/MethodLength
 
   def edit
     holidays = Holiday.where(id: holiday_ids)
+
     @holiday = BatchUpsertHolidays.new(
-      previous_holidays: holiday_ids,
       title: holidays.first.title,
       all_day: holidays.first.all_day,
-      date_range: build_date_range_picker_range(holidays.first.start_at, holidays.first.end_at),
-      users: holidays.pluck(:user_id)
+      previous_holidays: holiday_ids,
+      users: holidays.pluck(:user_id),
+      start_at: holidays.first.start_at,
+      end_at: holidays.first.end_at
     )
   end
 
   def batch_upsert
     @holiday = BatchUpsertHolidays.new(
-      previous_holidays: holiday_ids,
-      title: batch_create_params[:title],
-      all_day: batch_create_params[:all_day],
-      date_range: batch_create_params[:date_range],
-      users: user_ids
+      batch_create_params.merge(previous_holidays: holiday_ids)
     )
-    return redirect_to(holidays_path, success: 'Holiday has been updated') if @holiday.call
-    render :edit
+    if @holiday.call
+      redirect_to(holidays_path, success: 'Holiday has been updated')
+    else
+      render :edit
+    end
   end
 
   def destroy
@@ -89,7 +82,13 @@ class HolidaysController < ApplicationController
   def batch_create_params
     params
       .require(:holiday)
-      .permit(:title, :all_day, :date_range)
+      .permit(
+        :title,
+        :all_day,
+        :start_at,
+        :end_at
+      )
+      .merge(users: user_ids)
   end
 
   def user_ids
