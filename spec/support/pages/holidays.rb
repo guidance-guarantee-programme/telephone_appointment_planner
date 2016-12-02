@@ -13,15 +13,5 @@ module Pages
     end
 
     section :calendar, Sections::Calendar, '.t-calendar'
-
-    def all_events
-      wait_until_events_visible
-      events.map do |a|
-        {
-          title: a.title.text,
-          time: a.time.text
-        }
-      end
-    end
   end
 end
