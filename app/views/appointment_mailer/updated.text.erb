@@ -11,7 +11,7 @@ Start time
 <%= @appointment.start_at.to_time.to_s(:govuk_time) %>
 
 Appointment lasts
-<%= ((@appointment.end_at - @appointment.start_at) / 1.minutes).round %> minutes
+45 minutes
 
 Your contact number
 <%= @appointment.phone %>
