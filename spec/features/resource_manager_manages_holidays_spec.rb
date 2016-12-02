@@ -164,13 +164,13 @@ RSpec.feature 'Resource manager manages holidays' do
     @page.create_holiday.click
     @page = Pages::NewHoliday.new
 
-    @page.create_a_multiple_day_holiday.set(true)
     @page.title.set 'Holiday Title'
-    @page.set_all_day_date_range(
+    @page.select_all_users
+    @page.multi_day.set(true)
+    @page.multiple_day.set_date_range(
       Time.zone.now.to_date,
       Time.zone.now.to_date + 2.days
     )
-    @page.select_all_users
 
     @page.save.click
   end
@@ -181,13 +181,13 @@ RSpec.feature 'Resource manager manages holidays' do
     @page.create_holiday.click
     @page = Pages::NewHoliday.new
 
-    @page.create_a_single_day_holiday.set(true)
     @page.title.set 'Holiday Title'
-    @page.set_one_day_date_range(
+    @page.select_all_users
+    @page.multi_day.set(false)
+    @page.single_day.set_date_range(
       Time.zone.now.beginning_of_day.change(hour: 14),
       Time.zone.now.beginning_of_day.change(hour: 16)
     )
-    @page.select_all_users
 
     @page.save.click
   end
@@ -252,8 +252,11 @@ RSpec.feature 'Resource manager manages holidays' do
     @page = Pages::EditHoliday.new
     expect(@page).to be_displayed
     @page.title.set 'Some other holiday title'
-    @page.set_all_day_date_range(Time.zone.now.to_date, Time.zone.now.to_date + 2.days)
     @page.select_user(@guiders.first)
+    @page.multiple_day.set_date_range(
+      Time.zone.now.to_date,
+      Time.zone.now.to_date + 2.days
+    )
     @page.save.click
   end
 
@@ -262,11 +265,11 @@ RSpec.feature 'Resource manager manages holidays' do
     @page = Pages::EditHoliday.new
     expect(@page).to be_displayed
     @page.title.set 'Some other holiday title'
-    @page.set_one_day_date_range(
+    @page.select_user(@guiders.first)
+    @page.single_day.set_date_range(
       Time.zone.now.beginning_of_day.change(hour: 12),
       Time.zone.now.beginning_of_day.change(hour: 18)
     )
-    @page.select_user(@guiders.first)
     @page.save.click
   end
 

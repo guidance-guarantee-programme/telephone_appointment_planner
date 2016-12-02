@@ -12,6 +12,8 @@ require 'pusher-fake/support/rspec'
 
 require_relative 'support/pages/base'
 require_relative 'support/sections/calendar'
+require_relative 'support/sections/multiple_day'
+require_relative 'support/sections/single_day'
 
 if ENV['TRAVIS']
   require 'coveralls'

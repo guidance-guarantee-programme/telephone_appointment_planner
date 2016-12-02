@@ -4,24 +4,26 @@ class BatchUpsertHolidays
   extend ActiveModel::Naming
 
   attr_reader :title
-  attr_reader :date_range
   attr_reader :users
   attr_reader :all_day
+  attr_reader :start_at
+  attr_reader :end_at
 
   validates :title, presence: true
-  validates :date_range, presence: true
   validates :users, presence: true
 
-  def initialize(previous_holidays: [], title: nil, all_day: true, date_range: nil, users: [])
-    @previous_holidays = previous_holidays
-    @title = title
-    @all_day = ActiveRecord::Type::Boolean.new.cast(all_day)
-    @date_range = date_range
-    @users = users
+  def initialize(options = {})
+    @previous_holidays = options[:previous_holidays]
+    @users = options[:users]
+
+    @title = options[:title]
+    @all_day = ActiveRecord::Type::Boolean.new.cast(options[:all_day]) || false
+
+    calculate_range(options)
   end
 
   def to_model
-    if @previous_holidays.any?
+    if Array(@previous_holidays).any?
       @model ||= Holiday.find(@previous_holidays.first)
     else
       Holiday.new
@@ -38,26 +40,39 @@ class BatchUpsertHolidays
 
   private
 
-  def calculate_date_range
-    parts = date_range.split(' - ')
+  def calculate_range(options)
+    @start_at = options[:start_at] || Time.zone.now
+    @end_at = options[:end_at] || Time.zone.now
+
+    return if @start_at.is_a?(ActiveSupport::TimeWithZone) && @end_at.is_a?(ActiveSupport::TimeWithZone)
 
     if all_day
-      parts.map { |d| strp_date_range_picker_date(d) }
+      calculate_all_day_range(options)
     else
-      parts.map { |d| strp_date_range_picker_time(d) }
+      calculate_one_day_range(options)
     end
   end
 
+  def calculate_all_day_range(options)
+    @start_at = strp_date_range_picker_date(options[:start_at])
+    @end_at   = strp_date_range_picker_date(options[:end_at])
+  end
+
+  def calculate_one_day_range(options)
+    date      = strp_date_range_picker_date(options[:start_at])
+    @start_at = date.change(hour: options[:'start_at(4i)'], min: options[:'start_at(5i)'])
+    @end_at   = date.change(hour: options[:'end_at(4i)'], min: options[:'end_at(5i)'])
+  end
+
   def create_holidays
-    start_at, end_at = calculate_date_range
     ActiveRecord::Base.transaction do
       User.where(id: users).each do |user|
-        create_holiday_for_user(user, start_at, end_at)
+        create_holiday_for_user(user)
       end
     end
   end
 
-  def create_holiday_for_user(user, start_at, end_at)
+  def create_holiday_for_user(user)
     Holiday.create!(
       title: title,
       all_day: all_day,

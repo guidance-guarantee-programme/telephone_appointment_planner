@@ -6,32 +6,33 @@
     start(el) {
       super.start(el);
 
-      this.$allDay = this.$el.find('.js-all-day');
-      this.$oneDay = this.$el.find('.js-one-day');
+      this.$multiDay = this.$el.find('.js-multi-day-container');
+      this.$singleDay = this.$el.find('.js-single-day-container');
 
-      this.$showAllDay = this.$el.find('.js-show-all-day');
-      this.$showOneDay = this.$el.find('.js-show-one-day');
-
-      this.$showAllDay.on('change', this.toggleVisibility.bind(this));
-      this.$showOneDay.on('change', this.toggleVisibility.bind(this));
+      this.$multiDayCheckbox = this.$el.find('.js-multi-day');
+      this.$multiDayCheckbox.on('change', this.toggleVisibility.bind(this));
 
       this.toggleVisibility();
     }
 
     toggleVisibility() {
-      if (this.$showAllDay.prop('checked')) {
-        this.$allDay.removeAttr('disabled');
-        this.$allDay.parent().show();
-
-        this.$oneDay.attr('disabled', 'disabled');
-        this.$oneDay.parent().hide();
+      if (this.$multiDayCheckbox.prop('checked')) {
+        this.show(this.$multiDay);
+        this.hide(this.$singleDay);
       } else {
-        this.$allDay.attr('disabled', 'disabled');
-        this.$allDay.parent().hide();
-
-        this.$oneDay.removeAttr('disabled');
-        this.$oneDay.parent().show();
+        this.hide(this.$multiDay);
+        this.show(this.$singleDay);
       }
+    }
+
+    hide($element) {
+      $element.find('input, select').prop('disabled', true);
+      $element.hide();
+    }
+
+    show($element) {
+      $element.find('input, select').removeAttr('disabled');
+      $element.show();
     }
   }
 

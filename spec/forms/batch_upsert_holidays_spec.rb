@@ -8,10 +8,6 @@ RSpec.describe BatchUpsertHolidays do
       expect(subject.errors[:title]).to_not be_empty
     end
 
-    it 'validates presence of date_range' do
-      expect(subject.errors[:date_range]).to_not be_empty
-    end
-
     it 'validates presence of users' do
       expect(subject.errors[:users]).to_not be_empty
     end
@@ -31,8 +27,14 @@ RSpec.describe BatchUpsertHolidays do
         true
       end
 
-      let(:range) do
-        '20/10/2016 - 20/10/2016'
+      let(:options) do
+        {
+          users:    users.map(&:id),
+          title:    'Holiday name',
+          all_day:  all_day,
+          start_at: '20/10/2016',
+          end_at:   '20/10/2016'
+        }
       end
 
       let(:start_at) do
@@ -44,12 +46,7 @@ RSpec.describe BatchUpsertHolidays do
       end
 
       it 'creates holidays for users' do
-        described_class.new(
-          title: 'Holiday name',
-          all_day: all_day,
-          date_range: range,
-          users: users.map(&:id)
-        ).call
+        described_class.new(options).call
 
         expect(results.first).to have_attributes(
           title: 'Holiday name',
@@ -71,11 +68,7 @@ RSpec.describe BatchUpsertHolidays do
         it 'destroys the old holidays' do
           previous_holidays = create_list(:holiday, 2).pluck(:id)
           described_class.new(
-            previous_holidays: previous_holidays,
-            title: 'Holiday name',
-            all_day: all_day,
-            date_range: range,
-            users: users.map(&:id)
+            options.merge(previous_holidays: previous_holidays)
           ).call
 
           expect(results.count).to eq 2
@@ -88,8 +81,17 @@ RSpec.describe BatchUpsertHolidays do
         false
       end
 
-      let(:range) do
-        '12/10/2016 12:00 - 12/10/2016 14:00'
+      let(:options) do
+        {
+          users:          users.map(&:id),
+          title:          'Holiday name',
+          all_day:        all_day,
+          start_at:       '12/10/2016',
+          'start_at(4i)': 12,
+          'start_at(5i)': 0,
+          'end_at(4i)':   14,
+          'end_at(5i)':   0
+        }
       end
 
       let(:start_at) do
@@ -101,12 +103,7 @@ RSpec.describe BatchUpsertHolidays do
       end
 
       it 'creates holidays for users' do
-        described_class.new(
-          title: 'Holiday name',
-          all_day: all_day,
-          date_range: range,
-          users: users.map(&:id)
-        ).call
+        described_class.new(options).call
 
         expect(results.first).to have_attributes(
           title: 'Holiday name',
@@ -128,11 +125,7 @@ RSpec.describe BatchUpsertHolidays do
         it 'destroys the old holidays' do
           previous_holidays = create_list(:holiday, 2).pluck(:id)
           described_class.new(
-            previous_holidays: previous_holidays,
-            title: 'Holiday name',
-            all_day: all_day,
-            date_range: range,
-            users: users.map(&:id)
+            options.merge(previous_holidays: previous_holidays)
           ).call
 
           expect(results.count).to eq 2
