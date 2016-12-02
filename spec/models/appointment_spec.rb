@@ -166,4 +166,60 @@ RSpec.describe Appointment, type: :model do
       expect(subject.name).to eq 'Joe Bloggs'
     end
   end
+
+  describe '#can_be_rescheduled_by?' do
+    let(:result) do
+      appointment.can_be_rescheduled_by?(user)
+    end
+
+    context 'appointment is more than two days in the future' do
+      let(:appointment) do
+        build_stubbed(:appointment, start_at: BusinessDays.from_now(3))
+      end
+
+      context 'user is a guider' do
+        let(:user) do
+          build_stubbed(:guider)
+        end
+
+        it 'is true' do
+          expect(result).to be true
+        end
+      end
+      context 'user is a resource manager' do
+        let(:user) do
+          build_stubbed(:resource_manager)
+        end
+
+        it 'is true' do
+          expect(result).to be true
+        end
+      end
+    end
+
+    context 'appointment is less than two days in the future' do
+      let(:appointment) do
+        build_stubbed(:appointment, start_at: BusinessDays.from_now(1))
+      end
+
+      context 'user is a guider' do
+        let(:user) do
+          build_stubbed(:guider)
+        end
+
+        it 'is false' do
+          expect(result).to be false
+        end
+      end
+      context 'user is a resource manager' do
+        let(:user) do
+          build_stubbed(:resource_manager)
+        end
+
+        it 'is true' do
+          expect(result).to be true
+        end
+      end
+    end
+  end
 end

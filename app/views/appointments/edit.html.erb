@@ -9,9 +9,11 @@
     <%= rebooked_from_heading(@appointment) %>
   </div>
   <div class="col-md-3 action-buttons">
-    <%= link_to appointment_reschedule_path(@appointment), title: 'Reschedule appointment', class: 'btn btn-info' do %>
-      <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-      <span>Reschedule</span>
+    <% if @appointment.can_be_rescheduled_by?(current_user) %>
+      <%= link_to appointment_reschedule_path(@appointment), title: 'Reschedule appointment', class: 'btn btn-info' do %>
+        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+        <span>Reschedule</span>
+      <% end %>
     <% end %>
     <%= link_to new_appointment_path(copy_from: @appointment), title: 'Rebook appointment', class: 'btn btn-info t-rebook' do %>
       <span class="glyphicon glyphicon-copy" aria-hidden="true"></span>
