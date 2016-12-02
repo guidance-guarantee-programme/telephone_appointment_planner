@@ -151,7 +151,7 @@ RSpec.feature 'Roles' do
   end
 
   def when_they_try_to_manage_guiders
-    @page = Pages::Users.new.tap(&:load)
+    @page = Pages::ManageGuiders.new.tap(&:load)
   end
 
   def when_they_try_to_manage_guiders_slots

@@ -4,9 +4,14 @@ RSpec.feature 'Resource manager sorts guiders' do
   scenario 'Resource manager sorts guiders', js: true do
     given_the_user_is_a_resource_manager do
       and_there_are_some_guiders
+      and_there_is_a_deactivated_guider
       when_they_sort_those_guiders
       then_the_guiders_are_in_the_new_order
     end
+  end
+
+  def and_there_is_a_deactivated_guider
+    create(:deactivated_guider)
   end
 
   def and_there_are_some_guiders

@@ -16,7 +16,7 @@ class UsersController < ApplicationController
   end
 
   def sort
-    @guiders = User.guiders.includes(:groups)
+    @guiders = User.guiders.active.includes(:groups)
   end
 
   def sort_update
@@ -29,5 +29,25 @@ class UsersController < ApplicationController
     end
 
     redirect_to :sort_users, success: 'Guider order has been updated'
+  end
+
+  def deactivate
+    toggle_activation
+    redirect_to users_path, success: 'Guider has been deactivated'
+  end
+
+  def activate
+    toggle_activation
+    redirect_to users_path, success: 'Guider has been activated'
+  end
+
+  private
+
+  def toggle_activation
+    user = User.find(params[:user_id])
+
+    user.toggle!(:active)
+
+    GenerateBookableSlotsForUserJob.perform_later user
   end
 end
