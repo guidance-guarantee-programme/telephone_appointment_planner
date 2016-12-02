@@ -1,0 +1,52 @@
+<h1 style="color: #0B0C0C !important;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 20px;line-height: 1.111111111;padding: 15px 0;">
+  Missed appointment
+</h1>
+
+<p style="color: #0B0C0C;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-size: 16px;line-height: 1.315789474;">
+  Dear <%= @appointment.first_name %>,
+</p>
+
+<p style="color: #0B0C0C;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-size: 16px;line-height: 1.315789474;">
+  Our records show that your Pension Wise telephone appointment was missed.
+  Your appointment was scheduled for:
+</p>
+
+<p style="color: #0B0C0C;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-size: 16px;line-height: 1.315789474;">
+  Date
+  <br>
+  <strong class="emphasize" style="font-size: 24px;">
+    <%= @appointment.start_at.to_date.to_s(:govuk_date) %>
+  </strong>
+</p>
+
+<p style="color: #0B0C0C;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-size: 16px;line-height: 1.315789474;">
+  Start time
+  <br>
+  <strong class="emphasize" style="font-size: 24px;">
+    <%= @appointment.start_at.to_time.to_s(:govuk_time) %>
+  </strong>
+</p>
+
+<p style="color: #0B0C0C;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-size: 16px;line-height: 1.315789474;">
+  Your contact number
+  <br>
+  <strong class="emphasize" style="font-size: 24px;">
+    <%= @appointment.phone %>
+  </strong>
+</p>
+
+<p style="color: #0B0C0C;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-size: 16px;line-height: 1.315789474;">
+  Your reference number
+  <br>
+  <strong class="emphasize" style="font-size: 24px;">
+    #<%= @appointment.id %>
+  </strong>
+</p>
+
+<p style="color: #0B0C0C;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-size: 16px;line-height: 1.315789474;">
+  If you want to book another appointment, please call 0800 138 3944. Don’t reply to this email.
+</p>
+
+<p style="color: #0B0C0C;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-size: 16px;line-height: 1.315789474;">
+  Go to pensionwise.gov.uk for more information about your pension options.
+</p>

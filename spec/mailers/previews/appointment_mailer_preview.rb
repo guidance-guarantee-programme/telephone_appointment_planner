@@ -12,6 +12,10 @@ class AppointmentMailerPreview < ActionMailer::Preview
     AppointmentMailer.cancelled(random_appointment)
   end
 
+  def missed
+    AppointmentMailer.missed(random_appointment)
+  end
+
   private
 
   def random_appointment

@@ -53,6 +53,10 @@ class Appointment < ApplicationRecord
     status.start_with?('cancelled')
   end
 
+  def no_show?
+    status == 'no_show'
+  end
+
   def assign_to_guider
     slot = BookableSlot
            .without_appointments
