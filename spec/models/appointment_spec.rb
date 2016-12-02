@@ -41,6 +41,15 @@ RSpec.describe Appointment, type: :model do
         subject.validate
         expect(subject.errors[:start_at]).to_not be_empty
       end
+
+      context 'agent is a resource manager' do
+        it 'can be booked within two working days' do
+          subject.agent = build_stubbed(:resource_manager)
+          subject.start_at = BusinessDays.from_now(1)
+          subject.validate
+          expect(subject.errors[:start_at]).to be_empty
+        end
+      end
     end
 
     it 'cannot be booked further ahead than thirty working days' do

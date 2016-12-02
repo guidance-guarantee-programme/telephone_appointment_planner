@@ -8,11 +8,11 @@ class BookableSlotsController < ApplicationController
   end
 
   def available
-    render json: BookableSlot
-      .with_guider_count(
-        Time.zone.parse(params[:start]),
-        Time.zone.parse(params[:end])
-      )
+    render json: BookableSlot.with_guider_count(
+      current_user,
+      Time.zone.parse(params[:start]),
+      Time.zone.parse(params[:end])
+    )
   end
 
   def scoped_to_me?
