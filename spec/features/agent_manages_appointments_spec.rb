@@ -88,6 +88,14 @@ RSpec.feature 'Agent manages appointments' do
     end
   end
 
+  scenario 'Agent marks an appointment as no-show' do
+    given_the_user_is_an_agent do
+      and_there_is_an_appointment
+      when_they_mark_the_appointment_as_missed
+      then_the_customer_gets_a_missed_appointment_email
+    end
+  end
+
   def and_there_is_a_guider_with_available_slots
     @guider = create(:guider)
     slots = [
@@ -224,7 +232,7 @@ RSpec.feature 'Agent manages appointments' do
   def and_they_change_the_appointment_status
     @page = Pages::EditAppointment.new
     @page.load(id: @appointment.id)
-    @page.status.select('No Show')
+    @page.status.select('Incomplete')
     @page.submit.click
   end
 
@@ -237,5 +245,21 @@ RSpec.feature 'Agent manages appointments' do
 
   def then_the_customer_does_not_get_a_cancellation_email
     expect(ActionMailer::Base.deliveries).to be_empty
+  end
+
+  def when_they_mark_the_appointment_as_missed
+    @page = Pages::EditAppointment.new
+    @page.load(id: @appointment.id)
+    @page.status.select('No Show')
+    @page.submit.click
+  end
+
+  def then_the_customer_gets_a_missed_appointment_email
+    deliveries = ActionMailer::Base.deliveries
+    expect(deliveries.count).to eq 1
+    expect(deliveries.first.subject).to eq 'Your Pension Wise Appointment'
+    expect(deliveries.first.body.encoded).to include(
+      'Our records show that your Pension Wise telephone appointment was missed'
+    )
   end
 end

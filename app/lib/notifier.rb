@@ -27,6 +27,8 @@ class Notifier
       AppointmentMailer.updated(appointment).deliver_later
     elsif appointment_cancelled?(appointment)
       AppointmentMailer.cancelled(appointment).deliver_later
+    elsif appointment_missed?(appointment)
+      AppointmentMailer.missed(appointment).deliver_later
     end
   end
 
@@ -37,6 +39,11 @@ class Notifier
   def appointment_cancelled?(appointment)
     appointment.previous_changes.slice('status').present? &&
       appointment.cancelled?
+  end
+
+  def appointment_missed?(appointment)
+    appointment.previous_changes.slice('status').present? &&
+      appointment.no_show?
   end
 
   attr_reader :appointment

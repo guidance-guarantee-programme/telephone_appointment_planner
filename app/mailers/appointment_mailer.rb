@@ -24,4 +24,12 @@ class AppointmentMailer < ApplicationMailer
     @appointment = appointment
     mail to: @appointment.email
   end
+
+  def missed(appointment)
+    return unless appointment.email?
+
+    mailgun_headers('booking_missed', appointment.id)
+    @appointment = appointment
+    mail to: @appointment.email
+  end
 end
