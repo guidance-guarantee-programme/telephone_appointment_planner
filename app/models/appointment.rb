@@ -84,6 +84,14 @@ class Appointment < ApplicationRecord
     super().to_s.gsub(/(?!\A).(?!\Z)/, '*')
   end
 
+  def can_be_rescheduled_by?(user)
+    if user.resource_manager?
+      true
+    else
+      start_at >= BusinessDays.from_now(2)
+    end
+  end
+
   private
 
   def after_audit
