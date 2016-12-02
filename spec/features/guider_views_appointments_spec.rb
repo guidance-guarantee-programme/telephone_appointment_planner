@@ -35,14 +35,13 @@ RSpec.feature 'Guider views appointments' do
   def and_there_are_appointments_for_multiple_guiders
     # this would appear 'today'
     @appointment = create(:appointment, guider: current_user)
+    @other_appointment = create(:appointment, guider: create(:guider))
     # this would appear 'tomorrow'
     @appointment_tomorrow = create(
       :appointment,
       guider: current_user,
       start_at: BusinessDays.from_now(4).at_midday
     )
-    # this won't appear for the current user
-    create(:appointment)
   end
 
   def and_the_user_has_a_schedule
@@ -106,11 +105,16 @@ RSpec.feature 'Guider views appointments' do
 
   def then_they_see_the_appointments_for_today
     @page.wait_until_appointments_visible
-    expect(@page).to have_appointments(count: 1)
 
-    actual = @page.appointments.first['id']
+    expect(@page).to have_appointments(count: 2)
 
-    expect(actual).to eq(@appointment.id.to_s)
+    actual = @page.appointments.map { |a| a['id'].to_i }.sort
+    expected = [
+      @appointment.id,
+      @other_appointment.id
+    ].sort
+
+    expect(actual).to eq expected
   end
 
   def when_they_advance_a_working_day

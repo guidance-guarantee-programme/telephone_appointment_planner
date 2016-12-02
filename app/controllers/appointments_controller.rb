@@ -81,10 +81,8 @@ class AppointmentsController < ApplicationController
   def appointment_scope
     if scoped_to_me?
       current_user.appointments
-    elsif current_user.resource_manager?
-      Appointment.unscoped
     else
-      current_user.appointments
+      Appointment.unscoped
     end
   end
 
