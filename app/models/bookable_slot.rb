@@ -13,7 +13,8 @@ class BookableSlot < ApplicationRecord
     where("#{quoted_table_name}.start_at > ? AND #{quoted_table_name}.end_at < ?", from, to)
   end
 
-  def self.next_valid_start_date
+  def self.next_valid_start_date(user)
+    return Time.zone.now if user.resource_manager?
     BusinessDays.from_now(2)
   end
 
@@ -35,7 +36,9 @@ class BookableSlot < ApplicationRecord
               SQL
             )
   end
+  # rubocop:enable Metrics/MethodLength
 
+  # rubocop:disable Metrics/MethodLength
   def self.without_holidays
     joins(<<-SQL
           LEFT JOIN holidays ON
@@ -51,16 +54,17 @@ class BookableSlot < ApplicationRecord
          )
       .where('holidays.start_at IS NULL')
   end
+  # rubocop:enable Metrics/MethodLength
 
-  def self.starting_after_two_business_days
-    where("#{quoted_table_name}.start_at > ?", next_valid_start_date)
+  def self.starting_after_next_valid_start_date(user)
+    where("#{quoted_table_name}.start_at > ?", next_valid_start_date(user))
   end
 
-  def self.with_guider_count(from, to)
+  def self.with_guider_count(user, from, to)
     select("DISTINCT #{quoted_table_name}.start_at, #{quoted_table_name}.end_at, count(1) AS guiders")
       .without_appointments
       .without_holidays
-      .starting_after_two_business_days
+      .starting_after_next_valid_start_date(user)
       .group("#{quoted_table_name}.start_at, #{quoted_table_name}.end_at")
       .within_date_range(from, to)
       .map do |us|

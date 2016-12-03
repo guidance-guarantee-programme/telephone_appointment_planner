@@ -27,7 +27,7 @@ class Appointment < ApplicationRecord
   validates :status, presence: true
   validates :guider, presence: true
 
-  validate :not_within_two_business_days
+  validate :not_within_two_business_days, unless: :agent_is_resource_manager?
   validate :not_more_than_thirty_business_days_in_future
   validate :date_of_birth_valid
 
@@ -110,5 +110,9 @@ class Appointment < ApplicationRecord
 
   def date_of_birth_valid
     errors.add(:date_of_birth, 'must be valid') if @date_of_birth_invalid
+  end
+
+  def agent_is_resource_manager?
+    agent.present? && agent.resource_manager?
   end
 end

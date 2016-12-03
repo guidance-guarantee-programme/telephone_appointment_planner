@@ -9,9 +9,14 @@ RSpec.describe BookableSlot, type: :model do
 
   def result
     BookableSlot.with_guider_count(
+      user,
       BusinessDays.before_now(5),
       BusinessDays.from_now(10)
     )
+  end
+
+  let(:user) do
+    build_stubbed(:guider)
   end
 
   describe '#next_valid_start_date' do
@@ -28,9 +33,23 @@ RSpec.describe BookableSlot, type: :model do
         it "next valid start date is #{expected_day}" do
           now = Chronic.parse("next #{day}").in_time_zone
           travel_to(now) do
-            actual = BookableSlot.next_valid_start_date.strftime('%A')
+            actual = BookableSlot.next_valid_start_date(user).strftime('%A')
             expect(actual).to eq expected_day
           end
+        end
+      end
+    end
+
+    context 'user is a resource manager' do
+      let(:user) do
+        build_stubbed(:resource_manager)
+      end
+
+      it 'is now' do
+        now = Chronic.parse('next Monday').in_time_zone
+        travel_to(now) do
+          actual = BookableSlot.next_valid_start_date(user)
+          expect(actual).to eq now
         end
       end
     end
@@ -171,7 +190,7 @@ RSpec.describe BookableSlot, type: :model do
         )
       end
 
-      it 'excludes bookables slots that start too soon' do
+      it 'excludes bookables slots that start within two business days' do
         create(
           :bookable_slot,
           guider: create(:guider),
@@ -186,6 +205,39 @@ RSpec.describe BookableSlot, type: :model do
             selected: false
           ]
         )
+      end
+
+      context 'user is a resource manager' do
+        let(:user) do
+          build_stubbed(:resource_manager)
+        end
+
+        it 'includes bookable slots that start after now' do
+          start_at = BusinessDays.from_now(1).change(hour: 12, min: 30)
+          end_at = BusinessDays.from_now(1).change(hour: 14, min: 30)
+          create(
+            :bookable_slot,
+            guider: create(:guider),
+            start_at: start_at,
+            end_at: end_at
+          )
+          expect(result).to eq(
+            [
+              {
+                guiders: 1,
+                start: start_at,
+                end: end_at,
+                selected: false
+              },
+              {
+                guiders: 3,
+                start: make_time(10, 30),
+                end: make_time(11, 30),
+                selected: false
+              }
+            ]
+          )
+        end
       end
 
       context 'one guider has a bookable slot obscured by a non cancelled appointment' do
