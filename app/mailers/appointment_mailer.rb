@@ -17,6 +17,14 @@ class AppointmentMailer < ApplicationMailer
     mail to: @appointment.email
   end
 
+  def reminder(appointment)
+    return unless appointment.email?
+
+    mailgun_headers('booking_reminder', appointment.id)
+    @appointment = appointment
+    mail to: @appointment.email
+  end
+
   def cancelled(appointment)
     return unless appointment.email?
 

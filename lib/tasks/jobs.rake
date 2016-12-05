@@ -12,4 +12,11 @@ namespace :jobs do
       GenerateBankHolidaysJob.perform_now
     end
   end
+
+  namespace :reminder_emails do
+    desc 'send reminder emails'
+    task send: :environment do
+      AppointmentRemindersJob.perform_now
+    end
+  end
 end
