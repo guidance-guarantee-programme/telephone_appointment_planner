@@ -210,6 +210,7 @@ RSpec.describe Appointment, type: :model do
           expect(result).to be true
         end
       end
+
       context 'user is a resource manager' do
         let(:user) do
           build_stubbed(:resource_manager)
@@ -235,6 +236,7 @@ RSpec.describe Appointment, type: :model do
           expect(result).to be false
         end
       end
+
       context 'user is a resource manager' do
         let(:user) do
           build_stubbed(:resource_manager)
