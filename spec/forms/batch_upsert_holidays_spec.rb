@@ -42,7 +42,7 @@ RSpec.describe BatchUpsertHolidays do
       end
 
       let(:end_at) do
-        Time.zone.parse('2016-10-20 00:00:00.000000000 +0000')
+        Time.zone.parse('2016-10-20 23:59:59.999999000 +0000')
       end
 
       it 'creates holidays for users' do

@@ -55,7 +55,7 @@ class BatchUpsertHolidays
 
   def calculate_all_day_range(options)
     @start_at = strp_date_range_picker_date(options[:start_at])
-    @end_at   = strp_date_range_picker_date(options[:end_at])
+    @end_at   = strp_date_range_picker_date(options[:end_at]).end_of_day
   end
 
   def calculate_one_day_range(options)
