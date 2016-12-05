@@ -45,6 +45,10 @@ class Appointment < ApplicationRecord
     end
   end
 
+  def imported?
+    date_of_birth == Date.parse(AppointmentImporter::FAKE_DATE_OF_BIRTH)
+  end
+
   def name
     "#{first_name} #{last_name}"
   end
