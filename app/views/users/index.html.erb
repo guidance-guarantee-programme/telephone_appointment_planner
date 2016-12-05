@@ -58,12 +58,12 @@
                 <span class="sr-only">Manage schedules for #{guider.name}</span>
               <% end %>
               <% if guider.active %>
-                <%= link_to user_deactivate_path(guider), method: 'PATCH', title: "Deactivate #{guider.name}", class: 'btn btn-danger t-deactivate', 'data-confirm': 'Are you sure you want to deactivate this guider?' do %>
+                <%= link_to user_deactivate_path(guider), method: 'PATCH', title: "Deactivate #{guider.name}", class: 'btn btn-danger t-deactivate', 'data-confirm': t('users.deactivate_confirm') do %>
                   <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
                   <span class="sr-only">Deactivate #{guider.name}</span>
                 <% end %>
               <% else %>
-                <%= link_to user_activate_path(guider), method: 'PATCH', title: "Activate #{guider.name}", class: 'btn btn-danger t-activate', 'data-confirm': 'Are you sure you want to activate this guider?' do %>
+                <%= link_to user_activate_path(guider), method: 'PATCH', title: "Activate #{guider.name}", class: 'btn btn-success t-activate', 'data-confirm': t('users.activate_confirm') do %>
                   <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
                   <span class="sr-only">Activate #{guider.name}</span>
                 <% end %>
