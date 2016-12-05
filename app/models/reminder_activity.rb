@@ -1,0 +1,2 @@
+class ReminderActivity < Activity
+end

@@ -1,0 +1,4 @@
+<% content_for(:activity_message, flush: true) do %>
+  <%= reminder_activity.message %> to <%= reminder_activity.owner.name %>
+<% end %>
+<%= render 'activities/activity', activity: reminder_activity, details: details %>
