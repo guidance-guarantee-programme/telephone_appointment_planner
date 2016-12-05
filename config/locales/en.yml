@@ -26,3 +26,15 @@ en:
   time:
     formats:
       date_range_picker: "%e/%m/%Y %H:%M"
+  users:
+    deactivate_confirm: |
+      Deactivate this guider?
+
+      This will remove any bookable slots for this guider.
+      All other data will remain as it was.
+
+      You can re-activate at a later date by clicking the Play button.
+    activate_confirm: |
+      Activate this guider?
+
+      This will create bookable slots for this guider in accordance with their schedules.
