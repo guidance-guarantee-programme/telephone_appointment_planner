@@ -65,6 +65,8 @@
     }
 
     eventRender(event, element, view) {
+      super.eventRender(event, element);
+
       if (event.source.rendering == 'background') {
         return;
       }

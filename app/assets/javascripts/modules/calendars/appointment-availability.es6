@@ -68,6 +68,8 @@
     }
 
     eventRender(event, element) {
+      super.eventRender(event, element);
+
       event.$div = $(element);
 
       element.html(`

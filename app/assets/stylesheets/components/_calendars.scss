@@ -1,11 +1,12 @@
 $calendar-today-background: $color-white;
-$calendar-cancelled-background: $color-guardsman-red;
 $calendar-moved-background: $color-green;
 $calendar-filter-box-shadow: transparentize($color-black, .825);
 $calendar-filter-arrow-border: transparentize($color-black, .8);
 $calendar-dragging-highlight: transparentize($color-givry, .1);
 $calendar-appointment-background: $color-boston-blue;
-$calendar-appointment-cancelled-background: $color-muddy-waters;
+$calendar-past-appointment-background: lighten($color-boston-blue, 20%);
+$calendar-appointment-cancelled-background: $color-medium-carmine;
+$calendar-past-appointment-cancelled-background: lighten($color-medium-carmine, 20%);
 $calendar-appointment-moved-background: $color-green;
 $calendar-holiday-anchor-visited: $color-white;
 $calendar-holiday-background: $color-alto;
@@ -213,16 +214,31 @@ $guider-row-height: 120px;
   z-index: 3;
 }
 
-.fc-event--cancelled {
-  @include striped($calendar-appointment-cancelled-background);
-
-  &:hover td {
-    @include striped($calendar-appointment-cancelled-background);
-  }
+.fc--past {
+  @include striped($calendar-past-appointment-background);
+  border-color: $calendar-past-appointment-background;
 }
 
 .fc-event--moved {
   @include striped($calendar-appointment-moved-background);
+}
+
+.fc-event--cancelled {
+  @include striped($calendar-appointment-cancelled-background);
+  border-color: $calendar-appointment-cancelled-background;
+
+  &:hover td {
+    @include striped($calendar-appointment-cancelled-background);
+  }
+
+  &.fc--past {
+    @include striped($calendar-past-appointment-cancelled-background);
+    border-color: $calendar-past-appointment-cancelled-background;
+
+    &:hover td {
+      @include striped($calendar-past-appointment-cancelled-background);
+    }
+  }
 }
 
 .fc-day-grid,

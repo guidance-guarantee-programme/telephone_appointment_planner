@@ -150,8 +150,12 @@ class Calendar extends TapBase {
 
   }
 
-  eventRender() {
+  eventRender(event, element) {
+    const now = moment();
 
+    if (event.end < now) {
+      element.addClass('fc--past');
+    }
   }
 
   eventAfterRender() {
