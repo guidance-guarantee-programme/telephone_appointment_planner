@@ -159,6 +159,21 @@ RSpec.describe Appointment, type: :model do
     end
   end
 
+  describe '#imported?' do
+    it 'is true for appointments matching the imported (fake) date of birth' do
+      appointment = build_stubbed(
+        :appointment,
+        date_of_birth: AppointmentImporter::FAKE_DATE_OF_BIRTH
+      )
+
+      expect(appointment).to be_imported
+    end
+
+    it 'is false otherwise' do
+      expect(build_stubbed(:appointment)).to_not be_imported
+    end
+  end
+
   describe '#name' do
     subject { build_stubbed(:appointment, first_name: 'Joe', last_name: 'Bloggs') }
 
