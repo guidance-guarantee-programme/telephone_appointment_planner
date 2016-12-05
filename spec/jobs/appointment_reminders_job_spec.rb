@@ -52,14 +52,22 @@ RSpec.describe AppointmentRemindersJob, '#perform' do
     end
 
     context 'appointment is not pending' do
-      context 'by the customer' do
-        it 'does not remind the customer' do
-          appointment.update!(status: 'cancelled_by_customer')
-          travel_to(appointment.start_at - 5.hours) do
-            perform_job
-          end
-          expect(AppointmentMailer).to_not have_received(:reminder)
+      it 'does not remind the customer' do
+        appointment.update!(status: 'cancelled_by_customer')
+        travel_to(appointment.start_at - 5.hours) do
+          perform_job
         end
+        expect(AppointmentMailer).to_not have_received(:reminder)
+      end
+    end
+
+    context 'appointment does not have an email' do
+      it 'does not remind the customer' do
+        appointment.update!(email: nil)
+        travel_to(appointment.start_at - 5.hours) do
+          perform_job
+        end
+        expect(AppointmentMailer).to_not have_received(:reminder)
       end
     end
 

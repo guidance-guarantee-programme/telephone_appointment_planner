@@ -16,7 +16,11 @@ class Appointment < ApplicationRecord
 
   belongs_to :rebooked_from, class_name: Appointment
 
-  scope :within_reminder_window, -> { where('start_at < ?', 1.day.from_now) }
+  scope :needing_reminder, lambda {
+    pending
+      .where('start_at < ?', 1.day.from_now)
+      .where.not(email: nil)
+  }
 
   validates :agent, presence: true
   validates :start_at, presence: true
