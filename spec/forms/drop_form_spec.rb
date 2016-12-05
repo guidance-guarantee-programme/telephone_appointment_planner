@@ -7,6 +7,7 @@ RSpec.describe DropForm, '#create_activity' do
       'event'          => 'dropped',
       'description'    => 'the reasoning',
       'appointment_id' => appointment.to_param,
+      'environment'    => 'production',
       'timestamp'      => '1474638633',
       'token'          => 'secret',
       'signature'      => 'abf02bef01e803bea52213cb092a31dc2174f63bcc2382ba25732f4c84e084c1'
@@ -36,6 +37,12 @@ RSpec.describe DropForm, '#create_activity' do
   end
 
   context 'when the signature is verified' do
+    it 'requires production environment' do
+      params['environment'] = 'staging'
+
+      expect(subject).not_to be_valid
+    end
+
     it 'requires an event' do
       params.delete('event')
 

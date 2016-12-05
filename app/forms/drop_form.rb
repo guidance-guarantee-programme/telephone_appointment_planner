@@ -8,6 +8,7 @@ class DropForm
   attr_accessor :event
   attr_accessor :description
   attr_accessor :appointment_id
+  attr_accessor :environment
   attr_accessor :timestamp
   attr_accessor :token
   attr_accessor :signature
@@ -17,6 +18,7 @@ class DropForm
   validates :signature, presence: true
   validates :event, presence: true
   validates :appointment_id, presence: true
+  validates :environment, inclusion: { in: %w(production) }
 
   def create_activity
     return unless valid?
