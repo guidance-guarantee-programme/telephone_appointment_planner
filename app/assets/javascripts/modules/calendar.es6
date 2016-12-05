@@ -56,6 +56,10 @@ class Calendar extends TapBase {
   }
 
   insertLoadingView() {
+    if (this.calendarLoadingView) {
+      return;
+    }
+
     this.calendarLoadingView = $(`
       <div class="calendar-loading hide">
         <div class="calendar-loading-spinner">
@@ -134,9 +138,7 @@ class Calendar extends TapBase {
   }
 
   loading(isLoading) {
-    if (!this.calendarLoadingView) {
-      this.insertLoadingView();
-    }
+    this.insertLoadingView();
 
     if (isLoading && this.calendarLoadingView) {
       this.calendarLoadingView.removeClass('hide');
