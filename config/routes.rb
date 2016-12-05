@@ -14,6 +14,8 @@ Rails.application.routes.draw do
     resources :schedules
     get 'sort', on: :collection
     post 'sort', on: :collection, action: :sort_update
+    patch 'deactivate'
+    patch 'activate'
   end
   resources :activities, only: %i(index create)
 

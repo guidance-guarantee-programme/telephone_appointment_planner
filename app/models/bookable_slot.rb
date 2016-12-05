@@ -75,6 +75,8 @@ class BookableSlot < ApplicationRecord
   def self.generate_for_guider(guider)
     where(guider: guider).delete_all
 
+    return unless guider.active?
+
     generation_range.each do |day|
       active_schedule = guider.schedules.active(day)
       next unless active_schedule

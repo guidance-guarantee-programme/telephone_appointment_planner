@@ -20,6 +20,7 @@ class User < ApplicationRecord
   has_many :activities, -> { order('created_at DESC') }, foreign_key: :owner_id
 
   scope :guiders, -> { where('permissions @> ?', %(["#{GUIDER_PERMISSION}"])) }
+  scope :active, -> { where(active: true) }
 
   def guider?
     has_permission?(GUIDER_PERMISSION)

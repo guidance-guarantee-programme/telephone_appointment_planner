@@ -18,6 +18,10 @@ FactoryGirl.define do
 
     factory :guider do
       permissions { Array(User::GUIDER_PERMISSION) }
+
+      factory :deactivated_guider do
+        active false
+      end
     end
 
     factory :agent do

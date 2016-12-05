@@ -2,6 +2,7 @@ module Sections
   class Calendar < SitePrism::Section
     elements :background_events, '.fc-bgevent'
     elements :events, '.fc-event'
+    elements :resource_cells, '.fc-resource-cell'
 
     def holidays
       background_events('holiday')
@@ -9,6 +10,10 @@ module Sections
 
     def slots
       background_events('slot')
+    end
+
+    def guiders
+      resource_cells.map(&:text)
     end
 
     private

@@ -33,6 +33,24 @@ RSpec.feature 'Resource manager manages guiders' do
     end
   end
 
+  scenario 'Deactivating a guider' do
+    given_the_user_is_a_resource_manager do
+      and_there_is_a_guider_with_bookable_slots
+      when_they_deactivate_the_guider
+      then_the_guider_is_not_active
+      and_they_have_no_bookable_slots
+    end
+  end
+
+  scenario 'Activating a deactivated guider' do
+    given_the_user_is_a_resource_manager do
+      and_there_is_a_deactivated_guider_with_bookable_slots
+      when_they_activate_the_guider
+      then_the_guider_is_active
+      and_they_have_bookable_slots
+    end
+  end
+
   def and_they_choose_to_remove_groups_from_multiple_guiders
     and_they_choose_to_add_groups_to_multiple_guiders
   end
@@ -99,5 +117,65 @@ RSpec.feature 'Resource manager manages guiders' do
       expect(guider).to have_groups(count: 1)
       expect(guider.groups.first).to have_text(@team_one.name)
     end
+  end
+
+  def and_there_is_a_guider_with_bookable_slots
+    @guider = create(:guider)
+
+    day = BusinessDays.from_now(5)
+    @guider.schedules.create(
+      start_at: day.beginning_of_day,
+      slots: [
+        build(:nine_thirty_slot, day_of_week: day.wday),
+        build(:four_fifteen_slot, day_of_week: day.wday)
+      ]
+    )
+
+    BookableSlot.generate_for_six_weeks
+  end
+
+  def when_they_deactivate_the_guider
+    @page = Pages::ManageGuiders.new.tap(&:load)
+    @page.deactivate.click
+  end
+
+  def then_the_guider_is_not_active
+    expect(@page).to have_flash_of_success
+    expect(@page.guiders.first).to_not have_active_icon
+    expect(@guider.reload.active).to be false
+  end
+
+  def and_they_have_no_bookable_slots
+    expect(@guider.bookable_slots).to be_empty
+  end
+
+  def and_there_is_a_deactivated_guider_with_bookable_slots
+    @guider = create(:guider, active: false)
+
+    day = BusinessDays.from_now(5)
+    @guider.schedules.create(
+      start_at: day.beginning_of_day,
+      slots: [
+        build(:nine_thirty_slot, day_of_week: day.wday),
+        build(:four_fifteen_slot, day_of_week: day.wday)
+      ]
+    )
+
+    BookableSlot.generate_for_six_weeks
+  end
+
+  def when_they_activate_the_guider
+    @page = Pages::ManageGuiders.new.tap(&:load)
+    @page.activate.click
+  end
+
+  def then_the_guider_is_active
+    expect(@page).to have_flash_of_success
+    expect(@page.guiders.first).to have_active_icon
+    expect(@guider.reload.active).to be true
+  end
+
+  def and_they_have_bookable_slots
+    expect(@guider.bookable_slots).to_not be_empty
   end
 end
