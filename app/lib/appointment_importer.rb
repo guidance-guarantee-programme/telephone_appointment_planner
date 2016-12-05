@@ -1,5 +1,5 @@
 class AppointmentImporter
-  FAKE_DATE_OF_BIRTH = '1950-01-01'.freeze
+  FAKE_DATE_OF_BIRTH = '1900-01-01'.freeze
 
   def initialize(row)
     @row = row

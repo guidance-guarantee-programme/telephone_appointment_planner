@@ -34,7 +34,7 @@ RSpec.feature 'Pension Wise imports historical data' do
         email: 'customer@email.com',
         phone: '0208 252 4729',
         mobile: '07715 930 459',
-        date_of_birth: Date.parse('1950-01-01'),
+        date_of_birth: Date.parse('1900-01-01'),
         memorable_word: 'Memorable Word',
         status: 'complete',
         notes: 'This was good.',
