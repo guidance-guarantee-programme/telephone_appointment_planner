@@ -18,6 +18,18 @@ class BookableSlot < ApplicationRecord
     BusinessDays.from_now(2)
   end
 
+  def self.find_available_slot(start_at, end_at)
+    without_appointments_or_holidays(start_at, end_at)
+      .sample(1)
+      .first
+  end
+
+  def self.without_appointments_or_holidays(start_at, end_at)
+    without_appointments
+      .without_holidays
+      .where(start_at: start_at, end_at: end_at)
+  end
+
   # rubocop:disable Metrics/MethodLength
   def self.without_appointments
     joins(<<-SQL

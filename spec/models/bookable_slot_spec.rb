@@ -221,21 +221,19 @@ RSpec.describe BookableSlot, type: :model do
             start_at: start_at,
             end_at: end_at
           )
-          expect(result).to eq(
-            [
-              {
-                guiders: 1,
-                start: start_at,
-                end: end_at,
-                selected: false
-              },
-              {
-                guiders: 3,
-                start: make_time(10, 30),
-                end: make_time(11, 30),
-                selected: false
-              }
-            ]
+
+          expect(result.count).to eq 2
+          expect(result).to include(
+            guiders: 3,
+            start: make_time(10, 30),
+            end: make_time(11, 30),
+            selected: false
+          )
+          expect(result).to include(
+            guiders: 1,
+            start: start_at,
+            end: end_at,
+            selected: false
           )
         end
       end

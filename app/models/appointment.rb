@@ -16,11 +16,17 @@ class Appointment < ApplicationRecord
 
   belongs_to :rebooked_from, class_name: Appointment
 
-  scope :needing_reminder, lambda {
+  def self.needing_reminder
     pending
-      .where('start_at < ?', 1.day.from_now)
-      .where.not(email: nil)
-  }
+      .includes(:activities)
+      .where(start_at: Time.zone.now..24.hours.from_now)
+      .where.not(
+        email: nil,
+        activities: {
+          type: 'ReminderActivity', created_at: 12.hours.ago..12.hours.from_now
+        }
+      )
+  end
 
   validates :agent, presence: true
   validates :start_at, presence: true
@@ -64,12 +70,7 @@ class Appointment < ApplicationRecord
   end
 
   def assign_to_guider
-    slot = BookableSlot
-           .without_appointments
-           .without_holidays
-           .where(start_at: start_at, end_at: end_at)
-           .sample(1)
-           .first
+    slot = BookableSlot.find_available_slot(start_at, end_at)
     self.guider = nil
     self.guider = slot.guider if slot
   end
@@ -91,11 +92,7 @@ class Appointment < ApplicationRecord
   end
 
   def can_be_rescheduled_by?(user)
-    if user.resource_manager?
-      true
-    else
-      start_at >= BusinessDays.from_now(2)
-    end
+    user.resource_manager? || start_at >= BusinessDays.from_now(2)
   end
 
   private
