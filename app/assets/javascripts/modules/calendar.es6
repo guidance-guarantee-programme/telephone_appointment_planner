@@ -53,7 +53,6 @@ class Calendar extends TapBase {
 
     this.insertJumpToDate();
     this.addAccessibilityImprovements();
-    this.insertLoadingView();
   }
 
   insertLoadingView() {
@@ -135,6 +134,10 @@ class Calendar extends TapBase {
   }
 
   loading(isLoading) {
+    if (!this.calendarLoadingView) {
+      this.insertLoadingView();
+    }
+
     if (isLoading && this.calendarLoadingView) {
       this.calendarLoadingView.removeClass('hide');
     } else if(this.calendarLoadingView) {
