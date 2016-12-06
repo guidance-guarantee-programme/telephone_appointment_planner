@@ -18,7 +18,6 @@ module Sections
 
     private
 
-    # rubocop:disable Metrics/MethodLength
     def background_events(event_type)
       page.evaluate_script(<<-JS).map(&:with_indifferent_access)
         function() {
