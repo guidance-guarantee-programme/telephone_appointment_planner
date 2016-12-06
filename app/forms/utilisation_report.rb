@@ -38,7 +38,7 @@ class UtilisationReport
 
   def bookable_and_blocked(day_range)
     slots = BookableSlot.within_date_range(day_range.begin, day_range.end)
-    bookable = slots.without_appointments.without_holidays.count
+    bookable = slots.bookable.count
     blocked = slots.count - bookable
     [bookable, blocked]
   end
