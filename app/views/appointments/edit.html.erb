@@ -3,6 +3,18 @@
   { title: "Edit appointment for #{@appointment.name}" }
 ) %>
 
+<% if @appointment.imported? %>
+  <div class="alert alert-warning t-appointment-was-imported-message" role="alert">
+    <p>
+      This appointment was automatically imported from Booking Bug,
+      which means that the date of birth is not valid.
+    </p>
+    <p>
+      Please refer to the date of birth in the notes field.
+    </p>
+  </div>
+<% end %>
+
 <div class="row">
   <div class="col-md-9">
     <h1>Edit appointment for <%= @appointment.name %> <span class="text-muted"><span class="sr-only">Booking reference </span>#<%= @appointment.id %></span></h1>

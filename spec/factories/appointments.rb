@@ -13,5 +13,9 @@ FactoryGirl.define do
     memorable_word 'lozenge'
     date_of_birth '1945-01-01'
     guider { create(:guider) }
+
+    factory :imported_appointment do
+      date_of_birth AppointmentImporter::FAKE_DATE_OF_BIRTH
+    end
   end
 end

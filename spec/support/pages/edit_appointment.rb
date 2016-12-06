@@ -2,7 +2,8 @@ module Pages
   class EditAppointment < Base
     set_url '/appointments/{id}/edit'
 
-    element :flash_of_success, '.alert-success'
+    element :flash_of_success,                      '.alert-success'
+    element :appointment_was_imported_message,      '.t-appointment-was-imported-message'
     element :guider,                                '.t-guider'
     element :date_time,                             '.t-appointment-date-time'
     element :created_date,                          '.t-created-date'
