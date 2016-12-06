@@ -18,6 +18,19 @@ class BookableSlot < ApplicationRecord
     BusinessDays.from_now(2)
   end
 
+  def self.find_available_slot(start_at, end_at)
+    bookable
+      .where(start_at: start_at, end_at: end_at)
+      .limit(1)
+      .order('RANDOM()')
+      .first
+  end
+
+  def self.bookable
+    without_appointments
+      .without_holidays
+  end
+
   # rubocop:disable Metrics/MethodLength
   def self.without_appointments
     joins(<<-SQL
@@ -62,8 +75,7 @@ class BookableSlot < ApplicationRecord
 
   def self.with_guider_count(user, from, to)
     select("DISTINCT #{quoted_table_name}.start_at, #{quoted_table_name}.end_at, count(1) AS guiders")
-      .without_appointments
-      .without_holidays
+      .bookable
       .starting_after_next_valid_start_date(user)
       .group("#{quoted_table_name}.start_at, #{quoted_table_name}.end_at")
       .within_date_range(from, to)

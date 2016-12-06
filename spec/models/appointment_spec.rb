@@ -248,4 +248,56 @@ RSpec.describe Appointment, type: :model do
       end
     end
   end
+
+  describe '.needing_reminder' do
+    let(:appointment) do
+      create(
+        :appointment,
+        start_at: BusinessDays.from_now(10)
+      )
+    end
+
+    context 'more than 24 hours until appointment' do
+      it 'does not need a reminder' do
+        expect(Appointment.needing_reminder).to_not include(appointment)
+      end
+    end
+
+    context 'less than 24 hours until appointment' do
+      let(:result) do
+        travel_to(appointment.start_at - 5.hours) do
+          Appointment.needing_reminder
+        end
+      end
+
+      it 'needs a reminder' do
+        expect(result).to include(appointment)
+      end
+
+      context 'appointment has no email address' do
+        it 'does not need a reminder' do
+          appointment.update!(email: nil)
+          expect(result).to_not include(appointment)
+        end
+      end
+
+      context 'appointment is not pending' do
+        it 'does not need a reminder' do
+          appointment.update!(status: 'cancelled_by_customer')
+          expect(result).to_not include(appointment)
+        end
+      end
+
+      context 'appointment has been rescheduled' do
+        it 'needs another reminder' do
+          appointment.update!(
+            start_at: BusinessDays.from_now(20),
+            end_at:   BusinessDays.from_now(20) + 1.hour
+          )
+
+          expect(result).to include(appointment)
+        end
+      end
+    end
+  end
 end

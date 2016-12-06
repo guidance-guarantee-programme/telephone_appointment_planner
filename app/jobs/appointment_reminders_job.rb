@@ -3,11 +3,7 @@ class AppointmentRemindersJob < ApplicationJob
 
   def perform
     Appointment.needing_reminder.each do |appointment|
-      sent_in_current_period = ReminderActivity.exists?(
-        appointment: appointment,
-        created_at: 12.hours.ago..12.hours.from_now
-      )
-      AppointmentReminderJob.perform_later(appointment) unless sent_in_current_period
+      AppointmentReminderJob.perform_later(appointment)
     end
   end
 end
