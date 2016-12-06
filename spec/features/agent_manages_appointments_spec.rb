@@ -96,6 +96,14 @@ RSpec.feature 'Agent manages appointments' do
     end
   end
 
+  scenario 'Agent sees that the appointment was imported' do
+    given_the_user_is_an_agent do
+      and_there_is_an_imported_appointment
+      when_they_edit_the_appointment
+      then_they_see_that_the_appointment_was_imported
+    end
+  end
+
   def and_there_is_a_guider_with_available_slots
     @guider = create(:guider)
     slots = [
@@ -261,5 +269,18 @@ RSpec.feature 'Agent manages appointments' do
     expect(deliveries.first.body.encoded).to include(
       'Our records show that your Pension Wise telephone appointment was missed'
     )
+  end
+
+  def and_there_is_an_imported_appointment
+    @appointment = create(:imported_appointment)
+  end
+
+  def when_they_edit_the_appointment
+    @page = Pages::EditAppointment.new
+    @page.load(id: @appointment.id)
+  end
+
+  def then_they_see_that_the_appointment_was_imported
+    expect(@page).to have_appointment_was_imported_message
   end
 end
