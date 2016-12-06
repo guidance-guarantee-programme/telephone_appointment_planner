@@ -17,7 +17,10 @@ class HolidaysController < ApplicationController
   end
 
   def new
-    @holiday = BatchUpsertHolidays.new
+    @holiday = BatchUpsertHolidays.new(
+      start_at: Time.zone.now,
+      end_at: Time.zone.now
+    )
   end
 
   def create
@@ -79,20 +82,22 @@ class HolidaysController < ApplicationController
       .merge(bank_holiday: false)
   end
 
-  def batch_create_params
+  def batch_create_params # rubocop:disable Metrics/MethodLength
     params
       .require(:holiday)
       .permit(
         :title,
         :all_day,
-        :start_at,
-        :end_at
+        :single_day_start_at,
+        :single_day_end_at,
+        :multi_day_start_at,
+        :multi_day_end_at
       )
       .merge(users: user_ids)
   end
 
   def user_ids
-    params[:holiday][:users] || []
+    params[:holiday][:users].select(&:present?)
   end
 
   def starts

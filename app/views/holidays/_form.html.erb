@@ -23,14 +23,14 @@
       <%= form.check_box :all_day, label: 'This holiday lasts for multiple days', value: 'true', class: 'js-multi-day t-multi-day' %>
     </div>
   </div>
-  <div class="row js-multi-day-container t-multi-day-container">
+  <div class="row js-multi-day-container t-multi-day-container" style="display: none;">
     <div class="col-md-6">
       <%=
         form.text_field(
-          :start_at,
+          :multi_day_start_at,
           label: 'Date from',
           class: 't-start-at',
-          value: build_date_range_picker_date(holiday.start_at),
+          value: build_date_range_picker_date(holiday.multi_day_start_at),
           data: {
             module: 'date-range-picker',
             config: {
@@ -45,10 +45,10 @@
       %>
       <%=
         form.text_field(
-          :end_at,
+          :multi_day_end_at,
           label: 'Date to',
           class: 't-end-at',
-          value: build_date_range_picker_date(holiday.end_at),
+          value: build_date_range_picker_date(holiday.multi_day_end_at),
           data: {
             module: 'date-range-picker',
             config: {
@@ -64,13 +64,13 @@
     </div>
   </div>
 
-  <div class="row js-single-day-container t-single-day-container">
+  <div class="row js-single-day-container t-single-day-container" style="display: none;">
     <div class="col-md-6">
       <%=
         form.text_field(
-          :start_at,
+          :single_day_start_at,
           label: 'Date',
-          value: build_date_range_picker_date(holiday.start_at),
+          value: build_date_range_picker_date(holiday.single_day_start_at),
           class: 't-date',
           data: {
             module: 'date-range-picker',
@@ -86,15 +86,19 @@
       %>
     </div>
     <div class="col-md-12">
-      <div class="form-group">
-        <label>Start</label>
-        <!-- TODO: fix these labels -->
-        <%= form.time_select :start_at, { minute_step: 5 }, class: 'form-control', style: 'width: 65px; display: inline-block;' %>
+      <div class="form-group holiday-single-day-group">
+        <%= form.label :single_day_start_at, 'Start', class: 'holiday-single-day-group__label' %>
+        <%= form.time_select :single_day_start_at, { minute_step: 5 }, class: 'form-control', style: 'width: 65px; display: inline-block;' %>
 
-        <!-- TODO: fix these labels -->
-        <label style="margin-left: 10px">End</label>
-        <%= form.time_select :end_at, { minute_step: 5 }, class: 'form-control', style: 'width: 65px; display: inline-block;' %>
+        <%= form.label :single_day_end_at, 'End', class: 'holiday-single-day-group__label', style: 'margin-left: 10px' %>
+        <%= form.time_select :single_day_end_at, { minute_step: 5 }, class: 'form-control', style: 'width: 65px; display: inline-block;' %>
       </div>
+
+      <% if form.object.errors[:single_day_end_at].any? %>
+        <div class="has-error">
+          <span class="help-block text-left"><%= form.object.errors[:single_day_end_at].first %></span>
+        </div>
+      <% end %>
     </div>
   </div>
   <div class="row">

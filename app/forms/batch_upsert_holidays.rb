@@ -9,8 +9,14 @@ class BatchUpsertHolidays
   attr_reader :start_at
   attr_reader :end_at
 
+  alias single_day_start_at start_at
+  alias single_day_end_at end_at
+  alias multi_day_start_at start_at
+  alias multi_day_end_at end_at
+
   validates :title, presence: true
   validates :users, presence: true
+  validate :end_at_comes_after_start_at
 
   def initialize(options = {})
     @previous_holidays = options[:previous_holidays]
@@ -41,8 +47,8 @@ class BatchUpsertHolidays
   private
 
   def calculate_range(options)
-    @start_at = options[:start_at] || Time.zone.now
-    @end_at = options[:end_at] || Time.zone.now
+    @start_at = options[:start_at]
+    @end_at = options[:end_at]
 
     return if @start_at.is_a?(ActiveSupport::TimeWithZone) && @end_at.is_a?(ActiveSupport::TimeWithZone)
 
@@ -54,14 +60,14 @@ class BatchUpsertHolidays
   end
 
   def calculate_all_day_range(options)
-    @start_at = strp_date_range_picker_date(options[:start_at])
-    @end_at   = strp_date_range_picker_date(options[:end_at]).end_of_day
+    @start_at = strp_date_range_picker_date(options[:multi_day_start_at])
+    @end_at   = strp_date_range_picker_date(options[:multi_day_end_at]).end_of_day
   end
 
   def calculate_one_day_range(options)
-    date      = strp_date_range_picker_date(options[:start_at])
-    @start_at = date.change(hour: options[:'start_at(4i)'], min: options[:'start_at(5i)'])
-    @end_at   = date.change(hour: options[:'end_at(4i)'], min: options[:'end_at(5i)'])
+    date      = strp_date_range_picker_date(options[:single_day_start_at])
+    @start_at = date.change(hour: options[:'single_day_start_at(4i)'], min: options[:'single_day_start_at(5i)'])
+    @end_at   = date.change(hour: options[:'single_day_end_at(4i)'], min: options[:'single_day_end_at(5i)'])
   end
 
   def create_holidays
@@ -81,5 +87,14 @@ class BatchUpsertHolidays
       start_at: start_at,
       end_at: end_at
     )
+  end
+
+  def end_at_comes_after_start_at
+    return if end_at > start_at
+    if all_day
+      errors.add(:multi_day_end_at, 'must come after date from')
+    else
+      errors.add(:single_day_end_at, 'must come after start')
+    end
   end
 end

@@ -1,0 +1,9 @@
+.holiday-single-day-group {
+  .field_with_errors { // scss-lint:disable SelectorFormat
+    display: inline;
+  }
+
+  .holiday-single-day-group__label {
+    display: inline-block;
+  }
+}
