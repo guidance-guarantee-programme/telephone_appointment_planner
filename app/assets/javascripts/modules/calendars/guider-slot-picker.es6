@@ -66,6 +66,8 @@
     }
 
     eventRender(event, element) {
+      super.eventRender(event, element);
+
       if ($.inArray(event.start.format(this.initialDateTimeFormat), this.initialEventDateTimes) === -1) {
         this.setUnloadEvent();
       }

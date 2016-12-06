@@ -165,6 +165,8 @@ class CompanyCalendar extends Calendar {
   }
 
   eventRender(event, element, view) {
+    super.eventRender(event, element, view);
+
     $(element).attr('id', event.id);
 
     if (view.type === 'agendaDay') {
