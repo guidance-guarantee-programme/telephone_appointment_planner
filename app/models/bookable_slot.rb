@@ -21,7 +21,8 @@ class BookableSlot < ApplicationRecord
   def self.find_available_slot(start_at, end_at)
     bookable
       .where(start_at: start_at, end_at: end_at)
-      .sample(1)
+      .limit(1)
+      .order('RANDOM()')
       .first
   end
 
