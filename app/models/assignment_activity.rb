@@ -1,4 +1,18 @@
 class AssignmentActivity < Activity
+  ASSIGNED = 'assigned'.freeze
+
+  def message
+    if allocated?(super)
+      "#{owner.name} was allocated a new appointment"
+    else
+      "#{user_name} allocated this appointment to #{owner.name}"
+    end
+  end
+
+  def allocated?(type)
+    type == ASSIGNED
+  end
+
   def self.from(audit, appointment)
     if audit.action == 'create'
       create_assignment(audit, appointment)
@@ -10,7 +24,7 @@ class AssignmentActivity < Activity
   def self.create_assignment(audit, appointment)
     activity = create!(
       user_id: audit.user_id,
-      message: 'assigned',
+      message: ASSIGNED,
       appointment: appointment,
       owner: appointment.guider
     )

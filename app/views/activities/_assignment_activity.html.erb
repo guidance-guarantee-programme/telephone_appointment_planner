@@ -1,4 +1,4 @@
 <% content_for(:activity_message, flush: true) do %>
-  <%= assignment_activity.message %> to <%= assignment_activity.owner.name %>
+  <%= assignment_activity.message %>
 <% end %>
 <%= render 'activities/activity', activity: assignment_activity, details: details %>

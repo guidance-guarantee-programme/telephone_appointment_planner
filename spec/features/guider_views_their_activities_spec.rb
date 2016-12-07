@@ -47,8 +47,8 @@ RSpec.feature 'Guider views their activities' do
 
   def then_they_see_all_activities
     expect(@page.activities.map(&:text)).to match_array [
-      a_string_including('assigned'),
-      a_string_including('assigned'),
+      a_string_including('allocated a new'),
+      a_string_including('allocated a new'),
       a_string_including('created'),
       a_string_including('created')
     ]
