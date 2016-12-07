@@ -8,8 +8,22 @@ RSpec.feature 'Agent manages appointments' do
       and_there_is_a_guider_with_available_slots
       when_they_want_to_book_an_appointment
       and_they_fill_in_their_appointment_details
+      then_they_see_a_preview_of_the_appointment
+      when_they_accept_the_appointment_preview
       then_that_appointment_is_created
       and_the_customer_gets_an_email_confirmation
+    end
+  end
+
+  scenario 'Agents goes back to edit appointment when previewing' do
+    given_the_user_is_an_agent do
+      and_there_is_a_guider_with_available_slots
+      when_they_want_to_book_an_appointment
+      and_they_fill_in_their_appointment_details
+      when_they_go_back_to_edit_their_appointment
+      and_they_change_some_details
+      when_they_accept_the_appointment_preview
+      then_the_appointment_is_created_with_the_changed_details
     end
   end
 
@@ -18,6 +32,7 @@ RSpec.feature 'Agent manages appointments' do
       and_there_is_a_guider_with_available_slots
       when_they_want_to_book_an_appointment
       and_they_fill_in_their_appointment_details_without_an_email
+      when_they_accept_the_appointment_preview
       then_the_customer_does_not_get_an_email_confirmation
     end
   end
@@ -119,6 +134,9 @@ RSpec.feature 'Agent manages appointments' do
   end
 
   def fill_in_appointment_details(options = {})
+    @page.date_of_birth_day.set '23'
+    @page.date_of_birth_month.set '10'
+    @page.date_of_birth_year.set '1950'
     @page.first_name.set 'Some'
     @page.last_name.set 'Person'
     @page.email.set options[:email] || 'email@example.org'
@@ -126,18 +144,34 @@ RSpec.feature 'Agent manages appointments' do
     @page.mobile.set '1111111'
     @page.memorable_word.set 'lozenge'
     @page.notes.set 'something'
-    @page.date_of_birth_day.set '23'
-    @page.date_of_birth_month.set '10'
-    @page.date_of_birth_year.set '1950'
     @page.opt_out_of_market_research.set true
     @page.start_at.set day.change(hour: 9, min: 30).to_s
     @page.end_at.set day.change(hour: 10, min: 40).to_s
 
-    @page.save.click
+    @page.preview_appointment.click
   end
 
   def and_they_fill_in_their_appointment_details
     fill_in_appointment_details
+  end
+
+  def then_they_see_a_preview_of_the_appointment
+    @page = Pages::PreviewAppointment.new
+    expect(@page).to be_displayed
+
+    expect(@page.preview).to have_content 'Date: 14 December 2016'
+    expect(@page.preview).to have_content 'Start at: 9:30am'
+    expect(@page.preview).to have_content 'Duration: 45 minutes'
+
+    expect(@page.preview).to have_content 'Date of birth: 23 October 1950'
+    expect(@page.preview).to have_content 'First name: Some'
+    expect(@page.preview).to have_content 'Last name: Person'
+    expect(@page.preview).to have_content 'Email: email@example.org'
+    expect(@page.preview).to have_content 'Phone: 0000000'
+    expect(@page.preview).to have_content 'Mobile: 1111111'
+    expect(@page.preview).to have_content 'Memorable word: lozenge'
+    expect(@page.preview).to have_content 'Notes: something'
+    expect(@page.preview).to have_content 'Opt out of market research: yes'
   end
 
   def and_they_fill_in_their_appointment_details_without_an_email
@@ -151,12 +185,12 @@ RSpec.feature 'Agent manages appointments' do
 
     expect(appointment.agent).to eq current_user
     expect(appointment.guider).to eq @guider
+    expect(appointment.date_of_birth.to_s).to eq '1950-10-23'
     expect(appointment.first_name).to eq 'Some'
     expect(appointment.last_name).to eq 'Person'
     expect(appointment.email).to eq 'email@example.org'
     expect(appointment.phone).to eq '0000000'
     expect(appointment.mobile).to eq '1111111'
-    expect(appointment.date_of_birth.to_s).to eq '1950-10-23'
     expect(appointment.memorable_word).to eq 'lozenge'
     expect(appointment.notes).to eq 'something'
     expect(appointment.opt_out_of_market_research).to eq true
@@ -188,6 +222,59 @@ RSpec.feature 'Agent manages appointments' do
 
   def when_they_want_to_book_an_appointment
     @page = Pages::NewAppointment.new.tap(&:load)
+  end
+
+  def when_they_accept_the_appointment_preview
+    @page = Pages::PreviewAppointment.new
+    expect(@page).to be_displayed
+    @page.confirm_appointment.click
+  end
+
+  def when_they_go_back_to_edit_their_appointment
+    @page = Pages::PreviewAppointment.new
+    expect(@page).to be_displayed
+    @page.edit_appointment.click
+  end
+
+  def and_they_change_some_details
+    @page = Pages::NewAppointment.new
+
+    @page.date_of_birth_day.set '26'
+    @page.date_of_birth_month.set '12'
+    @page.date_of_birth_year.set '1949'
+    @page.first_name.set 'Another'
+    @page.last_name.set 'Name'
+    @page.email.set 'something@example.org'
+    @page.phone.set '99999999'
+    @page.mobile.set '8888888'
+    @page.memorable_word.set 'orange'
+    @page.notes.set 'no notes'
+    @page.opt_out_of_market_research.set false
+    @page.start_at.set day.change(hour: 9, min: 30).to_s
+    @page.end_at.set day.change(hour: 10, min: 40).to_s
+
+    @page.preview_appointment.click
+  end
+
+  def then_the_appointment_is_created_with_the_changed_details
+    @guider.reload
+    expect(Appointment.count).to eq 1
+    appointment = Appointment.first
+
+    expect(appointment.agent).to eq current_user
+    expect(appointment.guider).to eq @guider
+    expect(appointment.date_of_birth.to_s).to eq '1949-12-26'
+    expect(appointment.first_name).to eq 'Another'
+    expect(appointment.last_name).to eq 'Name'
+    expect(appointment.email).to eq 'something@example.org'
+    expect(appointment.phone).to eq '99999999'
+    expect(appointment.mobile).to eq '8888888'
+    expect(appointment.memorable_word).to eq 'orange'
+    expect(appointment.notes).to eq 'no notes'
+    expect(appointment.opt_out_of_market_research).to eq false
+    expect(appointment.start_at).to eq day.change(hour: 9, min: 30).to_s
+    expect(appointment.status).to eq 'pending'
+    expect(appointment.end_at).to eq day.change(hour: 10, min: 40).to_s
   end
 
   def and_there_is_an_appointment
