@@ -1,0 +1,88 @@
+<%=
+  breadcrumb(
+    { title: 'Book an appointment', path: new_appointment_path },
+    { title: 'Preview' },
+  )
+%>
+
+<h1>Preview appointment</h1>
+
+<%= rebooked_from_heading(@appointment) %>
+
+<div class="alert alert-warning">
+  This appointment has not been created yet. Please confirm the details are correct before proceeding.
+</div>
+
+<%= form_for @appointment, layout: :basic do |f| %>
+  <%= f.hidden_field :rebooked_from_id %>
+  <%= f.hidden_field :date_of_birth %>
+  <%= f.hidden_field :start_at %>
+  <%= f.hidden_field :end_at %>
+
+  <%= f.hidden_field :first_name %>
+  <%= f.hidden_field :last_name %>
+  <%= f.hidden_field :email %>
+  <%= f.hidden_field :phone %>
+  <%= f.hidden_field :mobile %>
+  <%= f.hidden_field :memorable_word %>
+  <%= f.hidden_field :notes %>
+  <%= f.hidden_field :opt_out_of_market_research %>
+  <%= f.hidden_field :status %>
+
+  <div class="t-preview">
+    <ul class="list-group">
+      <li class="list-group-item">
+        <div><strong>Date:</strong></div>
+        <%= @appointment.start_at.to_date.to_s(:govuk_date) %>
+      </li>
+      <li class="list-group-item">
+        <div><strong>Start at:</strong></div>
+        <%= @appointment.start_at.to_time.to_s(:govuk_time) %>
+      </li>
+      <li class="list-group-item">
+        <div><strong>Duration:</strong></div>
+        45 minutes
+      </li>
+    </ul>
+    <ul class="list-group">
+      <li class="list-group-item">
+        <div><strong>Date of birth:</strong></div>
+        <%= @appointment.date_of_birth.to_date.to_s(:govuk_date)%>
+      </li>
+      <li class="list-group-item">
+        <div><strong>First name:</strong></div>
+        <%= @appointment.first_name %>
+      </li>
+      <li class="list-group-item">
+        <div><strong>Last name:</strong></div>
+        <%= @appointment.last_name %>
+      </li>
+      <li class="list-group-item">
+        <div><strong>Email:</strong></div>
+        <%= @appointment.email %>
+      </li>
+      <li class="list-group-item">
+        <div><strong>Phone:</strong></div>
+        <%= @appointment.phone %>
+      </li>
+      <li class="list-group-item">
+        <div><strong>Mobile:</strong></div>
+        <%= @appointment.mobile %>
+      </li>
+      <li class="list-group-item">
+        <div><strong>Memorable word:</strong></div>
+        <%= @appointment.memorable_word %>
+      </li>
+      <li class="list-group-item">
+        <div><strong>Notes:</strong></div>
+        <%= @appointment.notes %>
+      </li>
+      <li class="list-group-item">
+        <div><strong>Opt out of market research:</strong></div>
+        <%= @appointment.opt_out_of_market_research ? 'yes' : 'no' %>
+      </li>
+    </ul>
+  </div>
+  <%= f.submit 'Confirm appointment', class: 't-confirm-appointment' %>
+  <%= f.submit 'Edit appointment', name: :edit_appointment, class: 'btn-danger t-edit-appointment' %>
+<% end %>

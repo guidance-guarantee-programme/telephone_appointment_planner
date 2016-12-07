@@ -4,7 +4,7 @@
 <%= rebooked_from_heading(@appointment) %>
 
 <%= render 'shared/required_fields_note' %>
-<%= form_for @appointment, layout: :basic do |f| %>
+<%= form_for @appointment, url: preview_appointments_path, layout: :basic do |f| %>
   <%= f.hidden_field :rebooked_from_id %>
   <div class="row form-group">
     <div class="col-md-12">
@@ -18,7 +18,7 @@
   <%= render partial: 'personal_details_form', locals: { f: f } %>
   <div class="row form-group">
     <div class="col-md-12">
-      <%= f.submit "Confirm appointment", class: 't-save' %>
+      <%= f.submit "Preview appointment", class: 't-preview-appointment' %>
     </div>
   </div>
 <% end %>

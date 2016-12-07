@@ -50,10 +50,21 @@ class AppointmentsController < ApplicationController
     @appointment = Appointment.copy_or_new_by(params[:copy_from])
   end
 
+  def preview
+    @appointment = Appointment.new(create_params.merge(agent: current_user))
+    @appointment.assign_to_guider
+    if @appointment.valid?
+      render :preview
+    else
+      render :new
+    end
+  end
+
   def create
     @appointment = Appointment.new(create_params.merge(agent: current_user))
     @appointment.assign_to_guider
-    if @appointment.save
+
+    if creating? && @appointment.save
       AppointmentMailer.confirmation(@appointment).deliver_later
       redirect_to(search_appointments_path, success: 'Appointment has been created')
     else
@@ -130,5 +141,9 @@ class AppointmentsController < ApplicationController
 
   def update_reschedule_params
     params.require(:appointment).permit(:start_at, :end_at)
+  end
+
+  def creating?
+    params[:edit_appointment].nil?
   end
 end

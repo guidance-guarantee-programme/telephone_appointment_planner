@@ -15,7 +15,7 @@ module Pages
     element :opt_out_of_market_research,            '.t-opt-out-of-market-research'
     element :start_at,                              '.t-start-at', visible: false
     element :end_at,                                '.t-end-at', visible: false
-    element :save,                                  '.t-save'
+    element :preview_appointment,                   '.t-preview-appointment'
     element :slot_unavailable_message,              '.t-slot-unavailable-message'
     element :original_appointment,                  '.t-original-appointment'
   end
