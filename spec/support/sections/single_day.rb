@@ -1,10 +1,10 @@
 module Sections
   class SingleDay < SitePrism::Section
     element :date, '.t-date'
-    element :start_at_hour, '#holiday_start_at_4i'
-    element :start_at_minute, '#holiday_start_at_5i'
-    element :end_at_hour, '#holiday_end_at_4i'
-    element :end_at_minute, '#holiday_end_at_5i'
+    element :start_at_hour, '#holiday_single_day_start_at_4i'
+    element :start_at_minute, '#holiday_single_day_start_at_5i'
+    element :end_at_hour, '#holiday_single_day_end_at_4i'
+    element :end_at_minute, '#holiday_single_day_end_at_5i'
 
     def set_date_range(start_at, end_at)
       date.set I18n.l(start_at, format: :date_range_picker)

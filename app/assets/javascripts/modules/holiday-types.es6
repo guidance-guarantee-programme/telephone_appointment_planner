@@ -17,8 +17,8 @@
 
     toggleVisibility() {
       if (this.$multiDayCheckbox.prop('checked')) {
-        this.show(this.$multiDay);
         this.hide(this.$singleDay);
+        this.show(this.$multiDay);
       } else {
         this.hide(this.$multiDay);
         this.show(this.$singleDay);
