@@ -20,7 +20,8 @@
         eventDataTransform: this.eventDataTransform,
         eventSources: [
           {
-            url: '/appointments?mine'
+            url: '/appointments?mine',
+            cache: true
           },
           {
             url: '/bookable_slots?mine',
