@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161202164324) do
+ActiveRecord::Schema.define(version: 20161208205325) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(version: 20161202164324) do
     t.datetime "updated_at",                                 null: false
     t.integer  "agent_id",                                   null: false
     t.integer  "rebooked_from_id"
+    t.index ["start_at"], name: "index_appointments_on_start_at", using: :btree
   end
 
   create_table "audits", force: :cascade do |t|
