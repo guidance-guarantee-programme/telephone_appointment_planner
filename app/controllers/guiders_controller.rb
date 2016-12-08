@@ -1,5 +1,7 @@
 class GuidersController < ApplicationController
   def index
-    render json: User.guiders.active
+    @guiders = User.guiders.active
+
+    render json: @guiders if stale?(@guiders)
   end
 end
