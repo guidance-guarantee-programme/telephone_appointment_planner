@@ -32,11 +32,9 @@ class AppointmentReport
   end
 
   def generate
-    field = where.to_sym
-    appointments = Appointment.all.order(field)
-    appointments = appointments.where(field => range) if range
     CSV.generate do |csv|
       csv << EXPORTABLE_ATTRIBUTES
+
       appointments.each do |appointment|
         presenter = AppointmentCsvPresenter.new(appointment)
         csv << EXPORTABLE_ATTRIBUTES.map { |a| presenter.public_send(a) }
@@ -46,5 +44,12 @@ class AppointmentReport
 
   def file_name
     "report-#{range_title}#{where}.csv"
+  end
+
+  private
+
+  def appointments
+    appointments = Appointment.includes(:agent, :guider).order(where)
+    appointments.where(where => range) if range
   end
 end
