@@ -159,7 +159,7 @@ RSpec.feature 'Agent manages appointments' do
     @page = Pages::PreviewAppointment.new
     expect(@page).to be_displayed
 
-    expect(@page.preview).to have_content 'Date: 14 December 2016'
+    expect(@page.preview).to have_content "Date: #{day.to_date.to_s(:govuk_date)}"
     expect(@page.preview).to have_content 'Start at: 9:30am'
     expect(@page.preview).to have_content 'Duration: 45 minutes'
 
