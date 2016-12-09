@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161208205325) do
+ActiveRecord::Schema.define(version: 20161209113503) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -73,9 +73,11 @@ ActiveRecord::Schema.define(version: 20161208205325) do
   end
 
   create_table "bookable_slots", force: :cascade do |t|
-    t.integer  "guider_id", null: false
-    t.datetime "start_at",  null: false
-    t.datetime "end_at",    null: false
+    t.integer  "guider_id",  null: false
+    t.datetime "start_at",   null: false
+    t.datetime "end_at",     null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["guider_id"], name: "index_bookable_slots_on_guider_id", using: :btree
   end
 

@@ -1,10 +1,8 @@
 class BookableSlotsController < ApplicationController
   def index
-    slots = BookableSlot
-            .without_holidays
-            .within_date_range(start_at, end_at)
-    slots = slots.for_guider(current_user) if scoped_to_me?
-    render json: slots
+    @bookable_slots = bookable_slots
+
+    render json: @bookable_slots if stale?(@bookable_slots)
   end
 
   def available
@@ -20,6 +18,15 @@ class BookableSlotsController < ApplicationController
   end
 
   private
+
+  def bookable_slots
+    slots = BookableSlot
+            .without_holidays
+            .within_date_range(start_at, end_at)
+
+    slots = slots.for_guider(current_user) if scoped_to_me?
+    slots
+  end
 
   def start_at
     params[:start].to_date.beginning_of_day
