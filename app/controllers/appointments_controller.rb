@@ -11,7 +11,7 @@ class AppointmentsController < ApplicationController
   def index
     @appointments = appointment_scope.where(start_at: date_range_params)
 
-    render json: @appointments
+    render json: @appointments if stale?(@appointments)
   end
 
   def edit

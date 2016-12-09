@@ -26,7 +26,8 @@ class CompanyCalendar extends Calendar {
       eventTextColor: '#fff',
       eventSources: [
         {
-          url: '/appointments'
+          url: '/appointments',
+          cache: true
         },
         {
           url: '/holidays',
