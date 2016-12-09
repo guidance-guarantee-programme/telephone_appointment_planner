@@ -1,5 +1,3 @@
-dist: trusty
-group: beta
 sudo: false
 language: ruby
 addons:
