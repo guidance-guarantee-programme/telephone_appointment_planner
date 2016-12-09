@@ -25,6 +25,7 @@
           },
           {
             url: '/bookable_slots?mine',
+            cache: true,
             className: 'fc-bgevent--bookable-slot',
             rendering: 'background',
             eventType: 'slot'

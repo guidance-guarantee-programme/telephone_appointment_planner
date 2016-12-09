@@ -37,6 +37,7 @@ class CompanyCalendar extends Calendar {
         },
         {
           url: '/bookable_slots',
+          cache: true,
           className: 'fc-bgevent--bookable-slot',
           rendering: 'background',
           eventType: 'slot'

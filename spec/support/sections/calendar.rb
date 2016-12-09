@@ -13,6 +13,8 @@ module Sections
     end
 
     def guiders
+      wait_until_resource_cells_visible
+
       resource_cells.map(&:text)
     end
 
