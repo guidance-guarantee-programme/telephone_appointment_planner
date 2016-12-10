@@ -54,7 +54,7 @@ source 'https://rubygems.org' do
   group :test do
     gem 'chronic'
     gem 'coveralls', require: false
-    gem 'database_cleaner'
+    gem 'database_rewinder'
     gem 'phantomjs-binaries'
     gem 'poltergeist'
     gem 'scss_lint', require: false

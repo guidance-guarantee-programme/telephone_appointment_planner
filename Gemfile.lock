@@ -97,7 +97,7 @@ GEM
       thor (~> 0.19.1)
       tins (>= 1.6.0, < 2)
     daemons (1.2.4)
-    database_cleaner (1.5.3)
+    database_rewinder (0.8.0)
     diff-lcs (1.2.5)
     docile (1.1.5)
     em-http-request (1.1.5)
@@ -404,7 +404,7 @@ DEPENDENCIES
   capybara!
   chronic!
   coveralls!
-  database_cleaner!
+  database_rewinder!
   factory_girl_rails (~> 4.0)!
   faker!
   font-awesome-rails!

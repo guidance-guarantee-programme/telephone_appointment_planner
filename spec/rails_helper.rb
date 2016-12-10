@@ -7,7 +7,7 @@ require 'spec_helper'
 require 'rspec/rails'
 require 'capybara/rails'
 require 'capybara/rspec'
-require 'database_cleaner'
+require 'database_rewinder'
 require 'pusher-fake/support/rspec'
 
 require_relative 'support/pages/base'
