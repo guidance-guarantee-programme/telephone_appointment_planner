@@ -248,7 +248,9 @@ RSpec.feature 'Resource manager manages holidays' do
   end
 
   def and_they_edit_the_multiple_day_holiday
+    @page.wait_until_events_visible
     @page.events.first.content.click
+
     @page = Pages::EditHoliday.new
     expect(@page).to be_displayed
     @page.title.set 'Some other holiday title'
@@ -261,7 +263,9 @@ RSpec.feature 'Resource manager manages holidays' do
   end
 
   def and_they_edit_the_single_day_holiday
+    @page.wait_until_events_visible
     @page.events.first.content.click
+
     @page = Pages::EditHoliday.new
     expect(@page).to be_displayed
     @page.title.set 'Some other holiday title'
