@@ -1,16 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe GenerateBookableSlotsForUserJob, '#perform' do
-  let(:guiders) do
-    create_list(:guider, 2)
-  end
+  let(:guider) { create(:guider) }
 
-  it 'generates bookable slots for guiders' do
-    allow(BookableSlot).to receive(:generate_for_guider)
-    described_class.new.perform(*guiders)
+  it 'generates bookable slots for the given guider' do
+    expect(BookableSlot).to receive(:generate_for_guider).with(guider)
 
-    guiders.each do |guider|
-      expect(BookableSlot).to have_received(:generate_for_guider).with(guider)
-    end
+    described_class.new.perform(guider)
   end
 end
