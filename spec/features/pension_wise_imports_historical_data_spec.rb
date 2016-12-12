@@ -8,6 +8,29 @@ RSpec.feature 'Pension Wise imports historical data' do
     and_no_activities_are_created
   end
 
+  scenario 'Importing an appointment with an inactive guider' do
+    given_a_csv_with_an_inactive_guider_appointment
+    when_the_csv_is_imported
+    then_the_imported_guider_is_inactive
+  end
+
+  def given_a_csv_with_an_inactive_guider_appointment
+    file = File.expand_path('../../spec/support/fixtures/inactive_guider.csv', __dir__)
+
+    @csv = IO.read(file)
+  end
+
+  def then_the_imported_guider_is_inactive
+    expect(Appointment.count).to eq(1)
+
+    Appointment.first.guider.tap do |guider|
+      expect(guider).to     be_disabled
+      expect(guider).not_to be_active
+
+      expect(guider.name).to eq('Mr Missing')
+    end
+  end
+
   def given_a_valid_csv_to_import
     file = File.expand_path('../../spec/support/fixtures/good_data.csv', __dir__)
 
@@ -15,7 +38,9 @@ RSpec.feature 'Pension Wise imports historical data' do
   end
 
   def when_the_csv_is_imported
-    CsvImporter.new(@csv, StringIO.new).call
+    silenced_output = StringIO.new
+
+    CsvImporter.new(@csv, silenced_output).call
   end
 
   def the_appointments_are_imported_successfully

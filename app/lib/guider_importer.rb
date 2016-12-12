@@ -15,6 +15,7 @@ class GuiderImporter
         attributes[:uid] = mappings[name]
       else
         attributes[:disabled] = true
+        attributes[:active]   = false
       end
     end
   end
