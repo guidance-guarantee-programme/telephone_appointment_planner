@@ -44,6 +44,7 @@ source 'https://rubygems.org' do
     gem 'factory_girl_rails', '~> 4.0'
     gem 'faker'
     gem 'launchy'
+    gem 'parallel_tests'
     gem 'pry-byebug'
     gem 'pusher-fake'
     gem 'rspec-rails'
