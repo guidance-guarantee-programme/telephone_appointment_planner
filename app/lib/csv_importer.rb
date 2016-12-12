@@ -1,16 +1,16 @@
 require 'csv'
 
 class CsvImporter
-  def initialize(csv_data)
+  def initialize(csv_data, output = STDOUT)
     @csv_data = csv_data
+    @output   = output
   end
 
   def call
     csv_without_headers.each do |row|
       appointment = AppointmentRow.new(row)
-
       AppointmentImporter.new(appointment).call
-      putc '.'
+      output.putc '.'
     end
   end
 
@@ -21,4 +21,5 @@ class CsvImporter
   end
 
   attr_reader :csv_data
+  attr_reader :output
 end

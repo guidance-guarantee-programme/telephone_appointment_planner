@@ -15,7 +15,7 @@ RSpec.feature 'Pension Wise imports historical data' do
   end
 
   def when_the_csv_is_imported
-    CsvImporter.new(@csv).call
+    CsvImporter.new(@csv, StringIO.new).call
   end
 
   def the_appointments_are_imported_successfully
