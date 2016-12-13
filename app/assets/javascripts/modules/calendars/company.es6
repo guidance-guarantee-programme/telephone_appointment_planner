@@ -138,7 +138,27 @@ class CompanyCalendar extends Calendar {
       return;
     }
 
-    const resource = this.$el.fullCalendar('getResourceById', event.resourceId);
+    const resource = this.$el.fullCalendar('getResourceById', event.resourceId),
+          $qtipContent = $(`
+
+    <div>
+      <p class="js-qtip-start"></p>
+      <p class="js-qtip-title"><span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span></p>
+      <p class="js-qtip-guider"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></p>
+    </div>
+    `);
+    let $start = $("<span></span>"),
+        $title = $("<span></span>"),
+        $guider = $("<span></span>");
+
+    $start.text(`${event.start.format('HH:mm')} - ${event.end.format('HH:mm')}`);
+    $title.text(event.title);
+
+    $guider.append(resource && resource.title ? resource.title : 'Unknown guider');
+
+    $qtipContent.find('.js-qtip-start').append($start);
+    $qtipContent.find('.js-qtip-title').append($title);
+    $qtipContent.find('.js-qtip-guider').append($guider);
 
     element.qtip({
       position: {
