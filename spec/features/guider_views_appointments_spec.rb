@@ -42,6 +42,77 @@ RSpec.feature 'Guider views appointments' do
     end
   end
 
+  scenario 'Guider views their own appoinments, and is notified of appointment changes', js: true do
+    given_the_requisite_data
+
+    travel_to @appointment.start_at do
+      given_a_browser_session_for @guider do
+        when_they_view_their_calendar
+      end
+
+      given_a_browser_session_for @resource_manager do
+        and_they_assign_the_appointment_to_another_guider
+      end
+
+      given_a_browser_session_for @guider do
+        then_they_are_notified_of_the_change
+        and_the_appointment_is_removed_from_their_calendar
+      end
+    end
+  end
+
+  scenario 'Guider views all appoinments, and is notified of appointment changes', js: true do
+    given_the_requisite_data
+
+    travel_to @appointment.start_at do
+      given_a_browser_session_for @guider do
+        when_they_view_the_company_calendar
+      end
+
+      given_a_browser_session_for @resource_manager do
+        and_they_assign_the_appointment_to_another_guider
+      end
+
+      given_a_browser_session_for @guider do
+        then_they_are_notified_of_the_change
+        and_the_appointment_is_visibly_assigned_to_the_other_guider
+      end
+    end
+  end
+
+  def given_the_requisite_data
+    @guider = create(:guider)
+    @appointment = create(:appointment, guider: @guider)
+    @other_guider = create(:guider)
+    @resource_manager = create(:resource_manager)
+  end
+
+  def and_they_assign_the_appointment_to_another_guider
+    @page = Pages::Allocations.new.tap(&:load)
+    expect(@page).to be_displayed
+    @page.reassign(@page.appointments.first, guider: @other_guider)
+    @page.wait_until_action_panel_visible
+    @page.action_panel.save.click
+    @page.wait_until_saved_changes_message_visible
+  end
+
+  def then_they_are_notified_of_the_change
+    @page = Pages::MyAppointments.new
+
+    @page.wait_until_notification_visible
+
+    expect(@page.notification.customer.text).to include(@appointment.name)
+    expect(@page.notification.guider.text).to include(@other_guider.name)
+  end
+
+  def and_the_appointment_is_removed_from_their_calendar
+    expect(@page.calendar.events).to be_empty
+  end
+
+  def and_the_appointment_is_visibly_assigned_to_the_other_guider
+    expect(@page.calendar.appointments.first[:resourceId]).to eq @other_guider.id
+  end
+
   def and_there_are_appointments_for_multiple_guiders
     # this would appear 'today'
     @appointment = create(:appointment, guider: current_user)
