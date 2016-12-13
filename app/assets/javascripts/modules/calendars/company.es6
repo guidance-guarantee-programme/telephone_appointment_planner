@@ -27,7 +27,8 @@ class CompanyCalendar extends Calendar {
       eventSources: [
         {
           url: '/appointments',
-          cache: true
+          cache: true,
+          eventType: 'appointment'
         },
         {
           url: '/holidays',
@@ -145,13 +146,7 @@ class CompanyCalendar extends Calendar {
         my: 'top right',
         at: 'bottom left'
       },
-      content: {
-        text: `
-        <p>${event.start.format('HH:mm')} - ${event.end.format('HH:mm')}</p>
-        <p><span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span> ${event.title}</p>
-        <p><span class="glyphicon glyphicon-user" aria-hidden="true"></span> ${resource && resource.title ? resource.title : 'Unknown guider'}</p>
-        `
-      }
+      content: { text: $qtipContent }
     });
   }
 

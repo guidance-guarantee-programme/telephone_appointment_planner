@@ -1,4 +1,4 @@
-/* global Calendar, Pusher */
+/* global Calendar */
 {
   'use strict';
 
@@ -40,30 +40,6 @@
       };
 
       super.start(el);
-
-      this.guiderId = this.$el.data('guider-id');
-      this.setupPusher();
-    }
-
-    setupPusher() {
-      const channel = Pusher.instance.subscribe('telephone_appointment_planner');
-
-      channel.bind(`${this.guiderId}`, this.handlePushEvent.bind(this));
-    }
-
-    handlePushEvent(payload) {
-      const $modal = $('#my-appointments-calendar-update');
-
-      $modal.find('.modal-body').html(`
-        <p><b>Appointment updated</b></p>
-        <p class="t-customer">Customer: ${payload['customer_name']}</p>
-        <p class="t-start">Date/Time: ${payload['start']}</p>
-        <p class="t-guider">Guider: ${payload['guider_name']}</p>
-      `);
-
-      this.$el.fullCalendar('removeEvents');
-      this.$el.fullCalendar('refetchEvents');
-      $modal.modal('show');
     }
 
     eventRender(event, element, view) {

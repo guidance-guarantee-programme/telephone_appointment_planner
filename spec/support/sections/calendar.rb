@@ -4,6 +4,10 @@ module Sections
     elements :events, '.fc-event'
     elements :resource_cells, '.fc-resource-cell'
 
+    def appointments
+      background_events('appointment')
+    end
+
     def holidays
       background_events('holiday')
     end

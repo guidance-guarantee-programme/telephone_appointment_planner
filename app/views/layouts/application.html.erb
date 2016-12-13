@@ -34,6 +34,22 @@
       })();
     </script>
   <% end %>
+  <div data-module="calendar-events" data-config='{ "guiderId": "<%= current_user.id %>"}'>
+    <div class="modal fade t-notification" id="calendar-event-modal" tabindex="-1" role="dialog" aria-labelledby="calendar-event-modal-label">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="calendar-event-modal-label">Appointment update</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 <% end %>
 
 <%= render template: 'layouts/govuk_admin_template' %>
