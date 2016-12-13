@@ -15,6 +15,11 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  def append_info_to_payload(payload)
+    super
+    payload[:params] = request.filtered_parameters
+  end
+
   def authorise_for_guiders!
     authorise_user!(User::GUIDER_PERMISSION)
   end
