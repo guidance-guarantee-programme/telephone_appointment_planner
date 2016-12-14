@@ -148,7 +148,7 @@ RSpec.feature 'Resource manager manages holidays' do
         {
           title: 'Christmas',
           start_at: '2016-10-25',
-          end_at: '2016-10-27'
+          end_at: '2016-10-28'
         }
       ]
     )
@@ -210,7 +210,7 @@ RSpec.feature 'Resource manager manages holidays' do
     expect_holidays_to_match(
       title:    'Holiday Title',
       start_at: '2016-10-18',
-      end_at:   '2016-10-20'
+      end_at:   '2016-10-21'
     )
   end
 
@@ -283,7 +283,7 @@ RSpec.feature 'Resource manager manages holidays' do
     expect_holidays_to_match(
       title:    'Some other holiday title',
       start_at: '2016-10-18',
-      end_at:   '2016-10-20'
+      end_at:   '2016-10-21'
     )
   end
 

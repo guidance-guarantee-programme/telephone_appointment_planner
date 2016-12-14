@@ -3,6 +3,8 @@ class Holiday < ApplicationRecord
 
   validates :user, presence: true, unless: :bank_holiday?
   validates :all_day, inclusion: [true, false]
+  validates :start_at, presence: true
+  validates :end_at, presence: true
 
   def self.merged_for_calendar_view
     select(
