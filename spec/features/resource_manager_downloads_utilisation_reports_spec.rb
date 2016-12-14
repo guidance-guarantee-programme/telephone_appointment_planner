@@ -36,8 +36,8 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
 
     # booked appointments
     appointments = [
-      create(:appointment, guider: guider, start_at: start_at + 1.day),
-      create(:appointment, guider: guider, start_at: start_at + 2.days)
+      create(:appointment, guider: guider, start_at: start_at.at_midday + 1.day),
+      create(:appointment, guider: guider, start_at: start_at.at_midday + 2.days)
     ]
 
     # cancelled appointments
@@ -52,15 +52,16 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
     create(:appointment, status: :cancelled_by_pension_wise, start_at: now + 2.days)
 
     # bookable slots
-    create(:bookable_slot, start_at: start_at + 5.days)
-    create(:bookable_slot, start_at: start_at + 6.days)
-    create(:bookable_slot, start_at: start_at + 7.days)
+    create(:bookable_slot, start_at: start_at.at_midday + 5.days)
+    create(:bookable_slot, start_at: start_at.at_midday + 6.days)
+    create(:bookable_slot, start_at: start_at.at_midday + 7.days)
+
+    # bookable slot (obsured by appointment, which is still counted)
+    create(:bookable_slot, start_at: appointments.first.start_at)
 
     # ignored slot (out of date range)
-    create(:bookable_slot, start_at: start_at - 5.days)
+    create(:bookable_slot, start_at: start_at.at_midday - 5.days)
 
-    # blocked slot (obsured by appointment)
-    create(:bookable_slot, guider: guider, start_at: appointments.first.start_at, end_at: appointments.first.end_at)
     # blocked slot (obsured by global holiday)
     holiday = create(:bank_holiday, start_at: start_at + 8.days, end_at: start_at + 9.days)
     create(:bookable_slot, start_at: holiday.start_at + 1.hour)
@@ -83,13 +84,13 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
       [
         [:date, :booked_appointments, :bookable_slots, :blocked_slots, :cancelled_appointments],
         ['2016-11-15', '0', '0', '0', '0'],
-        ['2016-11-16', '1', '0', '0', '1'],
+        ['2016-11-16', '1', '1', '0', '1'],
         ['2016-11-17', '1', '0', '0', '1'],
         ['2016-11-18', '0', '0', '0', '0'],
         ['2016-11-19', '0', '0', '0', '0'],
-        ['2016-11-20', '0', '0', '0', '0'],
-        ['2016-11-21', '0', '0', '0', '0'],
-        ['2016-11-22', '0', '0', '0', '0'],
+        ['2016-11-20', '0', '1', '0', '0'],
+        ['2016-11-21', '0', '1', '0', '0'],
+        ['2016-11-22', '0', '1', '0', '0'],
         ['2016-11-23', '0', '0', '1', '0'],
         ['2016-11-24', '0', '0', '0', '0'],
         ['2016-11-25', '0', '0', '1', '0'],
