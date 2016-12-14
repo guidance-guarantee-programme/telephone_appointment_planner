@@ -4,6 +4,8 @@ FactoryGirl.define do
     user { create(:guider) }
     bank_holiday false
     all_day false
+    start_at { Time.zone.now.at_midday }
+    end_at { Time.zone.now.at_midday + 1.hour }
 
     factory :bank_holiday do
       user nil

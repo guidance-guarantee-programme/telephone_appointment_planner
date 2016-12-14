@@ -7,6 +7,16 @@ RSpec.describe Holiday, type: :model do
       expect(holiday).to_not be_valid
     end
 
+    it 'requires start_at' do
+      holiday = build_stubbed(:holiday, start_at: nil)
+      expect(holiday).to_not be_valid
+    end
+
+    it 'requires end_at' do
+      holiday = build_stubbed(:holiday, end_at: nil)
+      expect(holiday).to_not be_valid
+    end
+
     context 'bank holiday' do
       it 'is valid with valid attributes' do
         holiday = build_stubbed(:holiday)

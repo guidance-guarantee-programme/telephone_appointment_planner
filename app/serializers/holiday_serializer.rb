@@ -5,7 +5,9 @@ class HolidaySerializer < ActiveModel::Serializer
   attribute :title
   attribute :all_day, key: :allDay
   attribute :start_at, key: :start
-  attribute :end_at, key: :end
+  attribute :end do
+    object.all_day? ? object.end_at + 1.day : object.end_at
+  end
   attribute :holiday_ids
   attribute :user_id, key: :resourceId
   attribute :resourceId do
