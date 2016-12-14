@@ -140,11 +140,16 @@ class Calendar extends TapBase {
   loading(isLoading) {
     this.insertLoadingView();
 
-    if (isLoading && this.calendarLoadingView) {
-      this.calendarLoadingView.removeClass('hide');
-    } else if(this.calendarLoadingView) {
-      this.calendarLoadingView.addClass('hide');
+    if (!isLoading && this.calendarLoadingView) {
+      clearTimeout(this.loadingTimeout);
+      return this.calendarLoadingView.addClass('hide');
     }
+
+    this.loadingTimeout = setTimeout(() => {
+      if (isLoading && this.calendarLoadingView) {
+        this.calendarLoadingView.removeClass('hide');
+      }
+    }, 200);
   }
 
   eventDrop() {
