@@ -40,6 +40,10 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
       create(:appointment, guider: guider, start_at: start_at + 2.days)
     ]
 
+    # cancelled appointments
+    create(:appointment, status: :cancelled_by_customer, start_at: start_at + 1.day)
+    create(:appointment, status: :cancelled_by_pension_wise, start_at: start_at + 2.days)
+
     # ignored appointment
     create(:appointment, start_at: now + 2.days)
 

@@ -30,7 +30,7 @@ class UtilisationReport
     bookable, blocked = bookable_and_blocked(day_range)
     [
       day,
-      Appointment.where(start_at: day_range).count,
+      Appointment.where(start_at: day_range).not_cancelled.count,
       bookable,
       blocked
     ]
