@@ -12,7 +12,7 @@ class UtilisationReport
 
   def generate
     CSV.generate do |csv|
-      csv << [:date, :booked_appointments, :bookable_slots, :blocked_slots]
+      csv << %i(date booked_appointments bookable_slots blocked_slots cancelled_appointments)
       range.each do |day|
         csv << generate_for_day(day)
       end
@@ -30,9 +30,10 @@ class UtilisationReport
     bookable, blocked = bookable_and_blocked(day_range)
     [
       day,
-      Appointment.where(start_at: day_range).not_cancelled.count,
+      Appointment.not_cancelled.where(start_at: day_range).count,
       bookable,
-      blocked
+      blocked,
+      Appointment.cancelled.where(start_at: day_range).count
     ]
   end
 
