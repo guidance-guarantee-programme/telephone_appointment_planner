@@ -22,9 +22,37 @@ module Sections
       resource_cells.map(&:text)
     end
 
+    def find_holiday_by_id(id)
+      page.evaluate_script(<<-JS).with_indifferent_access
+        function() {
+          return $('.t-calendar')
+            .fullCalendar('clientEvents', #{id})[0];
+        }();
+      JS
+    end
+
+    def select_holiday_range(resource_name) # rubocop:disable Metrics/MethodLength
+      wait_until_rendered
+
+      x, y = page.driver.evaluate_script <<-JS
+        function() {
+          var $calendar = $('.t-calendar');
+          var $header = $calendar.find(".fc-resource-cell:contains('#{resource_name}')");
+          if ($header.length > 0) {
+            var $row = $calendar.find('[data-time="09:00:00"]');
+            return [$header.offset().left + 5, $row.offset().top + 5];
+          }
+        }();
+      JS
+
+      page.driver.click(x, y)
+    end
+
     private
 
     def background_events(event_type)
+      wait_until_rendered
+
       page.evaluate_script(<<-JS).map(&:with_indifferent_access)
         function() {
           var $calendar = $('.t-calendar');
@@ -42,6 +70,10 @@ module Sections
           });
         }();
       JS
+    end
+
+    def wait_until_rendered
+      find('.t-full-calendar-rendered', visible: false, minimum: 1)
     end
   end
 end

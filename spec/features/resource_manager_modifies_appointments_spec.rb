@@ -201,13 +201,13 @@ RSpec.feature 'Resource manager modifies appointments' do
 
   def then_they_see_the_holiday_for_one_guider
     @page.calendar.wait_until_background_events_visible
-    holiday = @page.find_holiday(@holiday)
+    holiday = @page.calendar.find_holiday_by_id(@holiday.id)
     expect(holiday[:title]).to eq @holiday.title
     expect(holiday[:resourceId]).to eq @holiday.user.id
   end
 
   def then_they_see_the_holiday_for_all_guiders
-    holiday = @page.find_holiday(@holiday)
+    holiday = @page.calendar.find_holiday_by_id(@holiday.id)
     expect(holiday[:title]).to eq @holiday.title
     expect(holiday[:resourceId]).to be_nil
   end
@@ -270,16 +270,7 @@ RSpec.feature 'Resource manager modifies appointments' do
   def and_they_create_a_holiday_for_the_guider
     title = 'Holiday Title'
     stub_prompt_to_return(title)
-    x, y = page.driver.evaluate_script <<-JS
-      function() {
-        var $calendar = $('.js-calendar');
-        var $header = $calendar.find(".fc-resource-cell:contains('#{@guider.name}')");
-        var $row = $calendar.find('[data-time="09:00:00"]');
-        return [$header.offset().left + 5, $row.offset().top + 5];
-      }();
-    JS
-
-    page.driver.click(x, y)
+    @page.calendar.select_holiday_range(@guider.name)
 
     @page.wait_until_saved_changes_message_visible
   end

@@ -38,7 +38,8 @@ class Calendar extends TapBase {
       eventClick: (...args) => this.eventClick(...args),
       eventDrop: (...args) => this.eventDrop(...args),
       eventResize: (...args) => this.eventResize(...args),
-      loading: (...args) => this.loading(...args)
+      loading: (...args) => this.loading(...args),
+      eventAfterAllRender: (...args) => this.eventAfterAllRender(...args)
     };
 
     this.config = $.extend(
@@ -182,5 +183,13 @@ class Calendar extends TapBase {
 
   eventResize() {
 
+  }
+
+  eventAfterAllRender() {
+    if ($('.t-full-calendar-rendered').length > 0) {
+      return;
+    }
+    let $rendered = $("<div class='t-full-calendar-rendered' style='display:hidden;'></div>")
+    $('body').append($rendered);
   }
 }
