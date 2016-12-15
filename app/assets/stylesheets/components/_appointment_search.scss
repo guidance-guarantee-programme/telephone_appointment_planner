@@ -1,5 +1,5 @@
 .appointment-search {
-  padding: 8px 0 16px;
+  padding: 8px 0;
 }
 
 .appointment-search__term.form-control {
@@ -8,4 +8,8 @@
 
 .appointment-search__date-range.form-control {
   width: 260px;
+}
+
+.appointment-search-results tbody tr td { // scss-lint:disable SelectorDepth
+  vertical-align: middle;
 }
