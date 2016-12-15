@@ -11,11 +11,22 @@ class UtilisationReportsController < ApplicationController
   end
 
   def create
-    @utilisation_report = UtilisationReport.new(params.require(:utilisation_report).permit(:date_range))
-    send_data(
-      @utilisation_report.generate,
-      type: Mime[:csv],
-      disposition: "attachment; filename=#{@utilisation_report.file_name}"
-    )
+    @utilisation_report = UtilisationReport.new(report_params)
+
+    if @utilisation_report.valid?
+      send_data(
+        @utilisation_report.generate,
+        type: Mime[:csv],
+        disposition: "attachment; filename=#{@utilisation_report.file_name}"
+      )
+    else
+      render :new
+    end
+  end
+
+  private
+
+  def report_params
+    params.require(:utilisation_report).permit(:date_range)
   end
 end

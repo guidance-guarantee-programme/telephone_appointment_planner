@@ -6,6 +6,8 @@ class UtilisationReport
 
   attr_reader :date_range
 
+  validates :date_range, presence: true
+
   def initialize(params = {})
     @date_range = params[:date_range]
   end
