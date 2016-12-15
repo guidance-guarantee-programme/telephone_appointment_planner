@@ -17,6 +17,13 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
     end
   end
 
+  scenario 'date ranges must be provided' do
+    given_the_user_is_a_resource_manager do
+      when_they_attempt_to_download_reports_without_a_date_range
+      then_they_see_a_validation_message
+    end
+  end
+
   scenario 'appointments outside date range are ignored' do
     given_the_user_is_a_resource_manager do
       and_there_are_appointments_outside_the_date_range
@@ -79,6 +86,15 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
 
   def range_end
     Date.new(2016, 11, 9).beginning_of_day.to_date
+  end
+
+  def when_they_attempt_to_download_reports_without_a_date_range
+    @page = Pages::NewUtilisationReport.new.tap(&:load)
+    @page.download.click
+  end
+
+  def then_they_see_a_validation_message
+    expect(@page).to have_errors
   end
 
   def and_there_are_appointments

@@ -26,6 +26,8 @@ class AppointmentReport
     :email
   ].freeze
 
+  validates :date_range, presence: true
+
   def initialize(params = {})
     @where = params.fetch(:where, :created_at)
     @date_range = params[:date_range]
@@ -49,7 +51,9 @@ class AppointmentReport
   private
 
   def appointments
-    appointments = Appointment.includes(:agent, :guider).order(where)
-    appointments.where(where => range) if range
+    Appointment
+      .includes(:agent, :guider)
+      .where(where => range)
+      .order(where)
   end
 end

@@ -21,6 +21,13 @@ RSpec.feature 'Resource manager downloads appointment reports' do
     end
   end
 
+  scenario 'date ranges must be provided' do
+    given_the_user_is_a_resource_manager do
+      when_they_attempt_to_download_reports_without_a_date_range
+      then_they_see_a_validation_message
+    end
+  end
+
   let(:now) do
     Date.new(2016, 10, 23)
   end
@@ -31,6 +38,16 @@ RSpec.feature 'Resource manager downloads appointment reports' do
 
   let(:created_at) do
     BusinessDays.from_now(20).to_date
+  end
+
+  def when_they_attempt_to_download_reports_without_a_date_range
+    @page = Pages::NewAppointmentReport.new.tap(&:load)
+    @page.where.select 'Appointment creation date'
+    @page.download.click
+  end
+
+  def then_they_see_a_validation_message
+    expect(@page).to have_errors
   end
 
   def and_there_are_data
