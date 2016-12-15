@@ -29,15 +29,6 @@ module Pages
       end
     end
 
-    def find_holiday(holiday)
-      page.evaluate_script(<<-JS).with_indifferent_access
-        function() {
-          return $('.js-calendar')
-            .fullCalendar('clientEvents', #{holiday.id})[0];
-        }();
-      JS
-    end
-
     private
 
     def with_script_context(id)
