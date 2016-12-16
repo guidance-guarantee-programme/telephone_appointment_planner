@@ -1,0 +1,8 @@
+.guider__active {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.guiders tbody tr td { // scss-lint:disable SelectorDepth
+  vertical-align: middle;
+}
