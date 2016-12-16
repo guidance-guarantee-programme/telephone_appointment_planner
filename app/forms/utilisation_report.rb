@@ -14,7 +14,7 @@ class UtilisationReport
 
   def generate
     CSV.generate do |csv|
-      csv << %i(date booked_appointments bookable_slots blocked_slots cancelled_appointments)
+      csv << %i(date booked_appointments bookable_slots blocked_slots cancelled_appointments late_cancellations)
       range.each do |day|
         csv << generate_for_day(day)
       end
@@ -35,7 +35,8 @@ class UtilisationReport
       Appointment.not_cancelled.where(start_at: day_range).count,
       bookable,
       blocked,
-      Appointment.cancelled.where(start_at: day_range).count
+      cancellations(day_range).count,
+      late_cancellations(day_range).count
     ]
   end
 
@@ -44,5 +45,23 @@ class UtilisationReport
     bookable = slots.without_holidays.count
     blocked = slots.count - bookable
     [bookable, blocked]
+  end
+
+  def cancellations(day_range)
+    Appointment.cancelled.where(start_at: day_range)
+  end
+
+  def late_cancellations(day_range)
+    cancellations(day_range).select do |appointment|
+      late_cancellation?(appointment)
+    end
+  end
+
+  def late_cancellation?(appointment)
+    appointment.audits.any? do |audit|
+      audit.audited_changes.keys.include?('status') &&
+        Appointment.cancellation_status?(audit.audited_changes['status'].last) &&
+        audit.created_at > BusinessDays.before(appointment.start_at, 2).beginning_of_day
+    end
   end
 end

@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 class Appointment < ApplicationRecord
   belongs_to :agent, class_name: 'User'
 
@@ -69,6 +70,10 @@ class Appointment < ApplicationRecord
   end
 
   def cancelled?
+    Appointment.cancellation_status?(status)
+  end
+
+  def self.cancellation_status?(status)
     status.start_with?('cancelled')
   end
 
