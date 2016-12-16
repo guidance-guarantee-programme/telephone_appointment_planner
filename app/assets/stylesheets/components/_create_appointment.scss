@@ -1,0 +1,22 @@
+.appointment-preview__label {
+  display: block;
+  font-weight: bold;
+  float: left;
+  margin-right: 10px;
+  text-align: right;
+  width: 27%;
+}
+
+.appointment-preview__value {
+  display: block;
+  float: left;
+  width: 71%;
+}
+
+.appointment-preview__value--notes {
+  white-space: pre-wrap;
+}
+
+.appointment-preview__group {
+  overflow: hidden;
+}

@@ -1,11 +1,11 @@
 <%=
   breadcrumb(
     { title: 'Book an appointment', path: new_appointment_path },
-    { title: 'Preview' },
+    { title: 'Review appointment details' },
   )
 %>
 
-<h1>Preview appointment</h1>
+<h1>Review appointment details</h1>
 
 <%= rebooked_from_heading(@appointment) %>
 
@@ -29,59 +29,58 @@
   <%= f.hidden_field :opt_out_of_market_research %>
   <%= f.hidden_field :status %>
 
-  <div class="t-preview">
-    <ul class="list-group">
-      <li class="list-group-item">
-        <div><strong>Date:</strong></div>
-        <%= @appointment.start_at.to_date.to_s(:govuk_date) %>
-      </li>
-      <li class="list-group-item">
-        <div><strong>Start at:</strong></div>
-        <%= @appointment.start_at.to_time.to_s(:govuk_time) %>
-      </li>
-      <li class="list-group-item">
-        <div><strong>Duration:</strong></div>
-        45 minutes
-      </li>
-    </ul>
-    <ul class="list-group">
-      <li class="list-group-item">
-        <div><strong>Date of birth:</strong></div>
-        <%= @appointment.date_of_birth.to_date.to_s(:govuk_date)%>
-      </li>
-      <li class="list-group-item">
-        <div><strong>First name:</strong></div>
-        <%= @appointment.first_name %>
-      </li>
-      <li class="list-group-item">
-        <div><strong>Last name:</strong></div>
-        <%= @appointment.last_name %>
-      </li>
-      <li class="list-group-item">
-        <div><strong>Email:</strong></div>
-        <%= @appointment.email %>
-      </li>
-      <li class="list-group-item">
-        <div><strong>Phone:</strong></div>
-        <%= @appointment.phone %>
-      </li>
-      <li class="list-group-item">
-        <div><strong>Mobile:</strong></div>
-        <%= @appointment.mobile %>
-      </li>
-      <li class="list-group-item">
-        <div><strong>Memorable word:</strong></div>
-        <%= @appointment.memorable_word %>
-      </li>
-      <li class="list-group-item">
-        <div><strong>Notes:</strong></div>
-        <%= @appointment.notes %>
-      </li>
-      <li class="list-group-item">
-        <div><strong>Opt out of market research:</strong></div>
-        <%= @appointment.opt_out_of_market_research ? 'yes' : 'no' %>
-      </li>
-    </ul>
+  <div class="t-preview appointment-preview">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="panel panel-primary">
+          <div class="panel-heading">Appointment Details</div>
+          <ul class="list-group">
+            <li class="list-group-item appointment-preview__group">
+              <span class="appointment-preview__label">Name</span>
+              <span class="appointment-preview__value"><%= @appointment.name %></span>
+            </li>
+            <li class="list-group-item appointment-preview__group">
+              <span class="appointment-preview__label">Date</span>
+              <span class="appointment-preview__value"><%= "#{@appointment.start_at.to_date.to_s(:govuk_date)} #{@appointment.start_at.to_time.to_s(:govuk_time)} (will last around 45 minutes)" %></span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">Customer Details</div>
+          <ul class="list-group">
+            <li class="list-group-item appointment-preview__group">
+              <span class="appointment-preview__label">Date of birth</span>
+              <span class="appointment-preview__value"><%= @appointment.date_of_birth.to_date.to_s(:govuk_date) %></span>
+            </li>
+            <li class="list-group-item appointment-preview__group">
+              <span class="appointment-preview__label">Email</span>
+              <span class="appointment-preview__value"><%= @appointment.email %></span>
+            </li>
+            <li class="list-group-item appointment-preview__group">
+              <span class="appointment-preview__label">Phone</span>
+              <span class="appointment-preview__value"><%= @appointment.phone %></span>
+            </li>
+            <li class="list-group-item appointment-preview__group">
+              <span class="appointment-preview__label">Mobile</span>
+              <span class="appointment-preview__value"><%= @appointment.mobile %></span>
+            </li>
+            <li class="list-group-item appointment-preview__group">
+              <span class="appointment-preview__label">Memorable word</span>
+              <span class="appointment-preview__value"><%= @appointment.memorable_word %></span>
+            </li>
+            <li class="list-group-item appointment-preview__group">
+              <span class="appointment-preview__label">Notes</span>
+              <span class="appointment-preview__value appointment-preview__value--notes"><%= @appointment.notes %></span>
+            </li>
+            <li class="list-group-item appointment-preview__group">
+              <span class="appointment-preview__label">Opt out of market research</span>
+              <span class="appointment-preview__value"><%= @appointment.opt_out_of_market_research ? 'Yes' : 'No' %></span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
   <%= f.submit 'Confirm appointment', class: 't-confirm-appointment' %>
   <%= f.submit 'Edit appointment', name: :edit_appointment, class: 'btn-danger t-edit-appointment' %>
