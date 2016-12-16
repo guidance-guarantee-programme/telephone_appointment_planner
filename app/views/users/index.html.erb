@@ -10,7 +10,7 @@
         <input class="search form-control t-search" name="user-search" id="user-search" placeholder="Search">
       </div>
     </form>
-    <table class="table table-striped table-bordered table-hover" data-module="multi-checkbox" data-config='{"selectedClassName":"info"}'>
+    <table class="table table-striped table-bordered table-hover guiders" data-module="multi-checkbox" data-config='{"selectedClassName":"info"}'>
       <caption><span class="sr-only">List of guiders</span></caption>
       <colgroup>
         <col width="1%">
@@ -42,10 +42,12 @@
                 <span class="label label-info <%= dom_id(group) %> t-group"><%= group.name %></span>
               <% end %>
             </td>
-            <td>
+            <td class="guider__active">
               <% if guider.active? %>
                 <span class="glyphicon glyphicon-ok t-active-icon" aria-hidden="true"></span>
                 <span class="sr-only">Guider is active</span>
+              <% else %>
+                <span class="sr-only">Guider is inactive</span>
               <% end %>
             </td>
             <td nowrap="true">
