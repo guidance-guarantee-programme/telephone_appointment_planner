@@ -1,6 +1,18 @@
 require 'rails_helper'
 
 RSpec.describe Appointment, type: :model do
+  describe 'formatting' do
+    it 'title-cases first and last name' do
+      appointment = build_stubbed(:appointment, first_name: 'bob', last_name: 'carolgees')
+      appointment.validate
+
+      expect(appointment).to have_attributes(
+        first_name: 'Bob',
+        last_name: 'Carolgees'
+      )
+    end
+  end
+
   describe 'validations' do
     let(:subject) do
       build_stubbed(:appointment)

@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 class Appointment < ApplicationRecord
   belongs_to :agent, class_name: 'User'
 
@@ -50,6 +51,8 @@ class Appointment < ApplicationRecord
 
   audited on: %i(create update)
 
+  before_validation :format_name
+
   def self.copy_or_new_by(id)
     return new unless id
 
@@ -99,6 +102,11 @@ class Appointment < ApplicationRecord
   end
 
   private
+
+  def format_name
+    self.first_name = first_name.titleize if first_name
+    self.last_name  = last_name.titleize  if last_name
+  end
 
   def after_audit
     Activity.from(audits.last, self)
