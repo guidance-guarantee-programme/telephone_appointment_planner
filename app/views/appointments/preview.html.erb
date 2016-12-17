@@ -1,17 +1,14 @@
 <%=
   breadcrumb(
     { title: 'Book an appointment', path: new_appointment_path },
-    { title: 'Review appointment details' },
+    { title: 'Confirm appointment details' },
   )
 %>
 
-<h1>Review appointment details</h1>
-
+<h1>Confirm appointment details</h1>
 <%= rebooked_from_heading(@appointment) %>
 
-<div class="alert alert-warning">
-  This appointment has not been created yet. Please confirm the details are correct before proceeding.
-</div>
+<hr>
 
 <%= form_for @appointment, layout: :basic do |f| %>
   <%= f.hidden_field :rebooked_from_id %>
@@ -32,53 +29,55 @@
   <div class="t-preview appointment-preview">
     <div class="row">
       <div class="col-md-8">
-        <div class="panel panel-primary">
-          <div class="panel-heading">Appointment Details</div>
-          <ul class="list-group">
-            <li class="list-group-item appointment-preview__group">
-              <span class="appointment-preview__label">Name</span>
-              <span class="appointment-preview__value"><%= @appointment.name %></span>
-            </li>
-            <li class="list-group-item appointment-preview__group">
-              <span class="appointment-preview__label">Date</span>
-              <span class="appointment-preview__value"><%= "#{@appointment.start_at.to_date.to_s(:govuk_date)} #{@appointment.start_at.to_time.to_s(:govuk_time)} (will last around 45 minutes)" %></span>
-            </li>
-          </ul>
-        </div>
+        <p class="alert alert-warning">
+          This appointment has not yet been created.<br>Please check the details below and then click <b>Confirm appointment</b>.
+        </p>
 
-        <div class="panel panel-primary">
-          <div class="panel-heading">Customer Details</div>
-          <ul class="list-group">
-            <li class="list-group-item appointment-preview__group">
-              <span class="appointment-preview__label">Date of birth</span>
-              <span class="appointment-preview__value"><%= @appointment.date_of_birth.to_date.to_s(:govuk_date) %></span>
-            </li>
-            <li class="list-group-item appointment-preview__group">
-              <span class="appointment-preview__label">Email</span>
-              <span class="appointment-preview__value"><%= @appointment.email %></span>
-            </li>
-            <li class="list-group-item appointment-preview__group">
-              <span class="appointment-preview__label">Phone</span>
-              <span class="appointment-preview__value"><%= @appointment.phone %></span>
-            </li>
-            <li class="list-group-item appointment-preview__group">
-              <span class="appointment-preview__label">Mobile</span>
-              <span class="appointment-preview__value"><%= @appointment.mobile %></span>
-            </li>
-            <li class="list-group-item appointment-preview__group">
-              <span class="appointment-preview__label">Memorable word</span>
-              <span class="appointment-preview__value"><%= @appointment.memorable_word %></span>
-            </li>
-            <li class="list-group-item appointment-preview__group">
-              <span class="appointment-preview__label">Notes</span>
-              <span class="appointment-preview__value appointment-preview__value--notes"><%= @appointment.notes %></span>
-            </li>
-            <li class="list-group-item appointment-preview__group">
-              <span class="appointment-preview__label">Opt out of market research</span>
-              <span class="appointment-preview__value"><%= @appointment.opt_out_of_market_research ? 'Yes' : 'No' %></span>
-            </li>
-          </ul>
-        </div>
+        <table class="table lead">
+          <tbody>
+            <tr>
+              <td class="active" width="35%"><b>Customer name</b></td>
+              <td><%= @appointment.name %></td>
+            </tr>
+            <tr>
+              <td class="active"><b>Appointment date</b></td>
+              <td><%= "#{@appointment.start_at.to_date.to_s(:govuk_date)} #{@appointment.start_at.to_time.to_s(:govuk_time)}" %><br>(will last around 45 minutes)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <table class="table lead">
+          <tbody>
+            <tr>
+              <td class="active" width="35%"><b>Date of birth</b></td>
+              <td><%= @appointment.date_of_birth.to_date.to_s(:govuk_date) %></td>
+            </tr>
+            <tr>
+              <td class="active"><b>Email</b></td>
+              <td><%= @appointment.email %></td>
+            </tr>
+            <tr>
+              <td class="active"><b>Phone</b></td>
+              <td><%= @appointment.phone %></td>
+            </tr>
+            <tr>
+              <td class="active"><b>Mobile</b></td>
+              <td><%= @appointment.mobile %></td>
+            </tr>
+            <tr>
+              <td class="active"><b>Memorable word</b></td>
+              <td><%= @appointment.memorable_word %></td>
+            </tr>
+            <tr>
+              <td class="active"><b>Notes</b></td>
+              <td><%= @appointment.notes %></td>
+            </tr>
+            <tr>
+              <td class="active"><b>Opt out of market research</b></td>
+              <td><%= @appointment.opt_out_of_market_research ? 'Opted out' : 'Not opted out' %></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
