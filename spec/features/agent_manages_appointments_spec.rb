@@ -159,17 +159,17 @@ RSpec.feature 'Agent manages appointments' do
     @page = Pages::PreviewAppointment.new
     expect(@page).to be_displayed
 
-    expect(@page.preview).to have_content "Date #{day.to_date.to_s(:govuk_date)} 9:30am"
+    expect(@page.preview).to have_content "#{day.to_date.to_s(:govuk_date)} 9:30am"
     expect(@page.preview).to have_content '(will last around 45 minutes)'
 
-    expect(@page.preview).to have_content 'Date of birth 23 October 1950'
-    expect(@page.preview).to have_content 'Name Some Person'
-    expect(@page.preview).to have_content 'Email email@example.org'
-    expect(@page.preview).to have_content 'Phone 0000000'
-    expect(@page.preview).to have_content 'Mobile 1111111'
-    expect(@page.preview).to have_content 'Memorable word lozenge'
-    expect(@page.preview).to have_content 'Notes something'
-    expect(@page.preview).to have_content 'Opt out of market research Yes'
+    expect(@page.preview).to have_content '23 October 1950'
+    expect(@page.preview).to have_content 'Some Person'
+    expect(@page.preview).to have_content 'email@example.org'
+    expect(@page.preview).to have_content '0000000'
+    expect(@page.preview).to have_content '1111111'
+    expect(@page.preview).to have_content 'lozenge'
+    expect(@page.preview).to have_content 'something'
+    expect(@page.preview).to have_content 'Opted out'
   end
 
   def and_they_fill_in_their_appointment_details_without_an_email
