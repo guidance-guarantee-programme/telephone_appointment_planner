@@ -160,6 +160,28 @@ RSpec.describe BookableSlot, type: :model do
 
       expect(subject).to_not include slot
     end
+
+    it 'does not exclude slots that start directly after a holiday' do
+      create(
+        :holiday,
+        user: guider,
+        start_at: make_time(11, 30),
+        end_at: make_time(12, 30)
+      )
+
+      expect(subject).to include slot
+    end
+
+    it 'does not exclude slots that end directly before a holiday' do
+      create(
+        :holiday,
+        user: guider,
+        start_at: make_time(9, 30),
+        end_at: make_time(10, 30)
+      )
+
+      expect(subject).to include slot
+    end
   end
 
   describe '#with_guider_count' do
