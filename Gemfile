@@ -14,6 +14,7 @@ end
 source 'https://rubygems.org' do
   gem 'active_link_to'
   gem 'active_model_serializers'
+  gem 'activejob-retry'
   gem 'audited'
   gem 'bh'
   gem 'bootstrap-kaminari-views'
