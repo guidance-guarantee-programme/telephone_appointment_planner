@@ -114,31 +114,12 @@ RSpec.describe BookableSlot, type: :model do
       BookableSlot.without_holidays
     end
 
-    context 'holiday starts at same time as bookable slot' do
-      # This issue was found in production:
-      # bookable slot = 8:30 to 9:40
-      # holiday       = 8:30 to 9:45
-
+    context 'excludes slots that have the same start and end as a holiday' do
       before do
         create(
           :holiday,
           user: guider,
           start_at: make_time(10, 30),
-          end_at: make_time(11, 45)
-        )
-      end
-
-      it 'excludes the slot' do
-        expect(subject).to_not include slot
-      end
-    end
-
-    context 'holiday ends at same time as bookable slot' do
-      before do
-        create(
-          :holiday,
-          user: guider,
-          start_at: make_time(9, 0),
           end_at: make_time(11, 30)
         )
       end
@@ -173,6 +154,21 @@ RSpec.describe BookableSlot, type: :model do
       expect(subject).to_not include slot
     end
 
+    context 'excludes slots with holidays with the same start' do
+      before do
+        create(
+          :holiday,
+          user: guider,
+          start_at: make_time(10, 30),
+          end_at: make_time(11, 45)
+        )
+      end
+
+      it 'excludes the slot' do
+        expect(subject).to_not include slot
+      end
+    end
+
     it 'excludes slots with holidays that start inside them' do
       create(
         :holiday,
@@ -182,6 +178,21 @@ RSpec.describe BookableSlot, type: :model do
       )
 
       expect(subject).to_not include slot
+    end
+
+    context 'excludes slots with holidays with the same end' do
+      before do
+        create(
+          :holiday,
+          user: guider,
+          start_at: make_time(9, 0),
+          end_at: make_time(11, 30)
+        )
+      end
+
+      it 'excludes the slot' do
+        expect(subject).to_not include slot
+      end
     end
 
     it 'excludes slots with holidays that end inside them' do

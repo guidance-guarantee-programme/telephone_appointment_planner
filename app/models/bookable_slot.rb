@@ -55,9 +55,10 @@ class BookableSlot < ApplicationRecord
   def self.without_holidays
     joins(<<-SQL
           LEFT JOIN holidays ON
+            -- The holiday is specifically for the user, or it is for everyone
             (holidays.user_id = #{quoted_table_name}.guider_id OR holidays.user_id IS NULL) AND
             (
-              (holidays.start_at < #{quoted_table_name}.start_at AND holidays.end_at > #{quoted_table_name}.end_at)
+              (holidays.start_at <= #{quoted_table_name}.start_at AND holidays.end_at >= #{quoted_table_name}.end_at)
               OR
               (holidays.start_at >= #{quoted_table_name}.start_at AND holidays.start_at < #{quoted_table_name}.end_at)
               OR
