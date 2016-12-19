@@ -59,9 +59,9 @@ class BookableSlot < ApplicationRecord
             (
               (holidays.start_at < #{quoted_table_name}.start_at AND holidays.end_at > #{quoted_table_name}.end_at)
               OR
-              (holidays.start_at > #{quoted_table_name}.start_at AND holidays.start_at < #{quoted_table_name}.end_at)
+              (holidays.start_at >= #{quoted_table_name}.start_at AND holidays.start_at < #{quoted_table_name}.end_at)
               OR
-              (holidays.end_at > #{quoted_table_name}.start_at AND holidays.end_at < #{quoted_table_name}.end_at)
+              (holidays.end_at > #{quoted_table_name}.start_at AND holidays.end_at <= #{quoted_table_name}.end_at)
             )
             SQL
          )
