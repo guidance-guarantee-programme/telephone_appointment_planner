@@ -1,8 +1,6 @@
 class PusherActivityNotificationJob < ApplicationJob
   queue_as :default
 
-  include ActiveJob::Retry.new(strategy: :constant, limit: 5, delay: 1.second)
-
   include Rails.application.routes.url_helpers
 
   def perform(recipient, activity)
