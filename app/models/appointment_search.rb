@@ -33,12 +33,16 @@ class AppointmentSearch
   end
 
   def search_without_query
-    Appointment.order(created_at: :desc)
+    Appointment
+      .includes(:guider)
+      .order(created_at: :desc)
   end
 
   def search_with_query
-    Appointment.select('appointments.*')
-               .where(ilike(%w(appointments.id appointments.first_name appointments.last_name users.name)))
-               .joins(:guider)
+    Appointment
+      .joins(:guider)
+      .includes(:guider)
+      .select('appointments.*')
+      .where(ilike(%w(appointments.id appointments.first_name appointments.last_name users.name)))
   end
 end
