@@ -53,7 +53,15 @@ class AppointmentReport
   def appointments
     Appointment
       .includes(:agent, :guider)
-      .where(where => range)
+      .where(
+        "#{column_name} >= ? AND #{column_name} <= ?",
+        range.begin,
+        range.end.end_of_day
+      )
       .order(where)
+  end
+
+  def column_name
+    Appointment.connection.quote_column_name(where)
   end
 end

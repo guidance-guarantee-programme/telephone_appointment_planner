@@ -57,8 +57,8 @@ RSpec.feature 'Resource manager downloads appointment reports' do
 
   def date_range_enclosing(date)
     [
-      I18n.l(date - 1.day, format: :date_range_picker),
-      I18n.l(date + 1.day, format: :date_range_picker)
+      I18n.l(date, format: :date_range_picker),
+      I18n.l(date, format: :date_range_picker)
     ].join(' - ')
   end
 
@@ -71,7 +71,7 @@ RSpec.feature 'Resource manager downloads appointment reports' do
 
   def then_they_get_reports_by_appointment_created_at
     @page = Pages::ReportCsv.new
-    expect_csv_content_disposition('report-1479340800-1479513600created_at.csv')
+    expect_csv_content_disposition('report-1479427200-1479427200created_at.csv')
     expect_appointment_csv(@appointment_with_created_at)
   end
 
@@ -84,7 +84,7 @@ RSpec.feature 'Resource manager downloads appointment reports' do
 
   def then_they_get_reports_by_appointment_start_at
     @page = Pages::ReportCsv.new
-    expect_csv_content_disposition('report-1478131200-1478304000start_at.csv')
+    expect_csv_content_disposition('report-1478217600-1478217600start_at.csv')
     expect_appointment_csv(@appointment_with_start_at)
   end
 
