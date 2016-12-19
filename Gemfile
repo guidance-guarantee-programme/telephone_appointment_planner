@@ -48,6 +48,7 @@ source 'https://rubygems.org' do
     gem 'pry-byebug'
     gem 'pusher-fake'
     gem 'rspec-rails'
+    gem 'rspec-retry'
     gem 'rubocop'
     gem 'site_prism'
   end

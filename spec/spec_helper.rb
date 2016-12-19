@@ -1,3 +1,5 @@
+require 'rspec/retry'
+
 RSpec.configure do |config|
   config.order = :random
 
@@ -10,4 +12,7 @@ RSpec.configure do |config|
   end
 
   config.shared_context_metadata_behavior = :apply_to_host_groups
+
+  config.verbose_retry = true
+  config.display_try_failure_messages = true
 end

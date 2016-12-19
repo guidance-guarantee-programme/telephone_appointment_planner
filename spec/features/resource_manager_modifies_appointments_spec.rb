@@ -88,7 +88,7 @@ RSpec.feature 'Resource manager modifies appointments' do
     end
   end
 
-  scenario 'Viewing holidays for all guiders', js: true do
+  scenario 'Viewing holidays for all guiders', js: true, retry: 3 do
     given_the_user_is_a_resource_manager do
       and_there_is_a_holiday_for_all_guiders
       travel_to @holiday.start_at do
@@ -98,7 +98,7 @@ RSpec.feature 'Resource manager modifies appointments' do
     end
   end
 
-  scenario 'Creating a holiday for one guider', js: true do
+  scenario 'Creating a holiday for one guider', js: true, retry: 3 do
     given_the_user_is_a_resource_manager do
       travel_to BusinessDays.from_now(1) do
         and_there_is_a_guider
