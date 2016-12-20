@@ -35,4 +35,8 @@ RSpec.configure do |config|
   config.include ActionView::Helpers::DateHelper
 
   config.before(:each) { ActionMailer::Base.deliveries.clear }
+
+  config.before(:each, js: true) do
+    page.driver.browser.url_blacklist = %w(http://stats.pusher.com)
+  end
 end
