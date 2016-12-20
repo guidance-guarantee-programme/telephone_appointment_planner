@@ -51,7 +51,7 @@ RSpec.feature 'Pension Wise imports historical data' do
       expect(appointment.guider.name).to eq('Waheeda Noormohamed')
 
       expect(appointment).to have_attributes(
-        id: 1229,
+        id: 2101,
         start_at: Time.zone.parse('2015-04-06 14:50:00 UTC'),
         end_at: Time.zone.parse('2015-04-06 16:00:00 UTC'),
         first_name: 'George',
