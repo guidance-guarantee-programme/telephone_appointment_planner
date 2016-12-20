@@ -57,7 +57,6 @@ source 'https://rubygems.org' do
     gem 'chronic'
     gem 'coveralls', require: false
     gem 'database_rewinder'
-    gem 'phantomjs-binaries'
     gem 'poltergeist'
     gem 'scss_lint', require: false
   end
