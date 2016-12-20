@@ -4,21 +4,10 @@ class GuiderImporter
   end
 
   def call
-    User.find_or_create_by!(mapped_attributes)
+    User.find_by!(uid: mappings[name])
   end
 
   private
-
-  def mapped_attributes
-    { name: name }.tap do |attributes|
-      if mappings.key?(name)
-        attributes[:uid] = mappings[name]
-      else
-        attributes[:disabled] = true
-        attributes[:active]   = false
-      end
-    end
-  end
 
   def mappings # rubocop:disable Metrics/MethodLength
     {
