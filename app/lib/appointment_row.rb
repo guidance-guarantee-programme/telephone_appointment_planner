@@ -8,7 +8,7 @@ class AppointmentRow
     notes: 29,
     opt_out_of_market_research: 30,
     status: 34,
-    booking_reference: 40,
+    booking_reference: 0,
     first_name: 41,
     last_name: 42,
     email: 43,
