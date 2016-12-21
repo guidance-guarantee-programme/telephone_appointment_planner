@@ -28,7 +28,7 @@ source 'https://rubygems.org' do
   gem 'plek'
   gem 'puma', '~> 3.0'
   gem 'pusher'
-  gem 'rails', '~> 5.0.0', '>= 5.0.0.1'
+  gem 'rails', '~> 5.0.1'
   gem 'rails-observers', github: 'rails/rails-observers'
   gem 'sassc-rails'
   gem 'select2-rails'
