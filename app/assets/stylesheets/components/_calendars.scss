@@ -177,7 +177,7 @@ $guider-row-height: 120px;
 }
 
 .fc-unthemed {
-  .fc-today {
+  td.fc-today { // scss-lint:disable QualifyingElement
     background: $calendar-today-background;
   }
 
