@@ -37,7 +37,7 @@ class AppointmentReport
     CSV.generate do |csv|
       csv << EXPORTABLE_ATTRIBUTES
 
-      appointments.each do |appointment|
+      appointments.find_each do |appointment|
         presenter = AppointmentCsvPresenter.new(appointment)
         csv << EXPORTABLE_ATTRIBUTES.map { |a| presenter.public_send(a) }
       end
