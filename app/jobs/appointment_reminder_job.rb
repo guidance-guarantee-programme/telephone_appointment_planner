@@ -4,8 +4,7 @@ class AppointmentReminderJob < ApplicationJob
   def perform(appointment)
     ReminderActivity.create!(
       appointment: appointment,
-      owner: appointment.guider,
-      message: 'sent a reminder'
+      owner: appointment.guider
     )
     AppointmentMailer.reminder(appointment).deliver_later
   end

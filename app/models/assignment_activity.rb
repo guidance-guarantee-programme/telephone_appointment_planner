@@ -1,16 +1,8 @@
 class AssignmentActivity < Activity
   ASSIGNED = 'assigned'.freeze
 
-  def message
-    if allocated?(super)
-      "#{owner.name} was allocated a new appointment"
-    else
-      "#{user_name} allocated this appointment to #{owner.name}"
-    end
-  end
-
-  def allocated?(type)
-    type == ASSIGNED
+  def allocated?
+    message == ASSIGNED
   end
 
   def self.from(audit, appointment)

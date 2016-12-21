@@ -18,7 +18,7 @@ RSpec.describe AssignmentActivity do
           appointment: appointment,
           owner: appointment.guider,
           prior_owner: nil,
-          message: "#{appointment.guider.name} was allocated a new appointment"
+          message: 'assigned'
         )
       end
     end
@@ -46,7 +46,7 @@ RSpec.describe AssignmentActivity do
           prior_owner: prior_owner,
           owner: appointment.guider,
           appointment_id: appointment.id,
-          message: "#{user.name} allocated this appointment to #{appointment.guider.name}"
+          message: 'reassigned'
         )
       end
 

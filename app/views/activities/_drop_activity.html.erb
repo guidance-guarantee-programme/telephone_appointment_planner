@@ -1,4 +1,5 @@
 <% content_for(:activity_message, flush: true) do %>
-  <b>reported a delivery failure: </b><em><%= drop_activity.message %></em>
+  <strong>The system</strong>
+  reported a delivery failure: <em><%= drop_activity.message %></em>
 <% end %>
 <%= render 'activities/activity', activity: drop_activity, details: details %>

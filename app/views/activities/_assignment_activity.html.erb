@@ -1,4 +1,12 @@
 <% content_for(:activity_message, flush: true) do %>
-  <%= assignment_activity.message %>
+  <% if assignment_activity.allocated? %>
+    <strong>The system</strong>
+    assigned this appointment to
+    <strong><%= assignment_activity.owner.name %></strong>
+  <% else %>
+    <strong><%= assignment_activity.user_name %></strong>
+    allocated this appointment to
+    <strong><%= assignment_activity.owner.name %></strong>
+  <% end %>
 <% end %>
 <%= render 'activities/activity', activity: assignment_activity, details: details %>

@@ -1,4 +1,5 @@
 <% content_for(:activity_message, flush: true) do %>
+  <strong><%= audit_activity.user_name %></strong>
   changed the <%= audit_activity.message %>
 <% end %>
 <%= render 'activities/activity', activity: audit_activity, details: details %>
