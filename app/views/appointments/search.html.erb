@@ -39,11 +39,10 @@
   <thead>
     <tr>
       <th>Reference</th>
-      <th>Created</th>
-      <th>First Name</th>
-      <th>Last Name</th>
+      <th>Customer</th>
       <th>Guider</th>
       <th>Appointment Date/Time</th>
+      <th>Created</th>
       <th>Status</th>
       <th width="1%">Actions</th>
     </tr>
@@ -53,11 +52,10 @@
       <% result = AppointmentSearchResultPresenter.new(result) %>
       <tr class="t-result">
         <td class="t-id"><span class="id js-allow-highlighting">#<%= result.id %></span></td>
-        <td><%= result.created_at %></td>
-        <td class="t-first-name js-allow-highlighting"><%= result.first_name %></td>
-        <td class="js-allow-highlighting"><%= result.last_name %></td>
+        <td class="t-name js-allow-highlighting"><%= result.name %></td>
         <td class="js-allow-highlighting"><%= result.guider_name %></td>
         <td><%= result.date %></td>
+        <td><%= result.created_at %></td>
         <td><%= result.status %></td>
         <td nowrap="true">
           <%= link_to edit_appointment_path(result), title: 'Edit appointment', class: 'btn btn-info' do %>
