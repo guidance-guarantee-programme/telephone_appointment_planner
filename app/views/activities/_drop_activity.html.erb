@@ -1,4 +1,5 @@
 <% content_for(:activity_message, flush: true) do %>
+  <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
   <strong>The system</strong>
   reported a delivery failure: <em><%= drop_activity.message %></em>
 <% end %>

@@ -4,7 +4,6 @@
   <li class="activity list-group-item t-activity" data-activity-id="<%= activity.id %>">
 <% end %>
     <div class="activity-details">
-      <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
       <%= content_for(:activity_message) %>
       <%= render('activities/details', appointment: activity.appointment) if details %>
     </div>
