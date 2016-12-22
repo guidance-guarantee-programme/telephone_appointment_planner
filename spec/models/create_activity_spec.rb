@@ -24,7 +24,7 @@ RSpec.describe CreateActivity do
     it 'pushes an activity update' do
       expect(PusherActivityNotificationJob)
         .to have_received(:perform_later)
-        .with(@appointment.guider, subject)
+        .with(@appointment.guider_id, subject.id)
     end
   end
 end

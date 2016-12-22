@@ -20,7 +20,8 @@ class AssignmentActivity < Activity
       appointment: appointment,
       owner: appointment.guider
     )
-    PusherActivityNotificationJob.perform_later(appointment.guider, activity)
+
+    PusherActivityNotificationJob.perform_later(appointment.guider_id, activity.id)
   end
 
   def self.create_reassignment(audit, appointment)
@@ -32,7 +33,8 @@ class AssignmentActivity < Activity
       owner: appointment.guider,
       prior_owner_id: prior_owner.id
     )
-    PusherActivityNotificationJob.perform_later(appointment.guider, activity)
-    PusherActivityNotificationJob.perform_later(prior_owner, activity)
+
+    PusherActivityNotificationJob.perform_later(appointment.guider_id, activity.id)
+    PusherActivityNotificationJob.perform_later(prior_owner.id, activity.id)
   end
 end

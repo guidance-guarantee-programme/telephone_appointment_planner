@@ -5,6 +5,7 @@ class CreateActivity < Activity
       appointment_id: appointment.id,
       owner_id: appointment.guider.id
     )
-    PusherActivityNotificationJob.perform_later(appointment.guider, activity)
+
+    PusherActivityNotificationJob.perform_later(appointment.guider_id, activity.id)
   end
 end
