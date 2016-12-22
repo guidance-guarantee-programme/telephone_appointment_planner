@@ -1,4 +1,6 @@
 <% content_for(:activity_message, flush: true) do %>
-  <%= create_activity.message %>
+  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+  <strong><%= create_activity.user_name %></strong>
+  created this appointment
 <% end %>
 <%= render 'activities/activity', activity: create_activity, details: details %>

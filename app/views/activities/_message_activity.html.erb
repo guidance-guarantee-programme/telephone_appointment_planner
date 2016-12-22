@@ -1,4 +1,6 @@
 <% content_for(:activity_message, flush: true) do %>
+  <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+  <strong><%= message_activity.user_name %></strong>
   said <em><%= message_activity.message %></em>
 <% end %>
 <%= render 'activities/activity', activity: message_activity, details: details %>
