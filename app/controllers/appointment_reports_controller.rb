@@ -1,4 +1,6 @@
 class AppointmentReportsController < ApplicationController
+  include ActionController::Live
+
   before_action do
     authorise_user! any_of: [
       User::RESOURCE_MANAGER_PERMISSION,
@@ -16,17 +18,23 @@ class AppointmentReportsController < ApplicationController
     @appointment_report = AppointmentReport.new(report_params)
 
     if @appointment_report.valid?
-      send_data(
-        @appointment_report.generate,
-        type: Mime[:csv],
-        disposition: "attachment; filename=#{@appointment_report.file_name}"
-      )
+      stream_response
     else
       render :new
     end
   end
 
   private
+
+  def stream_response
+    response.headers['Content-Disposition'] = "attachment; filename=\"#{@appointment_report.file_name}\""
+    response.headers['Content-Type'] = 'text/csv'
+    @appointment_report.generate.copy_to do |line|
+      response.stream.write(line)
+    end
+  ensure
+    response.stream.close
+  end
 
   def load_where_options
     @where_options = [

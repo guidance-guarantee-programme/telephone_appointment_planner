@@ -27,6 +27,7 @@ source 'https://rubygems.org' do
   gem 'newrelic_rpm'
   gem 'pg', '~> 0.18'
   gem 'plek'
+  gem 'postgres-copy'
   gem 'puma', '~> 3.0'
   gem 'pusher'
   gem 'rails', '~> 5.0.1'

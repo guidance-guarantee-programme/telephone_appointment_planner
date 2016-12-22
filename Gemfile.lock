@@ -215,6 +215,11 @@ GEM
       capybara (~> 2.1)
       cliver (~> 0.3.1)
       websocket-driver (>= 0.2.0)
+    postgres-copy (1.1.0)
+      activerecord (>= 4.0)
+      pg (>= 0.17)
+      rails (>= 4.0)
+      responders
     powerpack (0.1.1)
     pry (0.10.4)
       coderay (~> 1.1.0)
@@ -295,6 +300,8 @@ GEM
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
     redis (3.3.2)
+    responders (2.3.0)
+      railties (>= 4.2.0, < 5.1)
     rspec-core (3.5.4)
       rspec-support (~> 3.5.0)
     rspec-expectations (3.5.0)
@@ -424,6 +431,7 @@ DEPENDENCIES
   pg (~> 0.18)!
   plek!
   poltergeist (= 1.11.0)!
+  postgres-copy!
   pry-byebug!
   puma (~> 3.0)!
   pusher!

@@ -89,12 +89,30 @@ RSpec.feature 'Resource manager downloads appointment reports' do
   end
 
   def expect_csv_content_disposition(file_name)
-    expect(@page.content_disposition).to eq "attachment; filename=#{file_name}"
+    expect(@page.content_disposition).to eq "attachment; filename=\"#{file_name}\""
   end
 
   def expect_appointment_csv(appointment)
     expect(@page.csv.count).to eq 2
-    expect(@page.csv.first).to eq AppointmentReport::EXPORTABLE_ATTRIBUTES
+    expect(@page.csv.first).to eq [
+      :created_at,
+      :booked_by,
+      :guider,
+      :date,
+      :duration,
+      :status,
+      :first_name,
+      :last_name,
+      :notes,
+      :opt_out_of_market_research,
+      :date_of_birth,
+      :booking_reference,
+      :memorable_word,
+      :phone,
+      :mobile,
+      :email
+    ]
+
     expect(@page.csv.second).to match_array [
       appointment.created_at.to_s,
       appointment.agent.name,
