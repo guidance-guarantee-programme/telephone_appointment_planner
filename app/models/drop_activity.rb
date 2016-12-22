@@ -5,7 +5,7 @@ class DropActivity < Activity
       appointment: appointment,
       owner: appointment.guider
     ).tap do |activity|
-      PusherActivityNotificationJob.perform_later(appointment.guider, activity)
+      PusherActivityNotificationJob.perform_later(appointment.guider_id, activity.id)
     end
   end
 end

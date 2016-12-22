@@ -17,6 +17,7 @@ source 'https://rubygems.org' do
   gem 'audited'
   gem 'bh'
   gem 'bootstrap-kaminari-views'
+  gem 'bugsnag'
   gem 'font-awesome-rails'
   gem 'foreman'
   gem 'gds-sso'
@@ -66,7 +67,6 @@ source 'https://rubygems.org' do
   end
 
   group :staging, :production do
-    gem 'bugsnag'
     gem 'lograge'
     gem 'rails_12factor'
   end

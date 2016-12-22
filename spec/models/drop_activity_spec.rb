@@ -19,8 +19,8 @@ RSpec.describe DropActivity, '.from' do
 
   it 'notifies asynchronously' do
     expect(PusherActivityNotificationJob).to have_received(:perform_later).with(
-      appointment.guider,
-      subject
+      appointment.guider_id,
+      subject.id
     )
   end
 end

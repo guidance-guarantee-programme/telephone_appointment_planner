@@ -7,7 +7,7 @@ class ActivitiesController < ApplicationController
 
   def create
     @activity = MessageActivity.create(message_params)
-    PusherActivityNotificationJob.perform_later(appointment.guider, @activity)
+    PusherActivityNotificationJob.perform_later(appointment.guider_id, @activity.id)
     respond_to do |format|
       format.js { render @activity }
     end
