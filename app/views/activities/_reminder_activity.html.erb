@@ -4,4 +4,4 @@
   sent an appointment reminder email to
   <strong><%= reminder_activity.appointment.name %></strong>
 <% end %>
-<%= render 'activities/activity', activity: reminder_activity, details: details %>
+<%= render 'activities/activity', activity: reminder_activity, details: details, hide: hide %>

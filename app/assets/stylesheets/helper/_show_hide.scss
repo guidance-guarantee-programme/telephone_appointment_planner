@@ -1,0 +1,7 @@
+.show-with-js {
+  display: none;
+
+  .js & {
+    display: block;
+  }
+}

@@ -38,7 +38,7 @@ class PusherActivityNotificationJob < ApplicationJob
   def render_activity(activity, details)
     ApplicationController.render(
       partial: activity,
-      locals: { details: details }
+      locals: { details: details, hide: false }
     )
   end
 end

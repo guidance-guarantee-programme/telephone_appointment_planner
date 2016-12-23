@@ -1,7 +1,7 @@
 <% if details %>
   <a class="activity list-group-item t-activity" href="<%= edit_appointment_path(activity.appointment) %>">
 <% else %>
-  <li class="activity list-group-item t-activity" data-activity-id="<%= activity.id %>">
+  <li class="activity list-group-item t-activity <%= 't-hidden-activity activity--hideable activity--hide' if hide %>" data-activity-id="<%= activity.id %>">
 <% end %>
     <div class="activity-details">
       <%= content_for(:activity_message) %>

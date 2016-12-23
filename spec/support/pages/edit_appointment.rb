@@ -25,7 +25,7 @@ module Pages
       element :submit, '.t-submit-message'
 
       element :further_activities, '.t-further-activities'
-      element :hidden_activities, '.t-hidden-activities'
+      element :hidden_activity, '.t-hidden-activity'
     end
 
     section :breadcrumb, '.t-breadcrumb' do
