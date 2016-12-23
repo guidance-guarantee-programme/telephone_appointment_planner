@@ -18,15 +18,15 @@
         <% end %>
       </div>
 
-      <ul class="list-group" data-module="activity-feed" data-config='{"event": "appointment_activity_<%= appointment.id %>"}'>
-        <%= render(appointment.activities.first, details: false) if appointment.activities.present? %>
+      <ul class="list-group" aria-live="polite" data-module="activity-feed" id="activity-list" data-config='{"event": "appointment_activity_<%= appointment.id %>"}' aria-label="Activities">
+        <%= render(appointment.activities[0..2], details: false, hide: false) if appointment.activities.present? %>
+        <% if appointment.activities.count > 3 %>
+          <%= render(appointment.activities - Array(appointment.activities[0..2]), details: false, hide: true) %>
+        <% end %>
       </ul>
 
-      <% if appointment.activities.count > 1 %>
-        <ul class="list-group t-hidden-activities collapse" id="collapse">
-          <%= render(appointment.activities - Array(appointment.activities.first), details: false) %>
-        </ul>
-        <button class="btn btn-default t-further-activities" data-target="#collapse" data-toggle="collapse" aria-expanded="false" aria-controls="collapse">
+      <% if appointment.activities.count > 3 %>
+        <button class="show-with-js js-activity-show-all btn btn-default t-further-activities" aria-expanded="false" aria-controls="activity-list">
           <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
           All activity
         </button>

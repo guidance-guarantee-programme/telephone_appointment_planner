@@ -5,7 +5,13 @@
   class ActivityFeed extends TapBase {
     start(el) {
       super.start(el);
+
+      this.$showAllButton = $('.js-activity-show-all');
+      this.hideableClass = 'activity--hideable';
+      this.hideClass = 'activity--hide';
+
       this.setupPusher();
+      this.bindEvents();
     }
 
     setupPusher() {
@@ -27,6 +33,18 @@
           .prependTo(this.$el)
           .fadeIn();
       }
+    }
+
+    bindEvents() {
+      this.$showAllButton.on('click', this.handleShowAllClick.bind(this));
+    }
+
+    handleShowAllClick(event) {
+      const $button = $(event.currentTarget),
+        $target = $(`#${$button.attr('aria-controls')}`);
+
+      $button.attr('aria-expanded', $button.attr('aria-expanded') === 'false' ? 'true' : 'false');
+      $target.find(`.${this.hideableClass}`).toggleClass(this.hideClass);
     }
 
     isUnique($element) {

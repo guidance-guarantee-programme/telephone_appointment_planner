@@ -16,7 +16,7 @@ RSpec.feature 'User views appointment activities' do
       and_there_is_an_appointment
       and_the_appointment_was_updated_multiple_times
       when_they_view_the_appointment
-      then_they_see_the_last_activity
+      then_they_see_the_last_three_activities
       when_they_request_further_activities
       then_they_see_all_the_activities
       when_somebody_else_adds_an_activity
@@ -53,9 +53,9 @@ RSpec.feature 'User views appointment activities' do
     @appointment.update(email: 'mortimer@example.com')
   end
 
-  def then_they_see_the_last_activity
+  def then_they_see_the_last_three_activities
     @page.activity_feed.tap do |feed|
-      expect(feed).to have_activities(count: 1)
+      expect(feed).to have_activities(count: 3)
       expect(feed.activities.first).to have_text('email')
     end
   end
@@ -66,7 +66,7 @@ RSpec.feature 'User views appointment activities' do
 
   def then_they_see_all_the_activities
     @page.activity_feed.tap do |feed|
-      feed.wait_until_hidden_activities_visible
+      feed.wait_until_hidden_activity_visible
 
       expect(feed).to have_activities(count: 4)
       expect(feed.activities.last).to have_text('created')

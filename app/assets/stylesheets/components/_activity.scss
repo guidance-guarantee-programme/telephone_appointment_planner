@@ -4,10 +4,16 @@
 }
 
 .activity-details {
-  flex-basis: 75%;
+  flex-basis: 73%;
 }
 
 .activity-badge {
-  flex-basis: 25%;
+  flex-basis: 27%;
   text-align: right;
+}
+
+.activity--hide {
+  .js & {
+    display: none;
+  }
 }
