@@ -184,7 +184,7 @@ RSpec.describe Appointment, type: :model do
     it 'is true for appointments matching the imported (fake) date of birth' do
       appointment = build_stubbed(
         :appointment,
-        date_of_birth: AppointmentImporter::FAKE_DATE_OF_BIRTH
+        date_of_birth: Appointment::FAKE_DATE_OF_BIRTH
       )
 
       expect(appointment).to be_imported

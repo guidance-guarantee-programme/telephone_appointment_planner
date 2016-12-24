@@ -15,7 +15,7 @@ FactoryGirl.define do
     guider { create(:guider) }
 
     factory :imported_appointment do
-      date_of_birth AppointmentImporter::FAKE_DATE_OF_BIRTH
+      date_of_birth Appointment::FAKE_DATE_OF_BIRTH
     end
   end
 end
