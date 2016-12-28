@@ -1,5 +1,7 @@
 # rubocop:disable Metrics/ClassLength
 class Appointment < ApplicationRecord
+  FAKE_DATE_OF_BIRTH = '1900-01-01'.freeze
+
   belongs_to :agent, class_name: 'User'
 
   enum status: %i(
@@ -64,7 +66,7 @@ class Appointment < ApplicationRecord
   end
 
   def imported?
-    date_of_birth == Date.parse(AppointmentImporter::FAKE_DATE_OF_BIRTH)
+    date_of_birth == Date.parse(FAKE_DATE_OF_BIRTH)
   end
 
   def name
