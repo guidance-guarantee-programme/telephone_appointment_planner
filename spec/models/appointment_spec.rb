@@ -77,6 +77,14 @@ RSpec.describe Appointment, type: :model do
         expect(subject.errors[:date_of_birth]).to eq ['must be valid']
       end
     end
+
+    context 'when the date of birth is prior to 1900' do
+      it 'is invalid' do
+        subject.date_of_birth = '1899-12-31'
+
+        expect(subject).to_not be_valid
+      end
+    end
   end
 
   describe '#assign_to_guider' do
