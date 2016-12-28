@@ -90,6 +90,8 @@ RSpec.feature 'Guider views appointments' do
   def and_they_assign_the_appointment_to_another_guider
     @page = Pages::Allocations.new.tap(&:load)
     expect(@page).to be_displayed
+    @page.wait_until_appointments_visible
+
     @page.reassign(@page.appointments.first, guider: @other_guider)
     @page.wait_until_action_panel_visible
     @page.action_panel.save.click
