@@ -67,6 +67,13 @@ class CompanyCalendar extends Calendar {
     $.get('/guiders', this.handleResources.bind(this, callback));
   }
 
+  eventClick(event) {
+    if (event.url) {
+      window.open(event.url);
+      return false;
+    }
+  }
+
   handleResources(callback, resources) {
     const filteredResources = resources.filter(this.filterResources.bind(this));
 
