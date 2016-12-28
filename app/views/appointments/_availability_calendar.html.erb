@@ -2,6 +2,8 @@
 <% if @appointment.errors[:guider].any? %>
   <%= render 'unable_to_assign' %>
 <% end %>
+
+<%= render 'shared/nojs' %>
 <div
   id="AppointmentAvailabilityCalendar"
   class="appointment-availability-calendar"

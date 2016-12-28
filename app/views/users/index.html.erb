@@ -4,7 +4,7 @@
 
 <div data-module="guiders-multi-action">
   <div id="guiders" data-module="sortable-list" data-default-order='{"value": "name", "order": "asc"}' data-config='<%= sortable_list_config(@groups) %>'>
-    <form class="form-inline">
+    <form class="form-inline show-with-js">
       <div class="form-group">
         <label for="user-search">Search</label>
         <input class="search form-control t-search" name="user-search" id="user-search" placeholder="Search">
@@ -20,7 +20,7 @@
       </colgroup>
       <thead>
         <tr>
-          <th><label for="select-all"><input type="checkbox" id="select-all" class="select-all js-multi-checkbox-all"> <span class="sr-only">Select All</span></label></th>
+          <th><label for="select-all" class="show-with-js"><input type="checkbox" id="select-all" class="select-all js-multi-checkbox-all"> <span class="sr-only">Select All</span></label></th>
           <th><span class="sort" data-sort="name">Name</span></th>
           <th>Groups</th>
           <th>Active</th>
@@ -31,7 +31,7 @@
         <% @guiders.each do |guider| %>
           <tr class="t-guider guider js-multi-checkbox-group">
             <td>
-              <label for="guider_<%= guider.id %>">
+              <label for="guider_<%= guider.id %>" class="show-with-js">
                 <input type="checkbox" name="guider_<%= guider.id %>" id="guider_<%= guider.id %>" value="<%= guider.id %>" class="guider__checkbox t-checkbox js-multi-checkbox-item">
                 <span class="sr-only">Select <%= guider.name %></span>
               </label>
