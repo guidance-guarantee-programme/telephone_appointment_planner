@@ -1,6 +1,6 @@
 # rubocop:disable Metrics/ClassLength
 class Appointment < ApplicationRecord
-  FAKE_DATE_OF_BIRTH = '1900-01-01'.freeze
+  FAKE_DATE_OF_BIRTH = Date.parse('1900-01-01').freeze
 
   belongs_to :agent, class_name: 'User'
 
@@ -66,7 +66,7 @@ class Appointment < ApplicationRecord
   end
 
   def imported?
-    date_of_birth == Date.parse(FAKE_DATE_OF_BIRTH)
+    date_of_birth == FAKE_DATE_OF_BIRTH
   end
 
   def name
@@ -130,6 +130,12 @@ class Appointment < ApplicationRecord
 
   def date_of_birth_valid
     errors.add(:date_of_birth, 'must be valid') if @date_of_birth_invalid
+
+    errors.add(:date_of_birth, 'must be at least 1900') if date_of_birth_pre_cut_off?
+  end
+
+  def date_of_birth_pre_cut_off?
+    date_of_birth? && date_of_birth < FAKE_DATE_OF_BIRTH
   end
 
   def agent_is_resource_manager?
