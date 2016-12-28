@@ -8,7 +8,7 @@ RSpec.feature 'Resource manager modifies appointments' do
         when_they_view_the_appointments
         then_they_see_appointments_for_multiple_guiders
         when_they_change_the_guider
-        and_click_the_appointment_while_dismissing_the_warning
+        and_click_a_link_while_dismissing_the_warning
         then_they_do_not_navigate_away
       end
     end
@@ -254,9 +254,9 @@ RSpec.feature 'Resource manager modifies appointments' do
     expect(deliveries.first.body.encoded).to include 'Your appointment has been changed'
   end
 
-  def and_click_the_appointment_while_dismissing_the_warning
+  def and_click_a_link_while_dismissing_the_warning
     dismiss_confirm('You have unsaved changes - Save, or undo the changes.') do
-      @page.appointments.first.click
+      @page.find('.navbar-brand').click
     end
   end
 
