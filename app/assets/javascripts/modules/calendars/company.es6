@@ -67,10 +67,10 @@ class CompanyCalendar extends Calendar {
     $.get('/guiders', this.handleResources.bind(this, callback));
   }
 
-  eventClick(event) {
+  eventClick(event, jsEvent) {
     if (event.url) {
+      jsEvent.preventDefault();
       window.open(event.url);
-      return false;
     }
   }
 
