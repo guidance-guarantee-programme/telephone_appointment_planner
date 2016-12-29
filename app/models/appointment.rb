@@ -27,7 +27,7 @@ class Appointment < ApplicationRecord
       .includes(:activities)
       .where(start_at: Time.zone.now..24.hours.from_now)
       .where.not(
-        email: nil,
+        email: '',
         activities: {
           type: 'ReminderActivity', created_at: 12.hours.ago..12.hours.from_now
         }

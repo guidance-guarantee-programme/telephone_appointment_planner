@@ -296,7 +296,7 @@ RSpec.describe Appointment, type: :model do
 
       context 'appointment has no email address' do
         it 'does not need a reminder' do
-          appointment.update!(email: nil)
+          appointment.update!(email: '')
           expect(result).to_not include(appointment)
         end
       end
