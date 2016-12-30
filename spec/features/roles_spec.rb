@@ -78,7 +78,7 @@ RSpec.feature 'Roles' do
 
     scenario 'Can reschedule appointments' do
       given_the_user_has_no_permissions do
-        when_they_try_to_reschedule_an_appoinment
+        when_they_try_to_reschedule_an_appointment
         then_they_are_allowed
       end
     end
@@ -193,7 +193,7 @@ RSpec.feature 'Roles' do
     @page.load
   end
 
-  def when_they_try_to_reschedule_an_appoinment
+  def when_they_try_to_reschedule_an_appointment
     appointment = create(:appointment)
     @page = Pages::RescheduleAppointment.new
     @page.load(id: appointment.id)

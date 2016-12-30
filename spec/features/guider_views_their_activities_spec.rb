@@ -17,7 +17,7 @@ RSpec.feature 'Guider views their activities' do
     end
   end
 
-  scenario 'Activies are loaded in realtime', js: true do
+  scenario 'Activities are loaded in realtime', js: true do
     given_a_browser_session_for guider do
       and_they_have_some_appointments
       when_they_view_their_activity

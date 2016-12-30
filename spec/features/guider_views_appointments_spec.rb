@@ -42,7 +42,7 @@ RSpec.feature 'Guider views appointments' do
     end
   end
 
-  scenario 'Guider views their own appoinments, and is notified of appointment changes', js: true do
+  scenario 'Guider views their own appointments and is notified of appointment changes', js: true do
     given_the_requisite_data
 
     travel_to @appointment.start_at do
@@ -61,7 +61,7 @@ RSpec.feature 'Guider views appointments' do
     end
   end
 
-  scenario 'Guider views all appoinments, and is notified of appointment changes', js: true do
+  scenario 'Guider views all appointments and is notified of appointment changes', js: true do
     given_the_requisite_data
 
     travel_to @appointment.start_at do
