@@ -13,7 +13,7 @@ end
 
 source 'https://rubygems.org' do
   gem 'active_link_to'
-  gem 'active_model_serializers'
+  gem 'active_model_serializers', '0.10.2'
   gem 'audited'
   gem 'bh'
   gem 'bootstrap-kaminari-views'
