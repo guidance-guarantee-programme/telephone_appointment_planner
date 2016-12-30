@@ -58,7 +58,7 @@ source 'https://rubygems.org' do
     gem 'chronic'
     gem 'coveralls', require: false
     gem 'database_rewinder'
-    gem 'poltergeist'
+    gem 'poltergeist', '1.11.0'
     gem 'scss_lint', require: false
   end
 

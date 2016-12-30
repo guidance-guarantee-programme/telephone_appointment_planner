@@ -421,7 +421,7 @@ DEPENDENCIES
   parallel_tests!
   pg (~> 0.18)!
   plek!
-  poltergeist!
+  poltergeist (= 1.11.0)!
   pry-byebug!
   puma (~> 3.0)!
   pusher!
