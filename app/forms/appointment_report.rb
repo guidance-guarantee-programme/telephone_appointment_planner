@@ -7,25 +7,6 @@ class AppointmentReport
   attr_reader :where
   attr_reader :date_range
 
-  EXPORTABLE_ATTRIBUTES = [
-    :created_at,
-    :booked_by,
-    :guider,
-    :date,
-    :duration,
-    :status,
-    :first_name,
-    :last_name,
-    :notes,
-    :opt_out_of_market_research,
-    :date_of_birth,
-    :booking_reference,
-    :memorable_word,
-    :phone,
-    :mobile,
-    :email
-  ].freeze
-
   validates :date_range, presence: true
 
   def initialize(params = {})
@@ -33,35 +14,55 @@ class AppointmentReport
     @date_range = params[:date_range]
   end
 
-  def generate
-    CSV.generate do |csv|
-      csv << EXPORTABLE_ATTRIBUTES
+  def generate # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+    column = where == 'created_at' ? 'appointments.created_at' : 'appointments.start_at'
 
-      appointments.find_each do |appointment|
-        presenter = AppointmentCsvPresenter.new(appointment)
-        csv << EXPORTABLE_ATTRIBUTES.map { |a| presenter.public_send(a) }
-      end
-    end
+    Appointment
+      .select("to_char(appointments.created_at::TIMESTAMPTZ, 'yyyy-MM-dd HH24:MI:ss TZ') AS created_at")
+      .select('agents.name AS booked_by')
+      .select('guiders.name AS guider')
+      .select("to_char(appointments.start_at::TIMESTAMPTZ, 'yyyy-MM-dd HH24:MI:ss TZ') AS date")
+      .select(<<-SQL
+                CONCAT(
+                  (
+                    DATE_PART('hour', appointments.end_at - appointments.start_at) * 60 +
+                    DATE_PART('minute', appointments.end_at - appointments.start_at)
+                  )::text,
+                  ' minutes'
+                )
+                AS duration
+              SQL
+             )
+      .select(<<-SQL
+                CASE appointments.status
+                  #{Appointment.statuses.map { |k, v| "WHEN #{v} THEN '#{k}'" }.join("\n")}
+                END
+                AS status
+              SQL
+             )
+      .select('appointments.first_name')
+      .select('appointments.last_name')
+      .select('appointments.notes')
+      .select(<<-SQL
+                CASE WHEN appointments.opt_out_of_market_research IS NOT NULL
+                  THEN 'true'
+                  ELSE 'false'
+                END AS opt_out_of_market_research
+              SQL
+             )
+      .select('appointments.date_of_birth')
+      .select('appointments.id AS booking_reference')
+      .select('appointments.memorable_word')
+      .select('appointments.phone')
+      .select('appointments.mobile')
+      .select('appointments.email')
+      .where("#{column} >= ? AND #{column} <= ?", range.begin, range.end)
+      .joins('INNER JOIN users guiders ON guiders.id = appointments.guider_id')
+      .joins('INNER JOIN users agents ON agents.id = appointments.agent_id')
+      .order(where)
   end
 
   def file_name
     "report-#{range_title}#{where}.csv"
-  end
-
-  private
-
-  def appointments
-    Appointment
-      .includes(:agent, :guider)
-      .where(
-        "#{column_name} >= ? AND #{column_name} <= ?",
-        range.begin,
-        range.end.end_of_day
-      )
-      .order(where)
-  end
-
-  def column_name
-    Appointment.connection.quote_column_name(where)
   end
 end

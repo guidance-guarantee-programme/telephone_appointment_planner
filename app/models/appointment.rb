@@ -1,5 +1,7 @@
 # rubocop:disable Metrics/ClassLength
 class Appointment < ApplicationRecord
+  acts_as_copy_target
+
   FAKE_DATE_OF_BIRTH = Date.parse('1900-01-01').freeze
 
   belongs_to :agent, class_name: 'User'
