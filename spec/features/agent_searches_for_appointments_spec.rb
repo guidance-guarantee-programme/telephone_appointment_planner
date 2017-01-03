@@ -63,8 +63,8 @@ RSpec.feature 'Agent searches for appointments' do
   end
 
   def then_they_can_see_those_filtered_appointments_only
-    expected = @appointments.select { |a| a.first_name == @expected_appointment.first_name }.map(&:name)
-    actual = @page.results.map(&:name).map(&:text)
+    expected = @appointments.select { |a| a.first_name == @expected_appointment.first_name }.map(&:name).sort
+    actual = @page.results.map(&:name).map(&:text).sort
     expect(actual).to eq expected
   end
 
