@@ -56,7 +56,7 @@ class AppointmentReport
       .select('appointments.phone')
       .select('appointments.mobile')
       .select('appointments.email')
-      .where("#{column} >= ? AND #{column} <= ?", range.begin, range.end)
+      .where("#{column} >= ? AND #{column} <= ?", range.begin, range.end.end_of_day)
       .joins('INNER JOIN users guiders ON guiders.id = appointments.guider_id')
       .joins('INNER JOIN users agents ON agents.id = appointments.agent_id')
       .order(where)
