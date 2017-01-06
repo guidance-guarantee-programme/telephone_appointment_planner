@@ -16,11 +16,17 @@
 <% end %>
 
 <div class="row">
-  <div class="col-md-9">
+  <div class="col-md-7">
     <h1>Edit appointment for <%= @appointment.name %> <span class="text-muted"><span class="sr-only">Booking reference </span>#<%= @appointment.id %></span></h1>
     <%= rebooked_from_heading(@appointment) %>
   </div>
-  <div class="col-md-3 action-buttons">
+  <div class="col-md-5 action-buttons">
+    <% if @appointment.can_create_summary? %>
+      <%= link_to SummaryDocumentLink.generate(@appointment), title: 'Create summary', class: 'btn btn-info', target: '_blank' do %>
+        <span class="glyphicon glyphicon-print" aria-hidden="true"></span>
+        <span>Create Summary</span>
+      <% end %>
+    <% end %>
     <% if @appointment.can_be_rescheduled_by?(current_user) %>
       <%= link_to appointment_reschedule_path(@appointment), title: 'Reschedule appointment', class: 'btn btn-info' do %>
         <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
