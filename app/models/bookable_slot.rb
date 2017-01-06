@@ -31,23 +31,27 @@ class BookableSlot < ApplicationRecord
       .without_holidays
   end
 
-  def self.without_appointments
+  def self.without_appointments # rubocop:disable Metrics/MethodLength
     joins(<<-SQL
             LEFT JOIN appointments ON
-              appointments.guider_id = #{quoted_table_name}.guider_id AND
-              appointments.start_at = #{quoted_table_name}.start_at AND
-              appointments.end_at = #{quoted_table_name}.end_at AND NOT
-              appointments.status IN (
+              appointments.guider_id = #{quoted_table_name}.guider_id
+              AND NOT appointments.status IN (
                 #{Appointment.statuses['cancelled_by_customer']},
                 #{Appointment.statuses['cancelled_by_pension_wise']}
+              )
+              AND (
+                (appointments.start_at = #{quoted_table_name}.start_at AND appointments.end_at = #{quoted_table_name}.end_at)
+                OR
+                (appointments.start_at BETWEEN #{quoted_table_name}.start_at AND #{quoted_table_name}.end_at)
+                OR
+                (appointments.end_at BETWEEN #{quoted_table_name}.start_at AND #{quoted_table_name}.end_at)
               )
             SQL
          )
       .where('appointments.start_at IS NULL')
   end
 
-  # rubocop:disable Metrics/MethodLength
-  def self.without_holidays
+  def self.without_holidays # rubocop:disable Metrics/MethodLength
     joins(<<-SQL
           LEFT JOIN holidays ON
             -- The holiday is specifically for the user, or it is for everyone
@@ -63,7 +67,6 @@ class BookableSlot < ApplicationRecord
          )
       .where('holidays.start_at IS NULL')
   end
-  # rubocop:enable Metrics/MethodLength
 
   def self.starting_after_next_valid_start_date(user)
     where("#{quoted_table_name}.start_at > ?", next_valid_start_date(user))

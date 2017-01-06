@@ -102,6 +102,28 @@ RSpec.describe BookableSlot, type: :model do
       expect(subject).to_not include slot
     end
 
+    it 'excludes slots with appointments that start inside them' do
+      create(
+        :appointment,
+        guider: guider,
+        start_at: make_time(10, 45),
+        end_at: make_time(12, 30),
+        status: :pending
+      )
+      expect(subject).to_not include slot
+    end
+
+    it 'excludes slots with appointments that end inside them' do
+      create(
+        :appointment,
+        guider: guider,
+        start_at: make_time(9, 45),
+        end_at: make_time(10, 35),
+        status: :pending
+      )
+      expect(subject).to_not include slot
+    end
+
     it 'includes slots with cancelled appointments' do
       create(
         :appointment,
