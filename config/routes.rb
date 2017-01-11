@@ -5,6 +5,12 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
 
   root 'home#index'
 
+  namespace :api, constraints: { format: :json } do
+    namespace :v1 do
+      resources :bookable_slots, only: :index
+    end
+  end
+
   namespace :mail_gun do
     resources :drops, only: :create
   end

@@ -28,7 +28,9 @@ Style/FrozenStringLiteralComment:
 Metrics/MethodLength:
   Exclude:
     - 'spec/features/*'
+    - 'spec/requests/*'
 
 Metrics/AbcSize:
   Exclude:
     - 'spec/features/*'
+    - 'spec/requests/*'
