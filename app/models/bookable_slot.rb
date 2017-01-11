@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 class BookableSlot < ApplicationRecord
   belongs_to :guider, class_name: 'User'
 
@@ -29,6 +30,18 @@ class BookableSlot < ApplicationRecord
   def self.bookable
     without_appointments
       .without_holidays
+  end
+
+  def self.grouped # rubocop:disable Metrics/AbcSize
+    from = BusinessDays.from_now(2).beginning_of_day
+    to   = 6.weeks.from_now.end_of_day
+
+    bookable
+      .within_date_range(from, to)
+      .select("#{quoted_table_name}.start_at::date as start_date")
+      .select("to_char(#{quoted_table_name}.start_at, 'HH24:MI') as start_time")
+      .group_by(&:start_date)
+      .transform_values { |value| value.map(&:start_time).uniq.sort }
   end
 
   def self.without_appointments # rubocop:disable Metrics/MethodLength

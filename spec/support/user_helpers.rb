@@ -21,6 +21,10 @@ module UserHelpers
     GDS::SSO.test_user = nil
   end
 
+  def given_the_user_is_a_pension_wise_api_user(&block)
+    given_the_user(:pension_wise_api, &block)
+  end
+
   def given_the_user_is_a_contact_centre_team_leader(&block)
     given_the_user(:contact_centre_team_leader, &block)
   end
