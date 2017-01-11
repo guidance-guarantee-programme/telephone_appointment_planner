@@ -2,7 +2,6 @@ class User < ApplicationRecord
   include GDS::SSO::User
 
   ALL_PERMISSIONS = [
-    PENSION_WISE_API_PERMISSION = 'pension_wise_api'.freeze,
     RESOURCE_MANAGER_PERMISSION = 'resource_manager'.freeze,
     GUIDER_PERMISSION           = 'guider'.freeze,
     AGENT_PERMISSION            = 'agent'.freeze,

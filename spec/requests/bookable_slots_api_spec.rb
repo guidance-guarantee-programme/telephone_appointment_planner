@@ -3,15 +3,13 @@ require 'rails_helper'
 RSpec.describe 'GET /api/v1/bookable_slots' do
   scenario 'retrieving slots for the booking window' do
     travel_to '2017-01-10 12:00' do
-      given_the_user_is_a_pension_wise_api_user do
-        and_bookable_slots_for_the_booking_window_exist
-        when_they_request_bookable_slots
-        then_the_response_contains_unique_slots_for_the_booking_window
-      end
+      given_bookable_slots_for_the_booking_window_exist
+      when_the_client_requests_bookable_slots
+      then_the_response_contains_unique_slots_for_the_booking_window
     end
   end
 
-  def and_bookable_slots_for_the_booking_window_exist
+  def given_bookable_slots_for_the_booking_window_exist
     # three slots combined for one day
     create(:bookable_slot, start_at: Time.zone.parse('2017-01-12 15:00'))
     create_list(:bookable_slot, 2, start_at: Time.zone.parse('2017-01-12 12:00'))
@@ -26,7 +24,7 @@ RSpec.describe 'GET /api/v1/bookable_slots' do
     create(:bookable_slot, start_at: 7.weeks.from_now)
   end
 
-  def when_they_request_bookable_slots
+  def when_the_client_requests_bookable_slots
     get api_v1_bookable_slots_path, as: :json
   end
 
