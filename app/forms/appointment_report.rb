@@ -43,13 +43,7 @@ class AppointmentReport
       .select('appointments.first_name')
       .select('appointments.last_name')
       .select('appointments.notes')
-      .select(<<-SQL
-                CASE WHEN appointments.opt_out_of_market_research IS NOT NULL
-                  THEN 'true'
-                  ELSE 'false'
-                END AS opt_out_of_market_research
-              SQL
-             )
+      .select('appointments.opt_out_of_market_research::text')
       .select('appointments.date_of_birth')
       .select('appointments.id AS booking_reference')
       .select('appointments.memorable_word')
