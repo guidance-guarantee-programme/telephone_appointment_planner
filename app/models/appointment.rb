@@ -144,3 +144,7 @@ class Appointment < ApplicationRecord
     agent.present? && agent.resource_manager?
   end
 end
+
+module Models
+  Appointment = ::Appointment
+end

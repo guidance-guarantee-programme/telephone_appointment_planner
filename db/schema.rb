@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161221152514) do
+ActiveRecord::Schema.define(version: 20170113163304) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,6 +47,8 @@ ActiveRecord::Schema.define(version: 20161221152514) do
     t.datetime "updated_at",                                 null: false
     t.integer  "agent_id",                                   null: false
     t.integer  "rebooked_from_id"
+    t.boolean  "dc_pot_confirmed",           default: true,  null: false
+    t.index ["start_at", "end_at"], name: "index_appointments_on_start_at_and_end_at", using: :btree
     t.index ["start_at"], name: "index_appointments_on_start_at", using: :btree
   end
 

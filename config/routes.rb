@@ -8,6 +8,8 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   namespace :api, constraints: { format: :json } do
     namespace :v1 do
       resources :bookable_slots, only: :index
+
+      resources :appointments, only: :create
     end
   end
 
