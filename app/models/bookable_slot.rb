@@ -40,6 +40,7 @@ class BookableSlot < ApplicationRecord
       .within_date_range(from, to)
       .select("#{quoted_table_name}.start_at::date as start_date")
       .select("to_char(#{quoted_table_name}.start_at, 'HH24:MI') as start_time")
+      .order('start_date asc')
       .group_by(&:start_date)
       .transform_values { |value| value.map(&:start_time).uniq.sort }
   end
