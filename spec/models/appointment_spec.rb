@@ -35,13 +35,34 @@ RSpec.describe Appointment, type: :model do
       :memorable_word,
       :guider,
       :agent,
-      :date_of_birth
+      :date_of_birth,
+      :dc_pot_confirmed
     ]
     required.each do |field|
       it "validate presence of #{field}" do
         subject.public_send("#{field}=", nil)
         subject.validate
         expect(subject.errors[field]).to_not be_empty
+      end
+    end
+
+    context 'when created by an API agent' do
+      it 'requires a reasonably valid email' do
+        appointment = build_stubbed(
+          :appointment,
+          email: 'a.com',
+          agent: build(:pension_wise_api_user)
+        )
+
+        expect(appointment).to_not be_valid
+      end
+    end
+
+    context 'when created by a non-API agent' do
+      it 'does not require an email' do
+        subject.email = ''
+
+        expect(subject).to be_valid
       end
     end
 

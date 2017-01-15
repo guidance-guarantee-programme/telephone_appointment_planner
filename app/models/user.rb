@@ -38,4 +38,8 @@ class User < ApplicationRecord
   def contact_centre_team_leader?
     has_permission?(CONTACT_CENTRE_TEAM_LEADER_PERMISSION)
   end
+
+  def pension_wise_api?
+    has_permission?(PENSION_WISE_API_PERMISSION)
+  end
 end

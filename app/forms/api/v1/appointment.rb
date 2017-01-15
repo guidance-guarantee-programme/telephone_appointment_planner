@@ -13,20 +13,20 @@ module Api
       attr_accessor :dc_pot_confirmed
       attr_accessor :agent
 
-      attr_reader :appointment
+      attr_reader :model
 
       def initialize(*)
         super
 
-        @appointment = Models::Appointment.new(to_params)
+        @model = Models::Appointment.new(to_params)
       end
 
       def create
-        appointment.tap do |a|
-          a.assign_to_guider
-          a.save!
-        end
+        model.assign_to_guider
+        model.save
       end
+
+      delegate :errors, to: :model
 
       private
 

@@ -13,6 +13,42 @@ RSpec.describe 'POST /api/v1/appointments' do
     end
   end
 
+  scenario 'attempting to create an invalid appointment' do
+    travel_to '2017-01-10 12:00' do
+      given_the_user_is_a_pension_wise_api_user do
+        and_a_bookable_slot_exists_for_the_given_appointment_date
+        when_the_client_posts_an_invalid_appointment_request
+        then_the_service_responds_with_a_422
+        and_the_errors_are_serialized_in_the_response
+      end
+    end
+  end
+
+  def when_the_client_posts_an_invalid_appointment_request
+    @payload = {
+      'start_at'         => '2017-01-13T12:10:00.000Z',
+      'first_name'       => '',
+      'last_name'        => '',
+      'email'            => 'rick@example.com',
+      'phone'            => '02082524729',
+      'memorable_word'   => 'snootboop',
+      'date_of_birth'    => '1950-02-02',
+      'dc_pot_confirmed' => true
+    }
+
+    post api_v1_appointments_path, params: @payload, as: :json
+  end
+
+  def then_the_service_responds_with_a_422
+    expect(response).to be_unprocessable
+  end
+
+  def and_the_errors_are_serialized_in_the_response
+    JSON.parse(response.body).tap do |json|
+      expect(json.keys).to eq(%w(first_name last_name))
+    end
+  end
+
   def and_a_bookable_slot_exists_for_the_given_appointment_date
     @bookable_slot = create(:bookable_slot, start_at: Time.zone.parse('2017-01-13 12:10'))
   end

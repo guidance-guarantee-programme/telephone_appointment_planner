@@ -6,10 +6,14 @@ module Api
       before_action { authorise_user!(User::PENSION_WISE_API_PERMISSION) }
 
       def create
-        @appointment = Appointment.new(appointment_params).create
-        AppointmentMailer.confirmation(@appointment).deliver_later
+        @appointment = Appointment.new(appointment_params)
 
-        head :created
+        if @appointment.create
+          AppointmentMailer.confirmation(@appointment.model).deliver_later
+          head :created
+        else
+          render json: @appointment.errors, status: :unprocessable_entity
+        end
       end
 
       private
