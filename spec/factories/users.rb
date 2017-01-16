@@ -31,5 +31,9 @@ FactoryGirl.define do
     factory :contact_centre_team_leader do
       permissions { Array(User::CONTACT_CENTRE_TEAM_LEADER_PERMISSION) }
     end
+
+    factory :pension_wise_api_user do
+      permissions { Array(User::PENSION_WISE_API_PERMISSION) }
+    end
   end
 end

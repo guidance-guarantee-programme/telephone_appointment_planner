@@ -10,6 +10,7 @@ FactoryGirl.define do
     mobile '07715 930 444'
     notes 'This customer is very nice.'
     opt_out_of_market_research true
+    dc_pot_confirmed true
     memorable_word 'lozenge'
     date_of_birth '1945-01-01'
     guider { create(:guider) }

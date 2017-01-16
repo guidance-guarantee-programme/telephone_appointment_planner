@@ -44,12 +44,14 @@ class Appointment < ApplicationRecord
   validates :phone, presence: true
   validates :date_of_birth, presence: true
   validates :memorable_word, presence: true
+  validates :dc_pot_confirmed, presence: true
   validates :status, presence: true
   validates :guider, presence: true
 
   validate :not_within_two_business_days, unless: :agent_is_resource_manager?
   validate :not_more_than_thirty_business_days_in_future
   validate :date_of_birth_valid
+  validate :email_valid, if: :agent_is_pension_wise_api?
 
   has_many :activities, -> { order('created_at DESC') }
 
@@ -136,6 +138,15 @@ class Appointment < ApplicationRecord
     errors.add(:date_of_birth, 'must be at least 1900') if date_of_birth_pre_cut_off?
   end
 
+  def email_valid
+    unless /.+@.+\..+/ === email.to_s # rubocop:disable Style/CaseEquality, Style/GuardClause
+      errors.add(
+        :email,
+        'must be valid'
+      )
+    end
+  end
+
   def date_of_birth_pre_cut_off?
     date_of_birth? && date_of_birth < FAKE_DATE_OF_BIRTH
   end
@@ -143,4 +154,12 @@ class Appointment < ApplicationRecord
   def agent_is_resource_manager?
     agent.present? && agent.resource_manager?
   end
+
+  def agent_is_pension_wise_api?
+    agent && agent.pension_wise_api?
+  end
+end
+
+module Models
+  Appointment = ::Appointment
 end
