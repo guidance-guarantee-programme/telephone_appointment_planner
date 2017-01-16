@@ -6,5 +6,6 @@ module Pages
 
     element :save, '.t-save'
     element :start_at, '.t-start-at'
+    element :mid, '.t-mid'
   end
 end

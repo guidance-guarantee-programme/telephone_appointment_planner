@@ -3,7 +3,7 @@ FactoryGirl.define do
     user { build(:user) }
     start_at { Time.zone.now.beginning_of_day }
 
-    days = 1.upto(6)
+    days = 1.upto(5)
 
     trait :with_early_shift do
       slots do

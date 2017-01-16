@@ -53,6 +53,19 @@ RSpec.feature 'Resource manager manages schedules' do
     end
   end
 
+  scenario 'Adds a mid shift schedule', js: true do
+    given_the_user_is_a_resource_manager do
+      and_there_is_a_guider
+      and_they_add_a_new_schedule
+      and_they_set_the_initial_start_at_date
+      and_they_add_the_default_mid_shift_slots
+      when_they_save_the_users_time_slots
+      then_they_are_told_that_the_schedule_has_been_created
+      and_the_guider_has_the_mid_shift_time_slots_available
+      and_the_guider_bookable_slots_are_regenerated
+    end
+  end
+
   def and_there_is_a_guider
     @guider = create(:guider, name: 'Davey Daverson')
   end
@@ -95,6 +108,16 @@ RSpec.feature 'Resource manager manages schedules' do
     click_on_day_and_time 'Monday', '09:00'
     click_on_day_and_time 'Tuesday', '10:30'
     expect(@page).to have_events(count: 2)
+  end
+
+  def and_they_add_the_default_mid_shift_slots
+    @page.mid.click
+  end
+
+  def and_the_guider_has_the_mid_shift_time_slots_available
+    schedule = @guider.schedules.first
+
+    expect(schedule.slots.count).to eq 25
   end
 
   def when_they_save_the_users_time_slots
