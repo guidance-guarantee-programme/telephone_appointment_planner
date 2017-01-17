@@ -10,6 +10,8 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
       resources :bookable_slots, only: :index
 
       resources :appointments, only: :create
+
+      resources :summary_documents, only: :create
     end
   end
 
