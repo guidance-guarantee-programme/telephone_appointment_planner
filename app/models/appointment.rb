@@ -44,7 +44,8 @@ class Appointment < ApplicationRecord
   validates :phone, presence: true
   validates :date_of_birth, presence: true
   validates :memorable_word, presence: true
-  validates :dc_pot_confirmed, presence: true
+  validates :dc_pot_confirmed, inclusion: [true, false]
+
   validates :status, presence: true
   validates :guider, presence: true
 

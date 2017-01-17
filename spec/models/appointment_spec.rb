@@ -46,6 +46,18 @@ RSpec.describe Appointment, type: :model do
       end
     end
 
+    it 'is valid when dc_pot_confirmed is true' do
+      subject.dc_pot_confirmed = true
+      subject.validate
+      expect(subject.errors[:dc_pot_confirmed]).to be_empty
+    end
+
+    it 'is valid when dc_pot_confirmed is false' do
+      subject.dc_pot_confirmed = false
+      subject.validate
+      expect(subject.errors[:dc_pot_confirmed]).to be_empty
+    end
+
     context 'when created by an API agent' do
       it 'requires a reasonably valid email' do
         appointment = build_stubbed(
