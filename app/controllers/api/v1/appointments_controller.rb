@@ -5,8 +5,10 @@ module Api
 
       before_action { authorise_user!(User::PENSION_WISE_API_PERMISSION) }
 
+      wrap_parameters false
+
       def create
-        @appointment = Appointment.new(appointment_params)
+        @appointment = Api::V1::Appointment.new(appointment_params)
 
         if @appointment.create
           AppointmentMailer.confirmation(@appointment.model).deliver_later
