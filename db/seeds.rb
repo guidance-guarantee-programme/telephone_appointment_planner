@@ -65,6 +65,7 @@ if Rails.env.development?
     user.permissions << User::RESOURCE_MANAGER_PERMISSION
     user.permissions << User::AGENT_PERMISSION
     user.permissions << User::GUIDER_PERMISSION
+    user.permissions << User::PENSION_WISE_API_PERMISSION
     user.save!
   end
 end
