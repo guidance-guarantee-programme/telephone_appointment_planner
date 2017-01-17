@@ -19,9 +19,9 @@ class BookableSlot < ApplicationRecord
     BusinessDays.from_now(2)
   end
 
-  def self.find_available_slot(start_at, end_at)
+  def self.find_available_slot(start_at)
     bookable
-      .where(start_at: start_at, end_at: end_at)
+      .where(start_at: start_at)
       .limit(1)
       .order('RANDOM()')
       .first

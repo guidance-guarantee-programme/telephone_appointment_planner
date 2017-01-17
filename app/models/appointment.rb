@@ -83,9 +83,11 @@ class Appointment < ApplicationRecord
   end
 
   def assign_to_guider
-    slot = BookableSlot.find_available_slot(start_at, end_at)
+    slot = BookableSlot.find_available_slot(start_at)
     self.guider = nil
-    self.guider = slot.guider if slot
+    return unless slot
+    self.end_at = slot.end_at
+    self.guider = slot.guider
   end
 
   def date_of_birth=(value)
