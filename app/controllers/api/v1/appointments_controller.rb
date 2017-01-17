@@ -18,7 +18,7 @@ module Api
 
       private
 
-      def appointment_params
+      def appointment_params # rubocop:disable Metrics/MethodLength
         params.permit(
           :start_at,
           :first_name,
@@ -27,7 +27,8 @@ module Api
           :phone,
           :memorable_word,
           :date_of_birth,
-          :dc_pot_confirmed
+          :dc_pot_confirmed,
+          :opt_out_of_market_research
         ).merge(agent: current_user)
       end
     end

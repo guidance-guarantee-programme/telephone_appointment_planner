@@ -11,6 +11,7 @@ module Api
       attr_accessor :memorable_word
       attr_accessor :date_of_birth
       attr_accessor :dc_pot_confirmed
+      attr_accessor :opt_out_of_market_research
       attr_accessor :agent
 
       attr_reader :model
@@ -45,6 +46,7 @@ module Api
           date_of_birth: date_of_birth,
           memorable_word: memorable_word,
           dc_pot_confirmed: dc_pot_confirmed,
+          opt_out_of_market_research: opt_out_of_market_research,
           agent: agent
         }
       end
