@@ -51,7 +51,11 @@ RSpec.describe 'POST /api/v1/appointments' do
   end
 
   def and_a_bookable_slot_exists_for_the_given_appointment_date
-    @bookable_slot = create(:bookable_slot, start_at: Time.zone.parse('2017-01-13 12:10'))
+    @bookable_slot = create(
+      :bookable_slot,
+      start_at: Time.zone.parse('2017-01-13 12:10'),
+      end_at: Time.zone.parse('2017-01-13 13:20')
+    )
   end
 
   def when_the_client_posts_a_valid_appointment_request
@@ -81,7 +85,7 @@ RSpec.describe 'POST /api/v1/appointments' do
 
       expect(appointment).to have_attributes(
         start_at: Time.zone.parse('2017-01-13 12:10'),
-        end_at: Time.zone.parse('2017-01-13 13:10'),
+        end_at: Time.zone.parse('2017-01-13 13:20'),
         date_of_birth: Date.parse('1950-02-02'),
         first_name: 'Rick',
         last_name: 'Sanchez',
