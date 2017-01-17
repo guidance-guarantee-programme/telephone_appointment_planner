@@ -31,14 +31,9 @@ module Api
 
       private
 
-      def end_at
-        Time.zone.parse(start_at) + 1.hour
-      end
-
       def to_params # rubocop:disable Metrics/MethodLength
         {
           start_at: start_at,
-          end_at: end_at,
           first_name: first_name,
           last_name: last_name,
           email: email,
