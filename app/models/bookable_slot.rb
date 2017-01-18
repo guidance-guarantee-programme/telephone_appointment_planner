@@ -54,11 +54,9 @@ class BookableSlot < ApplicationRecord
                 #{Appointment.statuses['cancelled_by_pension_wise']}
               )
               AND (
-                (appointments.start_at = #{quoted_table_name}.start_at AND appointments.end_at = #{quoted_table_name}.end_at)
-                OR
-                (appointments.start_at BETWEEN #{quoted_table_name}.start_at AND #{quoted_table_name}.end_at)
-                OR
-                (appointments.end_at BETWEEN #{quoted_table_name}.start_at AND #{quoted_table_name}.end_at)
+                appointments.start_at, appointments.end_at
+              ) OVERLAPS (
+                #{quoted_table_name}.start_at, #{quoted_table_name}.end_at
               )
             SQL
          )
@@ -69,13 +67,11 @@ class BookableSlot < ApplicationRecord
     joins(<<-SQL
           LEFT JOIN holidays ON
             -- The holiday is specifically for the user, or it is for everyone
-            (holidays.user_id = #{quoted_table_name}.guider_id OR holidays.user_id IS NULL) AND
-            (
-              (holidays.start_at <= #{quoted_table_name}.start_at AND holidays.end_at >= #{quoted_table_name}.end_at)
-              OR
-              (holidays.start_at >= #{quoted_table_name}.start_at AND holidays.start_at < #{quoted_table_name}.end_at)
-              OR
-              (holidays.end_at > #{quoted_table_name}.start_at AND holidays.end_at <= #{quoted_table_name}.end_at)
+            (holidays.user_id = #{quoted_table_name}.guider_id OR holidays.user_id IS NULL)
+            AND (
+              holidays.start_at, holidays.end_at
+            ) OVERLAPS (
+              #{quoted_table_name}.start_at, #{quoted_table_name}.end_at
             )
             SQL
          )
