@@ -5,8 +5,8 @@ Dear <%= @appointment.first_name %>,
 Thank you for booking a telephone guidance appointment with Pension Wise.
 Your appointment is confirmed for:
 
-Date
-<%= @appointment.start_at.to_s(:govuk_date) %>
+  Date
+    <%= @appointment.start_at.to_date.to_s(:govuk_date) %>
 
   Start time
     <%= @appointment.start_at.to_time.to_s(:govuk_time) %>

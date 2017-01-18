@@ -15,7 +15,7 @@
   Date
   <br>
   <strong class="emphasize" style="font-size: 24px;">
-    <%= @appointment.start_at.to_s(:govuk_date) %>
+    <%= @appointment.start_at.to_date.to_s(:govuk_date) %>
   </strong>
 </p>
 
