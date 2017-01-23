@@ -60,5 +60,5 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     get 'create', on: :collection, action: :create
   end
 
-  mount Sidekiq::Web, at: '/sidekiq', constraint: AuthenticatedUser.new
+  mount Sidekiq::Web, at: '/sidekiq', constraints: AuthenticatedUser.new
 end
