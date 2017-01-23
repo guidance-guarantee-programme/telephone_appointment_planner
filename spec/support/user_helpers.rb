@@ -1,4 +1,13 @@
 module UserHelpers
+  def with_real_sso
+    sso_env = ENV['GDS_SSO_MOCK_INVALID']
+    ENV['GDS_SSO_MOCK_INVALID'] = '1'
+
+    yield
+  ensure
+    ENV['GDS_SSO_MOCK_INVALID'] = sso_env
+  end
+
   def current_user
     GDS::SSO.test_user
   end
