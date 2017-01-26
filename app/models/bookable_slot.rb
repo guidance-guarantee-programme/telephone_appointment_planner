@@ -40,9 +40,9 @@ class BookableSlot < ApplicationRecord
       .within_date_range(from, to)
       .select("#{quoted_table_name}.start_at::date as start_date")
       .select("#{quoted_table_name}.start_at")
-      .order('start_date asc')
+      .order('start_date asc, start_at asc')
       .group_by(&:start_date)
-      .transform_values { |value| value.map(&:start_at).uniq.sort }
+      .transform_values { |value| value.map(&:start_at).uniq }
   end
 
   def self.without_appointments(from = nil, to = nil) # rubocop:disable Metrics/MethodLength
