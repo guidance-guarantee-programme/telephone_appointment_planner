@@ -27,8 +27,8 @@ class BookableSlot < ApplicationRecord
       .first
   end
 
-  def self.bookable
-    without_appointments
+  def self.bookable(from = nil, to = nil)
+    without_appointments(from, to)
       .without_holidays
   end
 
@@ -36,29 +36,28 @@ class BookableSlot < ApplicationRecord
     from = BusinessDays.from_now(2).beginning_of_day
     to   = 6.weeks.from_now.end_of_day
 
-    bookable
+    bookable(from, to)
       .within_date_range(from, to)
       .select("#{quoted_table_name}.start_at::date as start_date")
       .select("#{quoted_table_name}.start_at")
-      .order('start_date asc')
+      .order('start_date asc, start_at asc')
       .group_by(&:start_date)
-      .transform_values { |value| value.map(&:start_at).uniq.sort }
+      .transform_values { |value| value.map(&:start_at).uniq }
   end
 
-  def self.without_appointments # rubocop:disable Metrics/MethodLength
+  def self.without_appointments(from = nil, to = nil) # rubocop:disable Metrics/MethodLength
     joins(<<-SQL
             LEFT JOIN appointments ON
               appointments.guider_id = #{quoted_table_name}.guider_id
+              #{reduce_by_range(:appointments, from, to)}
               AND NOT appointments.status IN (
                 #{Appointment.statuses['cancelled_by_customer']},
                 #{Appointment.statuses['cancelled_by_pension_wise']}
               )
               AND (
-                (appointments.start_at = #{quoted_table_name}.start_at AND appointments.end_at = #{quoted_table_name}.end_at)
-                OR
-                (appointments.start_at BETWEEN #{quoted_table_name}.start_at AND #{quoted_table_name}.end_at)
-                OR
-                (appointments.end_at BETWEEN #{quoted_table_name}.start_at AND #{quoted_table_name}.end_at)
+                appointments.start_at, appointments.end_at
+              ) OVERLAPS (
+                #{quoted_table_name}.start_at, #{quoted_table_name}.end_at
               )
             SQL
          )
@@ -69,17 +68,21 @@ class BookableSlot < ApplicationRecord
     joins(<<-SQL
           LEFT JOIN holidays ON
             -- The holiday is specifically for the user, or it is for everyone
-            (holidays.user_id = #{quoted_table_name}.guider_id OR holidays.user_id IS NULL) AND
-            (
-              (holidays.start_at <= #{quoted_table_name}.start_at AND holidays.end_at >= #{quoted_table_name}.end_at)
-              OR
-              (holidays.start_at >= #{quoted_table_name}.start_at AND holidays.start_at < #{quoted_table_name}.end_at)
-              OR
-              (holidays.end_at > #{quoted_table_name}.start_at AND holidays.end_at <= #{quoted_table_name}.end_at)
+            (holidays.user_id = #{quoted_table_name}.guider_id OR holidays.user_id IS NULL)
+            AND (
+              holidays.start_at, holidays.end_at
+            ) OVERLAPS (
+              #{quoted_table_name}.start_at, #{quoted_table_name}.end_at
             )
             SQL
          )
       .where('holidays.start_at IS NULL')
+  end
+
+  def self.reduce_by_range(table, from, to)
+    return '' unless from && to
+
+    sanitize_sql(["AND (#{table}.start_at > ? AND #{table}.end_at < ?)", from, to])
   end
 
   def self.starting_after_next_valid_start_date(user)
