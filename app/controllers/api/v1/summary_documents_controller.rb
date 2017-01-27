@@ -1,11 +1,6 @@
 module Api
   module V1
-    class SummaryDocumentsController < ActionController::Base
-      include GDS::SSO::ControllerMethods
-      before_action :require_signin_permission!
-
-      protect_from_forgery with: :null_session
-
+    class SummaryDocumentsController < Api::V1::ApplicationController
       def create
         activity = SummaryDocumentActivity.new(summary_document_activity_params)
         if activity.save

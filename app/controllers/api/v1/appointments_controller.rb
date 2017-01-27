@@ -1,12 +1,6 @@
 module Api
   module V1
-    class AppointmentsController < ActionController::Base
-      include GDS::SSO::ControllerMethods
-
-      before_action { authorise_user!(User::PENSION_WISE_API_PERMISSION) }
-
-      wrap_parameters false
-
+    class AppointmentsController < Api::V1::ApplicationController
       def create
         @appointment = Api::V1::Appointment.new(appointment_params)
 
