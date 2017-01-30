@@ -10,10 +10,10 @@ class PusherActivityNotificationJob < ApplicationJob
   end
 
   def perform(recipient_id, activity_id)
-    recipient = User.find(recipient_id)
+    recipient = User.find(recipient_id) if recipient_id
     activity  = Activity.find(activity_id)
 
-    notify_guider(recipient, activity)
+    notify_guider(recipient, activity) if recipient_id
     notify_appointment_feed(activity)
   end
 

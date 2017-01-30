@@ -1,0 +1,6 @@
+<% content_for(:activity_message, flush: true) do %>
+  <span class="glyphicon glyphicon-print" aria-hidden="true"></span>
+  <strong><%= summary_document_activity.owner.name %></strong>
+  generated a <%= summary_document_activity.message %> summary document
+<% end %>
+<%= render 'activities/activity', activity: summary_document_activity, details: details, hide: hide %>

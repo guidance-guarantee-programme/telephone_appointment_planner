@@ -110,6 +110,10 @@ class Appointment < ApplicationRecord
     user.resource_manager? || start_at >= BusinessDays.from_now(2)
   end
 
+  def can_create_summary?
+    complete? || ineligible_age? || ineligible_pension_type?
+  end
+
   private
 
   def format_name

@@ -302,6 +302,30 @@ RSpec.describe Appointment, type: :model do
     end
   end
 
+  describe '#can_create_summary?' do
+    let(:result) { Appointment.new(status: status).can_create_summary? }
+
+    %i(complete ineligible_age ineligible_pension_type).each do |status|
+      context "when status is #{status}" do
+        let(:status) { status }
+
+        it 'is true' do
+          expect(result).to be true
+        end
+      end
+    end
+
+    %i(pending no_show incomplete cancelled_by_customer cancelled_by_pension_wise).each do |status|
+      context "when status is #{status}" do
+        let(:status) { status }
+
+        it 'is false' do
+          expect(result).to be false
+        end
+      end
+    end
+  end
+
   describe '.needing_reminder' do
     let(:appointment) do
       create(
