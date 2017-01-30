@@ -7,6 +7,7 @@ RSpec.describe 'POST /api/v1/appointments' do
         and_a_bookable_slot_exists_for_the_given_appointment_date
         when_the_client_posts_a_valid_appointment_request
         then_the_service_responds_with_a_201
+        and_the_location_header_describes_the_booking_reference
         and_the_appointment_is_created
         and_the_customer_receives_a_confirmation_email
       end
@@ -72,6 +73,10 @@ RSpec.describe 'POST /api/v1/appointments' do
 
   def then_the_service_responds_with_a_201
     expect(response).to be_created
+  end
+
+  def and_the_location_header_describes_the_booking_reference
+    expect(response.location).to end_with(appointment_path(Appointment.last))
   end
 
   def and_the_appointment_is_created

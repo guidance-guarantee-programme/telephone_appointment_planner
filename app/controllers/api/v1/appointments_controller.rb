@@ -12,7 +12,7 @@ module Api
 
         if @appointment.create
           AppointmentMailer.confirmation(@appointment.model).deliver_later
-          head :created
+          head :created, location: @appointment.model
         else
           render json: @appointment.errors, status: :unprocessable_entity
         end
