@@ -45,7 +45,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
       end
 
       it 'includes the duration' do
-        expect(body).to include('45 minutes')
+        expect(body).to include('45 to 60 minutes')
       end
 
       it 'includes the contact number' do
@@ -97,7 +97,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
       end
 
       it 'includes the duration' do
-        expect(body).to include('45 minutes')
+        expect(body).to include('45 to 60 minutes')
       end
 
       it 'includes the contact number' do
@@ -149,7 +149,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
       end
 
       it 'includes the duration' do
-        expect(body).to include('45 minutes')
+        expect(body).to include('45 to 60 minutes')
       end
 
       it 'includes the contact number' do
