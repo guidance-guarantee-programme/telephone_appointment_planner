@@ -10,6 +10,33 @@
   width: 260px;
 }
 
-.appointment-search-results tbody tr td { // scss-lint:disable SelectorDepth
-  vertical-align: middle;
+.appointment-search-results {
+  @media (max-width: $screen-xs-max) {
+    border: 0;
+  }
+
+  tbody tr td { // scss-lint:disable SelectorDepth
+    vertical-align: middle;
+  }
+}
+
+.appointment-search-results__head {
+  @media (max-width: $screen-xs-max) {
+    display: none;
+  }
+}
+
+.appointment-search-results__item {
+  @media (max-width: $screen-xs-max) {
+    display: block;
+    width: 100%;
+  }
+}
+
+.appointment-search-results__row {
+  @media (max-width: $screen-xs-max) {
+    display: block;
+    width: 100%;
+    margin-bottom: 20px;
+  }
 }

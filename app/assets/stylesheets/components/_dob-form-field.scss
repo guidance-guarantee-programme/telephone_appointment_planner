@@ -34,7 +34,14 @@
 }
 
 .form-dob__age {
-  display: inline-block;
-  float: left;
-  margin: 27px 0 0 5px;
+  display: block;
+  clear: left;
+  margin: 10px 0 0;
+
+  @media (min-width: $screen-sm) {
+    display: inline-block;
+    clear: none;
+    float: left;
+    margin: 27px 0 0 5px;
+  }
 }

@@ -1,0 +1,8 @@
+.navbar-brand {
+  .navbar .container & {
+    @media (max-width: $screen-xs-max) {
+      font-size: 99%;
+      padding-left: 3.5em;
+    }
+  }
+}

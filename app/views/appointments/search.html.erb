@@ -36,7 +36,7 @@
 
 <table id="results" class="appointment-search-results table table-striped table-bordered table-hover">
   <caption><span class="sr-only">Appointment search results</span></caption>
-  <thead>
+  <thead class="appointment-search-results__head">
     <tr>
       <th>Reference</th>
       <th>Customer</th>
@@ -50,14 +50,14 @@
   <tbody class="list" data-module="search-highlight">
     <% @results.each do |result| %>
       <% result = AppointmentSearchResultPresenter.new(result) %>
-      <tr class="t-result">
-        <td class="t-id"><span class="id js-allow-highlighting">#<%= result.id %></span></td>
-        <td class="t-name js-allow-highlighting"><%= result.name %></td>
-        <td class="js-allow-highlighting"><%= result.guider_name %></td>
-        <td><%= result.date %></td>
-        <td><%= result.created_at %></td>
-        <td><%= result.status %></td>
-        <td nowrap="true">
+      <tr class="appointment-search-results__row t-result">
+        <td class="appointment-search-results__item"><b class="visible-xs-block">Reference</b><span class="id js-allow-highlighting t-id">#<%= result.id %></span></td>
+        <td class="appointment-search-results__item"><b class="visible-xs-block">Customer</b><span class="js-allow-highlighting t-name"><%= result.name %></span></td>
+        <td class="appointment-search-results__item"><b class="visible-xs-block">Guider</b><span class="js-allow-highlighting"><%= result.guider_name %></span></td>
+        <td class="appointment-search-results__item"><b class="visible-xs-block">Appointment Date/Time</b><%= result.date %></td>
+        <td class="appointment-search-results__item"><b class="visible-xs-block">Created</b><%= result.created_at %></td>
+        <td class="appointment-search-results__item"><b class="visible-xs-block">Status</b><%= result.status %></td>
+        <td class="appointment-search-results__item" nowrap="true">
           <%= link_to edit_appointment_path(result), title: 'Edit appointment', class: 'btn btn-info' do %>
             <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
             <span class="sr-only">Edit appointment</span>
