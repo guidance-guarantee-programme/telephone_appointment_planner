@@ -55,9 +55,9 @@
 </div>
 <div class="row">
   <div class="col-md-12">
-    <table class="table table-striped table-bordered">
+    <table class="booking-details table table-striped table-bordered">
       <caption><span class="sr-only">Booking details</span></caption>
-      <thead>
+      <thead class="booking-details__head">
         <tr>
           <th>Guider</th>
           <th>Appointment date/time</th>
@@ -65,10 +65,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span class="t-guider"><%= @appointment.guider.name %></span></td>
-          <td><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> <span class="t-appointment-date-time"><%= @appointment.start_at.to_date.to_s(:govuk_date_short) %>, <%= @appointment.start_at.to_s(:govuk_time) %> - <%= @appointment.end_at.to_s(:govuk_time) %></span></td>
-          <td><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> <span class="t-created-date"><%= @appointment.created_at.to_s(:govuk_date_short) %></span></td>
+        <tr class="booking-details__row">
+          <td class="booking-details__item"><b class="visible-xs-block">Guider</b><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span class="t-guider"><%= @appointment.guider.name %></span></td>
+          <td class="booking-details__item"><b class="visible-xs-block">Appointment date/time</b><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> <span class="t-appointment-date-time"><%= @appointment.start_at.to_date.to_s(:govuk_date_short) %>, <%= @appointment.start_at.to_s(:govuk_time) %> - <%= @appointment.end_at.to_s(:govuk_time) %></span></td>
+          <td class="booking-details__item"><b class="visible-xs-block">Appointment created</b><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> <span class="t-created-date"><%= @appointment.created_at.to_s(:govuk_date_short) %></span></td>
         </tr>
       </tbody>
     </table>

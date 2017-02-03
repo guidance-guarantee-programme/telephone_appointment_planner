@@ -1,0 +1,19 @@
+.booking-details__head {
+  @media (max-width: $screen-xs-max) {
+    display: none;
+  }
+}
+
+.booking-details__item {
+  @media (max-width: $screen-xs-max) {
+    display: block;
+    width: 100%;
+  }
+}
+
+.booking-details__row {
+  @media (max-width: $screen-xs-max) {
+    display: block;
+    width: 100%;
+  }
+}

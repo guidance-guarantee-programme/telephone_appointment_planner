@@ -1,0 +1,11 @@
+.activity-feed__input {
+  @media (max-width: $screen-xs-max) {
+    display: block;
+  }
+}
+
+.activity-feed__button {
+  @media (max-width: $screen-xs-max) {
+    border-radius: 0;
+  }
+}

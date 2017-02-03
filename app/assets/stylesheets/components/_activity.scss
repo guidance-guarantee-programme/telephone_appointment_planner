@@ -1,15 +1,21 @@
 .activity {
-  display: flex;
-  flex-wrap: wrap;
+  @media (min-width: $screen-sm) {
+    display: flex;
+    flex-wrap: wrap;
+  }
 }
 
 .activity-details {
-  flex-basis: 73%;
+  @media (min-width: $screen-sm) {
+    flex-basis: 73%;
+  }
 }
 
 .activity-badge {
-  flex-basis: 27%;
-  text-align: right;
+  @media (min-width: $screen-sm) {
+    flex-basis: 27%;
+    text-align: right;
+  }
 }
 
 .activity--hide {
