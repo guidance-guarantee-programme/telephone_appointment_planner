@@ -194,9 +194,32 @@ $guider-row-height: 120px;
 
 .appointment-availability-calendar {
   min-height: 500px;
+
+  .fc-left h2 {
+    @media (max-width: $screen-xs-max) {
+      font-size: 120%;
+    }
+  }
+
+  .fc-right {
+    margin-top: 16px;
+
+    button {
+      @media (max-width: $screen-xs-max) {
+        margin-bottom: 16px;
+      }
+    }
+  }
+
+  .fc-toolbar > * > * { // scss-lint:disable SelectorDepth
+    @media (max-width: $screen-xs-max) {
+      margin-left: 0;
+      margin-right: .75em;
+    }
+  }
 }
 
-.fc-right {
+.fc-button-group--jump-to-date {
   position: relative;
 }
 
@@ -205,8 +228,9 @@ $guider-row-height: 120px;
   width: 0;
   height: 0;
   position: absolute;
-  right: 150px;
-  top: 20px;
+  right: 50%;
+  top: 50%;
+  background: transparent;
 }
 
 .fc-event {

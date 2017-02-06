@@ -13,3 +13,20 @@ mark,
   background-color: $mark-colour;
   padding: 0;
 }
+
+.checkbox {
+  input[type=checkbox] {
+    @media (max-width: $screen-xs-max) {
+      width: 32px;
+      height: 32px;
+      margin-left: -40px;
+      margin-top: -4px;
+    }
+  }
+
+  label {
+    @media (max-width: $screen-xs-max) {
+      padding-left: 40px;
+    }
+  }
+}
