@@ -93,6 +93,8 @@ class Calendar extends TapBase {
   insertJumpToDate() {
     const $jumpToDateButton = $('.fc-jumpToDate-button');
 
+    $jumpToDateButton.wrap('<div class="fc-button-group fc-button-group--jump-to-date" />');
+
     if ($jumpToDateButton.length === 0) {
       return;
     }
