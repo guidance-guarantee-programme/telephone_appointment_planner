@@ -196,7 +196,7 @@
         }).addClass('active');
 
         this.$rowHighlighterTime.css({
-          top: eventPosition.top - 35,
+          top: eventPosition.top,
           left: $columnHeader.offset().left + $columnHeader.width()
         })
         .addClass('active')
