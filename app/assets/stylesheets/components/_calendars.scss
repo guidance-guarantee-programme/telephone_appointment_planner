@@ -2,7 +2,7 @@ $calendar-today-background: $color-white;
 $calendar-moved-background: $color-green;
 $calendar-filter-box-shadow: transparentize($color-black, .825);
 $calendar-filter-arrow-border: transparentize($color-black, .8);
-$calendar-dragging-highlight: transparentize($color-givry, .1);
+$calendar-dragging-highlight: $color-guardsman-red;
 $calendar-appointment-background: $color-boston-blue;
 $calendar-past-appointment-background: lighten($color-boston-blue, 20%);
 $calendar-appointment-cancelled-background: $color-medium-carmine;
@@ -118,6 +118,7 @@ $guider-row-height: 120px;
 
   .active {
     background-color: $calendar-dragging-highlight;
+    color: $color-white;
   }
 
   .fc-slats table {
@@ -173,6 +174,21 @@ $guider-row-height: 120px;
     width: 100%;
     height: 5px;
     background: $calendar-dragging-highlight;
+  }
+}
+
+.calendar-row-highlighter-time {
+  background: $calendar-dragging-highlight;
+  color: $color-white;
+  display: none;
+  pointer-events: none;
+  position: absolute;
+  line-height: 1;
+  padding: .5em;
+  z-index: 2;
+
+  &.active {
+    display: inline-block;
   }
 }
 
