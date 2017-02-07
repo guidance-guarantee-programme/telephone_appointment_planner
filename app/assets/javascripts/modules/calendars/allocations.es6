@@ -32,7 +32,8 @@
 
       super.start(el);
 
-      this.$rowHighlighter = $(`<div class="calendar-row-highlighter"/>`).insertAfter(this.$el);
+      this.$rowHighlighter = $('<div class="calendar-row-highlighter"/>').insertAfter(this.$el);
+      this.$rowHighlighterTime = $('<div class="calendar-row-highlighter-time"/>').insertAfter(this.$el);
 
       this.setCalendarToCorrectHeight();
       this.setupUndo();
@@ -170,12 +171,12 @@
 
     highlightResource(event) {
       let eventStartSelector = event.start.format('HH:mm:ss'),
-        $timeRow = this.$el.find(`[data-time="${eventStartSelector}"]`);
-
-      this.$el.find(`.fc-resource-cell`)
+        $timeRow = this.$el.find(`[data-time="${eventStartSelector}"]`),
+        $columnHeader = this.$el.find(`.fc-resource-cell`)
         .removeClass('active')
-        .filter(`[data-resource-id="${event.resourceId}"]`)
-        .addClass('active');
+        .filter(`[data-resource-id="${event.resourceId}"]`);
+
+      $columnHeader.addClass('active');
 
       this.$el.find(`tr[data-time]`)
         .find('.fc-time')
@@ -193,11 +194,19 @@
           left: eventPosition.left,
           width: $timeRow.width()
         }).addClass('active');
+
+        this.$rowHighlighterTime.css({
+          top: eventPosition.top - 35,
+          left: $columnHeader.offset().left + $columnHeader.width()
+        })
+        .addClass('active')
+        .html(event.start.format('HH:mm'));
       }
     }
 
     eventDragStop() {
       this.$rowHighlighter.removeClass('active');
+      this.$rowHighlighterTime.removeClass('active');
       $(`.fc-resource-cell`).removeClass('active');
       $(`tr[data-time]`).find('.fc-time').removeClass('active');
     }
