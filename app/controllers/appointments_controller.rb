@@ -48,6 +48,12 @@ class AppointmentsController < ApplicationController
 
   def new
     @appointment = Appointment.copy_or_new_by(params[:copy_from])
+
+    if @appointment
+      render :new
+    else
+      redirect_back warning: I18n.t('appointments.rebooking'), fallback_location: search_appointments_path
+    end
   end
 
   def preview
