@@ -11,8 +11,33 @@ RSpec.feature 'Agent rebooks appointments' do
     end
   end
 
-  def and_there_is_an_appointment
+  scenario 'Agent attempts to rebook a pending appointment' do
+    given_the_user_is_an_agent do
+      and_there_is_a_pending_appointment
+      when_they_attempt_to_rebook_an_appointment
+      then_they_are_told_to_change_the_original_appointment_status
+    end
+  end
+
+  def and_there_is_a_pending_appointment
     @appointment = create(:appointment)
+  end
+
+  def when_they_attempt_to_rebook_an_appointment
+    @page = Pages::EditAppointment.new
+    @page.load(id: @appointment.id)
+    @page.rebook.click
+  end
+
+  def then_they_are_told_to_change_the_original_appointment_status
+    # redirected back
+    expect(@page).to be_displayed
+
+    expect(@page).to have_content(I18n.t('appointments.rebooking'))
+  end
+
+  def and_there_is_an_appointment
+    @appointment = create(:appointment, status: :cancelled_by_customer)
   end
 
   def and_they_rebook_an_appointment

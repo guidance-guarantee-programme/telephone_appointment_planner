@@ -64,6 +64,8 @@ class Appointment < ApplicationRecord
     return new unless id
 
     find(id).dup.tap do |appointment|
+      break if appointment.pending?
+
       appointment.start_at = nil
       appointment.end_at   = nil
       appointment.rebooked_from_id = id

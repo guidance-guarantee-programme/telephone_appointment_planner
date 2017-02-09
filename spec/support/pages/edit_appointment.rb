@@ -17,6 +17,7 @@ module Pages
     element :opt_out_of_market_research,            '.t-opt-out-of-market-research'
     element :status, '.t-status'
     element :submit, '.t-save'
+    element :rebook, '.t-rebook'
 
     section :activity_feed, '.t-activity-feed' do
       elements :activities, '.t-activity'

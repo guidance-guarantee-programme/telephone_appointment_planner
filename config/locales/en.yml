@@ -26,6 +26,8 @@ en:
   time:
     formats:
       date_range_picker: "%e/%m/%Y %H:%M"
+  appointments:
+    rebooking: "You can't rebook this appointment while it's pending. Please go back and change the status."
   users:
     deactivate_confirm: |
       Deactivate this guider?
