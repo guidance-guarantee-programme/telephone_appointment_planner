@@ -4,10 +4,15 @@ class GroupsController < ApplicationController
   def index
     @guiders = User.find(user_ids)
     @groups  = Group.assigned_to(user_ids)
+    @all_groups = Group.pluck(:name)
   end
 
   def create
-    CreateGroupAssignments.new(user_ids, group_params[:name]).call
+    CreateGroupAssignments.new(
+      user_ids,
+      group_params[:name].select(&:present?)
+    ).call
+
     go_back_with_success('assigned to')
   end
 
@@ -26,7 +31,7 @@ class GroupsController < ApplicationController
   end
 
   def group_params
-    params.require(:group).permit(:name)
+    params.require(:group).permit(name: [])
   end
 
   def user_ids

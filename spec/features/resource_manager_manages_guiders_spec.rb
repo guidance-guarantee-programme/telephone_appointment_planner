@@ -80,13 +80,17 @@ RSpec.feature 'Resource manager manages guiders' do
   end
 
   def when_they_create_a_new_group
-    @page.group.set 'Trainees'
+    # simulate the select.js behaviour correctly
+    @page.group.send_keys(%i(t r a i n e e s enter))
+    # wait until the new group / tag is selected
+    @page.wait_until_chosen_group_visible
+
     @page.add_group.click
   end
 
   def then_the_group_is_assigned_to_those_guiders
     expect(@page).to have_flash_of_success
-    expect(@page).to have_text('Trainees')
+    expect(@page).to have_text('TRAINEES')
   end
 
   def and_there_are_guiders_assigned_to_groups

@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe CreateGroupAssignments, '#call' do
   let(:users) { create_list(:guider, 2) }
   let(:user_ids) { users.map(&:id) }
-  let(:group_params) { Hash[name: 'Another Group'] }
+  let(:group_params) { Hash[name: ['Another Group']] }
 
   subject { described_class.new(user_ids, group_params[:name]) }
 
@@ -20,7 +20,7 @@ RSpec.describe CreateGroupAssignments, '#call' do
 
   context 'when a user is already a member and the group exists' do
     before do
-      group = create(:group, group_params)
+      group = create(:group, name: 'Another Group')
 
       users.first.group_assignments.create(group: group)
     end

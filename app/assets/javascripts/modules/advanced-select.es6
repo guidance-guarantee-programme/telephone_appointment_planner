@@ -7,7 +7,9 @@
       this.config = {
         theme: 'bootstrap',
         templateResult: this.renderTemplate.bind(this),
-        allowClear: true
+        allowClear: true,
+        placeholder: $(el).data('placeholder'),
+        tags: $(el).data('tags') ? true : false
       };
 
       super.start(el);
@@ -39,13 +41,14 @@
     renderTemplate(state) {
       if (!state.id) { return state.text; }
 
-      const icon = $(state.element).data('icon');
+      const icon = $(state.element).data('icon'),
+      text = state.element ? state.element.text : state.text;
 
       if (icon) {
-        return $(`<i class="glyphicon ${icon}"></i> <span>${state.element.text}</span>`);
+        return $(`<i class="glyphicon ${icon}"></i> <span>${text}</span>`);
       }
 
-      return state.element.text;
+      return text;
     }
   }
 

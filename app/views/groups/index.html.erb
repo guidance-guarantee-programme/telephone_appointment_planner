@@ -4,57 +4,59 @@
 )
 %>
 
-<h1>Manage groups</h1>
-
-<h2>Add/remove guider groups</h2>
-<p class="lead">Add or remove from the list below to set the group memberships for these guiders.</p>
+<h1>Add/remove guider groups</h1>
 
 <div class="panel panel-warning">
   <div class="panel-heading">
-    <h4>Guiders affected by this change:</h4>
+    <h2 class="h4">Guiders affected by this change</h2>
   </div>
   <div class="panel-body">
     The guiders affected will be: <strong class="t-affected"><%= @guiders.pluck(:name).to_sentence %></strong>.
   </div>
 </div>
 
-<div class="row">
-  <div class="col-md-6 border-bottom">
-    <table class="table">
-      <tr class="well">
-        <td colspan="2">
-          <div class="row">
-            <div class="col-lg-12">
-              <%= form_for Group.new, url: groups_path(user_ids: params[:user_ids]), class: 'js-form' do |f| %>
-                <div class="input-group">
-                  <%= f.text_field :name, class: 'form-control js-group-input t-name', placeholder: 'Add a new group' %>
-                  <span class="input-group-btn">
-                    <%= f.button class: 'btn btn-primary js-button t-add-group' do %>
-                      <span class="glyphicon glyphicon-plus"></span>
-                      Add group
-                    <% end %>
-                  </span>
-                </div>
-              <% end %>
-            </div>
-          </div>
-        </td>
-      </tr>
-      <% @groups.each do |group| %>
-        <tr class="t-group">
-          <td class="lead">
-            <span class="label label-info"><%= group.name %></span>
-          </td>
-          <td class="lead">
-            <%= link_to group_path(group, user_ids: params[:user_ids]),
-              class: 'js-remove pull-right t-remove',
-              method: :delete,
-              data: { confirm: "Are you sure you want to remove the group #{group.name} from these guiders?" } do %>
-              <span class="glyphicon glyphicon-remove"></span>
+
+<div class="well">
+  <div class="row">
+    <div class="col-md-12">
+      <%= form_for Group.new, url: groups_path(user_ids: params[:user_ids]), class: 'js-form' do |f| %>
+        <div class="input-group">
+          <%=
+            f.select(
+              :name,
+              @all_groups,
+              {},
+              multiple: 'multiple',
+              class: 'form-control t-name',
+              data: {
+                module: 'advanced-select',
+                tags: true,
+                placeholder: 'Add a group'
+              }
+            )
+          %>
+          <span class="input-group-btn">
+            <%= f.button class: 'btn btn-primary js-button t-add-group' do %>
+              <span class="glyphicon glyphicon-plus"></span>
+              Add group(s)
             <% end %>
-          </td>
-        </tr>
+          </span>
+        </div>
       <% end %>
-    </table>
+    </div>
   </div>
 </div>
+
+<ul class="list-group">
+  <% @groups.each do |group| %>
+    <li class="list-group-item clearfix lead t-group">
+      <span class="label label-info"><%= group.name %></span>
+      <%= link_to group_path(group, user_ids: params[:user_ids]),
+        class: 'js-remove t-remove v-middle',
+        method: :delete,
+        data: { confirm: "Are you sure you want to remove the group #{group.name} from these guiders?" } do %>
+        <span class="glyphicon glyphicon-remove"></span>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
