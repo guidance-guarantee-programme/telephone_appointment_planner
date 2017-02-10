@@ -15,12 +15,12 @@
   Date
   <br>
   <strong class="emphasize" style="font-size: 24px;">
-    <%= @appointment.start_at.to_s(:govuk_date) %>
+    <%= @appointment.start_at.to_date.to_s(:govuk_date) %>
   </strong>
 </p>
 
 <p style="color: #0B0C0C;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-size: 16px;line-height: 1.315789474;">
-  Start time
+  Time
   <br>
   <strong class="emphasize" style="font-size: 24px;">
     <%= @appointment.start_at.to_time.to_s(:govuk_time) %>
@@ -30,7 +30,6 @@
 <p style="color: #0B0C0C;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-size: 16px;line-height: 1.315789474;">
   Appointment lasts
   <br>
-
   <strong class="emphasize" style="font-size: 24px;">
     45 to 60 minutes
   </strong>

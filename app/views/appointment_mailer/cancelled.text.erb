@@ -2,19 +2,17 @@ Your appointment has been cancelled.
 
 Dear <%= @appointment.first_name %>,
 
+You asked us to cancel your telephone guidance appointment.
+The following appointment has now been cancelled:
 
-You asked us to cancel your telephone guidance appointment. The following appointment has now been cancelled:
+  Date
+    <%= @appointment.start_at.to_date.to_s(:govuk_date) %>
 
-Date
-<%= @appointment.start_at.to_date.to_s(:govuk_date) %>
+  Time
+    <%= @appointment.start_at.to_time.to_s(:govuk_time) %>
 
-Start time
-<%= @appointment.start_at.to_time.to_s(:govuk_time) %> - <%= @appointment.end_at.to_time.to_s(:govuk_time) %>
-
-The appointment will be with <%= @appointment.guider.name %>.
-
-Your reference number
-#<%= @appointment.id %>
+  Your reference number
+    #<%= @appointment.id %>
 
 If you didn't ask us to cancel your appointment or to book a new appointment, call 0800 138 3944. Don't reply to this email.
 
