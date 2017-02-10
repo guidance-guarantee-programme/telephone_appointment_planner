@@ -5,26 +5,26 @@ Dear <%= @appointment.first_name %>,
 This is a reminder of your telephone guidance appointment with Pension Wise.
 Your appointment is confirmed for:
 
-Date
-<%= @appointment.start_at.to_s(:govuk_date) %>
+  Date
+    <%= @appointment.start_at.to_date.to_s(:govuk_date) %>
 
-Start time
-<%= @appointment.start_at.to_time.to_s(:govuk_time) %>
+  Time
+    <%= @appointment.start_at.to_time.to_s(:govuk_time) %>
 
-Appointment lasts
-45 to 60 minutes
+  Appointment lasts
+    45 to 60 minutes
 
-Your contact number
-<%= @appointment.phone %>
+  Your contact number
+    <%= @appointment.phone %>
 
-Your memorable word
-<%= @appointment.memorable_word(obscure: true) %>
+  Your memorable word
+    <%= @appointment.memorable_word(obscure: true) %>
 
-Your reference number
-#<%= @appointment.id %>
+  Your reference number
+    #<%= @appointment.id %>
 
-A trained guidance specialist will call you on the number above. They'll repeat
-the memorable word to you so you know you're speaking to Pension Wise.
+A trained guidance specialist will call you on the number above. They'll repeat the
+memorable word to you so you know you're speaking to Pension Wise.
 
 If you don't answer the call, you'll need to book another appointment.
 
@@ -37,9 +37,11 @@ To make your appointment as useful as possible, it would be helpful to know the 
 
   - the value of your pension pot(s) - check your pension paperwork or ask your provider
   - an estimate of your State Pension - call the Future Pension Centre on 0345 3000 168 for a State Pension statement
-  - any special arrangements attached to your pension pot, eg a guaranteed annuity rate or a guaranteed pot value at a certain time - ask your provider
+  - any special arrangements attached to your pension pot, eg a guaranteed annuity rate or a guaranteed pot value at
+    a certain time - ask your provider
 
-  Think about your financial circumstances in general and plans for retirement, eg:
+Think about your financial circumstances in general and plans for retirement, eg:
+
   - sources of income like salary, benefits, savings, investments
   - debts and repayments you might have
   - when you want to stop working

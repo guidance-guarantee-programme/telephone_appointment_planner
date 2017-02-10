@@ -5,17 +5,17 @@ Dear <%= @appointment.first_name %>,
 Our records show that your Pension Wise telephone appointment was missed.
 Your appointment was scheduled for:
 
-Date
-<%= @appointment.start_at.to_date.to_s(:govuk_date) %>
+  Date
+    <%= @appointment.start_at.to_date.to_s(:govuk_date) %>
 
-Start time
-<%= @appointment.start_at.to_time.to_s(:govuk_time) %>
+  Time
+    <%= @appointment.start_at.to_time.to_s(:govuk_time) %>
 
-Your contact number
-<%= @appointment.phone %>
+  Your contact number
+    <%= @appointment.phone %>
 
-Your reference number
-#<%= @appointment.id %>
+  Your reference number
+    #<%= @appointment.id %>
 
 If you want to book another appointment, please call 0800 138 3944. Don’t reply to this email.
 

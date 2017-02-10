@@ -18,13 +18,11 @@
 </p>
 
 <p style="color: #0B0C0C;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-size: 16px;line-height: 1.315789474;">
-  Start time<br>
+  Time<br>
   <strong class="emphasize" style="font-size: 24px;">
-    <%= @appointment.start_at.to_time.to_s(:govuk_time) %> - <%= @appointment.end_at.to_time.to_s(:govuk_time) %>
+    <%= @appointment.start_at.to_time.to_s(:govuk_time) %>
   </strong>
 </p>
-
-<p>The appointment will be with <%= @appointment.guider.name %>.</p>
 
 <p style="color: #0B0C0C;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-size: 16px;line-height: 1.315789474;">
   Your reference number
