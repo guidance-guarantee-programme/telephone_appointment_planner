@@ -3,7 +3,8 @@ module Pages
     set_url '/groups'
 
     element :affected, '.t-affected'
-    element :group, '.t-name'
+    element :group, '.select2-search__field'
+    element :chosen_group, '.select2-selection__choice'
     element :add_group, '.t-add-group'
     element :flash_of_success, '.alert-success'
 
