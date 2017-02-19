@@ -6,6 +6,13 @@ module Api
       before_action { authorise_user!(User::PENSION_WISE_API_PERMISSION) }
 
       wrap_parameters false
+
+      protected
+
+      def append_info_to_payload(payload)
+        super
+        payload[:params] = request.filtered_parameters
+      end
     end
   end
 end
