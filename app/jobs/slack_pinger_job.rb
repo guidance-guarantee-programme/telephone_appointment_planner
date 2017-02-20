@@ -4,9 +4,9 @@ class SlackPingerJob < ActiveJob::Base
   def perform
     return unless hook_uri
 
-    number_of_appointments = Appointment.count(
+    number_of_appointments = Appointment.where(
       created_at: 1.hour.ago.beginning_of_hour..1.hour.ago.end_of_hour
-    )
+    ).count
 
     return unless number_of_appointments.positive?
 
