@@ -18,6 +18,9 @@ source 'https://rubygems.org' do
   gem 'bh'
   gem 'bootstrap-kaminari-views'
   gem 'bugsnag'
+  gem 'faraday'
+  gem 'faraday-conductivity'
+  gem 'faraday_middleware'
   gem 'font-awesome-rails'
   gem 'foreman'
   gem 'gds-sso'
@@ -62,6 +65,7 @@ source 'https://rubygems.org' do
     gem 'database_rewinder'
     gem 'poltergeist', '1.11.0'
     gem 'scss_lint', require: false
+    gem 'webmock'
   end
 
   group :development do
