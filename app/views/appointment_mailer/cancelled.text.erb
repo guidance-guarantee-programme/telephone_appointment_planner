@@ -1,19 +1,16 @@
-Your appointment has been cancelled.
+We've cancelled your appointment
 
 Dear <%= @appointment.first_name %>,
 
-You asked us to cancel your telephone guidance appointment.
-The following appointment has now been cancelled:
+We have cancelled the following phone appointment as requested:
 
-  Date
-    <%= @appointment.start_at.to_date.to_s(:govuk_date) %>
+Date:
+<%= @appointment.start_at.to_date.to_s(:govuk_date) %>
 
-  Time
-    <%= @appointment.start_at.to_time.to_s(:govuk_time) %>
+Time:
+<%= @appointment.start_at.to_time.to_s(:govuk_time) %>
 
-  Your reference number
-    #<%= @appointment.id %>
+Reference number:
+<%= @appointment.id %>
 
-If you didn't ask us to cancel your appointment or to book a new appointment, call 0800 138 3944. Don't reply to this email.
-
-Go to pensionwise.gov.uk for more information about your pension options.
+If you didn't ask us to cancel your appointment or to book a new one, call 0800 138 3944. Please don't reply to this email.

@@ -57,7 +57,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
       end
 
       it 'includes the reference number' do
-        expect(body).to include("##{appointment.id}")
+        expect(body).to include(appointment.id.to_s)
       end
     end
   end
@@ -109,7 +109,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
       end
 
       it 'includes the reference number' do
-        expect(body).to include("##{appointment.id}")
+        expect(body).to include(appointment.id.to_s)
       end
     end
   end
@@ -161,7 +161,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
       end
 
       it 'includes the reference number' do
-        expect(body).to include("##{appointment.id}")
+        expect(body).to include(appointment.id.to_s)
       end
     end
   end
@@ -193,8 +193,8 @@ RSpec.describe AppointmentMailer, type: :mailer do
       let(:body) { subject.body.encoded }
 
       it 'includes information' do
-        expect(body).to include('Your appointment has been cancelled')
-        expect(body).to include("##{appointment.id}")
+        expect(body).to include('We=E2=80=99ve cancelled your appointment')
+        expect(body).to include(appointment.id.to_s)
       end
     end
   end
@@ -242,7 +242,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
       end
 
       it 'includes the reference number' do
-        expect(body).to include("##{appointment.id}")
+        expect(body).to include(appointment.id.to_s)
       end
     end
   end

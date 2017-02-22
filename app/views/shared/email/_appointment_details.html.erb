@@ -1,0 +1,61 @@
+<%= p do %>
+  Date:
+  <br>
+  <strong class="emphasize">
+    <%= @appointment.start_at.to_date.to_s(:govuk_date) %>
+  </strong>
+<% end %>
+
+<%= p do %>
+  Time:
+  <br>
+  <strong class="emphasize">
+    <%= @appointment.start_at.to_time.to_s(:govuk_time) %>
+  </strong>
+<% end %>
+
+<%= p do %>
+  Appointment lasts:
+  <br>
+  <strong class="emphasize">
+    45 to 60 minutes
+  </strong>
+<% end %>
+
+<%= p do %>
+  Your phone number:
+  <br>
+  <strong class="emphasize">
+    <%= @appointment.phone %>
+  </strong>
+<% end %>
+
+<%= p do %>
+  Memorable word:
+  <br>
+  <strong class="emphasize">
+    <%= @appointment.memorable_word(obscure: true) %>
+  </strong>
+<% end %>
+
+<%= p do %>
+  Reference number:
+  <br>
+  <strong class="emphasize">
+    <%= @appointment.id %>
+  </strong>
+<% end %>
+
+<%= p do %>
+  A trained guidance specialist will call you on the number above. They’ll repeat the memorable word so you know you're speaking to Pension Wise.
+<% end %>
+
+<%= p do %>
+  <strong>
+    If you miss the call, you’ll need to book another appointment.
+  </strong>
+<% end %>
+
+<%= p do %>
+  Call 0800 138 3944 or email us to change or cancel your booking
+<% end %>

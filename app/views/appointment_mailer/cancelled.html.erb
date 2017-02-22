@@ -1,40 +1,40 @@
 <h1 style="color: #0B0C0C !important;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 20px;line-height: 1.111111111;padding: 15px 0;">
-  Your appointment has been cancelled
+  We’ve cancelled your appointment
 </h1>
 
-<p style="color: #0B0C0C;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-size: 16px;line-height: 1.315789474;">
+<%= p do %>
   Dear <%= @appointment.first_name %>,
-</p>
+<% end %>
 
-<p style="color: #0B0C0C;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-size: 16px;line-height: 1.315789474;">
-  You asked us to cancel your telephone guidance appointment. The following appointment has now been cancelled:
-</p>
+<%= p do %>
+  We have cancelled the following phone appointment as requested:
+<% end %>
 
-<p style="color: #0B0C0C;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-size: 16px;line-height: 1.315789474;">
-  Date<br>
-  <strong class="emphasize" style="font-size: 24px;">
+<%= p do %>
+  Date:
+  <br>
+  <strong class="emphasize">
     <%= @appointment.start_at.to_date.to_s(:govuk_date) %>
   </strong>
-</p>
+<% end %>
 
-<p style="color: #0B0C0C;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-size: 16px;line-height: 1.315789474;">
-  Time<br>
-  <strong class="emphasize" style="font-size: 24px;">
+<%= p do %>
+  Time:
+  <br>
+  <strong class="emphasize">
     <%= @appointment.start_at.to_time.to_s(:govuk_time) %>
   </strong>
-</p>
+<% end %>
 
-<p style="color: #0B0C0C;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-size: 16px;line-height: 1.315789474;">
-  Your reference number
+<%= p do %>
+  Reference number:
   <br>
-  <strong class="emphasize" style="font-size: 24px;">#<%= @appointment.id %></strong>
-</p>
+  <strong class="emphasize">
+    <%= @appointment.id %>
+  </strong>
+<% end %>
 
-<p style="color: #0B0C0C;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-size: 16px;line-height: 1.315789474;">
-  If you didn't ask us to cancel your appointment or to book a new appointment, call 0800 138 3944. Don't reply to this email.
-</p>
-
-<p style="color: #0B0C0C;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-size: 16px;line-height: 1.315789474;">
-  Go to pensionwise.gov.uk for more information about your pension options.
-</p>
+<%= p do %>
+  If you didn’t ask us to cancel your appointment or to book a new one, call 0800 138 3944. Please don’t reply to this email.
+<% end %>
 

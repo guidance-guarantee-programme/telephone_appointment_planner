@@ -2,51 +2,46 @@
   Missed appointment
 </h1>
 
-<p style="color: #0B0C0C;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-size: 16px;line-height: 1.315789474;">
+<%= p do %>
   Dear <%= @appointment.first_name %>,
-</p>
+<% end %>
 
-<p style="color: #0B0C0C;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-size: 16px;line-height: 1.315789474;">
-  Our records show that your Pension Wise telephone appointment was missed.
-  Your appointment was scheduled for:
-</p>
+<%= p do %>
+  Our records show that you missed your Pension Wise phone appointment which was scheduled for:
+<% end %>
 
-<p style="color: #0B0C0C;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-size: 16px;line-height: 1.315789474;">
-  Date
+<%= p do %>
+  Date:
   <br>
-  <strong class="emphasize" style="font-size: 24px;">
+  <strong class="emphasize">
     <%= @appointment.start_at.to_date.to_s(:govuk_date) %>
   </strong>
-</p>
+<% end %>
 
-<p style="color: #0B0C0C;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-size: 16px;line-height: 1.315789474;">
-  Time
+<%= p do %>
+  Time:
   <br>
-  <strong class="emphasize" style="font-size: 24px;">
+  <strong class="emphasize">
     <%= @appointment.start_at.to_time.to_s(:govuk_time) %>
   </strong>
-</p>
+<% end %>
 
-<p style="color: #0B0C0C;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-size: 16px;line-height: 1.315789474;">
-  Your contact number
+<%= p do %>
+  Your phone number:
   <br>
-  <strong class="emphasize" style="font-size: 24px;">
+  <strong class="emphasize">
     <%= @appointment.phone %>
   </strong>
-</p>
+<% end %>
 
-<p style="color: #0B0C0C;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-size: 16px;line-height: 1.315789474;">
-  Your reference number
+<%= p do %>
+  Reference number:
   <br>
-  <strong class="emphasize" style="font-size: 24px;">
-    #<%= @appointment.id %>
+  <strong class="emphasize">
+    <%= @appointment.id %>
   </strong>
-</p>
+<% end %>
 
-<p style="color: #0B0C0C;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-size: 16px;line-height: 1.315789474;">
-  If you want to book another appointment, please call 0800 138 3944. Don’t reply to this email.
-</p>
-
-<p style="color: #0B0C0C;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-size: 16px;line-height: 1.315789474;">
-  Go to pensionwise.gov.uk for more information about your pension options.
-</p>
+<%= p do %>
+  To book another appointment, please call 0800 138 3944. Please don’t reply to this email.
+<% end %>
