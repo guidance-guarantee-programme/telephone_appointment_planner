@@ -1,0 +1,5 @@
+<% content_for(:activity_message, flush: true) do %>
+  <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+  <strong>The summary document generator</strong> reported a delivery failure
+<% end %>
+<%= render 'activities/activity', activity: dropped_summary_document_activity, details: details, hide: hide %>

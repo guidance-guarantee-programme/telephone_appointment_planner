@@ -9,7 +9,9 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     namespace :v1 do
       resources :bookable_slots, only: :index
 
-      resources :appointments, only: :create
+      resources :appointments, only: :create do
+        resources :dropped_summary_documents, only: :create
+      end
 
       resources :summary_documents, only: :create
     end
