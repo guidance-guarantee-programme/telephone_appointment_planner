@@ -15,10 +15,6 @@
   </ul>
 </li>
 
-<% if current_user.guider? %>
-  <%= active_link_to 'My activity', activities_path, wrap_tag: :li %>
-<% end %>
-
 <% if current_user.resource_manager? %>
   <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Guiders <span class="caret"></span></a>
@@ -57,3 +53,55 @@
     </form>
   </div>
 </li>
+
+<% if current_user.guider? %>
+  <li class="dropdown">
+    <%= active_link_to '#', class: 'dropdown-toggle', data: { toggle: 'dropdown' }, role: 'button', aria: { haspopup: true, expanded: true } do %>
+      <span class="sr-only">My activity</span><span aria-hidden="true" class="glyphicon glyphicon-bell"></span><span class="badge badge-danger" style="display: none;"><span class="sr-only">You have </span>1 <span class="sr-only">unread activity messages</span></span>
+      <span class="caret"></span>
+    <% end %>
+    <ul class="dropdown-menu">
+      <li class="activity-item">
+        <a href="#">
+          <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+          <strong>Peter Guntrip</strong> said <em>this is a test message</em>
+          <span class="activity__date activity__date--dropdown">9:31am, 13 Feb 2017 (14 days ago)</span>
+        </a>
+      </li>
+      <li class="activity-item">
+        <a href="#">
+          <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+          <strong>Peter Guntrip</strong> said <em>this is a test message</em>
+          <span class="activity__date activity__date--dropdown">9:31am, 13 Feb 2017 (14 days ago)</span>
+        </a>
+      </li>
+      <li class="activity-item">
+        <a href="#">
+          <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+          <strong>Peter Guntrip</strong> said <em>this is a test message</em>
+          <span class="activity__date activity__date--dropdown">9:31am, 13 Feb 2017 (14 days ago)</span>
+        </a>
+      </li>
+      <li class="activity-item">
+        <a href="#">
+          <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+          <strong>Peter Guntrip</strong> said <em>this is a test message. This is a longer message here.</em>
+          <span class="activity__date activity__date--dropdown">9:31am, 13 Feb 2017 (14 days ago)</span>
+        </a>
+      </li>
+      <li class="activity-item">
+        <a href="#">
+          <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+          <strong>Peter Guntrip</strong> said <em>this is a test message</em>
+          <span class="activity__date activity__date--dropdown">9:31am, 13 Feb 2017 (14 days ago)</span>
+        </a>
+      </li>
+      <li class="activity-item">
+        <a href="/activities">
+          <span aria-hidden="true" class="glyphicon glyphicon-list"></span>
+          View all activities
+        </a>
+      </li>
+    </ul>
+  </li>
+<% end %>
