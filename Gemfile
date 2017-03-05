@@ -26,7 +26,7 @@ source 'https://rubygems.org' do
   gem 'gds-sso'
   gem 'govuk_admin_template'
   gem 'kaminari'
-  gem 'momentjs-rails'
+  gem 'momentjs-rails', '2.15.1'
   gem 'newrelic_rpm'
   gem 'pg', '~> 0.18'
   gem 'plek'
@@ -55,7 +55,7 @@ source 'https://rubygems.org' do
     gem 'pusher-fake'
     gem 'rspec-rails'
     gem 'rspec-retry'
-    gem 'rubocop'
+    gem 'rubocop', '0.46.0'
     gem 'site_prism'
   end
 
