@@ -20,6 +20,8 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  service:
+    title: '%{page_title} - Telephone Appointment Planner'
   date:
     formats:
       date_range_picker: '%e/%m/%Y'
