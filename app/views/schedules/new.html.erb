@@ -1,3 +1,4 @@
+<% content_for(:page_title, t('service.title', page_title: "New schedule for #{@guider.name}")) %>
 <%= breadcrumb(
   { title: 'Manage guiders', path: users_path },
   { title: "Manage schedules for #{@guider.name}", path: edit_user_path(@guider) },

@@ -1,6 +1,7 @@
+<% content_for(:page_title, t('service.title', page_title: "Reschedule appointment for #{@appointment.name}")) %>
 <%= breadcrumb(
   { title: 'Appointment search', path: search_appointments_path },
-  { title: "Edit appointment for #{@appointment.name}" })
+  { title: "Reschedule appointment for #{@appointment.name}" })
 %>
 
 <h1>Reschedule an appointment for <%= @appointment.name %></h1>
