@@ -79,6 +79,26 @@ RSpec.feature 'Agent manages appointments' do
     end
   end
 
+  scenario 'Agent modifies an appointment' do
+    given_the_user_is_an_agent do
+      and_there_is_a_guider_with_available_slots
+      and_there_is_an_appointment
+      when_they_change_the_appointment_first_name
+      then_the_appointments_first_name_is_changed
+      and_the_customer_gets_an_updated_email_confirmation
+    end
+  end
+
+  scenario 'Agent modifies an appointment without an email' do
+    given_the_user_is_an_agent do
+      and_there_is_a_guider_with_available_slots
+      and_there_is_an_appointment_without_an_email
+      when_they_change_the_appointment_first_name
+      then_the_appointments_first_name_is_changed
+      then_the_customer_does_not_get_an_updated_email_confirmation
+    end
+  end
+
   scenario 'Agent cancels an appointment' do
     given_the_user_is_an_agent do
       and_there_is_an_appointment
@@ -254,6 +274,13 @@ RSpec.feature 'Agent manages appointments' do
     @page.preview_appointment.click
   end
 
+  def when_they_change_the_appointment_first_name
+    @page = Pages::EditAppointment.new
+    @page.load(id: @appointment.id)
+    @page.first_name.set 'Another'
+    @page.submit.click
+  end
+
   def then_the_appointment_is_created_with_the_changed_details
     @guider.reload
     expect(Appointment.count).to eq 1
@@ -298,6 +325,11 @@ RSpec.feature 'Agent manages appointments' do
     appointment = Appointment.first
     expect(appointment.start_at).to eq day.change(hour: 16, min: 15).to_s
     expect(appointment.end_at).to eq day.change(hour: 17, min: 15).to_s
+  end
+
+  def then_the_appointments_first_name_is_changed
+    @appointment.reload
+    expect(@appointment.first_name).to eq('Another')
   end
 
   def and_all_slots_suddenly_become_unavailable

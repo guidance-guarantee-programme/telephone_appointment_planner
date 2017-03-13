@@ -23,7 +23,7 @@ class Notifier
   end
 
   def notify_customer(appointment)
-    if appointment_time_changed?(appointment)
+    if appointment_details_changed?(appointment)
       AppointmentMailer.updated(appointment).deliver_later
     elsif appointment_cancelled?(appointment)
       AppointmentMailer.cancelled(appointment).deliver_later
@@ -32,8 +32,9 @@ class Notifier
     end
   end
 
-  def appointment_time_changed?(appointment)
-    appointment.previous_changes.slice('start_at', 'end_at').present?
+  def appointment_details_changed?(appointment)
+    appointment.previous_changes.any? &&
+      (appointment.previous_changes.keys - Appointment::NON_NOTIFY_COLUMNS).present?
   end
 
   def appointment_cancelled?(appointment)
