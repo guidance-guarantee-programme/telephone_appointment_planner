@@ -126,6 +126,10 @@ class Appointment < ApplicationRecord
     complete? || ineligible_age? || ineligible_pension_type?
   end
 
+  def in_the_past?
+    start_at < Time.zone.now
+  end
+
   private
 
   def format_name

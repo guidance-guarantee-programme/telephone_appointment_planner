@@ -24,7 +24,7 @@ class Notifier
 
   def notify_customer(appointment)
     if appointment_details_changed?(appointment)
-      AppointmentMailer.updated(appointment).deliver_later
+      AppointmentUpdatedNotificationJob.perform_later(appointment)
     elsif appointment_cancelled?(appointment)
       AppointmentMailer.cancelled(appointment).deliver_later
     elsif appointment_missed?(appointment)
