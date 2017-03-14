@@ -24,11 +24,11 @@ class Notifier
 
   def notify_customer(appointment)
     if appointment_details_changed?(appointment)
-      AppointmentUpdatedNotificationJob.perform_later(appointment)
+      CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::UPDATED_MESSAGE)
     elsif appointment_cancelled?(appointment)
-      AppointmentMailer.cancelled(appointment).deliver_later
+      CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::CANCELLED_MESSAGE)
     elsif appointment_missed?(appointment)
-      AppointmentMailer.missed(appointment).deliver_later
+      CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::MISSED_MESSAGE)
     end
   end
 
