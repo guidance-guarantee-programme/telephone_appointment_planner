@@ -20,7 +20,7 @@ class CustomerUpdateJob < ActiveJob::Base
     when CustomerUpdateActivity::MISSED_MESSAGE
       AppointmentMailer.missed(appointment).deliver
     when CustomerUpdateActivity::UPDATED_MESSAGE
-      AppointmentMailer.updated(appointment).deliver unless appointment.in_the_past?
+      AppointmentMailer.updated(appointment).deliver
     end
   end
 end

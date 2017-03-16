@@ -23,7 +23,7 @@ class Notifier
   end
 
   def notify_customer
-    if appointment_details_changed?
+    if appointment_details_changed? && appointment.future?
       CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::UPDATED_MESSAGE)
     elsif appointment_cancelled?
       CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::CANCELLED_MESSAGE)

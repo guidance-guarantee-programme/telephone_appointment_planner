@@ -42,10 +42,7 @@ RSpec.describe Notifier, '#call' do
       end
 
       it 'creates a CustomerUpdateActvity' do
-        expect(CustomerUpdateActivity)
-          .to receive(:from)
-          .with(appointment, CustomerUpdateActivity::UPDATED_MESSAGE)
-
+        expect(CustomerUpdateActivity).not_to receive(:from)
         subject.call
       end
     end
