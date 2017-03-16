@@ -227,7 +227,7 @@ RSpec.feature 'Resource manager modifies appointments' do
   end
 
   def when_they_reschedule_an_appointment
-    @page.reschedule(@page.appointments.first, hours: 8, minutes: 30)
+    @page.reschedule(@page.appointments.first, hours: 13, minutes: 30)
   end
 
   def and_commit_their_modifications
@@ -239,10 +239,10 @@ RSpec.feature 'Resource manager modifies appointments' do
   def then_the_appointment_is_modified
     @appointment.reload
 
-    expect(@appointment.start_at.hour).to eq(8)
+    expect(@appointment.start_at.hour).to eq(13)
     expect(@appointment.start_at.min).to eq(30)
 
-    expect(@appointment.end_at.hour).to eq(9)
+    expect(@appointment.end_at.hour).to eq(14)
     expect(@appointment.end_at.min).to eq(30)
   end
 
