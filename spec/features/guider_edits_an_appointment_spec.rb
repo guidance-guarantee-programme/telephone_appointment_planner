@@ -8,7 +8,7 @@ RSpec.feature 'Guider edits an appointment' do
       then_they_see_the_existing_details
       when_they_modify_the_appointment
       then_the_appointment_is_changed
-      and_the_customer_is_not_notified
+      and_the_customer_is_notified
       and_they_see_a_success_message
     end
   end
@@ -50,8 +50,8 @@ RSpec.feature 'Guider edits an appointment' do
     expect(@appointment.reload.first_name).to eq('Rick')
   end
 
-  def and_the_customer_is_not_notified
-    expect(ActionMailer::Base.deliveries).to be_empty
+  def and_the_customer_is_notified
+    expect(ActionMailer::Base.deliveries).not_to be_empty
   end
 
   def and_they_see_a_success_message

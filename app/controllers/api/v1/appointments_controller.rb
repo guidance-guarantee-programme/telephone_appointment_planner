@@ -16,7 +16,7 @@ module Api
 
       def send_notifications(appointment)
         WebsiteAppointmentSlackPingerJob.perform_later
-        AppointmentMailer.confirmation(appointment.model).deliver_later
+        CustomerUpdateJob.perform_later(appointment.model, CustomerUpdateActivity::CONFIRMED_MESSAGE)
       end
 
       def appointment_params # rubocop:disable Metrics/MethodLength

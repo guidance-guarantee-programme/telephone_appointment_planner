@@ -1,0 +1,6 @@
+<% content_for(:activity_message, flush: true) do %>
+  <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+  <strong>The system</strong> sent an email to the customer informing them
+  their appointment has been <%= customer_update_activity.message %>
+<% end %>
+<%= render 'activities/activity', activity: customer_update_activity, details: details, hide: hide %>

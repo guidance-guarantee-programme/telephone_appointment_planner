@@ -4,6 +4,16 @@ class Appointment < ApplicationRecord
 
   FAKE_DATE_OF_BIRTH = Date.parse('1900-01-01').freeze
 
+  NON_NOTIFY_COLUMNS = %w(
+    agent_id
+    guider_id
+    notes
+    opt_out_of_market_research
+    status
+    dc_pot_confirmed
+    updated_at
+  ).freeze
+
   belongs_to :agent, class_name: 'User'
 
   enum status: %i(
@@ -114,6 +124,10 @@ class Appointment < ApplicationRecord
 
   def can_create_summary?
     complete? || ineligible_age? || ineligible_pension_type?
+  end
+
+  def in_the_past?
+    start_at < Time.zone.now
   end
 
   private

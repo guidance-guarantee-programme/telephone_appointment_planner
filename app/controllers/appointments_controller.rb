@@ -71,7 +71,7 @@ class AppointmentsController < ApplicationController
     @appointment.assign_to_guider
 
     if creating? && @appointment.save
-      AppointmentMailer.confirmation(@appointment).deliver_later
+      CustomerUpdateJob.perform_later(@appointment, CustomerUpdateActivity::CONFIRMED_MESSAGE)
       redirect_to(search_appointments_path, success: 'Appointment has been created')
     else
       render :new
