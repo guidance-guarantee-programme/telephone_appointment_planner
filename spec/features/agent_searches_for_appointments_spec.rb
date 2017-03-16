@@ -17,7 +17,7 @@ RSpec.feature 'Agent searches for appointments' do
     end
   end
 
-  scenario 'searches for date range' do
+  scenario 'searches for date range', js: true do
     given_the_user_is_an_agent do
       and_appointments_exist
       and_there_is_an_appointment_in_the_future
@@ -90,7 +90,8 @@ RSpec.feature 'Agent searches for appointments' do
     @page = Pages::Search.new.tap(&:load)
     start_at = I18n.l(18.days.from_now.to_date, format: :date_range_picker)
     end_at   = I18n.l(23.days.from_now.to_date, format: :date_range_picker)
-    @page.date_range.set("#{start_at} - #{end_at}")
+    @page.execute_script("$('.t-date-range').data('daterangepicker').setStartDate('#{start_at}')")
+    @page.execute_script("$('.t-date-range').data('daterangepicker').setEndDate('#{end_at}')")
     @page.search.click
   end
 end
