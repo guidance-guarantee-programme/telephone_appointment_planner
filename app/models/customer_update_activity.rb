@@ -2,7 +2,7 @@ class CustomerUpdateActivity < Activity
   CANCELLED_MESSAGE = 'cancelled'.freeze
   CONFIRMED_MESSAGE = 'confirmed'.freeze
   MISSED_MESSAGE = 'missed'.freeze
-  UPDATED_MESSAGE = 'update'.freeze
+  UPDATED_MESSAGE = 'updated'.freeze
 
   def self.from(appointment, message)
     create!(
