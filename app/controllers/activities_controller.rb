@@ -13,6 +13,16 @@ class ActivitiesController < ApplicationController
     end
   end
 
+  def resolve
+    @activity = Activity.find(params[:id])
+    @activity.resolve!(current_user)
+
+    respond_to do |format|
+      format.js { head :ok }
+      format.html { redirect_back(fallback_location: edit_appointment_path(@activity.appointment)) }
+    end
+  end
+
   private
 
   def message_params

@@ -29,7 +29,11 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     patch 'deactivate'
     patch 'activate'
   end
-  resources :activities, only: %i(index create)
+  resources :activities, only: %i(index create) do
+    member do
+      patch 'resolve', action: :resolve
+    end
+  end
 
   resources :groups, only: %i(index create destroy)
   resources :customers

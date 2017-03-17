@@ -6,8 +6,8 @@ class Activity < ApplicationRecord
   belongs_to :resolver, class_name: User
   validates :owner, presence: true
 
-  scope :resolved, -> { where('resolved_at IS NOT NULL') }
-  scope :unresolved, -> { where('resolved_at IS NULL') }
+  scope :resolved, -> { where.not(resolved_at: nil) }
+  scope :unresolved, -> { where(resolved_at: nil) }
 
   def self.from(audit, appointment)
     if audit.action == 'create'
@@ -25,6 +25,14 @@ class Activity < ApplicationRecord
 
   def to_partial_path
     "activities/#{model_name.singular}"
+  end
+
+  def resolve!(resolver)
+    return if resolved?
+
+    self.resolved_at = Time.zone.now
+    self.resolver = resolver
+    save!
   end
 
   def resolved?
