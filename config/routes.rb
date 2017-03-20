@@ -30,6 +30,9 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     patch 'activate'
   end
   resources :activities, only: %i(index create) do
+    collection do
+      get 'high-priority', action: :high_priority
+    end
     member do
       patch 'resolve', action: :resolve
     end

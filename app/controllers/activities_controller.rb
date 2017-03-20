@@ -22,6 +22,17 @@ class ActivitiesController < ApplicationController
     end
   end
 
+  def high_priority
+    @activities = current_user
+                  .activities
+                  .high_priority
+                  .unresolved
+                  .order('id DESC')
+                  .limit(5)
+
+    render layout: false
+  end
+
   private
 
   def message_params
