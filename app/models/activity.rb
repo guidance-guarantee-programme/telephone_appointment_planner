@@ -1,4 +1,6 @@
 class Activity < ApplicationRecord
+  HIGH_PRIORITY_ACTIVITY_CLASS_NAMES = %w(DropActivity).freeze
+
   belongs_to :appointment
   belongs_to :user
   belongs_to :owner, class_name: User
@@ -8,6 +10,7 @@ class Activity < ApplicationRecord
 
   scope :resolved, -> { where.not(resolved_at: nil) }
   scope :unresolved, -> { where(resolved_at: nil) }
+  scope :high_priority, -> { where(type: HIGH_PRIORITY_ACTIVITY_CLASS_NAMES) }
 
   def self.from(audit, appointment)
     if audit.action == 'create'
@@ -37,5 +40,9 @@ class Activity < ApplicationRecord
 
   def resolved?
     resolved_at?
+  end
+
+  def high_priority?
+    HIGH_PRIORITY_ACTIVITY_CLASS_NAMES.include?(self.class.to_s)
   end
 end
