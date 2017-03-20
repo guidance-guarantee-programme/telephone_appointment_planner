@@ -1,6 +1,8 @@
-<% @priority = [1,2,3,4].sample %>
-<% @resolved = [true,false].sample %>
-<li class="activity list-group-item t-activity <%= 't-hidden-activity activity--hideable activity--hide' if hide %><% if @priority == 1 && @resolved %> activity--priority-resolved<% end %><% if @priority == 1 && !@resolved %> activity--priority-unresolved<% end %>" data-activity-id="<%= activity.id %>">
+<li class="activity list-group-item t-activity
+  <%= 't-hidden-activity activity--hideable activity--hide' if hide %>
+  <% if activity.high_priority? && activity.resolved? %> activity--priority-resolved<% end %>
+  <% if activity.high_priority? && !activity.resolved? %> activity--priority-unresolved<% end %>
+" data-activity-id="<%= activity.id %>">
   <% if details %>
     <a href="<%= edit_appointment_path(activity.appointment) %>" class="activity__link">
   <% end %>
@@ -11,11 +13,11 @@
   <%= render('activities/details', appointment: activity.appointment) if details %>
   <span class="activity__date">
     <%= activity.created_at.in_time_zone('London').to_s(:govuk_date_short) %> (<%= time_ago_in_words(activity.created_at.in_time_zone('London'))%> ago)
-    <% if @priority == 1 %>
-      · <span class="activity__priority<% if @resolved %> activity__priority--resolved<% end %>">Priority</span>
+    <% if activity.high_priority? %>
+      · <span class="activity__priority<% if activity.resolved? %> activity__priority--resolved<% end %>">Priority</span>
     <% end %>
   </span>
-  <% if @priority == 1 && !@resolved %>
+  <% if activity.high_priority? && !activity.resolved? %>
     <a class="activity__resolve btn btn-success btn-sm" href="#">Resolve</a>
   <% end %>
 </li>
