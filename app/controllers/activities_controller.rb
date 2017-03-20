@@ -17,6 +17,9 @@ class ActivitiesController < ApplicationController
     @activity = Activity.find(params[:id])
     @activity.resolve!(current_user)
 
+    PusherHighPriorityCountChangedJob.perform_later(@activity.owner)
+    PusherHighPriorityCountChangedJob.perform_later(@activity.user) if @activity.user
+
     respond_to do |format|
       format.js { head :ok }
       format.html { redirect_back(fallback_location: edit_appointment_path(@activity.appointment)) }
