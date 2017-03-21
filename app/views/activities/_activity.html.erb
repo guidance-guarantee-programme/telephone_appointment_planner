@@ -17,7 +17,13 @@
       · <span class="activity__priority<% if activity.resolved? %> activity__priority--resolved<% end %>">Priority</span>
     <% end %>
   </span>
-  <% if activity.high_priority? && !activity.resolved? %>
-    <a class="activity__resolve btn btn-success btn-sm" href="#">Resolve</a>
-  <% end %>
+  <span aria-live="polite" class="activity__resolve-message label js-activity-resolve-message"></span>
+    <%= button_to(
+      'Resolve',
+      resolve_activity_path(activity.id),
+      class: 'activity__resolve btn btn-success btn-sm',
+      method: :patch,
+      remote: true,
+      data: { module: 'activity-resolve' }
+    ) if activity.high_priority? && !activity.resolved? %>
 </li>
