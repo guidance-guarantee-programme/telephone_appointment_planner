@@ -55,9 +55,9 @@
 </li>
 
 <% if current_user.guider? %>
-  <li class="dropdown">
-    <%= active_link_to '#', class: 'dropdown-toggle', data: { toggle: 'dropdown' }, role: 'button', aria: { haspopup: true, expanded: true } do %>
-      <span class="sr-only">My activity</span><span aria-hidden="true" class="glyphicon glyphicon-bell"></span><span class="badge badge-danger" style="display: none;"><span class="sr-only">You have </span>1 <span class="sr-only">unread activity messages</span></span>
+  <li class="dropdown" data-module="high-priority-activity" data-config='{"event": "guider_activity_<%= current_user.id %>"}'>
+    <%= active_link_to activities_path, class: 'dropdown-toggle', data: { toggle: 'dropdown' }, role: 'button', aria: { haspopup: true, expanded: true } do %>
+      <span class="sr-only">My activity</span><span aria-hidden="true" class="glyphicon glyphicon-bell"></span><span class="js-high-priority-badge badge badge-danger" style="display: none;"><span class="sr-only">You have </span><span class="js-high-priority-count"></span> <span class="sr-only">unread activity messages</span></span>
       <span class="caret"></span>
     <% end %>
     <ul class="dropdown-menu">
