@@ -9,7 +9,7 @@ class AuditActivity < Activity
       appointment_id: appointment.id
     )
 
-    PusherActivityNotificationJob.perform_later(appointment.guider_id, activity.id)
+    PusherActivityCreatedJob.perform_later(appointment.guider_id, activity.id)
   end
 
   def self.only_the_guider_has_been_changed?(audit)

@@ -6,7 +6,7 @@ RSpec.describe AssignmentActivity do
     let(:user) { create(:user) }
     let(:audit) { appointment.audits.first }
 
-    before { allow(PusherActivityNotificationJob).to receive(:perform_later) }
+    before { allow(PusherActivityCreatedJob).to receive(:perform_later) }
 
     subject { appointment.activities.first }
 
@@ -24,7 +24,7 @@ RSpec.describe AssignmentActivity do
     end
 
     it 'pushes an activity update' do
-      expect(PusherActivityNotificationJob)
+      expect(PusherActivityCreatedJob)
         .to have_received(:perform_later)
         .with(appointment.guider_id, subject.id)
     end
@@ -51,13 +51,13 @@ RSpec.describe AssignmentActivity do
       end
 
       it 'pushes an activity update' do
-        expect(PusherActivityNotificationJob)
+        expect(PusherActivityCreatedJob)
           .to have_received(:perform_later)
           .with(appointment.guider_id, subject.id)
       end
 
       it 'pushes an activity update to the prior owner' do
-        expect(PusherActivityNotificationJob)
+        expect(PusherActivityCreatedJob)
           .to have_received(:perform_later)
           .with(prior_owner.id, subject.id)
       end

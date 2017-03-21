@@ -13,7 +13,7 @@ RSpec.describe Notifier, '#call' do
     allow(AppointmentMailer).to receive(:updated) { mailer }
     allow(mailer).to receive(:deliver)
     allow(CustomerUpdateActivity).to receive(:from) { activity }
-    allow(PusherActivityNotificationJob).to receive(:perform_later)
+    allow(PusherActivityCreatedJob).to receive(:perform_later)
   end
 
   context 'and I update a core detail' do
