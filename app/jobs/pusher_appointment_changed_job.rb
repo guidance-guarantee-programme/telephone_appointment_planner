@@ -1,4 +1,4 @@
-class PusherNotificationJob < ApplicationJob
+class PusherAppointmentChangedJob < ApplicationJob
   queue_as :default
 
   def perform(guider_id, appointment)

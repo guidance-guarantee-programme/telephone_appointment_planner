@@ -14,7 +14,7 @@ class Notifier
 
   def notify_guiders
     guiders_to_notify.each do |guider_id|
-      PusherNotificationJob.perform_later(guider_id, appointment)
+      PusherAppointmentChangedJob.perform_later(guider_id, appointment)
     end
   end
 
