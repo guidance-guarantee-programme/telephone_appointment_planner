@@ -6,12 +6,12 @@
     start(el) {
       super.start(el);
 
-      this.$el.parents('form').on('ajax:success', this.handleSuccess.bind(this));
-      this.$el.parents('form').on('ajax:error', this.handleError.bind(this));
+      $(document).on('ajax:success', '.activity__form', this.handleSuccess.bind(this));
+      $(document).on('ajax:error', '.activity__form', this.handleError.bind(this));
     }
 
     handleSuccess(event) {
-      const $button = $(event.currentTarget),
+      const $button = $(event.target),
         $activity = $button.parents('.activity');
 
       $activity.removeClass('activity--priority-unresolved')

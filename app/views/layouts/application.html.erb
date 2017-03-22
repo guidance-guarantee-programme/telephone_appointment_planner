@@ -9,6 +9,7 @@
 <% end %>
 
 <% content_for :body_end do %>
+  <div data-module="activity-resolve"></div>
   <script>
   <% if defined?(PusherFake) %>
       Pusher.instance = <%= raw PusherFake.javascript %>;

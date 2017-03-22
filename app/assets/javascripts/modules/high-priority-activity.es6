@@ -7,7 +7,27 @@
       super.start(el);
       this.$badge = $('.js-high-priority-badge');
       this.$count = $('.js-high-priority-count');
+      this.$trigger = $('.js-high-priority-dropdown-trigger');
+      this.$dropdown = $('.js-high-priority-dropdown');
+      this.bindEvents();
       this.setupPusher();
+    }
+
+    bindEvents() {
+      this.$trigger.on('click', this.handleTriggerEvent.bind(this));
+    }
+
+    handleTriggerEvent() {
+      $.get('/activities/high-priority', this.handleHighPriorityResponse.bind(this));
+    }
+
+    handleHighPriorityResponse(html) {
+      this.$dropdown.find('.activity:not(.activity--view-all)').remove();
+      this.$dropdown.prepend(html);
+    }
+
+    currrentCount() {
+      return parseInt(this.$count.html());
     }
 
     setupPusher() {
@@ -21,18 +41,20 @@
     }
 
     handlePushEvent(payload) {
-      const highPriorityCount = payload.high_priority_activity_count;
+      const highPriorityCount = payload.count;
 
       if (highPriorityCount == 0) {
         this.$badge.fadeOut('fast');
         return;
       }
 
-      this.$count.html(highPriorityCount);
+      if (highPriorityCount > this.currrentCount()) {
+        this.$badge
+          .removeClass('badge--animate')
+          .fadeIn('fast', this.animateBadge.bind(this));
+      }
 
-      this.$badge
-        .removeClass('badge--animate')
-        .fadeIn('fast', this.animateBadge.bind(this));
+      this.$count.html(highPriorityCount);
     }
 
     animateBadge() {

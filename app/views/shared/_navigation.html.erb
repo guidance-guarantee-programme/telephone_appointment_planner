@@ -55,48 +55,20 @@
 </li>
 
 <% if current_user.guider? %>
-  <li class="dropdown" data-module="high-priority-activity" data-config='{"event": "guider_activity_<%= current_user.id %>"}'>
-    <%= active_link_to activities_path, class: 'dropdown-toggle', data: { toggle: 'dropdown' }, role: 'button', aria: { haspopup: true, expanded: true } do %>
-      <span class="sr-only">My activity</span><span aria-hidden="true" class="glyphicon glyphicon-bell"></span><span class="js-high-priority-badge badge badge-danger" style="display: none;"><span class="sr-only">You have </span><span class="js-high-priority-count"></span> <span class="sr-only">unread activity messages</span></span>
+  <li class="dropdown" data-module="high-priority-activity" data-config='{"event": "guider_<%= current_user.id %>_high_priority_count"}'>
+    <%= active_link_to activities_path, class: 'dropdown-toggle js-high-priority-dropdown-trigger', data: { toggle: 'dropdown' }, role: 'button', aria: { haspopup: true, expanded: false } do %>
+      <span class="sr-only">My activity</span><span aria-hidden="true" class="glyphicon glyphicon-bell"></span><span class="js-high-priority-badge badge badge-danger"<% if high_priority_activity_count == 0 %> style="display: none;"<% end %>><span class="sr-only">You have </span><span class="js-high-priority-count"><%= high_priority_activity_count %></span> <span class="sr-only">unread activity <%= 'message'.pluralize(high_priority_activity_count) %></span></span>
       <span class="caret"></span>
     <% end %>
-    <ul class="dropdown-menu">
-      <li class="activity-item">
-        <a href="#">
-          <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-          <strong>Peter Guntrip</strong> said <em>this is a test message</em>
-          <span class="activity__date activity__date--dropdown">9:31am, 13 Feb 2017 (14 days ago)</span>
-        </a>
+    <ul class="activity-dropdown-menu dropdown-menu js-high-priority-dropdown">
+      <li class="activity">
+        <div class="calendar-loading-spinner">
+          <div class="calendar-loading-spinner__bounce calendar-loading-spinner__bounce--1"></div>
+          <div class="calendar-loading-spinner__bounce calendar-loading-spinner__bounce--2"></div>
+          <div class="calendar-loading-spinner__bounce"></div>
+        </div>
       </li>
-      <li class="activity-item">
-        <a href="#">
-          <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-          <strong>Peter Guntrip</strong> said <em>this is a test message</em>
-          <span class="activity__date activity__date--dropdown">9:31am, 13 Feb 2017 (14 days ago)</span>
-        </a>
-      </li>
-      <li class="activity-item">
-        <a href="#">
-          <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-          <strong>Peter Guntrip</strong> said <em>this is a test message</em>
-          <span class="activity__date activity__date--dropdown">9:31am, 13 Feb 2017 (14 days ago)</span>
-        </a>
-      </li>
-      <li class="activity-item">
-        <a href="#">
-          <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-          <strong>Peter Guntrip</strong> said <em>this is a test message. This is a longer message here.</em>
-          <span class="activity__date activity__date--dropdown">9:31am, 13 Feb 2017 (14 days ago)</span>
-        </a>
-      </li>
-      <li class="activity-item">
-        <a href="#">
-          <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-          <strong>Peter Guntrip</strong> said <em>this is a test message</em>
-          <span class="activity__date activity__date--dropdown">9:31am, 13 Feb 2017 (14 days ago)</span>
-        </a>
-      </li>
-      <li class="activity-item">
+      <li class="activity activity--view-all">
         <a href="/activities">
           <span aria-hidden="true" class="glyphicon glyphicon-list"></span>
           View all activities

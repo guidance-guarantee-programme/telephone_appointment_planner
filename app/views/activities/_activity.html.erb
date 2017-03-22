@@ -3,27 +3,31 @@
   <% if activity.high_priority? && activity.resolved? %> activity--priority-resolved<% end %>
   <% if activity.high_priority? && !activity.resolved? %> activity--priority-unresolved<% end %>
 " data-activity-id="<%= activity.id %>">
-  <% if details %>
-    <a href="<%= edit_appointment_path(activity.appointment) %>" class="activity__link">
-  <% end %>
-    <%= content_for(:activity_message) %>
-  <% if details %>
-    </a>
-  <% end %>
-  <%= render('activities/details', appointment: activity.appointment) if details %>
-  <span class="activity__date">
-    <%= activity.created_at.in_time_zone('London').to_s(:govuk_date_short) %> (<%= time_ago_in_words(activity.created_at.in_time_zone('London'))%> ago)
-    <% if activity.high_priority? %>
-      · <span class="activity__priority<% if activity.resolved? %> activity__priority--resolved<% end %>">Priority</span>
+  <div class="activity__inner">
+    <% if details %>
+      <a href="<%= edit_appointment_path(activity.appointment) %>" class="activity__link">
     <% end %>
-  </span>
-  <span aria-live="polite" class="activity__resolve-message label js-activity-resolve-message"></span>
-    <%= button_to(
-      'Resolve',
-      resolve_activity_path(activity.id),
-      class: 'activity__resolve btn btn-success btn-sm',
-      method: :patch,
-      remote: true,
-      data: { module: 'activity-resolve' }
-    ) if activity.high_priority? && !activity.resolved? %>
+      <%= content_for(:activity_message) %>
+    <% if details %>
+      </a>
+    <% end %>
+    <%= render('activities/details', appointment: activity.appointment) if details %>
+    <span class="activity__date">
+      <%= activity.created_at.in_time_zone('London').to_s(:govuk_date_short) %> (<%= time_ago_in_words(activity.created_at.in_time_zone('London'))%> ago)
+      <% if activity.high_priority? %>
+        · <span class="activity__priority<% if activity.resolved? %> activity__priority--resolved<% end %>">Priority</span>
+      <% end %>
+    </span>
+    <% if activity.high_priority? && !activity.resolved? %>
+      <span aria-live="polite" class="activity__resolve-message label js-activity-resolve-message"></span>
+      <%= button_to(
+        'Resolve',
+        resolve_activity_path(activity.id),
+        class: 'activity__resolve btn btn-success btn-sm',
+        method: :patch,
+        remote: true,
+        form_class: 'activity__form'
+      ) %>
+    <% end %>
+  </div>
 </li>
