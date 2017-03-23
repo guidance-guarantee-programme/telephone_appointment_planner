@@ -1,5 +1,6 @@
 class AssignmentActivity < Activity
   ASSIGNED = 'assigned'.freeze
+  REASSIGNED = 'reassigned'.freeze
 
   def allocated?
     message == ASSIGNED
@@ -14,27 +15,26 @@ class AssignmentActivity < Activity
   end
 
   def self.create_assignment(audit, appointment)
-    activity = create!(
+    create!(
       user_id: audit.user_id,
       message: ASSIGNED,
       appointment: appointment,
       owner: appointment.guider
     )
-
-    PusherActivityCreatedJob.perform_later(appointment.guider_id, activity.id)
   end
 
   def self.create_reassignment(audit, appointment)
     prior_owner = User.find(audit.audited_changes['guider_id'].first)
-    activity = create!(
+    create!(
       user_id: audit.user_id,
-      message: 'reassigned',
+      message: REASSIGNED,
       appointment: appointment,
       owner: appointment.guider,
       prior_owner_id: prior_owner.id
     )
+  end
 
-    PusherActivityCreatedJob.perform_later(appointment.guider_id, activity.id)
-    PusherActivityCreatedJob.perform_later(prior_owner.id, activity.id)
+  def pusher_notify_user_ids
+    message == ASSIGNED ? owner_id : [owner_id, prior_owner_id]
   end
 end

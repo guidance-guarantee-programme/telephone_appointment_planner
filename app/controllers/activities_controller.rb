@@ -7,7 +7,6 @@ class ActivitiesController < ApplicationController
 
   def create
     @activity = MessageActivity.create(message_params)
-    PusherActivityCreatedJob.perform_later(appointment.guider_id, @activity.id)
     respond_to do |format|
       format.js { render @activity }
     end
@@ -16,9 +15,6 @@ class ActivitiesController < ApplicationController
   def resolve
     @activity = Activity.find(params[:id])
     @activity.resolve!(current_user)
-
-    PusherHighPriorityCountChangedJob.perform_later(@activity.owner)
-    PusherHighPriorityCountChangedJob.perform_later(@activity.user) if @activity.user
 
     respond_to do |format|
       format.js { head :ok }
