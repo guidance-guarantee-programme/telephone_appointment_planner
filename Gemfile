@@ -3,8 +3,8 @@ ruby IO.read('.ruby-version').strip
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-daterangepicker'
-  gem 'rails-assets-fullcalendar'
-  gem 'rails-assets-fullcalendar-scheduler'
+  gem 'rails-assets-fullcalendar', '3.2.0'
+  gem 'rails-assets-fullcalendar-scheduler', '1.5.1'
   gem 'rails-assets-listjs'
   gem 'rails-assets-pusher'
   gem 'rails-assets-qTip2'
