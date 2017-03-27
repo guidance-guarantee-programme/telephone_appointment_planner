@@ -1,18 +1,17 @@
 class PusherHighPriorityCountChangedJob < ApplicationJob
   queue_as :default
 
-  def perform(guider)
+  def perform(user)
     Pusher.trigger(
       'telephone_appointment_planner',
-      "guider_#{guider.id}_high_priority_count",
-      count: guider_high_priority_activity_count(guider)
+      "user_#{user.id}_high_priority_count",
+      count: user_high_priority_activity_count(user)
     )
   end
 
-  def guider_high_priority_activity_count(guider)
-    guider
-      .activities
-      .high_priority
+  def user_high_priority_activity_count(user)
+    Activity
+      .high_priority_for(user)
       .unresolved
       .count
   end

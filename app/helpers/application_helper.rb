@@ -5,9 +5,8 @@ module ApplicationHelper
   end
 
   def high_priority_activity_count
-    current_user
-      .activities
-      .high_priority
+    Activity
+      .high_priority_for(current_user)
       .unresolved
       .count
   end

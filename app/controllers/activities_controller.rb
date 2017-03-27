@@ -23,9 +23,8 @@ class ActivitiesController < ApplicationController
   end
 
   def high_priority
-    @activities = current_user
-                  .activities
-                  .high_priority
+    @activities = Activity
+                  .high_priority_for(current_user)
                   .unresolved
                   .order('id DESC')
                   .limit(5)

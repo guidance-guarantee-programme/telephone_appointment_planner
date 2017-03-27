@@ -22,6 +22,12 @@ class Activity < ApplicationRecord
     AssignmentActivity.from(audit, appointment)
   end
 
+  def self.high_priority_for(user)
+    high_priority
+      .joins(:appointment)
+      .where('appointments.agent_id = :user OR appointments.guider_id = :user', user: user)
+  end
+
   def user_name
     user.try(:name) || 'Someone'
   end
@@ -59,5 +65,9 @@ class Activity < ApplicationRecord
   after_commit if: :high_priority? do
     PusherHighPriorityCountChangedJob.perform_later(owner)
     PusherHighPriorityCountChangedJob.perform_later(user) if user
+
+    unless appointment.agent == owner
+      PusherHighPriorityCountChangedJob.perform_later(appointment.agent)
+    end
   end
 end

@@ -54,8 +54,8 @@
   </div>
 </li>
 
-<% if current_user.guider? %>
-  <li class="dropdown" data-module="high-priority-activity" data-config='{"event": "guider_<%= current_user.id %>_high_priority_count"}'>
+<% if current_user.guider? || current_user.agent? %>
+  <li class="dropdown" data-module="high-priority-activity" data-config='{"event": "user_<%= current_user.id %>_high_priority_count"}'>
     <%= active_link_to activities_path, class: 'dropdown-toggle js-high-priority-dropdown-trigger', data: { toggle: 'dropdown' }, role: 'button', aria: { haspopup: true, expanded: false } do %>
       <span class="sr-only">My activity</span><span aria-hidden="true" class="glyphicon glyphicon-bell"></span><span class="js-high-priority-badge badge badge-danger"<% if high_priority_activity_count == 0 %> style="display: none;"<% end %>><span class="sr-only">You have </span><span class="js-high-priority-count"><%= high_priority_activity_count %></span> <span class="sr-only">unread activity <%= 'message'.pluralize(high_priority_activity_count) %></span></span>
       <span class="caret"></span>
@@ -68,12 +68,14 @@
           <div class="loading-spinner__bounce"></div>
         </div>
       </li>
-      <li class="activity activity--view-all">
-        <a href="/activities">
-          <span aria-hidden="true" class="glyphicon glyphicon-list"></span>
-          View all activities
-        </a>
-      </li>
+      <% if current_user.guider? %>
+        <li class="activity activity--view-all">
+          <a href="/activities">
+            <span aria-hidden="true" class="glyphicon glyphicon-list"></span>
+            View all activities
+          </a>
+        </li>
+      <% end %>
     </ul>
   </li>
 <% end %>
