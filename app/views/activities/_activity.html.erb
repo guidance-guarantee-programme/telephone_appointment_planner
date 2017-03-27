@@ -8,7 +8,7 @@
       <%= render('activities/details', appointment: activity.appointment) if details %>
     </div>
     <div class="activity-badge">
-      <em class="badge"><%= activity.created_at.to_s(:govuk_date_short) %> (<%= time_ago_in_words(activity.created_at)%> ago)</em>
+      <em class="badge"><%= activity.created_at.in_time_zone('London').to_s(:govuk_date_short) %> (<%= time_ago_in_words(activity.created_at.in_time_zone('London'))%> ago)</em>
     </div>
 <% if details %>
   </a>
