@@ -12,15 +12,19 @@ module UserHelpers
     GDS::SSO.test_user
   end
 
-  def given_a_browser_session_for(user)
-    existing_session      = Capybara.session_name
-    Capybara.session_name = user.to_param
-    GDS::SSO.test_user    = user
+  def given_a_browser_session_for(*users) # rubocop:disable Metrics/MethodLength
+    users.each do |user|
+      begin
+        existing_session      = Capybara.session_name
+        Capybara.session_name = user.to_param
+        GDS::SSO.test_user    = user
 
-    yield
-  ensure
-    Capybara.session_name = existing_session
-    GDS::SSO.test_user    = nil
+        yield
+      ensure
+        Capybara.session_name = existing_session
+        GDS::SSO.test_user    = nil
+      end
+    end
   end
 
   def given_the_user(type)
