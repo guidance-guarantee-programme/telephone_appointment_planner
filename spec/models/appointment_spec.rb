@@ -1,19 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Appointment, type: :model do
-  describe 'Grace period bug regression' do
-    it 'does not permit bookings inside the grace period' do
-      travel_to '2017-03-26 11:05 UTC' do
-        # force new_record? to evaluate truthily
-        appointment = Appointment.new(
-          attributes_for(:appointment, start_at: Time.zone.parse('2017-03-28 11:20 UTC'))
-        )
-
-        expect(appointment).to be_invalid
-      end
-    end
-  end
-
   describe 'formatting' do
     it 'title-cases first and last name' do
       appointment = build_stubbed(:appointment, first_name: 'bob', last_name: 'carolgees')
