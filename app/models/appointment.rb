@@ -144,7 +144,7 @@ class Appointment < ApplicationRecord
   def not_within_two_business_days
     return unless new_record? && start_at?
 
-    too_soon = start_at < BusinessDays.from_now(2)
+    too_soon = start_at < BookableSlot.next_valid_start_date
     errors.add(:start_at, 'must be more than two business days from now') if too_soon
   end
 
