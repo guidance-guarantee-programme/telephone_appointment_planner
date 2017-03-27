@@ -69,7 +69,7 @@
         <tr class="booking-details__row">
           <td class="booking-details__item"><b class="visible-xs-block">Guider</b><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span class="t-guider"><%= @appointment.guider.name %></span></td>
           <td class="booking-details__item"><b class="visible-xs-block">Appointment date/time</b><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> <span class="t-appointment-date-time"><%= @appointment.start_at.to_date.to_s(:govuk_date_short) %>, <%= @appointment.start_at.to_s(:govuk_time) %> - <%= @appointment.end_at.to_s(:govuk_time) %></span></td>
-          <td class="booking-details__item"><b class="visible-xs-block">Appointment created</b><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> <span class="t-created-date"><%= @appointment.created_at.to_s(:govuk_date_short) %></span></td>
+          <td class="booking-details__item"><b class="visible-xs-block">Appointment created</b><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> <span class="t-created-date"><%= @appointment.created_at.in_time_zone('London').to_s(:govuk_date_short) %></span></td>
         </tr>
       </tbody>
     </table>
