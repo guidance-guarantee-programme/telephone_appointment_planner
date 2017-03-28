@@ -14,9 +14,10 @@ class BookableSlot < ApplicationRecord
     where("#{quoted_table_name}.start_at > ? AND #{quoted_table_name}.end_at < ?", from, to)
   end
 
-  def self.next_valid_start_date(user)
-    return Time.zone.now if user.resource_manager?
-    BusinessDays.from_now(2)
+  def self.next_valid_start_date(user = nil)
+    return Time.zone.now if user && user.resource_manager?
+
+    BusinessDays.from_now(2).change(hour: 18, min: 30)
   end
 
   def self.find_available_slot(start_at)
@@ -33,7 +34,7 @@ class BookableSlot < ApplicationRecord
   end
 
   def self.grouped # rubocop:disable Metrics/AbcSize
-    from = BusinessDays.from_now(2).beginning_of_day
+    from = next_valid_start_date
     to   = 6.weeks.from_now.end_of_day
 
     bookable(from, to)

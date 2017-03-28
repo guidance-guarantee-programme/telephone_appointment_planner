@@ -14,8 +14,8 @@ RSpec.describe 'GET /api/v1/bookable_slots' do
     create(:bookable_slot, start_at: Time.zone.parse('2017-01-13 14:00'))
 
     # three slots combined for one day
-    create(:bookable_slot, start_at: Time.zone.parse('2017-01-12 15:00'))
-    create_list(:bookable_slot, 2, start_at: Time.zone.parse('2017-01-12 12:00'))
+    create(:bookable_slot, start_at: Time.zone.parse('2017-01-16 15:00'))
+    create_list(:bookable_slot, 2, start_at: Time.zone.parse('2017-01-16 12:00'))
 
     # falls before the booking window
     create(:bookable_slot, start_at: 1.day.from_now)
@@ -32,11 +32,11 @@ RSpec.describe 'GET /api/v1/bookable_slots' do
     expect(response).to be_ok
 
     JSON.parse(response.body).tap do |json|
-      expect(json['2017-01-12']).to eq(%w(2017-01-12T12:00:00.000Z 2017-01-12T15:00:00.000Z))
+      expect(json['2017-01-16']).to eq(%w(2017-01-16T12:00:00.000Z 2017-01-16T15:00:00.000Z))
 
       expect(json['2017-01-13']).to eq(%w(2017-01-13T14:00:00.000Z))
 
-      expect(json.keys).to eq(%w(2017-01-12 2017-01-13))
+      expect(json.keys).to eq(%w(2017-01-13 2017-01-16))
     end
   end
 end
