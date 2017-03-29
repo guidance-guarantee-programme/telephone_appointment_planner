@@ -20,6 +20,9 @@
       <% if activity.high_priority? %>
         · <span class="activity__priority<% if activity.resolved? %> activity__priority--resolved<% end %>">Priority</span>
       <% end %>
+      <% if activity.resolved? %>
+        · <span>Resolved by <%= activity.resolver.name %></span>
+      <% end %>
     </span>
     <% if activity.high_priority? && !activity.resolved? %>
       <span aria-live="polite" class="activity__resolve-message label js-activity-resolve-message"></span>
