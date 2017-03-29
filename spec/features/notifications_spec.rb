@@ -10,34 +10,34 @@ RSpec.describe 'Activity notification alerts', js: true do
   end
 
   scenario 'A new high priority activity occurs' do
-    given_a_browser_session_for guider, agent do
+    given_a_browser_session_for(guider, agent) do
       when_they_are_on_their_dashboard
     end
 
     and_they_have_an_appointment
     and_a_high_priority_activity_occurs
 
-    given_a_browser_session_for guider, agent do
+    given_a_browser_session_for(guider, agent) do
       then_they_see_there_is_a_notification
     end
   end
 
   scenario 'Viewing high priority activities' do
-    given_a_browser_session_for guider, agent do
+    given_a_browser_session_for(guider, agent) do
       when_they_are_on_their_dashboard
     end
 
     and_they_have_an_appointment
     and_a_high_priority_activity_occurs
 
-    given_a_browser_session_for guider, agent do
+    given_a_browser_session_for(guider, agent) do
       and_they_click_on_the_high_priority_activity_badge
       and_they_can_see_their_high_priority_alerts
     end
   end
 
   scenario 'No high priority activities' do
-    given_a_browser_session_for guider, agent do
+    given_a_browser_session_for(guider, agent) do
       when_they_are_on_their_dashboard
       and_they_click_on_the_high_priority_activity_badge
       then_they_can_see_no_high_priority_alerts_message
@@ -45,7 +45,7 @@ RSpec.describe 'Activity notification alerts', js: true do
   end
 
   scenario 'Resolving a high priority activity' do
-    given_a_browser_session_for guider, agent do
+    given_a_browser_session_for(guider, agent) do
       and_they_have_an_appointment
       and_a_high_priority_activity_occurs
       when_they_are_viewing_the_appointment

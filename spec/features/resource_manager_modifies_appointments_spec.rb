@@ -19,7 +19,7 @@ RSpec.feature 'Resource manager modifies appointments' do
     when_there_are_appointments_for_multiple_guiders
 
     # start Ben and Jan's sessions to subscribe on the pusher channel
-    given_a_browser_session_for @ben, @jan do
+    given_a_browser_session_for(@ben, @jan) do
       when_they_view_their_appointments
     end
 

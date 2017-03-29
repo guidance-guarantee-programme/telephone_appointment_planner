@@ -10,7 +10,7 @@ RSpec.feature 'Guider views their activities' do
   end
 
   scenario 'No activities' do
-    given_a_browser_session_for guider do
+    given_a_browser_session_for(guider) do
       and_they_have_no_appointments
       when_they_view_their_activity
       then_they_see_a_no_activity_message
@@ -18,17 +18,17 @@ RSpec.feature 'Guider views their activities' do
   end
 
   scenario 'Activities are loaded in realtime', js: true do
-    given_a_browser_session_for guider do
+    given_a_browser_session_for(guider) do
       and_they_have_some_appointments
       when_they_view_their_activity
       then_they_see_all_activities
     end
 
-    given_a_browser_session_for someone do
+    given_a_browser_session_for(someone) do
       when_they_leave_a_message_on_one_of_the_guiders_appointments
     end
 
-    given_a_browser_session_for guider do
+    given_a_browser_session_for(guider) do
       then_they_see_the_new_activities
     end
   end

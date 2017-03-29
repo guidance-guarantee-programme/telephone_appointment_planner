@@ -46,15 +46,15 @@ RSpec.feature 'Guider views appointments' do
     given_the_requisite_data
 
     travel_to @appointment.start_at do
-      given_a_browser_session_for @guider do
+      given_a_browser_session_for(@guider) do
         when_they_view_their_calendar
       end
 
-      given_a_browser_session_for @resource_manager do
+      given_a_browser_session_for(@resource_manager) do
         and_they_assign_the_appointment_to_another_guider
       end
 
-      given_a_browser_session_for @guider do
+      given_a_browser_session_for(@guider) do
         then_they_are_notified_of_the_change
         and_the_appointment_is_removed_from_their_calendar
       end
@@ -65,15 +65,15 @@ RSpec.feature 'Guider views appointments' do
     given_the_requisite_data
 
     travel_to @appointment.start_at do
-      given_a_browser_session_for @guider do
+      given_a_browser_session_for(@guider) do
         when_they_view_the_company_calendar
       end
 
-      given_a_browser_session_for @resource_manager do
+      given_a_browser_session_for(@resource_manager) do
         and_they_assign_the_appointment_to_another_guider
       end
 
-      given_a_browser_session_for @guider do
+      given_a_browser_session_for(@guider) do
         then_they_are_notified_of_the_change
         and_the_appointment_is_visibly_assigned_to_the_other_guider
       end
