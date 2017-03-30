@@ -1,6 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe Appointment, type: :model do
+  describe 'Phantom audits bug regression' do
+    it 'defaults `mobile` and `notes` to empty strings' do
+      expect(described_class.new).to have_attributes(
+        mobile: '',
+        notes: ''
+      )
+    end
+  end
+
   describe 'Grace period bug regression' do
     it 'does not permit bookings inside the grace period' do
       travel_to '2017-03-26 11:05 UTC' do
