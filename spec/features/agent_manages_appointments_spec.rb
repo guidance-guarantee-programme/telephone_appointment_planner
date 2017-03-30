@@ -167,6 +167,7 @@ RSpec.feature 'Agent manages appointments' do
     @page.opt_out_of_market_research.set true
     @page.start_at.set day.change(hour: 9, min: 30).to_s
     @page.end_at.set day.change(hour: 10, min: 40).to_s
+    @page.type_of_appointment_standard.set true
 
     @page.preview_appointment.click
   end
@@ -190,6 +191,7 @@ RSpec.feature 'Agent manages appointments' do
     expect(@page.preview).to have_content 'lozenge'
     expect(@page.preview).to have_content 'something'
     expect(@page.preview).to have_content 'Opted out'
+    expect(@page.preview).to have_content 'Standard'
   end
 
   def and_they_fill_in_their_appointment_details_without_an_email
@@ -215,6 +217,7 @@ RSpec.feature 'Agent manages appointments' do
     expect(appointment.start_at).to eq day.change(hour: 9, min: 30).to_s
     expect(appointment.status).to eq 'pending'
     expect(appointment.end_at).to eq day.change(hour: 10, min: 40).to_s
+    expect(appointment.type_of_appointment).to eq('standard')
   end
 
   def and_the_customer_gets_an_email_confirmation
@@ -270,6 +273,7 @@ RSpec.feature 'Agent manages appointments' do
     @page.opt_out_of_market_research.set false
     @page.start_at.set day.change(hour: 9, min: 30).to_s
     @page.end_at.set day.change(hour: 10, min: 40).to_s
+    @page.type_of_appointment_50_54.set true
 
     @page.preview_appointment.click
   end
@@ -300,6 +304,7 @@ RSpec.feature 'Agent manages appointments' do
     expect(appointment.start_at).to eq day.change(hour: 9, min: 30).to_s
     expect(appointment.status).to eq 'pending'
     expect(appointment.end_at).to eq day.change(hour: 10, min: 40).to_s
+    expect(appointment.type_of_appointment).to eq('50-54')
   end
 
   def and_there_is_an_appointment

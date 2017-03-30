@@ -26,6 +26,7 @@
   <%= f.hidden_field :notes %>
   <%= f.hidden_field :opt_out_of_market_research %>
   <%= f.hidden_field :status %>
+  <%= f.hidden_field :type_of_appointment %>
 
   <div class="t-preview appointment-preview">
     <div class="row">
@@ -76,6 +77,10 @@
             <tr>
               <td class="active"><b>Opt out of market research</b></td>
               <td><%= @appointment.opt_out_of_market_research ? 'Opted out' : 'Not opted out' %></td>
+            </tr>
+            <tr>
+              <td class="active"><b>Type of appointment</b></td>
+              <td><%= @appointment.type_of_appointment.humanize %></td>
             </tr>
           </tbody>
         </table>
