@@ -16,6 +16,19 @@ RSpec.describe Notifier, '#call' do
     allow(PusherActivityCreatedJob).to receive(:perform_later)
   end
 
+  context 'when the appointment is without an associated email' do
+    before do
+      stub_const('AppointmentMailer', double)
+      stub_const('CustomerUpdateActivity', double)
+    end
+
+    it 'does not notify the customer' do
+      appointment.update_attribute(:email, '')
+
+      subject.call
+    end
+  end
+
   context 'and I update a core detail' do
     before { appointment.update_attribute(:first_name, 'Jean Ralphio') }
 
@@ -41,7 +54,7 @@ RSpec.describe Notifier, '#call' do
         subject.call
       end
 
-      it 'creates a CustomerUpdateActvity' do
+      it 'does not create a CustomerUpdateActvity' do
         expect(CustomerUpdateActivity).not_to receive(:from)
         subject.call
       end
