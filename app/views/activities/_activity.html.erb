@@ -1,17 +1,39 @@
-<% if details %>
-  <a class="activity list-group-item t-activity" href="<%= edit_appointment_path(activity.appointment) %>">
-<% else %>
-  <li class="activity list-group-item t-activity <%= 't-hidden-activity activity--hideable activity--hide' if hide %>" data-activity-id="<%= activity.id %>">
-<% end %>
-    <div class="activity-details">
+<li class="activity list-group-item t-activity
+  <%= 't-hidden-activity activity--hideable activity--hide' if hide %>
+  <% if activity.high_priority? %>
+    t-high-priority-activity
+    t-<%= 'un' if !activity.resolved? %>resolved-activity
+    activity--priority-<%= 'un' if !activity.resolved? %>resolved
+  <% end %>
+" data-activity-id="<%= activity.id %>">
+  <div class="activity__inner">
+    <% if details %>
+      <a href="<%= edit_appointment_path(activity.appointment) %>" class="activity__link">
+    <% end %>
       <%= content_for(:activity_message) %>
-      <%= render('activities/details', appointment: activity.appointment) if details %>
-    </div>
-    <div class="activity-badge">
-      <em class="badge"><%= activity.created_at.in_time_zone('London').to_s(:govuk_date_short) %> (<%= time_ago_in_words(activity.created_at.in_time_zone('London'))%> ago)</em>
-    </div>
-<% if details %>
-  </a>
-<% else %>
-  </li>
-<% end %>
+    <% if details %>
+      </a>
+    <% end %>
+    <%= render('activities/details', appointment: activity.appointment) if details %>
+    <span class="activity__date">
+      <%= activity.created_at.in_time_zone('London').to_s(:govuk_date_short) %> (<%= time_ago_in_words(activity.created_at.in_time_zone('London'))%> ago)
+      <% if activity.high_priority? %>
+        · <span class="activity__priority<% if activity.resolved? %> activity__priority--resolved<% end %>">Priority</span>
+      <% end %>
+      <% if activity.resolved? %>
+        · <span>Resolved by <%= activity.resolver.name %></span>
+      <% end %>
+    </span>
+    <% if activity.high_priority? && !activity.resolved? %>
+      <span aria-live="polite" class="activity__resolve-message label js-activity-resolve-message"></span>
+      <%= button_to(
+        'Resolve',
+        resolve_activity_path(activity.id),
+        class: 'activity__resolve btn btn-success btn-sm t-resolve-activity',
+        method: :patch,
+        remote: true,
+        form_class: 'activity__form'
+      ) %>
+    <% end %>
+  </div>
+</li>

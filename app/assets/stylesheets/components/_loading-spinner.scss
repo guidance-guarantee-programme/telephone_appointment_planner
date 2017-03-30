@@ -1,0 +1,33 @@
+.loading-spinner {
+  height: 25px;
+  max-width: 50%;
+  text-align: center;
+  width: 100px;
+}
+
+.loading-spinner__bounce {
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  background-color: $color-black;
+  border-radius: 100%;
+  display: inline-block;
+  height: 25px;
+  width: 25px;
+}
+
+.loading-spinner__bounce--1 {
+  animation-delay: -.32s;
+}
+
+.loading-spinner__bounce--2 {
+  animation-delay: -.16s;
+}
+
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% {
+    transform: scale(0);
+  }
+
+  40% {
+    transform: scale(1);
+  }
+}

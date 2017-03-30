@@ -1,4 +1,4 @@
-class PusherActivityNotificationJob < ApplicationJob
+class PusherActivityCreatedJob < ApplicationJob
   queue_as :default
 
   include Rails.application.routes.url_helpers

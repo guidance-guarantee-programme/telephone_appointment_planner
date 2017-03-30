@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe PusherNotificationJob, '#perform' do
+RSpec.describe PusherAppointmentChangedJob, '#perform' do
   subject { described_class.new.perform(0, appointment) }
 
   context 'when the appointment is for today' do

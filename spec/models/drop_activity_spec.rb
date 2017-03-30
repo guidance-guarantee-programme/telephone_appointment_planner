@@ -4,7 +4,8 @@ RSpec.describe DropActivity, '.from' do
   let(:appointment) { create(:appointment) }
 
   before do
-    allow(PusherActivityNotificationJob).to receive(:perform_later)
+    allow(PusherActivityCreatedJob).to receive(:perform_later)
+    allow(PusherHighPriorityCountChangedJob).to receive(:perform_later)
   end
 
   subject { described_class.from('drop', 'message', appointment) }
@@ -18,9 +19,12 @@ RSpec.describe DropActivity, '.from' do
   end
 
   it 'notifies asynchronously' do
-    expect(PusherActivityNotificationJob).to have_received(:perform_later).with(
+    expect(PusherActivityCreatedJob).to have_received(:perform_later).with(
       appointment.guider_id,
       subject.id
+    )
+    expect(PusherHighPriorityCountChangedJob).to have_received(:perform_later).with(
+      appointment.guider
     )
   end
 end

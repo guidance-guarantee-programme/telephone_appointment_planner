@@ -1,11 +1,15 @@
 class DroppedSummaryDocumentActivity < Activity
+  MESSAGE = 'fail'.freeze
+
   def self.from(appointment)
     create!(
       appointment: appointment,
       owner: appointment.guider,
-      message: 'fail'
-    ).tap do |activity|
-      PusherActivityNotificationJob.perform_later(appointment.guider_id, activity.id)
-    end
+      message: MESSAGE
+    )
+  end
+
+  def pusher_notify_user_ids
+    owner_id
   end
 end

@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe AuditActivity do
   describe '.from' do
     before do
-      allow(PusherActivityNotificationJob).to receive(:perform_later)
+      allow(PusherActivityCreatedJob).to receive(:perform_later)
     end
 
     context 'with updated fields' do
@@ -33,7 +33,7 @@ RSpec.describe AuditActivity do
       end
 
       it 'pushes an activity update' do
-        expect(PusherActivityNotificationJob)
+        expect(PusherActivityCreatedJob)
           .to have_received(:perform_later)
           .with(@appointment.guider_id, subject.id)
       end

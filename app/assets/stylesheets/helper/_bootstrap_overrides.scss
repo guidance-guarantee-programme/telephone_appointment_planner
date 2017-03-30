@@ -30,3 +30,38 @@ mark,
     }
   }
 }
+
+.badge-danger {
+  background: $brand-danger;
+}
+
+.badge--animate {
+  animation: tada 2s;
+}
+
+@keyframes tada {
+  from {
+    transform: scale3d(1, 1, 1);
+  }
+
+  10%, 20% {
+    -webkit-transform: scale3d(.9, .9, .9) rotate3d(0, 0, 1, -3deg);
+    transform: scale3d(.9, .9, .9) rotate3d(0, 0, 1, -3deg);
+  }
+
+  30%, 50%, 70%, 90% {
+    transform: scale3d(1.5, 1.5, 1.5) rotate3d(0, 0, 1, 3deg);
+  }
+
+  40%, 60%, 80% {
+    transform: scale3d(1.5, 1.5, 1.5) rotate3d(0, 0, 1, -3deg);
+  }
+
+  to {
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+.glyphicon-exclamation-sign {
+  color: $brand-danger;
+}

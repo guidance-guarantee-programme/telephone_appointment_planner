@@ -1,20 +1,25 @@
-.activity {
-  @media (min-width: $screen-sm) {
-    display: flex;
-    flex-wrap: wrap;
+.activity--priority-unresolved {
+  border-left: 5px solid $brand-danger;
+  padding-right: 90px;
+
+  .activity__inner {
+    margin-left: -5px;
+
+    .glyphicon {
+      left: 6px;
+    }
   }
 }
 
-.activity-details {
-  @media (min-width: $screen-sm) {
-    flex-basis: 73%;
-  }
-}
+.activity--priority-resolved {
+  border-left: 5px solid $brand-success;
 
-.activity-badge {
-  @media (min-width: $screen-sm) {
-    flex-basis: 27%;
-    text-align: right;
+  .activity__inner {
+    margin-left: -5px;
+
+    .glyphicon {
+      left: 6px;
+    }
   }
 }
 
@@ -22,4 +27,118 @@
   .js & {
     display: none;
   }
+}
+
+.activity__link {
+  &:link,
+  &:visited {
+    text-decoration: none;
+    color: $color-black;
+  }
+
+  &:hover,
+  &:focus {
+    &::after {
+      background: transparentize($color-black, .9);
+    }
+
+    .dropdown-menu & {
+      background: transparent;
+    }
+  }
+
+  &::after {
+    content: "";
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    position: absolute;
+  }
+}
+
+.activity__priority {
+  color: $brand-danger;
+}
+
+.activity__priority--resolved {
+  color: $color-dove-gray;
+}
+
+.activity__date {
+  color: $color-dove-gray;
+  display: block;
+  font-size: 80%;
+}
+
+.activity__date--dropdown {
+  margin-left: 0;
+}
+
+.activity__resolve {
+  position: absolute;
+  z-index: 2;
+  right: 16px;
+  top: 14px;
+}
+
+.activity-dropdown-menu {
+  padding: 0;
+  left: auto;
+  right: 0;
+}
+
+.activity {
+  .loading-spinner {
+    margin: 10px 0;
+  }
+
+  .glyphicon {
+    position: absolute;
+    top: .9em;
+    left: 10px;
+  }
+
+  .activity-dropdown-menu & {
+    border-bottom: 1px solid $color-silver;
+    width: 360px;
+
+    .activity-details {
+      white-space: normal;
+    }
+
+    .activity-badge {
+      text-align: left;
+    }
+
+    a {
+      white-space: normal;
+    }
+  }
+}
+
+.activity--none {
+  padding: 10px;
+}
+
+.activity__resolve-message {
+  display: inline-block;
+  margin-top: 5px;
+}
+
+.activity__inner {
+  padding-left: 16px;
+}
+
+.activity--view-all {
+  border-bottom: 0;
+  padding: .5em 0;
+
+  .glyphicon {
+    position: static;
+  }
+}
+
+.activity__form {
+  margin: 0;
 }

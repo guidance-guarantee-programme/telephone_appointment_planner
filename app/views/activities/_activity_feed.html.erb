@@ -18,12 +18,12 @@
         <% end %>
       </div>
 
-      <ul class="list-group" aria-live="polite" data-module="activity-feed" id="activity-list" data-config='{"event": "appointment_activity_<%= appointment.id %>"}' aria-label="Activities">
+      <ol class="list-group" aria-live="polite" data-module="activity-feed" id="activity-list" data-config='{"event": "appointment_activity_<%= appointment.id %>"}' aria-label="Activities">
         <%= render(appointment.activities[0..2], details: false, hide: false) if appointment.activities.present? %>
         <% if appointment.activities.count > 3 %>
           <%= render(appointment.activities - Array(appointment.activities[0..2]), details: false, hide: true) %>
         <% end %>
-      </ul>
+      </ol>
 
       <% if appointment.activities.count > 3 %>
         <button class="show-with-js js-activity-show-all btn btn-default t-further-activities" aria-expanded="false" aria-controls="activity-list">

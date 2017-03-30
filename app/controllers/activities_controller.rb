@@ -7,10 +7,29 @@ class ActivitiesController < ApplicationController
 
   def create
     @activity = MessageActivity.create(message_params)
-    PusherActivityNotificationJob.perform_later(appointment.guider_id, @activity.id)
     respond_to do |format|
       format.js { render @activity }
     end
+  end
+
+  def resolve
+    @activity = Activity.find(params[:id])
+    @activity.resolve!(current_user)
+
+    respond_to do |format|
+      format.js { head :ok }
+      format.html { redirect_back(fallback_location: edit_appointment_path(@activity.appointment)) }
+    end
+  end
+
+  def high_priority
+    @activities = Activity
+                  .high_priority_for(current_user)
+                  .unresolved
+                  .order('id DESC')
+                  .limit(5)
+
+    render layout: false
   end
 
   private

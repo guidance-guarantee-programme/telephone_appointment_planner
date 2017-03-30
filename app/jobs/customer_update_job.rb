@@ -6,7 +6,7 @@ class CustomerUpdateJob < ActiveJob::Base
 
     activity = CustomerUpdateActivity.from(appointment, message)
 
-    PusherActivityNotificationJob.perform_later(appointment.guider_id, activity.id)
+    PusherActivityCreatedJob.perform_later(appointment.guider_id, activity.id)
   end
 
   private

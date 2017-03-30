@@ -27,6 +27,10 @@ module Pages
 
       element :further_activities, '.t-further-activities'
       element :hidden_activity, '.t-hidden-activity'
+      element :high_priority_activities, '.t-high-priority-activity'
+      element :resolved_activities, '.t-resolved-activity'
+      element :unresolved_activities, '.t-unresolved-activity'
+      element :resolve_activity_button, '.t-resolve-activity'
     end
 
     section :breadcrumb, '.t-breadcrumb' do

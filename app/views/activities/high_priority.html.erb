@@ -1,0 +1,7 @@
+<% if @activities.present? %>
+  <%= render(@activities, details: true, hide: false) %>
+<% else %>
+  <li class="activity activity--none t-no-activities">
+    There are no activities which need your attention.
+  </li>
+<% end %>

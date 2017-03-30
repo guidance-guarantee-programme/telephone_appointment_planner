@@ -4,7 +4,6 @@ module Api
       def create
         activity = SummaryDocumentActivity.new(summary_document_activity_params)
         if activity.save
-          PusherActivityNotificationJob.perform_later(nil, activity.id)
           head :created
         else
           render json: activity.errors, status: :unprocessable_entity

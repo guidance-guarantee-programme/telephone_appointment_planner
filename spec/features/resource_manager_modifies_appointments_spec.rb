@@ -18,13 +18,8 @@ RSpec.feature 'Resource manager modifies appointments' do
     # create the guiders and appointments up front
     when_there_are_appointments_for_multiple_guiders
 
-    # start Ben's session to subscribe on the pusher channel
-    given_a_browser_session_for(@ben) do
-      when_they_view_their_appointments
-    end
-
-    # start Jan's session too
-    given_a_browser_session_for(@jan) do
+    # start Ben and Jan's sessions to subscribe on the pusher channel
+    given_a_browser_session_for(@ben, @jan) do
       when_they_view_their_appointments
     end
 
@@ -40,13 +35,8 @@ RSpec.feature 'Resource manager modifies appointments' do
       end
     end
 
-    # go back to Ben's session and check for the notification
-    given_a_browser_session_for(@ben) do
-      then_they_are_notified_of_the_change
-    end
-
-    # check Jan's session for the notification too
-    given_a_browser_session_for(@jan) do
+    # go back to Ben and Jan's sessions and check for the notifications
+    given_a_browser_session_for(@ben, @jan) do
       then_they_are_notified_of_the_change
     end
   end
