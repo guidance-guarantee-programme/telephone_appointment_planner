@@ -110,7 +110,7 @@
       for (let eventIndex in events) {
         let event = events[eventIndex];
 
-        if (moment(start).isSame(event.start) && moment(end).isSame(event.end)) {
+        if (moment.utc(start).isSame(event.start.utc()) && moment.utc(end).isSame(event.end.utc())) {
           this.$el.fullCalendar('gotoDate', start);
           event.$div.trigger('click');
           return;
