@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170330173341) do
+ActiveRecord::Schema.define(version: 20170405141224) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,25 +32,25 @@ ActiveRecord::Schema.define(version: 20170330173341) do
   end
 
   create_table "appointments", force: :cascade do |t|
-    t.integer  "guider_id",                                       null: false
-    t.datetime "start_at",                                        null: false
-    t.datetime "end_at",                                          null: false
-    t.string   "first_name",                                      null: false
-    t.string   "last_name",                                       null: false
+    t.integer  "guider_id",                                  null: false
+    t.datetime "start_at",                                   null: false
+    t.datetime "end_at",                                     null: false
+    t.string   "first_name",                                 null: false
+    t.string   "last_name",                                  null: false
     t.string   "email"
-    t.string   "phone",                                           null: false
+    t.string   "phone",                                      null: false
     t.string   "mobile",                     default: ""
-    t.string   "memorable_word",                                  null: false
+    t.string   "memorable_word",                             null: false
     t.text     "notes",                      default: ""
-    t.boolean  "opt_out_of_market_research", default: false,      null: false
+    t.boolean  "opt_out_of_market_research", default: false, null: false
     t.date     "date_of_birth"
-    t.integer  "status",                     default: 0,          null: false
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
-    t.integer  "agent_id",                                        null: false
+    t.integer  "status",                     default: 0,     null: false
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+    t.integer  "agent_id",                                   null: false
     t.integer  "rebooked_from_id"
-    t.boolean  "dc_pot_confirmed",           default: true,       null: false
-    t.string   "type_of_appointment",        default: "standard", null: false
+    t.boolean  "dc_pot_confirmed",           default: true,  null: false
+    t.string   "type_of_appointment",        default: "",    null: false
     t.index ["start_at"], name: "index_appointments_on_start_at", using: :btree
   end
 

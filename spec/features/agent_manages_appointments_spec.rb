@@ -3,6 +3,16 @@ require 'rails_helper'
 RSpec.feature 'Agent manages appointments' do
   let(:day) { BusinessDays.from_now(5) }
 
+  scenario 'Appointment types are inferred from date of birth', js: true do
+    given_the_user_is_an_agent do
+      when_they_want_to_book_an_appointment
+      and_they_enter_a_standard_date_of_birth
+      then_the_standard_appointment_type_is_selected
+      when_they_enter_a_50_to_54_date_of_birth
+      then_the_50_to_54_appointment_type_is_selected
+    end
+  end
+
   scenario 'Agent creates appointments' do
     given_the_user_is_an_agent do
       and_there_is_a_guider_with_available_slots
@@ -137,6 +147,24 @@ RSpec.feature 'Agent manages appointments' do
       when_they_edit_the_appointment
       then_they_see_that_the_appointment_was_imported
     end
+  end
+
+  def and_they_enter_a_standard_date_of_birth
+    @page.date_of_birth_day.set '23'
+    @page.date_of_birth_month.set '10'
+    @page.date_of_birth_year.set '1930'
+  end
+
+  def then_the_standard_appointment_type_is_selected
+    expect(@page.type_of_appointment_standard).to be_checked
+  end
+
+  def when_they_enter_a_50_to_54_date_of_birth
+    @page.date_of_birth_year.set '1970'
+  end
+
+  def then_the_50_to_54_appointment_type_is_selected
+    expect(@page.type_of_appointment_50_54).to be_checked
   end
 
   def and_there_is_a_guider_with_available_slots

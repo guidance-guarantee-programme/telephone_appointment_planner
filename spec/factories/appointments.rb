@@ -13,6 +13,7 @@ FactoryGirl.define do
     dc_pot_confirmed true
     memorable_word 'lozenge'
     date_of_birth '1945-01-01'
+    type_of_appointment '50-54'
     guider { create(:guider) }
 
     factory :imported_appointment do

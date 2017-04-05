@@ -45,6 +45,8 @@
       age = Math.floor(today.diff(inputDate, 'year'));
 
       if (age) {
+        $.publish('customer-age-change', age);
+
         this.$output.html(`Customer is <b>${age}</b> years old`);
       }
     }
