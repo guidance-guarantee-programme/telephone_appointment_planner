@@ -24,10 +24,18 @@
       ) if defined?(edit) && edit
     %>
 
-    <div class="form-group">
+    <div class="form-group" data-module="type-of-appointment">
       <p><strong>Type of appointment</strong></p>
-      <%= f.radio_button :type_of_appointment, 'standard', label: 'Appointment for customers aged 55+', class: 't-type-of-appointment-standard' %>
-      <%= f.radio_button :type_of_appointment, '50-54', label: 'Appointment for customers aged 50-54', class: 't-type-of-appointment-50-54' %>
+      <%= f.radio_button :type_of_appointment,
+        'standard',
+        label: 'Appointment for customers aged 55+',
+        class: 't-type-of-appointment-standard js-type-of-appointment-standard'
+      %>
+      <%= f.radio_button :type_of_appointment,
+        '50-54',
+        label: 'Appointment for customers aged 50-54',
+        class: 't-type-of-appointment-50-54 js-type-of-appointment-50-54'
+      %>
     </div>
   </div>
 </div>
