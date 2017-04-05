@@ -2,7 +2,7 @@ class ActivitiesController < ApplicationController
   store_previous_page_on :index
 
   def index
-    @activities = current_user.activities.includes(:user, :appointment)
+    @activities = current_user.activities.includes(:user, :appointment).page(params[:page])
   end
 
   def create
