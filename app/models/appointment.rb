@@ -132,6 +132,14 @@ class Appointment < ApplicationRecord
     start_at.advance(hours: -1) > Time.zone.now
   end
 
+  def age
+    return 0 unless date_of_birth?
+
+    age = Time.zone.today.year - date_of_birth.year
+    age -= 1 if Time.zone.today.to_date < date_of_birth + age.years
+    age
+  end
+
   private
 
   def format_name

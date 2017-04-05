@@ -1,6 +1,22 @@
 require 'rails_helper'
 
 RSpec.describe Appointment, type: :model do
+  describe '#age' do
+    context 'without a date of birth' do
+      it 'is 0' do
+        expect(build_stubbed(:appointment, date_of_birth: '').age).to eq(0)
+      end
+    end
+
+    context 'when a date of birth is present' do
+      it 'returns the correct age' do
+        travel_to '2017-04-05' do
+          expect(build_stubbed(:appointment, date_of_birth: '1980-02-02').age).to eq(37)
+        end
+      end
+    end
+  end
+
   describe '`#future?` does not respect timezones regression' do
     it 'must apply the local offset when checking' do
       appointment = build_stubbed(:appointment, start_at: Time.zone.parse('2017-03-30 12:20 UTC'))
