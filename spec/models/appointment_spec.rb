@@ -1,6 +1,30 @@
 require 'rails_helper'
 
 RSpec.describe Appointment, type: :model do
+  describe '#type_of_appointment' do
+    context 'without a date of birth' do
+      it 'returns an empty string' do
+        expect(
+          build_stubbed(:appointment, date_of_birth: '').type_of_appointment
+        ).to be_empty
+      end
+    end
+
+    context 'when specified' do
+      it 'returns the underlying attribute' do
+        expect(build_stubbed(:appointment).type_of_appointment).to eq('50-54')
+      end
+    end
+
+    context 'when unspecified' do
+      it 'is inferred from the date of birth' do
+        expect(
+          build_stubbed(:appointment, type_of_appointment: '').type_of_appointment
+        ).to eq('standard')
+      end
+    end
+  end
+
   describe '#age' do
     context 'without a date of birth' do
       it 'is 0' do

@@ -140,6 +140,13 @@ class Appointment < ApplicationRecord
     age
   end
 
+  def type_of_appointment
+    return ''    if age.zero?
+    return super if super.present?
+
+    age >= 55 ? 'standard' : '50-54'
+  end
+
   private
 
   def format_name
