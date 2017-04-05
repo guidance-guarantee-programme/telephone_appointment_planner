@@ -16,7 +16,7 @@ class SummaryDocumentLink
         reference_number: appointment.id,
         number_of_previous_appointments: 0,
         email: appointment.email,
-        appointment_type: (date_of_appointment - 55.years) > appointment.date_of_birth ? 'standard' : '50_54'
+        appointment_type: appointment.type_of_appointment == '50-54' ? '50_54' : appointment.type_of_appointment
       }.to_query(:appointment_summary)
     end
   end

@@ -18,5 +18,7 @@ module Pages
     element :preview_appointment,                   '.t-preview-appointment'
     element :slot_unavailable_message,              '.t-slot-unavailable-message'
     element :original_appointment,                  '.t-original-appointment'
+    element :type_of_appointment_standard,          '.t-type-of-appointment-standard'
+    element :type_of_appointment_50_54,             '.t-type-of-appointment-50-54'
   end
 end

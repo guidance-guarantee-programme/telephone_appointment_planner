@@ -12,6 +12,7 @@ class Appointment < ApplicationRecord
     status
     dc_pot_confirmed
     updated_at
+    type_of_appointment
   ).freeze
 
   belongs_to :agent, class_name: 'User'
@@ -55,6 +56,7 @@ class Appointment < ApplicationRecord
   validates :date_of_birth, presence: true
   validates :memorable_word, presence: true
   validates :dc_pot_confirmed, inclusion: [true, false]
+  validates :type_of_appointment, inclusion: %w(standard 50-54)
 
   validates :status, presence: true
   validates :guider, presence: true
