@@ -1,5 +1,5 @@
 class Activity < ApplicationRecord
-  HIGH_PRIORITY_ACTIVITY_CLASS_NAMES = %w(DropActivity).freeze
+  HIGH_PRIORITY_ACTIVITY_CLASS_NAMES = %w(DropActivity DroppedSummaryDocumentActivity).freeze
 
   belongs_to :appointment
   belongs_to :user
