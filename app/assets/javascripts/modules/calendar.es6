@@ -165,8 +165,10 @@ class Calendar extends TapBase {
 
   eventRender(event, element) {
     const now = moment();
+    let end = event.end.clone();
 
-    if (event.end < now) {
+    // account for timezone weirdness
+    if (end.subtract(1, 'h') < now) {
       element.addClass('fc--past');
     }
   }
