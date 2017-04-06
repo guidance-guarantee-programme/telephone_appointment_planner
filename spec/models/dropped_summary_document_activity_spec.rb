@@ -10,7 +10,7 @@ RSpec.describe DroppedSummaryDocumentActivity do
     let(:message) { 'message' }
     subject { described_class.from(appointment) }
 
-    it 'creates a create activity for the given appointment' do
+    it 'creates a dropped activity for the given appointment' do
       expect(subject).to be_a(described_class)
 
       expect(subject).to have_attributes(
