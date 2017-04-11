@@ -79,7 +79,7 @@ def and_they_click_on_the_high_priority_activity_badge
 end
 
 def then_they_see_there_is_a_notification
-  @page.high_priority_alert_badge.text == '1'
+  expect(@page.high_priority_count.text).to eq('1')
 end
 
 def and_they_can_see_their_high_priority_alerts
