@@ -147,6 +147,10 @@ class Appointment < ApplicationRecord
     age >= 55 ? 'standard' : '50-54'
   end
 
+  def agent_is_pension_wise_api?
+    agent && agent.pension_wise_api?
+  end
+
   private
 
   def format_name
@@ -193,10 +197,6 @@ class Appointment < ApplicationRecord
 
   def agent_is_resource_manager?
     agent.present? && agent.resource_manager?
-  end
-
-  def agent_is_pension_wise_api?
-    agent && agent.pension_wise_api?
   end
 end
 

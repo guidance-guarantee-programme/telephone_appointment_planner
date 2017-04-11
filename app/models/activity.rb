@@ -61,13 +61,4 @@ class Activity < ApplicationRecord
       PusherActivityCreatedJob.perform_later(user_id, id)
     end
   end
-
-  after_commit if: :high_priority? do
-    PusherHighPriorityCountChangedJob.perform_later(owner)
-    PusherHighPriorityCountChangedJob.perform_later(user) if user
-
-    unless appointment.agent == owner
-      PusherHighPriorityCountChangedJob.perform_later(appointment.agent)
-    end
-  end
 end
