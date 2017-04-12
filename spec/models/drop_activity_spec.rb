@@ -8,23 +8,45 @@ RSpec.describe DropActivity, '.from' do
     allow(PusherHighPriorityCountChangedJob).to receive(:perform_later)
   end
 
-  subject { described_class.from('drop', 'message', appointment) }
+  context 'when the initial confirmation is dropped' do
+    subject { described_class.from('drop', 'message', 'booking_created', appointment) }
 
-  it 'creates an activity entry' do
-    expect(subject).to have_attributes(
-      appointment_id: appointment.id,
-      owner_id: appointment.guider_id,
-      message: 'Drop - message'
-    )
+    it 'creates an activity entry assigned to the agent' do
+      expect(subject).to have_attributes(
+        appointment: appointment,
+        owner: appointment.agent,
+        message: 'Drop - message'
+      )
+    end
+
+    it 'notifies the agent' do
+      expect(PusherActivityCreatedJob).to have_received(:perform_later).with(
+        appointment.agent_id,
+        subject.id
+      )
+
+      expect(PusherHighPriorityCountChangedJob).to have_received(:perform_later).with(
+        appointment.agent
+      )
+    end
   end
 
-  it 'notifies asynchronously' do
-    expect(PusherActivityCreatedJob).to have_received(:perform_later).with(
-      appointment.guider_id,
-      subject.id
-    )
-    expect(PusherHighPriorityCountChangedJob).to have_received(:perform_later).with(
-      appointment.guider
-    )
+  context 'for any other dropped email' do
+    subject { described_class.from('drop', 'message', 'booking_missed', appointment) }
+
+    it 'assigns the guider as the owner' do
+      expect(subject.owner).to eq(appointment.guider)
+    end
+
+    it 'notifies the guider' do
+      expect(PusherActivityCreatedJob).to have_received(:perform_later).with(
+        appointment.guider_id,
+        subject.id
+      )
+
+      expect(PusherHighPriorityCountChangedJob).to have_received(:perform_later).with(
+        appointment.guider
+      )
+    end
   end
 end

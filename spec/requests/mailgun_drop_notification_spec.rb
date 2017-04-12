@@ -28,6 +28,7 @@ RSpec.describe 'POST /mail_gun/drops' do
       'event'          => 'dropped',
       'description'    => 'the reasoning',
       'environment'    => 'production',
+      'message_type'   => 'booking_created',
       'appointment_id' => @appointment.to_param,
       'timestamp'      => '1474638633',
       'token'          => 'secret',
