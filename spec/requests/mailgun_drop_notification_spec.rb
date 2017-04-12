@@ -27,6 +27,8 @@ RSpec.describe 'POST /mail_gun/drops' do
     post mail_gun_drops_path, params: {
       'event'          => 'dropped',
       'description'    => 'the reasoning',
+      'environment'    => 'production',
+      'message_type'   => 'booking_created',
       'appointment_id' => @appointment.to_param,
       'timestamp'      => '1474638633',
       'token'          => 'secret',
@@ -35,7 +37,7 @@ RSpec.describe 'POST /mail_gun/drops' do
   end
 
   def then_an_activity_is_created
-    expect(@appointment.activities).to_not be_empty
+    expect(DropActivity.last.appointment).to eq(@appointment)
   end
 
   def and_the_service_responds_ok

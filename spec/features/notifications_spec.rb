@@ -17,8 +17,12 @@ RSpec.describe 'Activity notification alerts', js: true do
     and_they_have_an_appointment
     and_a_high_priority_activity_occurs
 
-    given_a_browser_session_for(guider, agent) do
+    given_a_browser_session_for(agent) do
       then_they_see_there_is_a_notification
+    end
+
+    given_a_browser_session_for(guider) do
+      then_they_have_no_notifications
     end
   end
 
@@ -71,7 +75,7 @@ def when_they_are_viewing_the_appointment
 end
 
 def and_a_high_priority_activity_occurs
-  DropActivity.from('an event', 'an event description', @appointment)
+  DropActivity.from('an event', 'an event description', 'booking_created', @appointment)
 end
 
 def and_they_click_on_the_high_priority_activity_badge
@@ -80,6 +84,10 @@ end
 
 def then_they_see_there_is_a_notification
   expect(@page.high_priority_count.text).to eq('1')
+end
+
+def then_they_have_no_notifications
+  expect(@page).to have_no_high_priority_count
 end
 
 def and_they_can_see_their_high_priority_alerts

@@ -8,6 +8,7 @@ RSpec.describe DropForm, '#create_activity' do
       'description'    => 'the reasoning',
       'appointment_id' => appointment.to_param,
       'environment'    => 'production',
+      'message_type'   => 'booking_created',
       'timestamp'      => '1474638633',
       'token'          => 'secret',
       'signature'      => 'abf02bef01e803bea52213cb092a31dc2174f63bcc2382ba25732f4c84e084c1'
@@ -55,11 +56,18 @@ RSpec.describe DropForm, '#create_activity' do
       expect { subject.create_activity }.to raise_error(ActiveRecord::RecordNotFound)
     end
 
+    it 'requires a message type' do
+      params.delete('message_type')
+
+      expect(subject).not_to be_valid
+    end
+
     context 'when everything is validated' do
       it 'creates the drop activity' do
         expect(DropActivity).to receive(:from).with(
           params['event'],
           params['description'],
+          params['message_type'],
           appointment
         )
 

@@ -14,6 +14,7 @@ module MailGun
         :event,
         :description,
         :appointment_id,
+        :message_type,
         :environment,
         :timestamp,
         :token,
