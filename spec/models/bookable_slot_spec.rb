@@ -20,21 +20,33 @@ RSpec.describe BookableSlot, type: :model do
   end
 
   describe '#next_valid_start_date' do
-    {
-      'Monday'    => 'Wednesday',
-      'Tuesday'   => 'Thursday',
-      'Wednesday' => 'Friday',
-      'Thursday'  => 'Monday',
-      'Friday'    => 'Tuesday',
-      'Saturday'  => 'Tuesday',
-      'Sunday'    => 'Tuesday'
-    }.each do |day, expected_day|
-      context "Day is #{day}" do
-        it "next valid start date is #{expected_day}" do
-          now = Chronic.parse("next #{day}").in_time_zone
-          travel_to(now) do
-            actual = BookableSlot.next_valid_start_date(user).strftime('%A')
-            expect(actual).to eq expected_day
+    context 'user is a guider / agent' do
+      {
+        'Monday'    => 'Wednesday',
+        'Tuesday'   => 'Thursday',
+        'Wednesday' => 'Friday',
+        'Thursday'  => 'Monday',
+        'Friday'    => 'Tuesday',
+        'Saturday'  => 'Tuesday',
+        'Sunday'    => 'Tuesday'
+      }.each do |day, expected_day|
+        context "Day is #{day}" do
+          it "next valid start date is #{expected_day}" do
+            now = Chronic.parse("last week #{day}").in_time_zone
+            travel_to(now) do
+              actual = BookableSlot.next_valid_start_date(user).strftime('%A')
+              expect(actual).to eq expected_day
+            end
+          end
+        end
+      end
+
+      context 'when approaching a holiday period' do
+        subject { BookableSlot.next_valid_start_date(user) }
+
+        it 'takes account of holidays' do
+          travel_to '2017-04-13 12:00' do
+            expect(subject.to_date).to eq('2017-04-19'.to_date)
           end
         end
       end
