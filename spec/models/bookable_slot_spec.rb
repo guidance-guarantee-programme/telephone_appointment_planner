@@ -21,21 +21,25 @@ RSpec.describe BookableSlot, type: :model do
 
   describe '#next_valid_start_date' do
     context 'user is a guider / agent' do
-      {
-        'Monday'    => 'Wednesday',
-        'Tuesday'   => 'Thursday',
-        'Wednesday' => 'Friday',
-        'Thursday'  => 'Monday',
-        'Friday'    => 'Tuesday',
-        'Saturday'  => 'Tuesday',
-        'Sunday'    => 'Tuesday'
-      }.each do |day, expected_day|
-        context "Day is #{day}" do
-          it "next valid start date is #{expected_day}" do
-            now = Chronic.parse("last week #{day}").in_time_zone
-            travel_to(now) do
-              actual = BookableSlot.next_valid_start_date(user).strftime('%A')
-              expect(actual).to eq expected_day
+      context 'outside of a bank holiday period' do
+        around { |example| travel_to('2017-04-06 12:00', &example) }
+
+        {
+          'Monday'    => 'Wednesday',
+          'Tuesday'   => 'Thursday',
+          'Wednesday' => 'Friday',
+          'Thursday'  => 'Monday',
+          'Friday'    => 'Tuesday',
+          'Saturday'  => 'Tuesday',
+          'Sunday'    => 'Tuesday'
+        }.each do |day, expected_day|
+          context "Day is #{day}" do
+            it "next valid start date is #{expected_day}" do
+              now = Chronic.parse("last week #{day}").in_time_zone
+              travel_to(now) do
+                actual = BookableSlot.next_valid_start_date(user).strftime('%A')
+                expect(actual).to eq expected_day
+              end
             end
           end
         end
