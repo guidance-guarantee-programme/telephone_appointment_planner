@@ -57,6 +57,23 @@
   }
 }
 
+.activity__link--more {
+  display: block;
+  padding-right: 20px;
+
+  &::before {
+    background-image: url(data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%3E%3Cpath%20d%3D%22M4%201h6l10%2011-10%2011H4l10-11z%22%20fill%3D%22%238a8a8a%22%2F%3E%3C%2Fsvg%3E);
+    background-repeat: no-repeat;
+    background-position: 5px center;
+    content: "";
+    height: 100%;
+    position: absolute;
+    right: 5px;
+    top: 0;
+    width: 30px;
+  }
+}
+
 .activity__priority {
   color: $brand-danger;
 }
