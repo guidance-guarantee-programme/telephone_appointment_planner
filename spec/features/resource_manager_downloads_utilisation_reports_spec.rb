@@ -17,6 +17,14 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
     end
   end
 
+  scenario 'late cancellations are counted' do
+    given_the_user_is_a_resource_manager do
+      and_there_are_appointments_with_late_cancellations
+      when_they_download_utilisation_reports
+      then_they_see_a_count_of_late_cancellations
+    end
+  end
+
   scenario 'date ranges must be provided' do
     given_the_user_is_a_resource_manager do
       when_they_attempt_to_download_reports_without_a_date_range
@@ -108,6 +116,24 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
     create(:appointment, status: :cancelled_by_pension_wise).update(start_at: range_start + 2.days)
   end
 
+  def and_there_are_appointments_with_late_cancellations
+    create(:appointment).tap do |appointment|
+      appointment.update(start_at: range_start + 1.day)
+      travel_to(BusinessDays.before(appointment.start_at, 1)) do
+        appointment.status = :cancelled_by_customer
+        appointment.save!
+      end
+    end
+
+    create(:appointment).tap do |appointment|
+      appointment.update(start_at: range_start + 2.days)
+      travel_to(BusinessDays.before(appointment.start_at, 3)) do
+        appointment.status = :cancelled_by_pension_wise
+        appointment.save!
+      end
+    end
+  end
+
   def and_there_are_appointments_outside_the_date_range
     create(:appointment).update(start_at: range_start + 20.days)
   end
@@ -166,93 +192,85 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
 
   def then_they_see_a_count_of_booked_appointments
     expect_csv(
-      [
-        ['2016-11-07', '0', '0', '0', '0'],
-        ['2016-11-08', '1', '0', '0', '0'],
-        ['2016-11-09', '1', '0', '0', '0']
-      ]
+      ['2016-11-07', '0', '0', '0', '0', '0'],
+      ['2016-11-08', '1', '0', '0', '0', '0'],
+      ['2016-11-09', '1', '0', '0', '0', '0']
     )
   end
 
   def then_they_see_a_count_of_cancelled_appointments
     expect_csv(
-      [
-        ['2016-11-07', '0', '0', '0', '0'],
-        ['2016-11-08', '0', '0', '0', '1'],
-        ['2016-11-09', '0', '0', '0', '1']
-      ]
+      ['2016-11-07', '0', '0', '0', '0', '0'],
+      ['2016-11-08', '0', '0', '0', '1', '0'],
+      ['2016-11-09', '0', '0', '0', '1', '0']
+    )
+  end
+
+  def then_they_see_a_count_of_late_cancellations
+    expect_csv(
+      ['2016-11-07', '0', '0', '0', '0', '0'],
+      ['2016-11-08', '0', '0', '0', '1', '1'],
+      ['2016-11-09', '0', '0', '0', '1', '0']
     )
   end
 
   def then_they_dont_see_the_appointments
     expect_csv(
-      [
-        ['2016-11-07', '0', '0', '0', '0'],
-        ['2016-11-08', '0', '0', '0', '0'],
-        ['2016-11-09', '0', '0', '0', '0']
-      ]
+      ['2016-11-07', '0', '0', '0', '0', '0'],
+      ['2016-11-08', '0', '0', '0', '0', '0'],
+      ['2016-11-09', '0', '0', '0', '0', '0']
     )
   end
 
   def then_they_dont_see_the_cancelled_appointments
     expect_csv(
-      [
-        ['2016-11-07', '0', '0', '0', '0'],
-        ['2016-11-08', '0', '0', '0', '0'],
-        ['2016-11-09', '0', '0', '0', '0']
-      ]
+      ['2016-11-07', '0', '0', '0', '0', '0'],
+      ['2016-11-08', '0', '0', '0', '0', '0'],
+      ['2016-11-09', '0', '0', '0', '0', '0']
     )
   end
 
   def then_they_see_the_bookable_slots
     expect_csv(
-      [
-        ['2016-11-07', '0', '1', '0', '0'],
-        ['2016-11-08', '0', '1', '0', '0'],
-        ['2016-11-09', '0', '1', '0', '0']
-      ]
+      ['2016-11-07', '0', '1', '0', '0', '0'],
+      ['2016-11-08', '0', '1', '0', '0', '0'],
+      ['2016-11-09', '0', '1', '0', '0', '0']
     )
   end
 
   def then_they_see_the_bookable_slots_obscured_by_appointments
     expect_csv(
-      [
-        ['2016-11-07', '0', '0', '0', '0'],
-        ['2016-11-08', '1', '1', '0', '0'],
-        ['2016-11-09', '1', '1', '0', '0']
-      ]
+      ['2016-11-07', '0', '0', '0', '0', '0'],
+      ['2016-11-08', '1', '1', '0', '0', '0'],
+      ['2016-11-09', '1', '1', '0', '0', '0']
     )
   end
 
   def then_they_do_not_see_the_bookable_slots
     expect_csv(
-      [
-        ['2016-11-07', '0', '0', '0', '0'],
-        ['2016-11-08', '0', '0', '0', '0'],
-        ['2016-11-09', '0', '0', '0', '0']
-      ]
+      ['2016-11-07', '0', '0', '0', '0', '0'],
+      ['2016-11-08', '0', '0', '0', '0', '0'],
+      ['2016-11-09', '0', '0', '0', '0', '0']
     )
   end
 
   def then_they_see_the_blocked_bookable_slots
     expect_csv(
-      [
-        ['2016-11-07', '0', '0', '0', '0'],
-        ['2016-11-08', '0', '0', '2', '0'],
-        ['2016-11-09', '0', '0', '0', '0']
-      ]
+      ['2016-11-07', '0', '0', '0', '0', '0'],
+      ['2016-11-08', '0', '0', '2', '0', '0'],
+      ['2016-11-09', '0', '0', '0', '0', '0']
     )
   end
 
-  def expect_csv(csv)
+  def expect_csv(*expected_csv)
     @page = Pages::ReportCsv.new
 
     expected_file_name = "utilisation-report-#{range_start.to_time.to_i}-#{range_end.to_time.to_i}.csv"
     expect(@page.content_disposition).to eq "attachment; filename=#{expected_file_name}"
 
-    expected_csv = [
-      [:date, :booked_appointments, :bookable_slots, :blocked_slots, :cancelled_appointments]
-    ] + csv
+    expected_csv.unshift(
+      [:date, :booked_appointments, :bookable_slots, :blocked_slots, :cancelled_appointments, :late_cancellations]
+    )
     expect(@page.csv).to eq(expected_csv)
   end
 end

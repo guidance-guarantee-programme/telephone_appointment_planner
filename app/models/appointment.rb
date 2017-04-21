@@ -93,6 +93,10 @@ class Appointment < ApplicationRecord
   end
 
   def cancelled?
+    Appointment.cancellation_status?(status)
+  end
+
+  def self.cancellation_status?(status)
     status.start_with?('cancelled')
   end
 
