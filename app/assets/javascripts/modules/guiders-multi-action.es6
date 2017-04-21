@@ -49,7 +49,9 @@
 
     handleGoClick(e) {
       e.preventDefault();
-      location.href = `${this.$actionsSelect.val()}?user_ids=${$.makeArray(this.checkboxValuesOfSelected()).join()}`;
+      let userIDs = encodeURIComponent($.makeArray(this.checkboxValuesOfSelected()).join()),
+          href = `${window.location.protocol}//${window.location.host}${this.$actionsSelect.val()}?user_ids=${userIDs}`;
+      window.location.href = href;
     }
 
     checkboxesSelected() {
