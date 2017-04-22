@@ -20,7 +20,7 @@ module Api
       end
 
       def appointment_params # rubocop:disable Metrics/MethodLength
-        params.permit(
+        params.require(:appointment).permit(
           :start_at,
           :first_name,
           :last_name,
