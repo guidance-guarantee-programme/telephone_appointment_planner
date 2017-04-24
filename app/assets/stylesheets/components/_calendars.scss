@@ -270,6 +270,25 @@ $guider-row-height: 120px;
   opacity: 1;
 }
 
+.fc-bgevent--bookable-slot-over-holiday {
+  opacity: 0;
+
+  .fc-agenda-view & {
+    left: 10%;
+    width: 80%;
+  }
+
+  .fc-timeline & {
+    top: 10%;
+    height: 80%;
+  }
+
+  .bookable-slots-over-holiday & {
+    opacity: 1;
+    transition: opacity .7s;
+  }
+}
+
 .resource-calendar-filter {
   background: $color-white;
   border-radius: 4px;
