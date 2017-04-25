@@ -26,11 +26,13 @@ module Pages
       element :submit, '.t-submit-message'
 
       element :further_activities, '.t-further-activities'
+      element :audit_activity, '.t-audit-activity'
       element :hidden_activity, '.t-hidden-activity'
       element :high_priority_activities, '.t-high-priority-activity'
       element :resolved_activities, '.t-resolved-activity'
       element :unresolved_activities, '.t-unresolved-activity'
       element :resolve_activity_button, '.t-resolve-activity'
+      element :more_activity_link, '.t-activity-more'
     end
 
     section :breadcrumb, '.t-breadcrumb' do

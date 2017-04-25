@@ -1,4 +1,5 @@
 <li class="activity list-group-item t-activity
+  <%= "t-#{activity.model_name.to_s.underscore.dasherize}" %>
   <%= 't-hidden-activity activity--hideable activity--hide' if hide %>
   <% if activity.high_priority? %>
     t-high-priority-activity
@@ -11,7 +12,7 @@
       <a href="<%= edit_appointment_path(activity.appointment) %>" class="activity__link">
     <% end %>
     <% if local_assigns[:more] %>
-      <a href="<%= appointment_changes_path(activity.appointment) %>" class="activity__link activity__link--more">
+      <a href="<%= appointment_changes_path(activity.appointment) %>" class="activity__link activity__link--more t-activity-more">
     <% end %>
       <%= content_for(:activity_message) %>
     <% if [:details, :more].any? { |a| local_assigns.has_key?(a) } %>
