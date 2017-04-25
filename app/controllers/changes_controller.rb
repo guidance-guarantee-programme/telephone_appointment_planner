@@ -3,5 +3,6 @@ class ChangesController < ApplicationController
 
   def index
     @appointment = Appointment.find(params[:appointment_id])
+    @audits = AuditPresenter.wrap(@appointment.audits.where.not(action: :create).reverse)
   end
 end
