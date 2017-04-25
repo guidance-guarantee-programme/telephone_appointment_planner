@@ -1,4 +1,5 @@
 <li class="activity list-group-item t-activity
+  <%= "t-#{activity.model_name.to_s.underscore.dasherize}" %>
   <%= 't-hidden-activity activity--hideable activity--hide' if hide %>
   <% if activity.high_priority? %>
     t-high-priority-activity
@@ -7,14 +8,17 @@
   <% end %>
 " data-activity-id="<%= activity.id %>">
   <div class="activity__inner">
-    <% if details %>
+    <% if local_assigns[:details] %>
       <a href="<%= edit_appointment_path(activity.appointment) %>" class="activity__link">
     <% end %>
+    <% if local_assigns[:more] %>
+      <a href="<%= appointment_changes_path(activity.appointment) %>" class="activity__link activity__link--more t-activity-more">
+    <% end %>
       <%= content_for(:activity_message) %>
-    <% if details %>
+    <% if [:details, :more].any? { |a| local_assigns.has_key?(a) } %>
       </a>
     <% end %>
-    <%= render('activities/details', appointment: activity.appointment) if details %>
+    <%= render('activities/details', appointment: activity.appointment) if local_assigns[:details] %>
     <span class="activity__date">
       <%= activity.created_at.in_time_zone('London').to_s(:govuk_date_short) %> (<%= time_ago_in_words(activity.created_at.in_time_zone('London'))%> ago)
       <% if activity.high_priority? %>

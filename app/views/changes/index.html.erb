@@ -1,0 +1,32 @@
+<% content_for(:page_title, t('service.title', page_title: "Activities for #{@appointment.name}")) %>
+<%= breadcrumb(
+  { title: 'Edit Appointment', path: edit_appointment_path(@appointment.id) },
+  { title: "Activities for #{@appointment.name}" }
+) %>
+
+<h1>Activities for <%= @appointment.name %> <span class="text-muted"><span class="sr-only">Booking reference </span>#<%= @appointment.id %></span></h1>
+
+<% @audits.each do |audit| %>
+  <table class="table table-striped table-bordered t-changes-table">
+  <col width="20%" />
+  <col width="40%" />
+  <col width="40%" />
+  <caption><%= audit.user.name %> changed the <%= audit.changed_fields %> on <%= audit.timestamp %></caption>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Before</th>
+      <th>After</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% audit.changes.each do |field, change| %>
+    <tr class="t-change-row">
+      <td><%= field %></td>
+      <td><%= change[:before] %></td>
+      <td><%= change[:after] %></td>
+    </tr>
+    <% end %>
+  </tbody>
+  </table>
+<% end %>
