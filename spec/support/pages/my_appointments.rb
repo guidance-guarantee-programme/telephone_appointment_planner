@@ -2,7 +2,8 @@ module Pages
   class MyAppointments < Base
     set_url '/my_appointments'
 
-    element :next_working_day, '.fc-next-button'
+    element :date, '.fc-left h2'
+    element :next_week_day, '.fc-next-button'
 
     sections :appointments, '.fc-event' do
       element :title, '.fc-title'

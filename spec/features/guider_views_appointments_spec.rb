@@ -201,7 +201,11 @@ RSpec.feature 'Guider views appointments' do
   end
 
   def when_they_advance_a_working_day
-    @page.next_working_day.click
+    next_working_day = BusinessDays.from_now(1).to_date
+
+    until Date.parse(@page.date.text) == next_working_day
+      @page.next_week_day.click
+    end
   end
 
   def then_they_see_the_appointment_for_that_day
