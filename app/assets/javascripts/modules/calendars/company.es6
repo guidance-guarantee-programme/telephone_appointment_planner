@@ -59,7 +59,6 @@ class CompanyCalendar extends Calendar {
     this.$filterButton = $('.fc-filter-button');
     this.filterButtonLabel = this.$filterButton.text();
     this.$filterPanel = $('.resource-calendar-filter');
-    this.$bookingSlotToggle = $('.js-booking-slot-toggle');
 
     this.bindEvents();
   }
@@ -92,16 +91,7 @@ class CompanyCalendar extends Calendar {
   bindEvents() {
     $(`#${this.$el.data('filter-select-id')}`).on('change', this.setFilterList.bind(this));
 
-    this.$bookingSlotToggle.on('change', this.handleBookingSlotToggle.bind(this));
-
     $(document).click(this.hideFilterPanel.bind(this));
-  }
-
-  handleBookingSlotToggle(event) {
-    const checkbox = $(event.currentTarget),
-      isChecked = !!checkbox.prop('checked');
-
-    this.$el[isChecked ? 'addClass' : 'removeClass']('bookable-slots-over-holiday');
   }
 
   setFilterList(event) {
@@ -225,36 +215,6 @@ class CompanyCalendar extends Calendar {
     if(event.cancelled) {
       element.addClass('fc-event--cancelled');
     }
-  }
-
-  eventAfterAllRender() {
-    super.eventAfterAllRender();
-
-    const events = this.$el.fullCalendar('clientEvents'),
-      holidays = this.getEventsOfType(events, 'holiday'),
-      slots = this.getEventsOfType(events, 'slot');
-
-    for (let slot in slots) {
-      for (let holiday in holidays) {
-        if (
-          (
-            slots[slot].resourceId == holidays[holiday].resourceId ||
-            holidays[holiday].resourceId === null
-          )
-          &&
-          (
-            slots[slot].start.isBetween(holidays[holiday].start, holidays[holiday].end) ||
-            slots[slot].end.isBetween(holidays[holiday].start, holidays[holiday].end)
-          )
-        ) {
-          $(`#${slots[slot].elementId}`).addClass('fc-bgevent--bookable-slot-over-holiday');
-        }
-      }
-    }
-  }
-
-  getEventsOfType(events, type) {
-    return events.filter((x) => { return x.source.eventType == type });
   }
 }
 
