@@ -70,6 +70,8 @@
     eventRender(event, element) {
       super.eventRender(event, element);
 
+      event.$div = $(element);
+
       element.html(`
         <div style="font-size:18px;">${event.start.format('HH:mm')}</div>
         <span class="glyphicon glyphicon-user" aria-hidden="true"></span> ${event.guiders}
@@ -110,7 +112,7 @@
 
         if (moment.utc(start).isSame(event.start.utc()) && moment.utc(end).isSame(event.end.utc())) {
           this.$el.fullCalendar('gotoDate', start);
-          $(`#${event.elementId}`).trigger('click');
+          event.$div.trigger('click');
           return;
         }
       }
