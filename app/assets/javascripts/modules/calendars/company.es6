@@ -243,8 +243,8 @@ class CompanyCalendar extends Calendar {
           )
           &&
           (
-            slots[slot].start.isBetween(holidays[holiday].start, holidays[holiday].end) ||
-            slots[slot].end.isBetween(holidays[holiday].start, holidays[holiday].end)
+            slots[slot].start.isBetween(holidays[holiday].start, holidays[holiday].end, null, '[]') ||
+            slots[slot].end.isBetween(holidays[holiday].start, holidays[holiday].end, null, '[]')
           )
         ) {
           $(`#${slots[slot].elementId}`).addClass('fc-bgevent--bookable-slot-over-holiday');
