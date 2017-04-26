@@ -253,7 +253,7 @@ $guider-row-height: 120px;
   .fc-event--holiday,
   .fc-bgevent--holiday {
     background: $calendar-holiday-background;
-    z-index: 2;
+    z-index: 1;
   }
 
   .fc-event--bookable-slot {
@@ -262,12 +262,31 @@ $guider-row-height: 120px;
 
   .fc-bgevent--bookable-slot {
     background: $calendar-bookable-slot-background;
-    z-index: 1;
+    z-index: 2;
   }
 }
 
 .fc-bgevent {
   opacity: 1;
+}
+
+.fc-bgevent--bookable-slot-over-holiday {
+  opacity: 0;
+
+  .fc-agenda-view & {
+    left: 10%;
+    width: 80%;
+  }
+
+  .fc-timeline & {
+    top: 10%;
+    height: 80%;
+  }
+
+  .bookable-slots-over-holiday & {
+    opacity: 1;
+    transition: opacity .7s;
+  }
 }
 
 .resource-calendar-filter {

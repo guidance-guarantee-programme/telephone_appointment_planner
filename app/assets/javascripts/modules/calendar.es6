@@ -164,13 +164,18 @@ class Calendar extends TapBase {
   }
 
   eventRender(event, element) {
-    const now = moment();
+    const now = moment(),
+      elementId = `event_${event._id}`;
     let end = event.end.clone();
 
     // account for timezone weirdness
     if (end.subtract(1, 'h') < now) {
       element.addClass('fc--past');
     }
+
+    $(element).attr('id', elementId);
+
+    event.elementId = elementId;
   }
 
   eventAfterRender() {
