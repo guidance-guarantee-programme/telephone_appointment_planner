@@ -36,15 +36,19 @@ class Appointment < ApplicationRecord
   scope :not_cancelled, -> { where.not(status: %i(cancelled_by_customer cancelled_by_pension_wise)) }
 
   def self.needing_reminder
+    window = Time.zone.now..48.hours.from_now.in_time_zone
+
     pending
-      .includes(:activities)
-      .where(start_at: Time.zone.now..24.hours.from_now)
-      .where.not(
-        email: '',
-        activities: {
-          type: 'ReminderActivity', created_at: 12.hours.ago..12.hours.from_now
-        }
-      )
+      .where(start_at: window)
+      .where.not(email: '', id: reminded_ids)
+  end
+
+  def self.reminded_ids
+    window = 48.hours.ago.in_time_zone..Time.zone.now
+
+    ReminderActivity
+      .where(created_at: window)
+      .pluck(:appointment_id)
   end
 
   validates :agent, presence: true

@@ -399,52 +399,76 @@ RSpec.describe Appointment, type: :model do
   end
 
   describe '.needing_reminder' do
-    let(:appointment) do
-      create(
-        :appointment,
-        start_at: BusinessDays.from_now(10)
-      )
-    end
+    context 'more than 48 hours before the appointment' do
+      it 'does not return the appointment' do
+        appointment = create(:appointment, start_at: BusinessDays.from_now(10))
 
-    context 'more than 24 hours until appointment' do
-      it 'does not need a reminder' do
         expect(Appointment.needing_reminder).to_not include(appointment)
       end
     end
 
-    context 'less than 24 hours until appointment' do
-      let(:result) do
-        travel_to(appointment.start_at - 5.hours) do
-          Appointment.needing_reminder
+    context 'less than 48 hours before the appointment' do
+      it 'returns the appointment' do
+        appointment = create(:appointment, start_at: BusinessDays.from_now(10))
+
+        travel_to(appointment.start_at - 47.hours) do
+          expect(Appointment.needing_reminder).to include(appointment)
         end
       end
 
-      it 'needs a reminder' do
-        expect(result).to include(appointment)
-      end
+      context 'and the appointment has no email address' do
+        it 'does not return the appointment' do
+          appointment = create(:appointment, email: '', start_at: BusinessDays.from_now(10))
 
-      context 'appointment has no email address' do
-        it 'does not need a reminder' do
-          appointment.update!(email: '')
-          expect(result).to_not include(appointment)
+          travel_to(appointment.start_at - 47.hours) do
+            expect(Appointment.needing_reminder).to_not include(appointment)
+          end
         end
       end
 
-      context 'appointment is not pending' do
-        it 'does not need a reminder' do
-          appointment.update!(status: 'cancelled_by_customer')
-          expect(result).to_not include(appointment)
+      context 'and the appointment is not pending' do
+        it 'does not return the appointment' do
+          appointment = create(:appointment, status: 'cancelled_by_customer', start_at: BusinessDays.from_now(10))
+
+          travel_to(appointment.start_at - 47.hours) do
+            expect(Appointment.needing_reminder).to_not include(appointment)
+          end
         end
       end
 
-      context 'appointment has been rescheduled' do
-        it 'needs another reminder' do
-          appointment.update!(
-            start_at: BusinessDays.from_now(20),
-            end_at:   BusinessDays.from_now(20) + 1.hour
-          )
+      context 'and the appointment has already been reminded in the last 48 hours' do
+        it 'does not return the appointment' do
+          appointment = create(:appointment, start_at: BusinessDays.from_now(10))
+          check_time = appointment.start_at - 47.hours
+          create(:reminder_activity, appointment: appointment, created_at: check_time - 47.hours)
 
-          expect(result).to include(appointment)
+          travel_to(check_time) do
+            expect(Appointment.needing_reminder).to_not include(appointment)
+          end
+        end
+      end
+
+      context 'and the appointment has been rescheduled' do
+        before do
+          @appointment = create(:appointment, start_at: BusinessDays.from_now(20),
+                                              end_at: BusinessDays.from_now(20) + 1.hour)
+          create(:reminder_activity, appointment: @appointment, created_at: BusinessDays.from_now(10))
+        end
+
+        context 'and it is more than 48 hours before the appointment' do
+          it 'does not return the appointment' do
+            travel_to(@appointment.start_at - 49.hours) do
+              expect(Appointment.needing_reminder).to_not include(@appointment)
+            end
+          end
+        end
+
+        context 'and it is less than 48 hours before the appointment' do
+          it 'returns the appointment' do
+            travel_to(@appointment.start_at - 47.hours) do
+              expect(Appointment.needing_reminder).to include(@appointment)
+            end
+          end
         end
       end
     end
