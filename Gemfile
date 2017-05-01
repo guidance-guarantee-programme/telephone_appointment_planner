@@ -50,7 +50,7 @@ source 'https://rubygems.org' do
     gem 'faker'
     gem 'launchy'
     gem 'parallel_tests'
-    gem 'phantomjs-binaries'
+    gem 'phantomjs'
     gem 'pry-byebug'
     gem 'pusher-fake'
     gem 'rspec-rails'
