@@ -43,7 +43,9 @@
       this.selectedEventColour = 'green';
     }
 
-    eventClick(event) {
+    eventClick(event, jsEvent) {
+      jsEvent.preventDefault();
+
       const events = this.$el.fullCalendar('clientEvents');
 
       let start = '',
@@ -70,9 +72,14 @@
     eventRender(event, element) {
       super.eventRender(event, element);
 
+      // force the events to have hrefs to allow them to be focusable via tabbing
+      element.attr('href', '#');
+
       element.html(`
+        <span class="sr-only">${event.start.format('dddd, MMMM Do YYYY')}</span>
         <div style="font-size:18px;">${event.start.format('HH:mm')}</div>
         <span class="glyphicon glyphicon-user" aria-hidden="true"></span> ${event.guiders}
+        <span class="sr-only">guider${event.guiders === 1 ? '' : 's'} available</span>
       `).css({
         'max-width': '46%',
         'padding': '.2em',
@@ -80,6 +87,10 @@
         'cursor': 'pointer',
         'background': this.getEventColour(event)
       });
+
+      if (event.selected === true) {
+        element.append('<span class="sr-only">Selected</span>');
+      }
     }
 
     getEventColour(event) {
