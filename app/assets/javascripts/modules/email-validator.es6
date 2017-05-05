@@ -68,7 +68,7 @@
 
       // Null (falsey) if no suggestion
       if (didYouMean) {
-        messages.push(`did you mean <button class="button-link js-populate-suggested-email">${didYouMean}</button>?`);
+        messages.push(`did you mean <button class="button-link t-suggestion js-populate-suggested-email">${didYouMean}</button>?`);
       }
 
       message = messages.join(', ');

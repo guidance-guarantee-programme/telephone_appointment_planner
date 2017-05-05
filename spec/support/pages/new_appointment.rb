@@ -20,5 +20,6 @@ module Pages
     element :original_appointment,                  '.t-original-appointment'
     element :type_of_appointment_standard,          '.t-type-of-appointment-standard'
     element :type_of_appointment_50_54,             '.t-type-of-appointment-50-54'
+    element :suggestion,                            '.t-suggestion'
   end
 end

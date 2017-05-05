@@ -68,6 +68,7 @@ source 'https://rubygems.org' do
     gem 'poltergeist', '1.11.0'
     gem 'scss_lint', require: false
     gem 'webmock'
+    gem 'webrick'
   end
 
   group :development do

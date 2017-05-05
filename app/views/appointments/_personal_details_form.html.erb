@@ -6,7 +6,9 @@
   <div class="col-md-6">
     <%= f.text_field :first_name, class: 't-first-name', label: required_label(:first_name) %>
     <%= f.text_field :last_name, class: 't-last-name', label: required_label(:last_name) %>
-    <%= f.email_field :email, class: 't-email', data: { module: 'email-validator', api_key: ENV.fetch('MAILGUN_PUBLIC_API_KEY') { 'pubkey-b37c931b1fcef90bf2d83b7cdfd6df39' } } %>
+    <%= f.email_field :email, class: 't-email', data: { module: 'email-validator',
+                                                        api_key: 'pubkey-b37c931b1fcef90bf2d83b7cdfd6df39',
+                                                        api_host: Rails.env.test? ? 'http://localhost:9293' : nil } %>
     <%= f.telephone_field :phone, class: 't-phone', label: required_label(:phone) %>
     <%= f.telephone_field :mobile, class: 't-mobile' %>
     <%= render 'shared/date_of_birth_form_field', form: f if defined?(edit) && edit %>
