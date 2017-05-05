@@ -1,0 +1,14 @@
+.appointment-availability-calendar {
+  .fc-event {
+    color: $color-white;
+
+    &:visited {
+      color: $color-white;
+    }
+
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+    }
+  }
+}
