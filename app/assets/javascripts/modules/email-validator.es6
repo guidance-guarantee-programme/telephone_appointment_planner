@@ -12,6 +12,7 @@
 
       this.$el.mailgun_validator({
         api_key: this.$el.data('api-key'),
+        api_host: this.$el.data('api-host'),
         in_progress: this.showLoadingSpinner.bind(this),
         success: this.onSuccess.bind(this),
         error: this.onError.bind(this)

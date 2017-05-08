@@ -94,6 +94,11 @@
             if (console) console.log('Please pass in api_key to mailgun_validator.');
         }
 
+        // set default api host
+        if (options && options.api_host == undefined) {
+            options.api_host = 'https://api.mailgun.net';
+        }
+
         // timeout incase of some kind of internal server error
         var timeoutID = setTimeout(function() {
             error_message = 'Error occurred, unable to validate address.';
@@ -116,7 +121,7 @@
         // make ajax call to get validation results
         element.mailgunRequest = $.ajax({
             type: "GET",
-            url: 'https://api.mailgun.net/v2/address/validate?callback=?',
+            url: options.api_host + '/v2/address/validate?callback=?',
             data: { address: address_text, api_key: options.api_key },
             dataType: "jsonp",
             crossDomain: true,
