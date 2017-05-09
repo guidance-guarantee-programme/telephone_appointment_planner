@@ -63,7 +63,7 @@ class Calendar extends TapBase {
 
     this.calendarLoadingView = $(`
       <div class="calendar-loading hide">
-        <div class="loading-spinner">
+        <div class="loading-spinner loading-spinner--large">
           <div class="loading-spinner__bounce loading-spinner__bounce--1"></div>
           <div class="loading-spinner__bounce loading-spinner__bounce--2"></div>
           <div class="loading-spinner__bounce"></div>
