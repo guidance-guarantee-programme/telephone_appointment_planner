@@ -71,7 +71,7 @@ GEM
     audited (4.3.0)
       activerecord (>= 4.0, < 5.1)
       rails-observers (~> 0.1.2)
-    autoprefixer-rails (6.7.7.1)
+    autoprefixer-rails (7.0.1)
       execjs
     babel-source (5.8.35)
     babel-transpiler (0.7.0)
