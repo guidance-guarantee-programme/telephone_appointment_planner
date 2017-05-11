@@ -21,7 +21,7 @@
 //= require sortable-rails
 //= require pusher
 
-//= require mailgun-validator
+//= require mailgun-validator-jquery
 //= require tap-base
 //= require modules/calendar
 //= require modules/calendars/company

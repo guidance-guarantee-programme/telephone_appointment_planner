@@ -299,6 +299,7 @@ GEM
       rails-assets-ev-emitter (~> 1.0.0)
     rails-assets-jquery (3.2.1)
     rails-assets-listjs (1.5.0)
+    rails-assets-mailgun-validator-jquery (0.0.3)
     rails-assets-moment (2.18.1)
     rails-assets-pusher (4.0.0)
     rails-assets-qTip2 (3.0.2)
@@ -474,6 +475,7 @@ DEPENDENCIES
   rails-assets-fullcalendar (= 3.2.0)!
   rails-assets-fullcalendar-scheduler (= 1.5.1)!
   rails-assets-listjs!
+  rails-assets-mailgun-validator-jquery (= 0.0.3)!
   rails-assets-pusher!
   rails-assets-qTip2!
   rails-assets-zloirock--core-js!
