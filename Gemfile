@@ -6,6 +6,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-fullcalendar', '3.2.0'
   gem 'rails-assets-fullcalendar-scheduler', '1.5.1'
   gem 'rails-assets-listjs'
+  gem 'rails-assets-mailgun-validator-jquery', '0.0.3'
   gem 'rails-assets-pusher'
   gem 'rails-assets-qTip2'
   gem 'rails-assets-zloirock--core-js'
