@@ -4,15 +4,19 @@ RSpec.describe Appointment, type: :model do
   describe '#type_of_appointment' do
     context 'without a date of birth' do
       it 'returns an empty string' do
-        expect(
-          build_stubbed(:appointment, date_of_birth: '').type_of_appointment
-        ).to be_empty
+        appointment = build_stubbed(
+          :appointment,
+          date_of_birth: '',
+          type_of_appointment: ''
+        )
+
+        expect(appointment.type_of_appointment).to be_empty
       end
     end
 
     context 'when specified' do
       it 'returns the underlying attribute' do
-        expect(build_stubbed(:appointment).type_of_appointment).to eq('50-54')
+        expect(create(:appointment).type_of_appointment).to eq('50-54')
       end
     end
 
@@ -25,18 +29,24 @@ RSpec.describe Appointment, type: :model do
     end
   end
 
-  describe '#age' do
+  describe '#age_at_appointment' do
     context 'without a date of birth' do
       it 'is 0' do
-        expect(build_stubbed(:appointment, date_of_birth: '').age).to eq(0)
+        expect(build_stubbed(:appointment, date_of_birth: '').age_at_appointment).to eq(0)
       end
     end
 
     context 'when a date of birth is present' do
-      it 'returns the correct age' do
-        travel_to '2017-04-05' do
-          expect(build_stubbed(:appointment, date_of_birth: '1980-02-02').age).to eq(37)
-        end
+      it 'returns the age at the time of the appointment' do
+        appointment = build_stubbed(
+          :appointment,
+          date_of_birth: '1980-02-02',
+          start_at: Time.zone.parse('2017-01-20 13:00')
+        )
+        expect(appointment.age_at_appointment).to eq(36)
+
+        appointment.start_at = Time.zone.parse('2017-02-02 13:00')
+        expect(appointment.age_at_appointment).to eq(37)
       end
     end
   end

@@ -136,19 +136,17 @@ class Appointment < ApplicationRecord
     start_at.advance(hours: -1) > Time.zone.now
   end
 
-  def age
-    return 0 unless date_of_birth?
+  def age_at_appointment
+    return 0 unless date_of_birth? && start_at?
 
-    age = Time.zone.today.year - date_of_birth.year
-    age -= 1 if Time.zone.today.to_date < date_of_birth + age.years
-    age
+    ((start_at.to_date - date_of_birth) / 365).floor
   end
 
   def type_of_appointment
-    return ''    if age.zero?
-    return super if super.present?
+    return super if super.present? && persisted?
+    return ''    if age_at_appointment.zero?
 
-    age >= 55 ? 'standard' : '50-54'
+    age_at_appointment >= 55 ? 'standard' : '50-54'
   end
 
   def agent_is_pension_wise_api?
