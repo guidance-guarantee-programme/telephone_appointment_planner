@@ -143,8 +143,8 @@ class Appointment < ApplicationRecord
   end
 
   def type_of_appointment
+    return super if super.present? && persisted?
     return ''    if age_at_appointment.zero?
-    return super if super.present?
 
     age_at_appointment >= 55 ? 'standard' : '50-54'
   end
