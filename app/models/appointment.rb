@@ -30,7 +30,7 @@ class Appointment < ApplicationRecord
 
   belongs_to :guider, class_name: 'User'
 
-  belongs_to :rebooked_from, class_name: Appointment
+  belongs_to :rebooked_from, class_name: 'Appointment'
 
   scope :cancelled, -> { where(status: %i(cancelled_by_customer cancelled_by_pension_wise)) }
   scope :not_cancelled, -> { where.not(status: %i(cancelled_by_customer cancelled_by_pension_wise)) }

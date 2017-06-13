@@ -3,9 +3,9 @@ class Activity < ApplicationRecord
 
   belongs_to :appointment
   belongs_to :user
-  belongs_to :owner, class_name: User
-  belongs_to :prior_owner, class_name: User
-  belongs_to :resolver, class_name: User
+  belongs_to :owner, class_name: 'User'
+  belongs_to :prior_owner, class_name: 'User'
+  belongs_to :resolver, class_name: 'User'
   validates :owner, presence: true
 
   scope :resolved, -> { where.not(resolved_at: nil) }
