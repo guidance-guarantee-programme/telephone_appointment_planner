@@ -14,7 +14,7 @@ end
 
 source 'https://rubygems.org' do
   gem 'active_link_to'
-  gem 'active_model_serializers', '0.10.2'
+  gem 'active_model_serializers'
   gem 'audited'
   gem 'bh'
   gem 'bootstrap-kaminari-views'
@@ -34,7 +34,7 @@ source 'https://rubygems.org' do
   gem 'postgres-copy'
   gem 'puma', '~> 3.0'
   gem 'pusher'
-  gem 'rails', '~> 5.0.1'
+  gem 'rails', '~> 5.1.1'
   gem 'rails-observers', github: 'rails/rails-observers'
   gem 'sassc-rails'
   gem 'select2-rails'
