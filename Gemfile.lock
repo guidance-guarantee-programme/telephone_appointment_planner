@@ -220,6 +220,7 @@ GEM
       multi_json (~> 1.3)
       multi_xml (~> 0.5)
       rack (>= 1.2, < 3)
+    oj (3.1.3)
     omniauth (1.6.1)
       hashie (>= 3.4.6, < 3.6.0)
       rack (>= 1.6.2, < 3)
@@ -463,6 +464,7 @@ DEPENDENCIES
   lograge!
   momentjs-rails (= 2.15.1)!
   newrelic_rpm!
+  oj!
   parallel_tests!
   pg (~> 0.18)!
   phantomjs!
@@ -505,4 +507,4 @@ RUBY VERSION
    ruby 2.4.1p111
 
 BUNDLED WITH
-   1.14.6
+   1.15.1
