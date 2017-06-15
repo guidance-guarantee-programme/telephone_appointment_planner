@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/macournoyer/thin.git
+  remote: https://github.com/macournoyer/thin.git
   revision: 5cea3f285cdbcb819c7826bbcd7b6f3bdc2ed192
   ref: 5cea3f2
   specs:
@@ -9,7 +9,7 @@ GIT
       rack (>= 1, < 3)
 
 GIT
-  remote: git://github.com/rails/rails-observers.git
+  remote: https://github.com/rails/rails-observers.git
   revision: 206cb17bc14f4f5ac6f83da4204013a69549b9dc
   specs:
     rails-observers (0.1.4)
