@@ -2,7 +2,7 @@ Date:
 <%= @appointment.start_at.to_date.to_s(:govuk_date) %>
 
 Time:
-<%= @appointment.start_at.to_time.to_s(:govuk_time) %>
+<%= "#{@appointment.start_at.to_time.to_s(:govuk_time)} (#{@appointment.timezone})" %>
 
 Appointment lasts:
 45 to 60 minutes
