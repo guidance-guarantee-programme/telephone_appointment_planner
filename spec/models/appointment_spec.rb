@@ -51,6 +51,18 @@ RSpec.describe Appointment, type: :model do
     end
   end
 
+  describe '#timezone' do
+    it 'returns "GMT" when the appointment is in winter time' do
+      appointment = described_class.new(start_at: Time.zone.parse('1 January 2017 12:00'))
+      expect(appointment.timezone).to eq 'GMT'
+    end
+
+    it 'returns "BST" when the appointment is in summer time' do
+      appointment = described_class.new(start_at: Time.zone.parse('1 June 2017 12:00'))
+      expect(appointment.timezone).to eq 'BST'
+    end
+  end
+
   describe '`#future?` does not respect timezones regression' do
     it 'must apply the local offset when checking' do
       appointment = build_stubbed(:appointment, start_at: Time.zone.parse('2017-03-30 12:20 UTC'))

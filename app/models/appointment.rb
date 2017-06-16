@@ -149,6 +149,10 @@ class Appointment < ApplicationRecord
     age_at_appointment >= 55 ? 'standard' : '50-54'
   end
 
+  def timezone
+    start_at.in_time_zone('London').utc_offset.zero? ? 'GMT' : 'BST'
+  end
+
   def agent_is_pension_wise_api?
     agent && agent.pension_wise_api?
   end
