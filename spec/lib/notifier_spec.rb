@@ -12,17 +12,12 @@ RSpec.describe Notifier, '#call' do
     allow(AppointmentMailer).to receive(:missed) { mailer }
     allow(AppointmentMailer).to receive(:updated) { mailer }
     allow(mailer).to receive(:deliver)
-    allow(CustomerUpdateActivity).to receive(:from) { activity }
-    allow(PusherActivityCreatedJob).to receive(:perform_later)
   end
 
   context 'when the appointment is without an associated email' do
-    before do
-      stub_const('AppointmentMailer', double)
-      stub_const('CustomerUpdateActivity', double)
-    end
-
     it 'does not notify the customer' do
+      expect(AppointmentMailer).not_to receive(:confirmation)
+
       appointment.update_attribute(:email, '')
 
       subject.call
@@ -38,11 +33,11 @@ RSpec.describe Notifier, '#call' do
     end
 
     it 'creates a CustomerUpdateActvity' do
-      expect(CustomerUpdateActivity)
-        .to receive(:from)
-        .with(appointment, CustomerUpdateActivity::UPDATED_MESSAGE)
-
       subject.call
+
+      expect(CustomerUpdateActivity.last).to have_attributes(
+        message: CustomerUpdateActivity::UPDATED_MESSAGE
+      )
     end
 
     context 'but the appointment was in the past' do
@@ -55,8 +50,7 @@ RSpec.describe Notifier, '#call' do
       end
 
       it 'does not create a CustomerUpdateActvity' do
-        expect(CustomerUpdateActivity).not_to receive(:from)
-        subject.call
+        expect { subject.call }.to_not change { CustomerUpdateActivity.count }
       end
     end
   end
@@ -70,11 +64,11 @@ RSpec.describe Notifier, '#call' do
     end
 
     it 'creates a CustomerUpdateActvity' do
-      expect(CustomerUpdateActivity)
-        .to receive(:from)
-        .with(appointment, CustomerUpdateActivity::CANCELLED_MESSAGE)
-
       subject.call
+
+      expect(CustomerUpdateActivity.last).to have_attributes(
+        message: CustomerUpdateActivity::CANCELLED_MESSAGE
+      )
     end
   end
 
@@ -87,11 +81,11 @@ RSpec.describe Notifier, '#call' do
     end
 
     it 'creates a CustomerUpdateActvity' do
-      expect(CustomerUpdateActivity)
-        .to receive(:from)
-        .with(appointment, CustomerUpdateActivity::MISSED_MESSAGE)
-
       subject.call
+
+      expect(CustomerUpdateActivity.last).to have_attributes(
+        message: CustomerUpdateActivity::MISSED_MESSAGE
+      )
     end
   end
 end

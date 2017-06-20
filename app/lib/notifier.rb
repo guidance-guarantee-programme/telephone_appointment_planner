@@ -23,8 +23,6 @@ class Notifier
   end
 
   def notify_customer
-    return unless appointment.email?
-
     if appointment_cancelled?
       CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::CANCELLED_MESSAGE)
     elsif appointment_missed?

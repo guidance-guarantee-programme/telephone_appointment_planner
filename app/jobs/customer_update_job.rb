@@ -2,6 +2,8 @@ class CustomerUpdateJob < ActiveJob::Base
   queue_as :default
 
   def perform(appointment, message)
+    return unless appointment.email?
+
     send_email(appointment, message)
 
     activity = CustomerUpdateActivity.from(appointment, message)
