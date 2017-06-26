@@ -31,7 +31,7 @@ if Rails.env.development?
       :holiday,
       user: holiday_guiders.next,
       all_day: false,
-      end_at: date.end_of_day,
+      end_at: date.beginning_of_day + 1.day,
       start_at: date.beginning_of_day
     )
     print '.'
