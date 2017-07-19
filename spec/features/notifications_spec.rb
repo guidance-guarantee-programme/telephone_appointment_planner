@@ -75,7 +75,7 @@ def when_they_are_viewing_the_appointment
 end
 
 def and_a_high_priority_activity_occurs
-  DropActivity.from('an event', 'an event description', 'booking_created', @appointment)
+  DropActivity.from('an event', 'an event description', @appointment)
 end
 
 def and_they_click_on_the_high_priority_activity_badge

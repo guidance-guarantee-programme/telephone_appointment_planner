@@ -30,7 +30,6 @@ class DropForm
     DropActivity.from(
       event,
       description,
-      message_type,
       appointment
     )
   end
