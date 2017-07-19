@@ -62,8 +62,7 @@ source 'https://rubygems.org' do
     gem 'rspec-retry'
     gem 'rubocop', '0.46.0'
     gem 'site_prism'
-    # Removes `Fixnum` deprecation from `pusher-fake`
-    gem 'thin', github: 'macournoyer/thin', ref: '5cea3f2'
+    gem 'thin'
   end
 
   group :test do
