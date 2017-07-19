@@ -67,7 +67,6 @@ RSpec.describe DropForm, '#create_activity' do
         expect(DropActivity).to receive(:from).with(
           params['event'],
           params['description'],
-          params['message_type'],
           appointment
         )
 
