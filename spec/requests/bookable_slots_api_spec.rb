@@ -20,8 +20,11 @@ RSpec.describe 'GET /api/v1/bookable_slots' do
     # falls before the booking window
     create(:bookable_slot, start_at: 1.day.from_now)
 
-    # falls after the booking window
+    # included since the window is now 8 weeks
     create(:bookable_slot, start_at: 7.weeks.from_now)
+
+    # falls after the booking window
+    create(:bookable_slot, start_at: 9.weeks.from_now)
   end
 
   def when_the_client_requests_bookable_slots
@@ -36,7 +39,7 @@ RSpec.describe 'GET /api/v1/bookable_slots' do
 
       expect(json['2017-01-13']).to eq(%w(2017-01-13T14:00:00.000Z))
 
-      expect(json.keys).to eq(%w(2017-01-13 2017-01-16))
+      expect(json.keys).to eq(%w(2017-01-13 2017-01-16 2017-02-28))
     end
   end
 end
