@@ -35,7 +35,7 @@ class BookableSlot < ApplicationRecord
 
   def self.grouped # rubocop:disable Metrics/AbcSize
     from = next_valid_start_date
-    to   = 6.weeks.from_now.end_of_day
+    to   = 8.weeks.from_now.end_of_day
 
     bookable(from, to)
       .within_date_range(from, to)
@@ -131,6 +131,6 @@ class BookableSlot < ApplicationRecord
   end
 
   def self.generation_range
-    Time.zone.now.to_date..6.weeks.from_now.to_date
+    Time.zone.now.to_date..8.weeks.from_now.to_date
   end
 end
