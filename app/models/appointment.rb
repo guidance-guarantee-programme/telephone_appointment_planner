@@ -66,7 +66,7 @@ class Appointment < ApplicationRecord
   validates :guider, presence: true
 
   validate :not_within_two_business_days, unless: :agent_is_resource_manager?
-  validate :not_more_than_thirty_business_days_in_future
+  validate :valid_within_booking_window
   validate :date_of_birth_valid
   validate :email_valid, if: :agent_is_pension_wise_api?
 
@@ -175,11 +175,11 @@ class Appointment < ApplicationRecord
     errors.add(:start_at, 'must be more than two business days from now') if too_soon
   end
 
-  def not_more_than_thirty_business_days_in_future
+  def valid_within_booking_window
     return unless start_at
 
-    too_late = start_at > BusinessDays.from_now(30)
-    errors.add(:start_at, 'must be less than thirty business days from now') if too_late
+    too_late = start_at > BusinessDays.from_now(40)
+    errors.add(:start_at, 'must be less than 40 business days from now') if too_late
   end
 
   def date_of_birth_valid

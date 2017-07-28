@@ -191,8 +191,8 @@ RSpec.describe Appointment, type: :model do
       end
     end
 
-    it 'cannot be booked further ahead than thirty working days' do
-      subject.start_at = BusinessDays.from_now(40)
+    it 'cannot be booked further ahead than forty working days' do
+      subject.start_at = BusinessDays.from_now(41)
       subject.validate
       expect(subject.errors[:start_at]).to_not be_empty
     end
