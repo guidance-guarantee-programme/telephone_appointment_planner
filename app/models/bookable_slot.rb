@@ -14,6 +14,13 @@ class BookableSlot < ApplicationRecord
     where("#{quoted_table_name}.start_at > ? AND #{quoted_table_name}.end_at < ?", from, to)
   end
 
+  def self.without_guider_conference_days
+    where.not(
+      "#{quoted_table_name}.start_at::date in (?)",
+      Date.parse('2018-07-17')..Date.parse('2018-07-18')
+    )
+  end
+
   def self.next_valid_start_date(user = nil)
     return Time.zone.now if user && user.resource_manager?
 
@@ -29,7 +36,9 @@ class BookableSlot < ApplicationRecord
   end
 
   def self.bookable(from = nil, to = nil)
-    without_appointments(from, to).without_holidays
+    without_appointments(from, to)
+      .without_guider_conference_days
+      .without_holidays
   end
 
   def self.grouped # rubocop:disable Metrics/AbcSize
