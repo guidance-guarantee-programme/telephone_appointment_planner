@@ -14,6 +14,13 @@ class BookableSlot < ApplicationRecord
     where("#{quoted_table_name}.start_at > ? AND #{quoted_table_name}.end_at < ?", from, to)
   end
 
+  def self.without_guider_conference_days
+    where.not(
+      "#{quoted_table_name}.start_at::date in (?)",
+      Date.parse('2017-10-03')..Date.parse('2017-10-04')
+    )
+  end
+
   def self.next_valid_start_date(user = nil)
     return Time.zone.now.advance(hours: 1) if user && user.resource_manager?
 
@@ -30,6 +37,7 @@ class BookableSlot < ApplicationRecord
 
   def self.bookable(from = nil, to = nil)
     without_appointments(from, to)
+      .without_guider_conference_days
       .without_holidays
   end
 
