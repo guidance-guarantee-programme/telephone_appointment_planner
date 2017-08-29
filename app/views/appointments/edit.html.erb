@@ -16,6 +16,19 @@
   </div>
 <% end %>
 
+<% if @appointment.potential_duplicates? %>
+  <div class="alert alert-warning" role="alert">
+    <p>
+      This appointment may be a duplicate of:
+    </p>
+    <ul class="list-inline">
+      <% @appointment.potential_duplicates.each do |appointment| %>
+        <li><%= link_to appointment, edit_appointment_path(id: appointment) %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
 <div class="row">
   <div class="col-md-7">
     <h1>Edit appointment for <%= @appointment.name %> <span class="text-muted"><span class="sr-only">Booking reference </span>#<%= @appointment.id %></span></h1>

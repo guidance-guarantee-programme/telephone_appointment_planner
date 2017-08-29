@@ -89,6 +89,21 @@ class Appointment < ApplicationRecord
     end
   end
 
+  def potential_duplicates
+    self.class.where.not(id: id)
+        .where(
+          first_name: first_name,
+          last_name: last_name,
+          start_at: start_at.beginning_of_day..start_at.end_of_day
+        )
+        .order(:id)
+        .pluck(:id)
+  end
+
+  def potential_duplicates?
+    potential_duplicates.size.positive?
+  end
+
   def imported?
     date_of_birth == FAKE_DATE_OF_BIRTH
   end
