@@ -154,7 +154,7 @@ RSpec.describe Appointment, type: :model do
 
     context 'when created by an API agent' do
       it 'requires a reasonably valid email' do
-        appointment = build_stubbed(
+        appointment = build(
           :appointment,
           email: 'a.com',
           agent: build(:pension_wise_api_user)
