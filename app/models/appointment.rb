@@ -75,7 +75,7 @@ class Appointment < ApplicationRecord
 
   audited on: %i(create update)
 
-  before_validation :format_name
+  before_validation :format_name, on: :create
 
   def self.copy_or_new_by(id)
     return new unless id
