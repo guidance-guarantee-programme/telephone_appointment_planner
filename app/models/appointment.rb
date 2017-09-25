@@ -69,13 +69,13 @@ class Appointment < ApplicationRecord
   validate :valid_within_booking_window
   validate :not_during_guider_conference
   validate :date_of_birth_valid
-  validate :email_valid, if: :agent_is_pension_wise_api?
+  validate :email_valid, if: :agent_is_pension_wise_api?, on: :create
 
   has_many :activities, -> { order('created_at DESC') }
 
   audited on: %i(create update)
 
-  before_validation :format_name
+  before_validation :format_name, on: :create
 
   def self.copy_or_new_by(id)
     return new unless id

@@ -97,7 +97,7 @@ RSpec.describe Appointment, type: :model do
 
   describe 'formatting' do
     it 'title-cases first and last name' do
-      appointment = build_stubbed(:appointment, first_name: 'bob', last_name: 'carolgees')
+      appointment = build(:appointment, first_name: 'bob', last_name: 'carolgees')
       appointment.validate
 
       expect(appointment).to have_attributes(
@@ -154,7 +154,7 @@ RSpec.describe Appointment, type: :model do
 
     context 'when created by an API agent' do
       it 'requires a reasonably valid email' do
-        appointment = build_stubbed(
+        appointment = build(
           :appointment,
           email: 'a.com',
           agent: build(:pension_wise_api_user)
