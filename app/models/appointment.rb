@@ -13,6 +13,7 @@ class Appointment < ApplicationRecord
     dc_pot_confirmed
     updated_at
     type_of_appointment
+    where_you_heard
   ).freeze
 
   belongs_to :agent, class_name: 'User'
