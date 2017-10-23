@@ -39,5 +39,12 @@
         class: 't-type-of-appointment-50-54 js-type-of-appointment-50-54'
       %>
     </div>
+
+    <div class="form-group">
+      <%= f.select :where_you_heard,
+            options_for_select(WhereYouHeard::OPTIONS.invert.to_a, @appointment.where_you_heard),
+            {}, { class: 't-where-you-heard form-control' }
+      %>
+    </div>
   </div>
 </div>

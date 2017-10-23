@@ -13,6 +13,7 @@ class Appointment < ApplicationRecord
     dc_pot_confirmed
     updated_at
     type_of_appointment
+    where_you_heard
   ).freeze
 
   belongs_to :agent, class_name: 'User'
@@ -61,6 +62,7 @@ class Appointment < ApplicationRecord
   validates :memorable_word, presence: true
   validates :dc_pot_confirmed, inclusion: [true, false]
   validates :type_of_appointment, inclusion: %w(standard 50-54)
+  validates :where_you_heard, inclusion: WhereYouHeard.options_for_inclusion, on: :create
 
   validates :status, presence: true
   validates :guider, presence: true

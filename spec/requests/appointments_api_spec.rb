@@ -35,6 +35,7 @@ RSpec.describe 'POST /api/v1/appointments' do
       'memorable_word'   => 'snootboop',
       'date_of_birth'    => '1950-02-02',
       'dc_pot_confirmed' => true,
+      'where_you_heard'  => '1',
       'opt_out_of_market_research' => true
     }
 
@@ -65,6 +66,7 @@ RSpec.describe 'POST /api/v1/appointments' do
       'memorable_word'   => 'snootboop',
       'date_of_birth'    => '1950-02-02',
       'dc_pot_confirmed' => true,
+      'where_you_heard'  => '1',
       'opt_out_of_market_research' => true
     }
 
@@ -94,7 +96,8 @@ RSpec.describe 'POST /api/v1/appointments' do
         phone: '02082524729',
         memorable_word: 'snootboop',
         dc_pot_confirmed: true,
-        opt_out_of_market_research: true
+        opt_out_of_market_research: true,
+        where_you_heard: 1
       )
     end
   end
