@@ -196,6 +196,7 @@ RSpec.feature 'Agent manages appointments' do
     @page.start_at.set day.change(hour: 9, min: 30).to_s
     @page.end_at.set day.change(hour: 10, min: 40).to_s
     @page.type_of_appointment_standard.set true
+    @page.where_you_heard.select 'Other'
 
     @page.preview_appointment.click
   end
@@ -246,6 +247,7 @@ RSpec.feature 'Agent manages appointments' do
     expect(appointment.status).to eq 'pending'
     expect(appointment.end_at).to eq day.change(hour: 10, min: 40).to_s
     expect(appointment.type_of_appointment).to eq('standard')
+    expect(appointment.where_you_heard).to eq(17)
   end
 
   def and_the_customer_gets_an_email_confirmation

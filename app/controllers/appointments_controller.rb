@@ -131,7 +131,8 @@ class AppointmentsController < ApplicationController
       :notes,
       :opt_out_of_market_research,
       :status,
-      :type_of_appointment
+      :type_of_appointment,
+      :where_you_heard
     ]
   end
   # rubocop:enable Metrics/MethodLength

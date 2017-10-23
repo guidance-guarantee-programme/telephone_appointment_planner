@@ -35,6 +35,7 @@ RSpec.describe 'POST /api/v1/appointments' do
       'memorable_word'   => 'snootboop',
       'date_of_birth'    => '1950-02-02',
       'dc_pot_confirmed' => true,
+      'where_you_heard'  => '1',
       'opt_out_of_market_research' => true
     }
 

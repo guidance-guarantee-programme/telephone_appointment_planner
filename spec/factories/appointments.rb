@@ -15,6 +15,7 @@ FactoryGirl.define do
     date_of_birth '1945-01-01'
     type_of_appointment '50-54'
     guider { create(:guider) }
+    where_you_heard { WhereYouHeard.options_for_inclusion.sample }
 
     factory :imported_appointment do
       date_of_birth Appointment::FAKE_DATE_OF_BIRTH
