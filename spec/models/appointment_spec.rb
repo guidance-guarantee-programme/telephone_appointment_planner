@@ -110,6 +110,16 @@ RSpec.describe Appointment, type: :model do
       expect(subject).to be_valid
     end
 
+    context 'when rebooked' do
+      it 'does not validate WDYH' do
+        subject.id = nil
+        subject.rebooked_from_id = 1
+        subject.where_you_heard  = nil
+
+        expect(subject).to be_valid
+      end
+    end
+
     required = [
       :start_at,
       :end_at,
