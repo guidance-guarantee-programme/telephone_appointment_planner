@@ -39,7 +39,6 @@ source 'https://rubygems.org' do
   gem 'puma', '~> 3.0'
   gem 'pusher'
   gem 'rails', '~> 5.1.1'
-  gem 'rails-observers', github: 'rails/rails-observers'
   gem 'sassc-rails'
   gem 'select2-rails'
   gem 'sidekiq'
