@@ -35,6 +35,15 @@ class Appointment < ApplicationRecord
 
   scope :cancelled, -> { where(status: %i(cancelled_by_customer cancelled_by_pension_wise)) }
   scope :not_cancelled, -> { where.not(status: %i(cancelled_by_customer cancelled_by_pension_wise)) }
+  scope :with_mobile_number, -> { where("mobile != '' or phone like '07%'") }
+
+  def self.needing_sms_reminder
+    window = 2.days.from_now.beginning_of_day..2.days.from_now.end_of_day
+
+    pending
+      .where(start_at: window)
+      .with_mobile_number
+  end
 
   def self.needing_reminder
     window = Time.zone.now..48.hours.from_now.in_time_zone
@@ -89,6 +98,10 @@ class Appointment < ApplicationRecord
       appointment.end_at   = nil
       appointment.rebooked_from_id = id
     end
+  end
+
+  def canonical_sms_number
+    mobile.present? ? mobile : phone
   end
 
   def potential_duplicates

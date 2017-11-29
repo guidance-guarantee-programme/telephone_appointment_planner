@@ -1,0 +1,7 @@
+<% content_for(:activity_message, flush: true) do %>
+  <span class="glyphicon glyphicon-phone" aria-hidden="true"></span>
+  <strong>The system</strong>
+  sent an appointment reminder SMS to
+  <strong><%= sms_reminder_activity.appointment.canonical_sms_number %></strong>
+<% end %>
+<%= render 'activities/activity', activity: sms_reminder_activity, details: details, hide: hide %>

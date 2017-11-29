@@ -1,6 +1,30 @@
 require 'rails_helper'
 
 RSpec.describe Appointment, type: :model do
+  describe '#canonical_sms_number' do
+    context 'when a `mobile` is present' do
+      it 'returns the `mobile`' do
+        @appointment = Appointment.new(
+          phone: '07715 930 444',
+          mobile: '07715 999 123'
+        )
+
+        expect(@appointment.canonical_sms_number).to eq(@appointment.mobile)
+      end
+    end
+
+    context 'when a `phone` is present' do
+      it 'returns the `phone`' do
+        @appointment = Appointment.new(
+          phone: '07715 930 444',
+          mobile: ''
+        )
+
+        expect(@appointment.canonical_sms_number).to eq(@appointment.phone)
+      end
+    end
+  end
+
   describe '#type_of_appointment' do
     context 'without a date of birth' do
       it 'returns an empty string' do

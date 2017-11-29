@@ -204,6 +204,8 @@ GEM
     nio4r (2.1.0)
     nokogiri (1.8.0)
       mini_portile2 (~> 2.2.0)
+    notifications-ruby-client (2.2.0)
+      jwt (~> 1.5)
     oauth2 (1.4.0)
       faraday (>= 0.8, < 0.13)
       jwt (~> 1.0)
@@ -458,6 +460,7 @@ DEPENDENCIES
   lograge!
   momentjs-rails (= 2.15.1)!
   newrelic_rpm!
+  notifications-ruby-client!
   oj!
   parallel_tests!
   pg (~> 0.18)!
@@ -501,4 +504,4 @@ RUBY VERSION
    ruby 2.4.2p198
 
 BUNDLED WITH
-   1.15.4
+   1.16.0
