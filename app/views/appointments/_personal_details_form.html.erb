@@ -10,7 +10,9 @@
                                                         api_key: 'pubkey-b37c931b1fcef90bf2d83b7cdfd6df39',
                                                         api_host: Rails.env.test? ? 'http://localhost:9293' : nil } %>
     <%= f.telephone_field :phone, class: 't-phone', label: required_label(:phone) %>
-    <%= f.telephone_field :mobile, class: 't-mobile' %>
+    <%= f.telephone_field :mobile, class: 't-mobile',
+      help: 'Pension Wise will use this to send an SMS appointment reminder by 8am - 48 hours before the appointment.'
+    %>
     <%= render 'shared/date_of_birth_form_field', form: f if defined?(edit) && edit %>
   </div>
   <div class="col-md-6">
