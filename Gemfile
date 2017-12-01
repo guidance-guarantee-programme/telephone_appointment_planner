@@ -32,6 +32,7 @@ source 'https://rubygems.org' do
   gem 'kaminari'
   gem 'momentjs-rails', '2.15.1'
   gem 'newrelic_rpm'
+  gem 'notifications-ruby-client'
   gem 'oj'
   gem 'pg', '~> 0.18'
   gem 'plek'
