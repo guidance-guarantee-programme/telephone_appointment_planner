@@ -9,7 +9,7 @@ $calendar-appointment-cancelled-background: $color-medium-carmine;
 $calendar-past-appointment-cancelled-background: lighten($color-medium-carmine, 20%);
 $calendar-appointment-moved-background: $color-green;
 $calendar-holiday-anchor-visited: $color-white;
-$calendar-holiday-background: $color-alto;
+$calendar-holiday-background: darken($color-alto, 10%);
 $calendar-schedule-background: $color-xanadu;
 $calendar-bookable-slot-background: $color-madang;
 $calendar-loading-view-background: transparentize($color-white, .2);
@@ -231,6 +231,7 @@ $guider-row-height: 120px;
 
 .fc-event--cancelled {
   @include striped($calendar-appointment-cancelled-background);
+  margin: 1.5px;
   border-color: $calendar-appointment-cancelled-background;
 
   &:hover td {
