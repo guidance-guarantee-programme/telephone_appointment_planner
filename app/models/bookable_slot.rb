@@ -1,7 +1,5 @@
 # rubocop:disable Metrics/ClassLength
 class BookableSlot < ApplicationRecord
-  GUIDER_CONFERENCE_DAYS = Date.parse('2017-10-03')..Date.parse('2017-10-04')
-
   belongs_to :guider, class_name: 'User'
 
   scope :for_guider, ->(guider) { where(guider: guider) }
@@ -14,13 +12,6 @@ class BookableSlot < ApplicationRecord
 
   def self.within_date_range(from, to)
     where("#{quoted_table_name}.start_at > ? AND #{quoted_table_name}.end_at < ?", from, to)
-  end
-
-  def self.without_guider_conference_days
-    where.not(
-      "#{quoted_table_name}.start_at::date in (?)",
-      GUIDER_CONFERENCE_DAYS
-    )
   end
 
   def self.next_valid_start_date(user = nil)
@@ -38,9 +29,7 @@ class BookableSlot < ApplicationRecord
   end
 
   def self.bookable(from = nil, to = nil)
-    without_appointments(from, to)
-      .without_guider_conference_days
-      .without_holidays
+    without_appointments(from, to).without_holidays
   end
 
   def self.grouped # rubocop:disable Metrics/AbcSize
