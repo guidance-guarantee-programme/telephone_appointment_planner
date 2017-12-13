@@ -91,7 +91,9 @@ class HolidaysController < ApplicationController
         :single_day_start_at,
         :single_day_end_at,
         :multi_day_start_at,
-        :multi_day_end_at
+        :multi_day_end_at,
+        :recur,
+        :single_day_recur_end_at
       )
       .merge(users: user_ids)
   end

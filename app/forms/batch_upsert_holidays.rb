@@ -1,4 +1,4 @@
-class BatchUpsertHolidays
+class BatchUpsertHolidays # rubocop:disable ClassLength
   include ActiveModel::Model
   include DateRangePickerHelper
   extend ActiveModel::Naming
@@ -8,6 +8,8 @@ class BatchUpsertHolidays
   attr_reader :all_day
   attr_reader :start_at
   attr_reader :end_at
+  attr_reader :recur
+  attr_reader :single_day_recur_end_at
 
   alias single_day_start_at start_at
   alias single_day_end_at end_at
@@ -17,13 +19,15 @@ class BatchUpsertHolidays
   validates :title, presence: true
   validates :users, presence: true
   validate :end_at_comes_after_start_at
+  validate :validate_recurrence_dates
 
   def initialize(options = {})
     @previous_holidays = options[:previous_holidays]
-    @users = options[:users]
-
-    @title = options[:title]
-    @all_day = ActiveRecord::Type::Boolean.new.cast(options[:all_day]) || false
+    @users   = options[:users]
+    @title   = options[:title]
+    @all_day = sanitise_boolean(options[:all_day])
+    @recur   = sanitise_boolean(options[:recur])
+    @single_day_recur_end_at = options.fetch(:single_day_recur_end_at) { Date.current }
 
     calculate_range(options)
   end
@@ -45,6 +49,10 @@ class BatchUpsertHolidays
   end
 
   private
+
+  def sanitise_boolean(value)
+    ActiveRecord::Type::Boolean.new.cast(value) || false
+  end
 
   def calculate_range(options)
     @start_at = options[:start_at]
@@ -73,19 +81,30 @@ class BatchUpsertHolidays
   def create_holidays
     ActiveRecord::Base.transaction do
       User.where(id: users).each do |user|
-        create_holiday_for_user(user)
+        recur ? create_holidays_for_user(user) : create_holiday_for_user(user)
       end
     end
   end
 
-  def create_holiday_for_user(user)
+  def create_holidays_for_user(user) # rubocop:disable AbcSize
+    (start_at.to_date..single_day_recur_end_at.to_date).each do |day|
+      next if day.on_weekend?
+
+      starting = Time.utc(day.year, day.month, day.day, start_at.hour, start_at.min)
+      ending   = Time.utc(day.year, day.month, day.day, end_at.hour, end_at.min)
+
+      create_holiday_for_user(user, starting: starting, ending: ending)
+    end
+  end
+
+  def create_holiday_for_user(user, starting: start_at, ending: end_at)
     Holiday.create!(
       title: title,
       all_day: all_day,
       bank_holiday: false,
       user: user,
-      start_at: start_at,
-      end_at: end_at
+      start_at: starting,
+      end_at: ending
     )
   end
 
@@ -96,5 +115,12 @@ class BatchUpsertHolidays
     else
       errors.add(:single_day_end_at, 'must come after start')
     end
+  end
+
+  def validate_recurrence_dates
+    return unless recur
+    return if single_day_recur_end_at > start_at
+
+    errors.add(:single_day_recur_end_at, 'must come after start')
   end
 end
