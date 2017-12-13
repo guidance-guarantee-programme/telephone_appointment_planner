@@ -11,6 +11,17 @@ RSpec.feature 'Resource manager manages holidays' do
   let(:today) { Time.zone.parse('2016-10-18 09:00') }
   let(:next_week) { BusinessDays.from_now(5).change(hour: 9, min: 0) }
 
+  scenario 'Creating a recurring holiday', js: true do
+    given_the_user_is_a_resource_manager do
+      travel_to today do
+        and_there_is_a_guider
+        when_they_view_holidays
+        and_they_create_a_recurring_holiday
+        then_they_can_see_the_recurring_holiday
+      end
+    end
+  end
+
   context 'Multiple day holidays' do
     scenario 'Creates a holiday', js: true do
       given_the_user_is_a_resource_manager do
@@ -116,6 +127,51 @@ RSpec.feature 'Resource manager manages holidays' do
 
   def when_they_view_holidays
     @page = Pages::Holidays.new.tap(&:load)
+  end
+
+  def and_they_create_a_recurring_holiday
+    @page.wait_until_create_holiday_visible
+    @page.create_holiday.click
+    @page = Pages::NewHoliday.new
+
+    @page.title.set 'Holiday Title'
+    @page.select_all_users
+
+    @page.single_day.set_date_range(
+      Time.zone.now.beginning_of_day.change(hour: 14),
+      Time.zone.now.beginning_of_day.change(hour: 16)
+    )
+
+    @page.recur.set(true)
+    @page.wait_until_recur_end_at_visible
+    @page.set_recur_end_at(2.days.from_now.to_date)
+
+    @page.save.click
+  end
+
+  def then_they_can_see_the_recurring_holiday
+    @page = Pages::Holidays.new
+    expect(@page).to be_displayed
+
+    expect_holidays_to_match(
+      [
+        {
+          title: 'Holiday Title',
+          start_at: '2016-10-18T14:00:00.000Z',
+          end_at: '2016-10-18T16:00:00.000Z'
+        },
+        {
+          title: 'Holiday Title',
+          start_at: '2016-10-19T14:00:00.000Z',
+          end_at: '2016-10-19T16:00:00.000Z'
+        },
+        {
+          title: 'Holiday Title',
+          start_at: '2016-10-20T14:00:00.000Z',
+          end_at: '2016-10-20T16:00:00.000Z'
+        }
+      ]
+    )
   end
 
   def then_they_can_see_the_holidays_for_this_week

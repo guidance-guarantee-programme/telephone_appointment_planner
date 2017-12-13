@@ -100,7 +100,35 @@
         </div>
       <% end %>
     </div>
+    <% if recurrence %>
+    <div class="col-md-12" data-module="checkbox-toggle">
+      <div class="form-group">
+        <%= form.check_box :recur, label: 'This holiday recurs over multiple days', value: 'true', class: 't-recur', data: { target: 'recur-toggle' } %>
+      </div>
+      <div class="form-group col-md-6" id="recur-toggle">
+        <%=
+          form.text_field(
+            :single_day_recur_end_at,
+            label: 'Recur until',
+            value: build_date_range_picker_date(holiday.single_day_recur_end_at),
+            class: 't-recur-end-at',
+            data: {
+              module: 'date-range-picker',
+              config: {
+                singleDatePicker: true,
+                autoApply: true,
+                locale: {
+                  format: 'DD/MM/YYYY'
+                }
+              }
+            }
+          )
+        %>
+      </div>
+    </div>
+    <% end %>
   </div>
+
   <div class="row">
     <div class="col-md-12">
       <%= form.submit 'Save', class: 't-save' %>
