@@ -24,7 +24,7 @@ module Api
       end
 
       def create
-        model.assign_to_guider
+        model.allocate
         model.save
       end
 

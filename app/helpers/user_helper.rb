@@ -22,7 +22,7 @@ module UserHelper
   end
 
   def user_options
-    User.guiders.active.map do |guider|
+    User.guiders.active.reorder(:name).map do |guider|
       [
         guider.name,
         guider.id,

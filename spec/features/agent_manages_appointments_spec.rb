@@ -351,6 +351,7 @@ RSpec.feature 'Agent manages appointments' do
   end
 
   def when_they_reschedule_the_appointment
+    expect(@page).to have_no_availability_calendar_off
     @page.start_at.set day.change(hour: 16, min: 15).to_s
     @page.end_at.set day.change(hour: 17, min: 15).to_s
     @page.reschedule.click

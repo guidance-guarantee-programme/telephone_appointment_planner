@@ -27,7 +27,8 @@ class AppointmentsController < ApplicationController
   def update_reschedule
     @appointment = Appointment.find(params[:appointment_id])
     @appointment.assign_attributes(update_reschedule_params)
-    @appointment.assign_to_guider
+    @appointment.allocate(via_slot: calendar_scheduling?)
+
     if @appointment.save
       Notifier.new(@appointment).call
       redirect_to edit_appointment_path(@appointment), success: 'Appointment has been rescheduled'
@@ -58,7 +59,7 @@ class AppointmentsController < ApplicationController
 
   def preview
     @appointment = Appointment.new(create_params.merge(agent: current_user))
-    @appointment.assign_to_guider
+    @appointment.allocate
     if @appointment.valid?
       render :preview
     else
@@ -68,7 +69,7 @@ class AppointmentsController < ApplicationController
 
   def create
     @appointment = Appointment.new(create_params.merge(agent: current_user))
-    @appointment.assign_to_guider
+    @appointment.allocate
 
     if creating? && @appointment.save
       CustomerUpdateJob.perform_later(@appointment, CustomerUpdateActivity::CONFIRMED_MESSAGE)
@@ -90,6 +91,10 @@ class AppointmentsController < ApplicationController
   end
 
   private
+
+  def calendar_scheduling?
+    ActiveRecord::Type::Boolean.new.deserialize(params[:scheduled])
+  end
 
   def redirect_on_exact_match(result)
     redirect_to(edit_appointment_path(result))
@@ -148,7 +153,16 @@ class AppointmentsController < ApplicationController
   end
 
   def update_reschedule_params
-    params.require(:appointment).permit(:start_at, :end_at)
+    start_at = if calendar_scheduling?
+                 params[:appointment][:start_at]
+               else
+                 params[:appointment][:ad_hoc_start_at]
+               end
+
+    params
+      .require(:appointment)
+      .permit(:end_at, :guider_id)
+      .merge(start_at: start_at)
   end
 
   def creating?
