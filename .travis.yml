@@ -12,8 +12,8 @@ cache:
   - tmp/cache/assets/test
   - tmp/cache/assets/sprockets
 before_script:
-- nvm install 7
-- nvm use 7
+- nvm install 8
+- nvm use 8
 - npm install
 - gem update --system
 - bundle exec rails assets:precompile RAILS_ENV=test
