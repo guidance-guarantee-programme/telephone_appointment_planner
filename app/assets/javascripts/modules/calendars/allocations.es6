@@ -94,14 +94,6 @@
         .fadeOut('slow');
     }
 
-    getCookieConfig() {
-
-    }
-
-    setCookieConfig() {
-
-    }
-
     setCalendarToCorrectHeight() {
       this.alterHeight();
       $(window).on('resize', this.debounce(this.alterHeight.bind(this), 20));
