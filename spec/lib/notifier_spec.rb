@@ -41,7 +41,7 @@ RSpec.describe Notifier, '#call' do
     end
 
     context 'but the appointment was in the past' do
-      before { travel_to 1.week.from_now }
+      before { travel_to 2.weeks.from_now }
       after { travel_back }
 
       it 'does not send customer a mail' do
