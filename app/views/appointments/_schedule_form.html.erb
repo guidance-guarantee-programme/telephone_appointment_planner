@@ -17,19 +17,7 @@
         <%= form.text_field(
             :ad_hoc_start_at,
             class: 't-ad-hoc-start-at', 
-            data: {
-              module: 'date-range-picker',
-              config: {
-                singleDatePicker: true,
-                timePicker: true,
-                timePickerSeconds: false,
-                timePickerIncrement: 10,
-                autoApply: true,
-                locale: {
-                  format: 'DD/MM/YYYY h:mm A'
-                }
-              }
-            }
+            data: { module: 'date-time-picker' }
           )
         %>
       </div>

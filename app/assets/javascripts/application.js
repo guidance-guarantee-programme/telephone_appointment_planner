@@ -16,6 +16,7 @@
 //= require qTip2
 //= require listjs
 //= require bootstrap-daterangepicker
+//= require eonasdan-bootstrap-datetimepicker
 //= require core.js/core.js
 //= require select2
 //= require sortable-rails

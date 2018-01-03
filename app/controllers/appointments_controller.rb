@@ -160,7 +160,7 @@ class AppointmentsController < ApplicationController
   def create_params
     params
       .require(:appointment)
-      .permit(updateable_params.concat(%i(guider_id end_at rebooked_from_id)))
+      .permit(updateable_params.concat(%i(ad_hoc_start_at guider_id end_at rebooked_from_id)))
       .merge(start_at: munge_start_at)
   end
 
