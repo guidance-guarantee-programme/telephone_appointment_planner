@@ -2,13 +2,13 @@
   <% if current_user.resource_manager? %>
     <div class="radio">
       <%= label_tag :scheduled_true do %>
-        <%= radio_button_tag :scheduled, 'true', true, class: 't-availability-calendar-on', data: { target: 'availability-calendar-on' } %>
+        <%= radio_button_tag :scheduled, 'true', calendar_scheduling?, class: 't-availability-calendar-on', data: { target: 'availability-calendar-on' } %>
         <strong>Choose from the availability calendar</strong>
       <% end %>
     </div>
     <div class="radio">
       <%= label_tag :scheduled_false do %>
-        <%= radio_button_tag :scheduled, 'false', false, class: 't-availability-calendar-off', data: { target: 'availability-calendar-off' } %>
+        <%= radio_button_tag :scheduled, 'false', !calendar_scheduling?, class: 't-availability-calendar-off', data: { target: 'availability-calendar-off' } %>
         <strong>Choose from ad-hoc availability</strong>
       <% end %>
     </div>
@@ -36,7 +36,7 @@
       <div class="form-group">
         <%= form.select(
             :guider_id,
-            options_for_select(user_options),
+            options_for_select(user_options, @appointment.guider_id),
             { label: 'Guider' },
             class: 't-guider',
             data: { module: 'guider-select' }

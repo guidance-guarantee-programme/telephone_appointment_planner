@@ -1,6 +1,6 @@
 module Pages
   class NewAppointment < Base
-    set_url '/appointments/new'
+    set_url '/appointments/new{?query*}'
 
     element :first_name,                            '.t-first-name'
     element :last_name,                             '.t-last-name'
@@ -22,5 +22,14 @@ module Pages
     element :type_of_appointment_50_54,             '.t-type-of-appointment-50-54'
     element :suggestion,                            '.t-suggestion'
     element :where_you_heard, '.t-where-you-heard'
+
+    element :availability_calendar_off, '.t-availability-calendar-off'
+    element :availability_calendar_on, '.t-availability-calendar-on'
+    element :guider, '.t-guider'
+    element :ad_hoc_start_at, '.t-ad-hoc-start-at'
+
+    def ad_hoc_start_at(value)
+      execute_script("$('.t-ad-hoc-start-at').val('#{value}')")
+    end
   end
 end
