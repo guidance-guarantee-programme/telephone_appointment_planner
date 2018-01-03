@@ -54,7 +54,7 @@ if Rails.env.development?
     appointment = FactoryGirl.build(:appointment, guider: User.first)
     appointment.start_at = slot.start_at
     appointment.end_at = slot.end_at
-    appointment.assign_to_guider
+    appointment.allocate
     appointment.save!
     print '.'
   end

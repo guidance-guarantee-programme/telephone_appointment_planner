@@ -2,6 +2,8 @@
 class Appointment < ApplicationRecord
   acts_as_copy_target
 
+  APPOINTMENT_LENGTH_MINUTES = 70.minutes.freeze
+
   FAKE_DATE_OF_BIRTH = Date.parse('1900-01-01').freeze
 
   NON_NOTIFY_COLUMNS = %w(
@@ -32,6 +34,8 @@ class Appointment < ApplicationRecord
   belongs_to :guider, class_name: 'User'
 
   belongs_to :rebooked_from, class_name: 'Appointment'
+
+  attr_accessor :ad_hoc_start_at
 
   scope :cancelled, -> { where(status: %i(cancelled_by_customer cancelled_by_pension_wise)) }
   scope :not_cancelled, -> { where.not(status: %i(cancelled_by_customer cancelled_by_pension_wise)) }
@@ -130,12 +134,12 @@ class Appointment < ApplicationRecord
     status.start_with?('cancelled')
   end
 
-  def assign_to_guider
-    slot = BookableSlot.find_available_slot(start_at)
-    self.guider = nil
-    return unless slot
-    self.end_at = slot.end_at
-    self.guider = slot.guider
+  def allocate(via_slot: true)
+    if via_slot
+      allocate_slot
+    else
+      self.end_at = start_at + APPOINTMENT_LENGTH_MINUTES
+    end
   end
 
   def date_of_birth=(value)
@@ -188,6 +192,15 @@ class Appointment < ApplicationRecord
   end
 
   private
+
+  def allocate_slot
+    slot = BookableSlot.find_available_slot(start_at)
+    self.guider = nil
+    return unless slot
+
+    self.end_at = slot.end_at
+    self.guider = slot.guider
+  end
 
   def format_name
     self.first_name = first_name.titleize if first_name

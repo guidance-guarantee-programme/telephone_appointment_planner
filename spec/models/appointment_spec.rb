@@ -238,7 +238,7 @@ RSpec.describe Appointment, type: :model do
     end
   end
 
-  describe '#assign_to_guider' do
+  describe '#allocate' do
     let(:appointment_start_time) do
       BusinessDays.from_now(5).change(hour: 9, min: 0, second: 0)
     end
@@ -283,7 +283,7 @@ RSpec.describe Appointment, type: :model do
         subject.memorable_word = 'lozenge'
         subject.start_at = appointment_start_time
         subject.end_at = appointment_end_time
-        subject.assign_to_guider
+        subject.allocate
         expect(subject.guider).to eq guider_with_slot
       end
 
@@ -300,7 +300,7 @@ RSpec.describe Appointment, type: :model do
         it 'does not assign to a guider' do
           subject.start_at = appointment_start_time
           subject.end_at = appointment_end_time
-          expect { subject.assign_to_guider }.to_not change { subject.guider }
+          expect { subject.allocate }.to_not change { subject.guider }
         end
       end
 
@@ -317,7 +317,7 @@ RSpec.describe Appointment, type: :model do
         it 'does not assign to a guider' do
           subject.start_at = appointment_start_time
           subject.end_at = appointment_end_time
-          expect { subject.assign_to_guider }.to_not change { subject.guider }
+          expect { subject.allocate }.to_not change { subject.guider }
         end
       end
 
@@ -333,7 +333,7 @@ RSpec.describe Appointment, type: :model do
         it 'does not assign to a guider' do
           subject.start_at = appointment_start_time
           subject.end_at = appointment_end_time
-          expect { subject.assign_to_guider }.to_not change { subject.guider }
+          expect { subject.allocate }.to_not change { subject.guider }
         end
       end
     end

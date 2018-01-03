@@ -6,6 +6,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-daterangepicker'
+  gem 'rails-assets-eonasdan-bootstrap-datetimepicker'
   gem 'rails-assets-fullcalendar', '3.2.0'
   gem 'rails-assets-fullcalendar-scheduler', '1.5.1'
   gem 'rails-assets-listjs'

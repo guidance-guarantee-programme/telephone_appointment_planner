@@ -5,5 +5,14 @@ module Pages
     element :end_at,   '.t-end-at', visible: false
     element :reschedule, '.t-reschedule'
     element :slot_unavailable_message, '.t-slot-unavailable-message'
+
+    element :availability_calendar_off, '.t-availability-calendar-off'
+    element :availability_calendar_on, '.t-availability-calendar-on'
+    element :guider, '.t-guider'
+    element :ad_hoc_start_at, '.t-ad-hoc-start-at'
+
+    def ad_hoc_start_at(value)
+      execute_script("$('.t-ad-hoc-start-at').val('#{value}')")
+    end
   end
 end

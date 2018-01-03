@@ -12,10 +12,13 @@
 <hr>
 
 <%= form_for @appointment, layout: :basic do |f| %>
+  <%= hidden_field_tag :scheduled, calendar_scheduling? %>
   <%= f.hidden_field :rebooked_from_id %>
   <%= f.hidden_field :date_of_birth %>
   <%= f.hidden_field :start_at %>
+  <%= f.hidden_field :ad_hoc_start_at %>
   <%= f.hidden_field :end_at %>
+  <%= f.hidden_field :guider_id %>
 
   <%= f.hidden_field :first_name %>
   <%= f.hidden_field :last_name %>
