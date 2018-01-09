@@ -5,6 +5,10 @@ class SmsAppointmentReminderJob < ApplicationJob
 
   queue_as :default
 
+  rescue_from(Notifications::Client::RequestError) do |exception|
+    Bugsnag.notify(exception)
+  end
+
   def perform(appointment)
     return unless api_key
 
