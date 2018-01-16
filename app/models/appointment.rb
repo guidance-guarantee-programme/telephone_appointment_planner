@@ -50,7 +50,7 @@ class Appointment < ApplicationRecord
   end
 
   def self.needing_reminder
-    window = Time.zone.now..48.hours.from_now.in_time_zone
+    window = 3.hours.from_now..48.hours.from_now.in_time_zone
 
     pending
       .where(start_at: window)
