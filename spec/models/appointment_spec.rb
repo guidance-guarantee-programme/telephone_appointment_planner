@@ -445,6 +445,16 @@ RSpec.describe Appointment, type: :model do
   end
 
   describe '.needing_reminder' do
+    context 'less than 3 hours before the appointment' do
+      it 'does not return the appointment' do
+        appointment = create(:appointment, start_at: BusinessDays.from_now(10))
+
+        travel_to(appointment.start_at - 2.hours) do
+          expect(Appointment.needing_reminder).not_to include(appointment)
+        end
+      end
+    end
+
     context 'more than 48 hours before the appointment' do
       it 'does not return the appointment' do
         appointment = create(:appointment, start_at: BusinessDays.from_now(10))
