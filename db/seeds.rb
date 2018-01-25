@@ -12,8 +12,8 @@ if Rails.env.development?
   print "Seeding #{USER_COUNT} users"
   schedules = [:with_early_shift, :with_mid_shift, :with_late_shift].cycle
   USER_COUNT.times do |n|
-    guider = FactoryGirl.create(:guider)
-    schedule = FactoryGirl.create(
+    guider = FactoryBot.create(:guider)
+    schedule = FactoryBot.create(
       :schedule,
       schedules.next,
       start_at: Time.zone.now,
@@ -27,7 +27,7 @@ if Rails.env.development?
   holiday_guiders = User.guiders.cycle
   HOLIDAY_COUNT.times do
     date = Faker::Date.between(Time.zone.today, 1.month.from_now)
-    FactoryGirl.create(
+    FactoryBot.create(
       :holiday,
       user: holiday_guiders.next,
       all_day: false,
@@ -51,7 +51,7 @@ if Rails.env.development?
           .sample(APPOINTMENT_COUNT)
           .cycle(1)
   slots.each do |slot|
-    appointment = FactoryGirl.build(:appointment, guider: User.first)
+    appointment = FactoryBot.build(:appointment, guider: User.first)
     appointment.start_at = slot.start_at
     appointment.end_at = slot.end_at
     appointment.allocate

@@ -52,7 +52,7 @@ source 'https://rubygems.org' do
 
   group :development, :test do
     gem 'capybara'
-    gem 'factory_girl_rails', '~> 4.0'
+    gem 'factory_bot_rails'
     gem 'faker'
     gem 'launchy'
     gem 'parallel_tests'
