@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :appointment do
     agent { create(:agent) }
     start_at { BusinessDays.from_now(3).at_midday }

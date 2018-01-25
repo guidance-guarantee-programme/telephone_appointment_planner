@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :schedule do
     user { build(:user) }
     start_at { Time.zone.now.beginning_of_day }

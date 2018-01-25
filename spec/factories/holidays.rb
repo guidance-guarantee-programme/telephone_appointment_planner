@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :holiday do
     title { Faker::Book.title }
     user { create(:guider) }

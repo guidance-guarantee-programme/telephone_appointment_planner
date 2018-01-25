@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :slot do
     day_of_week 3
     start_hour 9

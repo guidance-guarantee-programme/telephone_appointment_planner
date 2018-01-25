@@ -23,6 +23,6 @@ class AppointmentMailerPreview < ActionMailer::Preview
   private
 
   def random_appointment
-    Appointment.all.sample(1).first || FactoryGirl.create(:appointment)
+    Appointment.all.sample(1).first || FactoryBot.create(:appointment)
   end
 end
