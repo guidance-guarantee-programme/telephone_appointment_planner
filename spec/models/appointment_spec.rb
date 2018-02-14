@@ -236,6 +236,17 @@ RSpec.describe Appointment, type: :model do
         expect(subject).to_not be_valid
       end
     end
+
+    context 'when attempting to book on a guider conference day' do
+      it 'is not valid' do
+        subject.start_at = '2018-07-17 13:00'
+        subject.end_at   = '2017-07-17 14:00'
+
+        travel_to '2018-07-12 13:00' do
+          expect(subject).not_to be_valid
+        end
+      end
+    end
   end
 
   describe '#allocate' do

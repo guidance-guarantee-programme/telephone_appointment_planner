@@ -82,6 +82,7 @@ class Appointment < ApplicationRecord
 
   validate :not_within_two_business_days, unless: :agent_is_resource_manager?
   validate :valid_within_booking_window
+  validate :not_during_guider_conference
   validate :date_of_birth_valid
   validate :email_valid, if: :agent_is_pension_wise_api?, on: :create
 
@@ -209,6 +210,14 @@ class Appointment < ApplicationRecord
 
   def after_audit
     Activity.from(audits.last, self)
+  end
+
+  def not_during_guider_conference
+    return unless start_at
+
+    if BookableSlot::GUIDER_CONFERENCE_DAYS.cover?(start_at.to_date) # rubocop:disable Style/GuardClause
+      errors.add(:start_at, 'must not be during the guider conference')
+    end
   end
 
   def not_within_two_business_days
