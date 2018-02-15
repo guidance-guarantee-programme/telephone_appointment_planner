@@ -1,6 +1,9 @@
 class User < ApplicationRecord
   include GDS::SSO::User
 
+  TPAS_ORGANISATION_ID = '14a48488-a42f-422d-969d-526e30922fe4'.freeze
+  TP_ORGANISATION_ID   = '41075b50-6385-4e8b-a17d-a7b9aae5d220'.freeze
+
   ALL_PERMISSIONS = [
     PENSION_WISE_API_PERMISSION = 'pension_wise_api'.freeze,
     RESOURCE_MANAGER_PERMISSION = 'resource_manager'.freeze,

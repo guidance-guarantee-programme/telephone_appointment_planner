@@ -9,14 +9,17 @@ FactoryBot.define do
     permissions ['signin']
 
     factory :guider_and_resource_manager do
+      organisation_content_id User::TPAS_ORGANISATION_ID
       permissions { [User::RESOURCE_MANAGER_PERMISSION, User::GUIDER_PERMISSION] }
     end
 
     factory :resource_manager do
+      organisation_content_id User::TPAS_ORGANISATION_ID
       permissions { Array(User::RESOURCE_MANAGER_PERMISSION) }
     end
 
     factory :guider do
+      organisation_content_id User::TPAS_ORGANISATION_ID
       permissions { Array(User::GUIDER_PERMISSION) }
 
       factory :deactivated_guider do
@@ -25,10 +28,12 @@ FactoryBot.define do
     end
 
     factory :agent do
+      organisation_content_id User::TP_ORGANISATION_ID
       permissions { Array(User::AGENT_PERMISSION) }
     end
 
     factory :contact_centre_team_leader do
+      organisation_content_id User::TP_ORGANISATION_ID
       permissions { Array(User::CONTACT_CENTRE_TEAM_LEADER_PERMISSION) }
     end
 
