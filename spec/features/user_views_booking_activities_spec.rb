@@ -45,7 +45,7 @@ RSpec.feature 'User views appointment activities' do
   end
 
   def and_the_message_field_is_cleared
-    expect(@page.activity_feed.message.value).to eq('')
+    expect(@page.activity_feed.message).to have_text('')
   end
 
   def and_the_appointment_was_updated_multiple_times
