@@ -22,6 +22,7 @@ class User < ApplicationRecord
   has_many :group_assignments
   has_many :groups, through: :group_assignments
   has_many :activities, -> { order('created_at DESC') }, foreign_key: :owner_id
+  has_many :colleagues, class_name: 'User', primary_key: :organisation_content_id, foreign_key: :organisation_content_id
 
   scope :guiders, -> { where('permissions @> ?', %(["#{GUIDER_PERMISSION}"])) }
   scope :active, -> { where(active: true) }

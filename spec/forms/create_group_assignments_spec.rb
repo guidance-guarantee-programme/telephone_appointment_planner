@@ -1,11 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe CreateGroupAssignments, '#call' do
+  let(:user) { create(:resource_manager) }
   let(:users) { create_list(:guider, 2) }
   let(:user_ids) { users.map(&:id) }
   let(:group_params) { Hash[name: ['Another Group']] }
 
-  subject { described_class.new(user_ids, group_params[:name]) }
+  subject { described_class.new(user_ids, group_params[:name], user) }
 
   context 'when the users are not already members' do
     it 'assigns the group to the given users' do

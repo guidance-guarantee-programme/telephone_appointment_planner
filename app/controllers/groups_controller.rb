@@ -2,15 +2,16 @@ class GroupsController < ApplicationController
   before_action :authorise_for_resource_managers!
 
   def index
-    @guiders = User.find(user_ids)
+    @guiders = current_user.colleagues.find(user_ids)
     @groups  = Group.assigned_to(user_ids)
-    @all_groups = Group.pluck(:name)
+    @all_groups = Group.for_user(current_user).pluck(:name)
   end
 
   def create
     CreateGroupAssignments.new(
       user_ids,
-      group_params[:name].select(&:present?)
+      group_params[:name].select(&:present?),
+      current_user
     ).call
 
     go_back_with_success('assigned to')

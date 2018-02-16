@@ -8,6 +8,10 @@ FactoryBot.define do
 
     permissions ['signin']
 
+    trait :tp do
+      organisation_content_id User::TP_ORGANISATION_ID
+    end
+
     factory :guider_and_resource_manager do
       organisation_content_id User::TPAS_ORGANISATION_ID
       permissions { [User::RESOURCE_MANAGER_PERMISSION, User::GUIDER_PERMISSION] }
