@@ -1,10 +1,10 @@
 module UserHelper
-  def guider_options
-    groups = Group.includes(:users)
+  def guider_options(user)
+    groups = Group.for_user(user).includes(:users)
 
     {
       'Groups' => group_options(groups),
-      'Users'  => user_options
+      'Users'  => user_options(user)
     }
   end
 
@@ -21,8 +21,8 @@ module UserHelper
     end
   end
 
-  def user_options
-    User.guiders.active.reorder(:name).map do |guider|
+  def user_options(user)
+    user.colleagues.guiders.active.reorder(:name).map do |guider|
       [
         guider.name,
         guider.id,

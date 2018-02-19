@@ -24,7 +24,7 @@
       <div class="form-group">
         <%= form.select(
             :guider_id,
-            options_for_select(user_options, @appointment.guider_id),
+            options_for_select(user_options(current_user), @appointment.guider_id),
             { label: 'Guider' },
             class: 't-guider',
             data: { module: 'guider-select' }

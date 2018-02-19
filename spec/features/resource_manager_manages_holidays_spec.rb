@@ -4,12 +4,21 @@ RSpec.feature 'Resource manager manages holidays' do
   let(:users) do
     [
       create(:guider, name: 'First Guider'),
-      create(:guider, name: 'Second Guider')
+      create(:guider, name: 'Second Guider'),
+      create(:guider, :tp, name: 'A TP Guider')
     ]
   end
 
   let(:today) { Time.zone.parse('2016-10-18 09:00') }
   let(:next_week) { BusinessDays.from_now(5).change(hour: 9, min: 0) }
+
+  scenario 'Creating a holiday for my guiders' do
+    given_the_user_is_a_resource_manager(organisation: :tp) do
+      and_guiders_from_multiple_organisations_exist
+      when_they_attempt_to_create_a_holiday
+      they_see_only_their_guiders
+    end
+  end
 
   scenario 'Creating a recurring holiday', js: true do
     given_the_user_is_a_resource_manager do
@@ -90,6 +99,19 @@ RSpec.feature 'Resource manager manages holidays' do
         then_it_is_deleted
       end
     end
+  end
+
+  def and_guiders_from_multiple_organisations_exist
+    users
+  end
+
+  def when_they_attempt_to_create_a_holiday
+    @page = Pages::NewHoliday.new.tap(&:load)
+    expect(@page).to be_displayed
+  end
+
+  def they_see_only_their_guiders
+    expect(@page).to have_user_options(count: 1)
   end
 
   def and_there_are_some_holidays
@@ -273,7 +295,8 @@ RSpec.feature 'Resource manager manages holidays' do
   def and_there_are_guiders_with_multiple_day_holidays
     @guiders = [
       create(:guider, name: 'a'),
-      create(:guider, name: 'b')
+      create(:guider, name: 'b'),
+      create(:guider, :tp, name: 'TP')
     ]
     @guiders.each do |guider|
       create(
@@ -290,7 +313,8 @@ RSpec.feature 'Resource manager manages holidays' do
   def and_there_are_guiders_with_single_day_holidays
     @guiders = [
       create(:guider, name: 'a'),
-      create(:guider, name: 'b')
+      create(:guider, name: 'b'),
+      create(:guider, :tp, name: 'TP')
     ]
     @guiders.each do |guider|
       create(
@@ -361,7 +385,7 @@ RSpec.feature 'Resource manager manages holidays' do
   end
 
   def then_it_is_deleted
-    expect(Holiday.all).to be_empty
+    expect(Holiday.where.not(user: @guiders.last)).to be_empty
   end
 
   def expect_holidays_to_match(expected_holidays)

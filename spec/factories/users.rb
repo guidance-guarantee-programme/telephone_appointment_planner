@@ -8,6 +8,10 @@ FactoryBot.define do
 
     permissions ['signin']
 
+    trait :tpas do
+      organisation_content_id User::TPAS_ORGANISATION_ID
+    end
+
     trait :tp do
       organisation_content_id User::TP_ORGANISATION_ID
     end

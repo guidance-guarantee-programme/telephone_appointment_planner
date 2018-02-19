@@ -3,7 +3,7 @@
   <%=
     select_tag(
       :filter_guiders,
-      grouped_options_for_select(guider_options),
+      grouped_options_for_select(guider_options(current_user)),
       multiple: 'multiple',
       class: 't-users',
       data: { module: 'advanced-select', placeholder: 'Guider or Group' }

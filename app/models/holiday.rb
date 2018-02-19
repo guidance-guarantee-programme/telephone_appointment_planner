@@ -6,7 +6,7 @@ class Holiday < ApplicationRecord
   validates :start_at, presence: true
   validates :end_at, presence: true
 
-  def self.merged_for_calendar_view
+  def self.merged_for_calendar_view(user) # rubocop:disable MethodLength
     select(
       <<-SQL
         DISTINCT ON(holidays.bank_holiday, holidays.all_day, holidays.start_at, holidays.end_at, holidays.title)
@@ -15,6 +15,7 @@ class Holiday < ApplicationRecord
       SQL
     )
       .joins('LEFT JOIN users ON users.id = holidays.user_id')
+      .where(users: { organisation_content_id: [user.organisation_content_id, nil] })
       .group(:bank_holiday, :all_day, :start_at, :end_at, :title)
       .order(:start_at)
   end
@@ -23,11 +24,10 @@ class Holiday < ApplicationRecord
     where('(user_id = ? OR bank_holiday = true)', user.id)
   end
 
-  def self.overlapping_or_inside(start_at, end_at)
-    range = start_at..end_at
-    where(start_at: range)
-      .or(where(end_at: range))
-      .or(where('(start_at < ? AND end_at > ?)', start_at, end_at))
+  def self.overlapping_or_inside(start_at, end_at, user)
+    includes(:user)
+      .where(users: { organisation_content_id: [user.organisation_content_id, nil] })
+      .where('(holidays.start_at, holidays.end_at) OVERLAPS (?, ?)', start_at, end_at)
   end
 
   def holiday_ids

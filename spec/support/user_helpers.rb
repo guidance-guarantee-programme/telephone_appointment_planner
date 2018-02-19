@@ -27,8 +27,8 @@ module UserHelpers
     end
   end
 
-  def given_the_user(type)
-    GDS::SSO.test_user = create(type)
+  def given_the_user(type, organisation = :tpas)
+    GDS::SSO.test_user = create(type, organisation)
     yield
   ensure
     GDS::SSO.test_user = nil
@@ -50,8 +50,8 @@ module UserHelpers
     given_the_user(:guider, &block)
   end
 
-  def given_the_user_is_a_resource_manager(&block)
-    given_the_user(:resource_manager, &block)
+  def given_the_user_is_a_resource_manager(organisation: :tpas, &block)
+    given_the_user(:resource_manager, organisation, &block)
   end
 
   def given_the_user_is_an_agent(&block)
