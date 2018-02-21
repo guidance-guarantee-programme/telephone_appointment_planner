@@ -3,6 +3,7 @@ class User < ApplicationRecord
 
   TPAS_ORGANISATION_ID = '14a48488-a42f-422d-969d-526e30922fe4'.freeze
   TP_ORGANISATION_ID   = '41075b50-6385-4e8b-a17d-a7b9aae5d220'.freeze
+  CAS_ORGANISATION_ID  = '272e2a93-c7f5-43f7-bd40-c21bddb2d56b'.freeze
 
   ALL_PERMISSIONS = [
     PENSION_WISE_API_PERMISSION = 'pension_wise_api'.freeze,
@@ -45,5 +46,9 @@ class User < ApplicationRecord
 
   def pension_wise_api?
     has_permission?(PENSION_WISE_API_PERMISSION)
+  end
+
+  def tp?
+    organisation_content_id == TP_ORGANISATION_ID
   end
 end

@@ -21,8 +21,9 @@ module UserHelper
     end
   end
 
-  def user_options(user)
-    user.colleagues.guiders.active.reorder(:name).map do |guider|
+  def user_options(user, scoped: true)
+    scope = scoped ? user.colleagues : User
+    scope.guiders.active.reorder(:name).map do |guider|
       [
         guider.name,
         guider.id,

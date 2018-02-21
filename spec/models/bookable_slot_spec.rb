@@ -7,9 +7,9 @@ RSpec.describe BookableSlot, type: :model do
       .change(hour: hour, min: minute)
   end
 
-  def result
+  def result(current_user = user)
     BookableSlot.with_guider_count(
-      user,
+      current_user,
       BusinessDays.before_now(5),
       BusinessDays.from_now(10)
     )
@@ -287,6 +287,30 @@ RSpec.describe BookableSlot, type: :model do
   end
 
   describe '#with_guider_count' do
+    describe 'requesting with differing providers' do
+      it 'sees the correct slots based on organisational membership' do
+        [
+          @guider_tpas = create(:guider, :tpas),
+          @guider_tp   = create(:guider, :tp),
+          @guiders_cas = create_list(:guider, 2, :cas)
+        ].flatten.each do |guider|
+          create(
+            :bookable_slot,
+            guider: guider,
+            start_at: make_time(10, 30),
+            end_at: make_time(11, 30)
+          )
+        end
+
+        # TP can see all slots irrespectively
+        expect(result(@guider_tp).first).to include(guiders: 4)
+        # TPAS can see their own slot
+        expect(result(@guider_tpas).first).to include(guiders: 1)
+        # CAS can see their own slots
+        expect(result(@guiders_cas.first).first).to include(guiders: 2)
+      end
+    end
+
     context 'three guiders with bookable slots' do
       let(:guiders) do
         create_list(:guider, 3)

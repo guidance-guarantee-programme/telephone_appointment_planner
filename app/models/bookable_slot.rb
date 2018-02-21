@@ -105,11 +105,19 @@ class BookableSlot < ApplicationRecord
     select("DISTINCT #{quoted_table_name}.start_at, #{quoted_table_name}.end_at, count(1) AS guiders")
       .bookable
       .starting_after_next_valid_start_date(user)
+      .for_organisation(user)
       .group("#{quoted_table_name}.start_at, #{quoted_table_name}.end_at")
       .within_date_range(from, to)
       .map do |us|
         { guiders: us.attributes['guiders'], start: us.start_at, end: us.end_at, selected: false }
       end
+  end
+
+  def self.for_organisation(user)
+    return where('1 = 1') if user.tp?
+
+    joins(:guider)
+      .where(users: { organisation_content_id: user.organisation_content_id })
   end
 
   def self.generate_for_guider(guider)
