@@ -54,8 +54,8 @@ module UserHelpers
     given_the_user(:resource_manager, organisation, &block)
   end
 
-  def given_the_user_is_an_agent(&block)
-    given_the_user(:agent, &block)
+  def given_the_user_is_an_agent(organisation: :tp, &block)
+    given_the_user(:agent, organisation, &block)
   end
 
   def given_the_user_has_no_permissions(&block)

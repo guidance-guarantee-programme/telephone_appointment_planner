@@ -12,8 +12,8 @@ RSpec.describe AppointmentSearch, type: :model do
       ]
     end
 
-    def results(q, start_at, end_at)
-      described_class.new(q, start_at, end_at).search
+    def results(q, start_at, end_at, current_user = create(:agent))
+      described_class.new(q, start_at, end_at, current_user).search
     end
 
     it 'returns all results' do

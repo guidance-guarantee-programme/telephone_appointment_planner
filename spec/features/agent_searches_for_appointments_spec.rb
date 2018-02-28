@@ -1,6 +1,30 @@
 require 'rails_helper'
 
 RSpec.feature 'Agent searches for appointments' do
+  scenario 'Searching as a TP agent' do
+    given_appointments_exist_across_multiple_organisations
+    given_the_user_is_an_agent(organisation: :tp) do
+      when_they_search_for_nothing
+      then_they_see_appointments_across_multiple_organisations
+    end
+  end
+
+  scenario 'Searching as a CAS resource manager' do
+    given_appointments_exist_across_multiple_organisations
+    given_the_user_is_a_resource_manager(organisation: :cas) do
+      when_they_search_for_nothing
+      then_they_are_redirected_to_their_single_appointment_for('Becky')
+    end
+  end
+
+  scenario 'Searching as a TPAS resource manager' do
+    given_appointments_exist_across_multiple_organisations
+    given_the_user_is_a_resource_manager(organisation: :tpas) do
+      when_they_search_for_nothing
+      then_they_are_redirected_to_their_single_appointment_for('George')
+    end
+  end
+
   scenario 'searches for nothing' do
     given_the_user_is_an_agent do
       and_appointments_exist
@@ -32,6 +56,27 @@ RSpec.feature 'Agent searches for appointments' do
       when_they_search_for_a_name
       then_they_can_see_those_filtered_appointments_only
     end
+  end
+
+  def given_appointments_exist_across_multiple_organisations
+    @appointments = [
+      create(:appointment, first_name: 'George', guider: create(:guider, :tpas)),
+      create(:appointment, first_name: 'Daisy', guider: create(:guider, :tp)),
+      create(:appointment, first_name: 'Becky', guider: create(:guider, :cas))
+    ]
+  end
+
+  def then_they_see_appointments_across_multiple_organisations
+    expect(@page).to have_results(count: 3)
+
+    %w(George Daisy Becky).each { |name| expect(@page).to have_text(name) }
+  end
+
+  def then_they_are_redirected_to_their_single_appointment_for(name)
+    @page = Pages::EditAppointment.new
+    expect(@page).to be_displayed
+
+    expect(@page.first_name.value).to eq(name)
   end
 
   def and_appointments_exist
