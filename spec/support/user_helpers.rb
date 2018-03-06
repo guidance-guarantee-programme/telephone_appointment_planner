@@ -46,8 +46,8 @@ module UserHelpers
     given_the_user(:guider_and_resource_manager, &block)
   end
 
-  def given_the_user_is_a_guider(&block)
-    given_the_user(:guider, &block)
+  def given_the_user_is_a_guider(organisation: :tpas, &block)
+    given_the_user(:guider, organisation, &block)
   end
 
   def given_the_user_is_a_resource_manager(organisation: :tpas, &block)

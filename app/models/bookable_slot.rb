@@ -113,8 +113,8 @@ class BookableSlot < ApplicationRecord
       end
   end
 
-  def self.for_organisation(user)
-    return where('1 = 1') if user.tp?
+  def self.for_organisation(user, scoped: true)
+    return where('1 = 1') if user.tp? && scoped
 
     joins(:guider)
       .where(users: { organisation_content_id: user.organisation_content_id })

@@ -108,7 +108,10 @@ class AppointmentsController < ApplicationController
     if scoped_to_me?
       current_user.appointments
     else
-      Appointment.unscoped
+      Appointment
+        .unscoped
+        .joins(:guider)
+        .where(users: { organisation_content_id: current_user.organisation_content_id })
     end
   end
 

@@ -24,8 +24,11 @@ class BookableSlotsController < ApplicationController
             .without_guider_conference_days
             .within_date_range(start_at, end_at)
 
-    slots = slots.without_holidays.for_guider(current_user) if scoped_to_me?
-    slots
+    if scoped_to_me?
+      slots.without_holidays.for_guider(current_user)
+    else
+      slots.for_organisation(current_user, scoped: false)
+    end
   end
 
   def start_at
