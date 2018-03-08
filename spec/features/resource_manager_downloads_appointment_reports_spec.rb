@@ -32,6 +32,16 @@ RSpec.feature 'Resource manager downloads appointment reports' do
     end
   end
 
+  scenario 'The user is a contact centre team leader' do
+    given_the_user_is_a_contact_centre_team_leader do
+      travel_to now do
+        and_there_are_data
+        when_they_download_reports_by_appointment_start_at
+        then_they_get_reports_across_all_providers
+      end
+    end
+  end
+
   scenario 'date ranges must be provided' do
     given_the_user_is_a_resource_manager do
       when_they_attempt_to_download_reports_without_a_date_range
@@ -62,8 +72,9 @@ RSpec.feature 'Resource manager downloads appointment reports' do
   end
 
   def and_there_are_data
-    @appointment_with_created_at = create(:appointment, created_at: created_at)
-    @appointment_with_start_at = create(:appointment, start_at: start_at)
+    @appointment_with_created_at  = create(:appointment, created_at: created_at)
+    @appointment_with_start_at    = create(:appointment, start_at: start_at)
+    @tp_appointment_with_start_at = create(:appointment, start_at: start_at, guider: create(:guider, :tp))
   end
 
   def and_there_is_an_appointment_at_the_end_of_the_date_range
@@ -94,6 +105,12 @@ RSpec.feature 'Resource manager downloads appointment reports' do
     @page = Pages::ReportCsv.new
     expect_csv_content_disposition('report-1478217600-1478217600start_at.csv')
     expect_appointment_csv(@appointment_with_start_at)
+  end
+
+  def then_they_get_reports_across_all_providers
+    @page = Pages::ReportCsv.new
+    expect_csv_content_disposition('report-1478217600-1478217600start_at.csv')
+    expect(@page.csv.count).to eq(3)
   end
 
   def and_the_appointment_is_included_in_the_result
