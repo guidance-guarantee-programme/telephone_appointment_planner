@@ -1,11 +1,14 @@
 class User < ApplicationRecord
   include GDS::SSO::User
 
-  TPAS_ORGANISATION_ID = '14a48488-a42f-422d-969d-526e30922fe4'.freeze
-  TP_ORGANISATION_ID   = '41075b50-6385-4e8b-a17d-a7b9aae5d220'.freeze
-  CAS_ORGANISATION_ID  = '272e2a93-c7f5-43f7-bd40-c21bddb2d56b'.freeze
+  ALL_ORGANISATIONS = [
+    TPAS_ORGANISATION_ID = '14a48488-a42f-422d-969d-526e30922fe4'.freeze,
+    TP_ORGANISATION_ID   = '41075b50-6385-4e8b-a17d-a7b9aae5d220'.freeze,
+    CAS_ORGANISATION_ID  = '272e2a93-c7f5-43f7-bd40-c21bddb2d56b'.freeze
+  ].freeze
 
   ALL_PERMISSIONS = [
+    ADMINISTRATOR_PERMISSION    = 'administrator'.freeze,
     PENSION_WISE_API_PERMISSION = 'pension_wise_api'.freeze,
     RESOURCE_MANAGER_PERMISSION = 'resource_manager'.freeze,
     GUIDER_PERMISSION           = 'guider'.freeze,
@@ -28,24 +31,10 @@ class User < ApplicationRecord
   scope :guiders, -> { where('permissions @> ?', %(["#{GUIDER_PERMISSION}"])) }
   scope :active, -> { where(active: true) }
 
-  def guider?
-    has_permission?(GUIDER_PERMISSION)
-  end
-
-  def resource_manager?
-    has_permission?(RESOURCE_MANAGER_PERMISSION)
-  end
-
-  def agent?
-    has_permission?(AGENT_PERMISSION)
-  end
-
-  def contact_centre_team_leader?
-    has_permission?(CONTACT_CENTRE_TEAM_LEADER_PERMISSION)
-  end
-
-  def pension_wise_api?
-    has_permission?(PENSION_WISE_API_PERMISSION)
+  ALL_PERMISSIONS.each do |permission|
+    define_method "#{permission}?" do
+      has_permission?(permission)
+    end
   end
 
   def tp?

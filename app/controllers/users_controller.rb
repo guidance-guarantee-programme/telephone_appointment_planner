@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :authorise_for_resource_managers!
+  before_action :authorise_for_administrators!, only: :update
 
   def index
     @guiders = current_user.colleagues.guiders.includes(:groups)
@@ -13,6 +14,12 @@ class UsersController < ApplicationController
         .with_end_at
         .by_start_at
     )
+  end
+
+  def update
+    current_user.update(organisation_params)
+
+    redirect_back fallback_location: root_path
   end
 
   def sort
@@ -42,6 +49,10 @@ class UsersController < ApplicationController
   end
 
   private
+
+  def organisation_params
+    params.require(:user).permit(:organisation_content_id)
+  end
 
   def toggle_activation
     user = current_user.colleagues.find(params[:user_id])

@@ -29,4 +29,8 @@ class ApplicationController < ActionController::Base
   def authorise_for_resource_managers!
     authorise_user!(User::RESOURCE_MANAGER_PERMISSION)
   end
+
+  def authorise_for_administrators!
+    authorise_user!(User::ADMINISTRATOR_PERMISSION)
+  end
 end

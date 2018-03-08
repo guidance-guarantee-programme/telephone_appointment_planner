@@ -6,5 +6,7 @@ module Pages
     element :high_priority_activities, '.activity-dropdown-menu'
     element :high_priority_count, '.t-high-priority-count'
     element :no_activities, '.t-no-activities'
+
+    element :organisations, '.t-organisation'
   end
 end

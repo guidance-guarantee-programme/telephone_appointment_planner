@@ -1,4 +1,12 @@
 module UserHelper
+  def organisation_options
+    [
+      ['CAS',  User::CAS_ORGANISATION_ID],
+      ['TP',   User::TP_ORGANISATION_ID],
+      ['TPAS', User::TPAS_ORGANISATION_ID]
+    ]
+  end
+
   def guider_options(user)
     groups = Group.for_user(user).includes(:users)
 

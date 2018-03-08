@@ -1,6 +1,37 @@
 require 'rails_helper'
 
 RSpec.feature 'Roles' do
+  context 'Administrators' do
+    scenario 'Can see the organisation selection' do
+      given_the_user_is_an_administrator do
+        when_they_try_to_view_the_allocations_calendar
+        then_they_see_the_organisations
+      end
+    end
+  end
+
+  context 'Other users' do
+    scenario 'Cannot see the organisation selection' do
+      given_the_user_is_a_resource_manager do
+        when_they_try_to_view_the_allocations_calendar
+        then_they_do_not_see_the_organisations
+      end
+    end
+  end
+
+  def when_they_try_to_view_the_allocations_calendar
+    @page = Pages::Allocations.new.tap(&:load)
+    expect(@page).to be_displayed
+  end
+
+  def then_they_see_the_organisations
+    expect(@page).to have_organisations
+  end
+
+  def then_they_do_not_see_the_organisations
+    expect(@page).to have_no_organisations
+  end
+
   context 'Team Leaders' do
     scenario 'Can run reports' do
       given_the_user_is_a_contact_centre_team_leader do

@@ -34,6 +34,10 @@ module UserHelpers
     GDS::SSO.test_user = nil
   end
 
+  def given_the_user_is_an_administrator(&block)
+    given_the_user(:administrator, &block)
+  end
+
   def given_the_user_is_a_pension_wise_api_user(&block)
     given_the_user(:pension_wise_api_user, &block)
   end
