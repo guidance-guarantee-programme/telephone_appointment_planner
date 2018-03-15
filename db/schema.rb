@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180212134744) do
+ActiveRecord::Schema.define(version: 20180314110329) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,12 @@ ActiveRecord::Schema.define(version: 20180212134744) do
     t.boolean "dc_pot_confirmed", default: true, null: false
     t.string "type_of_appointment", default: "", null: false
     t.integer "where_you_heard", default: 0, null: false
+    t.string "address_line_one", default: "", null: false
+    t.string "address_line_two", default: "", null: false
+    t.string "address_line_three", default: "", null: false
+    t.string "town", default: "", null: false
+    t.string "county", default: "", null: false
+    t.string "postcode", default: "", null: false
     t.index ["start_at"], name: "index_appointments_on_start_at"
   end
 
@@ -99,6 +105,7 @@ ActiveRecord::Schema.define(version: 20180212134744) do
     t.string "name", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "organisation_content_id", default: "", null: false
   end
 
   create_table "holidays", id: :serial, force: :cascade do |t|

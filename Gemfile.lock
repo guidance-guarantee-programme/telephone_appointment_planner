@@ -290,6 +290,7 @@ GEM
     rails-assets-imagesloaded (4.1.4)
       rails-assets-ev-emitter (>= 1.0.0, < 2)
     rails-assets-jquery (3.3.1)
+    rails-assets-jquery.postcodes (3.0.6)
     rails-assets-listjs (1.5.0)
     rails-assets-mailgun-validator-jquery (0.0.3)
     rails-assets-moment (2.20.1)
@@ -484,6 +485,7 @@ DEPENDENCIES
   rails-assets-eonasdan-bootstrap-datetimepicker!
   rails-assets-fullcalendar (= 3.2.0)!
   rails-assets-fullcalendar-scheduler (= 1.5.1)!
+  rails-assets-jquery.postcodes!
   rails-assets-listjs!
   rails-assets-mailgun-validator-jquery (= 0.0.3)!
   rails-assets-pusher!

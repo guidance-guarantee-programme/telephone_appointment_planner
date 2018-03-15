@@ -199,10 +199,36 @@ RSpec.describe Appointment, type: :model do
     end
 
     context 'when created by a non-API agent' do
-      it 'does not require an email' do
-        subject.email = ''
+      before { subject.id = nil } # not persisted yet
 
-        expect(subject).to be_valid
+      context 'when no postal address is supplied' do
+        it '#address? is false' do
+          expect(subject).not_to be_address
+        end
+
+        it 'requires an email address' do
+          subject.email = ''
+
+          expect(subject).to be_invalid
+        end
+      end
+
+      context 'when a postal address is provided' do
+        before do
+          subject.address_line_one = '10 Some Street'
+          subject.town = 'Some Town'
+          subject.postcode = 'RM1 1AA'
+        end
+
+        it '#address? is true' do
+          expect(subject).to be_address
+        end
+
+        it 'does not require an email' do
+          subject.email = ''
+
+          expect(subject).to be_valid
+        end
       end
     end
 
@@ -495,7 +521,7 @@ RSpec.describe Appointment, type: :model do
 
       context 'and the appointment has no email address' do
         it 'does not return the appointment' do
-          appointment = create(:appointment, email: '', start_at: BusinessDays.from_now(10))
+          appointment = create(:appointment, :with_address, email: '', start_at: BusinessDays.from_now(10))
 
           travel_to(appointment.start_at - 47.hours) do
             expect(Appointment.needing_reminder).to_not include(appointment)
@@ -505,7 +531,7 @@ RSpec.describe Appointment, type: :model do
 
       context 'and the appointment is not pending' do
         it 'does not return the appointment' do
-          appointment = create(:appointment, status: 'cancelled_by_customer', start_at: BusinessDays.from_now(10))
+          appointment = create(:appointment, :api, status: 'cancelled_by_customer', start_at: BusinessDays.from_now(10))
 
           travel_to(appointment.start_at - 47.hours) do
             expect(Appointment.needing_reminder).to_not include(appointment)

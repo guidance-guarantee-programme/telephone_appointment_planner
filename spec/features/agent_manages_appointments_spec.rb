@@ -197,6 +197,9 @@ RSpec.feature 'Agent manages appointments' do
     @page.end_at.set day.change(hour: 10, min: 40).to_s
     @page.type_of_appointment_standard.set true
     @page.where_you_heard.select 'Other'
+    @page.address_line_one.set(options[:address_line_one]) if options[:address_line_one]
+    @page.town.set(options[:town]) if options[:town]
+    @page.postcode.set(options[:postcode]) if options[:postcode]
 
     @page.preview_appointment.click
   end
@@ -224,7 +227,12 @@ RSpec.feature 'Agent manages appointments' do
   end
 
   def and_they_fill_in_their_appointment_details_without_an_email
-    fill_in_appointment_details email: ''
+    fill_in_appointment_details(
+      email: '',
+      address_line_one: '10 Some Street',
+      town: 'Romford',
+      postcode: 'RM1 1AL'
+    )
   end
 
   def then_that_appointment_is_created
@@ -342,7 +350,7 @@ RSpec.feature 'Agent manages appointments' do
   end
 
   def and_there_is_an_appointment_without_an_email
-    @appointment = create(:appointment, email: nil)
+    @appointment = create(:appointment, :with_address, email: nil)
   end
 
   def and_they_want_to_reschedule_the_appointment

@@ -31,6 +31,12 @@
   <%= f.hidden_field :status %>
   <%= f.hidden_field :type_of_appointment %>
   <%= f.hidden_field :where_you_heard %>
+  <%= f.hidden_field :address_line_one %>
+  <%= f.hidden_field :address_line_two %>
+  <%= f.hidden_field :address_line_three %>
+  <%= f.hidden_field :town %>
+  <%= f.hidden_field :county %>
+  <%= f.hidden_field :postcode %>
 
   <div class="t-preview appointment-preview">
     <div class="row">
@@ -62,6 +68,19 @@
               <td class="active"><b>Email</b></td>
               <td><%= @appointment.email %></td>
             </tr>
+            <% if @appointment.address_line_one? %>
+            <tr>
+              <td class="active"><b>Address</b></td>
+              <td>
+                <%= @appointment.address_line_one %><br>
+                <%= display_with_newline(@appointment.address_line_two) %>
+                <%= display_with_newline(@appointment.address_line_three) %>
+                <%= @appointment.town %><br>
+                <%= display_with_newline(@appointment.county) %>
+                <%= @appointment.postcode %>
+              </td>
+            </tr>
+            <% end %>
             <tr>
               <td class="active"><b>Phone</b></td>
               <td><%= @appointment.phone %></td>

@@ -20,5 +20,15 @@ FactoryBot.define do
     factory :imported_appointment do
       date_of_birth Appointment::FAKE_DATE_OF_BIRTH
     end
+
+    trait :api do
+      agent { create(:pension_wise_api_user) }
+    end
+
+    trait :with_address do
+      address_line_one '10 Some Road'
+      town 'Some Town'
+      postcode 'E3 3NN'
+    end
   end
 end

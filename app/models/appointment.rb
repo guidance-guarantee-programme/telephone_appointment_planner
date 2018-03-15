@@ -84,7 +84,8 @@ class Appointment < ApplicationRecord
   validate :valid_within_booking_window
   validate :not_during_guider_conference
   validate :date_of_birth_valid
-  validate :email_valid, if: :agent_is_pension_wise_api?, on: :create
+  validate :email_valid, if: :pension_wise_api?, on: :create
+  validate :address_or_email_valid, if: :regular_agent?, on: :create
 
   has_many :activities, -> { order('created_at DESC') }
 
@@ -102,6 +103,10 @@ class Appointment < ApplicationRecord
       appointment.end_at   = nil
       appointment.rebooked_from_id = id
     end
+  end
+
+  def address?
+    [address_line_one, town, postcode].all?(&:present?)
   end
 
   def canonical_sms_number
@@ -253,12 +258,29 @@ class Appointment < ApplicationRecord
     end
   end
 
+  def address_or_email_valid
+    unless address? || email? # rubocop:disable GuardClause
+      errors.add(
+        :base,
+        'Please supply either an email or confirmation address'
+      )
+    end
+  end
+
   def date_of_birth_pre_cut_off?
     date_of_birth? && date_of_birth < FAKE_DATE_OF_BIRTH
   end
 
   def agent_is_resource_manager?
     agent.present? && agent.resource_manager?
+  end
+
+  def pension_wise_api?
+    agent&.pension_wise_api?
+  end
+
+  def regular_agent?
+    agent && !agent.pension_wise_api?
   end
 end
 

@@ -21,9 +21,11 @@
 //= require select2
 //= require sortable-rails
 //= require pusher
+//= require jquery.postcodes/dist/postcodes.js
 
 //= require mailgun-validator-jquery
 //= require tap-base
+//= require postcode-lookup
 //= require modules/calendar
 //= require modules/calendars/company
 
