@@ -21,6 +21,7 @@ source 'https://rubygems.org' do
   gem 'active_model_serializers'
   gem 'audited'
   gem 'bh'
+  gem 'bootsnap'
   gem 'bootstrap-kaminari-views'
   gem 'bugsnag'
   gem 'faraday'
