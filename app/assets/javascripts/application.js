@@ -25,7 +25,6 @@
 
 //= require mailgun-validator-jquery
 //= require tap-base
-//= require postcode-lookup
 //= require modules/calendar
 //= require modules/calendars/company
 
