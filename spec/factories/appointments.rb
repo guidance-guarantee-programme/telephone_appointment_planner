@@ -27,7 +27,10 @@ FactoryBot.define do
 
     trait :with_address do
       address_line_one '10 Some Road'
+      address_line_two 'Some Street'
+      address_line_three 'Somewhere'
       town 'Some Town'
+      county 'Some County'
       postcode 'E3 3NN'
     end
   end

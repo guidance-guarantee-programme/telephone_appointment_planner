@@ -199,6 +199,9 @@ GEM
     multi_xml (0.6.0)
     multipart-post (2.0.0)
     mustermann (1.0.2)
+    net-sftp (2.1.2)
+      net-ssh (>= 2.6.5)
+    net-ssh (4.2.0)
     newrelic_rpm (4.8.0.341)
     nio4r (2.2.0)
     nokogiri (1.8.2)
@@ -467,6 +470,7 @@ DEPENDENCIES
   listen (~> 3.0.5)!
   lograge!
   momentjs-rails (= 2.15.1)!
+  net-sftp!
   newrelic_rpm!
   notifications-ruby-client!
   oj!

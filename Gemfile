@@ -34,6 +34,7 @@ source 'https://rubygems.org' do
   gem 'govuk_admin_template'
   gem 'kaminari'
   gem 'momentjs-rails', '2.15.1'
+  gem 'net-sftp'
   gem 'newrelic_rpm'
   gem 'notifications-ruby-client'
   gem 'oj'
