@@ -27,6 +27,7 @@ class AppointmentsController < ApplicationController
   def update_reschedule
     @appointment = Appointment.find(params[:appointment_id])
     @appointment.assign_attributes(update_reschedule_params)
+    @appointment.mark_rescheduled!
     @appointment.allocate(via_slot: calendar_scheduling?)
 
     if @appointment.save

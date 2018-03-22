@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180321144232) do
+ActiveRecord::Schema.define(version: 20180322154626) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,6 +61,7 @@ ActiveRecord::Schema.define(version: 20180321144232) do
     t.string "county", default: "", null: false
     t.string "postcode", default: "", null: false
     t.datetime "batch_processed_at"
+    t.datetime "rescheduled_at"
     t.index ["start_at"], name: "index_appointments_on_start_at"
   end
 

@@ -69,6 +69,11 @@ class Appointment < ApplicationRecord
 
   before_validation :format_name, on: :create
 
+  def mark_rescheduled!
+    self.batch_processed_at = nil
+    self.rescheduled_at     = Time.zone.now
+  end
+
   def address?
     [address_line_one, town, postcode].all?(&:present?)
   end

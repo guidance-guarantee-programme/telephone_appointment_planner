@@ -369,6 +369,9 @@ RSpec.feature 'Agent manages appointments' do
     appointment = Appointment.first
     expect(appointment.start_at).to eq day.change(hour: 16, min: 15).to_s
     expect(appointment.end_at).to eq day.change(hour: 17, min: 15).to_s
+
+    expect(appointment).to be_rescheduled_at
+    expect(appointment).not_to be_batch_processed_at
   end
 
   def then_the_appointments_first_name_is_changed

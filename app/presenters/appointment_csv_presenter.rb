@@ -36,7 +36,7 @@ class AppointmentCsvPresenter
   end
 
   def letter_type
-    'Booking'
+    appointment.rescheduled_at ? 'Rescheduled' : 'Booking'
   end
 
   attr_reader :appointment
