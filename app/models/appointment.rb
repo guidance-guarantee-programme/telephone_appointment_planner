@@ -177,7 +177,8 @@ class Appointment < ApplicationRecord
 
       appointment.start_at = nil
       appointment.end_at   = nil
-      appointment.rebooked_from_id = id
+      appointment.rebooked_from_id   = id
+      appointment.batch_processed_at = nil
     end
   end
 

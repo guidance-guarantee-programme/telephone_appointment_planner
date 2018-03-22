@@ -1,6 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe Appointment, type: :model do
+  context 'when copying an appointment that had printed confirmation' do
+    it 'ensures the copy will also be batch processed' do
+      @old  = create(:appointment, batch_processed_at: Time.zone.now, status: :complete)
+      @copy = Appointment.copy_or_new_by(@old.id)
+
+      expect(@copy).not_to be_batch_processed_at
+    end
+  end
+
   describe '#canonical_sms_number' do
     context 'when a `mobile` is present' do
       it 'returns the `mobile`' do
