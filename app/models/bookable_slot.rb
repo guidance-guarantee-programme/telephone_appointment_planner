@@ -24,7 +24,7 @@ class BookableSlot < ApplicationRecord
   end
 
   def self.next_valid_start_date(user = nil)
-    return Time.zone.now if user && user.resource_manager?
+    return Time.zone.now.advance(hours: 1) if user && user.resource_manager?
 
     BusinessDays.from_now(2).change(hour: 18, min: 30)
   end
