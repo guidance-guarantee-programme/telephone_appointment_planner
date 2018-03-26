@@ -171,7 +171,11 @@ class Appointment < ApplicationRecord
   end
 
   def mark_batch_processed!
-    touch(:batch_processed_at)
+    transaction do
+      touch(:batch_processed_at)
+
+      PrintBatchActivity.from(self)
+    end
   end
 
   def self.copy_or_new_by(id)

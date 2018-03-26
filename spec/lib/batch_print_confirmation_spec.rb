@@ -10,7 +10,7 @@ RSpec.describe BatchPrintConfirmation do
     it 'exports and marks appointments as batch processed' do
       @confirmation = create(:appointment, :with_address)
 
-      subject.call
+      expect { subject.call }.to change { PrintBatchActivity.count }.by(1)
 
       expect(@confirmation.reload).to be_batch_processed_at
     end
