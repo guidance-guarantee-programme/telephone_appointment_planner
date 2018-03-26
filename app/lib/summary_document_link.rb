@@ -16,7 +16,14 @@ class SummaryDocumentLink
         reference_number: appointment.id,
         number_of_previous_appointments: 0,
         email: appointment.email,
-        appointment_type: appointment.type_of_appointment == '50-54' ? '50_54' : appointment.type_of_appointment
+        appointment_type: appointment.type_of_appointment == '50-54' ? '50_54' : appointment.type_of_appointment,
+        address_line_1: appointment.address_line_one,
+        address_line_2: appointment.address_line_two,
+        address_line_3: appointment.address_line_three,
+        town: appointment.town,
+        county: appointment.county,
+        postcode: appointment.postcode,
+        country: 'United Kingdom'
       }.to_query(:appointment_summary)
     end
   end
