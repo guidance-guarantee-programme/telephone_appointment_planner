@@ -6,7 +6,7 @@ class Activity < ApplicationRecord
   belongs_to :owner, class_name: 'User'
   belongs_to :prior_owner, class_name: 'User'
   belongs_to :resolver, class_name: 'User'
-  validates :owner, presence: true
+  validates :owner, presence: true, if: :owner_required?
 
   scope :resolved, -> { where.not(resolved_at: nil) }
   scope :unresolved, -> { where(resolved_at: nil) }
@@ -54,6 +54,10 @@ class Activity < ApplicationRecord
 
   def pusher_notify_user_ids
     []
+  end
+
+  def owner_required?
+    true
   end
 
   after_commit on: :create do
