@@ -192,6 +192,10 @@ class Appointment < ApplicationRecord
     agent && agent.pension_wise_api?
   end
 
+  def unable_to_assign?
+    errors.key?(:guider) || errors.key?(:start_at)
+  end
+
   private
 
   def allocate_slot

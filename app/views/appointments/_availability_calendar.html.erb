@@ -1,5 +1,5 @@
 <h2>Choose available slot <%= required_label %></h2>
-<% if @appointment.errors[:guider].any? %>
+<% if @appointment.unable_to_assign? %>
   <%= render 'unable_to_assign' %>
 <% end %>
 
