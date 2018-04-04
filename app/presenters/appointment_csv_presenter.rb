@@ -17,7 +17,9 @@ class AppointmentCsvPresenter
       'Town'               => appointment.town,
       'County'             => appointment.county,
       'Postcode'           => appointment.postcode,
-      'Letter type'        => letter_type
+      'Letter type'        => letter_type,
+      'Phone'              => appointment.phone,
+      'Memorable word'     => appointment.memorable_word(obscure: true)
     }
   end
 

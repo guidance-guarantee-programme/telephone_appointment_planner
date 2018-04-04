@@ -19,8 +19,8 @@ RSpec.describe BatchPrintCsv do
     )
 
     expect(subject.call(@appointment)).to eq(<<~CSV)
-      Date,Reference,Appointment date,Appointment time,First name,Last name,Address line one,Address line two,Address line three,Town,County,Postcode,Letter type
-      22 March 2018,9999,27 March 2018,12:00pm BST,George,Daisy,10 Some Road,Some Street,Somewhere,Some Town,Some County,E3 3NN,Booking
+      Date,Reference,Appointment date,Appointment time,First name,Last name,Address line one,Address line two,Address line three,Town,County,Postcode,Letter type,Phone,Memorable word
+      22 March 2018,9999,27 March 2018,12:00pm BST,George,Daisy,10 Some Road,Some Street,Somewhere,Some Town,Some County,E3 3NN,Booking,0208 252 4758,l*****e
     CSV
   end
 end
