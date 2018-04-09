@@ -34,9 +34,14 @@ RSpec.describe 'Activity notification alerts', js: true do
     and_they_have_an_appointment
     and_a_high_priority_activity_occurs
 
-    given_a_browser_session_for(guider, agent) do
+    given_a_browser_session_for(agent) do
       and_they_click_on_the_high_priority_activity_badge
       and_they_can_see_their_high_priority_alerts
+    end
+
+    given_a_browser_session_for(guider) do
+      and_they_click_on_the_high_priority_activity_badge
+      then_they_can_see_no_high_priority_alerts_message
     end
   end
 

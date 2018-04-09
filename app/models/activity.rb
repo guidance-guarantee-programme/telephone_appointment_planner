@@ -23,9 +23,7 @@ class Activity < ApplicationRecord
   end
 
   def self.high_priority_for(user)
-    high_priority
-      .joins(:appointment)
-      .where('appointments.agent_id = :user OR appointments.guider_id = :user', user: user)
+    high_priority.where(owner: user)
   end
 
   def user_name
