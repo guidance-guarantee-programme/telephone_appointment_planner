@@ -291,7 +291,7 @@ RSpec.describe BookableSlot, type: :model do
       it 'sees the correct slots based on organisational membership' do
         [
           @guider_tpas = create(:guider, :tpas),
-          @guider_tp   = create(:guider, :tp),
+          @guider_tp   = create(:agent_and_guider, :tp),
           @guiders_cas = create_list(:guider, 2, :cas)
         ].flatten.each do |guider|
           create(

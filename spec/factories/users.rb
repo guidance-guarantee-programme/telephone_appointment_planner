@@ -30,6 +30,11 @@ FactoryBot.define do
       permissions { [User::RESOURCE_MANAGER_PERMISSION, User::GUIDER_PERMISSION] }
     end
 
+    factory :agent_and_guider do
+      organisation_content_id User::TP_ORGANISATION_ID
+      permissions { [User::AGENT_PERMISSION, User::GUIDER_PERMISSION] }
+    end
+
     factory :resource_manager do
       organisation_content_id User::TPAS_ORGANISATION_ID
       permissions { Array(User::RESOURCE_MANAGER_PERMISSION) }

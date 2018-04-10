@@ -30,7 +30,8 @@ module UserHelper
   end
 
   def user_options(user, scoped: true)
-    scope = scoped ? user.colleagues : User
+    scope = user.tp_agent? && scoped ? User : user.colleagues
+
     scope.guiders.active.reorder(:name).map do |guider|
       [
         guider.name,

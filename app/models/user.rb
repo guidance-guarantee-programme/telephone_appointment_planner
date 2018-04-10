@@ -40,4 +40,8 @@ class User < ApplicationRecord
   def tp?
     organisation_content_id == TP_ORGANISATION_ID
   end
+
+  def tp_agent?
+    tp? && agent?
+  end
 end

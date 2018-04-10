@@ -18,7 +18,7 @@ class AppointmentSearch
   attr_reader :current_user
 
   def for_current_user(results)
-    return results if current_user.tp?
+    return results if current_user.tp_agent?
 
     results.where(users: { organisation_content_id: current_user.organisation_content_id })
   end
