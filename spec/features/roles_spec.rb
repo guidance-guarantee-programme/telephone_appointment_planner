@@ -99,6 +99,15 @@ RSpec.feature 'Roles' do
     end
   end
 
+  context 'Contact centre team leaders' do
+    scenario 'Visiting the home page' do
+      given_the_user_is_a_contact_centre_team_leader do
+        when_they_visit_the_home_page
+        then_they_see_a_report
+      end
+    end
+  end
+
   context 'Users who are not Resource Managers, Agents, or Guiders' do
     scenario 'Can book appointments' do
       given_the_user_has_no_permissions do
@@ -171,6 +180,15 @@ RSpec.feature 'Roles' do
         then_they_are_locked_out
       end
     end
+  end
+
+  def when_they_visit_the_home_page
+    visit '/'
+  end
+
+  def then_they_see_a_report
+    @page = Pages::NewAppointmentReport.new
+    expect(@page).to be_displayed
   end
 
   def when_they_try_to_view_appointment_reports
