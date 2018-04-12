@@ -111,7 +111,7 @@ RSpec.describe Appointment, type: :model do
       travel_to '2017-03-26 11:05 UTC' do
         # force new_record? to evaluate truthily
         appointment = Appointment.new(
-          attributes_for(:appointment, start_at: Time.zone.parse('2017-03-28 11:20 UTC'))
+          attributes_for(:appointment, start_at: Time.zone.parse('2017-03-27 11:20 UTC'))
         )
 
         expect(appointment).to be_invalid

@@ -80,7 +80,7 @@ class Appointment < ApplicationRecord
   validates :status, presence: true
   validates :guider, presence: true
 
-  validate :not_within_two_business_days, unless: :agent_is_resource_manager?
+  validate :not_within_grace_period, unless: :agent_is_resource_manager?
   validate :valid_within_booking_window
   validate :not_during_guider_conference
   validate :date_of_birth_valid
@@ -224,11 +224,11 @@ class Appointment < ApplicationRecord
     end
   end
 
-  def not_within_two_business_days
+  def not_within_grace_period
     return unless new_record? && start_at?
 
     too_soon = start_at < BookableSlot.next_valid_start_date
-    errors.add(:start_at, 'must be more than two business days from now') if too_soon
+    errors.add(:start_at, 'must be more than one business day from now') if too_soon
   end
 
   def valid_within_booking_window

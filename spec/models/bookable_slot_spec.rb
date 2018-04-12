@@ -26,13 +26,13 @@ RSpec.describe BookableSlot, type: :model do
         after { travel_back }
 
         {
-          'Monday'    => 'Wednesday',
-          'Tuesday'   => 'Thursday',
-          'Wednesday' => 'Friday',
-          'Thursday'  => 'Monday',
-          'Friday'    => 'Tuesday',
-          'Saturday'  => 'Tuesday',
-          'Sunday'    => 'Tuesday'
+          'Monday'    => 'Tuesday',
+          'Tuesday'   => 'Wednesday',
+          'Wednesday' => 'Thursday',
+          'Thursday'  => 'Friday',
+          'Friday'    => 'Monday',
+          'Saturday'  => 'Monday',
+          'Sunday'    => 'Monday'
         }.each do |day, expected_day|
           context "Day is #{day}" do
             it "next valid start date is #{expected_day}" do
@@ -51,7 +51,7 @@ RSpec.describe BookableSlot, type: :model do
 
         it 'takes account of holidays' do
           travel_to '2018-05-05 12:00' do
-            expect(subject.to_date).to eq('2018-05-09'.to_date)
+            expect(subject.to_date).to eq('2018-05-08'.to_date)
           end
         end
       end
