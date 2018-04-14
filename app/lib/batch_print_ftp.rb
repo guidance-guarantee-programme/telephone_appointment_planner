@@ -1,5 +1,4 @@
 require 'uri'
-require 'net/ssh'
 require 'net/sftp'
 require 'net/ssh/proxy/http'
 
@@ -18,7 +17,7 @@ class BatchPrintFtp
 
   def call(data)
     Net::SFTP.start(host, username, password: password, proxy: proxy) do |sftp|
-      sftp.file.open(filename, 'w') do |file|
+      sftp.file.open(file_path, 'w') do |file|
         file.puts(data)
       end
     end
@@ -35,8 +34,8 @@ class BatchPrintFtp
     )
   end
 
-  def filename
-    "#{Time.zone.today}.csv"
+  def file_path
+    "/upload/#{Time.zone.today}.csv"
   end
 
   attr_reader :host
