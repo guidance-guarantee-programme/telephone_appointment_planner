@@ -238,14 +238,20 @@ RSpec.describe Appointment, type: :model do
 
           expect(subject).to be_valid
         end
+
+        it 'does not permit the presence of an email' do
+          subject.email = 'ben@example.com'
+
+          expect(subject).to be_invalid
+        end
       end
     end
 
     context 'when not persisted' do
       before { allow(subject).to receive(:new_record?).and_return(true) }
 
-      it 'cannot be booked within two working days' do
-        subject.start_at = BusinessDays.from_now(1)
+      it 'cannot be booked at short notice' do
+        subject.start_at = 1.hour.from_now
         subject.validate
         expect(subject.errors[:start_at]).to_not be_empty
       end
