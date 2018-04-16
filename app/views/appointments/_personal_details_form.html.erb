@@ -1,9 +1,7 @@
 <div class="row form-group">
-  <div class="col-md-12">
-    <h2>Customer details</h2>
-    <%= render 'shared/required_fields_note' %>
-  </div>
   <div class="col-md-6">
+    <h2 class="h3">Customer details <small>fields marked with * are required</small></h2>
+
     <%= f.text_field :first_name, class: 't-first-name', label: required_label(:first_name) %>
     <%= f.text_field :last_name, class: 't-last-name', label: required_label(:last_name) %>
     <%= f.email_field :email, class: 't-email', data: { module: 'email-validator',
@@ -13,20 +11,10 @@
     <%= f.telephone_field :mobile, class: 't-mobile',
       help: 'Pension Wise will use this to send an SMS appointment reminder by 8am - 48 hours before the appointment.'
     %>
-    <%= render 'shared/date_of_birth_form_field', form: f if defined?(edit) && edit %>
-  </div>
-  <div class="col-md-6">
     <%= f.text_field :memorable_word, class: 't-memorable-word', placeholder: 'Pension Wise will use this each time the customer is called', label: required_label(:memorable_word) %>
-    <%= f.text_area :notes, class: 't-notes', rows: 6, placeholder: 'Is the customer hard of hearing? Is English their first language? etc.' %>
-    <%= f.check_box :opt_out_of_market_research, class: 't-opt-out-of-market-research' %>
-    <%=
-      f.select(
-        :status,
-        friendly_options(Appointment.statuses),
-        options = {},
-        { class: 't-status' }
-      ) if defined?(edit) && edit
-    %>
+    <%= render 'shared/date_of_birth_form_field', form: f if defined?(edit) && edit %>
+
+    <h2 class="h3">Eligibility</h2>
 
     <div class="form-group" data-module="type-of-appointment">
       <p><strong>Type of appointment</strong></p>
@@ -41,12 +29,40 @@
         class: 't-type-of-appointment-50-54 js-type-of-appointment-50-54'
       %>
     </div>
+  </div>
 
+  <div class="col-md-6">
+    <h2 class="h3" data-module="postcode-lookup" data-postcode-api-key="<%= postcode_api_key %>">Confirmation address <small>required if no email address</small></h2>
+    <div class="form-group form-inline postcode-lookup" id="postcode-lookup">
+      <label for="appointment_summary_lookup">Postcode or address to search for</label><br>
+      <input class="form-control input-md-3 add-right-margin" placeholder="Enter postcode or address" type="text" id="postcode-lookup-input" />
+      <button class="btn btn-success btn-sm" onclick="return false" id="postcode-lookup-button">Find UK address</button>
+    </div>
+    <div class="form-group form-inline" id="postcode-lookup-results-container"></div>
+
+    <%= f.text_field :address_line_one, class: 't-address-line-one', label: 'Building and street' %>
+    <%= f.text_field :address_line_two, class: 't-address-line-two', use_label: false %>
+    <%= f.text_field :address_line_three, class: 't-address-line-three', use_label: false %>
+    <%= f.text_field :town, class: 't-town' %>
+    <%= f.text_field :county, class: 't-county', label: 'County (optional)' %>
+    <%= f.text_field :postcode, class: 't-postcode' %>
+
+    <h2 class="h3">Additional information and marketing</h2>
+    <%= f.text_area :notes, class: 't-notes', rows: 6, placeholder: 'Is the customer hard of hearing? Is English their first language? etc.' %>
+    <%= f.check_box :opt_out_of_market_research, class: 't-opt-out-of-market-research' %>
     <div class="form-group">
       <%= f.select :where_you_heard,
             options_for_select(WhereYouHeard::OPTIONS.invert.to_a, @appointment.where_you_heard),
             {}, { class: 't-where-you-heard form-control' }
       %>
     </div>
+    <%=
+      f.select(
+        :status,
+        friendly_options(Appointment.statuses),
+        options = {},
+        { class: 't-status' }
+      ) if defined?(edit) && edit
+    %>
   </div>
 </div>

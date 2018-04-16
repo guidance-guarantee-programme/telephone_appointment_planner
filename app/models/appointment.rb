@@ -1,5 +1,7 @@
 # rubocop:disable Metrics/ClassLength
 class Appointment < ApplicationRecord
+  audited on: %i(create update)
+
   acts_as_copy_target
 
   APPOINTMENT_LENGTH_MINUTES = 70.minutes.freeze
@@ -18,8 +20,6 @@ class Appointment < ApplicationRecord
     where_you_heard
   ).freeze
 
-  belongs_to :agent, class_name: 'User'
-
   enum status: %i(
     pending
     complete
@@ -31,39 +31,19 @@ class Appointment < ApplicationRecord
     cancelled_by_pension_wise
   )
 
+  belongs_to :agent, class_name: 'User'
+
   belongs_to :guider, class_name: 'User'
 
   belongs_to :rebooked_from, class_name: 'Appointment'
+
+  has_many :activities, -> { order('created_at DESC') }
 
   attr_accessor :ad_hoc_start_at
 
   scope :cancelled, -> { where(status: %i(cancelled_by_customer cancelled_by_pension_wise)) }
   scope :not_cancelled, -> { where.not(status: %i(cancelled_by_customer cancelled_by_pension_wise)) }
   scope :with_mobile_number, -> { where("mobile != '' or phone like '07%'") }
-
-  def self.needing_sms_reminder
-    window = 2.days.from_now.beginning_of_day..2.days.from_now.end_of_day
-
-    pending
-      .where(start_at: window)
-      .with_mobile_number
-  end
-
-  def self.needing_reminder
-    window = 3.hours.from_now..48.hours.from_now.in_time_zone
-
-    pending
-      .where(start_at: window)
-      .where.not(email: '', id: reminded_ids)
-  end
-
-  def self.reminded_ids
-    window = 48.hours.ago.in_time_zone..Time.zone.now
-
-    ReminderActivity
-      .where(created_at: window)
-      .pluck(:appointment_id)
-  end
 
   validates :agent, presence: true
   validates :start_at, presence: true
@@ -84,24 +64,18 @@ class Appointment < ApplicationRecord
   validate :valid_within_booking_window
   validate :not_during_guider_conference
   validate :date_of_birth_valid
-  validate :email_valid, if: :agent_is_pension_wise_api?, on: :create
-
-  has_many :activities, -> { order('created_at DESC') }
-
-  audited on: %i(create update)
+  validate :email_valid, if: :pension_wise_api?, on: :create
+  validate :address_or_email_valid, if: :regular_agent?, on: :create
 
   before_validation :format_name, on: :create
 
-  def self.copy_or_new_by(id)
-    return new unless id
+  def mark_rescheduled!
+    self.batch_processed_at = nil
+    self.rescheduled_at     = Time.zone.now
+  end
 
-    find(id).dup.tap do |appointment|
-      break if appointment.pending?
-
-      appointment.start_at = nil
-      appointment.end_at   = nil
-      appointment.rebooked_from_id = id
-    end
+  def address?
+    [address_line_one, town, postcode].all?(&:present?)
   end
 
   def canonical_sms_number
@@ -196,6 +170,57 @@ class Appointment < ApplicationRecord
     errors.key?(:guider) || errors.key?(:start_at)
   end
 
+  def mark_batch_processed!
+    transaction do
+      touch(:batch_processed_at)
+
+      PrintBatchActivity.from(self)
+    end
+  end
+
+  def self.copy_or_new_by(id)
+    return new unless id
+
+    find(id).dup.tap do |appointment|
+      break if appointment.pending?
+
+      appointment.start_at = nil
+      appointment.end_at   = nil
+      appointment.rebooked_from_id   = id
+      appointment.batch_processed_at = nil
+    end
+  end
+
+  def self.needing_print_confirmation
+    pending
+      .where(batch_processed_at: nil)
+      .where.not(address_line_one: '')
+  end
+
+  def self.needing_sms_reminder
+    window = 2.days.from_now.beginning_of_day..2.days.from_now.end_of_day
+
+    pending
+      .where(start_at: window)
+      .with_mobile_number
+  end
+
+  def self.needing_reminder
+    window = 3.hours.from_now..48.hours.from_now.in_time_zone
+
+    pending
+      .where(start_at: window)
+      .where.not(email: '', id: reminded_ids)
+  end
+
+  def self.reminded_ids
+    window = 48.hours.ago.in_time_zone..Time.zone.now
+
+    ReminderActivity
+      .where(created_at: window)
+      .pluck(:appointment_id)
+  end
+
   private
 
   def allocate_slot
@@ -253,12 +278,29 @@ class Appointment < ApplicationRecord
     end
   end
 
+  def address_or_email_valid
+    unless address? || email? # rubocop:disable GuardClause
+      errors.add(
+        :base,
+        'Please supply either an email or confirmation address'
+      )
+    end
+  end
+
   def date_of_birth_pre_cut_off?
     date_of_birth? && date_of_birth < FAKE_DATE_OF_BIRTH
   end
 
   def agent_is_resource_manager?
     agent.present? && agent.resource_manager?
+  end
+
+  def pension_wise_api?
+    agent&.pension_wise_api?
+  end
+
+  def regular_agent?
+    agent && !agent.pension_wise_api?
   end
 end
 

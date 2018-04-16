@@ -9,4 +9,10 @@ Rails.application.config.filter_parameters += %i(
   mobile
   memorable_word
   password
+  address_line_one
+  address_line_two
+  address_line_three
+  town
+  county
+  postcode
 )

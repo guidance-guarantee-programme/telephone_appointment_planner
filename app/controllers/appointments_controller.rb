@@ -27,6 +27,7 @@ class AppointmentsController < ApplicationController
   def update_reschedule
     @appointment = Appointment.find(params[:appointment_id])
     @appointment.assign_attributes(update_reschedule_params)
+    @appointment.mark_rescheduled!
     @appointment.allocate(via_slot: calendar_scheduling?)
 
     if @appointment.save
@@ -93,6 +94,11 @@ class AppointmentsController < ApplicationController
 
   private
 
+  def postcode_api_key
+    ENV.fetch('POSTCODE_API_KEY') { 'iddqd' } # default to test API key
+  end
+  helper_method :postcode_api_key
+
   def calendar_scheduling?
     ActiveRecord::Type::Boolean.new.deserialize(params.fetch(:scheduled, true))
   end
@@ -139,7 +145,13 @@ class AppointmentsController < ApplicationController
       :opt_out_of_market_research,
       :status,
       :type_of_appointment,
-      :where_you_heard
+      :where_you_heard,
+      :address_line_one,
+      :address_line_two,
+      :address_line_three,
+      :town,
+      :county,
+      :postcode
     ]
   end
   # rubocop:enable Metrics/MethodLength
