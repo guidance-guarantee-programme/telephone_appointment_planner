@@ -26,6 +26,7 @@ FactoryBot.define do
     end
 
     trait :with_address do
+      email ''
       address_line_one '10 Some Road'
       address_line_two 'Some Street'
       address_line_three 'Somewhere'
