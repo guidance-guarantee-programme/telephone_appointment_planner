@@ -280,11 +280,11 @@ class Appointment < ApplicationRecord
 
   def address_or_email_valid
     unless address? || email?
-      errors.add(:base, 'Please supply either an email or confirmation address')
+      errors.add(:email, 'Please supply either an email or confirmation address')
     end
 
     if email? && address? # rubocop:disable GuardClause
-      errors.add(:base, 'Please supply only an email or confirmation address, not both')
+      errors.add(:email, 'Please supply only an email or confirmation address, not both')
     end
   end
 
