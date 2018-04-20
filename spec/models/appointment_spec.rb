@@ -243,6 +243,7 @@ RSpec.describe Appointment, type: :model do
           subject.email = 'ben@example.com'
 
           expect(subject).to be_invalid
+          expect(subject.errors[:email]).not_to be_empty
         end
       end
     end
