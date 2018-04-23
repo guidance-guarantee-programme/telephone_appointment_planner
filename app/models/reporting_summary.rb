@@ -1,0 +1,2 @@
+class ReportingSummary < ApplicationRecord
+end
