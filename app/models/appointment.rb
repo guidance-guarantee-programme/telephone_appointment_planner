@@ -39,6 +39,8 @@ class Appointment < ApplicationRecord
 
   has_many :activities, -> { order('created_at DESC') }
 
+  has_many :status_transitions
+
   attr_accessor :ad_hoc_start_at
 
   scope :cancelled, -> { where(status: %i(cancelled_by_customer cancelled_by_pension_wise)) }
@@ -68,6 +70,8 @@ class Appointment < ApplicationRecord
   validate :address_or_email_valid, if: :regular_agent?, on: :create
 
   before_validation :format_name, on: :create
+  before_create :track_initial_status
+  before_update :track_status_transitions
 
   def mark_rescheduled!
     self.batch_processed_at = nil
@@ -222,6 +226,14 @@ class Appointment < ApplicationRecord
   end
 
   private
+
+  def track_initial_status
+    status_transitions << StatusTransition.new(status: status)
+  end
+
+  def track_status_transitions
+    track_initial_status if status_changed?
+  end
 
   def allocate_slot
     slot = BookableSlot.find_available_slot(start_at)
