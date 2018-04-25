@@ -1,6 +1,20 @@
 require 'rails_helper'
 
 RSpec.describe Appointment, type: :model do
+  context 'when the status changes before saving' do
+    it 'stores the associated statuses' do
+      appointment = create(:appointment)
+
+      expect(appointment.status_transitions.map(&:status)).to match_array('pending')
+
+      appointment.update(status: 'cancelled_by_pension_wise')
+
+      expect(appointment.status_transitions.map(&:status)).to match_array(
+        %w(pending cancelled_by_pension_wise)
+      )
+    end
+  end
+
   context 'when copying an appointment that had printed confirmation' do
     it 'ensures the copy will also be batch processed' do
       @old  = create(:appointment, batch_processed_at: Time.zone.now, status: :complete)
