@@ -21,6 +21,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     resources :drops, only: :create
   end
 
+  resources :sms_cancellations, only: :create
   resources :guiders, only: :index
   resources :users do
     resources :schedules
