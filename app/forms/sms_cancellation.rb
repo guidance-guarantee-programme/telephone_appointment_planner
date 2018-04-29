@@ -8,11 +8,12 @@ class SmsCancellation
   validates :message, presence: true, format: { with: /\Acancel/i }
 
   def call
-    return unless valid? && appointment
-
-    appointment.cancel!
-
-    send_notifications
+    if valid? && appointment
+      appointment.cancel!
+      send_notifications
+    else
+      SmsCancellationFailureJob.perform_later(source_number)
+    end
   end
 
   private
