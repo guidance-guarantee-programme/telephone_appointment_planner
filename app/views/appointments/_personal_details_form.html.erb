@@ -9,7 +9,7 @@
                                                         api_host: Rails.env.test? ? 'http://localhost:9293' : nil } %>
     <%= f.telephone_field :phone, class: 't-phone', label: required_label(:phone) %>
     <%= f.telephone_field :mobile, class: 't-mobile',
-      help: 'Pension Wise will use this to send an SMS appointment reminder by 8am - 48 hours before the appointment.'
+      help: 'Pension Wise will use this to send an SMS appointment reminder by 8am - 48 hours before the appointment. Customers can cancel appointments via SMS response.'
     %>
     <%= f.text_field :memorable_word, class: 't-memorable-word', placeholder: 'Pension Wise will use this each time the customer is called', label: required_label(:memorable_word) %>
     <%= render 'shared/date_of_birth_form_field', form: f if defined?(edit) && edit %>
