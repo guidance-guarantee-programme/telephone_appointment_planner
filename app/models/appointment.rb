@@ -184,10 +184,12 @@ class Appointment < ApplicationRecord
   end
 
   def cancel!
-    transaction do
-      update!(status: :cancelled_by_customer_sms)
+    without_auditing do
+      transaction do
+        update!(status: :cancelled_by_customer_sms)
 
-      SmsCancellationActivity.from(self)
+        SmsCancellationActivity.from(self)
+      end
     end
   end
 

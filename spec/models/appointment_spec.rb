@@ -1,6 +1,17 @@
 require 'rails_helper'
 
 RSpec.describe Appointment, type: :model do
+  describe '#cancel!' do
+    it 'does not audit any changes' do
+      appointment = create(:appointment)
+      appointment.audits.destroy_all
+
+      appointment.cancel!
+
+      expect(appointment.reload.audits).to be_empty
+    end
+  end
+
   describe '.for_sms_cancellation' do
     context 'when two appointment exist with the same number' do
       it 'returns the appointment created last' do
