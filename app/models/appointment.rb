@@ -29,6 +29,7 @@ class Appointment < ApplicationRecord
     ineligible_pension_type
     cancelled_by_customer
     cancelled_by_pension_wise
+    cancelled_by_customer_sms
   )
 
   belongs_to :agent, class_name: 'User'
@@ -182,6 +183,14 @@ class Appointment < ApplicationRecord
     end
   end
 
+  def cancel!
+    transaction do
+      update!(status: :cancelled_by_customer_sms)
+
+      SmsCancellationActivity.from(self)
+    end
+  end
+
   def self.copy_or_new_by(id)
     return new unless id
 
@@ -223,6 +232,12 @@ class Appointment < ApplicationRecord
     ReminderActivity
       .where(created_at: window)
       .pluck(:appointment_id)
+  end
+
+  def self.for_sms_cancellation(number)
+    pending
+      .order(created_at: :desc)
+      .find_by("REPLACE(mobile, ' ', '') = :number OR REPLACE(phone, ' ', '') = :number", number: number)
   end
 
   private

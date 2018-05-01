@@ -1,6 +1,17 @@
 require 'rails_helper'
 
 RSpec.describe Appointment, type: :model do
+  describe '.for_sms_cancellation' do
+    context 'when two appointment exist with the same number' do
+      it 'returns the appointment created last' do
+        @first = create(:appointment, mobile: '07715930455', created_at: '2018-04-28 13:00')
+        @last  = create(:appointment, mobile: '07715930455', created_at: '2018-04-28 14:00')
+
+        expect(described_class.for_sms_cancellation('07715930455')).to eq(@last)
+      end
+    end
+  end
+
   context 'when the status changes before saving' do
     it 'stores the associated statuses' do
       appointment = create(:appointment)

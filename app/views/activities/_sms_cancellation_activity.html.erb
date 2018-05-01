@@ -1,0 +1,6 @@
+<% content_for(:activity_message, flush: true) do %>
+  <span class="glyphicon glyphicon-phone" aria-hidden="true"></span>
+  <strong>The customer</strong>
+  cancelled their appointment via SMS
+<% end %>
+<%= render 'activities/activity', activity: sms_cancellation_activity, details: details, hide: hide %>
