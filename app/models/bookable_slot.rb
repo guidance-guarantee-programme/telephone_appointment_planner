@@ -63,7 +63,8 @@ class BookableSlot < ApplicationRecord
               #{reduce_by_range(:appointments, from, to)}
               AND NOT appointments.status IN (
                 #{Appointment.statuses['cancelled_by_customer']},
-                #{Appointment.statuses['cancelled_by_pension_wise']}
+                #{Appointment.statuses['cancelled_by_pension_wise']},
+                #{Appointment.statuses['cancelled_by_customer_sms']}
               )
               AND (
                 appointments.start_at, appointments.end_at
