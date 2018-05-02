@@ -18,8 +18,10 @@ RSpec.describe SmsCancellation do
 
     it 'requires the correct `message` for cancellation' do
       subject.message = 'Please cancel my appointment.'
-
       expect(subject).to be_invalid
+
+      subject.message = "'Cancel'"
+      expect(subject).to be_valid
     end
   end
 

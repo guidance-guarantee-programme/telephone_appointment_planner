@@ -5,7 +5,7 @@ class SmsCancellation
   attr_accessor :message
 
   validates :source_number, presence: true
-  validates :message, presence: true, format: { with: /\Acancel/i }
+  validates :message, presence: true, format: { with: /\A'?cancel'?/i }
 
   def call
     if valid? && appointment
