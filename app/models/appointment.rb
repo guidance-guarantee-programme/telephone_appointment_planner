@@ -4,6 +4,12 @@ class Appointment < ApplicationRecord
 
   acts_as_copy_target
 
+  CANCELLED_STATUSES = %i(
+    cancelled_by_customer
+    cancelled_by_pension_wise
+    cancelled_by_customer_sms
+  ).freeze
+
   APPOINTMENT_LENGTH_MINUTES = 70.minutes.freeze
 
   FAKE_DATE_OF_BIRTH = Date.parse('1900-01-01').freeze
@@ -44,8 +50,8 @@ class Appointment < ApplicationRecord
 
   attr_accessor :ad_hoc_start_at
 
-  scope :cancelled, -> { where(status: %i(cancelled_by_customer cancelled_by_pension_wise)) }
-  scope :not_cancelled, -> { where.not(status: %i(cancelled_by_customer cancelled_by_pension_wise)) }
+  scope :cancelled, -> { where(status: CANCELLED_STATUSES) }
+  scope :not_cancelled, -> { where.not(status: CANCELLED_STATUSES) }
   scope :with_mobile_number, -> { where("mobile != '' or phone like '07%'") }
 
   validates :agent, presence: true
