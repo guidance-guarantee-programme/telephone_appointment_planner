@@ -9,7 +9,7 @@ FactoryBot.define do
     phone '0208 252 4758'
     mobile '07715 930 444'
     notes 'This customer is very nice.'
-    opt_out_of_market_research true
+    gdpr_consent 'yes'
     dc_pot_confirmed true
     memorable_word 'lozenge'
     date_of_birth '1945-01-01'

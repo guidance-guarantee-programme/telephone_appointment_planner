@@ -27,7 +27,7 @@
   <%= f.hidden_field :mobile %>
   <%= f.hidden_field :memorable_word %>
   <%= f.hidden_field :notes %>
-  <%= f.hidden_field :opt_out_of_market_research %>
+  <%= f.hidden_field :gdpr_consent %>
   <%= f.hidden_field :status %>
   <%= f.hidden_field :type_of_appointment %>
   <%= f.hidden_field :where_you_heard %>
@@ -98,8 +98,8 @@
               <td><%= @appointment.notes %></td>
             </tr>
             <tr>
-              <td class="active"><b>Opt out of market research</b></td>
-              <td><%= @appointment.opt_out_of_market_research ? 'Opted out' : 'Not opted out' %></td>
+              <td class="active"><b>Customer research consent</b></td>
+              <td><%= @appointment.customer_research_consent %></td>
             </tr>
             <tr>
               <td class="active"><b>Type of appointment</b></td>
@@ -107,9 +107,15 @@
             </tr>
           </tbody>
         </table>
+
+        <p class="alert alert-warning">
+          Full details on our privacy policy, including the customers rights in
+          regards to their personal data, can be found on the Pension Wise website
+        </p>
       </div>
     </div>
   </div>
+
   <%= f.submit 'Confirm appointment', class: 't-confirm-appointment' %>
   <%= f.submit 'Edit appointment', name: :edit_appointment, class: 'btn-danger t-edit-appointment' %>
 <% end %>

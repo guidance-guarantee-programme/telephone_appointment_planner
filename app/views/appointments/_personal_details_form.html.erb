@@ -29,6 +29,21 @@
         class: 't-type-of-appointment-50-54 js-type-of-appointment-50-54'
       %>
     </div>
+
+    <h2 class="h3">Research</h2>
+
+    <div class="form-group">
+      <p><strong>Customer research consent</strong></p>
+      <p class="help-block">
+        Your feedback helps us improve the service. Is it OK if we share your
+        contact details with our trusted research partner? Ipsos MORI may
+        contact you to ask if you would like to provide feedback and you can
+        decide then if you want to take part.
+      </p>
+      <%= f.radio_button :gdpr_consent, 'yes', label: 'Yes', class: 't-gdpr-consent-yes' %>
+      <%= f.radio_button :gdpr_consent, 'no', label: 'No', class: 't-gdpr-consent-no' %>
+      <%= f.radio_button :gdpr_consent, '', label: 'No response', class: 't-gdpr-consent-no-response' %>
+    </div>
   </div>
 
   <div class="col-md-6">
@@ -49,7 +64,6 @@
 
     <h2 class="h3">Additional information and marketing</h2>
     <%= f.text_area :notes, class: 't-notes', rows: 6, placeholder: 'Is the customer hard of hearing? Is English their first language? etc.' %>
-    <%= f.check_box :opt_out_of_market_research, class: 't-opt-out-of-market-research' %>
     <div class="form-group">
       <%= f.select :where_you_heard,
             options_for_select(WhereYouHeard::OPTIONS.invert.to_a, @appointment.where_you_heard),

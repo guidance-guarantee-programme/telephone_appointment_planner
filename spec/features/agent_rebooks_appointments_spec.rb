@@ -58,7 +58,7 @@ RSpec.feature 'Agent rebooks appointments' do
     expect(@page.date_of_birth_year.value).to eq @appointment.date_of_birth.year.to_s
     expect(@page.memorable_word.value).to eq @appointment.memorable_word
     expect(@page.notes.value).to eq @appointment.notes
-    expect(@page.opt_out_of_market_research.checked?).to eq @appointment.opt_out_of_market_research?
+    expect(@page.gdpr_consent_yes).to be_checked
   end
 
   def and_the_start_and_end_date_are_not_copied_over

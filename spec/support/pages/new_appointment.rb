@@ -12,7 +12,9 @@ module Pages
     element :date_of_birth_year,                    '.t-date-of-birth-year'
     element :memorable_word,                        '.t-memorable-word'
     element :notes,                                 '.t-notes'
-    element :opt_out_of_market_research,            '.t-opt-out-of-market-research'
+    element :gdpr_consent_yes,                      '.t-gdpr-consent-yes'
+    element :gdpr_consent_no,                       '.t-gdpr-consent-no'
+    element :gdpr_consent_no_response,              '.t-gdpr-consent-no-response'
     element :start_at,                              '.t-start-at', visible: false
     element :end_at,                                '.t-end-at', visible: false
     element :preview_appointment,                   '.t-preview-appointment'

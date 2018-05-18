@@ -142,7 +142,6 @@ class AppointmentsController < ApplicationController
       :date_of_birth,
       :memorable_word,
       :notes,
-      :opt_out_of_market_research,
       :status,
       :type_of_appointment,
       :where_you_heard,
@@ -151,7 +150,8 @@ class AppointmentsController < ApplicationController
       :address_line_three,
       :town,
       :county,
-      :postcode
+      :postcode,
+      :gdpr_consent
     ]
   end
   # rubocop:enable Metrics/MethodLength

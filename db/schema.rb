@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180425083620) do
+ActiveRecord::Schema.define(version: 20180518131750) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,7 +43,6 @@ ActiveRecord::Schema.define(version: 20180425083620) do
     t.string "mobile", default: ""
     t.string "memorable_word", null: false
     t.text "notes", default: ""
-    t.boolean "opt_out_of_market_research", default: false, null: false
     t.date "date_of_birth"
     t.integer "status", default: 0, null: false
     t.datetime "created_at", null: false
@@ -62,6 +61,7 @@ ActiveRecord::Schema.define(version: 20180425083620) do
     t.string "postcode", default: "", null: false
     t.datetime "batch_processed_at"
     t.datetime "rescheduled_at"
+    t.string "gdpr_consent", default: "", null: false
     t.index ["start_at"], name: "index_appointments_on_start_at"
   end
 

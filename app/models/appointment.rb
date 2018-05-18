@@ -18,12 +18,12 @@ class Appointment < ApplicationRecord
     agent_id
     guider_id
     notes
-    opt_out_of_market_research
     status
     dc_pot_confirmed
     updated_at
     type_of_appointment
     where_you_heard
+    gdpr_consent
   ).freeze
 
   enum status: %i(
@@ -65,6 +65,7 @@ class Appointment < ApplicationRecord
   validates :dc_pot_confirmed, inclusion: [true, false]
   validates :type_of_appointment, inclusion: %w(standard 50-54)
   validates :where_you_heard, inclusion: WhereYouHeard.options_for_inclusion, on: :create, unless: :rebooked_from_id?
+  validates :gdpr_consent, inclusion: ['yes', 'no', '']
 
   validates :status, presence: true
   validates :guider, presence: true
@@ -197,6 +198,10 @@ class Appointment < ApplicationRecord
         SmsCancellationActivity.from(self)
       end
     end
+  end
+
+  def customer_research_consent
+    gdpr_consent == '' ? 'No response' : gdpr_consent.titleize
   end
 
   def self.copy_or_new_by(id)
