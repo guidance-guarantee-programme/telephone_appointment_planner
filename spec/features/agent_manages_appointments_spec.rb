@@ -192,7 +192,7 @@ RSpec.feature 'Agent manages appointments' do
     @page.mobile.set '1111111'
     @page.memorable_word.set 'lozenge'
     @page.notes.set 'something'
-    @page.opt_out_of_market_research.set true
+    @page.gdpr_consent_yes.set true
     @page.start_at.set day.change(hour: 9, min: 30).to_s
     @page.end_at.set day.change(hour: 10, min: 40).to_s
     @page.type_of_appointment_standard.set true
@@ -222,7 +222,7 @@ RSpec.feature 'Agent manages appointments' do
     expect(@page.preview).to have_content '1111111'
     expect(@page.preview).to have_content 'lozenge'
     expect(@page.preview).to have_content 'something'
-    expect(@page.preview).to have_content 'Opted out'
+    expect(@page.preview).to have_content 'Customer research consent Yes'
     expect(@page.preview).to have_content 'Standard'
   end
 
@@ -250,7 +250,7 @@ RSpec.feature 'Agent manages appointments' do
     expect(appointment.mobile).to eq '1111111'
     expect(appointment.memorable_word).to eq 'lozenge'
     expect(appointment.notes).to eq 'something'
-    expect(appointment.opt_out_of_market_research).to eq true
+    expect(appointment.gdpr_consent).to eq 'yes'
     expect(appointment.start_at).to eq day.change(hour: 9, min: 30).to_s
     expect(appointment.status).to eq 'pending'
     expect(appointment.end_at).to eq day.change(hour: 10, min: 40).to_s
@@ -308,7 +308,7 @@ RSpec.feature 'Agent manages appointments' do
     @page.mobile.set '8888888'
     @page.memorable_word.set 'orange'
     @page.notes.set 'no notes'
-    @page.opt_out_of_market_research.set false
+    @page.gdpr_consent_yes.set true
     @page.start_at.set day.change(hour: 9, min: 30).to_s
     @page.end_at.set day.change(hour: 10, min: 40).to_s
     @page.type_of_appointment_50_54.set true
@@ -338,7 +338,7 @@ RSpec.feature 'Agent manages appointments' do
     expect(appointment.mobile).to eq '8888888'
     expect(appointment.memorable_word).to eq 'orange'
     expect(appointment.notes).to eq 'no notes'
-    expect(appointment.opt_out_of_market_research).to eq false
+    expect(appointment.gdpr_consent).to eq 'yes'
     expect(appointment.start_at).to eq day.change(hour: 9, min: 30).to_s
     expect(appointment.status).to eq 'pending'
     expect(appointment.end_at).to eq day.change(hour: 10, min: 40).to_s

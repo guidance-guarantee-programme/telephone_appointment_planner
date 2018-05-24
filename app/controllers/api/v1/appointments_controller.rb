@@ -29,8 +29,8 @@ module Api
           :memorable_word,
           :date_of_birth,
           :dc_pot_confirmed,
-          :opt_out_of_market_research,
-          :where_you_heard
+          :where_you_heard,
+          :gdpr_consent
         ).merge(agent: current_user)
       end
     end

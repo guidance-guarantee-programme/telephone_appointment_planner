@@ -37,7 +37,7 @@ RSpec.feature 'Guider edits an appointment' do
     expect(@page.mobile.value).to eq(@appointment.mobile)
     expect(@page.memorable_word.value).to eq(@appointment.memorable_word)
     expect(@page.notes.value).to eq(@appointment.notes)
-    expect(@page.opt_out_of_market_research.value).to eq('1')
+    expect(@page.gdpr_consent_yes).to be_checked
     expect(@page.status.value).to eq(@appointment.status)
   end
 

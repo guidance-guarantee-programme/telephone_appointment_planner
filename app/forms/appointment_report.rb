@@ -43,7 +43,7 @@ class AppointmentReport
       .select('appointments.first_name')
       .select('appointments.last_name')
       .select('appointments.notes')
-      .select('appointments.opt_out_of_market_research::text')
+      .select('appointments.gdpr_consent')
       .select('appointments.date_of_birth')
       .select('appointments.id AS booking_reference')
       .select('appointments.memorable_word')

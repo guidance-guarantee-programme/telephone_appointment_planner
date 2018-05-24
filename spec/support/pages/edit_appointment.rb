@@ -14,7 +14,10 @@ module Pages
     element :mobile,                                '.t-mobile'
     element :memorable_word,                        '.t-memorable-word'
     element :notes,                                 '.t-notes'
-    element :opt_out_of_market_research,            '.t-opt-out-of-market-research'
+    element :gdpr_consent_yes,                      '.t-gdpr-consent-yes'
+    element :gdpr_consent_no,                       '.t-gdpr-consent-no'
+    element :gdpr_consent_no_response,              '.t-gdpr-consent-no-response'
+
     element :status, '.t-status'
     element :submit, '.t-save'
     element :rebook, '.t-rebook'
