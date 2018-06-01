@@ -224,10 +224,8 @@ class Appointment < ApplicationRecord
   end
 
   def self.needing_sms_reminder
-    window = 2.days.from_now.beginning_of_day..2.days.from_now.end_of_day
-
     pending
-      .where(start_at: window)
+      .where(start_at: [day_range(2), day_range(7)])
       .with_mobile_number
   end
 
@@ -342,6 +340,14 @@ class Appointment < ApplicationRecord
 
   def regular_agent?
     agent && !agent.pension_wise_api?
+  end
+
+  class << self
+    private
+
+    def day_range(days_from)
+      days_from.days.from_now.beginning_of_day.in_time_zone..days_from.days.from_now.end_of_day.in_time_zone
+    end
   end
 end
 

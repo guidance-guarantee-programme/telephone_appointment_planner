@@ -628,4 +628,24 @@ RSpec.describe Appointment, type: :model do
       end
     end
   end
+
+  describe '.needing_sms_reminder' do
+    let!(:eleven) { create(:appointment, start_at: 11.days.from_now, end_at: 11.days.from_now) }
+
+    let!(:twelve) { create(:appointment, start_at: 12.days.from_now, end_at: 12.days.from_now) }
+
+    let!(:thirteen) { create(:appointment, start_at: 13.days.from_now, end_at: 13.days.from_now) }
+
+    it 'is all pending appointments starting 2 days from now' do
+      travel_to(twelve.start_at - 47.hours) do
+        expect(Appointment.needing_sms_reminder).to eq [twelve]
+      end
+    end
+
+    it 'is all pending appointments starting 7 days from now' do
+      travel_to(twelve.start_at - (7 * 24 - 1).hours) do
+        expect(Appointment.needing_sms_reminder).to eq [twelve]
+      end
+    end
+  end
 end
