@@ -7,7 +7,7 @@ class UtilisationReportsController < ApplicationController
   end
 
   def new
-    @utilisation_report = UtilisationReport.new
+    @utilisation_report = UtilisationReport.new(current_user: current_user)
   end
 
   def create
@@ -27,6 +27,9 @@ class UtilisationReportsController < ApplicationController
   private
 
   def report_params
-    params.require(:utilisation_report).permit(:date_range)
+    params
+      .require(:utilisation_report)
+      .permit(:date_range)
+      .merge(current_user: current_user)
   end
 end

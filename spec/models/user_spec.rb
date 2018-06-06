@@ -5,6 +5,18 @@ require 'gds-sso/lint/user_spec'
 RSpec.describe User, type: :model do
   it_behaves_like 'a gds-sso user class'
 
+  describe '#colleagues' do
+    it 'returns users in the same organisation' do
+      guider      = create(:guider, :tp)
+      tpas_guider = create(:guider)
+
+      # includes itself
+      expect(guider.colleagues).to match_array(guider)
+      # does not include the TP guider
+      expect(tpas_guider.colleagues).to_not match_array(guider)
+    end
+  end
+
   describe '.guiders' do
     it 'filters users by the guider permission' do
       create(:guider)

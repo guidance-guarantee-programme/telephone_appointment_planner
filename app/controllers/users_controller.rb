@@ -1,13 +1,14 @@
 class UsersController < ApplicationController
   before_action :authorise_for_resource_managers!
+  before_action :authorise_for_administrators!, only: :update
 
   def index
-    @guiders = User.includes(:groups).guiders
-    @groups = Group.all
+    @guiders = current_user.colleagues.guiders.includes(:groups)
+    @groups = Group.for_user(current_user)
   end
 
   def edit
-    @guider = User.find(params[:id])
+    @guider = current_user.colleagues.find(params[:id])
     @schedules = SchedulePresenter.wrap(
       @guider.schedules
         .with_end_at
@@ -15,8 +16,14 @@ class UsersController < ApplicationController
     )
   end
 
+  def update
+    current_user.update(organisation_params)
+
+    redirect_back fallback_location: root_path
+  end
+
   def sort
-    @guiders = User.guiders.active.includes(:groups)
+    @guiders = current_user.colleagues.guiders.active.includes(:groups)
   end
 
   def sort_update
@@ -43,9 +50,12 @@ class UsersController < ApplicationController
 
   private
 
-  def toggle_activation
-    user = User.find(params[:user_id])
+  def organisation_params
+    params.require(:user).permit(:organisation_content_id)
+  end
 
+  def toggle_activation
+    user = current_user.colleagues.find(params[:user_id])
     user.toggle!(:active)
 
     GenerateBookableSlotsForUserJob.perform_later user

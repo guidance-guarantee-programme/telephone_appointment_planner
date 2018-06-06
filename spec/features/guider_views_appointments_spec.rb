@@ -32,13 +32,14 @@ RSpec.feature 'Guider views appointments' do
     end
   end
 
-  scenario 'Guider does not see deactivated guiders', js: true do
+  scenario 'Guider does not see deactivated and/or other organisation guiders', js: true do
     given_the_user_is_a_guider do
-      and_there_is_a_guider
+      and_there_is_a_guider_from_another_organisation
       and_there_is_a_deactivated_guider
       when_they_view_the_company_calendar
       then_they_see_the_guider
       and_they_do_not_see_the_deactivated_guider
+      and_they_do_not_see_the_guider_from_another_organisation
     end
   end
 
@@ -238,8 +239,13 @@ RSpec.feature 'Guider views appointments' do
     expect(@page.appointments.first['href']).to end_with(edit_appointment_path(@appointment_tomorrow))
   end
 
-  def and_there_is_a_guider
-    @guider = create(:guider)
+  def and_there_is_a_guider_from_another_organisation
+    @guider    = create(:guider, :tpas)
+    @tp_guider = create(:guider, :tp)
+  end
+
+  def and_they_do_not_see_the_guider_from_another_organisation
+    expect(@page.calendar.guiders).to_not include(@tp_guider.name)
   end
 
   def and_there_is_a_deactivated_guider

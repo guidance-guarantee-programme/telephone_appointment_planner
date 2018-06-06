@@ -1,7 +1,8 @@
 class CreateGroupAssignments
-  def initialize(user_ids, names)
+  def initialize(user_ids, names, user)
     @user_ids = user_ids
     @names = names
+    @user = user
   end
 
   def call
@@ -15,13 +16,19 @@ class CreateGroupAssignments
   private
 
   def groups
-    @groups ||= names.map { |name| Group.find_or_create_by(name: name) }
+    @groups ||= names.map do |name|
+      Group.find_or_create_by(
+        name: name,
+        organisation_content_id: user.organisation_content_id
+      )
+    end
   end
 
   def users
-    User.find(user_ids)
+    user.colleagues.find(user_ids)
   end
 
   attr_reader :user_ids
   attr_reader :names
+  attr_reader :user
 end

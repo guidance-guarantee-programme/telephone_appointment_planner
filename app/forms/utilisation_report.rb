@@ -5,11 +5,13 @@ class UtilisationReport
   include Report
 
   attr_reader :date_range
+  attr_reader :current_user
 
   validates :date_range, presence: true
 
   def initialize(params = {})
-    @date_range = params[:date_range]
+    @date_range   = params[:date_range]
+    @current_user = params[:current_user]
   end
 
   def generate
@@ -27,22 +29,32 @@ class UtilisationReport
 
   private
 
+  def role_scoped(scope)
+    return scope if current_user.contact_centre_team_leader?
+
+    scope
+      .includes(:guider)
+      .where(users: { organisation_content_id: current_user.organisation_content_id })
+  end
+
   def generate_for_day(day)
     day_range = (day.beginning_of_day..day.end_of_day)
+    scope = Appointment.where(start_at: day_range)
     bookable, blocked = bookable_and_blocked(day_range)
+
     [
       day,
-      Appointment.not_cancelled.where(start_at: day_range).count,
+      role_scoped(scope).not_cancelled.count,
       bookable,
       blocked,
-      Appointment.cancelled.where(start_at: day_range).count
+      role_scoped(scope).cancelled.count
     ]
   end
 
   def bookable_and_blocked(day_range)
-    slots = BookableSlot.within_date_range(day_range.begin, day_range.end)
-    bookable = slots.without_holidays.count
-    blocked = slots.count - bookable
+    scope    = role_scoped(BookableSlot.within_date_range(day_range.begin, day_range.end))
+    bookable = scope.without_holidays.count
+    blocked  = scope.count - bookable
     [bookable, blocked]
   end
 end

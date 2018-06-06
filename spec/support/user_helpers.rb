@@ -27,11 +27,15 @@ module UserHelpers
     end
   end
 
-  def given_the_user(type)
-    GDS::SSO.test_user = create(type)
+  def given_the_user(type, organisation = :tpas)
+    GDS::SSO.test_user = create(type, organisation)
     yield
   ensure
     GDS::SSO.test_user = nil
+  end
+
+  def given_the_user_is_an_administrator(&block)
+    given_the_user(:administrator, &block)
   end
 
   def given_the_user_is_a_pension_wise_api_user(&block)
@@ -46,16 +50,16 @@ module UserHelpers
     given_the_user(:guider_and_resource_manager, &block)
   end
 
-  def given_the_user_is_a_guider(&block)
-    given_the_user(:guider, &block)
+  def given_the_user_is_a_guider(organisation: :tpas, &block)
+    given_the_user(:guider, organisation, &block)
   end
 
-  def given_the_user_is_a_resource_manager(&block)
-    given_the_user(:resource_manager, &block)
+  def given_the_user_is_a_resource_manager(organisation: :tpas, &block)
+    given_the_user(:resource_manager, organisation, &block)
   end
 
-  def given_the_user_is_an_agent(&block)
-    given_the_user(:agent, &block)
+  def given_the_user_is_an_agent(organisation: :tp, &block)
+    given_the_user(:agent, organisation, &block)
   end
 
   def given_the_user_has_no_permissions(&block)

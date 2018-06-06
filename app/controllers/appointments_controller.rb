@@ -1,6 +1,5 @@
 # rubocop:disable Metrics/ClassLength
 class AppointmentsController < ApplicationController
-  before_action :authenticate_user!
   store_previous_page_on :search
 
   def batch_update
@@ -82,10 +81,7 @@ class AppointmentsController < ApplicationController
   end
 
   def search
-    @search = Search.new(
-      search_params[:q],
-      search_params[:date_range]
-    )
+    @search = Search.new(search_params)
 
     return redirect_on_exact_match(@search.results.first) if @search.results.one?
 
@@ -112,7 +108,10 @@ class AppointmentsController < ApplicationController
     if scoped_to_me?
       current_user.appointments
     else
-      Appointment.unscoped
+      Appointment
+        .unscoped
+        .joins(:guider)
+        .where(users: { organisation_content_id: current_user.organisation_content_id })
     end
   end
 
@@ -121,7 +120,10 @@ class AppointmentsController < ApplicationController
   end
 
   def search_params
-    params.fetch(:search, {}).permit(:q, :date_range)
+    params
+      .fetch(:search, {})
+      .permit(:q, :date_range)
+      .merge(current_user: current_user)
   end
 
   def date_range_params

@@ -6,12 +6,14 @@ class AppointmentReport
 
   attr_reader :where
   attr_reader :date_range
+  attr_reader :current_user
 
   validates :date_range, presence: true
 
   def initialize(params = {})
     @where = params.fetch(:where, :created_at)
     @date_range = params[:date_range]
+    @current_user = params[:current_user]
   end
 
   def generate # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
@@ -51,6 +53,7 @@ class AppointmentReport
       .select('appointments.mobile')
       .select('appointments.email')
       .where("#{column} >= ? AND #{column} <= ?", range.begin, range.end.end_of_day)
+      .where(organisation_clause)
       .joins('INNER JOIN users guiders ON guiders.id = appointments.guider_id')
       .joins('INNER JOIN users agents ON agents.id = appointments.agent_id')
       .order(where)
@@ -58,5 +61,13 @@ class AppointmentReport
 
   def file_name
     "report-#{range_title}#{where}.csv"
+  end
+
+  private
+
+  def organisation_clause
+    return '1 = 1' if current_user.contact_centre_team_leader?
+
+    { guiders: { organisation_content_id: current_user.organisation_content_id } }
   end
 end

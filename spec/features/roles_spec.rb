@@ -1,6 +1,37 @@
 require 'rails_helper'
 
 RSpec.feature 'Roles' do
+  context 'Administrators' do
+    scenario 'Can see the organisation selection' do
+      given_the_user_is_an_administrator do
+        when_they_try_to_view_the_allocations_calendar
+        then_they_see_the_organisations
+      end
+    end
+  end
+
+  context 'Other users' do
+    scenario 'Cannot see the organisation selection' do
+      given_the_user_is_a_resource_manager do
+        when_they_try_to_view_the_allocations_calendar
+        then_they_do_not_see_the_organisations
+      end
+    end
+  end
+
+  def when_they_try_to_view_the_allocations_calendar
+    @page = Pages::Allocations.new.tap(&:load)
+    expect(@page).to be_displayed
+  end
+
+  def then_they_see_the_organisations
+    expect(@page).to have_organisations
+  end
+
+  def then_they_do_not_see_the_organisations
+    expect(@page).to have_no_organisations
+  end
+
   context 'Team Leaders' do
     scenario 'Can run reports' do
       given_the_user_is_a_contact_centre_team_leader do
@@ -64,6 +95,15 @@ RSpec.feature 'Roles' do
       given_the_user_is_a_guider do
         when_they_try_to_view_their_activities
         then_they_are_allowed
+      end
+    end
+  end
+
+  context 'Contact centre team leaders' do
+    scenario 'Visiting the home page' do
+      given_the_user_is_a_contact_centre_team_leader do
+        when_they_visit_the_home_page
+        then_they_see_a_report
       end
     end
   end
@@ -140,6 +180,15 @@ RSpec.feature 'Roles' do
         then_they_are_locked_out
       end
     end
+  end
+
+  def when_they_visit_the_home_page
+    visit '/'
+  end
+
+  def then_they_see_a_report
+    @page = Pages::NewAppointmentReport.new
+    expect(@page).to be_displayed
   end
 
   def when_they_try_to_view_appointment_reports

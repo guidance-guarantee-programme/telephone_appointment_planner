@@ -11,7 +11,7 @@ class AppointmentReportsController < ApplicationController
   before_action :load_where_options
 
   def new
-    @appointment_report = AppointmentReport.new
+    @appointment_report = AppointmentReport.new(current_user: current_user)
   end
 
   def create
@@ -44,6 +44,9 @@ class AppointmentReportsController < ApplicationController
   end
 
   def report_params
-    params.require(:appointment_report).permit(:where, :date_range)
+    params
+      .require(:appointment_report)
+      .permit(:where, :date_range)
+      .merge(current_user: current_user)
   end
 end
