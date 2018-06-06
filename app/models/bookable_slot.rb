@@ -43,12 +43,14 @@ class BookableSlot < ApplicationRecord
       .without_holidays
   end
 
-  def self.grouped # rubocop:disable Metrics/AbcSize
+  def self.grouped(organisation_id = nil) # rubocop:disable Metrics/AbcSize
     from = next_valid_start_date
     to   = 8.weeks.from_now.end_of_day
 
-    bookable(from, to)
-      .within_date_range(from, to)
+    scope = bookable(from, to).within_date_range(from, to)
+    scope = scope.joins(:guider).where(users: { organisation_content_id: organisation_id }) if organisation_id
+
+    scope
       .select("#{quoted_table_name}.start_at::date as start_date")
       .select("#{quoted_table_name}.start_at")
       .order('start_date asc, start_at asc')
