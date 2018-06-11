@@ -53,6 +53,7 @@ class Appointment < ApplicationRecord
   scope :cancelled, -> { where(status: CANCELLED_STATUSES) }
   scope :not_cancelled, -> { where.not(status: CANCELLED_STATUSES) }
   scope :with_mobile_number, -> { where("mobile != '' or phone like '07%'") }
+  scope :not_booked_today, -> { where.not(created_at: Time.current.beginning_of_day..Time.current.end_of_day) }
 
   validates :agent, presence: true
   validates :start_at, presence: true
@@ -225,6 +226,7 @@ class Appointment < ApplicationRecord
 
   def self.needing_sms_reminder
     pending
+      .not_booked_today
       .where(start_at: [day_range(2), day_range(7)])
       .with_mobile_number
   end
@@ -233,6 +235,7 @@ class Appointment < ApplicationRecord
     window = 3.hours.from_now..48.hours.from_now.in_time_zone
 
     pending
+      .not_booked_today
       .where(start_at: window)
       .where.not(email: '', id: reminded_ids)
   end

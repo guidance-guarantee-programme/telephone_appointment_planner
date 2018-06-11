@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe SmsAppointmentReminderJob, '#perform' do
-  let(:appointment) { create(:appointment) }
+  let(:appointment) { create(:appointment, created_at: 1.day.ago) }
   let(:client) { double(Notifications::Client, send_sms: true) }
 
   it 'sends an SMS' do
