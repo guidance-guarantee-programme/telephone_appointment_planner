@@ -16,6 +16,7 @@ FactoryBot.define do
     type_of_appointment '50-54'
     guider { create(:guider) }
     where_you_heard { WhereYouHeard.options_for_inclusion.sample }
+    created_at { 1.day.ago }
 
     factory :imported_appointment do
       date_of_birth Appointment::FAKE_DATE_OF_BIRTH
