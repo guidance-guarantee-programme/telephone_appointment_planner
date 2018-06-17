@@ -4,7 +4,7 @@ class User < ApplicationRecord
   ALL_ORGANISATIONS = [
     TPAS_ORGANISATION_ID = '14a48488-a42f-422d-969d-526e30922fe4'.freeze,
     TP_ORGANISATION_ID   = '41075b50-6385-4e8b-a17d-a7b9aae5d220'.freeze,
-    CAS_ORGANISATION_ID  = '272e2a93-c7f5-43f7-bd40-c21bddb2d56b'.freeze
+    CAS_ORGANISATION_ID  = '0c686436-de02-4d92-8dc7-26c97bb7c5bb'.freeze
   ].freeze
 
   ALL_PERMISSIONS = [
