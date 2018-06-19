@@ -601,42 +601,6 @@ RSpec.describe Appointment, type: :model do
           end
         end
       end
-
-      context 'and the appointment has already been reminded in the last 48 hours' do
-        it 'does not return the appointment' do
-          appointment = create(:appointment, start_at: BusinessDays.from_now(10))
-          check_time = appointment.start_at - 47.hours
-          create(:reminder_activity, appointment: appointment, created_at: check_time - 47.hours)
-
-          travel_to(check_time) do
-            expect(Appointment.needing_reminder).to_not include(appointment)
-          end
-        end
-      end
-
-      context 'and the appointment has been rescheduled' do
-        before do
-          @appointment = create(:appointment, start_at: BusinessDays.from_now(20),
-                                              end_at: BusinessDays.from_now(20) + 1.hour)
-          create(:reminder_activity, appointment: @appointment, created_at: BusinessDays.from_now(10))
-        end
-
-        context 'and it is more than 48 hours before the appointment' do
-          it 'does not return the appointment' do
-            travel_to(@appointment.start_at - 49.hours) do
-              expect(Appointment.needing_reminder).to_not include(@appointment)
-            end
-          end
-        end
-
-        context 'and it is less than 48 hours before the appointment' do
-          it 'returns the appointment' do
-            travel_to(@appointment.start_at - 47.hours) do
-              expect(Appointment.needing_reminder).to include(@appointment)
-            end
-          end
-        end
-      end
     end
   end
 
