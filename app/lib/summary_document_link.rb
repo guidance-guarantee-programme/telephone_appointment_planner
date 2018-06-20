@@ -23,7 +23,8 @@ class SummaryDocumentLink
         town: appointment.town,
         county: appointment.county,
         postcode: appointment.postcode,
-        country: 'United Kingdom'
+        country: 'United Kingdom',
+        telephone_appointment: true
       }.to_query(:appointment_summary)
     end
   end
