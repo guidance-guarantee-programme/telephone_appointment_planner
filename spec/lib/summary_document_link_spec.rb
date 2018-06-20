@@ -1,10 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe SummaryDocumentLink do
-  it 'includes encoded address elements' do
-    @query = described_class.query(build(:appointment, :with_address))
+  subject { described_class.query(build(:appointment, :with_address)) }
 
-    expect(@query).to include(
+  it 'includes the telephone appointment flag' do
+    expect(subject).to include('%5Btelephone_appointment%5D=true')
+  end
+
+  it 'includes encoded address elements' do
+    expect(subject).to include(
       '10+Some+Road',
       'Some+Street',
       'Somewhere',
