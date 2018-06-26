@@ -122,9 +122,9 @@ class Appointment < ApplicationRecord
     status.start_with?('cancelled')
   end
 
-  def allocate(via_slot: true)
+  def allocate(via_slot: true, agent: nil)
     if via_slot
-      allocate_slot
+      allocate_slot(agent)
     else
       self.end_at = start_at + APPOINTMENT_LENGTH_MINUTES
     end
@@ -264,8 +264,8 @@ class Appointment < ApplicationRecord
     track_initial_status if status_changed?
   end
 
-  def allocate_slot
-    slot = BookableSlot.find_available_slot(start_at)
+  def allocate_slot(agent)
+    slot = BookableSlot.find_available_slot(start_at, agent)
     self.guider = nil
     return unless slot
 

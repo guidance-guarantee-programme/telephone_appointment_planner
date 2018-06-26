@@ -59,7 +59,7 @@ class AppointmentsController < ApplicationController
 
   def preview
     @appointment = Appointment.new(create_params.merge(agent: current_user))
-    @appointment.allocate(via_slot: calendar_scheduling?)
+    @appointment.allocate(via_slot: calendar_scheduling?, agent: current_user)
 
     if @appointment.valid?
       render :preview
