@@ -29,12 +29,11 @@ class BookableSlot < ApplicationRecord
     BusinessDays.from_now(1).change(hour: 18, min: 30)
   end
 
-  def self.find_available_slot(start_at)
-    bookable
-      .where(start_at: start_at)
-      .limit(1)
-      .order('RANDOM()')
-      .first
+  def self.find_available_slot(start_at, agent)
+    scope = bookable.where(start_at: start_at)
+    scope = scope.for_organisation(agent) if agent
+
+    scope.limit(1).order('RANDOM()').first
   end
 
   def self.bookable(from = nil, to = nil)

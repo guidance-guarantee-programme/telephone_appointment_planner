@@ -346,6 +346,52 @@ RSpec.describe Appointment, type: :model do
       BusinessDays.from_now(5).change(hour: 10, min: 30, second: 0)
     end
 
+    context 'when booking as a TPAS agent' do
+      it 'excludes TP guiders' do
+        tpas_resource_manager = create(:resource_manager, :tpas)
+        tp_resource_manager   = create(:resource_manager, :tp)
+
+        tp_guider   = guider_with_slot(:tp)
+        tpas_guider = guider_with_slot(:tpas)
+
+        subject.start_at = appointment_start_time
+        subject.end_at   = appointment_end_time
+
+        subject.allocate(agent: tpas_resource_manager)
+        expect(subject.guider).to eq(tpas_guider)
+
+        subject.allocate(agent: tp_resource_manager)
+        expect(subject.guider).to eq(tp_guider)
+      end
+
+      def guider_with_slot(provider) # rubocop:disable MethodLength
+        guider = create(:guider, provider)
+        guider.schedules.build(
+          start_at: appointment_start_time.beginning_of_day,
+          slots: [
+            build(
+              :slot,
+              day_of_week: appointment_start_time.wday,
+              start_hour: 9,
+              start_minute: 0,
+              end_hour: 10,
+              end_minute: 30
+            )
+          ]
+        )
+        guider.save!
+
+        create(
+          :bookable_slot,
+          guider: guider,
+          start_at: appointment_start_time,
+          end_at: appointment_end_time
+        )
+
+        guider
+      end
+    end
+
     context 'with a guider who has a slot at the appointment time' do
       let!(:guider_with_slot) do
         guider_with_slot = create(:guider)
