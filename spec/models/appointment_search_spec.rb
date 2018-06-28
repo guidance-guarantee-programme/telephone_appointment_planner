@@ -46,8 +46,8 @@ RSpec.describe AppointmentSearch, type: :model do
     end
 
     it 'returns results for a date range' do
-      date_range_start = 20.days.from_now.to_date
-      date_range_end = 30.days.from_now.to_date
+      date_range_start = 30.days.from_now.to_date
+      date_range_end = 40.days.from_now.to_date
       start_at = date_range_start + 5.hours
       end_at = start_at + 1.hour
       appointment = create(:appointment, start_at: start_at, end_at: end_at)

@@ -127,7 +127,7 @@ RSpec.feature 'Agent searches for appointments' do
   def and_there_is_an_appointment_in_the_future
     @expected_appointment = create(
       :appointment,
-      start_at: 20.days.from_now
+      start_at: 30.days.from_now
     )
   end
 
