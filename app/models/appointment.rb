@@ -220,6 +220,7 @@ class Appointment < ApplicationRecord
 
   def self.needing_print_confirmation
     pending
+      .not_booked_today
       .where(batch_processed_at: nil, email: '')
       .where.not(address_line_one: '')
   end
