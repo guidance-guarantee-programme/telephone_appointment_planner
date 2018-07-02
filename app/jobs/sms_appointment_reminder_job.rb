@@ -18,7 +18,7 @@ class SmsAppointmentReminderJob < SmsJobBase
       template_id: TEMPLATE_ID,
       reference: appointment.to_param,
       personalisation: {
-        date: appointment.start_at.to_s(:govuk_date_short)
+        date: "#{appointment.start_at.to_s(:govuk_date_short)} (#{appointment.timezone})"
       }
     )
   end
