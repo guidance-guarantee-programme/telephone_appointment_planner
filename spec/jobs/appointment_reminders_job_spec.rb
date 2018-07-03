@@ -14,7 +14,7 @@ RSpec.describe AppointmentRemindersJob, '#perform' do
   let(:appointment) do
     create(
       :appointment,
-      start_at: BusinessDays.from_now(10)
+      start_at: BusinessDays.from_now(20)
     )
   end
 
