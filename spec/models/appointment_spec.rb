@@ -603,7 +603,7 @@ RSpec.describe Appointment, type: :model do
 
     context 'less than 3 hours before the appointment' do
       it 'does not return the appointment' do
-        appointment = create(:appointment, start_at: BusinessDays.from_now(10))
+        appointment = create(:appointment, start_at: BusinessDays.from_now(20))
 
         travel_to(appointment.start_at - 2.hours) do
           expect(Appointment.needing_reminder).not_to include(appointment)
@@ -613,7 +613,7 @@ RSpec.describe Appointment, type: :model do
 
     context 'more than 48 hours before the appointment' do
       it 'does not return the appointment' do
-        appointment = create(:appointment, start_at: BusinessDays.from_now(10))
+        appointment = create(:appointment, start_at: BusinessDays.from_now(20))
 
         expect(Appointment.needing_reminder).to_not include(appointment)
       end
@@ -621,7 +621,7 @@ RSpec.describe Appointment, type: :model do
 
     context 'less than 48 hours before the appointment' do
       it 'returns the appointment' do
-        appointment = create(:appointment, start_at: BusinessDays.from_now(10))
+        appointment = create(:appointment, start_at: BusinessDays.from_now(20))
 
         travel_to(appointment.start_at - 47.hours) do
           expect(Appointment.needing_reminder).to include(appointment)
@@ -630,7 +630,7 @@ RSpec.describe Appointment, type: :model do
 
       context 'and the appointment has no email address' do
         it 'does not return the appointment' do
-          appointment = create(:appointment, :with_address, email: '', start_at: BusinessDays.from_now(10))
+          appointment = create(:appointment, :with_address, email: '', start_at: BusinessDays.from_now(20))
 
           travel_to(appointment.start_at - 47.hours) do
             expect(Appointment.needing_reminder).to_not include(appointment)
@@ -640,7 +640,7 @@ RSpec.describe Appointment, type: :model do
 
       context 'and the appointment is not pending' do
         it 'does not return the appointment' do
-          appointment = create(:appointment, :api, status: 'cancelled_by_customer', start_at: BusinessDays.from_now(10))
+          appointment = create(:appointment, :api, status: 'cancelled_by_customer', start_at: BusinessDays.from_now(20))
 
           travel_to(appointment.start_at - 47.hours) do
             expect(Appointment.needing_reminder).to_not include(appointment)
