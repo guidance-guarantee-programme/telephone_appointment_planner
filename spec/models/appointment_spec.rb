@@ -651,21 +651,22 @@ RSpec.describe Appointment, type: :model do
   end
 
   describe '.needing_sms_reminder' do
-    let!(:eleven) { create(:appointment, start_at: 11.days.from_now, end_at: 11.days.from_now) }
+    it 'includes the correct appointments at given periods' do
+      # excluded before
+      create(:appointment, start_at: 20.days.from_now)
+      # this is included
+      found = create(:appointment, start_at: 21.days.from_now)
+      # excluded after
+      create(:appointment, start_at: 22.days.from_now)
 
-    let!(:twelve) { create(:appointment, start_at: 12.days.from_now, end_at: 12.days.from_now) }
-
-    let!(:thirteen) { create(:appointment, start_at: 13.days.from_now, end_at: 13.days.from_now) }
-
-    it 'is all pending appointments starting 2 days from now' do
-      travel_to(twelve.start_at - 47.hours) do
-        expect(Appointment.needing_sms_reminder).to eq [twelve]
+      # at roughly two days prior
+      travel_to(found.start_at - 47.hours) do
+        expect(Appointment.needing_sms_reminder).to contain_exactly(found)
       end
-    end
 
-    it 'is all pending appointments starting 7 days from now' do
-      travel_to(twelve.start_at - (7 * 24 - 1).hours) do
-        expect(Appointment.needing_sms_reminder).to eq [twelve]
+      # at roughly seven days prior
+      travel_to(found.start_at - (7 * 24 - 1).hours) do
+        expect(Appointment.needing_sms_reminder).to contain_exactly(found)
       end
     end
   end
