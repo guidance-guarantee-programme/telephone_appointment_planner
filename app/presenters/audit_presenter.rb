@@ -1,4 +1,8 @@
 class AuditPresenter < SimpleDelegator
+  def owner
+    user ? user.name : 'The system'
+  end
+
   def changed_fields
     audited_changes.keys.map(&:humanize).to_sentence.downcase
   end
