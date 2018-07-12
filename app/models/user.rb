@@ -41,6 +41,10 @@ class User < ApplicationRecord
     organisation_content_id == TP_ORGANISATION_ID
   end
 
+  def tpas?
+    organisation_content_id == TPAS_ORGANISATION_ID
+  end
+
   def tp_agent?
     tp? && agent?
   end

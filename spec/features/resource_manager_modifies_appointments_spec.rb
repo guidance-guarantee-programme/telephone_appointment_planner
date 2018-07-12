@@ -130,7 +130,7 @@ RSpec.feature 'Resource manager modifies appointments' do
 
   def and_there_is_a_bookable_slot_for_a_guider
     guider = create(:guider)
-    today = BusinessDays.from_now(3)
+    today = BusinessDays.from_now(10)
 
     @bookable_slot = guider.bookable_slots.create(
       start_at: today.change(hour: 11, min: 0),
