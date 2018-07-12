@@ -156,7 +156,7 @@ RSpec.describe Appointment, type: :model do
       travel_to '2017-03-26 11:05 UTC' do
         # force new_record? to evaluate truthily
         appointment = Appointment.new(
-          attributes_for(:appointment, start_at: Time.zone.parse('2017-03-27 11:20 UTC'))
+          attributes_for(:appointment, agent: build_stubbed(:agent), start_at: Time.zone.parse('2017-03-27 11:20 UTC'))
         )
 
         expect(appointment).to be_invalid
@@ -288,6 +288,7 @@ RSpec.describe Appointment, type: :model do
       before { allow(subject).to receive(:new_record?).and_return(true) }
 
       it 'cannot be booked at short notice' do
+        subject.agent = build_stubbed(:agent)
         subject.start_at = 1.hour.from_now
         subject.validate
         expect(subject.errors[:start_at]).to_not be_empty
@@ -326,12 +327,17 @@ RSpec.describe Appointment, type: :model do
     end
 
     context 'when attempting to book on a guider conference day' do
-      it 'is not valid' do
+      it 'is not valid unless the agent is a TPAS resource manager' do
+        subject.agent    = build_stubbed(:agent)
         subject.start_at = '2018-07-17 13:00'
         subject.end_at   = '2017-07-17 14:00'
 
         travel_to '2018-07-12 13:00' do
           expect(subject).not_to be_valid
+
+          subject.agent = build_stubbed(:resource_manager)
+
+          expect(subject).to be_valid
         end
       end
     end

@@ -83,7 +83,7 @@ RSpec.feature 'Guider views appointments' do
 
   def given_the_requisite_data
     @guider = create(:guider)
-    @appointment = create(:appointment, guider: @guider)
+    @appointment = create(:appointment, guider: @guider, start_at: BusinessDays.from_now(10).change(hour: 9))
     @other_guider = create(:guider)
     @resource_manager = create(:resource_manager)
   end
@@ -117,20 +117,21 @@ RSpec.feature 'Guider views appointments' do
   end
 
   def and_there_are_appointments_for_multiple_guiders
+    start_at = BusinessDays.from_now(10).change(hour: 14)
     # this would appear 'today'
-    @appointment = create(:appointment, guider: current_user)
-    @other_appointment = create(:appointment, guider: create(:guider))
+    @appointment = create(:appointment, guider: current_user, start_at: start_at)
+    @other_appointment = create(:appointment, guider: create(:guider), start_at: start_at)
     # this would appear 'tomorrow'
     @appointment_tomorrow = create(
       :appointment,
       guider: current_user,
-      start_at: BusinessDays.from_now(4).at_midday
+      start_at: BusinessDays.from_now(11).at_midday
     )
   end
 
   def and_the_user_has_a_schedule
-    today    = BusinessDays.from_now(3).beginning_of_day
-    tomorrow = BusinessDays.from_now(4).beginning_of_day
+    today    = BusinessDays.from_now(10).beginning_of_day
+    tomorrow = BusinessDays.from_now(11).beginning_of_day
     # this would appear 'today'
     @bookable_slots = [
       current_user.bookable_slots.create(
@@ -146,7 +147,7 @@ RSpec.feature 'Guider views appointments' do
   end
 
   def and_the_user_has_a_holiday
-    today = BusinessDays.from_now(3).beginning_of_day
+    today = BusinessDays.from_now(10).beginning_of_day
     @holiday = create(
       :holiday,
       user: current_user,

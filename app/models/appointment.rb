@@ -285,6 +285,7 @@ class Appointment < ApplicationRecord
 
   def not_during_guider_conference
     return unless start_at
+    return if agent_is_tpas_resource_manager?
 
     if BookableSlot::GUIDER_CONFERENCE_DAYS.cover?(start_at.to_date) # rubocop:disable Style/GuardClause
       errors.add(:start_at, 'must not be during the guider conference')
@@ -336,6 +337,10 @@ class Appointment < ApplicationRecord
 
   def agent_is_resource_manager?
     agent.present? && agent.resource_manager?
+  end
+
+  def agent_is_tpas_resource_manager?
+    agent_is_resource_manager? && agent.tpas?
   end
 
   def pension_wise_api?

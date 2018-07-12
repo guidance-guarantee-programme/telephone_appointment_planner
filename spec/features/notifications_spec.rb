@@ -66,7 +66,8 @@ RSpec.describe 'Activity notification alerts', js: true do
 end
 
 def and_they_have_an_appointment
-  @appointment = create(:appointment, guider: guider, agent: agent)
+  start_at     = BusinessDays.from_now(10).change(hour: 9)
+  @appointment = create(:appointment, start_at: start_at, guider: guider, agent: agent)
 end
 
 def when_they_are_on_their_dashboard
