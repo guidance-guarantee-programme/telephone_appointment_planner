@@ -182,7 +182,10 @@ class AppointmentsController < ApplicationController
     params
       .require(:appointment)
       .permit(:end_at, :guider_id)
-      .merge(start_at: munge_start_at)
+      .merge(
+        start_at: munge_start_at,
+        agent: current_user
+      )
   end
 
   def creating?
