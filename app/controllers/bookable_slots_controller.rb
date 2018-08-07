@@ -21,7 +21,6 @@ class BookableSlotsController < ApplicationController
 
   def bookable_slots
     slots = BookableSlot
-            .without_guider_conference_days
             .within_date_range(start_at, end_at)
 
     if scoped_to_me?
