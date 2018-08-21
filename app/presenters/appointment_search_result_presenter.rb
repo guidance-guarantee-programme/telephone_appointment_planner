@@ -1,7 +1,7 @@
 class AppointmentSearchResultPresenter < SimpleDelegator
   DATE_FORMAT = '%d %B %Y %H:%M'.freeze
 
-  delegate :name, to: :guider, prefix: true
+  delegate :name, :organisation, to: :guider, prefix: true
 
   def status
     super.titleize

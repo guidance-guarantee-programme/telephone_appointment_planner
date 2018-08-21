@@ -48,4 +48,17 @@ class User < ApplicationRecord
   def tp_agent?
     tp? && agent?
   end
+
+  def organisation
+    case organisation_content_id
+    when TP_ORGANISATION_ID
+      'TP'
+    when TPAS_ORGANISATION_ID
+      'TPAS'
+    when CAS_ORGANISATION_ID
+      'CAS'
+    else
+      ''
+    end
+  end
 end
