@@ -5,6 +5,18 @@ require 'gds-sso/lint/user_spec'
 RSpec.describe User, type: :model do
   it_behaves_like 'a gds-sso user class'
 
+  describe '#organisation' do
+    it 'returns the correct descriptive text based on organisation membership' do
+      tp   = build_stubbed(:guider, :tp)
+      tpas = build_stubbed(:guider)
+      cas  = build_stubbed(:guider, :cas)
+
+      expect(tp.organisation).to eq('TP')
+      expect(tpas.organisation).to eq('TPAS')
+      expect(cas.organisation).to eq('CAS')
+    end
+  end
+
   describe '#colleagues' do
     it 'returns users in the same organisation' do
       guider      = create(:guider, :tp)
