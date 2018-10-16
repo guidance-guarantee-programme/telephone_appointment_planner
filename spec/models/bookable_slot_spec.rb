@@ -112,6 +112,20 @@ RSpec.describe BookableSlot, type: :model do
         end
       end
     end
+
+    context 'user is a resource manager' do
+      let(:user) do
+        build_stubbed(:resource_manager)
+      end
+
+      it 'is now' do
+        now = Chronic.parse('next Monday').in_time_zone
+        travel_to(now) do
+          actual = BookableSlot.next_valid_start_date(user)
+          expect(actual).to eq now
+        end
+      end
+    end
   end
 
   describe '#without_appointments' do
