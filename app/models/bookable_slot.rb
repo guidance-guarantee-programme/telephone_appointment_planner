@@ -17,7 +17,7 @@ class BookableSlot < ApplicationRecord
   def self.next_valid_start_date(user = nil)
     return Time.zone.now if user && user.resource_manager?
 
-    BusinessDays.from_now(2).change(hour: 18, min: 30)
+    BusinessDays.from_now(1).change(hour: 18, min: 30)
   end
 
   def self.find_available_slot(start_at, agent)
