@@ -8,7 +8,7 @@
         format: 'DD/MM/YYYY h:mm a',
         stepping: 5,
         useCurrent: false,
-        daysOfWeekDisabled: [0, 6],
+        daysOfWeekDisabled: [0],
         sideBySide: true
       };
 

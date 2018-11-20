@@ -6,7 +6,6 @@
     start(el) {
       this.config = {
         defaultView: 'agendaWeek',
-        weekends: false,
         columnFormat: 'ddd D/M',
         slotDuration: '00:30:00',
         eventBorderColor: '#000',

@@ -152,8 +152,9 @@ RSpec.feature 'Resource manager manages schedules' do
   end
 
   def and_they_change_the_time_slots
-    click_on_day_and_time 'Wednesday', '11:00'
+    click_on_day_and_time 'Wednesday', '09:30'
     click_on_day_and_time 'Thursday', '10:30'
+
     expect(@page).to have_events(count: 2)
   end
 
@@ -161,10 +162,10 @@ RSpec.feature 'Resource manager manages schedules' do
     first_slot = @schedule.slots.where(day_of_week: 3).first
     expect(first_slot).to have_attributes(
       day_of_week: 3,
-      start_hour: 11,
-      start_minute: 0,
-      end_hour: 12,
-      end_minute: 10
+      start_hour: 9,
+      start_minute: 30,
+      end_hour: 10,
+      end_minute: 40
     )
 
     second_slot = @schedule.slots.where(day_of_week: 4).first

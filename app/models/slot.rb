@@ -3,5 +3,5 @@ class Slot < ApplicationRecord
 
   default_scope { order(:day_of_week) }
 
-  validates :day_of_week, inclusion: (1..5)
+  validates :day_of_week, inclusion: (1..6)
 end
