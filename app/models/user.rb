@@ -61,4 +61,10 @@ class User < ApplicationRecord
       ''
     end
   end
+
+  def self.guider_organisation_match?(guider, original_guider_id)
+    original = find(original_guider_id)
+
+    guider.organisation_content_id == original.organisation_content_id
+  end
 end
