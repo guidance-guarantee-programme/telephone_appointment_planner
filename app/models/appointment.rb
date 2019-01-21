@@ -76,6 +76,7 @@ class Appointment < ApplicationRecord
   validate :date_of_birth_valid
   validate :email_valid, if: :pension_wise_api?, on: :create
   validate :address_or_email_valid, if: :regular_agent?, on: :create
+  validate :validate_guider_organisation, on: :update
 
   before_validation :format_name, on: :create
   before_create :track_initial_status
@@ -323,6 +324,13 @@ class Appointment < ApplicationRecord
 
   def date_of_birth_pre_cut_off?
     date_of_birth? && date_of_birth < FAKE_DATE_OF_BIRTH
+  end
+
+  def validate_guider_organisation
+    return unless guider_id_changed? && guider
+    return if User.guider_organisation_match?(guider, guider_id_was)
+
+    errors.add(:guider, 'The guider is from another provider')
   end
 
   def agent_is_resource_manager?

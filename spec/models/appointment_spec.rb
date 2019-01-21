@@ -171,6 +171,17 @@ RSpec.describe Appointment, type: :model do
       build_stubbed(:appointment)
     end
 
+    describe 'rescheduling across organisations' do
+      it 'is not possible' do
+        @cas_guider  = create(:guider, :cas)
+        @appointment = create(:appointment)
+
+        @appointment.guider = @cas_guider
+
+        expect(@appointment).to be_invalid
+      end
+    end
+
     it 'defaults #status to `pending`' do
       expect(described_class.new).to be_pending
     end
