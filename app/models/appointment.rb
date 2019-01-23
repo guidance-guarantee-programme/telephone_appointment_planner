@@ -77,6 +77,7 @@ class Appointment < ApplicationRecord
   validate :email_valid, if: :pension_wise_api?, on: :create
   validate :address_or_email_valid, if: :regular_agent?, on: :create
   validate :validate_guider_organisation, on: :update
+  validate :validate_guider_available, on: :update
 
   before_validation :format_name, on: :create
   before_create :track_initial_status
@@ -331,6 +332,25 @@ class Appointment < ApplicationRecord
     return if User.guider_organisation_match?(guider, guider_id_was)
 
     errors.add(:guider, 'The guider is from another provider')
+  end
+
+  def validate_guider_available
+    return unless pending_from_cancelled?
+    return unless existing_appointment?
+
+    errors.add(:guider, 'The guider would be double-booked')
+  end
+
+  def pending_from_cancelled?
+    CANCELLED_STATUSES.any? { |s| status_changed?(to: 'pending', from: s.to_s) }
+  end
+
+  def existing_appointment?
+    self.class
+        .not_cancelled
+        .where(guider_id: guider_id, start_at: start_at)
+        .where.not(id: id)
+        .exists?
   end
 
   def agent_is_resource_manager?

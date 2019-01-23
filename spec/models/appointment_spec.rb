@@ -35,6 +35,20 @@ RSpec.describe Appointment, type: :model do
         %w(pending cancelled_by_pension_wise)
       )
     end
+
+    context 'changing from a cancellation back to pending' do
+      it 'is invalid when the original slot is taken' do
+        @guider      = create(:guider)
+        @cancelled   = create(:appointment, status: :cancelled_by_customer, guider: @guider)
+        @appointment = create(:appointment, guider: @guider)
+
+        @cancelled.status = :pending
+        expect(@cancelled).to be_invalid
+
+        @appointment.update(status: :cancelled_by_customer)
+        expect(@cancelled).to be_valid
+      end
+    end
   end
 
   context 'when copying an appointment that had printed confirmation' do
