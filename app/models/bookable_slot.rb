@@ -113,13 +113,15 @@ class BookableSlot < ApplicationRecord
     where("#{quoted_table_name}.start_at > ?", next_valid_start_date(user))
   end
 
-  def self.with_guider_count(user, from, to)
+  def self.with_guider_count(user, from, to) # rubocop:disable AbcSize
+    limit_by_organisation = !user.resource_manager?
+
     select("DISTINCT #{quoted_table_name}.start_at, #{quoted_table_name}.end_at, count(1) AS guiders")
       .bookable
       .starting_after_next_valid_start_date(user)
       .for_organisation(user)
       .group("#{quoted_table_name}.start_at, #{quoted_table_name}.end_at")
-      .within_date_range(from, to, organisation_limit: true)
+      .within_date_range(from, to, organisation_limit: limit_by_organisation)
       .map do |us|
         { guiders: us.attributes['guiders'], start: us.start_at, end: us.end_at, selected: false }
       end

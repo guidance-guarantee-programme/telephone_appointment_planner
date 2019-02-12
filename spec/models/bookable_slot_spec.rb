@@ -355,6 +355,37 @@ RSpec.describe BookableSlot, type: :model do
         )
       end
 
+      context 'user is a resource manager' do
+        let(:user) do
+          build_stubbed(:resource_manager)
+        end
+
+        it 'includes bookable slots that start after now' do
+          start_at = BusinessDays.from_now(1).change(hour: 12, min: 30)
+          end_at = BusinessDays.from_now(1).change(hour: 14, min: 30)
+          create(
+            :bookable_slot,
+            guider: create(:guider),
+            start_at: start_at,
+            end_at: end_at
+          )
+
+          expect(result.count).to eq 2
+          expect(result).to include(
+            guiders: 3,
+            start: make_time(10, 30),
+            end: make_time(11, 30),
+            selected: false
+          )
+          expect(result).to include(
+            guiders: 1,
+            start: start_at,
+            end: end_at,
+            selected: false
+          )
+        end
+      end
+
       context 'one guider has a bookable slot obscured by a non cancelled appointment' do
         it 'excludes the slot' do
           create(
