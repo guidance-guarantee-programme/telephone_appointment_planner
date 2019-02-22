@@ -19,6 +19,7 @@ RSpec.feature 'Resource manager manages schedules' do
   end
 
   scenario 'Successfully updates a schedule', js: true do
+    skip 'While the email banner pushes the required nodes off screen'
     given_the_user_is_a_resource_manager do
       and_there_is_a_guider
       and_the_guider_has_a_schedule_that_can_be_modified
