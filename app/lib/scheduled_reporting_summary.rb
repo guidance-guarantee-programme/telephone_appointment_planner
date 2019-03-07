@@ -1,12 +1,6 @@
 class ScheduledReportingSummary
-  ORGANISATIONS = {
-    User::TPAS_ORGANISATION_ID => 'TPAS',
-    User::TP_ORGANISATION_ID   => 'TP',
-    User::CAS_ORGANISATION_ID  => 'CAS'
-  }.freeze
-
   def call
-    ORGANISATIONS.each do |id, name|
+    User::ORGANISATIONS.each do |id, name|
       ReportingSummary.create!(
         organisation: name,
         four_week_availability: four_week_available?(id),
