@@ -20,6 +20,10 @@ FactoryBot.define do
       organisation_content_id User::CAS_ORGANISATION_ID
     end
 
+    trait :ni do
+      organisation_content_id User::NI_ORGANISATION_ID
+    end
+
     factory :administrator do
       organisation_content_id User::TPAS_ORGANISATION_ID
       permissions { [User::ADMINISTRATOR_PERMISSION] }

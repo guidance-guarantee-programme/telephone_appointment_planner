@@ -4,8 +4,16 @@ class User < ApplicationRecord
   ALL_ORGANISATIONS = [
     TPAS_ORGANISATION_ID = '14a48488-a42f-422d-969d-526e30922fe4'.freeze,
     TP_ORGANISATION_ID   = '41075b50-6385-4e8b-a17d-a7b9aae5d220'.freeze,
-    CAS_ORGANISATION_ID  = '0c686436-de02-4d92-8dc7-26c97bb7c5bb'.freeze
+    CAS_ORGANISATION_ID  = '0c686436-de02-4d92-8dc7-26c97bb7c5bb'.freeze,
+    NI_ORGANISATION_ID   = '1de9b76c-c349-4e2a-a3a7-bb0f59b0807e'.freeze
   ].freeze
+
+  ORGANISATIONS = {
+    TPAS_ORGANISATION_ID => 'TPAS'.freeze,
+    TP_ORGANISATION_ID   => 'TP'.freeze,
+    CAS_ORGANISATION_ID  => 'CAS'.freeze,
+    NI_ORGANISATION_ID   => 'NI'.freeze
+  }.freeze
 
   ALL_PERMISSIONS = [
     ADMINISTRATOR_PERMISSION    = 'administrator'.freeze,
@@ -50,16 +58,7 @@ class User < ApplicationRecord
   end
 
   def organisation
-    case organisation_content_id
-    when TP_ORGANISATION_ID
-      'TP'
-    when TPAS_ORGANISATION_ID
-      'TPAS'
-    when CAS_ORGANISATION_ID
-      'CAS'
-    else
-      ''
-    end
+    ORGANISATIONS[organisation_content_id].to_s
   end
 
   def self.guider_organisation_match?(guider, original_guider_id)

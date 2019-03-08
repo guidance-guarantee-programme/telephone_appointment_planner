@@ -11,5 +11,9 @@ FactoryBot.define do
     trait :cas do
       guider { create(:guider, :cas) }
     end
+
+    trait :ni do
+      guider { create(:guider, :ni) }
+    end
   end
 end
