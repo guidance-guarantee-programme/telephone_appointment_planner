@@ -70,7 +70,7 @@ class AppointmentsController < ApplicationController
 
   def create
     @appointment = Appointment.new(create_params.merge(agent: current_user))
-    @appointment.allocate(via_slot: calendar_scheduling?)
+    @appointment.allocate(via_slot: calendar_scheduling?, agent: current_user)
 
     if creating? && @appointment.save
       CustomerUpdateJob.perform_later(@appointment, CustomerUpdateActivity::CONFIRMED_MESSAGE)
