@@ -61,6 +61,10 @@ class User < ApplicationRecord
     ORGANISATIONS[organisation_content_id].to_s
   end
 
+  def delete_future_slots!
+    bookable_slots.where('start_at > ?', Time.current).delete_all
+  end
+
   def self.guider_organisation_match?(guider, original_guider_id)
     original = find(original_guider_id)
 

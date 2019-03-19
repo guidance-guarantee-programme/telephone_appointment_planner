@@ -135,9 +135,7 @@ class BookableSlot < ApplicationRecord
   end
 
   def self.generate_for_guider(guider)
-    where(guider: guider).delete_all
-
-    return unless guider.active?
+    return guider.delete_future_slots! unless guider.active?
 
     generation_range.each do |day|
       active_schedule = guider.schedules.active(day)
@@ -152,15 +150,10 @@ class BookableSlot < ApplicationRecord
   end
 
   def self.create_from_slot!(guider, day, slot)
-    start_at = day.in_time_zone.change(
-      hour: slot.start_hour,
-      min: slot.start_minute
-    )
-    end_at = day.in_time_zone.change(
-      hour: slot.end_hour,
-      min: slot.end_minute
-    )
-    create!(guider: guider, start_at: start_at, end_at: end_at)
+    start_at = day.in_time_zone.change(hour: slot.start_hour, min: slot.start_minute)
+    end_at   = day.in_time_zone.change(hour: slot.end_hour, min: slot.end_minute)
+
+    find_or_create_by(guider: guider, start_at: start_at, end_at: end_at)
   end
 
   def self.generation_range
