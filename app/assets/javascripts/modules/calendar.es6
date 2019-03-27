@@ -193,10 +193,6 @@ class Calendar extends TapBase {
   }
 
   eventAfterAllRender() {
-    if ($('.t-full-calendar-rendered').length > 0) {
-      return;
-    }
-    let $rendered = $("<div class='t-full-calendar-rendered' style='display:hidden;'></div>")
-    $('body').append($rendered);
+
   }
 }
