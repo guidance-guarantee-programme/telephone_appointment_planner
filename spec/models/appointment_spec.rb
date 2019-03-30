@@ -670,7 +670,7 @@ RSpec.describe Appointment, type: :model do
       # excluded before
       create(:appointment, start_at: 20.days.from_now)
       # this is included
-      found = create(:appointment, start_at: 21.days.from_now)
+      found = create(:appointment, start_at: 21.days.from_now.change(hour: 13, min: 30))
       # excluded after
       create(:appointment, start_at: 22.days.from_now)
 
