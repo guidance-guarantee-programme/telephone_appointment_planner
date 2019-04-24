@@ -1,4 +1,4 @@
-class SpringBankHolidayExcluder
+class BankHolidayExcluder
   def call
     ActiveRecord::Base.transaction do
       bank_holiday_observing_organisation_ids.each do |organisation_id|
@@ -11,16 +11,25 @@ class SpringBankHolidayExcluder
 
   private
 
-  def create_all_day_bank_holidays_for_organisation(organisation_id)
+  def permitted_date_pairs
+    [
+      ['2019-05-06 00:00:00', '2019-05-06 23:59:59'],
+      ['2019-05-27 00:00:00', '2019-05-27 23:59:59']
+    ]
+  end
+
+  def create_all_day_bank_holidays_for_organisation(organisation_id) # rubocop:disable MethodLength
     active_guider_ids_for_organisation(organisation_id).each do |guider_id|
-      Holiday.create!(
-        user_id: guider_id,
-        all_day: true,
-        bank_holiday: false,
-        title: 'ALL - Easter Bank Holiday',
-        start_at: '2019-04-19 00:00:00',
-        end_at: '2019-04-22 23:59:59'
-      )
+      permitted_date_pairs.each do |date_pair|
+        Holiday.create!(
+          user_id: guider_id,
+          all_day: true,
+          bank_holiday: false,
+          title: 'ALL - Bank Holiday',
+          start_at: date_pair.first,
+          end_at: date_pair.last
+        )
+      end
     end
   end
 
@@ -29,8 +38,8 @@ class SpringBankHolidayExcluder
   end
 
   def bank_holiday_observing_organisation_ids
-    # TPAS are missing as they manage holidays manually
     [
+      User::TPAS_ORGANISATION_ID,
       User::TP_ORGANISATION_ID,
       User::NI_ORGANISATION_ID
     ]
@@ -40,7 +49,7 @@ class SpringBankHolidayExcluder
     Holiday.where(
       user_id: nil,
       bank_holiday: true,
-      start_at: ['2019-04-19 00:00:00', '2019-04-22 00:00:00']
+      start_at: permitted_date_pairs.map(&:first)
     ).delete_all
   end
 end
