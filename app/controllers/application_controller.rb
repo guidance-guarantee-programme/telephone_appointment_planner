@@ -20,6 +20,7 @@ class ApplicationController < ActionController::Base
 
     payload[:params]    = request.filtered_parameters
     payload[:remote_ip] = request.remote_ip
+    payload[:user_id]   = current_user&.id
   end
 
   def authorise_for_guiders!
