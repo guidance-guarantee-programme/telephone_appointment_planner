@@ -8,7 +8,8 @@ Rails.application.configure do # rubocop:disable Metrics/BlockLength
   config.lograge.custom_options = lambda do |event|
     {
       params: event.payload[:params].except(*EXCEPTIONS),
-      remote_ip: event.payload[:remote_ip]
+      remote_ip: event.payload[:remote_ip],
+      user_id: event.payload[:user_id]
     }
   end
 
