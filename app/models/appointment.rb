@@ -252,7 +252,7 @@ class Appointment < ApplicationRecord
 
   def self.for_sms_cancellation(number)
     pending
-      .order(created_at: :desc)
+      .order(:created_at)
       .find_by("REPLACE(mobile, ' ', '') = :number OR REPLACE(phone, ' ', '') = :number", number: number)
   end
 
