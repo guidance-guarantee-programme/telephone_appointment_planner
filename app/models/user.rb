@@ -9,6 +9,8 @@ class User < ApplicationRecord
     CITA_WALLSEND_ID     = 'cb30f26c-15c3-4ab1-b74b-be5cf8d368b7'.freeze
   ].freeze
 
+  BANK_HOLIDAY_OBSERVING_ORGANISATIONS = ALL_ORGANISATIONS - Array(CAS_ORGANISATION_ID)
+
   ORGANISATIONS = {
     TPAS_ORGANISATION_ID => 'TPAS'.freeze,
     TP_ORGANISATION_ID   => 'TP'.freeze,
