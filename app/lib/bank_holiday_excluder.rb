@@ -13,8 +13,7 @@ class BankHolidayExcluder
 
   def permitted_date_pairs
     [
-      ['2019-05-06 00:00:00', '2019-05-06 23:59:59'],
-      ['2019-05-27 00:00:00', '2019-05-27 23:59:59']
+      ['2019-08-26 00:00:00', '2019-08-26 23:59:59']
     ]
   end
 
@@ -38,11 +37,7 @@ class BankHolidayExcluder
   end
 
   def bank_holiday_observing_organisation_ids
-    [
-      User::TPAS_ORGANISATION_ID,
-      User::TP_ORGANISATION_ID,
-      User::NI_ORGANISATION_ID
-    ]
+    User::BANK_HOLIDAY_OBSERVING_ORGANISATIONS
   end
 
   def delete_existing_bank_holidays
