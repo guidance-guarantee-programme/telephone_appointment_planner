@@ -2,6 +2,10 @@
 class AppointmentsController < ApplicationController
   store_previous_page_on :search
 
+  rescue_from ActiveRecord::RecordNotFound do
+    render :missing
+  end
+
   def batch_update
     BatchAppointmentUpdate.new(params[:changes]).call
     head :ok
@@ -14,7 +18,7 @@ class AppointmentsController < ApplicationController
   end
 
   def edit
-    @appointment = Appointment.find(params[:id])
+    @appointment = Appointment.for_organisation(current_user).find(params[:id])
   end
 
   def reschedule
