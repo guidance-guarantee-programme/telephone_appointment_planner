@@ -22,6 +22,8 @@ module Pages
     element :submit, '.t-save'
     element :rebook, '.t-rebook'
 
+    element :permissions_warning, '.t-permissions'
+
     section :activity_feed, '.t-activity-feed' do
       elements :activities, '.t-activity'
 

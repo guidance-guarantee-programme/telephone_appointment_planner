@@ -206,6 +206,13 @@ class Appointment < ApplicationRecord
     gdpr_consent == '' ? 'No response' : gdpr_consent.titleize
   end
 
+  def self.for_organisation(user)
+    return where('1 = 1') if user.tp_agent?
+
+    joins(:guider)
+      .where(users: { organisation_content_id: user.organisation_content_id })
+  end
+
   def self.copy_or_new_by(id)
     return new unless id
 
