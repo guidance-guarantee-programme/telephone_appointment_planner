@@ -75,6 +75,7 @@ RSpec.describe 'POST /api/v1/appointments' do
       'dc_pot_confirmed' => true,
       'where_you_heard'  => '1',
       'gdpr_consent'     => nil,
+      'pension_provider' => nil,
       'accessibility_requirements' => true,
       'notes' => 'I am hard of hearing'
     }
@@ -108,7 +109,8 @@ RSpec.describe 'POST /api/v1/appointments' do
         where_you_heard: 1,
         gdpr_consent: '',
         accessibility_requirements: true,
-        notes: 'I am hard of hearing'
+        notes: 'I am hard of hearing',
+        pension_provider: ''
       )
     end
   end
