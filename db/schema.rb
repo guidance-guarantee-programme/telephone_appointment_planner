@@ -63,7 +63,10 @@ ActiveRecord::Schema.define(version: 20190910114253) do
     t.datetime "rescheduled_at"
     t.string "gdpr_consent", default: "", null: false
     t.string "pension_provider", default: "", null: false
+<<<<<<< HEAD
     t.boolean "accessibility_requirements", default: false, null: false
+=======
+>>>>>>> Allow agents to specify final-nudge partner
     t.index ["start_at"], name: "index_appointments_on_start_at"
   end
 

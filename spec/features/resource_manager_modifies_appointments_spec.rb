@@ -1,6 +1,14 @@
 require 'rails_helper'
 
 RSpec.feature 'Resource manager modifies appointments' do
+  scenario 'Creating an appointment' do
+    given_the_user_is_a_resource_manager do
+      and_pension_providers_are_configured
+      when_they_attempt_to_create_an_appointment
+      then_they_do_not_see_pension_providers
+    end
+  end
+
   scenario 'Avoid navigating away with unsaved modifications', js: true do
     given_the_user_is_a_resource_manager do
       when_there_are_appointments_for_multiple_guiders
@@ -276,5 +284,22 @@ RSpec.feature 'Resource manager modifies appointments' do
     expect(holiday[:end]).to eq "#{date}T09:10:00.000Z"
 
     expect(Holiday.count).to eq 1
+  end
+
+  def and_pension_providers_are_configured
+    allow(PensionProvider).to receive(:all).and_return(
+      'aviva' => 'Aviva',
+      'hargreaves-landsdown' => 'Hargreaves Landsdown'
+    )
+  end
+
+  def when_they_attempt_to_create_an_appointment
+    @page = Pages::NewAppointment.new
+    @page.load
+  end
+
+  def then_they_do_not_see_pension_providers
+    expect(@page).to be_displayed
+    expect(@page).to have_no_pension_provider
   end
 end

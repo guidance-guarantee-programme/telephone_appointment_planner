@@ -36,5 +36,9 @@ FactoryBot.define do
       county { 'Some County' }
       postcode { 'E3 3NN' }
     end
+
+    trait :aviva do
+      pension_provider { 'aviva' }
+    end
   end
 end

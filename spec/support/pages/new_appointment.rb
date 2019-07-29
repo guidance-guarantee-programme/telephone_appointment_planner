@@ -34,6 +34,8 @@ module Pages
     element :guider, '.t-guider'
     element :ad_hoc_start_at, '.t-ad-hoc-start-at'
 
+    element :pension_provider, '.t-pension-provider'
+
     def ad_hoc_start_at(value)
       execute_script("$('.t-ad-hoc-start-at').val('#{value}')")
     end
