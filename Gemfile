@@ -35,7 +35,6 @@ source 'https://rubygems.org' do
   gem 'govuk_admin_template'
   gem 'kaminari'
   gem 'net-sftp'
-  gem 'newrelic_rpm'
   gem 'notifications-ruby-client'
   gem 'oj'
   gem 'pg', '~> 0.18'
