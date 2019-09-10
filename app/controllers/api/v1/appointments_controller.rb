@@ -30,7 +30,9 @@ module Api
           :date_of_birth,
           :dc_pot_confirmed,
           :where_you_heard,
-          :gdpr_consent
+          :gdpr_consent,
+          :accessibility_requirements,
+          :notes
         ).merge(agent: current_user)
       end
     end

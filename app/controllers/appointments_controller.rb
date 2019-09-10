@@ -147,6 +147,7 @@ class AppointmentsController < ApplicationController
       :mobile,
       :date_of_birth,
       :memorable_word,
+      :accessibility_requirements,
       :notes,
       :status,
       :type_of_appointment,

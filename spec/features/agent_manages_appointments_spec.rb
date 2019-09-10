@@ -191,6 +191,7 @@ RSpec.feature 'Agent manages appointments' do
     @page.phone.set '0000000'
     @page.mobile.set '1111111'
     @page.memorable_word.set 'lozenge'
+    @page.accessibility_requirements.set true
     @page.notes.set 'something'
     @page.gdpr_consent_yes.set true
     @page.start_at.set day.change(hour: 9, min: 30).to_s
@@ -256,6 +257,7 @@ RSpec.feature 'Agent manages appointments' do
     expect(appointment.end_at).to eq day.change(hour: 10, min: 40).to_s
     expect(appointment.type_of_appointment).to eq('standard')
     expect(appointment.where_you_heard).to eq(17)
+    expect(appointment).to be_accessibility_requirements
   end
 
   def and_the_customer_gets_an_email_confirmation
@@ -312,6 +314,7 @@ RSpec.feature 'Agent manages appointments' do
     @page.start_at.set day.change(hour: 9, min: 30).to_s
     @page.end_at.set day.change(hour: 10, min: 40).to_s
     @page.type_of_appointment_50_54.set true
+    @page.accessibility_requirements.set false
 
     @page.preview_appointment.click
   end
@@ -343,6 +346,7 @@ RSpec.feature 'Agent manages appointments' do
     expect(appointment.status).to eq 'pending'
     expect(appointment.end_at).to eq day.change(hour: 10, min: 40).to_s
     expect(appointment.type_of_appointment).to eq('50-54')
+    expect(appointment).not_to be_accessibility_requirements
   end
 
   def and_there_is_an_appointment

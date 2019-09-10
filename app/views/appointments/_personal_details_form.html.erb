@@ -57,6 +57,7 @@
     <%= f.text_field :postcode, class: 't-postcode' %>
 
     <h2 class="h3">Additional information and marketing</h2>
+    <%= f.check_box :accessibility_requirements, class: 't-accessibility-requirements', label: 'Do you need any help or an adjustment to access our service?' %>
     <%= f.text_area :notes, class: 't-notes', rows: 6, placeholder: 'Is the customer hard of hearing? Is English their first language? etc.' %>
     <div class="form-group">
       <%= f.select :where_you_heard,
