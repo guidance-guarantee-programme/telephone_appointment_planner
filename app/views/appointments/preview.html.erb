@@ -26,6 +26,7 @@
   <%= f.hidden_field :phone %>
   <%= f.hidden_field :mobile %>
   <%= f.hidden_field :memorable_word %>
+  <%= f.hidden_field :accessibility_requirements %>
   <%= f.hidden_field :notes %>
   <%= f.hidden_field :gdpr_consent %>
   <%= f.hidden_field :status %>
@@ -92,6 +93,10 @@
             <tr>
               <td class="active"><b>Memorable word</b></td>
               <td><%= @appointment.memorable_word %></td>
+            </tr>
+            <tr>
+              <td class="active"><b>I require help or an adjustment to help me access my appointment</b></td>
+              <td><%= @appointment.accessibility_requirements %></td>
             </tr>
             <tr>
               <td class="active"><b>Notes</b></td>

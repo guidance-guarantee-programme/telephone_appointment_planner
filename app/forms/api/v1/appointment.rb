@@ -13,6 +13,8 @@ module Api
       attr_accessor :dc_pot_confirmed
       attr_accessor :where_you_heard
       attr_accessor :gdpr_consent
+      attr_accessor :accessibility_requirements
+      attr_accessor :notes
       attr_accessor :agent
 
       attr_reader :model
@@ -20,7 +22,7 @@ module Api
       def initialize(*)
         super
 
-        @model = Models::Appointment.new(to_params)
+        @model = ::Appointment.new(to_params)
       end
 
       def create
@@ -44,7 +46,9 @@ module Api
           dc_pot_confirmed: dc_pot_confirmed,
           where_you_heard: where_you_heard,
           gdpr_consent: gdpr_consent.to_s,
-          agent: agent
+          agent: agent,
+          accessibility_requirements: accessibility_requirements,
+          notes: notes
         }
       end
     end

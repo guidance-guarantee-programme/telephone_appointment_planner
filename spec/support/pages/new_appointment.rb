@@ -11,6 +11,7 @@ module Pages
     element :date_of_birth_month,                   '.t-date-of-birth-month'
     element :date_of_birth_year,                    '.t-date-of-birth-year'
     element :memorable_word,                        '.t-memorable-word'
+    element :accessibility_requirements,            '.t-accessibility-requirements'
     element :notes,                                 '.t-notes'
     element :gdpr_consent_yes,                      '.t-gdpr-consent-yes'
     element :gdpr_consent_no,                       '.t-gdpr-consent-no'

@@ -36,7 +36,8 @@ RSpec.describe 'POST /api/v1/appointments' do
       'date_of_birth'    => '1950-02-02',
       'dc_pot_confirmed' => true,
       'where_you_heard'  => '1',
-      'gdpr_consent'     => 'yes'
+      'gdpr_consent'     => 'yes',
+      'accessibility_requirements' => 'false'
     }
 
     post api_v1_appointments_path, params: @payload, as: :json
@@ -67,7 +68,9 @@ RSpec.describe 'POST /api/v1/appointments' do
       'date_of_birth'    => '1950-02-02',
       'dc_pot_confirmed' => true,
       'where_you_heard'  => '1',
-      'gdpr_consent'     => nil
+      'gdpr_consent'     => nil,
+      'accessibility_requirements' => true,
+      'notes' => 'I am hard of hearing'
     }
 
     post api_v1_appointments_path, params: @payload, as: :json
@@ -97,7 +100,9 @@ RSpec.describe 'POST /api/v1/appointments' do
         memorable_word: 'snootboop',
         dc_pot_confirmed: true,
         where_you_heard: 1,
-        gdpr_consent: ''
+        gdpr_consent: '',
+        accessibility_requirements: true,
+        notes: 'I am hard of hearing'
       )
     end
   end
