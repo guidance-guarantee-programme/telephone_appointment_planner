@@ -1,6 +1,10 @@
 class PensionProvider
   def self.all
-    @all ||= JSON.parse(ENV.fetch('PENSION_PROVIDERS', '{}'))
+    @all ||= begin
+               JSON.parse(ENV.fetch('PENSION_PROVIDERS', '{}')).merge(
+                 'n/a' => 'Not Applicable'
+               )
+             end
   end
 
   def self.[](key)

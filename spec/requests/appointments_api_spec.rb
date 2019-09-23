@@ -110,7 +110,7 @@ RSpec.describe 'POST /api/v1/appointments' do
         gdpr_consent: '',
         accessibility_requirements: true,
         notes: 'I am hard of hearing',
-        pension_provider: ''
+        pension_provider: 'n/a'
       )
     end
   end

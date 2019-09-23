@@ -49,7 +49,7 @@ module Api
           gdpr_consent: gdpr_consent.to_s,
           accessibility_requirements: accessibility_requirements,
           notes: notes,
-          pension_provider: pension_provider.to_s,
+          pension_provider: pension_provider.presence || 'n/a',
           agent: agent
         }
       end
