@@ -50,6 +50,8 @@ class Appointment < ApplicationRecord
 
   attr_accessor :ad_hoc_start_at
 
+  delegate :resource_managers, to: :guider
+
   scope :cancelled, -> { where(status: CANCELLED_STATUSES) }
   scope :not_cancelled, -> { where.not(status: CANCELLED_STATUSES) }
   scope :with_mobile_number, -> { where("mobile != '' or phone like '07%'") }

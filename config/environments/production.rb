@@ -103,6 +103,7 @@ Rails.application.configure do # rubocop:disable Metrics/BlockLength
   config.active_record.dump_schema_after_migration = false
 
   # Configure email delivery using Mailgun
+  config.action_mailer.default_url_options = { host: ENV['APPLICATION_HOST'] }
   config.action_mailer.smtp_settings = {
     port: ENV['MAILGUN_SMTP_PORT'],
     address: ENV['MAILGUN_SMTP_SERVER'],

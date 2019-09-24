@@ -77,7 +77,8 @@ class AppointmentsController < ApplicationController
     @appointment.allocate(via_slot: calendar_scheduling?, agent: current_user)
 
     if creating? && @appointment.save
-      CustomerUpdateJob.perform_later(@appointment, CustomerUpdateActivity::CONFIRMED_MESSAGE)
+      send_notifications(@appointment)
+
       redirect_to(search_appointments_path, success: 'Appointment has been created')
     else
       render :new
@@ -93,6 +94,11 @@ class AppointmentsController < ApplicationController
   end
 
   private
+
+  def send_notifications(appointment)
+    AccessibilityAdjustmentNotificationsJob.perform_later(appointment) if appointment.accessibility_requirements?
+    CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::CONFIRMED_MESSAGE)
+  end
 
   def postcode_api_key
     ENV.fetch('POSTCODE_API_KEY') { 'iddqd' } # default to test API key
