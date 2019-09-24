@@ -104,6 +104,10 @@
               <td><%= @appointment.notes %></td>
             </tr>
             <tr>
+              <td class="active"><b>Pension provider</b></td>
+              <td><%= PensionProvider[@appointment.pension_provider] %></td>
+            </tr>
+            <tr>
               <td class="active"><b>Customer research consent</b></td>
               <td><%= @appointment.customer_research_consent %></td>
             </tr>
