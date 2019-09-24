@@ -47,11 +47,19 @@ class User < ApplicationRecord
 
   scope :guiders, -> { where('permissions @> ?', %(["#{GUIDER_PERMISSION}"])) }
   scope :active, -> { where(active: true) }
+  scope :enabled, -> { where(disabled: false) }
 
   ALL_PERMISSIONS.each do |permission|
     define_method "#{permission}?" do
       has_permission?(permission)
     end
+  end
+
+  def resource_managers
+    colleagues
+      .where('permissions @> ?', %(["#{RESOURCE_MANAGER_PERMISSION}"]))
+      .enabled
+      .active
   end
 
   def tp?

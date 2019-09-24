@@ -10,6 +10,30 @@ RSpec.describe AppointmentMailer, type: :mailer do
     )
   end
 
+  describe 'Accessibility Adjustment' do
+    subject(:mail) { described_class.accessibility_adjustment(appointment, resource_manager) }
+
+    let(:mailgun_headers) { JSON.parse(mail['X-Mailgun-Variables'].value) }
+    let(:resource_manager) { build_stubbed(:resource_manager) }
+
+    it 'renders the headers' do
+      expect(mail.subject).to eq('Pension Wise Accessibility Adjustment')
+      expect(mail.to).to eq([resource_manager.email])
+      expect(mail.from).to eq(['booking@pensionwise.gov.uk'])
+    end
+
+    it 'renders the mailgun specific headers' do
+      expect(mailgun_headers).to include(
+        'message_type'   => 'accessibility_adjustment',
+        'appointment_id' => appointment.id
+      )
+    end
+
+    it 'renders the body specifics' do
+      expect(subject.body.encoded).to match(%q(http://localhost:3001/appointments/\d+/edit))
+    end
+  end
+
   describe 'Confirmation' do
     subject(:mail) { described_class.confirmation(appointment) }
     let(:mailgun_headers) { JSON.parse(mail['X-Mailgun-Variables'].value) }

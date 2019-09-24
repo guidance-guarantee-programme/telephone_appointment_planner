@@ -30,7 +30,7 @@ module Api
         model.save
       end
 
-      delegate :errors, to: :model
+      delegate :errors, :accessibility_requirements?, to: :model
 
       private
 

@@ -5,7 +5,7 @@ module Api
         @appointment = Api::V1::Appointment.new(appointment_params)
 
         if @appointment.create
-          send_notifications(@appointment)
+          send_notifications(@appointment.model)
           head :created, location: @appointment.model
         else
           render json: @appointment.errors, status: :unprocessable_entity
@@ -15,8 +15,9 @@ module Api
       private
 
       def send_notifications(appointment)
+        AccessibilityAdjustmentNotificationsJob.perform_later(appointment) if appointment.accessibility_requirements?
         WebsiteAppointmentSlackPingerJob.perform_later
-        CustomerUpdateJob.perform_later(appointment.model, CustomerUpdateActivity::CONFIRMED_MESSAGE)
+        CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::CONFIRMED_MESSAGE)
       end
 
       def appointment_params # rubocop:disable Metrics/MethodLength

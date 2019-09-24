@@ -1,6 +1,12 @@
 class AppointmentMailer < ApplicationMailer
   default subject: 'Your Pension Wise Appointment'
 
+  def accessibility_adjustment(appointment, resource_manager)
+    mailgun_headers('accessibility_adjustment', appointment.id)
+    @appointment = appointment
+    mail to: resource_manager.email, subject: 'Pension Wise Accessibility Adjustment'
+  end
+
   def confirmation(appointment)
     return unless appointment.email?
 

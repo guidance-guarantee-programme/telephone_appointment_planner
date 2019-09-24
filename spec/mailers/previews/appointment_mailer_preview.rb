@@ -1,5 +1,11 @@
 # Preview all emails at http://localhost:3000/rails/mailers/appointment_mailer
 class AppointmentMailerPreview < ActionMailer::Preview
+  def accessibility_adjustment
+    appointment = random_appointment
+
+    AppointmentMailer.accessibility_adjustment(appointment, appointment.resource_managers.first)
+  end
+
   def confirmation
     AppointmentMailer.confirmation(random_appointment)
   end
