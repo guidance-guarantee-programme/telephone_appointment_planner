@@ -42,3 +42,11 @@ en:
       Activate this guider?
 
       This will create bookable slots for this guider in accordance with their schedules.
+
+  activerecord:
+    errors:
+      models:
+        appointment:
+          attributes:
+            notes:
+              blank: describe the accessibility adjustment the customer requires

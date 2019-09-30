@@ -195,6 +195,17 @@ RSpec.describe Appointment, type: :model do
       build_stubbed(:appointment)
     end
 
+    context 'when specifying accessibility requirements' do
+      it 'requires additional notes to be specified' do
+        subject.accessibility_requirements = true
+        subject.notes = ''
+        expect(subject).to be_invalid
+
+        subject.notes = 'They require some assistance'
+        expect(subject).to be_valid
+      end
+    end
+
     describe 'rescheduling across organisations' do
       it 'is not possible' do
         @cas_guider  = create(:guider, :cas)
