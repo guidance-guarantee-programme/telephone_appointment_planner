@@ -14,7 +14,6 @@ ActiveRecord::Schema.define(version: 20190910114253) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
 
   create_table "activities", id: :serial, force: :cascade do |t|
@@ -52,7 +51,6 @@ ActiveRecord::Schema.define(version: 20190910114253) do
     t.boolean "dc_pot_confirmed", default: true, null: false
     t.string "type_of_appointment", default: "", null: false
     t.integer "where_you_heard", default: 0, null: false
-    t.string "country", default: "", null: false
     t.string "address_line_one", default: "", null: false
     t.string "address_line_two", default: "", null: false
     t.string "address_line_three", default: "", null: false
@@ -63,10 +61,7 @@ ActiveRecord::Schema.define(version: 20190910114253) do
     t.datetime "rescheduled_at"
     t.string "gdpr_consent", default: "", null: false
     t.string "pension_provider", default: "", null: false
-<<<<<<< HEAD
     t.boolean "accessibility_requirements", default: false, null: false
-=======
->>>>>>> Allow agents to specify final-nudge partner
     t.index ["start_at"], name: "index_appointments_on_start_at"
   end
 
