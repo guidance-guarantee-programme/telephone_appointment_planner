@@ -38,6 +38,7 @@
   <%= f.hidden_field :town %>
   <%= f.hidden_field :county %>
   <%= f.hidden_field :postcode %>
+  <%= f.hidden_field :pension_provider %>
 
   <div class="t-preview appointment-preview">
     <div class="row">
@@ -101,6 +102,10 @@
             <tr>
               <td class="active"><b>Notes</b></td>
               <td><%= @appointment.notes %></td>
+            </tr>
+            <tr>
+              <td class="active"><b>Pension provider</b></td>
+              <td><%= PensionProvider[@appointment.pension_provider] %></td>
             </tr>
             <tr>
               <td class="active"><b>Customer research consent</b></td>

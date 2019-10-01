@@ -277,4 +277,21 @@ RSpec.feature 'Resource manager modifies appointments' do
 
     expect(Holiday.count).to eq 1
   end
+
+  def and_pension_providers_are_configured
+    allow(PensionProvider).to receive(:all).and_return(
+      'aviva' => 'Aviva',
+      'hargreaves-landsdown' => 'Hargreaves Landsdown'
+    )
+  end
+
+  def when_they_attempt_to_create_an_appointment
+    @page = Pages::NewAppointment.new
+    @page.load
+  end
+
+  def then_they_do_not_see_pension_providers
+    expect(@page).to be_displayed
+    expect(@page).to have_no_pension_provider
+  end
 end

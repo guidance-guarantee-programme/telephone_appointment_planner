@@ -18,6 +18,7 @@ FactoryBot.define do
     where_you_heard { WhereYouHeard.options_for_inclusion.sample }
     created_at { 1.day.ago }
     accessibility_requirements { false }
+    pension_provider { 'n/a' }
 
     factory :imported_appointment do
       date_of_birth { Appointment::FAKE_DATE_OF_BIRTH }
@@ -35,6 +36,10 @@ FactoryBot.define do
       town { 'Some Town' }
       county { 'Some County' }
       postcode { 'E3 3NN' }
+    end
+
+    trait :aviva do
+      pension_provider { 'aviva' }
     end
   end
 end
