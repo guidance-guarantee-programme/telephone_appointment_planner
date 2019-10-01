@@ -67,6 +67,7 @@ class Appointment < ApplicationRecord
   validates :memorable_word, presence: true
   validates :dc_pot_confirmed, inclusion: [true, false]
   validates :accessibility_requirements, inclusion: [true, false]
+  validates :notes, presence: true, if: :accessibility_requirements?
   validates :type_of_appointment, inclusion: %w(standard 50-54)
   validates :where_you_heard, inclusion: WhereYouHeard.options_for_inclusion, on: :create, unless: :rebooked_from_id?
   validates :gdpr_consent, inclusion: ['yes', 'no', '']

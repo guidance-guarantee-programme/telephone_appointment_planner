@@ -39,7 +39,7 @@ RSpec.describe 'POST /api/v1/appointments' do
       'dc_pot_confirmed' => true,
       'where_you_heard'  => '1',
       'gdpr_consent'     => 'yes',
-      'accessibility_requirements' => 'true'
+      'accessibility_requirements' => 'false'
     }
 
     post api_v1_appointments_path, params: @payload, as: :json
