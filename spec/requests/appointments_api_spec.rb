@@ -120,6 +120,6 @@ RSpec.describe 'POST /api/v1/appointments' do
   end
 
   def and_the_resource_manager_receives_an_accessibility_notification
-    expect(ActionMailer::Base.deliveries.map(&:to)).to include(Array(@resource_manager.email))
+    expect(ActionMailer::Base.deliveries.map(&:to)).to include(Array('supervisors@maps.org.uk'))
   end
 end

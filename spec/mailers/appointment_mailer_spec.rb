@@ -14,11 +14,11 @@ RSpec.describe AppointmentMailer, type: :mailer do
     subject(:mail) { described_class.accessibility_adjustment(appointment, resource_manager) }
 
     let(:mailgun_headers) { JSON.parse(mail['X-Mailgun-Variables'].value) }
-    let(:resource_manager) { build_stubbed(:resource_manager) }
+    let(:resource_manager) { 'supervisors@maps.org.uk' }
 
     it 'renders the headers' do
       expect(mail.subject).to eq('Pension Wise Accessibility Adjustment')
-      expect(mail.to).to eq([resource_manager.email])
+      expect(mail.to).to eq(['supervisors@maps.org.uk'])
       expect(mail.from).to eq(['booking@pensionwise.gov.uk'])
     end
 

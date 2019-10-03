@@ -181,6 +181,10 @@ class Appointment < ApplicationRecord
     start_at.in_time_zone('London').utc_offset.zero? ? 'GMT' : 'BST'
   end
 
+  def tpas_guider?
+    guider&.tpas?
+  end
+
   def agent_is_pension_wise_api?
     agent && agent.pension_wise_api?
   end
