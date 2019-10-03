@@ -263,8 +263,8 @@ RSpec.feature 'Agent manages appointments' do
 
   def and_the_customer_gets_an_email_confirmation
     deliveries = ActionMailer::Base.deliveries
-    expect(deliveries.count).to eq 1
-    expect(deliveries.first.subject).to eq 'Your Pension Wise Appointment'
+    expect(deliveries.count).to eq 2
+    expect(deliveries.map(&:subject)).to include('Your Pension Wise Appointment')
   end
 
   def and_the_customer_gets_an_updated_email_confirmation
@@ -275,7 +275,7 @@ RSpec.feature 'Agent manages appointments' do
   end
 
   def then_the_customer_does_not_get_an_email_confirmation
-    expect(ActionMailer::Base.deliveries).to be_empty
+    expect(ActionMailer::Base.deliveries.flat_map(&:to)).to eq(['supervisors@maps.org.uk'])
   end
 
   def then_the_customer_does_not_get_an_updated_email_confirmation
