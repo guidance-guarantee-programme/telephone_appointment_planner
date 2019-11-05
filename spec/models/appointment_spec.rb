@@ -193,6 +193,11 @@ RSpec.describe Appointment, type: :model do
 
         subject.notes = 'They require some assistance'
         expect(subject).to be_valid
+
+        # no notes required before cutoff date of 2019-09-25
+        subject.created_at = '2019-01-01'.to_date
+        subject.notes = ''
+        expect(subject).to be_valid
       end
     end
 
