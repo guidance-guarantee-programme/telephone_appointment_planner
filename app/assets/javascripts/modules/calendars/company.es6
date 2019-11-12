@@ -6,9 +6,13 @@ class CompanyCalendar extends Calendar {
       defaultView: 'agendaDay',
       resourceLabelText: 'Guiders',
       header: {
-        right: 'sort filter agendaDay timelineDay today jumpToDate prev,next'
+        right: 'fullscreen sort filter agendaDay timelineDay today jumpToDate prev,next'
       },
       customButtons: {
+        fullscreen: {
+          text: 'Fullscreen',
+          click: this.fullscreenClick.bind(this)
+        },
         filter: {
           text: 'Filter',
           click: this.filterClick.bind(this)
@@ -55,6 +59,7 @@ class CompanyCalendar extends Calendar {
 
     super.start(el);
 
+    this.isFullscreen = false;
     this.filterList = [];
     this.$filterButton = $('.fc-filter-button');
     this.filterButtonLabel = this.$filterButton.text();
@@ -62,6 +67,7 @@ class CompanyCalendar extends Calendar {
     this.$bookingSlotToggle = $('.js-booking-slot-toggle');
 
     this.bindEvents();
+    this.setCalendarToCorrectHeight();
   }
 
   resources(callback) {
@@ -255,6 +261,65 @@ class CompanyCalendar extends Calendar {
 
   getEventsOfType(events, type) {
     return events.filter((x) => { return x.source.eventType == type });
+  }
+
+  fullscreenClick(event) {
+    let method = 'show';
+
+    this.isFullscreen = this.isFullscreen ? false : true;
+
+    this.$el.toggleClass('company-calendar--fullscreen');
+    $('.container').toggleClass('container--fullscreen');
+    $(event.currentTarget).toggleClass('fc-state-active');
+
+    if (this.isFullscreen) {
+      method = 'hide';
+    }
+
+    $('.page-footer, .breadcrumb, .navbar')[method]();
+
+    this.alterHeight();
+  }
+
+  alterHeight() {
+    this.$el.fullCalendar('option', 'height', this.getHeight());
+  }
+
+  getHeight() {
+    let height = $(window).height();
+
+    if (this.isFullscreen === false) {
+      height -= (this.$el.offset().top + $('.page-footer').outerHeight(true));
+    } else {
+      height -= 20;
+    }
+
+    return height;
+  }
+
+  setCalendarToCorrectHeight() {
+    this.alterHeight();
+    $(window).on('resize', this.debounce(this.alterHeight.bind(this), 20));
+  }
+
+  debounce(func, wait, immediate) {
+    let timeout;
+
+    return () => {
+      const context = this,
+        args = arguments,
+        later = () => {
+          timeout = null;
+          if (!immediate) func.apply(context, args);
+        },
+        callNow = immediate && !timeout;
+
+      clearTimeout(timeout);
+
+      timeout = setTimeout(later, wait);
+
+      if (callNow) func.apply(context, args);
+    };
   }
 }
 
