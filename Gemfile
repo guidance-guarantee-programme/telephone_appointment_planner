@@ -40,7 +40,7 @@ source 'https://rubygems.org' do
   gem 'pg', '~> 0.18'
   gem 'plek'
   gem 'postgres-copy'
-  gem 'puma', '~> 3.0'
+  gem 'puma', '~> 3.12'
   gem 'pusher'
   gem 'rails', '~> 5.1.1'
   gem 'sassc-rails'
