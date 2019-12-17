@@ -11,7 +11,6 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-fullcalendar-scheduler', '1.5.1'
   gem 'rails-assets-jquery.postcodes'
   gem 'rails-assets-listjs'
-  gem 'rails-assets-mailgun-validator-jquery', '0.0.3'
   gem 'rails-assets-moment', '2.15.1'
   gem 'rails-assets-pusher'
   gem 'rails-assets-qTip2'
