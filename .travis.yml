@@ -15,7 +15,7 @@ before_script:
 - nvm install 7
 - nvm use 7
 - npm install
-- gem update --system
+- gem update --system 3.0.6
 - gem install bundler
 - bundle exec rails assets:precompile RAILS_ENV=test
 - bundle exec rails db:create db:migrate RAILS_ENV=test
