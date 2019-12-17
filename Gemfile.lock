@@ -293,7 +293,6 @@ GEM
     rails-assets-jquery (3.3.1)
     rails-assets-jquery.postcodes (3.0.7)
     rails-assets-listjs (1.5.0)
-    rails-assets-mailgun-validator-jquery (0.0.3)
     rails-assets-moment (2.15.1)
     rails-assets-pusher (4.3.1)
     rails-assets-qTip2 (3.0.2)
@@ -485,7 +484,6 @@ DEPENDENCIES
   rails-assets-fullcalendar-scheduler (= 1.5.1)!
   rails-assets-jquery.postcodes!
   rails-assets-listjs!
-  rails-assets-mailgun-validator-jquery (= 0.0.3)!
   rails-assets-moment (= 2.15.1)!
   rails-assets-pusher!
   rails-assets-qTip2!
@@ -512,4 +510,4 @@ RUBY VERSION
    ruby 2.6.2p47
 
 BUNDLED WITH
-   1.17.2
+   1.17.3
