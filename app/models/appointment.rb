@@ -55,7 +55,7 @@ class Appointment < ApplicationRecord
 
   scope :cancelled, -> { where(status: CANCELLED_STATUSES) }
   scope :not_cancelled, -> { where.not(status: CANCELLED_STATUSES) }
-  scope :with_mobile_number, -> { where("mobile != '' or phone like '07%'") }
+  scope :with_mobile_number, -> { where("mobile like '07%' or phone like '07%'") }
   scope :not_booked_today, -> { where.not(created_at: Time.current.beginning_of_day..Time.current.end_of_day) }
 
   validates :agent, presence: true
