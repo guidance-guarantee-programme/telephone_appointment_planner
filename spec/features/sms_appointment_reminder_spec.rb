@@ -15,6 +15,8 @@ RSpec.feature 'SMS appointment reminders' do
     @past = create(:appointment, start_at: 5.days.from_now)
     # in the window but no mobile number
     @no_mobile = create(:appointment, mobile: '', start_at: 2.days.from_now, agent: @agent)
+    # in the window but the 'mobile' number is not valid UK
+    @no_uk_mobile = create(:appointment, mobile: '0121 123 4567', start_at: 2.days.from_now, agent: @agent)
     # in the window with a mobile number
     @mobile = create(:appointment, start_at: 2.days.from_now, agent: @agent)
   end
