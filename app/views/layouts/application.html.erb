@@ -20,6 +20,16 @@
   <% end %>
 <% end %>
 
+<% content_for :content do %>
+  <div class="alert alert-danger" role="alert">
+    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+    <span class="sr-only">Warning:</span>
+    TPAS are experiencing issues with inbound and outbound calls. This may affect telephone appointments scheduled for today
+  </div>
+
+  <%= yield %>
+<% end %>
+
 <% content_for :body_end do %>
   <div data-module="activity-resolve"></div>
   <script>
