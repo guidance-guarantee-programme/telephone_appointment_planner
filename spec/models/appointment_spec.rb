@@ -277,6 +277,32 @@ RSpec.describe Appointment, type: :model do
     context 'when created by a non-API agent' do
       before { subject.id = nil } # not persisted yet
 
+      it 'requires a phone number of at least 11 digits' do
+        subject.agent = build(:agent, :tp)
+        subject.phone = '0 1 2 1 2 5 2 4 7 2 8'
+
+        expect(subject).to be_valid
+
+        subject.phone = '0         '
+        expect(subject).to be_invalid
+
+        subject.phone = '+447515 830 458'
+        expect(subject).to be_valid
+      end
+
+      it 'requires a mobile number of at least 11 digits when specified' do
+        subject.agent  = build(:agent, :tp)
+        subject.mobile = ''
+
+        expect(subject).to be_valid
+
+        subject.mobile = '07715 830 458'
+        expect(subject).to be_valid
+
+        subject.mobile = ' 0 1 1 2 3 '
+        expect(subject).to be_invalid
+      end
+
       context 'when no postal address is supplied' do
         it '#address? is false' do
           expect(subject).not_to be_address
