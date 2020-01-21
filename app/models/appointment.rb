@@ -84,6 +84,8 @@ class Appointment < ApplicationRecord
   validate :address_or_email_valid, if: :regular_agent?, on: :create
   validate :validate_guider_organisation, on: :update
   validate :validate_guider_available, on: :update
+  validate :validate_phone_digits, if: :tp_agent?
+  validate :validate_mobile_digits, if: :tp_agent?
 
   before_validation :format_name, on: :create
   before_create :track_initial_status
@@ -394,6 +396,18 @@ class Appointment < ApplicationRecord
     date = created_at || Time.zone.today
 
     accessibility_requirements? && date > ACCESSIBILITY_NOTES_CUTOFF
+  end
+
+  def validate_phone_digits
+    return if phone.blank?
+
+    errors.add(:phone, 'must have at least 11 digits') if phone.gsub(/[^\d]/, '').length < 11
+  end
+
+  def validate_mobile_digits
+    return if mobile.blank?
+
+    errors.add(:mobile, 'must have at least 11 digits') if mobile.gsub(/[^\d]/, '').length < 11
   end
 
   class << self
