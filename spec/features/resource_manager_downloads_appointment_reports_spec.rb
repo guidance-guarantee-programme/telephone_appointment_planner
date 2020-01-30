@@ -140,6 +140,7 @@ RSpec.feature 'Resource manager downloads appointment reports' do
       :duration,
       :status,
       :status_changed,
+      :summary_document_created,
       :first_name,
       :last_name,
       :notes,
@@ -160,6 +161,7 @@ RSpec.feature 'Resource manager downloads appointment reports' do
       '60 minutes',
       appointment.status,
       appointment.status_transitions.last.created_at,
+      'No', # summary document created
       appointment.first_name,
       appointment.last_name,
       appointment.notes,
