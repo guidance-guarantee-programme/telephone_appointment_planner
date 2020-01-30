@@ -43,6 +43,12 @@ class AppointmentReport
               SQL
              )
       .select('(SELECT MAX(created_at) FROM status_transitions WHERE appointment_id = appointments.id) as status_changed') # rubocop:disable LineLength
+      .select(<<-SQL
+                CASE WHEN EXISTS(SELECT 1 FROM Activities WHERE type = 'SummaryDocumentActivity' AND appointment_id = appointments.id) THEN 'Yes'
+                     ELSE 'No'
+                END as summary_document_created
+              SQL
+             )
       .select('appointments.first_name')
       .select('appointments.last_name')
       .select('appointments.notes')
