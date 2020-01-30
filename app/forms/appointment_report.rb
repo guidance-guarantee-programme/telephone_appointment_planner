@@ -42,6 +42,7 @@ class AppointmentReport
                 AS status
               SQL
              )
+      .select('(SELECT MAX(created_at) FROM status_transitions WHERE appointment_id = appointments.id) as status_changed') # rubocop:disable LineLength
       .select('appointments.first_name')
       .select('appointments.last_name')
       .select('appointments.notes')
