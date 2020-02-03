@@ -401,13 +401,13 @@ class Appointment < ApplicationRecord
   def validate_phone_digits
     return if phone.blank?
 
-    errors.add(:phone, 'must have at least 11 digits') if phone.gsub(/[^\d]/, '').length < 11
+    errors.add(:phone, 'must have at least 10 digits') if phone.gsub(/[^\d]/, '').length < 10
   end
 
   def validate_mobile_digits
     return if mobile.blank?
 
-    errors.add(:mobile, 'must have at least 11 digits') if mobile.gsub(/[^\d]/, '').length < 11
+    errors.add(:mobile, 'must have at least 10 digits') if mobile.gsub(/[^\d]/, '').length < 10
   end
 
   class << self
