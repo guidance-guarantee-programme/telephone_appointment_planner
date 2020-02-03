@@ -277,7 +277,7 @@ RSpec.describe Appointment, type: :model do
     context 'when created by a non-API agent' do
       before { subject.id = nil } # not persisted yet
 
-      it 'requires a phone number of at least 11 digits' do
+      it 'requires a phone number of at least 10 digits' do
         subject.agent = build(:agent, :tp)
         subject.phone = '0 1 2 1 2 5 2 4 7 2 8'
 
@@ -290,7 +290,7 @@ RSpec.describe Appointment, type: :model do
         expect(subject).to be_valid
       end
 
-      it 'requires a mobile number of at least 11 digits when specified' do
+      it 'requires a mobile number of at least 10 digits when specified' do
         subject.agent  = build(:agent, :tp)
         subject.mobile = ''
 
