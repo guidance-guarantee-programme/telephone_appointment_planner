@@ -35,7 +35,8 @@ RSpec.describe 'GET /api/v1/searches' do
     expect(results.first).to eq(
       'reference' => @appointment.id,
       'name' => @appointment.name,
-      'url' => "http://localhost:3001/appointments/#{@appointment.id}/edit"
+      'url' => "http://localhost:3001/appointments/#{@appointment.id}/edit",
+      'application' => 'Telephone Planner'
     )
   end
 
