@@ -258,6 +258,8 @@ GEM
       thin (~> 1.5)
     pusher-signature (0.1.8)
     rack (2.0.8)
+    rack-cors (1.1.1)
+      rack (>= 2.0.0)
     rack-protection (2.0.5)
       rack
     rack-test (1.1.0)
@@ -477,6 +479,7 @@ DEPENDENCIES
   puma (~> 3.12)!
   pusher!
   pusher-fake!
+  rack-cors!
   rails (~> 5.1.1)!
   rails-assets-bootstrap-daterangepicker (= 2.1.27)!
   rails-assets-eonasdan-bootstrap-datetimepicker!

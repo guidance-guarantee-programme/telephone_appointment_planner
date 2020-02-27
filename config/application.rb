@@ -23,5 +23,12 @@ module TelephoneAppointmentPlanner
     # -- all .rb files in that directory are automatically loaded.
 
     config.action_mailer.default_url_options = { host: ENV['APPLICATION_HOST'] }
+
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins '*'
+        resource '/api/v1/searches', headers: :any, methods: %i(get options)
+      end
+    end
   end
 end

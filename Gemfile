@@ -41,6 +41,7 @@ source 'https://rubygems.org' do
   gem 'postgres-copy'
   gem 'puma', '~> 3.12'
   gem 'pusher'
+  gem 'rack-cors'
   gem 'rails', '~> 5.1.1'
   gem 'sassc-rails'
   gem 'select2-rails'
