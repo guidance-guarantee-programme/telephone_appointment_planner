@@ -1,6 +1,6 @@
 module Api
   module V1
-    class SearchesController < ApplicationController
+    class SearchesController < Api::V1::ApplicationController
       def index
         @results = AppointmentApiSearch.new(params[:query]).call
 
