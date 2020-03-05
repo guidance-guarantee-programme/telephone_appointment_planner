@@ -18,7 +18,7 @@ RSpec.describe AppointmentApiSearch do
   context 'with a name or email' do
     it 'returns the matching results' do
       @appointment = create(:appointment, last_name: 'Jones')
-      @other       = create(:appointment, email: 'bleh@example.com')
+      @other       = create(:appointment, last_name: 'Smith', email: 'bleh@example.com')
 
       # by name
       expect(described_class.new('jones').call).to eq([@appointment])
