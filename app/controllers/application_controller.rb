@@ -34,4 +34,8 @@ class ApplicationController < ActionController::Base
   def authorise_for_administrators!
     authorise_user!(User::ADMINISTRATOR_PERMISSION)
   end
+
+  def authorise_for_api_users!
+    authorise_user!(User::PENSION_WISE_API_PERMISSION)
+  end
 end
