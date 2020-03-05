@@ -1,11 +1,11 @@
 class WebsiteAppointmentSlackPingerJob < ActiveJob::Base
   queue_as :default
 
-  def perform(appointment)
+  def perform
     return unless hook_uri
 
     hook = WebHook.new(hook_uri)
-    hook.call(payload(appointment))
+    hook.call(payload)
   end
 
   private
@@ -14,13 +14,11 @@ class WebsiteAppointmentSlackPingerJob < ActiveJob::Base
     ENV['APPOINTMENTS_SLACK_PINGER_URI']
   end
 
-  def payload(appointment)
-    pension_provider = PensionProvider[appointment.pension_provider]
-
+  def payload
     {
       username: 'dave',
       channel: '#online-bookings',
-      text: ":tada: customer telephone booking #{pension_provider} :tada:",
+      text: ':tada: customer telephone booking :tada:',
       icon_emoji: ':mullet:'
     }
   end

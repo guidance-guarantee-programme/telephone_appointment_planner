@@ -16,7 +16,7 @@ module Api
 
       def send_notifications(appointment)
         AccessibilityAdjustmentNotificationsJob.perform_later(appointment) if appointment.accessibility_requirements?
-        WebsiteAppointmentSlackPingerJob.perform_later(appointment)
+        WebsiteAppointmentSlackPingerJob.perform_later
         CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::CONFIRMED_MESSAGE)
       end
 
@@ -33,8 +33,7 @@ module Api
           :where_you_heard,
           :gdpr_consent,
           :accessibility_requirements,
-          :notes,
-          :pension_provider
+          :notes
         ).merge(agent: current_user)
       end
     end
