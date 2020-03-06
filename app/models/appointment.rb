@@ -72,8 +72,6 @@ class Appointment < ApplicationRecord
   validates :type_of_appointment, inclusion: %w(standard 50-54)
   validates :where_you_heard, inclusion: WhereYouHeard.options_for_inclusion, on: :create, unless: :rebooked_from_id?
   validates :gdpr_consent, inclusion: ['yes', 'no', '']
-  validates :pension_provider, presence: true, if: :tp_agent?, on: :create
-
   validates :status, presence: true
   validates :guider, presence: true
 

@@ -201,7 +201,6 @@ RSpec.feature 'Agent manages appointments' do
     @page.address_line_one.set(options[:address_line_one]) if options[:address_line_one]
     @page.town.set(options[:town]) if options[:town]
     @page.postcode.set(options[:postcode]) if options[:postcode]
-    @page.pension_provider.select('Not Applicable')
 
     @page.preview_appointment.click
   end

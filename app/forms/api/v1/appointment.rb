@@ -15,7 +15,6 @@ module Api
       attr_accessor :gdpr_consent
       attr_accessor :accessibility_requirements
       attr_accessor :notes
-      attr_accessor :pension_provider
       attr_accessor :agent
 
       attr_reader :model
@@ -35,7 +34,7 @@ module Api
 
       private
 
-      def to_params # rubocop:disable Metrics/MethodLength, AbcSize
+      def to_params # rubocop:disable Metrics/MethodLength
         {
           start_at: start_at,
           first_name: first_name,
@@ -49,7 +48,7 @@ module Api
           gdpr_consent: gdpr_consent.to_s,
           accessibility_requirements: accessibility_requirements,
           notes: notes,
-          pension_provider: pension_provider.presence || 'n/a',
+          pension_provider: 'n/a',
           agent: agent
         }
       end
