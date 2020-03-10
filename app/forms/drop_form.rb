@@ -19,7 +19,7 @@ class DropForm
   validates :signature, presence: true
   validates :event, presence: true
   validates :appointment_id, presence: true
-  validates :message_type, presence: true
+  validates :message_type, presence: true, exclusion: { in: %w(accessibility_adjustment) }
   validates :environment, inclusion: { in: %w(production) }
 
   def create_activity
