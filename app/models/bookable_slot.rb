@@ -10,8 +10,29 @@ class BookableSlot < ApplicationRecord
     end
   end
 
-  def self.within_date_range(from, to)
+  def self.within_date_range(from, to, organisation_limit: false)
+    return limit_by_organisation(from, to) if organisation_limit
+
     where("#{quoted_table_name}.start_at > ? AND #{quoted_table_name}.end_at < ?", from, to)
+  end
+
+  def self.limit_by_organisation(from, to) # rubocop:disable MethodLength
+    tpas_start_at = BusinessDays.from_now(2).change(hour: 18, min: 30)
+
+    joins(:guider)
+      .where(
+        '
+        (users.organisation_content_id = :tpas_id
+          AND bookable_slots.start_at > :tpas_start_at AND bookable_slots.end_at < :end_at)
+        OR
+        (users.organisation_content_id != :tpas_id
+          AND bookable_slots.start_at > :start_at AND bookable_slots.end_at < :end_at)
+        ',
+        tpas_id: User::TPAS_ORGANISATION_ID,
+        tpas_start_at: tpas_start_at,
+        start_at: from,
+        end_at: to
+      )
   end
 
   def self.next_valid_start_date(user = nil)
@@ -36,7 +57,7 @@ class BookableSlot < ApplicationRecord
     from = next_valid_start_date
     to   = BusinessDays.from_now(40).end_of_day
 
-    scope = bookable(from, to).within_date_range(from, to)
+    scope = bookable(from, to).within_date_range(from, to, organisation_limit: true)
     scope = scope.joins(:guider).where(users: { organisation_content_id: organisation_id }) if organisation_id
 
     scope
@@ -92,13 +113,15 @@ class BookableSlot < ApplicationRecord
     where("#{quoted_table_name}.start_at > ?", next_valid_start_date(user))
   end
 
-  def self.with_guider_count(user, from, to)
+  def self.with_guider_count(user, from, to) # rubocop:disable AbcSize
+    limit_by_organisation = !user.resource_manager?
+
     select("DISTINCT #{quoted_table_name}.start_at, #{quoted_table_name}.end_at, count(1) AS guiders")
       .bookable
       .starting_after_next_valid_start_date(user)
       .for_organisation(user)
       .group("#{quoted_table_name}.start_at, #{quoted_table_name}.end_at")
-      .within_date_range(from, to)
+      .within_date_range(from, to, organisation_limit: limit_by_organisation)
       .map do |us|
         { guiders: us.attributes['guiders'], start: us.start_at, end: us.end_at, selected: false }
       end
