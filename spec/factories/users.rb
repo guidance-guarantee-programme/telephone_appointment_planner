@@ -28,6 +28,10 @@ FactoryBot.define do
       organisation_content_id { User::CITA_WALLSEND_ID }
     end
 
+    trait :cita_lancs_west do
+      organisation_content_id { User::CITA_LANCS_WEST }
+    end
+
     factory :administrator do
       organisation_content_id { User::TPAS_ORGANISATION_ID }
       permissions { [User::ADMINISTRATOR_PERMISSION] }
