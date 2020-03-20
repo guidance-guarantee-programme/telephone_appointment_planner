@@ -19,5 +19,9 @@ FactoryBot.define do
     trait :cita_wallsend do
       guider { create(:guider, :cita_wallsend) }
     end
+
+    trait :cita_lancs_west do
+      guider { create(:guider, :cita_lancs_west) }
+    end
   end
 end

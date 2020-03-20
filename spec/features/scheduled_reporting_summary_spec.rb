@@ -20,10 +20,11 @@ RSpec.feature 'Scheduled reporting summary' do
     create(:bookable_slot, :cas, start_at: Time.zone.parse('2018-04-28 11:00'))
     create(:bookable_slot, :ni, start_at: Time.zone.parse('2018-04-29 11:00'))
     create(:bookable_slot, :cita_wallsend, start_at: Time.zone.parse('2018-04-29 11:00'))
+    create(:bookable_slot, :cita_lancs_west, start_at: Time.zone.parse('2018-04-29 11:00'))
   end
 
   def then_the_availability_is_summarised_correctly
-    expect(ReportingSummary.count).to eq(5)
+    expect(ReportingSummary.count).to eq(6)
 
     expect(ReportingSummary.first).to have_attributes(
       organisation: 'TPAS',
@@ -61,11 +62,11 @@ RSpec.feature 'Scheduled reporting summary' do
   end
 
   def then_the_availability_is_summarised
-    expect(ReportingSummary.count).to eq(5)
+    expect(ReportingSummary.count).to eq(6)
 
     ReportingSummary.all.each do |entry|
       expect(entry).to have_attributes(
-        organisation: a_string_matching(/TPAS|CAS|TP|NI|CITA Wallsend/),
+        organisation: a_string_matching(/TPAS|CAS|TP|NI|CITA Wallsend|CITA Lancs West/),
         four_week_availability: false,
         first_available_slot_on: nil
       )
