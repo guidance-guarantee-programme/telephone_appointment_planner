@@ -16,12 +16,12 @@ FactoryBot.define do
       guider { create(:guider, :ni) }
     end
 
-    trait :cita_wallsend do
-      guider { create(:guider, :cita_wallsend) }
+    trait :wallsend do
+      guider { create(:guider, :wallsend) }
     end
 
-    trait :cita_lancs_west do
-      guider { create(:guider, :cita_lancs_west) }
+    trait :lancs_west do
+      guider { create(:guider, :lancs_west) }
     end
   end
 end
