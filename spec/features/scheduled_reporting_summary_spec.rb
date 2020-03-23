@@ -24,32 +24,27 @@ RSpec.feature 'Scheduled reporting summary' do
   end
 
   def then_the_availability_is_summarised_correctly
-    expect(ReportingSummary.first).to have_attributes(
-      organisation: 'CAS',
+    expect(ReportingSummary.find_by(organisation: 'CAS')).to have_attributes(
       four_week_availability: true,
       first_available_slot_on: '2018-04-28'.to_date
     )
 
-    expect(ReportingSummary.second).to have_attributes(
-      organisation: 'CITA Lancs West',
+    expect(ReportingSummary.find_by(organisation: 'CITA Lancs West')).to have_attributes(
       four_week_availability: true,
       first_available_slot_on: '2018-04-29'.to_date
     )
 
-    expect(ReportingSummary.third).to have_attributes(
-      organisation: 'CITA Wallsend',
+    expect(ReportingSummary.find_by(organisation: 'CITA Wallsend')).to have_attributes(
       four_week_availability: true,
       first_available_slot_on: '2018-04-29'.to_date
     )
 
-    expect(ReportingSummary.fourth).to have_attributes(
-      organisation: 'NI',
+    expect(ReportingSummary.find_by(organisation: 'NI')).to have_attributes(
       four_week_availability: true,
       first_available_slot_on: '2018-04-29'.to_date
     )
 
-    expect(ReportingSummary.fifth).to have_attributes(
-      organisation: 'TP',
+    expect(ReportingSummary.find_by(organisation: 'TP')).to have_attributes(
       four_week_availability: true,
       first_available_slot_on: '2018-04-27'.to_date
     )
@@ -60,11 +55,8 @@ RSpec.feature 'Scheduled reporting summary' do
   end
 
   def then_the_availability_is_summarised
-    expect(ReportingSummary.count).to eq(6)
-
     ReportingSummary.all.each do |entry|
       expect(entry).to have_attributes(
-        organisation: a_string_matching(/TPAS|CAS|TP|NI|CITA Wallsend|CITA Lancs West/),
         four_week_availability: false,
         first_available_slot_on: nil
       )
