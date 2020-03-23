@@ -52,7 +52,7 @@ class User < ApplicationRecord
   end
 
   def organisation
-    Provider.find(organisation_content_id).name
+    Provider.find(organisation_content_id)&.name
   end
 
   def delete_future_slots!
