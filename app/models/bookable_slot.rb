@@ -28,7 +28,7 @@ class BookableSlot < ApplicationRecord
         (users.organisation_content_id != :tpas_id
           AND bookable_slots.start_at > :start_at AND bookable_slots.end_at < :end_at)
         ',
-        tpas_id: User::TPAS_ORGANISATION_ID,
+        tpas_id: Provider::TPAS.id,
         tpas_start_at: tpas_start_at,
         start_at: from,
         end_at: to

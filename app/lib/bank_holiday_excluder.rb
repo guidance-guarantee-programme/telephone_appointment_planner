@@ -37,7 +37,7 @@ class BankHolidayExcluder
   end
 
   def bank_holiday_observing_organisation_ids
-    User::BANK_HOLIDAY_OBSERVING_ORGANISATIONS
+    Provider.bank_holiday_observing_organisation_ids
   end
 
   def delete_existing_bank_holidays

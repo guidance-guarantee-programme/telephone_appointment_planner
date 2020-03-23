@@ -8,52 +8,29 @@ FactoryBot.define do
 
     permissions { ['signin'] }
 
-    trait :tpas do
-      organisation_content_id { User::TPAS_ORGANISATION_ID }
+    Provider::ALL_ORGANISATIONS.each do |organisation|
+      trait organisation.symbol_name do
+        organisation_content_id { organisation.id }
+      end
     end
 
-    trait :tp do
-      organisation_content_id { User::TP_ORGANISATION_ID }
-    end
-
-    trait :cas do
-      organisation_content_id { User::CAS_ORGANISATION_ID }
-    end
-
-    trait :ni do
-      organisation_content_id { User::NI_ORGANISATION_ID }
-    end
-
-    trait :cita_wallsend do
-      organisation_content_id { User::CITA_WALLSEND_ID }
-    end
-
-    trait :cita_lancs_west do
-      organisation_content_id { User::CITA_LANCS_WEST }
-    end
-
-    factory :administrator do
-      organisation_content_id { User::TPAS_ORGANISATION_ID }
+    factory :administrator, traits: [:tpas] do
       permissions { [User::ADMINISTRATOR_PERMISSION] }
     end
 
-    factory :guider_and_resource_manager do
-      organisation_content_id { User::TPAS_ORGANISATION_ID }
+    factory :guider_and_resource_manager, traits: [:tpas] do
       permissions { [User::RESOURCE_MANAGER_PERMISSION, User::GUIDER_PERMISSION] }
     end
 
-    factory :agent_and_guider do
-      organisation_content_id { User::TP_ORGANISATION_ID }
+    factory :agent_and_guider, traits: [:tp] do
       permissions { [User::AGENT_PERMISSION, User::GUIDER_PERMISSION] }
     end
 
-    factory :resource_manager do
-      organisation_content_id { User::TPAS_ORGANISATION_ID }
+    factory :resource_manager, traits: [:tpas] do
       permissions { Array(User::RESOURCE_MANAGER_PERMISSION) }
     end
 
-    factory :guider do
-      organisation_content_id { User::TPAS_ORGANISATION_ID }
+    factory :guider, traits: [:tpas] do
       permissions { Array(User::GUIDER_PERMISSION) }
 
       factory :deactivated_guider do
@@ -61,13 +38,11 @@ FactoryBot.define do
       end
     end
 
-    factory :agent do
-      organisation_content_id { User::TP_ORGANISATION_ID }
+    factory :agent, traits: [:tp] do
       permissions { Array(User::AGENT_PERMISSION) }
     end
 
-    factory :contact_centre_team_leader do
-      organisation_content_id { User::TP_ORGANISATION_ID }
+    factory :contact_centre_team_leader, traits: [:tp] do
       permissions { Array(User::CONTACT_CENTRE_TEAM_LEADER_PERMISSION) }
     end
 
