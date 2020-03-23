@@ -1,7 +1,7 @@
 module UserHelper
   def organisation_options
-    User::ORGANISATIONS.map do |k, v|
-      [v, k]
+    Provider.all.map do |organisation|
+      [organisation.name, organisation.id]
     end
   end
 

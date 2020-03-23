@@ -5,7 +5,7 @@ class AddOrganisationContentIdToGroups < ActiveRecord::Migration[5.1]
     Group.reset_column_information
     Group
       .where(organisation_content_id: '')
-      .update_all(organisation_content_id: User::TPAS_ORGANISATION_ID)
+      .update_all(organisation_content_id: Provider::TPAS.id)
   end
 
   def down

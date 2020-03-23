@@ -1,10 +1,10 @@
 class ScheduledReportingSummary
   def call
-    User::ORGANISATIONS.each do |id, name|
+    Provider.all.each do |organisation|
       ReportingSummary.create!(
-        organisation: name,
-        four_week_availability: four_week_available?(id),
-        first_available_slot_on: first_available_slot_on(id)
+        organisation: organisation.name,
+        four_week_availability: four_week_available?(organisation.id),
+        first_available_slot_on: first_available_slot_on(organisation.id)
       )
     end
   end
