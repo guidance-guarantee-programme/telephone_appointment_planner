@@ -2,7 +2,7 @@ class Schedule < ApplicationRecord
   belongs_to :user
   has_many :slots, inverse_of: :schedule, dependent: :destroy
   accepts_nested_attributes_for :slots, allow_destroy: true
-  scope :by_start_at, -> { order(:start_at) }
+  scope :by_start_at, -> { order(start_at: :desc) }
 
   validates :start_at, presence: true
   validates :start_at, uniqueness: { scope: :user_id }

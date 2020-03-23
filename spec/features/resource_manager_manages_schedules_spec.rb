@@ -214,13 +214,13 @@ RSpec.feature 'Resource manager manages schedules' do
   def then_they_cant_edit_the_schedule
     @page = Pages::EditUser.new
     @page.load(id: @guider.id)
-    expect(@page.schedules.first).to have_no_edit
+    expect(@page.schedules.last).to have_no_edit
   end
 
   def and_they_cant_delete_the_schedule
     @page = Pages::EditUser.new
     @page.load(id: @guider.id)
-    expect(@page.schedules.first.delete).to be_disabled
+    expect(@page.schedules.last.delete).to be_disabled
   end
 
   def and_the_guider_bookable_slots_are_regenerated
