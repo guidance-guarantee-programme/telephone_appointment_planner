@@ -1,6 +1,10 @@
 FactoryBot.define do
   factory :appointment do
-    agent { create(:resource_manager) }
+    transient do
+      organisation { :tpas }
+    end
+
+    agent { create(:resource_manager, organisation) }
     start_at { BusinessDays.from_now(3).at_midday }
     end_at { start_at + 1.hour }
     first_name { Faker::Name.first_name }
@@ -14,7 +18,7 @@ FactoryBot.define do
     memorable_word { 'lozenge' }
     date_of_birth { '1945-01-01' }
     type_of_appointment { '50-54' }
-    guider { create(:guider) }
+    guider { create(:guider, organisation) }
     where_you_heard { WhereYouHeard.options_for_inclusion.sample }
     created_at { 1.day.ago }
     accessibility_requirements { false }

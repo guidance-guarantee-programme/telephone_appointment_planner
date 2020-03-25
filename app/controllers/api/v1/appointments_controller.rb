@@ -18,6 +18,7 @@ module Api
         AccessibilityAdjustmentNotificationsJob.perform_later(appointment) if appointment.accessibility_requirements?
         WebsiteAppointmentSlackPingerJob.perform_later
         CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::CONFIRMED_MESSAGE)
+        AppointmentCreatedNotificationsJob.perform_later(appointment)
       end
 
       def appointment_params # rubocop:disable Metrics/MethodLength

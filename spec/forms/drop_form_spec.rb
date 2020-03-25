@@ -62,10 +62,12 @@ RSpec.describe DropForm, '#create_activity' do
       expect(subject).not_to be_valid
     end
 
-    it 'does not bounce for `accessibility_adjustment` messages' do
-      params['message_type'] = 'accessibility_adjustment'
+    DropForm::IGNORED_MESSAGE_TYPES.each do |type|
+      it "does not bounce for `#{type}` messages" do
+        params['message_type'] = type
 
-      expect(subject).to be_invalid
+        expect(subject).to be_invalid
+      end
     end
 
     context 'when everything is validated' do

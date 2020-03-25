@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe 'POST /api/v1/appointments' do
+  include ActiveJob::TestHelper
+
   scenario 'create a valid appointment' do
     travel_to '2017-01-10 12:00' do
       given_the_user_is_a_pension_wise_api_user do
@@ -12,6 +14,7 @@ RSpec.describe 'POST /api/v1/appointments' do
         and_the_appointment_is_created
         and_the_customer_receives_a_confirmation_email
         and_the_resource_manager_receives_an_accessibility_notification
+        and_the_resource_manager_receives_a_new_appointment_notification
       end
     end
   end
@@ -115,10 +118,14 @@ RSpec.describe 'POST /api/v1/appointments' do
   end
 
   def and_the_customer_receives_a_confirmation_email
-    expect(ActionMailer::Base.deliveries.map(&:to)).to include(%w(rick@example.com))
+    assert_enqueued_jobs(1, only: CustomerUpdateJob)
   end
 
   def and_the_resource_manager_receives_an_accessibility_notification
-    expect(ActionMailer::Base.deliveries.map(&:to)).to include(Array('supervisors@maps.org.uk'))
+    assert_enqueued_jobs(1, only: AccessibilityAdjustmentNotificationsJob)
+  end
+
+  def and_the_resource_manager_receives_a_new_appointment_notification
+    assert_enqueued_jobs(1, only: AppointmentCreatedNotificationsJob)
   end
 end
