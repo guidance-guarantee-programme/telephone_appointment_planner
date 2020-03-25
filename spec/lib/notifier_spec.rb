@@ -70,6 +70,16 @@ RSpec.describe Notifier, '#call' do
         message: CustomerUpdateActivity::CANCELLED_MESSAGE
       )
     end
+
+    context 'when the appointment is not TPAS' do
+      it 'alerts the resource managers' do
+        appointment.update_attribute(:guider_id, create(:guider, :wallsend))
+
+        expect(AppointmentCancelledNotificationsJob).to receive(:perform_later).with(appointment)
+
+        subject.call
+      end
+    end
   end
 
   context 'and I mark the appointment missed' do

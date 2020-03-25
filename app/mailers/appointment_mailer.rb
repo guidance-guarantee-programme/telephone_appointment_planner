@@ -1,6 +1,12 @@
 class AppointmentMailer < ApplicationMailer
   default subject: 'Your Pension Wise Appointment'
 
+  def resource_manager_appointment_cancelled(appointment, recipient)
+    mailgun_headers('resource_manager_appointment_cancelled', appointment.id)
+    @appointment = appointment
+    mail to: recipient, subject: 'Pension Wise Appointment Cancelled'
+  end
+
   def resource_manager_appointment_created(appointment, recipient)
     mailgun_headers('resource_manager_appointment_created', appointment.id)
     @appointment = appointment

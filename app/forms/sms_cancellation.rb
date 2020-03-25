@@ -25,6 +25,7 @@ class SmsCancellation
     )
 
     SmsCancellationSuccessJob.perform_later(appointment)
+    AppointmentCancelledNotificationsJob.perform_later(appointment)
   end
 
   def appointment

@@ -1,0 +1,23 @@
+<h1 style="color: #0B0C0C !important;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 20px;line-height: 1.111111111;padding: 15px 0;">
+  An appointment was cancelled
+</h1>
+
+<%= p do %>
+  Reference number:
+  <br>
+  <strong class="emphasize">
+    <%= @appointment.id %>
+  </strong>
+<% end %>
+
+<%= p do %>
+  Guider:
+  <br>
+  <strong class="emphasize">
+    <%= @appointment.guider.name %>
+  </strong>
+<% end %>
+
+<%= p do %>
+  <%= link_to 'View the appointment', edit_appointment_url(@appointment) %>
+<% end %>

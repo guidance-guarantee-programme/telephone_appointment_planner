@@ -8,9 +8,17 @@ class Notifier
 
     notify_customer
     notify_guiders
+    notify_resource_managers
   end
 
   private
+
+  def notify_resource_managers
+    return if appointment.tpas_guider?
+    return unless appointment_cancelled?
+
+    AppointmentCancelledNotificationsJob.perform_later(appointment)
+  end
 
   def notify_guiders
     guiders_to_notify.each do |guider_id|

@@ -8,6 +8,7 @@ class DropForm
   IGNORED_MESSAGE_TYPES = %w(
     accessibility_adjustment
     resource_manager_appointment_created
+    resource_manager_appointment_cancelled
   ).freeze
 
   attr_accessor :event
