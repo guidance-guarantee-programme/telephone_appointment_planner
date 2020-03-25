@@ -14,6 +14,16 @@ RSpec.describe Notifier, '#call' do
     allow(mailer).to receive(:deliver)
   end
 
+  context 'when the appointment is rescheduled' do
+    it 'enqueues the rescheduled notifications' do
+      appointment.update_attribute(:guider_id, create(:guider, :wallsend))
+
+      expect(AppointmentRescheduledNotificationsJob).to receive(:perform_later).with(appointment)
+
+      subject.call
+    end
+  end
+
   context 'when the appointment is without an associated email' do
     it 'does not notify the customer' do
       expect(AppointmentMailer).not_to receive(:confirmation)
@@ -71,14 +81,10 @@ RSpec.describe Notifier, '#call' do
       )
     end
 
-    context 'when the appointment is not TPAS' do
-      it 'alerts the resource managers' do
-        appointment.update_attribute(:guider_id, create(:guider, :wallsend))
+    it 'alerts the resource managers' do
+      expect(AppointmentCancelledNotificationsJob).to receive(:perform_later).with(appointment)
 
-        expect(AppointmentCancelledNotificationsJob).to receive(:perform_later).with(appointment)
-
-        subject.call
-      end
+      subject.call
     end
   end
 

@@ -14,10 +14,11 @@ class Notifier
   private
 
   def notify_resource_managers
-    return if appointment.tpas_guider?
-    return unless appointment_cancelled?
-
-    AppointmentCancelledNotificationsJob.perform_later(appointment)
+    if appointment_cancelled?
+      AppointmentCancelledNotificationsJob.perform_later(appointment)
+    elsif appointment_rescheduled?
+      AppointmentRescheduledNotificationsJob.perform_later(appointment)
+    end
   end
 
   def notify_guiders
@@ -53,6 +54,10 @@ class Notifier
   def appointment_missed?
     appointment.previous_changes.slice('status').present? &&
       appointment.no_show?
+  end
+
+  def appointment_rescheduled?
+    appointment.previous_changes.slice('guider_id', 'start_at').present?
   end
 
   attr_reader :appointment
