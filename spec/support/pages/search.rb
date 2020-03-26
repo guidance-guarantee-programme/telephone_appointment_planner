@@ -11,5 +11,7 @@ module Pages
       element :id, '.t-id'
       element :name, '.t-name'
     end
+
+    elements :processed, '.t-processed'
   end
 end
