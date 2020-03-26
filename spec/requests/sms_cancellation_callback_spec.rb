@@ -17,6 +17,7 @@ RSpec.describe 'POST /sms_cancellations', type: :request do
     and_a_cancellation_activity_is_created
     and_the_customer_is_sent_a_confirmation_sms
     and_the_guider_is_notified
+    and_the_resource_managers_are_notified
   end
 
   def given_a_pending_appointment_exists
@@ -53,6 +54,10 @@ RSpec.describe 'POST /sms_cancellations', type: :request do
 
   def and_the_guider_is_notified
     assert_enqueued_jobs(1, only: PusherAppointmentChangedJob)
+  end
+
+  def and_the_resource_managers_are_notified
+    assert_enqueued_jobs(1, only: AppointmentCancelledNotificationsJob)
   end
 
   def when_the_client_makes_an_unauthorised_request

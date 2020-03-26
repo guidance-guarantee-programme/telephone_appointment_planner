@@ -8,9 +8,18 @@ class Notifier
 
     notify_customer
     notify_guiders
+    notify_resource_managers
   end
 
   private
+
+  def notify_resource_managers
+    if appointment_cancelled?
+      AppointmentCancelledNotificationsJob.perform_later(appointment)
+    elsif appointment_rescheduled?
+      AppointmentRescheduledNotificationsJob.perform_later(appointment)
+    end
+  end
 
   def notify_guiders
     guiders_to_notify.each do |guider_id|
@@ -45,6 +54,10 @@ class Notifier
   def appointment_missed?
     appointment.previous_changes.slice('status').present? &&
       appointment.no_show?
+  end
+
+  def appointment_rescheduled?
+    appointment.previous_changes.slice('guider_id', 'start_at').present?
   end
 
   attr_reader :appointment

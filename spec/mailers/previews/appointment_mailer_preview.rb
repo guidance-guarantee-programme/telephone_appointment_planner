@@ -1,5 +1,32 @@
 # Preview all emails at http://localhost:3000/rails/mailers/appointment_mailer
 class AppointmentMailerPreview < ActionMailer::Preview
+  def resource_manager_appointment_created
+    appointment = random_appointment
+
+    AppointmentMailer.resource_manager_appointment_created(
+      appointment,
+      appointment.resource_managers.first.email
+    )
+  end
+
+  def resource_manager_appointment_rescheduled
+    appointment = random_appointment
+
+    AppointmentMailer.resource_manager_appointment_rescheduled(
+      appointment,
+      appointment.resource_managers.first.email
+    )
+  end
+
+  def resource_manager_appointment_cancelled
+    appointment = random_appointment
+
+    AppointmentMailer.resource_manager_appointment_cancelled(
+      appointment,
+      appointment.resource_managers.first.email
+    )
+  end
+
   def accessibility_adjustment
     appointment = random_appointment
 

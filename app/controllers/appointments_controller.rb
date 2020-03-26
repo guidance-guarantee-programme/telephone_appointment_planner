@@ -98,6 +98,7 @@ class AppointmentsController < ApplicationController
   def send_notifications(appointment)
     AccessibilityAdjustmentNotificationsJob.perform_later(appointment) if appointment.accessibility_requirements?
     CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::CONFIRMED_MESSAGE)
+    AppointmentCreatedNotificationsJob.perform_later(appointment)
   end
 
   def postcode_api_key

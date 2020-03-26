@@ -27,6 +27,7 @@ FactoryBot.define do
     end
 
     factory :resource_manager, traits: [:tpas] do
+      email { 'rm@example.com' }
       permissions { Array(User::RESOURCE_MANAGER_PERMISSION) }
     end
 

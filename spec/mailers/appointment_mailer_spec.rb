@@ -10,6 +10,81 @@ RSpec.describe AppointmentMailer, type: :mailer do
     )
   end
 
+  describe 'Resource Manager Appointment Rescheduled' do
+    subject(:mail) { described_class.resource_manager_appointment_rescheduled(appointment, resource_manager) }
+
+    let(:mailgun_headers) { JSON.parse(mail['X-Mailgun-Variables'].value) }
+    let(:resource_manager) { 'supervisors@maps.org.uk' }
+
+    it 'renders the headers' do
+      expect(mail.subject).to eq('Pension Wise Appointment Rescheduled')
+      expect(mail.to).to eq(['supervisors@maps.org.uk'])
+      expect(mail.from).to eq(['booking@pensionwise.gov.uk'])
+    end
+
+    it 'renders the mailgun specific headers' do
+      expect(mailgun_headers).to include(
+        'message_type'   => 'resource_manager_appointment_rescheduled',
+        'appointment_id' => appointment.id
+      )
+    end
+
+    it 'renders the body specifics' do
+      expect(subject.body.encoded).to match(%q(http://localhost:3001/appointments/\d+/edit))
+      expect(subject.body.encoded).to include(appointment.guider.name)
+    end
+  end
+
+  describe 'Resource Manager Appointment Cancelled' do
+    subject(:mail) { described_class.resource_manager_appointment_cancelled(appointment, resource_manager) }
+
+    let(:mailgun_headers) { JSON.parse(mail['X-Mailgun-Variables'].value) }
+    let(:resource_manager) { 'supervisors@maps.org.uk' }
+
+    it 'renders the headers' do
+      expect(mail.subject).to eq('Pension Wise Appointment Cancelled')
+      expect(mail.to).to eq(['supervisors@maps.org.uk'])
+      expect(mail.from).to eq(['booking@pensionwise.gov.uk'])
+    end
+
+    it 'renders the mailgun specific headers' do
+      expect(mailgun_headers).to include(
+        'message_type'   => 'resource_manager_appointment_cancelled',
+        'appointment_id' => appointment.id
+      )
+    end
+
+    it 'renders the body specifics' do
+      expect(subject.body.encoded).to match(%q(http://localhost:3001/appointments/\d+/edit))
+      expect(subject.body.encoded).to include(appointment.guider.name)
+    end
+  end
+
+  describe 'Resource Manager Appointment Created' do
+    subject(:mail) { described_class.resource_manager_appointment_created(appointment, resource_manager) }
+
+    let(:mailgun_headers) { JSON.parse(mail['X-Mailgun-Variables'].value) }
+    let(:resource_manager) { 'supervisors@maps.org.uk' }
+
+    it 'renders the headers' do
+      expect(mail.subject).to eq('Pension Wise Appointment Created')
+      expect(mail.to).to eq(['supervisors@maps.org.uk'])
+      expect(mail.from).to eq(['booking@pensionwise.gov.uk'])
+    end
+
+    it 'renders the mailgun specific headers' do
+      expect(mailgun_headers).to include(
+        'message_type'   => 'resource_manager_appointment_created',
+        'appointment_id' => appointment.id
+      )
+    end
+
+    it 'renders the body specifics' do
+      expect(subject.body.encoded).to match(%q(http://localhost:3001/appointments/\d+/edit))
+      expect(subject.body.encoded).to include(appointment.guider.name)
+    end
+  end
+
   describe 'Accessibility Adjustment' do
     subject(:mail) { described_class.accessibility_adjustment(appointment, resource_manager) }
 

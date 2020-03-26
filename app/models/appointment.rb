@@ -186,6 +186,10 @@ class Appointment < ApplicationRecord
     guider&.tpas?
   end
 
+  def cas_guider?
+    guider&.cas?
+  end
+
   def agent_is_pension_wise_api?
     agent && agent.pension_wise_api?
   end
