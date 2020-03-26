@@ -21,6 +21,7 @@ module Pages
     element :status, '.t-status'
     element :submit, '.t-save'
     element :rebook, '.t-rebook'
+    element :process, '.t-process'
 
     element :permissions_warning, '.t-permissions'
 

@@ -1,4 +1,8 @@
 module UserHelper
+  def can_process?(current_user, appointment)
+    !current_user.tpas? && !appointment.processed_at?
+  end
+
   def organisation_options
     Provider.all.map do |organisation|
       [organisation.name, organisation.id]
