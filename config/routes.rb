@@ -45,6 +45,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   resource :my_appointments, only: :show
   resource :company_calendar, only: :show
   resources :appointments, only: %i(new index show edit update create) do
+    resource :process, only: :create
     resources :changes, only: :index
 
     post :preview, on: :collection

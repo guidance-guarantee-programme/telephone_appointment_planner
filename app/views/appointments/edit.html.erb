@@ -35,6 +35,12 @@
     <%= rebooked_from_heading(@appointment) %>
   </div>
   <div class="col-md-5 action-buttons">
+    <% if can_process?(current_user, @appointment) %>
+      <%= link_to appointment_process_path(@appointment), method: :post, title: 'Mark as Processed', class: 'btn btn-info t-process' do %>
+        <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
+        <span>Mark as Processed</span>
+      <% end %>
+    <% end %>
     <% if @appointment.can_create_summary? %>
       <%= link_to SummaryDocumentLink.generate(@appointment), title: 'Create summary', class: 'btn btn-info', target: '_blank' do %>
         <span class="glyphicon glyphicon-print" aria-hidden="true"></span>

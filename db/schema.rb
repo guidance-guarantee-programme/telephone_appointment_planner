@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190910114253) do
+ActiveRecord::Schema.define(version: 20200326124042) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,6 +62,7 @@ ActiveRecord::Schema.define(version: 20190910114253) do
     t.string "gdpr_consent", default: "", null: false
     t.string "pension_provider", default: "", null: false
     t.boolean "accessibility_requirements", default: false, null: false
+    t.datetime "processed_at"
     t.index ["start_at"], name: "index_appointments_on_start_at"
   end
 

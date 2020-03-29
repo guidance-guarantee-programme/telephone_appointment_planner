@@ -89,6 +89,18 @@ class Appointment < ApplicationRecord
   before_create :track_initial_status
   before_update :track_status_transitions
 
+  def process!(by)
+    return if processed_at?
+
+    without_auditing do
+      transaction do
+        touch(:processed_at)
+
+        ProcessedActivity.from(user: by, appointment: self)
+      end
+    end
+  end
+
   def mark_rescheduled!
     self.batch_processed_at = nil
     self.rescheduled_at     = Time.zone.now

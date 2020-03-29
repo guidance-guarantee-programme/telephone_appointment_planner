@@ -1,4 +1,10 @@
 module AppointmentHelper
+  def processed_tick(appointment)
+    return unless appointment.processed_at?
+
+    content_tag(:span, '', class: 'glyphicon glyphicon-ok t-processed text-muted', title: 'Processed')
+  end
+
   def display_with_newline(value)
     safe_join([value, tag.br]) if value.present?
   end

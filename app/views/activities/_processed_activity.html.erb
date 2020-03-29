@@ -1,0 +1,6 @@
+<% content_for(:activity_message, flush: true) do %>
+  <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
+  <strong><%= processed_activity.user_name %></strong>
+  processed this appointment
+<% end %>
+<%= render 'activities/activity', activity: processed_activity, details: details, hide: hide %>

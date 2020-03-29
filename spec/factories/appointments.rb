@@ -41,5 +41,9 @@ FactoryBot.define do
       county { 'Some County' }
       postcode { 'E3 3NN' }
     end
+
+    trait :processed do
+      processed_at { Time.zone.now }
+    end
   end
 end
