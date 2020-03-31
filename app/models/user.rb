@@ -51,6 +51,10 @@ class User < ApplicationRecord
     organisation_content_id == Provider::CAS.id
   end
 
+  def ni?
+    organisation_content_id == Provider::NI.id
+  end
+
   def tp_agent?
     tp? && agent?
   end

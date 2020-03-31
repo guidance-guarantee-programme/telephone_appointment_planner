@@ -1,13 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe AppointmentCancelledNotificationsJob do
-  context 'when the appointment has a TPAS guider' do
-    it 'ensures the resource managers are not alerted by email' do
-      appointment = create(:appointment)
+  %i(tpas ni).each do |provider|
+    context "when the guider is from #{provider}" do
+      it 'does nothing' do
+        appointment = create(:appointment, organisation: provider)
 
-      expect(AppointmentMailer).not_to receive(:resource_manager_appointment_cancelled)
+        expect(AppointmentMailer).not_to receive(:resource_manager_appointment_cancelled)
 
-      subject.perform(appointment)
+        subject.perform(appointment)
+      end
     end
   end
 
