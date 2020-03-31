@@ -1,13 +1,14 @@
 namespace :jobs do
   namespace :wipe do
-    desc 'wipes schedules, slots and holidays across all providers'
+    desc 'wipes data across all providers'
     task data: :environment do
       abort 'This task runs in DEVELOPMENT or STAGING only!' unless Rails.env.development? || Rails.env.staging?
 
-      Schedule.destroy_all
-      Holiday.where(bank_holiday: false).destroy_all
+      [Schedule, Slot, BookableSlot, Appointment, Activity].map(&:delete_all)
 
-      puts 'Deleted all schedules, slots and non bank holidays'
+      Holiday.where(bank_holiday: false).delete_all
+
+      puts 'Deleted all staging or test data'
     end
   end
 
