@@ -232,6 +232,12 @@ class Appointment < ApplicationRecord
     gdpr_consent == '' ? 'No response' : gdpr_consent.titleize
   end
 
+  def self.for_redaction
+    where
+      .not(first_name: 'redacted')
+      .where('created_at < ?', 2.years.ago.beginning_of_day)
+  end
+
   def self.for_organisation(user)
     return where('1 = 1') if user.tp_agent?
 
@@ -309,7 +315,7 @@ class Appointment < ApplicationRecord
   end
 
   def format_name
-    self.first_name = first_name.titleize if first_name
+    self.first_name = first_name.titleize if first_name != 'redacted'
     self.last_name  = last_name.titleize  if last_name
   end
 
