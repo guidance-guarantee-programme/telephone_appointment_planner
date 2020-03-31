@@ -202,6 +202,10 @@ class Appointment < ApplicationRecord
     guider&.cas?
   end
 
+  def ni_guider?
+    guider&.ni?
+  end
+
   def agent_is_pension_wise_api?
     agent && agent.pension_wise_api?
   end

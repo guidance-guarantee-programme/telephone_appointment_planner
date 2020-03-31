@@ -1,13 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe AppointmentRescheduledNotificationsJob do
-  context 'when the guider is from TPAS' do
-    it 'does not send notifications' do
-      appointment = create(:appointment)
+  %i(tpas ni).each do |provider|
+    context "when the guider is from #{provider}" do
+      it 'does nothing' do
+        appointment = create(:appointment, organisation: provider)
 
-      expect(AppointmentMailer).not_to receive(:resource_manager_appointment_rescheduled)
+        expect(AppointmentMailer).not_to receive(:resource_manager_appointment_rescheduled)
 
-      subject.perform(appointment)
+        subject.perform(appointment)
+      end
     end
   end
 
