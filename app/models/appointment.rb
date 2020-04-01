@@ -145,6 +145,8 @@ class Appointment < ApplicationRecord
     if via_slot
       allocate_slot(agent)
     else
+      return unless start_at?
+
       self.end_at = start_at + APPOINTMENT_LENGTH_MINUTES
     end
   end

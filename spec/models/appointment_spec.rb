@@ -403,6 +403,14 @@ RSpec.describe Appointment, type: :model do
       BusinessDays.from_now(5).change(hour: 10, min: 30, second: 0)
     end
 
+    context 'adhoc' do
+      it 'does not error when no `start_at` was specified' do
+        appointment = build(:appointment, start_at: nil, end_at: nil)
+
+        expect { appointment.allocate(via_slot: false) }.not_to raise_error
+      end
+    end
+
     context 'when booking as a TPAS agent' do
       it 'excludes TP guiders' do
         tpas_resource_manager = create(:resource_manager, :tpas)
