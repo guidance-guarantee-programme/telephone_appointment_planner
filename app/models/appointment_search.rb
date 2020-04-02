@@ -1,14 +1,16 @@
 class AppointmentSearch
-  def initialize(query, start_at, end_at, current_user)
+  def initialize(query, start_at, end_at, current_user, processed)
     @query = query
     @start_at = start_at
     @end_at = end_at
     @current_user = current_user
+    @processed = processed
   end
 
   def search
     results = @query.present? ? search_with_query : search_without_query
     results = within_date_range(results)
+    results = processed_for_current_user(results)
 
     for_current_user(results)
   end
@@ -16,6 +18,16 @@ class AppointmentSearch
   private
 
   attr_reader :current_user
+
+  def processed_for_current_user(results)
+    return results if current_user.tpas? || @processed.blank?
+
+    if @processed == 'yes'
+      results.where.not(processed_at: nil)
+    else
+      results.where(processed_at: nil)
+    end
+  end
 
   def for_current_user(results)
     return results if current_user.tp_agent?

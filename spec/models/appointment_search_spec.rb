@@ -8,12 +8,23 @@ RSpec.describe AppointmentSearch, type: :model do
       @appointments = [
         create(:appointment, first_name: 'Stefan', last_name: 'Löfven', created_at: from + 2.seconds),
         create(:appointment, first_name: 'Angela', last_name: 'Merkel', created_at: from + 1.second),
-        create(:appointment, first_name: 'Adrian', last_name: 'Hasler', created_at: from)
+        create(:appointment, first_name: 'Adrian', last_name: 'Hasler', created_at: from, processed_at: Time.current)
       ]
     end
 
-    def results(q, start_at, end_at, current_user = create(:agent))
-      described_class.new(q, start_at, end_at, current_user).search
+    def results(q, start_at, end_at, current_user = create(:agent), processed = '')
+      described_class.new(q, start_at, end_at, current_user, processed).search
+    end
+
+    context 'for a non-tpas user' do
+      it 'respects the `processed` flag' do
+        processed   = create(:appointment, organisation: :cas, processed_at: Time.current)
+        unprocessed = create(:appointment, organisation: :cas)
+        cas_agent   = create(:agent, :cas)
+
+        expect(results(nil, nil, nil, cas_agent, 'yes')).to eq([processed])
+        expect(results(nil, nil, nil, cas_agent, 'no')).to eq([unprocessed])
+      end
     end
 
     it 'returns all results' do

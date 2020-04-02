@@ -4,6 +4,8 @@ module Pages
 
     element :q,          '.t-q'
     element :date_range, '.t-date-range'
+    element :processed_no, '.t-processed-no'
+    element :processed_yes, '.t-processed-yes'
     element :search,     '.t-search'
     element :rebook,     '.t-rebook'
 
