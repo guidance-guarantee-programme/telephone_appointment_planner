@@ -41,6 +41,16 @@ class BookableSlot < ApplicationRecord
     BusinessDays.from_now(1).change(hour: 18, min: 30)
   end
 
+  def self.find_from_available_provider(appointment)
+    scope = bookable.where(start_at: appointment.start_at)
+    scope = scope
+            .joins(:guider)
+            .where
+            .not(users: { organisation_content_id: appointment.guider.organisation_content_id })
+
+    scope.order('RANDOM()').first
+  end
+
   def self.find_available_slot(start_at, agent)
     scope = bookable.where(start_at: start_at)
     scope = scope.for_organisation(agent) if agent

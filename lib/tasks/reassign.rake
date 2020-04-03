@@ -16,6 +16,24 @@ namespace :reassign do
     end
   end
 
+  desc 'Attempt to reallocate appointments to random available slots from other providers'
+  task random: :environment do
+    appointment_ids = ENV.fetch('REFERENCES').split(',')
+
+    appointment_ids.each do |id|
+      if source = Appointment.find(id)
+
+        if destination = BookableSlot.find_from_available_provider(source)
+          reassign_appointment(source, destination.guider)
+        else
+          puts "Could not find any slot matching #{id}"
+        end
+      else
+        puts "Appointment with reference #{id} was not found"
+      end
+    end
+  end
+
   desc 'Attempt to reallocate appointments (REFERENCES=X,X,X) to (PROVIDER=X)'
   task appointments: :environment do
     provider_agent = User.find_by(organisation_content_id: ENV.fetch('PROVIDER'))
