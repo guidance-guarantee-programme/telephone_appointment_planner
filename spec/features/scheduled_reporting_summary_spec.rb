@@ -25,8 +25,8 @@ RSpec.feature 'Scheduled reporting summary' do
 
   def then_the_availability_is_summarised_correctly
     expect(ReportingSummary.find_by(organisation: 'CAS')).to have_attributes(
-      four_week_availability: true,
-      first_available_slot_on: '2018-04-28'.to_date
+      four_week_availability: false,
+      first_available_slot_on: nil
     )
 
     expect(ReportingSummary.find_by(organisation: 'Lancs West')).to have_attributes(
