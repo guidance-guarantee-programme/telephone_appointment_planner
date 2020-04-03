@@ -26,9 +26,6 @@ RSpec.describe 'GET /api/v1/bookable_slots' do
     # included since the window is now 8 weeks
     create(:bookable_slot, start_at: 7.weeks.from_now)
 
-    # excluded temporarily as it's from CAS
-    create(:bookable_slot, :cas, start_at: 8.weeks.from_now)
-
     # falls after the booking window
     create(:bookable_slot, start_at: 9.weeks.from_now)
   end
