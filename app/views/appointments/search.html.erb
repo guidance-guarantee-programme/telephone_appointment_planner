@@ -31,6 +31,13 @@
       )
     %>
   </div>
+  <% unless current_user.tpas? %>
+  <div class="form-group">
+    <label>Processed</label>
+    <label><%= f.radio_button :processed, 'no', class: 't-processed-no' %> No</label>
+    <label><%= f.radio_button :processed, 'yes', class: 't-processed-yes' %> Yes</label>
+  </div>
+  <% end %>
   <div class="form-group">
     <%= f.submit 'Search', class: 't-search btn btn-primary' %>
   </div>

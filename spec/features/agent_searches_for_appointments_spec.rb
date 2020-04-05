@@ -1,6 +1,20 @@
 require 'rails_helper'
 
 RSpec.feature 'Agent searches for appointments' do
+  scenario 'TPAS users do not see `processed` filters' do
+    given_the_user_is_an_agent(organisation: :tpas) do
+      when_they_view_the_search
+      then_they_do_not_see_the_processed_filters
+    end
+  end
+
+  scenario 'Other users see `processed` filters' do
+    given_the_user_is_an_agent(organisation: :cas) do
+      when_they_view_the_search
+      then_they_see_the_processed_filters
+    end
+  end
+
   scenario 'Searching as a TP agent' do
     given_appointments_exist_across_multiple_organisations
     given_the_user_is_an_agent(organisation: :tp) do
@@ -56,6 +70,20 @@ RSpec.feature 'Agent searches for appointments' do
       when_they_search_for_a_name
       then_they_can_see_those_filtered_appointments_only
     end
+  end
+
+  def when_they_view_the_search
+    @page = Pages::Search.new.tap(&:load)
+  end
+
+  def then_they_do_not_see_the_processed_filters
+    expect(@page).to have_no_processed_no
+    expect(@page).to have_no_processed_yes
+  end
+
+  def then_they_see_the_processed_filters
+    expect(@page).to have_processed_no
+    expect(@page).to have_processed_yes
   end
 
   def given_appointments_exist_across_multiple_organisations

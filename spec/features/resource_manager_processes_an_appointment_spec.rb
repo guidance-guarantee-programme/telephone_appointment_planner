@@ -22,12 +22,21 @@ RSpec.feature 'Resource manager processes an appointment' do
 
   scenario 'Viewing processed/unprocessed appointments in search results' do
     given_the_user_is_a_resource_manager(organisation: :cas) do
-      and_an_appointment_exists_for(:cas)
-      and_a_processed_appointment_exists_for(:cas)
+      and_appointments_exist_for(:cas)
+      and_processed_appointments_exist_for(:cas)
       when_they_view_the_appointments
-      then_one_appointment_is_processed
-      and_the_other_is_not_processed
+      then_two_appointments_are_unprocessed
+      when_they_set_the_processed_filter
+      then_two_appointments_are_processed
     end
+  end
+
+  def and_appointments_exist_for(organisation)
+    create_list(:appointment, 2, organisation: organisation)
+  end
+
+  def and_processed_appointments_exist_for(organisation)
+    create_list(:appointment, 2, :processed, organisation: organisation)
   end
 
   def and_a_processed_appointment_exists_for(organisation)
@@ -39,8 +48,19 @@ RSpec.feature 'Resource manager processes an appointment' do
     @page.load
   end
 
-  def then_one_appointment_is_processed
-    expect(@page).to have_processed(count: 1)
+  def then_two_appointments_are_processed
+    expect(@page).to have_results(count: 2)
+    expect(@page).to have_processed(count: 2)
+  end
+
+  def then_two_appointments_are_unprocessed
+    expect(@page).to have_results(count: 2)
+    expect(@page).to have_no_processed
+  end
+
+  def when_they_set_the_processed_filter
+    @page.processed_yes.set(true)
+    @page.search.click
   end
 
   def and_the_other_is_not_processed
