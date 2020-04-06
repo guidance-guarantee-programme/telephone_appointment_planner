@@ -24,9 +24,7 @@ RSpec.describe AssignmentActivity do
     end
 
     it 'pushes an activity update' do
-      expect(PusherActivityCreatedJob)
-        .to have_received(:perform_later)
-        .with(appointment.guider_id, subject.id)
+      expect(PusherActivityCreatedJob).to have_received(:perform_later).with(subject.id)
     end
 
     context 'reassignment' do
@@ -51,15 +49,7 @@ RSpec.describe AssignmentActivity do
       end
 
       it 'pushes an activity update' do
-        expect(PusherActivityCreatedJob)
-          .to have_received(:perform_later)
-          .with(appointment.guider_id, subject.id)
-      end
-
-      it 'pushes an activity update to the prior owner' do
-        expect(PusherActivityCreatedJob)
-          .to have_received(:perform_later)
-          .with(prior_owner.id, subject.id)
+        expect(PusherActivityCreatedJob).to have_received(:perform_later).with(subject.id)
       end
     end
   end

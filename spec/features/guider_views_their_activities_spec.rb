@@ -17,19 +17,11 @@ RSpec.feature 'Guider views their activities' do
     end
   end
 
-  scenario 'Activities are loaded in realtime', js: true do
+  scenario 'Activities are visible statically' do
     given_a_browser_session_for(guider) do
       and_they_have_some_appointments
       when_they_view_their_activity
       then_they_see_all_activities
-    end
-
-    given_a_browser_session_for(someone) do
-      when_they_leave_a_message_on_one_of_the_guiders_appointments
-    end
-
-    given_a_browser_session_for(guider) do
-      then_they_see_the_new_activities
     end
   end
 
@@ -52,20 +44,6 @@ RSpec.feature 'Guider views their activities' do
       a_string_including('created'),
       a_string_including('created')
     ]
-  end
-
-  def when_they_leave_a_message_on_one_of_the_guiders_appointments
-    page = Pages::EditAppointment.new
-    page.load(id: @appointments.first.id)
-    page.activity_feed.message.set('Hello mate')
-    page.activity_feed.submit.click
-  end
-
-  def then_they_see_the_new_activities
-    expect(@page).to have_activities(count: 5, wait: 10)
-    expect(@page.activities.first.text).to include(
-      "#{someone.name} said Hello mate appointment \##{@appointments.first.id}"
-    )
   end
 
   def then_they_see_a_no_activity_message

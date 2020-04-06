@@ -6,9 +6,7 @@ class CustomerUpdateJob < ActiveJob::Base
 
     send_email(appointment, message)
 
-    activity = CustomerUpdateActivity.from(appointment, message)
-
-    PusherActivityCreatedJob.perform_later(appointment.guider_id, activity.id)
+    CustomerUpdateActivity.from(appointment, message)
   end
 
   private

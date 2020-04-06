@@ -32,9 +32,7 @@ RSpec.describe MessageActivity do
     end
 
     it 'pushes an activity update' do
-      expect(PusherActivityCreatedJob)
-        .to have_received(:perform_later)
-        .with(appointment.guider_id, subject.id)
+      expect(PusherActivityCreatedJob).to have_received(:perform_later).with(subject.id)
     end
   end
 end

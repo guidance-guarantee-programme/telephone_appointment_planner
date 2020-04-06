@@ -50,17 +50,11 @@ class Activity < ApplicationRecord
     HIGH_PRIORITY_ACTIVITY_CLASS_NAMES.include?(self.class.to_s)
   end
 
-  def pusher_notify_user_ids
-    []
-  end
-
   def owner_required?
     true
   end
 
   after_commit on: :create do
-    Array(pusher_notify_user_ids).each do |user_id|
-      PusherActivityCreatedJob.perform_later(user_id, id)
-    end
+    PusherActivityCreatedJob.perform_later(id)
   end
 end
