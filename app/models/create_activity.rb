@@ -6,8 +6,4 @@ class CreateActivity < Activity
       owner_id: appointment.guider.id
     )
   end
-
-  def pusher_notify_user_ids
-    owner_id
-  end
 end

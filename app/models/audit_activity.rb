@@ -13,8 +13,4 @@ class AuditActivity < Activity
   def self.only_the_guider_has_been_changed?(audit)
     audit.audited_changes.keys == ['guider_id']
   end
-
-  def pusher_notify_user_ids
-    owner_id
-  end
 end

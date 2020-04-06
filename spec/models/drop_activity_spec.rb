@@ -20,10 +20,7 @@ RSpec.describe DropActivity, '.from' do
     end
 
     it 'notifies the agent' do
-      expect(PusherActivityCreatedJob).to have_received(:perform_later).with(
-        appointment.agent_id,
-        subject.id
-      )
+      expect(PusherActivityCreatedJob).to have_received(:perform_later).with(subject.id)
 
       expect(PusherHighPriorityCountChangedJob).to have_received(:perform_later).with(
         appointment.agent

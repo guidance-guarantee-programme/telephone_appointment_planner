@@ -13,10 +13,6 @@ class DropActivity < Activity
     return appointment.agent if message_type == 'booking_created'
   end
 
-  def pusher_notify_user_ids
-    owner_id
-  end
-
   def owner_required?
     false
   end

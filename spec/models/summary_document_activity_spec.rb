@@ -60,9 +60,7 @@ RSpec.describe SummaryDocumentActivity do
       end
 
       it 'pushes an activity update' do
-        expect(PusherActivityCreatedJob)
-          .to have_received(:perform_later)
-          .with(nil, subject.id)
+        expect(PusherActivityCreatedJob).to have_received(:perform_later).with(subject.id)
       end
     end
   end

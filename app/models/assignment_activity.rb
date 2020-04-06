@@ -33,8 +33,4 @@ class AssignmentActivity < Activity
       prior_owner_id: prior_owner.id
     )
   end
-
-  def pusher_notify_user_ids
-    message == ASSIGNED ? owner_id : [owner_id, prior_owner_id]
-  end
 end

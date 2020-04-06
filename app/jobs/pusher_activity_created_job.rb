@@ -9,23 +9,13 @@ class PusherActivityCreatedJob < ApplicationJob
     retry_job(wait: 2.seconds)
   end
 
-  def perform(recipient_id, activity_id)
-    recipient = User.find(recipient_id) if recipient_id
-    activity  = Activity.find(activity_id)
+  def perform(activity_id)
+    activity = Activity.find(activity_id)
 
-    notify_guider(recipient, activity) if recipient_id
     notify_appointment_feed(activity)
   end
 
   private
-
-  def notify_guider(recipient, activity)
-    Pusher.trigger(
-      'telephone_appointment_planner',
-      "guider_activity_#{recipient.id}",
-      body: render_activity(activity, true)
-    )
-  end
 
   def notify_appointment_feed(activity)
     Pusher.trigger(
