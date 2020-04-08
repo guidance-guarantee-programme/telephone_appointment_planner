@@ -1,18 +1,20 @@
 # rubocop:disable AssignmentInCondition
 namespace :reassign do
-  desc 'Reallocate appointment REFERENCE=x to GUIDER=x'
+  desc 'Reallocate appointments REFERENCES=x to GUIDER=x'
   task appointment: :environment do
-    reference = ENV.fetch('REFERENCE')
-    guider_id = ENV.fetch('GUIDER')
+    references = ENV.fetch('REFERENCES').split(',')
+    guider_id  = ENV.fetch('GUIDER')
 
-    if source = Appointment.find(reference)
-      if guider = User.find(guider_id)
-        reassign_appointment(source, guider)
+    references.each do |reference|
+      if source = Appointment.find(reference)
+        if guider = User.find(guider_id)
+          reassign_appointment(source, guider)
+        else
+          puts "Could not find guider ID: #{guider_id}"
+        end
       else
-        puts "Could not find guider ID: #{guider_id}"
+        puts "Could not find appointment reference: #{reference}"
       end
-    else
-      puts "Could not find appointment reference: #{reference}"
     end
   end
 
