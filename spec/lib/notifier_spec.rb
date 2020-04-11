@@ -16,7 +16,8 @@ RSpec.describe Notifier, '#call' do
 
   context 'when the appointment is rescheduled' do
     it 'enqueues the rescheduled notifications' do
-      appointment.update_attribute(:guider_id, create(:guider, :wallsend))
+      new_guider = create(:guider)
+      appointment.update_attribute(:guider_id, new_guider.id)
 
       expect(AppointmentRescheduledNotificationsJob).to receive(:perform_later).with(appointment)
 

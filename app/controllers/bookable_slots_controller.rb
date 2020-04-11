@@ -2,7 +2,7 @@ class BookableSlotsController < ApplicationController
   def index
     @bookable_slots = bookable_slots
 
-    render json: @bookable_slots if stale?(@bookable_slots)
+    render json: @bookable_slots
   end
 
   def available

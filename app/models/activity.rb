@@ -2,10 +2,10 @@ class Activity < ApplicationRecord
   HIGH_PRIORITY_ACTIVITY_CLASS_NAMES = %w(DropActivity DroppedSummaryDocumentActivity).freeze
 
   belongs_to :appointment
-  belongs_to :user
-  belongs_to :owner, class_name: 'User'
-  belongs_to :prior_owner, class_name: 'User'
-  belongs_to :resolver, class_name: 'User'
+  belongs_to :user, optional: true
+  belongs_to :owner, class_name: 'User', optional: true
+  belongs_to :prior_owner, class_name: 'User', optional: true
+  belongs_to :resolver, class_name: 'User', optional: true
   validates :owner, presence: true, if: :owner_required?
 
   scope :resolved, -> { where.not(resolved_at: nil) }

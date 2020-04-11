@@ -43,7 +43,7 @@ class Appointment < ApplicationRecord
 
   belongs_to :guider, class_name: 'User'
 
-  belongs_to :rebooked_from, class_name: 'Appointment'
+  belongs_to :rebooked_from, class_name: 'Appointment', optional: true
 
   has_many :activities, -> { order('created_at DESC') }
 
@@ -284,7 +284,8 @@ class Appointment < ApplicationRecord
     pending
       .not_booked_today
       .where(start_at: window)
-      .where.not(email: '', id: reminded_ids)
+      .where.not(email: '')
+      .where.not(id: reminded_ids)
   end
 
   def self.reminded_ids
