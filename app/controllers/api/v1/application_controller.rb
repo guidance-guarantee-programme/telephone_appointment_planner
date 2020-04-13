@@ -7,6 +7,8 @@ module Api
 
       wrap_parameters false
 
+      skip_forgery_protection
+
       protected
 
       def append_info_to_payload(payload)

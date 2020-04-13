@@ -1,5 +1,7 @@
 module MailGun
   class DropsController < ActionController::Base
+    skip_forgery_protection
+
     def create
       form = DropForm.new(drop_params)
       form.create_activity
