@@ -14,7 +14,7 @@ class AppointmentsController < ApplicationController
   def index
     @appointments = appointment_scope.where(start_at: date_range_params)
 
-    render json: @appointments if stale?(@appointments)
+    render json: @appointments
   end
 
   def edit
@@ -43,7 +43,7 @@ class AppointmentsController < ApplicationController
 
   def update
     @appointment = Appointment.find(params[:id])
-    if @appointment.update_attributes(update_params)
+    if @appointment.update(update_params)
       Notifier.new(@appointment).call
       redirect_to edit_appointment_path(@appointment), success: 'Appointment has been modified'
     else

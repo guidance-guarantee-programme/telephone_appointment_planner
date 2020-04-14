@@ -66,7 +66,8 @@ RSpec.describe 'POST /api/v1/summary_documents' do
 
   def and_the_errors_are_serialized_in_the_response
     JSON.parse(response.body).tap do |json|
-      expect(json.keys).to eq(%w(owner appointment))
+      expect(json).to have_key('appointment')
+      expect(json).to have_key('owner')
     end
   end
 

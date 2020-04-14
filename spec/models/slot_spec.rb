@@ -4,7 +4,8 @@ RSpec.describe Slot do
   describe 'validations' do
     subject do
       Slot.new(
-        day_of_week: 3
+        day_of_week: 3,
+        schedule: build(:schedule)
       )
     end
 
