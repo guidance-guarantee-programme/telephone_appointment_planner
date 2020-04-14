@@ -17,7 +17,7 @@ class BookableSlot < ApplicationRecord
   end
 
   def self.limit_by_organisation(from, to) # rubocop:disable MethodLength
-    tpas_start_at = BusinessDays.from_now(4).change(hour: 18, min: 30)
+    tpas_start_at = BusinessDays.from_now(4).change(hour: 18, min: 30).in_time_zone('London')
 
     joins(:guider)
       .where(
@@ -38,7 +38,7 @@ class BookableSlot < ApplicationRecord
   def self.next_valid_start_date(user = nil)
     return Time.zone.now.advance(hours: 1) if user && user.resource_manager?
 
-    BusinessDays.from_now(1).change(hour: 18, min: 30)
+    BusinessDays.from_now(1).change(hour: 18, min: 30).in_time_zone('London')
   end
 
   def self.find_available_slot(start_at, agent)
