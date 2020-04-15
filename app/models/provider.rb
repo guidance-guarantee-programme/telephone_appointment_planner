@@ -44,7 +44,7 @@ class Provider
   end
 
   def self.bank_holiday_observing_organisation_ids
-    (ALL_ORGANISATIONS - CAS).map(&:id)
+    ALL_ORGANISATIONS.map(&:id) - Array(CAS.id)
   end
 
   def self.all
