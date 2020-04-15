@@ -84,6 +84,5 @@ source 'https://rubygems.org' do
 
   group :staging, :production do
     gem 'lograge'
-    gem 'rails_12factor'
   end
 end
