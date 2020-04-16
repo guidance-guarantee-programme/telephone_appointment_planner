@@ -2,14 +2,14 @@
   <div class="col-md-6">
     <h2 class="h3">Customer details <small>fields marked with * are required</small></h2>
 
-    <%= f.text_field :first_name, class: 't-first-name', label: required_label(:first_name) %>
-    <%= f.text_field :last_name, class: 't-last-name', label: required_label(:last_name) %>
-    <%= f.email_field :email, class: 't-email' %>
-    <%= f.telephone_field :phone, class: 't-phone', label: required_label(:phone) %>
-    <%= f.telephone_field :mobile, class: 't-mobile',
+    <%= f.text_field :first_name, autocomplete: 'off', class: 't-first-name', label: required_label(:first_name) %>
+    <%= f.text_field :last_name, autocomplete: 'off', class: 't-last-name', label: required_label(:last_name) %>
+    <%= f.email_field :email, autocomplete: 'off', class: 't-email' %>
+    <%= f.telephone_field :phone, autocomplete: 'off', class: 't-phone', label: required_label(:phone) %>
+    <%= f.telephone_field :mobile, autocomplete: 'off', class: 't-mobile',
       help: 'Pension Wise will use this to send an SMS appointment reminder 7 days and additionally 48 hours before the appointment. Customers can cancel appointments via SMS response.'
     %>
-    <%= f.text_field :memorable_word, class: 't-memorable-word', placeholder: 'Pension Wise will use this each time the customer is called', label: required_label(:memorable_word) %>
+    <%= f.text_field :memorable_word, autocomplete: 'off', class: 't-memorable-word', placeholder: 'Pension Wise will use this each time the customer is called', label: required_label(:memorable_word) %>
     <%= render 'shared/date_of_birth_form_field', form: f if defined?(edit) && edit %>
 
     <h2 class="h3">Eligibility</h2>
@@ -47,16 +47,16 @@
     </div>
     <div class="form-group form-inline" id="postcode-lookup-results-container"></div>
 
-    <%= f.text_field :address_line_one, class: 't-address-line-one', label: 'Building and street' %>
-    <%= f.text_field :address_line_two, class: 't-address-line-two', use_label: false %>
-    <%= f.text_field :address_line_three, class: 't-address-line-three', use_label: false %>
-    <%= f.text_field :town, class: 't-town' %>
-    <%= f.text_field :county, class: 't-county', label: 'County (optional)' %>
-    <%= f.text_field :postcode, class: 't-postcode' %>
+    <%= f.text_field :address_line_one, autocomplete: 'off', class: 't-address-line-one', label: 'Building and street' %>
+    <%= f.text_field :address_line_two, autocomplete: 'off', class: 't-address-line-two', use_label: false %>
+    <%= f.text_field :address_line_three, autocomplete: 'off', class: 't-address-line-three', use_label: false %>
+    <%= f.text_field :town, autocomplete: 'off', class: 't-town' %>
+    <%= f.text_field :county, autocomplete: 'off', class: 't-county', label: 'County (optional)' %>
+    <%= f.text_field :postcode, autocomplete: 'off', class: 't-postcode' %>
 
     <h2 class="h3">Additional information and marketing</h2>
     <%= f.check_box :accessibility_requirements, class: 't-accessibility-requirements', label: 'Do you require an adjustment to access our service?' %>
-    <%= f.text_area :notes, class: 't-notes', rows: 6, placeholder: 'Is the customer hard of hearing? Is English their first language? etc.' %>
+    <%= f.text_area :notes, autocomplete: 'off', class: 't-notes', rows: 6, placeholder: 'Is the customer hard of hearing? Is English their first language? etc.' %>
     <div class="form-group">
       <%= f.select :where_you_heard,
             options_for_select(WhereYouHeard::OPTIONS.invert.to_a, @appointment.where_you_heard),
