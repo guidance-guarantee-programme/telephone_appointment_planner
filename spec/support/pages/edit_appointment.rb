@@ -3,6 +3,7 @@ module Pages
     set_url '/appointments/{id}/edit'
 
     element :flash_of_success,                      '.alert-success'
+    element :dc_pot_unsure_banner,                  '.t-dc-pot-unsure'
     element :appointment_was_imported_message,      '.t-appointment-was-imported-message'
     element :guider,                                '.t-guider'
     element :date_time,                             '.t-appointment-date-time'
