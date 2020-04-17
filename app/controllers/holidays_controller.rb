@@ -2,7 +2,7 @@ class HolidaysController < ApplicationController
   before_action :authorise_for_resource_managers!
 
   def merged
-    render json: Holiday.merged_for_calendar_view(current_user)
+    render json: Holiday.merged_for_calendar_view(starts, ends, current_user)
   end
 
   def index
