@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.feature 'Guider edits an appointment' do
   scenario 'Successfully editing an appointment' do
-    given_the_user_is_a_guider do
+    given_the_user_is_a_guider(organisation: :cas) do
       and_they_have_an_appointment
       when_they_attempt_to_edit_the_appointment
       then_they_see_the_existing_details
@@ -14,7 +14,7 @@ RSpec.feature 'Guider edits an appointment' do
   end
 
   def and_they_have_an_appointment
-    @appointment = create(:appointment, guider: current_user)
+    @appointment = create(:appointment, guider: current_user, dc_pot_confirmed: false)
   end
 
   def when_they_attempt_to_edit_the_appointment
@@ -39,6 +39,8 @@ RSpec.feature 'Guider edits an appointment' do
     expect(@page.notes.value).to eq(@appointment.notes)
     expect(@page.gdpr_consent_yes).to be_checked
     expect(@page.status.value).to eq(@appointment.status)
+
+    expect(@page).to have_dc_pot_unsure_banner
   end
 
   def when_they_modify_the_appointment

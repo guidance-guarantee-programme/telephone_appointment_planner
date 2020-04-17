@@ -4,6 +4,12 @@
   { title: "Edit appointment for #{@appointment.name}" }
 ) %>
 
+<% if display_dc_pot_unsure_banner?(@appointment) %>
+  <div class="alert alert-warning t-dc-pot-unsure" role="alert">
+    <p>The customer was <strong>unsure</strong> if they had a DC pension</p>
+  </div>
+<% end %>
+
 <% if @appointment.imported? %>
   <div class="alert alert-warning t-appointment-was-imported-message" role="alert">
     <p>
