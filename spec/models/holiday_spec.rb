@@ -45,7 +45,9 @@ RSpec.describe Holiday, type: :model do
   describe '#merge_for_calendar_view' do
     let(:resource_manager) { create(:resource_manager) }
     let(:results) do
-      subject.class.merged_for_calendar_view(resource_manager)
+      subject.class.merged_for_calendar_view(
+        Time.current.beginning_of_day, 5.days.from_now.end_of_day, resource_manager
+      )
     end
 
     it 'merges holidays for calendar view' do
@@ -78,12 +80,6 @@ RSpec.describe Holiday, type: :model do
     end
 
     it 'lists bank holidays' do
-      create(
-        :holiday,
-        title: 'some other holiday',
-        start_at: Date.new(2014, 12, 25).beginning_of_day,
-        end_at: Date.new(2014, 12, 25).end_of_day
-      )
       christmas = create(
         :bank_holiday,
         title: 'christmas',
@@ -91,9 +87,11 @@ RSpec.describe Holiday, type: :model do
         end_at: Date.new(2010, 12, 25).end_of_day
       )
 
-      expect(results.first.title).to eq christmas.title
-      expect(results.first.start_at.to_s).to eq christmas.start_at.to_s
-      expect(results.first.end_at.to_s).to eq christmas.end_at.to_s
+      travel_to '2010-12-24 00:00' do
+        expect(results.first.title).to eq christmas.title
+        expect(results.first.start_at.to_s).to eq christmas.start_at.to_s
+        expect(results.first.end_at.to_s).to eq christmas.end_at.to_s
+      end
     end
   end
 
