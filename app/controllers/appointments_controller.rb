@@ -27,11 +27,11 @@ class AppointmentsController < ApplicationController
     @appointment.end_at = nil
   end
 
-  def update_reschedule
+  def update_reschedule # rubocop:disable AbcSize
     @appointment = Appointment.find(params[:appointment_id])
     @appointment.assign_attributes(update_reschedule_params)
     @appointment.mark_rescheduled!
-    @appointment.allocate(via_slot: calendar_scheduling?)
+    @appointment.allocate(via_slot: calendar_scheduling?, agent: current_user)
 
     if @appointment.save
       Notifier.new(@appointment).call
