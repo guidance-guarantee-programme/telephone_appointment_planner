@@ -59,12 +59,12 @@ RSpec.describe BookableSlot, type: :model do
       it 'respects timezones eg DST/BST' do
         # DST
         travel_to '2020-01-01 13:00' do
-          expect(BookableSlot.next_valid_start_date(user)).to eq('2020-01-02 18:30 UTC'.to_time.in_time_zone('London'))
+          expect(BookableSlot.next_valid_start_date(user)).to eq('2020-01-02 21:00 UTC'.to_time.in_time_zone('London'))
         end
 
         # BST
         travel_to '2020-04-14 13:00' do
-          expect(BookableSlot.next_valid_start_date(user)).to eq('2020-04-15 18:30 UTC'.to_time.in_time_zone('London'))
+          expect(BookableSlot.next_valid_start_date(user)).to eq('2020-04-15 21:00 UTC'.to_time.in_time_zone('London'))
         end
       end
     end
