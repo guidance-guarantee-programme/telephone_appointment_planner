@@ -17,7 +17,7 @@ class BookableSlot < ApplicationRecord
   end
 
   def self.limit_by_organisation(from, to) # rubocop:disable MethodLength
-    tpas_start_at = BusinessDays.from_now(4).change(hour: 18, min: 30).in_time_zone('London')
+    tpas_start_at = BusinessDays.from_now(2).change(hour: 21, min: 0).in_time_zone('London')
 
     joins(:guider)
       .where(
