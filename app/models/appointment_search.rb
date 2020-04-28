@@ -10,9 +10,11 @@ class AppointmentSearch
   def search
     results = @query.present? ? search_with_query : search_without_query
     results = within_date_range(results)
-    results = processed_for_current_user(results)
+    results = for_current_user(results)
 
-    for_current_user(results)
+    return results if results.count == 1
+
+    processed_for_current_user(results)
   end
 
   private

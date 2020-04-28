@@ -24,6 +24,10 @@ RSpec.describe AppointmentSearch, type: :model do
 
         expect(results(nil, nil, nil, cas_agent, 'yes')).to eq([processed])
         expect(results(nil, nil, nil, cas_agent, 'no')).to eq([unprocessed])
+
+        # always return the only result by ID whether processed
+        expect(results(processed.to_param, nil, nil, cas_agent, 'no')).to eq([processed])
+        expect(results(processed.to_param, nil, nil, cas_agent, 'yes')).to eq([processed])
       end
     end
 
