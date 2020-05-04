@@ -6,6 +6,17 @@ RSpec.feature 'Roles' do
       given_the_user_is_an_administrator do
         when_they_try_to_view_the_allocations_calendar
         then_they_see_the_organisations
+        and_they_can_see_all_organisations
+      end
+    end
+  end
+
+  context 'CITA business analysts' do
+    scenario 'Can see the filtered organisation selection' do
+      given_the_user_is_a_business_analyst do
+        when_they_try_to_view_the_allocations_calendar
+        then_they_see_the_organisations
+        and_they_only_see_cita_organisations
       end
     end
   end
@@ -17,6 +28,16 @@ RSpec.feature 'Roles' do
         then_they_do_not_see_the_organisations
       end
     end
+  end
+
+  def and_they_only_see_cita_organisations
+    expect(@page).to have_no_text('TPAS')
+    expect(@page).to have_text('Waltham Forest')
+  end
+
+  def and_they_can_see_all_organisations
+    expect(@page).to have_text('TPAS')
+    expect(@page).to have_text('Waltham Forest')
   end
 
   def when_they_try_to_view_the_allocations_calendar

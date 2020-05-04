@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :authorise_for_resource_managers!
-  before_action :authorise_for_administrators!, only: :update
+  before_action :authorise_for_administrators_or_business_analysts!, only: :update
 
   def index
     @guiders = current_user.colleagues.guiders.includes(:groups)

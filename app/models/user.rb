@@ -7,6 +7,7 @@ class User < ApplicationRecord
     RESOURCE_MANAGER_PERMISSION = 'resource_manager'.freeze,
     GUIDER_PERMISSION           = 'guider'.freeze,
     AGENT_PERMISSION            = 'agent'.freeze,
+    BUSINESS_ANALYST_PERMISSION = 'business_analyst'.freeze,
     CONTACT_CENTRE_TEAM_LEADER_PERMISSION = 'contact_centre_team_leader'.freeze
   ].freeze
 

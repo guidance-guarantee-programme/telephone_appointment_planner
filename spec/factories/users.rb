@@ -14,6 +14,10 @@ FactoryBot.define do
       end
     end
 
+    factory :business_analyst, traits: [:tpas] do
+      permissions { [User::BUSINESS_ANALYST_PERMISSION, User::RESOURCE_MANAGER_PERMISSION] }
+    end
+
     factory :administrator, traits: [:tpas] do
       permissions { [User::ADMINISTRATOR_PERMISSION] }
     end

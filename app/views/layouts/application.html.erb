@@ -9,10 +9,10 @@
 <% end %>
 
 <% content_for :navbar_right do %>
-  <% if current_user.administrator? %>
+  <% if current_user.administrator? || current_user.business_analyst? %>
     <%= form_for current_user, html: { class: 'js-organisation-form' } do |f| %>
       <%= f.select :organisation_content_id,
-        options_for_select(organisation_options, current_user.organisation_content_id),
+        options_for_select(organisation_options(current_user), current_user.organisation_content_id),
         { include_blank: true },
         { class: 't-organisation js-organisation' }
       %>

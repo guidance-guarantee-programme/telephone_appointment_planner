@@ -3,8 +3,8 @@ module UserHelper
     !current_user.tpas? && !appointment.processed_at?
   end
 
-  def organisation_options
-    Provider.all.map do |organisation|
+  def organisation_options(current_user)
+    Provider.all(current_user).map do |organisation|
       [organisation.name, organisation.id]
     end
   end
