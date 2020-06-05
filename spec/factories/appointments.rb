@@ -111,6 +111,15 @@ FactoryBot.define do
         )
       end
     end
+
+    trait :casebook_guider do
+      # a randomly selected, valid production casebook guider ID
+      guider { create(:guider, organisation, casebook_guider_id: 90_939) }
+    end
+
+    trait :casebook_pushed do
+      casebook_appointment_id { 1 }
+    end
   end
 end
 # rubocop:enable Metrics/BlockLength

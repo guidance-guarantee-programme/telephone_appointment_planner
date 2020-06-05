@@ -202,6 +202,16 @@ class Appointment < ApplicationRecord
     schedule_type == User::PENSION_WISE_SCHEDULE_TYPE
   end
 
+  def process_casebook!(casebook_identifier)
+    without_auditing do
+      transaction do
+        update!(processed_at: Time.zone.now, casebook_appointment_id: casebook_identifier)
+
+        CasebookProcessedActivity.create!(appointment: self)
+      end
+    end
+  end
+
   def process!(by)
     return if processed_at?
 
@@ -350,6 +360,10 @@ class Appointment < ApplicationRecord
     guider&.tp?
   end
 
+  def casebook_pushable_guider?
+    guider&.casebook_guider_id?
+  end
+
   def agent_is_pension_wise_api?
     agent&.pension_wise_api?
   end
@@ -453,6 +467,10 @@ class Appointment < ApplicationRecord
       .where(schedule_type:)
       .order(:created_at)
       .find_by("REPLACE(mobile, ' ', '') = :number OR REPLACE(phone, ' ', '') = :number", number:)
+  end
+
+  def push_to_casebook?
+    pending? && casebook_pushable_guider? && !casebook_appointment_id? && !processed_at?
   end
 
   private
