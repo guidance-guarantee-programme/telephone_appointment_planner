@@ -45,5 +45,26 @@ FactoryBot.define do
     trait :processed do
       processed_at { Time.zone.now }
     end
+
+    trait :third_party_booking do
+      third_party_booking { true }
+      data_subject_name { 'Bob Bobson' }
+      data_subject_age { 51 }
+    end
+
+    trait :third_party_consent_form_requested do
+      printed_consent_form_required { true }
+
+      consent_address_line_one { '1 Some Street' }
+      consent_address_line_two { 'Some Place' }
+      consent_address_line_three { 'Somewhere' }
+      consent_town { 'Some Town' }
+      consent_county { 'Some County' }
+      consent_postcode { 'SS1 1SS' }
+    end
+
+    trait :data_subject_consented do
+      data_subject_consent_obtained { true }
+    end
   end
 end

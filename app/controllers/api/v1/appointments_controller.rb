@@ -15,7 +15,7 @@ module Api
       private
 
       def send_notifications(appointment)
-        AccessibilityAdjustmentNotificationsJob.perform_later(appointment) if appointment.accessibility_requirements?
+        AdjustmentNotificationsJob.perform_later(appointment) if appointment.adjustments?
         WebsiteAppointmentSlackPingerJob.perform_later
         CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::CONFIRMED_MESSAGE)
         AppointmentCreatedNotificationsJob.perform_later(appointment)

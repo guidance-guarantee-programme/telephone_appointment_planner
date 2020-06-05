@@ -12,6 +12,17 @@ module Pages
     element :date_of_birth_year,                    '.t-date-of-birth-year'
     element :memorable_word,                        '.t-memorable-word'
     element :accessibility_requirements,            '.t-accessibility-requirements'
+
+    element :third_party_booked,                    '.t-third-party-booked'
+    element :data_subject_name,                     '.t-data-subject-name'
+    element :data_subject_age,                      '.t-data-subject-age'
+    element :data_subject_consent_obtained,         '.t-data-subject-consent-obtained'
+    element :data_subject_consent_evidence,         '.t-data-subject-consent-evidence'
+    element :power_of_attorney,                     '.t-power-of-attorney'
+    element :power_of_attorney_evidence,            '.t-power-of-attorney-evidence'
+    element :printed_consent_form_required,         '.t-printed-consent-form-required'
+    element :printed_consent_form_postcode_lookup,  '.t-printed-consent-form-postcode-lookup'
+
     element :notes,                                 '.t-notes'
     element :gdpr_consent_yes,                      '.t-gdpr-consent-yes'
     element :gdpr_consent_no,                       '.t-gdpr-consent-no'

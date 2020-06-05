@@ -19,10 +19,10 @@ class AppointmentMailer < ApplicationMailer
     mail to: recipient, subject: 'Pension Wise Appointment Created'
   end
 
-  def accessibility_adjustment(appointment, recipient)
-    mailgun_headers('accessibility_adjustment', appointment.id)
+  def adjustment(appointment, recipient)
+    mailgun_headers('adjustment', appointment.id)
     @appointment = appointment
-    mail to: recipient, subject: 'Pension Wise Accessibility Adjustment'
+    mail to: recipient, subject: 'Pension Wise Appointment Adjustment'
   end
 
   def confirmation(appointment)

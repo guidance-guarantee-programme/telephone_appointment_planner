@@ -204,19 +204,84 @@ RSpec.describe Appointment, type: :model do
       build_stubbed(:appointment)
     end
 
-    context 'when specifying accessibility requirements' do
-      it 'requires additional notes to be specified' do
-        subject.accessibility_requirements = true
-        subject.notes = ''
-        expect(subject).to be_invalid
+    context 'when specifying adjustments requirements' do
+      context 'when third party booked' do
+        before do
+          subject.third_party_booking = true
+          subject.printed_consent_form_required = false
+          subject.data_subject_name = 'Bob Bobson'
+          subject.data_subject_age  = 51
+        end
 
-        subject.notes = 'They require some assistance'
-        expect(subject).to be_valid
+        it 'requires a data subject name' do
+          subject.data_subject_name = nil
 
-        # no notes required before cutoff date of 2019-09-25
-        subject.created_at = '2019-01-01'.to_date
-        subject.notes = ''
-        expect(subject).to be_valid
+          expect(subject).to be_invalid
+        end
+
+        it 'requires a data subject age' do
+          subject.data_subject_age = nil
+
+          expect(subject).to be_invalid
+        end
+
+        context 'when a printed consent form is requested' do
+          it 'requires an address' do
+            subject.printed_consent_form_required = true
+
+            expect(subject).to be_invalid
+
+            subject.consent_address_line_one = '13 Some Street'
+            subject.consent_town = 'Some Town'
+            subject.consent_postcode = 'RM1 1AA'
+
+            expect(subject).to be_valid
+          end
+        end
+
+        context 'when power of attorney is specified' do
+          it 'cannot also specify data subject consent' do
+            subject.power_of_attorney = true
+            subject.data_subject_consent_obtained = true
+
+            expect(subject).to be_invalid
+
+            subject.data_subject_consent_obtained = false
+
+            expect(subject).to be_valid
+          end
+        end
+
+        context 'when data subject consent is obtained' do
+          it 'cannot also specify power of attorney' do
+            subject.power_of_attorney = true
+            subject.data_subject_consent_obtained = true
+
+            expect(subject).to be_invalid
+
+            subject.power_of_attorney = false
+
+            expect(subject).to be_valid
+          end
+
+          it 'requires documentary evidence is attached'
+        end
+      end
+
+      context 'when accessibility adjustments' do
+        it 'requires additional notes to be specified' do
+          subject.accessibility_requirements = true
+          subject.notes = ''
+          expect(subject).to be_invalid
+
+          subject.notes = 'They require some assistance'
+          expect(subject).to be_valid
+
+          # no notes required before cutoff date of 2019-09-25
+          subject.created_at = '2019-01-01'.to_date
+          subject.notes = ''
+          expect(subject).to be_valid
+        end
       end
     end
 

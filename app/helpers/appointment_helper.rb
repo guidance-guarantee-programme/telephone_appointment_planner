@@ -9,6 +9,10 @@ module AppointmentHelper
     true
   end
 
+  def boolean_yes_no(value)
+    value ? 'Yes' : 'No'
+  end
+
   def display_dc_pot_unsure_banner?(appointment)
     return if appointment.dc_pot_confirmed?
     return if appointment.tp_guider? || appointment.tpas_guider?

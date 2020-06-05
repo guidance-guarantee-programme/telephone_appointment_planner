@@ -6,6 +6,7 @@ class DropForm
   include ActiveModel::Model
 
   IGNORED_MESSAGE_TYPES = %w(
+    adjustment
     accessibility_adjustment
     resource_manager_appointment_created
     resource_manager_appointment_cancelled

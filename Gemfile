@@ -84,6 +84,7 @@ source 'https://rubygems.org' do
   end
 
   group :staging, :production do
+    gem 'aws-sdk-s3', require: false
     gem 'lograge'
   end
 end

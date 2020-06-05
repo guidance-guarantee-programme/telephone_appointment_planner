@@ -1,9 +1,9 @@
-class AccessibilityAdjustmentNotificationsJob < ApplicationJob
+class AdjustmentNotificationsJob < ApplicationJob
   queue_as :default
 
   def perform(appointment)
     recipients_for(appointment).each do |email|
-      AppointmentMailer.accessibility_adjustment(appointment, email).deliver_later
+      AppointmentMailer.adjustment(appointment, email).deliver_later
     end
   end
 

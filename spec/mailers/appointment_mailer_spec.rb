@@ -6,7 +6,9 @@ RSpec.describe AppointmentMailer, type: :mailer do
       :appointment,
       email: 'test@example.org',
       start_at: DateTime.new(2016, 10, 23).in_time_zone,
-      memorable_word: 'mailertest'
+      memorable_word: 'mailertest',
+      accessibility_requirements: true,
+      third_party_booking: true
     )
   end
 
@@ -85,27 +87,31 @@ RSpec.describe AppointmentMailer, type: :mailer do
     end
   end
 
-  describe 'Accessibility Adjustment' do
-    subject(:mail) { described_class.accessibility_adjustment(appointment, resource_manager) }
+  describe 'Adjustment' do
+    subject(:mail) { described_class.adjustment(appointment, resource_manager) }
 
     let(:mailgun_headers) { JSON.parse(mail['X-Mailgun-Variables'].value) }
     let(:resource_manager) { 'supervisors@maps.org.uk' }
 
     it 'renders the headers' do
-      expect(mail.subject).to eq('Pension Wise Accessibility Adjustment')
+      expect(mail.subject).to eq('Pension Wise Appointment Adjustment')
       expect(mail.to).to eq(['supervisors@maps.org.uk'])
       expect(mail.from).to eq(['booking@pensionwise.gov.uk'])
     end
 
     it 'renders the mailgun specific headers' do
       expect(mailgun_headers).to include(
-        'message_type'   => 'accessibility_adjustment',
+        'message_type'   => 'adjustment',
         'appointment_id' => appointment.id
       )
     end
 
     it 'renders the body specifics' do
       expect(subject.body.encoded).to match(%q(http://localhost:3001/appointments/\d+/edit))
+      # include the accessibility adjustment
+      expect(subject.body.encoded).to include('they require help')
+      # include the third party booking disclaimer
+      expect(subject.body.encoded).to include('appointment on behalf')
     end
   end
 

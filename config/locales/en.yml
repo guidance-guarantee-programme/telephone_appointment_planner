@@ -49,4 +49,4 @@ en:
         appointment:
           attributes:
             notes:
-              blank: describe the accessibility adjustment the customer requires
+              blank: describe the accessibility adjustment or third party notes the customer requires

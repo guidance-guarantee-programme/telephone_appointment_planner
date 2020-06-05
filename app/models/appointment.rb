@@ -50,6 +50,9 @@ class Appointment < ApplicationRecord
 
   has_many :status_transitions
 
+  has_one_attached :power_of_attorney_evidence
+  has_one_attached :data_subject_consent_evidence
+
   attr_accessor :ad_hoc_start_at
 
   delegate :resource_managers, to: :guider
@@ -69,13 +72,18 @@ class Appointment < ApplicationRecord
   validates :memorable_word, presence: true
   validates :dc_pot_confirmed, inclusion: [true, false]
   validates :accessibility_requirements, inclusion: [true, false]
-  validates :notes, presence: true, if: :validate_accessibility_needs?
+  validates :third_party_booking, inclusion: [true, false]
+  validates :data_subject_name, presence: true, if: :third_party_booking?
+  validates :data_subject_age, numericality: { only_integer: true }, if: :third_party_booking?
+  validates :notes, presence: true, if: :validate_adjustment_needs?
   validates :type_of_appointment, inclusion: %w(standard 50-54)
   validates :where_you_heard, inclusion: WhereYouHeard.options_for_inclusion, on: :create, unless: :rebooked_from_id?
   validates :gdpr_consent, inclusion: ['yes', 'no', '']
   validates :status, presence: true
   validates :guider, presence: true
 
+  validate :validate_printed_consent_form_address
+  validate :validate_consent_type
   validate :not_within_grace_period, unless: :agent_is_resource_manager?
   validate :valid_within_booking_window
   validate :date_of_birth_valid
@@ -105,6 +113,10 @@ class Appointment < ApplicationRecord
   def mark_rescheduled!
     self.batch_processed_at = nil
     self.rescheduled_at     = Time.zone.now
+  end
+
+  def adjustments?
+    accessibility_requirements? || third_party_booking?
   end
 
   def address?
@@ -428,7 +440,7 @@ class Appointment < ApplicationRecord
     agent && !agent.pension_wise_api?
   end
 
-  def validate_accessibility_needs?
+  def validate_adjustment_needs?
     date = created_at || Time.zone.today
 
     accessibility_requirements? && date > ACCESSIBILITY_NOTES_CUTOFF
@@ -444,6 +456,27 @@ class Appointment < ApplicationRecord
     return if mobile.blank?
 
     errors.add(:mobile, 'must have at least 10 digits') if mobile.gsub(/[^\d]/, '').length < 10
+  end
+
+  def validate_printed_consent_form_address
+    return unless third_party_booking? && printed_consent_form_required?
+
+    errors.add(:printed_consent_form_required, 'must supply a valid address') unless printed_consent_address?
+  end
+
+  def validate_consent_type
+    return unless third_party_booking?
+
+    if power_of_attorney? && data_subject_consent_obtained? # rubocop:disable GuardClause
+      errors.add(
+        :third_party_booking,
+        "you may only specify 'data subject consent obtained', 'power of attorney' or neither"
+      )
+    end
+  end
+
+  def printed_consent_address?
+    [consent_address_line_one, consent_town, consent_postcode].all?(&:present?)
   end
 
   class << self

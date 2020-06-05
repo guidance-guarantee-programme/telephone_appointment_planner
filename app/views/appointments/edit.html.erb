@@ -4,6 +4,12 @@
   { title: "Edit appointment for #{@appointment.name}" }
 ) %>
 
+<% if @appointment.third_party_booking? %>
+  <div class="alert alert-warning t-third-party-booked" role="alert">
+    <p>The appointment was <strong>booked by a third party</strong> on behalf of the customer</p>
+  </div>
+<% end %>
+
 <% if display_dc_pot_unsure_banner?(@appointment) %>
   <div class="alert alert-warning t-dc-pot-unsure" role="alert">
     <p>The customer was <strong>unsure</strong> if they had a DC pension</p>

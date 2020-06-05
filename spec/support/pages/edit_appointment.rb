@@ -5,6 +5,7 @@ module Pages
     element :flash_of_success,                      '.alert-success'
     element :dc_pot_unsure_banner,                  '.t-dc-pot-unsure'
     element :appointment_was_imported_message,      '.t-appointment-was-imported-message'
+    element :third_party_booked_banner,             '.t-third-party-booked'
     element :guider,                                '.t-guider'
     element :date_time,                             '.t-appointment-date-time'
     element :created_date,                          '.t-created-date'
@@ -23,6 +24,18 @@ module Pages
     element :submit, '.t-save'
     element :rebook, '.t-rebook'
     element :process, '.t-process'
+
+    element :third_party_booked,                    '.t-third-party-booked'
+    element :data_subject_name,                     '.t-data-subject-name'
+    element :data_subject_age,                      '.t-data-subject-age'
+    element :data_subject_consent_obtained,         '.t-data-subject-consent-obtained'
+    element :data_subject_consent_evidence,         '.t-data-subject-consent-evidence'
+    element :consent_download,                      '.t-consent-download'
+    element :power_of_attorney,                     '.t-power-of-attorney'
+    element :power_of_attorney_evidence,            '.t-power-of-attorney-evidence'
+    element :power_of_attorney_download,            '.t-power-of-attorney-download'
+    element :printed_consent_form_required,         '.t-printed-consent-form-required'
+    element :printed_consent_form_postcode_lookup,  '.t-printed-consent-form-postcode-lookup'
 
     element :permissions_warning, '.t-permissions'
 

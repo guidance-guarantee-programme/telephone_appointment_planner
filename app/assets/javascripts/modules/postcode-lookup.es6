@@ -6,6 +6,11 @@
     start(el) {
       super.start(el);
       this.$apiKey = el.data('postcode-api-key');
+      this.$lookupInput = el.data('lookup-input');
+      this.$lookupButton = el.data('lookup-button');
+      this.$resultsContainer = el.data('results-container');
+      this.$outputFieldPrefix = el.data('output-field-prefix');
+
       this.initPostcodeLookup();
     }
 
@@ -17,16 +22,16 @@
       this.$el.setupPostcodeLookup({
         address_search: 20,
         api_key: this.$apiKey,
-        input: '#postcode-lookup-input',
-        button: '#postcode-lookup-button',
+        input: this.$lookupInput,
+        button: this.$lookupButton,
         dropdown_class: 'form-control input-md-3',
-        dropdown_container: '#postcode-lookup-results-container',
+        dropdown_container: this.$resultsContainer,
         output_fields: {
-          line_1: '#appointment_address_line_one',
-          line_2: '#appointment_address_line_two',
-          line_3: '#appointment_address_line_three',
-          post_town: '#appointment_town',
-          postcode: '#appointment_postcode'
+          line_1: `${this.$outputFieldPrefix}_address_line_one`,
+          line_2: `${this.$outputFieldPrefix}_address_line_two`,
+          line_3: `${this.$outputFieldPrefix}_address_line_three`,
+          post_town: `${this.$outputFieldPrefix}_town`,
+          postcode: `${this.$outputFieldPrefix}_postcode`
         }
       });
     }
