@@ -141,6 +141,44 @@ RSpec.describe Appointment, type: :model do
     end
   end
 
+  describe '#casebook_process!' do
+    it 'processes the appointment and logs an activity' do
+      appointment = create(:appointment)
+
+      appointment.process_casebook!('123')
+
+      expect(appointment).to be_processed_at
+      expect(appointment.casebook_appointment_id).to eq(123)
+      expect(appointment.activities.first).to be_an_instance_of(CasebookProcessedActivity)
+    end
+  end
+
+  describe '#push_to_casebook?' do
+    context 'when it is pushable' do
+      it 'returns truthily' do
+        # regular pushable guider, pending, unprocessed and unpushed
+        appointment = build_stubbed(:appointment, :casebook_guider)
+        expect(appointment).to be_push_to_casebook
+
+        # regular pushable guider, unpushe, unprocessed but not pending
+        appointment = build_stubbed(:appointment, :casebook_guider, status: :complete)
+        expect(appointment).not_to be_push_to_casebook
+
+        # not a pushable guider, pending, unprocessed and unpushed
+        appointment = build_stubbed(:appointment)
+        expect(appointment).not_to be_push_to_casebook
+
+        # already pushed to casebook, pending and unprocessed
+        appointment = build_stubbed(:appointment, :casebook_guider, :casebook_pushed)
+        expect(appointment).not_to be_push_to_casebook
+
+        # marked as processed, unpushed, pending, pushable guider
+        appointment = build_stubbed(:appointment, :casebook_guider, :processed)
+        expect(appointment).not_to be_push_to_casebook
+      end
+    end
+  end
+
   describe '#cancel!' do
     it 'does not audit any changes' do
       appointment = create(:appointment)

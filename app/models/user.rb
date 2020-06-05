@@ -74,7 +74,7 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
   end
 
   def cita?
-    Provider.lloyds_providers.map(&:id).include?(organisation_content_id)
+    Provider.find(organisation_content_id)&.cita?
   end
 
   def tp_agent?
