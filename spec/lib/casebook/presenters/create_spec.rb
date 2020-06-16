@@ -12,7 +12,7 @@ RSpec.describe Casebook::Presenters::Create, '#to_h' do
       date_of_birth: '1945-01-01',
       mobile_phone: '07715 930 444',
       email: 'someone@example.com',
-      notes: 'This customer is very nice.',
+      notes: 'Pension Wise online booking. This customer is very nice.',
       user_id: appointment.guider.casebook_guider_id,
       channel: 'telephone',
       location_id: 26_089
