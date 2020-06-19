@@ -21,6 +21,7 @@ source 'https://rubygems.org' do
   gem 'active_link_to'
   gem 'active_model_serializers'
   gem 'audited'
+  gem 'azure-storage-blob'
   gem 'bh'
   gem 'bootsnap'
   gem 'bootstrap-kaminari-views'
