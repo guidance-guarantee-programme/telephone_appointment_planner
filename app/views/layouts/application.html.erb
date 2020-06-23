@@ -20,6 +20,16 @@
   <% end %>
 <% end %>
 
+<% content_for :content do %>
+  <p class="alert alert-warning">
+    We are experiencing an issue with outbound transactional emails (eg
+    confirmations.) All emails will be sent once it is resolved. There is no
+    impact on summary document emails.
+  </p>
+
+  <%= yield %>
+<% end %>
+
 <% content_for :body_end do %>
   <div data-module="activity-resolve"></div>
   <script>
