@@ -9,6 +9,10 @@ class DropActivity < Activity
     end
   end
 
+  def self.from_invalid_email(appointment)
+    from('undeliverable', 'The email is invalid', 'booking_created', appointment)
+  end
+
   def self.owner(appointment, message_type)
     return appointment.agent if message_type == 'booking_created'
   end

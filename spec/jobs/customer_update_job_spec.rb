@@ -11,4 +11,16 @@ RSpec.describe CustomerUpdateJob, '#perform' do
     assert_no_enqueued_jobs
     expect(CustomerUpdateActivity.count).to be_zero
   end
+
+  context 'when the email is janky' do
+    it 'logs an activity' do
+      appointment = create(:appointment)
+
+      allow(AppointmentMailer).to receive(:updated).and_raise(Net::SMTPSyntaxError)
+
+      described_class.new.perform(appointment, CustomerUpdateActivity::UPDATED_MESSAGE)
+
+      expect(appointment.activities.first).to be_a(DropActivity)
+    end
+  end
 end

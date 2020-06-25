@@ -7,6 +7,8 @@ class CustomerUpdateJob < ActiveJob::Base
     send_email(appointment, message)
 
     CustomerUpdateActivity.from(appointment, message)
+  rescue Net::SMTPSyntaxError
+    DropActivity.from_invalid_email(appointment)
   end
 
   private
