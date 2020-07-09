@@ -72,6 +72,17 @@ GEM
       activerecord (>= 4.2, < 6.1)
     autoprefixer-rails (9.5.0)
       execjs
+    azure-core (0.1.15)
+      faraday (~> 0.9)
+      faraday_middleware (~> 0.10)
+      nokogiri (~> 1.6)
+    azure-storage-blob (1.1.0)
+      azure-core (~> 0.1.13)
+      azure-storage-common (~> 1.0)
+      nokogiri (~> 1.6, >= 1.6.8)
+    azure-storage-common (1.1.0)
+      azure-core (~> 0.1.13)
+      nokogiri (~> 1.6, >= 1.6.8)
     babel-source (5.8.35)
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
@@ -466,6 +477,7 @@ DEPENDENCIES
   active_link_to!
   active_model_serializers!
   audited!
+  azure-storage-blob!
   bh!
   bootsnap!
   bootstrap-kaminari-views!
