@@ -16,6 +16,7 @@ module Api
       attr_accessor :accessibility_requirements
       attr_accessor :notes
       attr_accessor :agent
+      attr_writer   :smarter_signposted
 
       attr_reader :model
 
@@ -31,6 +32,10 @@ module Api
       end
 
       delegate :errors, :accessibility_requirements?, to: :model
+
+      def smarter_signposted
+        @smarter_signposted || false
+      end
 
       private
 
@@ -49,7 +54,8 @@ module Api
           accessibility_requirements: accessibility_requirements,
           notes: notes,
           pension_provider: 'n/a',
-          agent: agent
+          agent: agent,
+          smarter_signposted: smarter_signposted
         }
       end
     end

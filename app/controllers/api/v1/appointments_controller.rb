@@ -34,7 +34,8 @@ module Api
           :where_you_heard,
           :gdpr_consent,
           :accessibility_requirements,
-          :notes
+          :notes,
+          :smarter_signposted
         ).merge(agent: current_user)
       end
     end
