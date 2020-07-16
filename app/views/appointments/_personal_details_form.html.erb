@@ -64,6 +64,10 @@
       %>
     </div>
 
+    <% if current_user.tpas? || current_user.administrator? %>
+      <%= f.check_box :smarter_signposted, class: 't-smarter-signposted', label: 'Smarter signposting referral?' %>
+    <% end %>
+
     <%=
       f.select(
         :status,

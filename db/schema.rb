@@ -63,7 +63,7 @@ ActiveRecord::Schema.define(version: 2020_07_16_092614) do
     t.string "pension_provider", default: "", null: false
     t.boolean "accessibility_requirements", default: false, null: false
     t.datetime "processed_at"
-    t.boolean "smarter_signposted", default: false, null: false
+    t.boolean "smarter_signposted", default: false
     t.index ["start_at"], name: "index_appointments_on_start_at"
   end
 
