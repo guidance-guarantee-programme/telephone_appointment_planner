@@ -46,6 +46,10 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
     end
   end
 
+  def casebook_pushable?
+    casebook_guider_id? && casebook_location_id?
+  end
+
   def resource_managers
     colleagues
       .where('permissions @> ?', %(["#{RESOURCE_MANAGER_PERMISSION}"]))
