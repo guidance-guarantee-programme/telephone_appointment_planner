@@ -114,7 +114,14 @@ FactoryBot.define do
 
     trait :casebook_guider do
       # a randomly selected, valid production casebook guider ID
-      guider { create(:guider, organisation, casebook_guider_id: 90_939) }
+      guider do
+        create(
+          :guider,
+          organisation,
+          casebook_guider_id: 90_939,
+          casebook_location_id: 26_089
+        )
+      end
     end
 
     trait :casebook_pushed do

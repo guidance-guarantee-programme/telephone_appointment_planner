@@ -361,7 +361,7 @@ class Appointment < ApplicationRecord
   end
 
   def casebook_pushable_guider?
-    guider&.casebook_guider_id?
+    guider && guider.casebook_pushable?
   end
 
   def agent_is_pension_wise_api?

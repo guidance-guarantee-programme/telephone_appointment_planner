@@ -19,17 +19,13 @@ module Casebook
               notes: "Pension Wise online booking. #{appointment.notes}",
               user_id: appointment.guider.casebook_guider_id,
               channel: 'telephone',
-              location_id: nominated_casebook_location_id
+              location_id: appointment.guider.casebook_location_id
             }
           }
         }
       end
 
       private
-
-      def nominated_casebook_location_id
-        ENV.fetch('CASEBOOK_LOCATION_ID') { 26_089 }
-      end
 
       def starts_at
         return appointment.start_at if gmt?
