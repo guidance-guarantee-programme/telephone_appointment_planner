@@ -141,7 +141,17 @@ RSpec.describe Appointment, type: :model do
     end
   end
 
-  describe '#casebook_process!' do
+  describe '#process_casebook_cancellation!' do
+    it 'creates the cancelled activity for auditing' do
+      appointment = create(:appointment)
+
+      appointment.process_casebook_cancellation!
+
+      expect(appointment.activities.first).to be_an_instance_of(CasebookCancelledActivity)
+    end
+  end
+
+  describe '#process_casebook!' do
     it 'processes the appointment and logs an activity' do
       appointment = create(:appointment)
 
@@ -180,13 +190,22 @@ RSpec.describe Appointment, type: :model do
   end
 
   describe '#cancel!' do
+    include ActiveJob::TestHelper
+
+    let(:appointment) { create(:appointment) }
+
     it 'does not audit any changes' do
-      appointment = create(:appointment)
       appointment.audits.destroy_all
 
       appointment.cancel!
 
       expect(appointment.reload.audits).to be_empty
+    end
+
+    it 'enqueues a casebook cancellation' do
+      assert_enqueued_jobs(1, only: CancelCasebookAppointmentJob) do
+        appointment.cancel!
+      end
     end
   end
 

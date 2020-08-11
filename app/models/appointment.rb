@@ -204,6 +204,10 @@ class Appointment < ApplicationRecord
     end
   end
 
+  def process_casebook_cancellation!
+    CasebookCancelledActivity.create!(appointment: self)
+  end
+
   def process!(by)
     return if processed_at?
 
@@ -373,6 +377,7 @@ class Appointment < ApplicationRecord
       transaction do
         update!(status: :cancelled_by_customer_sms)
 
+        CancelCasebookAppointmentJob.perform_later(self)
         SmsCancellationActivity.from(self)
       end
     end

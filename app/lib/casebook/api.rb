@@ -11,10 +11,16 @@ module Casebook
       raise ApiError, e.description
     end
 
+    def cancel(appointment)
+      token.delete("/api/v1/appointments/#{appointment.casebook_appointment_id}")
+    rescue OAuth2::Error => e
+      raise ApiError, e.description
+    end
+
     private
 
     def token
-      @token ||= client.client_credentials.get_token(scope: 'appointments:create')
+      @token ||= client.client_credentials.get_token(scope: 'appointments:create appointments:destroy')
     end
 
     def client
