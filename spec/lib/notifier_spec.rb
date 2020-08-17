@@ -127,10 +127,11 @@ RSpec.describe Notifier, '#call' do
   end
 
   context 'when the appointment is rescheduled' do
-    it 'enqueues the rescheduled notifications' do
-      new_guider = create(:guider)
-      appointment.update_attribute(:guider_id, new_guider.id)
+    let(:guider) { create(:guider) }
 
+    before { appointment.update_attribute(:guider_id, guider.id) }
+
+    it 'enqueues the rescheduled notifications' do
       expect(AppointmentRescheduledNotificationsJob).to receive(:perform_later).with(appointment)
 
       subject.call
@@ -144,6 +145,12 @@ RSpec.describe Notifier, '#call' do
 
         subject.call
       end
+    end
+
+    it 'enqueues a casebook appointment changed job' do
+      expect(RescheduleCasebookAppointmentJob).to receive(:perform_later).with(appointment)
+
+      subject.call
     end
   end
 

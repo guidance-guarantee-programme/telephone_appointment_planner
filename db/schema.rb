@@ -246,6 +246,7 @@ ActiveRecord::Schema.define(version: 2024_03_26_090221) do
     t.boolean "active", default: true, null: false
     t.string "schedule_type", default: "pension_wise", null: false
     t.integer "casebook_guider_id"
+    t.integer "casebook_location_id"
     t.index ["organisation_content_id"], name: "index_users_on_organisation_content_id"
     t.index ["permissions"], name: "index_users_on_permissions", using: :gin
     t.index ["schedule_type"], name: "index_users_on_schedule_type"
