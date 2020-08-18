@@ -1,10 +1,4 @@
-class CancelCasebookAppointmentJob < ApplicationJob
-  queue_as :default
-
-  discard_on Casebook::ApiError do |_, error|
-    Bugsnag.notify(error)
-  end
-
+class CancelCasebookAppointmentJob < CasebookJob
   def perform(appointment)
     return unless appointment.casebook_appointment_id? && appointment.cancelled?
 

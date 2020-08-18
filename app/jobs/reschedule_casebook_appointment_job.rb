@@ -1,10 +1,4 @@
-class RescheduleCasebookAppointmentJob < ApplicationJob
-  discard_on Casebook::ApiError do |_, error|
-    Bugsnag.notify(error)
-  end
-
-  queue_as :default
-
+class RescheduleCasebookAppointmentJob < CasebookJob
   def perform(appointment)
     return unless appointment.casebook_pushable_guider?
 
