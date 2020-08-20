@@ -127,6 +127,10 @@ FactoryBot.define do
     trait :casebook_pushed do
       casebook_appointment_id { 1 }
     end
+
+    trait :casebook_rebooked do
+      rebooked_from { create(:appointment, :casebook_guider, :casebook_pushed) }
+    end
   end
 end
 # rubocop:enable Metrics/BlockLength
