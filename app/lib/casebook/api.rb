@@ -12,7 +12,9 @@ module Casebook
     end
 
     def cancel(appointment)
-      token.delete("/api/v1/appointments/#{appointment.casebook_appointment_id}")
+      payload = Presenters::Cancel.new(appointment).to_h
+
+      token.delete("/api/v1/appointments/#{appointment.casebook_appointment_id}", params: payload)
     rescue OAuth2::Error => e
       raise ApiError, e.description
     end
