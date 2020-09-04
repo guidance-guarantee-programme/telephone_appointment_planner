@@ -26,6 +26,12 @@ class Appointment < ApplicationRecord
     where_you_heard
     gdpr_consent
     bsl_video
+    third_party_booking
+    data_subject_name
+    data_subject_age
+    power_of_attorney
+    data_subject_consent_obtained
+    printed_consent_form_required
   ).freeze
 
   enum status: %i(
