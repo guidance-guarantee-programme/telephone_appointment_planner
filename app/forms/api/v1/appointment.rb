@@ -16,6 +16,7 @@ module Api
       attr_accessor :accessibility_requirements
       attr_accessor :notes
       attr_accessor :agent
+      attr_accessor :smarter_signposted
 
       attr_reader :model
 
@@ -49,7 +50,8 @@ module Api
           accessibility_requirements: accessibility_requirements,
           notes: notes,
           pension_provider: 'n/a',
-          agent: agent
+          agent: agent,
+          smarter_signposted: smarter_signposted
         }
       end
     end

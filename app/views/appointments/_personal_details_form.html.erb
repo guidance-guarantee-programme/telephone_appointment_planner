@@ -55,6 +55,10 @@
     <%= f.text_field :postcode, autocomplete: 'off', class: 't-postcode' %>
 
     <h2 class="h3">Additional information and marketing</h2>
+    <% if current_user.tpas? || current_user.administrator? %>
+      <%= f.check_box :smarter_signposted, class: 't-smarter-signposted', label: 'Smarter signposting referral?' %>
+    <% end %>
+
     <%= f.check_box :accessibility_requirements, class: 't-accessibility-requirements', label: 'Do you require an adjustment to access our service?' %>
     <%= f.text_area :notes, autocomplete: 'off', class: 't-notes', rows: 6, placeholder: 'Is the customer hard of hearing? Is English their first language? etc.' %>
     <div class="form-group">

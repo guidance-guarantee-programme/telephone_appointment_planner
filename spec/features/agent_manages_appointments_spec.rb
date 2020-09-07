@@ -13,10 +13,22 @@ RSpec.feature 'Agent manages appointments' do
     end
   end
 
+  scenario 'TPAS individual creates a smarter signposted appointment' do
+    given_the_user_is_an_agent(organisation: :tpas) do
+      and_there_is_a_guider_with_available_slots
+      when_they_want_to_book_an_appointment
+      and_they_fill_in_their_appointment_details(smarter_signposted: true)
+      then_they_see_a_preview_of_the_appointment(smarter_signposted: true)
+      when_they_accept_the_appointment_preview
+      then_that_appointment_is_created(smarter_signposted: true)
+    end
+  end
+
   scenario 'Agent creates appointments' do
     given_the_user_is_an_agent do
       and_there_is_a_guider_with_available_slots
       when_they_want_to_book_an_appointment
+      then_they_do_not_see_the_smarter_signposting_option
       and_they_fill_in_their_appointment_details
       then_they_see_a_preview_of_the_appointment
       when_they_accept_the_appointment_preview
@@ -149,6 +161,10 @@ RSpec.feature 'Agent manages appointments' do
     end
   end
 
+  def then_they_do_not_see_the_smarter_signposting_option
+    expect(@page).to have_no_smarter_signposted
+  end
+
   def and_they_enter_a_standard_date_of_birth
     @page.date_of_birth_day.set '23'
     @page.date_of_birth_month.set '10'
@@ -201,15 +217,16 @@ RSpec.feature 'Agent manages appointments' do
     @page.address_line_one.set(options[:address_line_one]) if options[:address_line_one]
     @page.town.set(options[:town]) if options[:town]
     @page.postcode.set(options[:postcode]) if options[:postcode]
+    @page.smarter_signposted.set(options[:smarter_signposted]) if options[:smarter_signposted]
 
     @page.preview_appointment.click
   end
 
-  def and_they_fill_in_their_appointment_details
-    fill_in_appointment_details
+  def and_they_fill_in_their_appointment_details(options = {})
+    fill_in_appointment_details(options)
   end
 
-  def then_they_see_a_preview_of_the_appointment
+  def then_they_see_a_preview_of_the_appointment(smarter_signposted: nil)
     @page = Pages::PreviewAppointment.new
     expect(@page).to be_displayed
 
@@ -225,6 +242,7 @@ RSpec.feature 'Agent manages appointments' do
     expect(@page.preview).to have_content 'something'
     expect(@page.preview).to have_content 'Customer research consent Yes'
     expect(@page.preview).to have_content 'Standard'
+    expect(@page.preview).to have_content 'Smarter signposted referral? Yes' if smarter_signposted
   end
 
   def and_they_fill_in_their_appointment_details_without_an_email
@@ -236,7 +254,7 @@ RSpec.feature 'Agent manages appointments' do
     )
   end
 
-  def then_that_appointment_is_created
+  def then_that_appointment_is_created(smarter_signposted: nil)
     @guider.reload
     expect(Appointment.count).to eq 1
     appointment = Appointment.first
@@ -258,6 +276,7 @@ RSpec.feature 'Agent manages appointments' do
     expect(appointment.type_of_appointment).to eq('standard')
     expect(appointment.where_you_heard).to eq(17)
     expect(appointment).to be_accessibility_requirements
+    expect(appointment).to be_smarter_signposted if smarter_signposted
   end
 
   def and_the_customer_gets_an_email_confirmation

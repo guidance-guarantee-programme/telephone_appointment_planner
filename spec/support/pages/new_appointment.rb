@@ -28,6 +28,7 @@ module Pages
     element :address_line_one, '.t-address-line-one'
     element :town, '.t-town'
     element :postcode, '.t-postcode'
+    element :smarter_signposted, '.t-smarter-signposted'
 
     element :availability_calendar_off, '.t-availability-calendar-off'
     element :availability_calendar_on, '.t-availability-calendar-on'
