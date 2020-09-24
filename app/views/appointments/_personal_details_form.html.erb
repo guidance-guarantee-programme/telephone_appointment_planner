@@ -55,6 +55,8 @@
     <%= f.text_field :postcode, autocomplete: 'off', class: 't-postcode' %>
 
     <h2 class="h3">Additional information and marketing</h2>
+    <%= f.check_box :bsl_video, class: 't-bsl-video', label: 'BSL video appointment?' %>
+
     <% if current_user.tpas? || current_user.administrator? %>
       <%= f.check_box :smarter_signposted, class: 't-smarter-signposted', label: 'Smarter signposting referral?' %>
     <% end %>

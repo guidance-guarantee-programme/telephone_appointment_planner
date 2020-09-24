@@ -218,6 +218,7 @@ RSpec.feature 'Agent manages appointments' do
     @page.town.set(options[:town]) if options[:town]
     @page.postcode.set(options[:postcode]) if options[:postcode]
     @page.smarter_signposted.set(options[:smarter_signposted]) if options[:smarter_signposted]
+    @page.bsl_video.set(true)
 
     @page.preview_appointment.click
   end
@@ -277,6 +278,7 @@ RSpec.feature 'Agent manages appointments' do
     expect(appointment.where_you_heard).to eq(17)
     expect(appointment).to be_accessibility_requirements
     expect(appointment).to be_smarter_signposted if smarter_signposted
+    expect(appointment).to be_bsl_video
   end
 
   def and_the_customer_gets_an_email_confirmation

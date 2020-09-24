@@ -29,6 +29,7 @@ module Pages
     element :town, '.t-town'
     element :postcode, '.t-postcode'
     element :smarter_signposted, '.t-smarter-signposted'
+    element :bsl_video, '.t-bsl-video'
 
     element :availability_calendar_off, '.t-availability-calendar-off'
     element :availability_calendar_on, '.t-availability-calendar-on'
