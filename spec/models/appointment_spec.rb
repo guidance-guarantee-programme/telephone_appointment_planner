@@ -236,6 +236,10 @@ RSpec.describe Appointment, type: :model do
             subject.consent_postcode = 'RM1 1AA'
 
             expect(subject).to be_valid
+
+            subject.power_of_attorney = true
+
+            expect(subject).to be_invalid
           end
         end
 
@@ -249,6 +253,18 @@ RSpec.describe Appointment, type: :model do
             subject.data_subject_consent_obtained = false
 
             expect(subject).to be_valid
+          end
+
+          it 'cannot also specify consent required' do
+            subject.power_of_attorney = true
+            subject.printed_consent_form_required = true
+
+            expect(subject).to be_invalid
+
+            subject.printed_consent_form_required = false
+            subject.email_consent_form_required = true
+
+            expect(subject).to be_invalid
           end
         end
 

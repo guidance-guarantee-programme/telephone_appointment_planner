@@ -93,6 +93,7 @@ class Appointment < ApplicationRecord
 
   validate :validate_printed_consent_form_address
   validate :validate_consent_type
+  validate :validate_power_of_attorney_or_consent
   validate :not_within_grace_period, unless: :agent_is_resource_manager?
   validate :valid_within_booking_window
   validate :date_of_birth_valid
@@ -471,6 +472,18 @@ class Appointment < ApplicationRecord
     return unless third_party_booking? && printed_consent_form_required?
 
     errors.add(:printed_consent_form_required, 'must supply a valid address') unless printed_consent_address?
+  end
+
+  def validate_power_of_attorney_or_consent
+    return unless third_party_booking?
+
+    if printed_consent_form_required? && power_of_attorney?
+      errors.add(:printed_consent_form_required, 'cannot be checked when power of attorney is specified')
+    end
+
+    if email_consent_form_required? && power_of_attorney? # rubocop:disable GuardClause
+      errors.add(:email_consent_form_required, 'cannot be checked when power of attorney is specified')
+    end
   end
 
   def validate_consent_type
