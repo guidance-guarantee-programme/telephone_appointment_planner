@@ -15,7 +15,7 @@ class AppointmentCreatedNotificationsJob < ApplicationJob
   private
 
   def ignore?(appointment)
-    appointment.tpas_guider? || appointment.cas_guider? || appointment.ni_guider?
+    appointment.tpas_guider? || appointment.cas_guider?
   end
 
   def recipients_for(appointment)
