@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   include GDS::SSO::User
 
+  RESOURCE_MANAGER_EXCEPTIONS = %w(6f338640-808d-0133-2100-36ff48a3bf62).freeze
+
   ALL_PERMISSIONS = [
     ADMINISTRATOR_PERMISSION    = 'administrator'.freeze,
     PENSION_WISE_API_PERMISSION = 'pension_wise_api'.freeze,
@@ -26,6 +28,7 @@ class User < ApplicationRecord
   scope :guiders, -> { where('permissions @> ?', %(["#{GUIDER_PERMISSION}"])) }
   scope :active, -> { where(active: true) }
   scope :enabled, -> { where(disabled: false) }
+  scope :unexcluded, -> { where.not(uid: RESOURCE_MANAGER_EXCEPTIONS) }
 
   ALL_PERMISSIONS.each do |permission|
     define_method "#{permission}?" do
@@ -38,6 +41,7 @@ class User < ApplicationRecord
       .where('permissions @> ?', %(["#{RESOURCE_MANAGER_PERMISSION}"]))
       .enabled
       .active
+      .unexcluded
   end
 
   def tp?
