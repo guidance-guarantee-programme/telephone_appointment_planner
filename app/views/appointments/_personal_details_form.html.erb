@@ -71,9 +71,9 @@
 
     <%= f.check_box :accessibility_requirements, class: 't-accessibility-requirements', label: 'Do you require an adjustment to access our service?' %>
 
-    <%= f.check_box :third_party_booking, class: 't-third-party-booked', label: 'Booked by a third party?', data: { target: 'consent' } %>
+    <%= f.check_box :third_party_booking, class: 't-third-party-booked', label: 'Third party appointment', data: { target: 'consent' } %>
     <div class="col-md-offset-1" id="consent">
-      <p><strong>This appointment will be delivered on behalf of the data subject:</strong></p>
+      <p><strong>This appointment will be delivered to a third party on behalf of the data subject:</strong></p>
       <div class="form-group">
         <%= f.text_field :data_subject_name, autocomplete: false, class: 't-data-subject-name', label: required_label('Name'), placeholder: 'Name' %>
         <%= f.text_field :data_subject_age, autocomplete: false, class: 't-data-subject-age', label: required_label('Age'), placeholder: 'Age' %>
