@@ -173,6 +173,7 @@ class AppointmentsController < ApplicationController
       :data_subject_name,
       :data_subject_age,
       :data_subject_consent_obtained,
+      :email_consent_form_required,
       :printed_consent_form_required,
       :power_of_attorney,
       :consent_address_line_one,

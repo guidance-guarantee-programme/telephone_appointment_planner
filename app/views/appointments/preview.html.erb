@@ -46,6 +46,7 @@
   <%= f.hidden_field :data_subject_age %>
   <%= f.hidden_field :data_subject_consent_obtained %>
   <%= f.hidden_field :printed_consent_form_required %>
+  <%= f.hidden_field :email_consent_form_required %>
   <%= f.hidden_field :power_of_attorney %>
   <%= f.hidden_field :consent_address_line_one %>
   <%= f.hidden_field :consent_address_line_two %>
@@ -121,6 +122,10 @@
             <tr>
               <td class="active"><b>Data subject age</b></td>
               <td><%= @appointment.data_subject_age %></td>
+            </tr>
+            <tr>
+              <td class="active"><b>Email consent form required</b></td>
+              <td><%= boolean_yes_no(@appointment.email_consent_form_required) %></td>
             </tr>
             <tr>
               <td class="active"><b>Printed consent form required</b></td>

@@ -34,6 +34,7 @@ class Appointment < ApplicationRecord
     printed_consent_form_required
     data_subject_consent_evidence
     power_of_attorney_evidence
+    email_consent_form_required
   ).freeze
 
   enum status: %i(

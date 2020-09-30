@@ -109,6 +109,7 @@
         <% end %>
       </div>
 
+      <%= f.check_box :email_consent_form_required, class: 't-email-consent-form-required' %>
       <%= f.check_box :printed_consent_form_required, class: 't-printed-consent-form-required', data: { target: 'printed-consent' } %>
       <div class="col-md-offset-1" id="printed-consent">
         <h2 class="h4" data-module="postcode-lookup"
