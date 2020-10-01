@@ -21,3 +21,6 @@ node_modules
 
 # Coverage reports
 coverage
+
+# active storage
+storage
