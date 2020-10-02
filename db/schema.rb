@@ -84,9 +84,9 @@ ActiveRecord::Schema.define(version: 2020_09_30_134433) do
     t.string "pension_provider", default: "", null: false
     t.boolean "accessibility_requirements", default: false, null: false
     t.datetime "processed_at"
-    t.boolean "third_party_booking", default: false, null: false
     t.boolean "smarter_signposted", default: false
     t.boolean "bsl_video", default: false, null: false
+    t.boolean "third_party_booking", default: false, null: false
     t.string "data_subject_name", default: "", null: false
     t.integer "data_subject_age"
     t.boolean "data_subject_consent_obtained", default: false, null: false
@@ -208,6 +208,8 @@ ActiveRecord::Schema.define(version: 2020_09_30_134433) do
     t.jsonb "permissions", default: "[]"
     t.integer "position", default: 0, null: false
     t.boolean "active", default: true, null: false
+    t.integer "casebook_guider_id"
+    t.integer "casebook_location_id"
     t.index ["permissions"], name: "index_users_on_permissions", using: :gin
   end
 
