@@ -91,6 +91,8 @@
           <% end %>
 
           <%= f.file_field :data_subject_consent_evidence, class: 't-data-subject-consent-evidence' %>
+        <% elsif @appointment.rebooked_from_id? && @appointment.rebooked_from.data_subject_consent_evidence.attached? %>
+          <span class="text-info t-copied-evidence">The previously attached evidence will be copied to the new appointment.</span>
         <% end %>
       </div>
 
@@ -106,6 +108,8 @@
           <% end %>
 
           <%= f.file_field :power_of_attorney_evidence %>
+        <% elsif @appointment.rebooked_from_id? && @appointment.rebooked_from.power_of_attorney_evidence.attached? %>
+          <span class="text-info">The previously attached evidence will be copied to the new appointment.</span>
         <% end %>
       </div>
 

@@ -269,6 +269,16 @@ class Appointment < ApplicationRecord
     gdpr_consent == '' ? 'No response' : gdpr_consent.titleize
   end
 
+  def copy_attachments! # rubocop:disable AbcSize
+    return unless rebooked_from_id?
+
+    if rebooked_from.data_subject_consent_evidence.attached?
+      data_subject_consent_evidence.attach(rebooked_from.data_subject_consent_evidence.blob)
+    elsif rebooked_from.power_of_attorney_evidence.attached?
+      power_of_attorney_evidence.attach(rebooked_from.power_of_attorney_evidence.blob)
+    end
+  end
+
   def self.for_redaction
     where
       .not(first_name: 'redacted')

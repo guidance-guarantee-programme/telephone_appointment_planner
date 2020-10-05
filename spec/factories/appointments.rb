@@ -66,5 +66,12 @@ FactoryBot.define do
     trait :data_subject_consented do
       data_subject_consent_obtained { true }
     end
+
+    trait :with_data_subject_consent_evidence do
+      data_subject_consent_obtained { true }
+      data_subject_consent_evidence do
+        Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'evidence.pdf'), 'application/pdf')
+      end
+    end
   end
 end

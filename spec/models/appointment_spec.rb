@@ -20,6 +20,19 @@ RSpec.describe Appointment, type: :model do
     end
   end
 
+  describe '#copy_attachments!' do
+    context 'when an attachment is present' do
+      it 'copies the original to the rebooked' do
+        @original = create(:appointment, :with_data_subject_consent_evidence)
+        @rebooked = build(:appointment, rebooked_from: @original)
+
+        @rebooked.copy_attachments!
+
+        @rebooked.save
+      end
+    end
+  end
+
   describe '#cancel!' do
     it 'does not audit any changes' do
       appointment = create(:appointment)

@@ -18,6 +18,7 @@ module Pages
     element :data_subject_age,                      '.t-data-subject-age'
     element :data_subject_consent_obtained,         '.t-data-subject-consent-obtained'
     element :data_subject_consent_evidence,         '.t-data-subject-consent-evidence'
+    element :data_subject_consent_evidence_copied,  '.t-copied-evidence'
     element :power_of_attorney,                     '.t-power-of-attorney'
     element :power_of_attorney_evidence,            '.t-power-of-attorney-evidence'
     element :printed_consent_form_required,         '.t-printed-consent-form-required'

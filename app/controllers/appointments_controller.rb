@@ -75,6 +75,7 @@ class AppointmentsController < ApplicationController
   def create
     @appointment = Appointment.new(create_params.merge(agent: current_user))
     @appointment.allocate(via_slot: calendar_scheduling?, agent: current_user)
+    @appointment.copy_attachments!
 
     if creating? && @appointment.save
       send_notifications(@appointment)
