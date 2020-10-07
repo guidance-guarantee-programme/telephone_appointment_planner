@@ -26,6 +26,7 @@ class Appointment < ApplicationRecord
     where_you_heard
     gdpr_consent
     bsl_video
+    rescheduled_by
   ).freeze
 
   enum status: %i(
@@ -39,6 +40,11 @@ class Appointment < ApplicationRecord
     cancelled_by_pension_wise
     cancelled_by_customer_sms
   )
+
+  enum rescheduled_by: %i(
+    customer
+    pension_wise
+  ), _prefix: :rescheduled_by
 
   belongs_to :agent, class_name: 'User'
 

@@ -8,6 +8,16 @@
 
 <%= render 'shared/required_fields_note' %>
 <%= form_for [@appointment], url: appointment_update_reschedule_path(@appointment), layout: :basic do |f| %>
+  <% unless current_user.tp_agent? %>
+    <div class="row form-group col-sm-3">
+      <%= f.select(
+        :rescheduled_by,
+        friendly_options(Appointment.rescheduled_bys),
+        options = {},
+        { class: 't-rescheduled-by form-control' })
+      %>
+    </div>
+  <% end %>
   <div class="row form-group">
     <%= render 'schedule_form', form: f %>
   </div>

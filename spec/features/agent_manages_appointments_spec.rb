@@ -94,6 +94,16 @@ RSpec.feature 'Agent manages appointments' do
     end
   end
 
+  scenario 'Non-TP agent reschedules an appointment and specifies the reason' do
+    given_the_user_is_an_agent(organisation: :tpas) do
+      and_there_is_a_guider_with_available_slots
+      and_there_is_an_appointment
+      and_they_want_to_reschedule_the_appointment
+      when_they_reschedule_the_appointment_and_specify_the_reason
+      then_the_appointment_is_rescheduled_with_the_reason
+    end
+  end
+
   scenario 'Agent reschedules an appointment without an email' do
     given_the_user_is_an_agent do
       and_there_is_a_guider_with_available_slots
@@ -409,9 +419,23 @@ RSpec.feature 'Agent manages appointments' do
 
   def when_they_reschedule_the_appointment
     expect(@page).to have_no_availability_calendar_off
+    expect(@page).to have_no_rescheduled_by
+
     @page.start_at.set day.change(hour: 16, min: 15).to_s
     @page.end_at.set day.change(hour: 17, min: 15).to_s
     @page.reschedule.click
+  end
+
+  def when_they_reschedule_the_appointment_and_specify_the_reason
+    @page.rescheduled_by.select('Pension Wise')
+    @page.start_at.set day.change(hour: 16, min: 15).to_s
+    @page.end_at.set day.change(hour: 17, min: 15).to_s
+    @page.reschedule.click
+  end
+
+  def then_the_appointment_is_rescheduled_with_the_reason
+    appointment = Appointment.first
+    expect(appointment).to be_rescheduled_by_pension_wise
   end
 
   def then_the_appointment_is_rescheduled
@@ -419,6 +443,7 @@ RSpec.feature 'Agent manages appointments' do
     expect(appointment.start_at).to eq day.change(hour: 16, min: 15).to_s
     expect(appointment.end_at).to eq day.change(hour: 17, min: 15).to_s
 
+    expect(appointment).to be_rescheduled_by_customer
     expect(appointment).to be_rescheduled_at
     expect(appointment).not_to be_batch_processed_at
   end

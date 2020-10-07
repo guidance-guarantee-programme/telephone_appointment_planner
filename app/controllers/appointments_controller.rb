@@ -197,9 +197,16 @@ class AppointmentsController < ApplicationController
       .require(:appointment)
       .permit(:end_at, :guider_id)
       .merge(
+        rescheduled_by: munge_rescheduled_by,
         start_at: munge_start_at,
         agent: current_user
       )
+  end
+
+  def munge_rescheduled_by
+    return Appointment.rescheduled_bys['customer'] if current_user.tp_agent?
+
+    params[:appointment][:rescheduled_by]
   end
 
   def creating?
