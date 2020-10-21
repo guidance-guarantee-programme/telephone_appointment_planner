@@ -12,7 +12,7 @@ RSpec.describe SmsAppointmentReminderJob, '#perform' do
           template_id: SmsAppointmentReminderJob::STANDARD_TEMPLATE_ID,
           reference: appointment.to_param,
           personalisation: {
-            date: a_string_matching(/12:00pm, .* \(BST\)/)
+            date: a_string_matching(/12:00pm, .*/)
           }
         )
 
@@ -33,7 +33,7 @@ RSpec.describe SmsAppointmentReminderJob, '#perform' do
           template_id: SmsAppointmentReminderJob::BSL_TEMPLATE_ID,
           reference: appointment.to_param,
           personalisation: {
-            date: a_string_matching(/12:00pm, .* \(BST\)/)
+            date: a_string_matching(/12:00pm, .*/)
           }
         )
 
