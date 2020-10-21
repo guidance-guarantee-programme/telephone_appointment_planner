@@ -22,12 +22,14 @@
   </strong>
 <% end %>
 
-<%= p do %>
-  Your phone number:
-  <br>
-  <strong class="emphasize">
-    <%= @appointment.phone %>
-  </strong>
+<% unless @appointment.bsl_video? %>
+  <%= p do %>
+    Your phone number:
+    <br>
+    <strong class="emphasize">
+      <%= @appointment.phone %>
+    </strong>
+  <% end %>
 <% end %>
 
 <%= p do %>
@@ -46,16 +48,32 @@
   </strong>
 <% end %>
 
-<%= p do %>
-  A trained guidance specialist will call you on the number above. They’ll repeat the memorable word so you know you're speaking to Pension Wise.
-<% end %>
+<% if @appointment.bsl_video? %>
+  <%= p do %>
+    This is a video appointment with a British Sign Language interpreter.
+  <% end %>
 
-<%= p do %>
-  <strong>
-    If you miss the call, you’ll need to book another appointment.
-  </strong>
-<% end %>
+  <%= p do %>
+    You will be sent further information and a link to access your video
+    appointment that only you and the guidance specialist can join. They’ll
+    repeat the memorable word so you know you’re speaking to Pension Wise.
+  <% end %>
 
-<%= p do %>
-  Call 0800 138 3944 or email us to change or cancel your booking
+  <%= p do %>
+    Email us to change or cancel your booking.
+  <% end %>
+<% else %>
+  <%= p do %>
+    A trained guidance specialist will call you on the number above. They’ll repeat the memorable word so you know you're speaking to Pension Wise.
+  <% end %>
+
+  <%= p do %>
+    <strong>
+      If you miss the call, you’ll need to book another appointment.
+    </strong>
+  <% end %>
+
+  <%= p do %>
+    Call 0800 138 3944 or email us to change or cancel your booking
+  <% end %>
 <% end %>

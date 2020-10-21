@@ -7,8 +7,10 @@ Time:
 Appointment lasts:
 45 to 60 minutes
 
+<% unless @appointment.bsl_video? %>
 Your phone number:
 <%= @appointment.phone %>
+<% end %>
 
 Memorable word:
 <%= @appointment.memorable_word(obscure: true) %>
@@ -16,8 +18,16 @@ Memorable word:
 Reference number:
 <%= @appointment.id %>
 
+<% if @appointment.bsl_video? %>
+This is a video appointment with a British Sign Language interpreter.
+
+You should have received further information and a link to access your video appointment that only you and the guidance specialist can join. They’ll repeat the memorable word so you know you're speaking to Pension Wise.
+
+Email us if you need this information resent or to change or cancel your booking. You may be asked for your booking reference number.
+<% else %>
 A trained guidance specialist will call you on the number above. They'll repeat the memorable word so you know you're speaking to Pension Wise.
 
 If you miss the call, you'll need to book another appointment.
 
 Call 0800 138 3944 or email us to change or cancel your booking.
+<% end %>
