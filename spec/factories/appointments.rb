@@ -52,6 +52,11 @@ FactoryBot.define do
       data_subject_age { 51 }
     end
 
+    trait :email_consent_form_requested do
+      email_consent_form_required { true }
+      email_consent { 'bob@example.com' }
+    end
+
     trait :third_party_consent_form_requested do
       printed_consent_form_required { true }
 

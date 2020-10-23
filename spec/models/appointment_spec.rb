@@ -256,6 +256,17 @@ RSpec.describe Appointment, type: :model do
           end
         end
 
+        context 'when an email consent form is requested' do
+          it 'requires a consent email' do
+            subject.email_consent_form_required = true
+            subject.email_consent = ''
+            expect(subject).to be_invalid
+
+            subject.email_consent = 'ben@example.com'
+            expect(subject).to be_valid
+          end
+        end
+
         context 'when power of attorney is specified' do
           it 'cannot also specify data subject consent' do
             subject.power_of_attorney = true
@@ -276,6 +287,7 @@ RSpec.describe Appointment, type: :model do
 
             subject.printed_consent_form_required = false
             subject.email_consent_form_required = true
+            subject.email_consent = 'ben@example.com'
 
             expect(subject).to be_invalid
           end
@@ -292,8 +304,6 @@ RSpec.describe Appointment, type: :model do
 
             expect(subject).to be_valid
           end
-
-          it 'requires documentary evidence is attached'
         end
       end
 

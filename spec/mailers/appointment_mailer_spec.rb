@@ -12,6 +12,28 @@ RSpec.describe AppointmentMailer, type: :mailer do
     )
   end
 
+  describe 'Customer email consent form' do
+    let(:mailgun_headers) { JSON.parse(mail['X-Mailgun-Variables'].value) }
+    let(:appointment) { build_stubbed(:appointment, :third_party_booking, :email_consent_form_requested) }
+
+    subject(:mail) { described_class.consent_form(appointment) }
+
+    it 'sends to the third party requesting the consent form' do
+      expect(mail.to).to eq(['bob@example.com'])
+    end
+
+    it 'renders the mailgun specific headers' do
+      expect(mailgun_headers).to include(
+        'message_type'   => 'consent_form',
+        'appointment_id' => appointment.id
+      )
+    end
+
+    it 'renders the body specifics' do
+      expect(subject.body.encoded).to match(%q(http://localhost:3001/appointments/\d+/consent))
+    end
+  end
+
   describe 'Resource Manager Appointment Rescheduled' do
     subject(:mail) { described_class.resource_manager_appointment_rescheduled(appointment, resource_manager) }
 

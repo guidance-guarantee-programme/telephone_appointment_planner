@@ -53,6 +53,12 @@ class AppointmentMailerPreview < ActionMailer::Preview
     AppointmentMailer.reminder(random_appointment)
   end
 
+  def consent_form
+    AppointmentMailer.consent_form(
+      FactoryBot.build_stubbed(:appointment, :third_party_booking, :email_consent_form_requested)
+    )
+  end
+
   private
 
   def random_appointment

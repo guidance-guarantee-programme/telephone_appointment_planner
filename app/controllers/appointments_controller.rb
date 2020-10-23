@@ -101,6 +101,7 @@ class AppointmentsController < ApplicationController
     CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::CONFIRMED_MESSAGE)
     AppointmentCreatedNotificationsJob.perform_later(appointment)
     PrintedThirdPartyConsentFormJob.perform_later(appointment)
+    EmailThirdPartyConsentFormJob.perform_later(appointment)
   end
 
   def postcode_api_key
@@ -184,7 +185,8 @@ class AppointmentsController < ApplicationController
       :consent_county,
       :consent_postcode,
       :power_of_attorney_evidence,
-      :data_subject_consent_evidence
+      :data_subject_consent_evidence,
+      :email_consent
     ]
   end
   # rubocop:enable Metrics/MethodLength

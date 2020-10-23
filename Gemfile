@@ -40,6 +40,7 @@ source 'https://rubygems.org' do
   gem 'pg'
   gem 'plek'
   gem 'postgres-copy'
+  gem 'princely'
   gem 'puma'
   gem 'pusher'
   gem 'rack-cors'

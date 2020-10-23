@@ -59,6 +59,7 @@ RSpec.feature 'Agent manages appointments' do
       then_that_appointment_is_created
       and_the_customer_gets_an_email_confirmation
       and_a_printed_consent_form_job_is_enqueued
+      and_an_email_consent_form_job_is_enqueued
     end
   end
 
@@ -222,8 +223,10 @@ RSpec.feature 'Agent manages appointments' do
     expect(@page).to have_no_printed_consent_form_postcode_lookup
 
     @page.printed_consent_form_required.set(true)
-
     expect(@page).to have_printed_consent_form_postcode_lookup
+
+    @page.email_consent_form_required.set(true)
+    expect(@page).to have_email_consent
   end
 
   def and_they_enter_a_standard_date_of_birth
@@ -350,6 +353,10 @@ RSpec.feature 'Agent manages appointments' do
 
   def and_a_printed_consent_form_job_is_enqueued
     assert_enqueued_jobs(1, only: PrintedThirdPartyConsentFormJob)
+  end
+
+  def and_an_email_consent_form_job_is_enqueued
+    assert_enqueued_jobs(1, only: EmailThirdPartyConsentFormJob)
   end
 
   def and_the_customer_gets_an_updated_email_confirmation

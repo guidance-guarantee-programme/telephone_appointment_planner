@@ -23,6 +23,8 @@ module Pages
     element :power_of_attorney_evidence,            '.t-power-of-attorney-evidence'
     element :printed_consent_form_required,         '.t-printed-consent-form-required'
     element :printed_consent_form_postcode_lookup,  '.t-printed-consent-form-postcode-lookup'
+    element :email_consent_form_required,           '.t-email-consent-form-required'
+    element :email_consent,                         '.t-email-consent'
 
     element :notes,                                 '.t-notes'
     element :gdpr_consent_yes,                      '.t-gdpr-consent-yes'

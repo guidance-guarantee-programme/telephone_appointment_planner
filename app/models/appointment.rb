@@ -35,6 +35,8 @@ class Appointment < ApplicationRecord
     data_subject_consent_evidence
     power_of_attorney_evidence
     email_consent_form_required
+    email_consent
+    generated_consent_form
   ).freeze
 
   enum status: %i(
@@ -61,6 +63,7 @@ class Appointment < ApplicationRecord
 
   has_one_attached :power_of_attorney_evidence
   has_one_attached :data_subject_consent_evidence
+  has_one_attached :generated_consent_form
 
   attr_accessor :ad_hoc_start_at
 
@@ -103,6 +106,7 @@ class Appointment < ApplicationRecord
   validate :validate_guider_available, on: :update
   validate :validate_phone_digits, if: :tp_agent?
   validate :validate_mobile_digits, if: :tp_agent?
+  validate :email_consent_valid, if: :email_consent_form_required?
 
   before_validation :format_name, on: :create
   before_create :track_initial_status
@@ -504,6 +508,12 @@ class Appointment < ApplicationRecord
         :third_party_booking,
         "you may only specify 'data subject consent obtained', 'power of attorney' or neither"
       )
+    end
+  end
+
+  def email_consent_valid
+    unless /.+@.+\..+/ === email_consent.to_s # rubocop:disable Style/CaseEquality, Style/GuardClause
+      errors.add(:email_consent, 'must be valid')
     end
   end
 
