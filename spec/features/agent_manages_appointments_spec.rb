@@ -205,7 +205,7 @@ RSpec.feature 'Agent manages appointments' do
     @page.last_name.set 'Person'
     @page.email.set options[:email] || 'email@example.org'
     @page.phone.set '0208 252 4729'
-    @page.mobile.set '+447715 930 459'
+    @page.mobile.set '07715 930 459'
     @page.memorable_word.set 'lozenge'
     @page.accessibility_requirements.set true
     @page.notes.set 'something'
@@ -237,12 +237,13 @@ RSpec.feature 'Agent manages appointments' do
     expect(@page.preview).to have_content 'Some Person'
     expect(@page.preview).to have_content 'email@example.org'
     expect(@page.preview).to have_content '0208 252 4729'
-    expect(@page.preview).to have_content '+447715 930 459'
+    expect(@page.preview).to have_content '07715 930 459'
     expect(@page.preview).to have_content 'lozenge'
     expect(@page.preview).to have_content 'something'
     expect(@page.preview).to have_content 'Customer research consent Yes'
     expect(@page.preview).to have_content 'Standard'
     expect(@page.preview).to have_content 'Smarter signposted referral? Yes' if smarter_signposted
+    expect(@page).to have_road_safety_banner
   end
 
   def and_they_fill_in_their_appointment_details_without_an_email
@@ -266,7 +267,7 @@ RSpec.feature 'Agent manages appointments' do
     expect(appointment.last_name).to eq 'Person'
     expect(appointment.email).to eq 'email@example.org'
     expect(appointment.phone).to eq '0208 252 4729'
-    expect(appointment.mobile).to eq '+447715 930 459'
+    expect(appointment.mobile).to eq '07715 930 459'
     expect(appointment.memorable_word).to eq 'lozenge'
     expect(appointment.notes).to eq 'something'
     expect(appointment.gdpr_consent).to eq 'yes'
@@ -326,7 +327,7 @@ RSpec.feature 'Agent manages appointments' do
     @page.last_name.set 'Name'
     @page.email.set 'something@example.org'
     @page.phone.set '02082524729'
-    @page.mobile.set '+447715930459'
+    @page.mobile.set '07715930459'
     @page.memorable_word.set 'orange'
     @page.notes.set 'no notes'
     @page.gdpr_consent_yes.set true
@@ -357,7 +358,7 @@ RSpec.feature 'Agent manages appointments' do
     expect(appointment.last_name).to eq 'Name'
     expect(appointment.email).to eq 'something@example.org'
     expect(appointment.phone).to eq '02082524729'
-    expect(appointment.mobile).to eq '+447715930459'
+    expect(appointment.mobile).to eq '07715930459'
     expect(appointment.memorable_word).to eq 'orange'
     expect(appointment.notes).to eq 'no notes'
     expect(appointment.gdpr_consent).to eq 'yes'

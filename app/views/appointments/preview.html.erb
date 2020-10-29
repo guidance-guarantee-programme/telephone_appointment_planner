@@ -120,6 +120,24 @@
           </tbody>
         </table>
 
+        <% if @appointment.mobile? %>
+          <div class="alert alert-warning t-road-safety-banner">
+            <p>
+              In the interest of road safety we will not deliver a Pension Wise appointment
+              if you are driving. This also includes the use of hands-free devices as the
+              Royal Society for the Prevention of Accidents (RoSPA) considers that using a
+              hands-free phone while driving is a significant distraction that can
+              substantially increases the risk of crashing.
+            </p>
+            <p>
+              Please ensure you are not driving at the time of your appointment. If we become
+              aware that you are driving during an appointment, we cannot continue. We will
+              ask you to either pull over in a safe, legal and convenient place, or if this
+              is not possible, we will advise to you rebook your appointment
+            </p>
+          </div>
+        <% end %>
+
         <p class="alert alert-warning">
           Full details on our privacy policy, including the customers rights in
           regards to their personal data, can be found on the Pension Wise website

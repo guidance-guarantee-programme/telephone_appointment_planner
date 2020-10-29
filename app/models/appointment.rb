@@ -220,6 +220,10 @@ class Appointment < ApplicationRecord
     errors.key?(:guider) || errors.key?(:start_at)
   end
 
+  def mobile?
+    phone.start_with?('07') || mobile.start_with?('07')
+  end
+
   def mark_batch_processed!
     transaction do
       touch(:batch_processed_at)
