@@ -25,6 +25,7 @@ class Appointment < ApplicationRecord
     type_of_appointment
     where_you_heard
     gdpr_consent
+    bsl_video
   ).freeze
 
   enum status: %i(

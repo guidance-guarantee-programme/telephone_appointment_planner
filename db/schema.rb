@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_16_092614) do
+ActiveRecord::Schema.define(version: 2020_09_24_145011) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(version: 2020_07_16_092614) do
     t.boolean "accessibility_requirements", default: false, null: false
     t.datetime "processed_at"
     t.boolean "smarter_signposted", default: false
+    t.boolean "bsl_video", default: false, null: false
     t.index ["start_at"], name: "index_appointments_on_start_at"
   end
 

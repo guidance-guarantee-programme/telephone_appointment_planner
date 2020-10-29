@@ -135,6 +135,14 @@ RSpec.describe AppointmentMailer, type: :mailer do
     describe 'rendering the body' do
       let(:body) { subject.body.encoded }
 
+      context 'when the appointment is BSL video based' do
+        it 'includes the video appointment specifics' do
+          appointment.bsl_video = true
+
+          expect(body).to include('British Sign Language')
+        end
+      end
+
       it 'includes the date' do
         expect(body).to include('23 October 2016')
       end
@@ -157,6 +165,10 @@ RSpec.describe AppointmentMailer, type: :mailer do
 
       it 'includes the reference number' do
         expect(body).to include(appointment.id.to_s)
+      end
+
+      it 'includes the phone specifics' do
+        expect(body).to include('call you on the number')
       end
     end
   end
@@ -238,6 +250,24 @@ RSpec.describe AppointmentMailer, type: :mailer do
 
     describe 'rendering the body' do
       let(:body) { subject.body.encoded }
+
+      context 'when the appointment is BSL video based' do
+        before do
+          appointment.bsl_video = true
+        end
+
+        it 'includes the video appointment specifics' do
+          expect(body).to include('British Sign Language')
+        end
+
+        it 'does not include the customer phone number' do
+          expect(body).not_to include(appointment.phone)
+        end
+      end
+
+      it 'includes the phone specifics' do
+        expect(body).to include('call you on the number')
+      end
 
       it 'includes the date' do
         expect(body).to include('23 October 2016')

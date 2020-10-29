@@ -166,7 +166,8 @@ class AppointmentsController < ApplicationController
       :county,
       :postcode,
       :gdpr_consent,
-      :smarter_signposted
+      :smarter_signposted,
+      :bsl_video
     ]
   end
   # rubocop:enable Metrics/MethodLength
