@@ -1,4 +1,14 @@
 module AppointmentHelper
+  def bsl_video_visible?(current_user)
+    current_user.administrator? || current_user.tp? || current_user.lancs_west?
+  end
+
+  def bsl_video_disabled?(current_user)
+    return false if current_user.administrator? || current_user.lancs_west?
+
+    true
+  end
+
   def display_dc_pot_unsure_banner?(appointment)
     return if appointment.dc_pot_confirmed?
     return if appointment.tp_guider? || appointment.tpas_guider?

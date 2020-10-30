@@ -3,6 +3,20 @@ require 'rails_helper'
 RSpec.feature 'Agent manages appointments' do
   let(:day) { BusinessDays.from_now(5) }
 
+  scenario 'Lancs West guider modifying BSL' do
+    given_the_user_is_an_agent(organisation: :lancs_west) do
+      when_they_want_to_book_an_appointment
+      then_they_can_specify_bsl_video
+    end
+  end
+
+  scenario 'TP agent cannot modify BSL' do
+    given_the_user_is_an_agent(organisation: :tp) do
+      when_they_want_to_book_an_appointment
+      then_bsl_video_is_disabled
+    end
+  end
+
   scenario 'Appointment types are inferred from date of birth', js: true do
     given_the_user_is_an_agent do
       when_they_want_to_book_an_appointment
@@ -17,7 +31,7 @@ RSpec.feature 'Agent manages appointments' do
     given_the_user_is_an_agent(organisation: :tpas) do
       and_there_is_a_guider_with_available_slots
       when_they_want_to_book_an_appointment
-      and_they_fill_in_their_appointment_details(smarter_signposted: true)
+      and_they_fill_in_their_appointment_details(smarter_signposted: true, bsl_video: true)
       then_they_see_a_preview_of_the_appointment(smarter_signposted: true)
       when_they_accept_the_appointment_preview
       then_that_appointment_is_created(smarter_signposted: true)
@@ -161,6 +175,14 @@ RSpec.feature 'Agent manages appointments' do
     end
   end
 
+  def then_bsl_video_is_disabled
+    expect(@page.bsl_video).to be_disabled
+  end
+
+  def then_they_can_specify_bsl_video
+    @page.bsl_video.set(true)
+  end
+
   def then_they_do_not_see_the_smarter_signposting_option
     expect(@page).to have_no_smarter_signposted
   end
@@ -197,7 +219,7 @@ RSpec.feature 'Agent manages appointments' do
     BookableSlot.generate_for_six_weeks
   end
 
-  def fill_in_appointment_details(options = {})
+  def fill_in_appointment_details(options = {}) # rubocop:disable CyclomaticComplexity
     @page.date_of_birth_day.set '23'
     @page.date_of_birth_month.set '10'
     @page.date_of_birth_year.set '1950'
@@ -218,7 +240,8 @@ RSpec.feature 'Agent manages appointments' do
     @page.town.set(options[:town]) if options[:town]
     @page.postcode.set(options[:postcode]) if options[:postcode]
     @page.smarter_signposted.set(options[:smarter_signposted]) if options[:smarter_signposted]
-    @page.bsl_video.set(true)
+
+    expect(@page).to have_no_bsl_video if options[:bsl_video]
 
     @page.preview_appointment.click
   end
@@ -278,7 +301,7 @@ RSpec.feature 'Agent manages appointments' do
     expect(appointment.where_you_heard).to eq(17)
     expect(appointment).to be_accessibility_requirements
     expect(appointment).to be_smarter_signposted if smarter_signposted
-    expect(appointment).to be_bsl_video
+    expect(appointment).to_not be_bsl_video
   end
 
   def and_the_customer_gets_an_email_confirmation

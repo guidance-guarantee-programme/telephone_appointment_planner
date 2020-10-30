@@ -60,6 +60,10 @@ class User < ApplicationRecord
     organisation_content_id == Provider::NI.id
   end
 
+  def lancs_west?
+    organisation_content_id == Provider::LANCS_WEST.id
+  end
+
   def tp_agent?
     tp? && agent?
   end
