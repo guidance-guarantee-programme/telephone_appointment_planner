@@ -1,6 +1,25 @@
 require 'rails_helper'
 
 RSpec.describe Appointment, type: :model do
+  describe '#mobile?' do
+    context 'when the appointment has mobileish number' do
+      it 'is true' do
+        appointment = build_stubbed(:appointment, phone: '07715930485', mobile: '')
+        expect(appointment).to be_mobile
+
+        appointment = build_stubbed(:appointment, phone: '', mobile: '0771675849')
+        expect(appointment).to be_mobile
+      end
+    end
+
+    context 'when neither the phone or mobile fields are mobileish' do
+      it 'is false' do
+        appointment = build_stubbed(:appointment, phone: '0208 252 4888', mobile: '')
+        expect(appointment).not_to be_mobile
+      end
+    end
+  end
+
   describe '#cancel!' do
     it 'does not audit any changes' do
       appointment = create(:appointment)
