@@ -11,6 +11,7 @@ class Redactor
         redact_appointment(appointment)
         redact_audits(appointment)
         redact_activities(appointment)
+        redact_attachments(appointment)
       end
     end
   end
@@ -22,6 +23,12 @@ class Redactor
   end
 
   private
+
+  def redact_attachments(appointment)
+    appointment.power_of_attorney_evidence.purge
+    appointment.data_subject_consent_evidence.purge
+    appointment.generated_consent_form.purge
+  end
 
   def redact_appointment(appointment) # rubocop:disable MethodLength
     appointment.update(
@@ -37,7 +44,15 @@ class Redactor
       address_line_three: 'redacted',
       town: 'redacted',
       postcode: 'redacted',
-      notes: 'redacted'
+      notes: 'redacted',
+      data_subject_name: 'redacted',
+      data_subject_age: '0',
+      consent_address_line_one: 'redacted',
+      consent_address_line_two: 'redacted',
+      consent_address_line_three: 'redacted',
+      consent_town: 'redacted',
+      consent_postcode: 'redacted',
+      email_consent: 'redacted@example.com'
     )
   end
 
