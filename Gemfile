@@ -40,6 +40,7 @@ source 'https://rubygems.org' do
   gem 'pg'
   gem 'plek'
   gem 'postgres-copy'
+  gem 'princely'
   gem 'puma'
   gem 'pusher'
   gem 'rack-cors'
@@ -84,6 +85,7 @@ source 'https://rubygems.org' do
   end
 
   group :staging, :production do
+    gem 'aws-sdk-s3', require: false
     gem 'lograge'
   end
 end

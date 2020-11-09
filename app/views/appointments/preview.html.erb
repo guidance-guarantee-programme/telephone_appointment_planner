@@ -19,6 +19,7 @@
   <%= f.hidden_field :ad_hoc_start_at %>
   <%= f.hidden_field :end_at %>
   <%= f.hidden_field :guider_id %>
+  <%= f.hidden_field :third_party_booking %>
 
   <%= f.hidden_field :first_name %>
   <%= f.hidden_field :last_name %>
@@ -40,6 +41,20 @@
   <%= f.hidden_field :postcode %>
   <%= f.hidden_field :smarter_signposted %>
   <%= f.hidden_field :bsl_video %>
+
+  <%= f.hidden_field :data_subject_name %>
+  <%= f.hidden_field :data_subject_age %>
+  <%= f.hidden_field :data_subject_consent_obtained %>
+  <%= f.hidden_field :printed_consent_form_required %>
+  <%= f.hidden_field :email_consent_form_required %>
+  <%= f.hidden_field :power_of_attorney %>
+  <%= f.hidden_field :consent_address_line_one %>
+  <%= f.hidden_field :consent_address_line_two %>
+  <%= f.hidden_field :consent_address_line_three %>
+  <%= f.hidden_field :consent_town %>
+  <%= f.hidden_field :consent_county %>
+  <%= f.hidden_field :consent_postcode %>
+  <%= f.hidden_field :email_consent %>
 
   <div class="t-preview appointment-preview">
     <div class="row">
@@ -100,9 +115,41 @@
               <td class="active"><b>I require help or an adjustment to help me access my appointment</b></td>
               <td><%= @appointment.accessibility_requirements %></td>
             </tr>
+            <% if @appointment.third_party_booking? %>
+            <tr>
+              <td class="active"><b>Data subject name</b></td>
+              <td><%= @appointment.data_subject_name %></td>
+            </tr>
+            <tr>
+              <td class="active"><b>Data subject age</b></td>
+              <td><%= @appointment.data_subject_age %></td>
+            </tr>
+            <tr>
+              <td class="active"><b>Email consent form required</b></td>
+              <td><%= boolean_yes_no(@appointment.email_consent_form_required) %></td>
+            </tr>
+            <% if @appointment.email_consent_form_required? %>
+            <tr>
+              <td class="active"><b>Email consent</b></td>
+              <td><%= @appointment.email_consent %></td>
+            </tr>
+            <% end %>
+            <tr>
+              <td class="active"><b>Printed consent form required</b></td>
+              <td><%= boolean_yes_no(@appointment.printed_consent_form_required) %></td>
+            </tr>
+            <tr>
+              <td class="active"><b>Data subject consent obtained</b></td>
+              <td><%= boolean_yes_no(@appointment.data_subject_consent_obtained) %></td>
+            </tr>
+            <tr>
+              <td class="active"><b>Power of attorney</b></td>
+              <td><%= boolean_yes_no(@appointment.power_of_attorney) %></td>
+            </tr>
+            <% end %>
             <tr>
               <td class="active"><b>Notes</b></td>
-              <td><%= @appointment.notes %></td>
+              <td><%= simple_format(@appointment.notes) %></td>
             </tr>
             <tr>
               <td class="active"><b>Customer research consent</b></td>

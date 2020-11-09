@@ -1,0 +1,18 @@
+Booking reference number: <%= @appointment.id %>
+
+Dear customer,
+
+A third party has asked to book a Pension Wise appointment to discuss your
+pension payment options. We need your authority to deliver a Pension Wise
+appointment to them on your behalf.
+
+Please complete the third party consent form and follow the return
+instructions:
+
+<%= link_to 'Download the consent form', appointment_consent_url(@appointment) %>
+
+If you did not ask a third party to discuss your pension options with Pension
+Wise email contact@pensionwise.gov.uk
+
+Pension Wise is an impartial government service. We don’t recommend any
+products or tell you what to do with your money.

@@ -1,11 +1,11 @@
-class SmsCancellationSuccessJob < SmsJobBase
+class SmsCancellationSuccessJob < NotifyJobBase
   STANDARD_TEMPLATE_ID = 'fd90b779-03e1-471d-b9e4-34afa9622410'.freeze
   BSL_TEMPLATE_ID      = '43fb57ed-1abe-4115-81ca-10f5042e23ca'.freeze
 
   def perform(appointment)
     return unless api_key
 
-    sms_client.send_sms(
+    client.send_sms(
       phone_number: appointment.canonical_sms_number,
       template_id: template_for(appointment),
       reference: appointment.to_param,

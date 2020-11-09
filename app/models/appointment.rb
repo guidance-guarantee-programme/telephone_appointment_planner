@@ -26,6 +26,17 @@ class Appointment < ApplicationRecord
     where_you_heard
     gdpr_consent
     bsl_video
+    third_party_booking
+    data_subject_name
+    data_subject_age
+    power_of_attorney
+    data_subject_consent_obtained
+    printed_consent_form_required
+    data_subject_consent_evidence
+    power_of_attorney_evidence
+    email_consent_form_required
+    email_consent
+    generated_consent_form
   ).freeze
 
   enum status: %i(
@@ -50,6 +61,10 @@ class Appointment < ApplicationRecord
 
   has_many :status_transitions
 
+  has_one_attached :power_of_attorney_evidence
+  has_one_attached :data_subject_consent_evidence
+  has_one_attached :generated_consent_form
+
   attr_accessor :ad_hoc_start_at
 
   delegate :resource_managers, to: :guider
@@ -69,13 +84,19 @@ class Appointment < ApplicationRecord
   validates :memorable_word, presence: true
   validates :dc_pot_confirmed, inclusion: [true, false]
   validates :accessibility_requirements, inclusion: [true, false]
-  validates :notes, presence: true, if: :validate_accessibility_needs?
+  validates :third_party_booking, inclusion: [true, false]
+  validates :data_subject_name, presence: true, if: :third_party_booking?
+  validates :data_subject_age, numericality: { only_integer: true }, if: :third_party_booking?
+  validates :notes, presence: true, if: :validate_adjustment_needs?
   validates :type_of_appointment, inclusion: %w(standard 50-54)
   validates :where_you_heard, inclusion: WhereYouHeard.options_for_inclusion, on: :create, unless: :rebooked_from_id?
   validates :gdpr_consent, inclusion: ['yes', 'no', '']
   validates :status, presence: true
   validates :guider, presence: true
 
+  validate :validate_printed_consent_form_address
+  validate :validate_consent_type
+  validate :validate_power_of_attorney_or_consent
   validate :not_within_grace_period, unless: :agent_is_resource_manager?
   validate :valid_within_booking_window
   validate :date_of_birth_valid
@@ -85,6 +106,7 @@ class Appointment < ApplicationRecord
   validate :validate_guider_available, on: :update
   validate :validate_phone_digits, if: :tp_agent?
   validate :validate_mobile_digits, if: :tp_agent?
+  validate :email_consent_valid, if: :email_consent_form_required?
 
   before_validation :format_name, on: :create
   before_create :track_initial_status
@@ -105,6 +127,10 @@ class Appointment < ApplicationRecord
   def mark_rescheduled!
     self.batch_processed_at = nil
     self.rescheduled_at     = Time.zone.now
+  end
+
+  def adjustments?
+    accessibility_requirements? || third_party_booking?
   end
 
   def address?
@@ -245,6 +271,16 @@ class Appointment < ApplicationRecord
 
   def customer_research_consent
     gdpr_consent == '' ? 'No response' : gdpr_consent.titleize
+  end
+
+  def copy_attachments! # rubocop:disable AbcSize
+    return unless rebooked_from_id?
+
+    if rebooked_from.data_subject_consent_evidence.attached?
+      data_subject_consent_evidence.attach(rebooked_from.data_subject_consent_evidence.blob)
+    elsif rebooked_from.power_of_attorney_evidence.attached?
+      power_of_attorney_evidence.attach(rebooked_from.power_of_attorney_evidence.blob)
+    end
   end
 
   def self.for_redaction
@@ -428,7 +464,7 @@ class Appointment < ApplicationRecord
     agent && !agent.pension_wise_api?
   end
 
-  def validate_accessibility_needs?
+  def validate_adjustment_needs?
     date = created_at || Time.zone.today
 
     accessibility_requirements? && date > ACCESSIBILITY_NOTES_CUTOFF
@@ -444,6 +480,45 @@ class Appointment < ApplicationRecord
     return if mobile.blank?
 
     errors.add(:mobile, 'must have at least 10 digits') if mobile.gsub(/[^\d]/, '').length < 10
+  end
+
+  def validate_printed_consent_form_address
+    return unless third_party_booking? && printed_consent_form_required?
+
+    errors.add(:printed_consent_form_required, 'must supply a valid address') unless printed_consent_address?
+  end
+
+  def validate_power_of_attorney_or_consent
+    return unless third_party_booking?
+
+    if printed_consent_form_required? && power_of_attorney?
+      errors.add(:printed_consent_form_required, 'cannot be checked when power of attorney is specified')
+    end
+
+    if email_consent_form_required? && power_of_attorney? # rubocop:disable GuardClause
+      errors.add(:email_consent_form_required, 'cannot be checked when power of attorney is specified')
+    end
+  end
+
+  def validate_consent_type
+    return unless third_party_booking?
+
+    if power_of_attorney? && data_subject_consent_obtained? # rubocop:disable GuardClause
+      errors.add(
+        :third_party_booking,
+        "you may only specify 'data subject consent obtained', 'power of attorney' or neither"
+      )
+    end
+  end
+
+  def email_consent_valid
+    unless /.+@.+\..+/ === email_consent.to_s # rubocop:disable Style/CaseEquality, Style/GuardClause
+      errors.add(:email_consent, 'must be valid')
+    end
+  end
+
+  def printed_consent_address?
+    [consent_address_line_one, consent_town, consent_postcode].all?(&:present?)
   end
 
   class << self

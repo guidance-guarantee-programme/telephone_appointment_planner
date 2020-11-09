@@ -1,0 +1,5 @@
+<% content_for(:activity_message, flush: true) do %>
+  <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+  <strong>The system</strong> sent an email third party <%= link_to 'consent form', appointment_consent_path(email_third_party_consent_form_activity.appointment) %>
+<% end %>
+<%= render 'activities/activity', activity: email_third_party_consent_form_activity, details: details, hide: hide %>

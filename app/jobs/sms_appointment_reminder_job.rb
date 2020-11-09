@@ -1,6 +1,6 @@
 require 'notifications/client'
 
-class SmsAppointmentReminderJob < SmsJobBase
+class SmsAppointmentReminderJob < NotifyJobBase
   STANDARD_TEMPLATE_ID = '14d350d2-f962-4daa-b3b8-e6c3696864c0'.freeze
   BSL_TEMPLATE_ID      = '6bedd37b-c75c-44f5-bed3-3ec5eb5bb564'.freeze
 
@@ -14,7 +14,7 @@ class SmsAppointmentReminderJob < SmsJobBase
   private
 
   def send_sms_reminder(appointment)
-    sms_client.send_sms(
+    client.send_sms(
       phone_number: appointment.canonical_sms_number,
       template_id: template_for(appointment),
       reference: appointment.to_param,

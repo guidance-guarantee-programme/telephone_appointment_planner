@@ -75,6 +75,7 @@ class AppointmentsController < ApplicationController
   def create
     @appointment = Appointment.new(create_params.merge(agent: current_user))
     @appointment.allocate(via_slot: calendar_scheduling?, agent: current_user)
+    @appointment.copy_attachments!
 
     if creating? && @appointment.save
       send_notifications(@appointment)
@@ -96,9 +97,11 @@ class AppointmentsController < ApplicationController
   private
 
   def send_notifications(appointment)
-    AccessibilityAdjustmentNotificationsJob.perform_later(appointment) if appointment.accessibility_requirements?
+    AdjustmentNotificationsJob.perform_later(appointment) if appointment.adjustments?
     CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::CONFIRMED_MESSAGE)
     AppointmentCreatedNotificationsJob.perform_later(appointment)
+    PrintedThirdPartyConsentFormJob.perform_later(appointment)
+    EmailThirdPartyConsentFormJob.perform_later(appointment)
   end
 
   def postcode_api_key
@@ -167,7 +170,23 @@ class AppointmentsController < ApplicationController
       :postcode,
       :gdpr_consent,
       :smarter_signposted,
-      :bsl_video
+      :bsl_video,
+      :third_party_booking,
+      :data_subject_name,
+      :data_subject_age,
+      :data_subject_consent_obtained,
+      :email_consent_form_required,
+      :printed_consent_form_required,
+      :power_of_attorney,
+      :consent_address_line_one,
+      :consent_address_line_two,
+      :consent_address_line_three,
+      :consent_town,
+      :consent_county,
+      :consent_postcode,
+      :power_of_attorney_evidence,
+      :data_subject_consent_evidence,
+      :email_consent
     ]
   end
   # rubocop:enable Metrics/MethodLength

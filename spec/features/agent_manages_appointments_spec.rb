@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.feature 'Agent manages appointments' do
+  include ActiveJob::TestHelper
+
   let(:day) { BusinessDays.from_now(5) }
 
   scenario 'Lancs West guider modifying BSL' do
@@ -14,6 +16,14 @@ RSpec.feature 'Agent manages appointments' do
     given_the_user_is_an_agent(organisation: :tp) do
       when_they_want_to_book_an_appointment
       then_bsl_video_is_disabled
+    end
+  end
+
+  scenario 'Third party consent', js: true do
+    given_the_user_is_an_agent do
+      when_they_want_to_book_an_appointment
+      and_they_declare_a_third_party_booking
+      then_they_see_the_correct_consent_fields
     end
   end
 
@@ -48,6 +58,8 @@ RSpec.feature 'Agent manages appointments' do
       when_they_accept_the_appointment_preview
       then_that_appointment_is_created
       and_the_customer_gets_an_email_confirmation
+      and_a_printed_consent_form_job_is_enqueued
+      and_an_email_consent_form_job_is_enqueued
     end
   end
 
@@ -64,12 +76,14 @@ RSpec.feature 'Agent manages appointments' do
   end
 
   scenario 'Agent creates appointment without an email' do
-    given_the_user_is_an_agent do
-      and_there_is_a_guider_with_available_slots
-      when_they_want_to_book_an_appointment
-      and_they_fill_in_their_appointment_details_without_an_email
-      when_they_accept_the_appointment_preview
-      then_the_customer_does_not_get_an_email_confirmation
+    perform_enqueued_jobs do
+      given_the_user_is_an_agent do
+        and_there_is_a_guider_with_available_slots
+        when_they_want_to_book_an_appointment
+        and_they_fill_in_their_appointment_details_without_an_email
+        when_they_accept_the_appointment_preview
+        then_the_customer_does_not_get_an_email_confirmation
+      end
     end
   end
 
@@ -185,6 +199,34 @@ RSpec.feature 'Agent manages appointments' do
 
   def then_they_do_not_see_the_smarter_signposting_option
     expect(@page).to have_no_smarter_signposted
+  end
+
+  def and_they_declare_a_third_party_booking
+    expect(@page).to have_no_data_subject_name
+
+    @page.third_party_booked.set(true)
+  end
+
+  def then_they_see_the_correct_consent_fields
+    expect(@page).to have_data_subject_name
+    expect(@page).to have_data_subject_age
+
+    expect(@page).to have_no_data_subject_consent_evidence
+    expect(@page).to have_no_power_of_attorney_evidence
+
+    @page.data_subject_consent_obtained.set(true)
+    @page.power_of_attorney.set(true)
+
+    expect(@page).to have_no_data_subject_consent_evidence
+    expect(@page).to have_no_power_of_attorney_evidence
+
+    expect(@page).to have_no_printed_consent_form_postcode_lookup
+
+    @page.printed_consent_form_required.set(true)
+    expect(@page).to have_printed_consent_form_postcode_lookup
+
+    @page.email_consent_form_required.set(true)
+    expect(@page).to have_email_consent
   end
 
   def and_they_enter_a_standard_date_of_birth
@@ -306,16 +348,19 @@ RSpec.feature 'Agent manages appointments' do
   end
 
   def and_the_customer_gets_an_email_confirmation
-    deliveries = ActionMailer::Base.deliveries
-    expect(deliveries.count).to eq 2
-    expect(deliveries.map(&:subject)).to include('Your Pension Wise Appointment')
+    assert_enqueued_jobs(1, only: CustomerUpdateJob)
+  end
+
+  def and_a_printed_consent_form_job_is_enqueued
+    assert_enqueued_jobs(1, only: PrintedThirdPartyConsentFormJob)
+  end
+
+  def and_an_email_consent_form_job_is_enqueued
+    assert_enqueued_jobs(1, only: EmailThirdPartyConsentFormJob)
   end
 
   def and_the_customer_gets_an_updated_email_confirmation
-    deliveries = ActionMailer::Base.deliveries
-    expect(deliveries.count).to eq 1
-    expect(deliveries.first.subject).to eq 'Your Pension Wise Appointment'
-    expect(deliveries.first.body.encoded).to include 'We=E2=80=99ve updated your appointment'
+    assert_enqueued_jobs(1, only: CustomerUpdateJob)
   end
 
   def then_the_customer_does_not_get_an_email_confirmation
@@ -458,10 +503,7 @@ RSpec.feature 'Agent manages appointments' do
   end
 
   def then_the_customer_gets_a_cancellation_email
-    deliveries = ActionMailer::Base.deliveries
-    expect(deliveries.count).to eq 1
-    expect(deliveries.first.subject).to eq 'Your Pension Wise Appointment'
-    expect(deliveries.first.body.encoded).to include 'We=E2=80=99ve cancelled your appointment'
+    assert_enqueued_jobs(1, only: CustomerUpdateJob)
   end
 
   def then_the_customer_does_not_get_a_cancellation_email
@@ -476,12 +518,7 @@ RSpec.feature 'Agent manages appointments' do
   end
 
   def then_the_customer_gets_a_missed_appointment_email
-    deliveries = ActionMailer::Base.deliveries
-    expect(deliveries.count).to eq 1
-    expect(deliveries.first.subject).to eq 'Your Pension Wise Appointment'
-    expect(deliveries.first.body.encoded).to include(
-      'Our records show that your Pension Wise telephone appointment was missed'
-    )
+    assert_enqueued_jobs(1, only: CustomerUpdateJob)
   end
 
   def and_there_is_an_imported_appointment

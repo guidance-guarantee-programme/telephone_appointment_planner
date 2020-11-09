@@ -157,7 +157,7 @@ RSpec.describe 'POST /api/v1/appointments' do
   end
 
   def and_the_resource_manager_receives_an_accessibility_notification
-    assert_enqueued_jobs(1, only: AccessibilityAdjustmentNotificationsJob)
+    assert_enqueued_jobs(1, only: AdjustmentNotificationsJob)
   end
 
   def and_the_resource_manager_receives_a_new_appointment_notification

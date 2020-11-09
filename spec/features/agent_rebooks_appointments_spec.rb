@@ -37,14 +37,21 @@ RSpec.feature 'Agent rebooks appointments' do
   end
 
   def and_there_is_an_appointment
-    @appointment = create(:appointment, status: :cancelled_by_customer)
+    @appointment = create(
+      :appointment,
+      :third_party_booking,
+      :with_data_subject_consent_evidence,
+      status: :cancelled_by_customer
+    )
   end
 
   def and_they_rebook_an_appointment
     @page = Pages::Search.new.tap(&:load)
     @page.rebook.click
+
     @page = Pages::NewAppointment.new
     expect(@page).to be_displayed
+    expect(@page).to have_data_subject_consent_evidence_copied
   end
 
   def then_the_details_are_copied_over
