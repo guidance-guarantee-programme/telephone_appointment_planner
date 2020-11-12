@@ -14,6 +14,18 @@ RSpec.describe Notifier, '#call' do
     allow(mailer).to receive(:deliver)
   end
 
+  context 'when a BSL appointment is completed' do
+    it 'enqueues the BSL exit poll job to run in 24 hours' do
+      scheduler = double(perform_later: true)
+      appointment.update(bsl_video: true, status: :complete)
+
+      expect(BslCustomerExitPollJob).to receive(:set).with(wait: 24.hours).and_return(scheduler)
+      expect(scheduler).to receive(:perform_later).with(appointment)
+
+      subject.call
+    end
+  end
+
   context 'when the appointment is rescheduled' do
     it 'enqueues the rescheduled notifications' do
       new_guider = create(:guider)

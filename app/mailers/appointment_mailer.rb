@@ -65,6 +65,14 @@ class AppointmentMailer < ApplicationMailer
     mail to: @appointment.email
   end
 
+  def bsl_customer_exit_poll(appointment)
+    return unless appointment.email?
+
+    mailgun_headers('bsl_exit_poll', appointment.id)
+    @appointment = appointment
+    mail to: @appointment.email
+  end
+
   def consent_form(appointment)
     return unless appointment.email_consent?
 

@@ -31,14 +31,25 @@ class Notifier
     Array(appointment.previous_changes.fetch('guider_id', appointment.guider_id))
   end
 
-  def notify_customer
+  def notify_customer # rubocop:disable AbcSize
     if appointment_cancelled?
       CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::CANCELLED_MESSAGE)
     elsif appointment_missed?
       CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::MISSED_MESSAGE)
     elsif appointment_details_changed? && appointment.future?
       CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::UPDATED_MESSAGE)
+    elsif bsl_appointment_complete?
+      BslCustomerExitPollJob.set(wait: 24.hours).perform_later(appointment)
     end
+  end
+
+  def bsl_appointment_complete?
+    appointment.bsl_video? && appointment_complete?
+  end
+
+  def appointment_complete?
+    appointment.previous_changes.slice('status').present? &&
+      appointment.complete?
   end
 
   def appointment_details_changed?
