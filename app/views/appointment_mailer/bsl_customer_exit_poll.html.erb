@@ -1,0 +1,23 @@
+<h1 style="color: #0B0C0C !important;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 20px;line-height: 1.111111111;padding: 15px 0;">
+  We’d appreciate your feedback
+</h1>
+
+<%= p do %>
+  Dear <%= @appointment.first_name %>,
+<% end %>
+
+<%= p do %>
+  You recently had a Pension Wise appointment with <%= @appointment.guider.name %> on <%= @appointment.start_at.to_date.to_s(:govuk_date) %>.
+<% end %>
+
+<%= p do %>
+  This is a new service and we’d appreciate your feedback on how it went:
+<% end %>
+
+<%= p do %>
+  <a href="https://www.pensionwise.gov.uk/bsl-exit-poll">www.pensionwise.gov.uk/bsl-exit-poll</a>
+<% end %>
+
+<%= p do %>
+  The information you provide on this feedback form will be shared with our Pension Wise partners for service improvement.
+<% end %>

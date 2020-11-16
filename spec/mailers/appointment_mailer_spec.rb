@@ -12,6 +12,25 @@ RSpec.describe AppointmentMailer, type: :mailer do
     )
   end
 
+  describe 'BSL customer exit poll' do
+    let(:mailgun_headers) { JSON.parse(mail['X-Mailgun-Variables'].value) }
+    let(:appointment) { build_stubbed(:appointment, bsl_video: true) }
+
+    subject(:mail) { described_class.bsl_customer_exit_poll(appointment) }
+
+    it 'sends to the customer email' do
+      expect(mail.to).to eq(['someone@example.com'])
+    end
+
+    it 'renders the mailgun specific headers' do
+      expect(mailgun_headers).to include('message_type' => 'bsl_exit_poll', 'appointment_id' => appointment.id)
+    end
+
+    it 'renders the exit poll vanity URL' do
+      expect(subject.body.encoded).to match('https://www.pensionwise.gov.uk/bsl-exit-poll')
+    end
+  end
+
   describe 'Customer email consent form' do
     let(:mailgun_headers) { JSON.parse(mail['X-Mailgun-Variables'].value) }
     let(:appointment) { build_stubbed(:appointment, :third_party_booking, :email_consent_form_requested) }
