@@ -26,6 +26,7 @@ source 'https://rubygems.org' do
   gem 'bootsnap'
   gem 'bootstrap-kaminari-views'
   gem 'bugsnag'
+  gem 'capitalize-names', require: 'capitalize_names'
   gem 'faraday'
   gem 'faraday-conductivity'
   gem 'faraday_middleware'
