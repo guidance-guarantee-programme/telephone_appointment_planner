@@ -202,12 +202,12 @@ RSpec.describe Appointment, type: :model do
 
   describe 'formatting' do
     it 'title-cases first and last name' do
-      appointment = build(:appointment, first_name: 'bob', last_name: 'carolgees')
+      appointment = build(:appointment, first_name: 'bob', last_name: 'mcDonald')
       appointment.validate
 
       expect(appointment).to have_attributes(
         first_name: 'Bob',
-        last_name: 'Carolgees'
+        last_name: 'McDonald'
       )
     end
   end
