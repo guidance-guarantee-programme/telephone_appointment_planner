@@ -150,7 +150,14 @@ RSpec.feature 'Resource manager downloads appointment reports' do
       :memorable_word,
       :phone,
       :mobile,
-      :email
+      :email,
+      :third_party_booking,
+      :data_subject_consent_obtained,
+      :data_subject_consent_attached,
+      :power_of_attorney,
+      :power_of_attorney_attached,
+      :printed_consent_form_required,
+      :email_consent_form_required
     ]
 
     expect(@page.csv.second).to match_array [
@@ -171,7 +178,8 @@ RSpec.feature 'Resource manager downloads appointment reports' do
       appointment.memorable_word,
       appointment.phone,
       appointment.mobile,
-      appointment.email
+      appointment.email,
+      'f', 'f', 'f', 'f', 'f', 'f', 'f' # third party booking flags
     ]
   end
 end
