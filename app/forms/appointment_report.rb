@@ -1,5 +1,4 @@
-require 'csv'
-
+# rubocop:disable LineLength
 class AppointmentReport
   include ActiveModel::Model
   include Report
@@ -42,7 +41,7 @@ class AppointmentReport
                 AS status
               SQL
              )
-      .select('(SELECT MAX(created_at) FROM status_transitions WHERE appointment_id = appointments.id) as status_changed') # rubocop:disable LineLength
+      .select('(SELECT MAX(created_at) FROM status_transitions WHERE appointment_id = appointments.id) as status_changed')
       .select(<<-SQL
                 CASE WHEN EXISTS(SELECT 1 FROM Activities WHERE type = 'SummaryDocumentActivity' AND appointment_id = appointments.id) THEN 'Yes'
                      ELSE 'No'
@@ -59,23 +58,23 @@ class AppointmentReport
       .select('appointments.phone')
       .select('appointments.mobile')
       .select('appointments.email')
-      .select('third_party_booking')
-      .select('data_subject_consent_obtained')
+      .select("case when third_party_booking is true then 'Yes' else 'No' end as third_party_booking")
+      .select("case when data_subject_consent_obtained is true then 'Yes' else 'No' end as data_subject_consent_obtained")
       .select(<<-SQL
-                exists(
-                  select id from active_storage_attachments where appointments.id = record_id and name = 'data_subject_consent_evidence'
-                ) as data_subject_consent_attached
+                case
+                when exists(select id from active_storage_attachments where appointments.id = record_id and name = 'data_subject_consent_evidence') is true then 'Yes' else 'No'
+                end as data_subject_consent_attached
               SQL
              )
-      .select(' power_of_attorney')
+      .select("case when power_of_attorney = true then 'Yes' else 'No' end as power_of_attorney")
       .select(<<-SQL
-                exists(
-                  select id from active_storage_attachments where appointments.id = record_id and name = 'power_of_attorney_evidence'
-                ) as power_of_attorney_attached
+                case
+                when exists(select id from active_storage_attachments where appointments.id = record_id and name = 'power_of_attorney_evidence') is true then 'Yes' else 'No'
+                end as power_of_attorney_attached
               SQL
              )
-      .select('printed_consent_form_required')
-      .select('email_consent_form_required')
+      .select("case when printed_consent_form_required is true then 'Yes' else 'No' end as printed_consent_form_required")
+      .select("case when email_consent_form_required is true then 'Yes' else 'No' end as email_consent_form_required")
       .where("#{column} >= ? AND #{column} <= ?", range.begin, range.end.end_of_day)
       .where(organisation_clause)
       .joins('INNER JOIN users guiders ON guiders.id = appointments.guider_id')
