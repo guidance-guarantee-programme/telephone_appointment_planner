@@ -59,6 +59,23 @@ class AppointmentReport
       .select('appointments.phone')
       .select('appointments.mobile')
       .select('appointments.email')
+      .select('third_party_booking')
+      .select('data_subject_consent_obtained')
+      .select(<<-SQL
+                exists(
+                  select id from active_storage_attachments where appointments.id = record_id and name = 'data_subject_consent_evidence'
+                ) as data_subject_consent_attached
+              SQL
+             )
+      .select(' power_of_attorney')
+      .select(<<-SQL
+                exists(
+                  select id from active_storage_attachments where appointments.id = record_id and name = 'power_of_attorney_evidence'
+                ) as power_of_attorney_attached
+              SQL
+             )
+      .select('printed_consent_form_required')
+      .select('email_consent_form_required')
       .where("#{column} >= ? AND #{column} <= ?", range.begin, range.end.end_of_day)
       .where(organisation_clause)
       .joins('INNER JOIN users guiders ON guiders.id = appointments.guider_id')
