@@ -179,7 +179,7 @@ RSpec.feature 'Resource manager downloads appointment reports' do
       appointment.phone,
       appointment.mobile,
       appointment.email,
-      'f', 'f', 'f', 'f', 'f', 'f', 'f' # third party booking flags
+      'No', 'No', 'No', 'No', 'No', 'No', 'No' # third party booking flags
     ]
   end
 end
