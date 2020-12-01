@@ -223,7 +223,7 @@ RSpec.describe Appointment, type: :model do
           subject.third_party_booking = true
           subject.printed_consent_form_required = false
           subject.data_subject_name = 'Bob Bobson'
-          subject.data_subject_age  = 51
+          subject.data_subject_date_of_birth = '1950-01-01'.to_date
         end
 
         it 'requires a data subject name' do
@@ -232,8 +232,8 @@ RSpec.describe Appointment, type: :model do
           expect(subject).to be_invalid
         end
 
-        it 'requires a data subject age' do
-          subject.data_subject_age = nil
+        it 'requires a data subject date of birth' do
+          subject.data_subject_date_of_birth = nil
 
           expect(subject).to be_invalid
         end

@@ -29,6 +29,7 @@ class Appointment < ApplicationRecord
     third_party_booking
     data_subject_name
     data_subject_age
+    data_subject_date_of_birth
     power_of_attorney
     data_subject_consent_obtained
     printed_consent_form_required
@@ -86,7 +87,7 @@ class Appointment < ApplicationRecord
   validates :accessibility_requirements, inclusion: [true, false]
   validates :third_party_booking, inclusion: [true, false]
   validates :data_subject_name, presence: true, if: :third_party_booking?
-  validates :data_subject_age, numericality: { only_integer: true }, if: :third_party_booking?
+  validates :data_subject_date_of_birth, presence: true, if: :third_party_booking?
   validates :notes, presence: true, if: :validate_adjustment_needs?
   validates :type_of_appointment, inclusion: %w(standard 50-54)
   validates :where_you_heard, inclusion: WhereYouHeard.options_for_inclusion, on: :create, unless: :rebooked_from_id?
@@ -100,6 +101,7 @@ class Appointment < ApplicationRecord
   validate :not_within_grace_period, unless: :agent_is_resource_manager?
   validate :valid_within_booking_window
   validate :date_of_birth_valid
+  validate :data_subject_date_of_birth_valid
   validate :email_valid, if: :pension_wise_api?, on: :create
   validate :address_or_email_valid, if: :regular_agent?, on: :create
   validate :validate_guider_organisation, on: :update
@@ -186,6 +188,16 @@ class Appointment < ApplicationRecord
     end
   rescue ArgumentError
     @date_of_birth_invalid = true
+  end
+
+  def data_subject_date_of_birth=(value)
+    if value.is_a?(Hash)
+      super(Date.new(value[1], value[2], value[3]))
+    else
+      super(value)
+    end
+  rescue ArgumentError
+    @data_subject_date_of_birth_invalid = true
   end
 
   def memorable_word(obscure: false)
@@ -387,6 +399,12 @@ class Appointment < ApplicationRecord
 
     too_late = start_at > BusinessDays.from_now(45)
     errors.add(:start_at, 'must be less than 45 business days from now') if too_late
+  end
+
+  def data_subject_date_of_birth_valid
+    return unless third_party_booking?
+
+    errors.add(:data_subject_date_of_birth, 'must be valid') if @data_subject_date_of_birth_invalid
   end
 
   def date_of_birth_valid

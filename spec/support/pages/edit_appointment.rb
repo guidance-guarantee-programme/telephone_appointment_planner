@@ -27,7 +27,9 @@ module Pages
 
     element :third_party_booked,                    '.t-third-party-booked'
     element :data_subject_name,                     '.t-data-subject-name'
-    element :data_subject_age,                      '.t-data-subject-age'
+    element :data_subject_date_of_birth_day,        '.t-data-subject-date-of-birth-day'
+    element :data_subject_date_of_birth_month,      '.t-data-subject-date-of-birth-month'
+    element :data_subject_date_of_birth_year,       '.t-data-subject-date-of-birth-year'
     element :data_subject_consent_obtained,         '.t-data-subject-consent-obtained'
     element :data_subject_consent_evidence,         '.t-data-subject-consent-evidence'
     element :consent_download,                      '.t-consent-download'

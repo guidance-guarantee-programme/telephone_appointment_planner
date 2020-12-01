@@ -174,6 +174,7 @@ class AppointmentsController < ApplicationController
       :third_party_booking,
       :data_subject_name,
       :data_subject_age,
+      :data_subject_date_of_birth,
       :data_subject_consent_obtained,
       :email_consent_form_required,
       :printed_consent_form_required,

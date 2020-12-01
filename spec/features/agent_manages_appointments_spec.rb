@@ -209,7 +209,9 @@ RSpec.feature 'Agent manages appointments' do
 
   def then_they_see_the_correct_consent_fields
     expect(@page).to have_data_subject_name
-    expect(@page).to have_data_subject_age
+    expect(@page).to have_data_subject_date_of_birth_day
+    expect(@page).to have_data_subject_date_of_birth_month
+    expect(@page).to have_data_subject_date_of_birth_year
 
     expect(@page).to have_no_data_subject_consent_evidence
     expect(@page).to have_no_power_of_attorney_evidence

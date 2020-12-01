@@ -1,0 +1,67 @@
+<%
+  form_element_day_id = "#{form.object_name}_data_subject_date_of_birth_3i"
+  form_element_month_id = "#{form.object_name}_data_subject_date_of_birth_2i"
+  form_element_year_id = "#{form.object_name}_data_subject_date_of_birth_1i"
+%>
+
+<div class="form-dob clearfix" data-module="customer-age" data-output-id="data-subject-date-of-birth">
+  <%= field_with_errors_wrapper(form, :data_subject_date_of_birth, 'form-dob__inputs-container') do %>
+    <label for="<%= form_element_day_id %>">
+      <span class="sr-only">Date of birth</span> <%= required_label(:day) %>
+      <%=
+        form.text_field(
+          'data_subject_date_of_birth(3i)',
+          id: form_element_day_id,
+          use_label: false,
+          value: form.object.data_subject_date_of_birth.try(:day),
+          placeholder: 'DD',
+          autocomplete: 'off',
+          class: 'form-dob__input js-dob-day t-data-subject-date-of-birth-day',
+          pattern: '[0-9]+',
+          maxlength: 2,
+          title: 'Must be numeric eg 01',
+          'aria-describedby': 'dob-hint'
+        )
+      %>
+    </label>
+    <label for="<%= form_element_month_id %>">
+      <span class="sr-only">Date of birth</span> <%= required_label(:month) %>
+      <%=
+        form.text_field(
+          'data_subject_date_of_birth(2i)',
+          id: form_element_month_id,
+          use_label: false,
+          value: form.object.data_subject_date_of_birth.try(:month),
+          placeholder: 'MM',
+          autocomplete: 'off',
+          class: 'form-dob__input js-dob-month t-data-subject-date-of-birth-month',
+          pattern: '[0-9]+',
+          maxlength: 2,
+          title: 'Must be numeric eg 01'
+        )
+      %>
+    </label>
+    <label for="<%= form_element_year_id %>">
+      <span class="sr-only">Date of birth</span> <%= required_label(:year) %>
+      <%=
+        form.text_field(
+          'data_subject_date_of_birth(1i)',
+          id: form_element_year_id,
+          use_label: false,
+          value: form.object.data_subject_date_of_birth.try(:year),
+          placeholder: 'YYYY',
+          autocomplete: 'off',
+          class: 'form-dob__input form-dob__input--year js-dob-year t-data-subject-date-of-birth-year',
+          pattern: '[0-9]+',
+          maxlength: 4,
+          title: 'Must be numeric eg 1955'
+        )
+      %>
+    </label>
+    <% form.object.errors[:data_subject_date_of_birth].each do |message| %>
+      <div class="text-danger"><%= message %></div>
+    <% end %>
+  <% end %>
+  <span class="bg-info form-dob__age" id="data-subject-date-of-birth"></span>
+</div>
+<div class="help-block" id="dob-hint">For example, 31 3 1950</div>

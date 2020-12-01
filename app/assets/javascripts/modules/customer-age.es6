@@ -47,7 +47,7 @@
       if (age) {
         $.publish('customer-age-change', age);
 
-        this.$output.html(`Customer is <b>${age}</b> years old`);
+        this.$output.html(`<b>${age}</b> years old`);
       }
     }
 

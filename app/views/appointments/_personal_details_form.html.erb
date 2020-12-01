@@ -69,7 +69,11 @@
       <p><strong>This appointment will be delivered to a third party on behalf of the data subject:</strong></p>
       <div class="form-group">
         <%= f.text_field :data_subject_name, autocomplete: false, class: 't-data-subject-name', label: required_label('Name'), placeholder: 'Name' %>
-        <%= f.text_field :data_subject_age, autocomplete: false, class: 't-data-subject-age', label: required_label('Age'), placeholder: 'Age' %>
+        <% if @appointment.data_subject_age.present? %>
+        <%= f.text_field :data_subject_age, autocomplete: false, readonly: true, disabled: true, class: 't-data-subject-age', label: required_label('Age'), placeholder: 'Age' %>
+        <% end %>
+        <p><strong>Date of birth</strong></p>
+        <%= render 'data_subject_date_of_birth_field', form: f %>
       </div>
 
       <%= f.check_box :data_subject_consent_obtained, class: 't-data-subject-consent-obtained', data: { target: 'data-subject-consent' } %>
