@@ -43,7 +43,7 @@
   <%= f.hidden_field :bsl_video %>
 
   <%= f.hidden_field :data_subject_name %>
-  <%= f.hidden_field :data_subject_age %>
+  <%= f.hidden_field :data_subject_date_of_birth %>
   <%= f.hidden_field :data_subject_consent_obtained %>
   <%= f.hidden_field :printed_consent_form_required %>
   <%= f.hidden_field :email_consent_form_required %>
@@ -121,8 +121,8 @@
               <td><%= @appointment.data_subject_name %></td>
             </tr>
             <tr>
-              <td class="active"><b>Data subject age</b></td>
-              <td><%= @appointment.data_subject_age %></td>
+              <td class="active"><b>Data subject date of birth</b></td>
+              <td><%= @appointment.data_subject_date_of_birth.to_date.to_s(:govuk_date) %></td>
             </tr>
             <tr>
               <td class="active"><b>Email consent form required</b></td>

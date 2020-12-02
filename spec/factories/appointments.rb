@@ -49,7 +49,7 @@ FactoryBot.define do
     trait :third_party_booking do
       third_party_booking { true }
       data_subject_name { 'Bob Bobson' }
-      data_subject_age { 51 }
+      data_subject_date_of_birth { '1950-01-01' }
     end
 
     trait :email_consent_form_requested do

@@ -47,6 +47,7 @@ class Redactor
       notes: 'redacted',
       data_subject_name: 'redacted',
       data_subject_age: '0',
+      data_subject_date_of_birth: '1950-01-01',
       consent_address_line_one: 'redacted',
       consent_address_line_two: 'redacted',
       consent_address_line_three: 'redacted',
