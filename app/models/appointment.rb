@@ -87,7 +87,7 @@ class Appointment < ApplicationRecord
   validates :accessibility_requirements, inclusion: [true, false]
   validates :third_party_booking, inclusion: [true, false]
   validates :data_subject_name, presence: true, if: :third_party_booking?
-  validates :data_subject_date_of_birth, presence: true, if: :third_party_booking?
+  validates :data_subject_date_of_birth, presence: true, if: :require_data_subject_date_of_birth?
   validates :notes, presence: true, if: :validate_adjustment_needs?
   validates :type_of_appointment, inclusion: %w(standard 50-54)
   validates :where_you_heard, inclusion: WhereYouHeard.options_for_inclusion, on: :create, unless: :rebooked_from_id?
@@ -402,9 +402,13 @@ class Appointment < ApplicationRecord
   end
 
   def data_subject_date_of_birth_valid
-    return unless third_party_booking?
+    return unless require_data_subject_date_of_birth?
 
     errors.add(:data_subject_date_of_birth, 'must be valid') if @data_subject_date_of_birth_invalid
+  end
+
+  def require_data_subject_date_of_birth?
+    third_party_booking? && data_subject_age.blank?
   end
 
   def date_of_birth_valid
