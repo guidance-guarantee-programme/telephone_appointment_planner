@@ -168,10 +168,10 @@
         eventsToAdd = [];
 
       for (let currentDate = moment(calendarStartDate); currentDate < calendarEndDate; currentDate.add(1, 'days')) {
-        if (currentDate.day() != 0 && currentDate.day() != 6) {
-          for (let eventIndex in events) {
-            let currentEvent = events[eventIndex];
+        for (let eventIndex in events) {
+          let currentEvent = events[eventIndex];
 
+          if (currentEvent.days.includes(currentDate.day())) {
             eventsToAdd.push({
               start: `${currentDate.format('YYYY-MM-DD')}T${currentEvent.start}`,
               end: `${currentDate.format('YYYY-MM-DD')}T${currentEvent.end}`
