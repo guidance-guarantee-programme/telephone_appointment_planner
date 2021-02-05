@@ -26,13 +26,13 @@ RSpec.describe BookableSlot, type: :model do
         after { travel_back }
 
         {
-          'Monday'    => 'Tuesday',
-          'Tuesday'   => 'Wednesday',
-          'Wednesday' => 'Thursday',
-          'Thursday'  => 'Friday',
-          'Friday'    => 'Monday',
-          'Saturday'  => 'Monday',
-          'Sunday'    => 'Monday'
+          'Monday'    => 'Wednesday',
+          'Tuesday'   => 'Thursday',
+          'Wednesday' => 'Friday',
+          'Thursday'  => 'Monday',
+          'Friday'    => 'Tuesday',
+          'Saturday'  => 'Tuesday',
+          'Sunday'    => 'Tuesday'
         }.each do |day, expected_day|
           context "Day is #{day}" do
             it "next valid start date is #{expected_day}" do
@@ -51,7 +51,7 @@ RSpec.describe BookableSlot, type: :model do
 
         it 'takes account of holidays' do
           travel_to '2020-05-24 12:00' do
-            expect(subject.to_date).to eq('2020-05-26'.to_date)
+            expect(subject.to_date).to eq('2020-05-27'.to_date)
           end
         end
       end
@@ -59,12 +59,12 @@ RSpec.describe BookableSlot, type: :model do
       it 'respects timezones eg DST/BST' do
         # DST
         travel_to '2020-01-01 13:00' do
-          expect(BookableSlot.next_valid_start_date(user)).to eq('2020-01-02 21:00 UTC'.to_time.in_time_zone('London'))
+          expect(BookableSlot.next_valid_start_date(user)).to eq('2020-01-03 21:00 UTC'.to_time.in_time_zone('London'))
         end
 
         # BST
         travel_to '2020-04-14 13:00' do
-          expect(BookableSlot.next_valid_start_date(user)).to eq('2020-04-15 21:00 UTC'.to_time.in_time_zone('London'))
+          expect(BookableSlot.next_valid_start_date(user)).to eq('2020-04-16 21:00 UTC'.to_time.in_time_zone('London'))
         end
       end
     end
