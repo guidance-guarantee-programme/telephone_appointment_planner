@@ -88,5 +88,6 @@ source 'https://rubygems.org' do
   group :staging, :production do
     gem 'aws-sdk-s3', require: false
     gem 'lograge'
+    gem 'newrelic_rpm'
   end
 end
