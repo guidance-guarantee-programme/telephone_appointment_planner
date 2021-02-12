@@ -14,6 +14,16 @@ RSpec.describe Notifier, '#call' do
     allow(mailer).to receive(:deliver)
   end
 
+  context 'when an appointment is updated to include printed consent' do
+    it 'enqueues the third party printed consent form job' do
+      appointment.update_attribute(:printed_consent_form_required, true)
+
+      expect(PrintedThirdPartyConsentFormJob).to receive(:perform_later).with(appointment)
+
+      subject.call
+    end
+  end
+
   context 'when an appointment is updated to include email consent' do
     it 'enqueues the third party consent form job' do
       appointment.update_attribute(:email_consent_form_required, true)

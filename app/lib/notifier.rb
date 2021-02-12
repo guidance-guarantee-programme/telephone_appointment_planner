@@ -40,8 +40,14 @@ class Notifier
       CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::UPDATED_MESSAGE)
     end
 
+    PrintedThirdPartyConsentFormJob.perform_later(appointment) if requires_printed_consent_form?
     EmailThirdPartyConsentFormJob.perform_later(appointment) if requires_email_consent_form?
     BslCustomerExitPollJob.set(wait: 24.hours).perform_later(appointment) if bsl_appointment_complete?
+  end
+
+  def requires_printed_consent_form?
+    appointment.previous_changes.slice('printed_consent_form_required').present? &&
+      appointment.printed_consent_form_required?
   end
 
   def requires_email_consent_form?
