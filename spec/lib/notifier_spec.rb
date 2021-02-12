@@ -14,6 +14,16 @@ RSpec.describe Notifier, '#call' do
     allow(mailer).to receive(:deliver)
   end
 
+  context 'when an appointment is updated to include email consent' do
+    it 'enqueues the third party consent form job' do
+      appointment.update_attribute(:email_consent_form_required, true)
+
+      expect(EmailThirdPartyConsentFormJob).to receive(:perform_later).with(appointment)
+
+      subject.call
+    end
+  end
+
   context 'when a BSL appointment is completed' do
     it 'enqueues the BSL exit poll job to run in 24 hours' do
       scheduler = double(perform_later: true)
