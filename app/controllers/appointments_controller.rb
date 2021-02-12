@@ -34,7 +34,7 @@ class AppointmentsController < ApplicationController
     @appointment.allocate(via_slot: calendar_scheduling?, agent: current_user)
 
     if @appointment.save
-      Notifier.new(@appointment).call
+      Notifier.new(@appointment, current_user).call
       redirect_to edit_appointment_path(@appointment), success: 'Appointment has been rescheduled'
     else
       render :reschedule
@@ -44,7 +44,7 @@ class AppointmentsController < ApplicationController
   def update
     @appointment = Appointment.find(params[:id])
     if @appointment.update(update_params)
-      Notifier.new(@appointment).call
+      Notifier.new(@appointment, current_user).call
       redirect_to edit_appointment_path(@appointment), success: 'Appointment has been modified'
     else
       render :edit

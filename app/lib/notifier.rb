@@ -1,6 +1,7 @@
 class Notifier
-  def initialize(appointment)
+  def initialize(appointment, modifying_agent = nil)
     @appointment = appointment
+    @modifying_agent = modifying_agent
   end
 
   def call
@@ -18,6 +19,8 @@ class Notifier
       AppointmentCancelledNotificationsJob.perform_later(appointment)
     elsif appointment_rescheduled?
       AppointmentRescheduledNotificationsJob.perform_later(appointment)
+    elsif requires_adjustment_notification?
+      AdjustmentNotificationsJob.perform_later(appointment)
     end
   end
 
@@ -31,16 +34,35 @@ class Notifier
     Array(appointment.previous_changes.fetch('guider_id', appointment.guider_id))
   end
 
-  def notify_customer # rubocop:disable AbcSize
+  def notify_customer # rubocop:disable AbcSize, CyclomaticComplexity, PerceivedComplexity
     if appointment_cancelled?
       CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::CANCELLED_MESSAGE)
     elsif appointment_missed?
       CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::MISSED_MESSAGE)
     elsif appointment_details_changed? && appointment.future?
       CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::UPDATED_MESSAGE)
-    elsif bsl_appointment_complete?
-      BslCustomerExitPollJob.set(wait: 24.hours).perform_later(appointment)
     end
+
+    PrintedThirdPartyConsentFormJob.perform_later(appointment) if requires_printed_consent_form?
+    EmailThirdPartyConsentFormJob.perform_later(appointment) if requires_email_consent_form?
+    BslCustomerExitPollJob.set(wait: 24.hours).perform_later(appointment) if bsl_appointment_complete?
+  end
+
+  def requires_adjustment_notification?
+    return unless modifying_agent&.tp_agent?
+
+    appointment.previous_changes.slice('accessibility_requirements', 'third_party_booking').present? &&
+      appointment.adjustments?
+  end
+
+  def requires_printed_consent_form?
+    appointment.previous_changes.slice('printed_consent_form_required').present? &&
+      appointment.printed_consent_form_required?
+  end
+
+  def requires_email_consent_form?
+    appointment.previous_changes.slice('email_consent_form_required').present? &&
+      appointment.email_consent_form_required?
   end
 
   def bsl_appointment_complete?
@@ -72,4 +94,5 @@ class Notifier
   end
 
   attr_reader :appointment
+  attr_reader :modifying_agent
 end
