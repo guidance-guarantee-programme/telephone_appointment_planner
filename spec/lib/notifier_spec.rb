@@ -1,10 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe Notifier, '#call' do
-  subject { described_class.new(appointment) }
+  subject { described_class.new(appointment, modifying_agent) }
   let!(:appointment) { create(:appointment) }
   let(:mailer) { double }
   let(:activity) { double(id: 1) }
+  let(:modifying_agent) { nil }
 
   before do
     allow(AppointmentMailer).to receive(:cancelled) { mailer }
@@ -12,6 +13,30 @@ RSpec.describe Notifier, '#call' do
     allow(AppointmentMailer).to receive(:missed) { mailer }
     allow(AppointmentMailer).to receive(:updated) { mailer }
     allow(mailer).to receive(:deliver)
+  end
+
+  context 'when an appointment is updated to include an ’adjustment’' do
+    context 'when the person effecting the change is a TP agent' do
+      let(:modifying_agent) { create(:agent, :tp) }
+
+      it 'enqueues the adjustment notifications job' do
+        appointment.update_attribute(:accessibility_requirements, true)
+
+        expect(AdjustmentNotificationsJob).to receive(:perform_later).with(appointment)
+
+        subject.call
+      end
+    end
+
+    context 'when it’s another type of user' do
+      it 'does not enqueue the adjustment notifications job' do
+        appointment.update_attribute(:accessibility_requirements, true)
+
+        expect(AdjustmentNotificationsJob).not_to receive(:perform_later).with(appointment)
+
+        subject.call
+      end
+    end
   end
 
   context 'when an appointment is updated to include printed consent' do

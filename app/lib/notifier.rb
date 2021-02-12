@@ -1,6 +1,7 @@
 class Notifier
-  def initialize(appointment)
+  def initialize(appointment, modifying_agent = nil)
     @appointment = appointment
+    @modifying_agent = modifying_agent
   end
 
   def call
@@ -18,6 +19,8 @@ class Notifier
       AppointmentCancelledNotificationsJob.perform_later(appointment)
     elsif appointment_rescheduled?
       AppointmentRescheduledNotificationsJob.perform_later(appointment)
+    elsif requires_adjustment_notification?
+      AdjustmentNotificationsJob.perform_later(appointment)
     end
   end
 
@@ -43,6 +46,13 @@ class Notifier
     PrintedThirdPartyConsentFormJob.perform_later(appointment) if requires_printed_consent_form?
     EmailThirdPartyConsentFormJob.perform_later(appointment) if requires_email_consent_form?
     BslCustomerExitPollJob.set(wait: 24.hours).perform_later(appointment) if bsl_appointment_complete?
+  end
+
+  def requires_adjustment_notification?
+    return unless modifying_agent&.tp_agent?
+
+    appointment.previous_changes.slice('accessibility_requirements', 'third_party_booking').present? &&
+      appointment.adjustments?
   end
 
   def requires_printed_consent_form?
@@ -84,4 +94,5 @@ class Notifier
   end
 
   attr_reader :appointment
+  attr_reader :modifying_agent
 end
