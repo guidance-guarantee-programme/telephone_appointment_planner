@@ -17,7 +17,7 @@ RSpec.describe 'GET /api/v1/bookable_slots' do
     create(:bookable_slot, start_at: Time.zone.parse('2017-01-16 15:00'))
     create_list(:bookable_slot, 2, start_at: Time.zone.parse('2017-01-16 12:00'))
 
-    # falls within the booking window
+    # falls before the booking window
     create(:bookable_slot, start_at: 2.days.from_now.advance(hours: 1))
 
     # in the window since it's TP with a short start
