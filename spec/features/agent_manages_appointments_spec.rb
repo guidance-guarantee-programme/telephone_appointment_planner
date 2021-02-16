@@ -311,7 +311,6 @@ RSpec.feature 'Agent manages appointments' do
     expect(@page.preview).to have_content 'Customer research consent Yes'
     expect(@page.preview).to have_content 'Standard'
     expect(@page.preview).to have_content 'Smarter signposted referral? Yes' if smarter_signposted
-    expect(@page).to have_road_safety_banner
   end
 
   def and_they_fill_in_their_appointment_details_without_an_email
