@@ -21,32 +21,44 @@ RSpec.feature 'Scheduled reporting summary' do
     create(:bookable_slot, :ni, start_at: Time.zone.parse('2018-04-29 11:00'))
     create(:bookable_slot, :wallsend, start_at: Time.zone.parse('2018-04-29 11:00'))
     create(:bookable_slot, :lancs_west, start_at: Time.zone.parse('2018-04-29 11:00'))
+    create(:bookable_slot, :derbyshire_districts, start_at: Time.zone.parse('2018-05-12 11:00'))
   end
 
   def then_the_availability_is_summarised_correctly
     expect(ReportingSummary.find_by(organisation: 'CAS')).to have_attributes(
+      two_week_availability: true,
       four_week_availability: true,
       first_available_slot_on: '2018-04-28'.to_date
     )
 
     expect(ReportingSummary.find_by(organisation: 'Lancs West')).to have_attributes(
+      two_week_availability: true,
       four_week_availability: true,
       first_available_slot_on: '2018-04-29'.to_date
     )
 
     expect(ReportingSummary.find_by(organisation: 'Wallsend')).to have_attributes(
+      two_week_availability: true,
       four_week_availability: true,
       first_available_slot_on: '2018-04-29'.to_date
     )
 
     expect(ReportingSummary.find_by(organisation: 'NI')).to have_attributes(
+      two_week_availability: true,
       four_week_availability: true,
       first_available_slot_on: '2018-04-29'.to_date
     )
 
     expect(ReportingSummary.find_by(organisation: 'TP')).to have_attributes(
+      two_week_availability: true,
       four_week_availability: true,
       first_available_slot_on: '2018-04-27'.to_date
+    )
+
+    expect(ReportingSummary.find_by(organisation: 'Derbyshire Districts')).to have_attributes(
+      two_week_availability: false,
+      four_week_availability: true,
+      first_available_slot_on: '2018-05-12'.to_date
     )
   end
 
@@ -57,6 +69,7 @@ RSpec.feature 'Scheduled reporting summary' do
   def then_the_availability_is_summarised
     ReportingSummary.all.each do |entry|
       expect(entry).to have_attributes(
+        two_week_availability: false,
         four_week_availability: false,
         first_available_slot_on: nil
       )

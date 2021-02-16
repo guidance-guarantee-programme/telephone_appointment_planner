@@ -23,5 +23,9 @@ FactoryBot.define do
     trait :lancs_west do
       guider { create(:guider, :lancs_west) }
     end
+
+    trait :derbyshire_districts do
+      guider { create(:guider, :derbyshire_districts) }
+    end
   end
 end
