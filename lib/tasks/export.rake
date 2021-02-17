@@ -4,8 +4,8 @@ namespace :export do
                                  where_you_heard, gdpr_consent, created_at, updated_at',
     'MAPS_PWBLZ_TAPBKSLT_'   => 'id, guider_id, start_at, end_at, created_at, updated_at',
     'MAPS_PWBLZ_TAPHLD_'     => 'id, user_id, start_at, end_at, created_at, updated_at',
-    'MAPS_PWBLZ_TAPREPSUM_'  => 'id, organisation, four_week_availability, first_available_slot_on, created_at,
-                                 updated_at',
+    'MAPS_PWBLZ_TAPREPSUM_'  => 'id, organisation, two_week_availability, four_week_availability,
+                                 first_available_slot_on, created_at, updated_at',
     'MAPS_PWBLZ_TAPUSR_'     => 'id, organisation_slug, organisation_content_id, created_at, updated_at'
   }.freeze
 
