@@ -151,7 +151,7 @@ class Appointment < ApplicationRecord
           start_at: start_at.beginning_of_day..start_at.end_of_day
         )
         .order(:id)
-        .pluck(:id)
+        .take(5)
   end
 
   def potential_duplicates?

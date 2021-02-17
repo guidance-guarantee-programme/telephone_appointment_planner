@@ -33,9 +33,14 @@
     <p>
       This appointment may be a duplicate of:
     </p>
-    <ul class="list-inline">
+    <ul>
       <% @appointment.potential_duplicates.each do |appointment| %>
-        <li><%= link_to appointment, edit_appointment_path(id: appointment) %></li>
+        <li>
+          <%= link_to "##{appointment.id}", edit_appointment_path(id: appointment) %><br>
+          Organisation: <em><%= organisation_name(appointment) %></em><br>
+          Appointment date/time: <em><%= appointment.start_at.to_date.to_s(:govuk_date_short) %>, <%= appointment.start_at.to_s(:govuk_time) %></em><br>
+          Created: <em><%= appointment.created_at.to_date.to_s(:govuk_date_short) %>, <%= appointment.created_at.to_s(:govuk_time) %></em>
+        </li>
       <% end %>
     </ul>
   </div>
