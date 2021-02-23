@@ -1,0 +1,33 @@
+<% content_for(:page_title, t('service.title', page_title: "Duplicates for Appointment ##{@appointment.id}")) %>
+<%= breadcrumb(
+  { title: 'Edit Appointment', path: edit_appointment_path(@appointment.id) },
+  { title: "Duplicates for Appointment ##{@appointment.id}" }
+) %>
+
+<h1>Duplicates for Appointment #<%= @appointment.id %></h1>
+
+<table class="table table-striped table-bordered">
+  <thead>
+    <tr>
+      <th>Reference</th>
+      <th>Organisation</th>
+      <th>Appointment date/time</th>
+      <th>Status</th>
+      <th>Created by</th>
+      <th>Created</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @appointment.potential_duplicates.each do |duplicate| %>
+    <% @duplicate = DuplicatePresenter.new(duplicate) %>
+    <tr class="t-duplicate">
+      <td><%= @duplicate.id %></td>
+      <td><%= @duplicate.organisation_name %> <small><%= @duplicate.email %></small></td>
+      <td><%= @duplicate.start %></td>
+      <td><%= @duplicate.status %></td>
+      <td><%= @duplicate.agent_name %></td>
+      <td><%= @duplicate.timestamp %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

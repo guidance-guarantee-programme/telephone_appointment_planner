@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_16_104738) do
+ActiveRecord::Schema.define(version: 2021_02_23_123516) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -134,6 +134,13 @@ ActiveRecord::Schema.define(version: 2021_02_16_104738) do
     t.datetime "updated_at", null: false
     t.index ["guider_id"], name: "index_bookable_slots_on_guider_id"
     t.index ["start_at", "end_at"], name: "index_bookable_slots_on_start_at_and_end_at"
+  end
+
+  create_table "email_lookups", force: :cascade do |t|
+    t.string "organisation_id", null: false
+    t.string "email", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "group_assignments", id: false, force: :cascade do |t|

@@ -1,0 +1,2 @@
+class EmailLookup < ApplicationRecord
+end
