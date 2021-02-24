@@ -44,6 +44,10 @@ class Provider
     @cita
   end
 
+  def email
+    EmailLookup.find_by(organisation_id: id)&.email
+  end
+
   def self.find(id)
     ALL_ORGANISATIONS.find { |organisation| organisation.id == id }
   end

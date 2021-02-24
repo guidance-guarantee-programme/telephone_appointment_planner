@@ -1,8 +1,4 @@
 module AppointmentHelper
-  def organisation_name(appointment)
-    Provider.find(appointment.guider.organisation_content_id)&.name
-  end
-
   def bsl_video_visible?(current_user)
     current_user.administrator? || current_user.tp? || current_user.lancs_west?
   end

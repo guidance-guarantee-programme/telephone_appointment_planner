@@ -48,6 +48,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     resource :consent, only: :show
     resource :process, only: :create
     resources :changes, only: :index
+    resources :duplicates, only: :index
 
     post :preview, on: :collection
     patch :batch_update, on: :collection
