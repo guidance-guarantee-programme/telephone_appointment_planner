@@ -18,10 +18,28 @@ class AuditPresenter < SimpleDelegator
       after = value.last.to_s
 
       memo[field] = {
-        before: before.empty? ? '-' : before.humanize,
-        after: after.empty? ? '-' : after.humanize
+        before: before.empty? ? '-' : formatted_value(key, before),
+        after: after.empty? ? '-' : formatted_value(key, after)
       }
     end
+  end
+
+  def formatted_value(key, value)
+    formatter = "format_#{key}"
+
+    respond_to?(formatter) ? public_send(formatter, value) : value.humanize
+  end
+
+  def format_guider_id(value)
+    User.find(value).name
+  end
+
+  def format_agent_id(value)
+    User.find(value).name
+  end
+
+  def format_status(value)
+    Appointment.statuses.key(value.to_i)&.humanize
   end
 
   def self.wrap(objects)
