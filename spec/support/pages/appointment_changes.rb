@@ -3,7 +3,7 @@ module Pages
     set_url '/appointments/{id}/changes'
 
     section :changes_table, '.t-changes-table' do
-      element :change_row, '.t-change-row'
+      elements :change_rows, '.t-change-row'
     end
   end
 end
