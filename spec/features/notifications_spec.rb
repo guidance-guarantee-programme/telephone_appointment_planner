@@ -66,8 +66,8 @@ RSpec.describe 'Activity notification alerts', js: true do
 end
 
 def and_they_have_an_appointment
-  start_at     = BusinessDays.from_now(10).change(hour: 9)
-  @appointment = create(:appointment, start_at: start_at, guider: guider, agent: agent)
+  start_at = BusinessDays.from_now(10).change(hour: 9)
+  @appointment ||= create(:appointment, start_at: start_at, guider: guider, agent: agent)
 end
 
 def when_they_are_on_their_dashboard
@@ -105,7 +105,7 @@ def then_they_can_see_no_high_priority_alerts_message
 end
 
 def then_they_can_see_the_high_priority_activity
-  expect(@page.activity_feed.high_priority_activities).to be_visible
+  expect(@page.activity_feed.high_priority_activities).to be_present
 end
 
 def and_when_they_resolve_the_high_priority_activity
@@ -113,5 +113,5 @@ def and_when_they_resolve_the_high_priority_activity
 end
 
 def then_the_high_priority_activity_is_resolved
-  expect(@page.activity_feed.high_priority_activities).to have_content('Resolved Successfully')
+  expect(@page.activity_feed.high_priority_activities.first).to have_content('Resolved Successfully')
 end
