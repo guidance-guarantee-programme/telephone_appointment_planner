@@ -65,4 +65,8 @@ class Provider
 
     []
   end
+
+  def self.lloyds_providers
+    ALL_ORGANISATIONS.select(&:cita?)
+  end
 end
