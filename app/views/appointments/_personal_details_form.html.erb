@@ -150,6 +150,8 @@
       <%= f.check_box :smarter_signposted, class: 't-smarter-signposted', label: 'Smarter signposting referral?' %>
     <% end %>
 
+    <%= f.check_box :lloyds_signposted, class: 't-lloyds-signposted', label: 'Lloyds signposting referral?' %>
+
     <%= f.text_area :notes, autocomplete: 'off', class: 't-notes js-notes', rows: 6, placeholder: 'Is the customer hard of hearing? Is English their first language? etc.' %>
     <div class="form-group">
       <%= f.select :where_you_heard,

@@ -90,7 +90,8 @@ RSpec.describe 'POST /api/v1/appointments' do
       'where_you_heard'  => '1',
       'gdpr_consent'     => nil,
       'accessibility_requirements' => true,
-      'notes' => 'I am hard of hearing'
+      'notes' => 'I am hard of hearing',
+      'lloyds_signposted' => true
     }
 
     post api_v1_appointments_path, params: @payload, as: :json
@@ -110,7 +111,8 @@ RSpec.describe 'POST /api/v1/appointments' do
       'gdpr_consent'     => nil,
       'accessibility_requirements' => true,
       'notes' => 'I am hard of hearing',
-      'smarter_signposted' => true
+      'smarter_signposted' => true,
+      'lloyds_signposted' => false
     }
 
     post api_v1_appointments_path, params: @payload, as: :json
@@ -147,7 +149,8 @@ RSpec.describe 'POST /api/v1/appointments' do
         gdpr_consent: '',
         accessibility_requirements: true,
         notes: 'I am hard of hearing',
-        pension_provider: 'n/a'
+        pension_provider: 'n/a',
+        lloyds_signposted: true
       )
     end
   end
