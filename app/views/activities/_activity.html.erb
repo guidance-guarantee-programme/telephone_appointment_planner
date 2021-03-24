@@ -20,7 +20,7 @@
     <% end %>
     <%= render('activities/details', appointment: activity.appointment) if local_assigns[:details] %>
     <span class="activity__date">
-      <%= activity.created_at.to_s(:govuk_date_short) %> (<%= time_ago_in_words(activity.created_at) %> ago)
+      <%= activity.created_at.in_time_zone('London').to_s(:govuk_date_short) %> (<%= time_ago_in_words(activity.created_at.in_time_zone('London'))%> ago)
       <% if activity.high_priority? %>
         · <span class="activity__priority<% if activity.resolved? %> activity__priority--resolved<% end %>">Priority</span>
       <% end %>
