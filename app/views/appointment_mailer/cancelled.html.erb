@@ -1,7 +1,3 @@
-<%= p do %>
-  If you've cancelled due to the ongoing response to coronavirus you can still <a href="https://www.pensionwise.gov.uk/en/explore-your-options?utm_source=cancellation&utm_medium=email&utm_campaign=tele">explore your pension options</a>.
-<% end %>
-
 <h1 style="color: #0B0C0C !important;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 20px;line-height: 1.111111111;padding: 15px 0;">
   We’ve cancelled your appointment
 </h1>
@@ -11,7 +7,11 @@
 <% end %>
 
 <%= p do %>
-  We have cancelled the following phone appointment as requested:
+  <% if @appointment.cancelled_by_pension_wise? %>
+    We have cancelled the following phone appointment due to unforeseen circumstances. We apologise for any inconvenience this may cause.
+  <% else %>
+    We have cancelled the following phone appointment as requested:
+  <% end %>
 <% end %>
 
 <%= p do %>
@@ -39,7 +39,11 @@
 <% end %>
 
 <%= p do %>
-  If you didn’t ask us to cancel your appointment or to book a new one, call 0800 138 3944. Please don’t reply to this email.
+  <% if @appointment.cancelled_by_pension_wise? %>
+    If we have not contacted you already, we will offer you a new date for your appointment within 1 working day.
+  <% else %>
+    If you didn’t ask us to cancel your appointment or to book a new one, call 0800 138 3944. Please don’t reply to this email.
+  <% end %>
 <% end %>
 
 <%= p do %>

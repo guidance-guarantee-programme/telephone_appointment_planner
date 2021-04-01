@@ -368,9 +368,21 @@ RSpec.describe AppointmentMailer, type: :mailer do
     describe 'rendering the body' do
       let(:body) { subject.body.encoded }
 
-      it 'includes information' do
-        expect(body).to include('We=E2=80=99ve cancelled your appointment')
-        expect(body).to include(appointment.id.to_s)
+      context 'when cancelled by pension wise' do
+        it 'includes the correct messaging' do
+          appointment.status = :cancelled_by_pension_wise
+
+          expect(body).to include('unforeseen circumstances')
+          expect(body).to include('offer you a new date')
+        end
+      end
+
+      context 'when cancelled otherwise' do
+        it 'includes information' do
+          expect(body).to include('We=E2=80=99ve cancelled your appointment')
+          expect(body).to include(appointment.id.to_s)
+          expect(body).to include('as requested')
+        end
       end
     end
   end
