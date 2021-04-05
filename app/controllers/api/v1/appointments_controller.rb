@@ -35,7 +35,8 @@ module Api
           :gdpr_consent,
           :accessibility_requirements,
           :notes,
-          :smarter_signposted
+          :smarter_signposted,
+          :lloyds_signposted
         ).merge(agent: current_user)
       end
     end

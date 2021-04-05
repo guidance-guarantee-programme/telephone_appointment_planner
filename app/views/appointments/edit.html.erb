@@ -4,6 +4,12 @@
   { title: "Edit appointment for #{@appointment.name}" }
 ) %>
 
+<% if @appointment.lloyds_signposted? %>
+  <div class="alert alert-warning t-lloyds-signposted" role="alert">
+    <p>The appointment was referred by <strong>Lloyds Banking Group</strong></p>
+  </div>
+<% end %>
+
 <% if @appointment.third_party_booking? %>
   <div class="alert alert-warning t-third-party-booked" role="alert">
     <p>The appointment will be delivered to a <strong>third party</strong> on behalf of the customer</p>

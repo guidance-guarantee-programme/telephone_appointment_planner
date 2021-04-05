@@ -17,6 +17,7 @@ module Api
       attr_accessor :notes
       attr_accessor :agent
       attr_accessor :smarter_signposted
+      attr_accessor :lloyds_signposted
 
       attr_reader :model
 
@@ -35,7 +36,7 @@ module Api
 
       private
 
-      def to_params # rubocop:disable Metrics/MethodLength
+      def to_params # rubocop:disable MethodLength, AbcSize
         {
           start_at: start_at,
           first_name: first_name,
@@ -51,7 +52,8 @@ module Api
           notes: notes,
           pension_provider: 'n/a',
           agent: agent,
-          smarter_signposted: smarter_signposted
+          smarter_signposted: smarter_signposted,
+          lloyds_signposted: lloyds_signposted
         }
       end
     end

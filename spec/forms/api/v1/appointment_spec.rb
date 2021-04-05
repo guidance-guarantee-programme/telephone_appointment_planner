@@ -18,7 +18,8 @@ RSpec.describe Api::V1::Appointment, '#create' do
       accessibility_requirements: false,
       notes: '',
       agent: create(:agent),
-      smarter_signposted: false
+      smarter_signposted: false,
+      lloyds_signposted: false
     }
 
     @first  = described_class.new(@attributes)
