@@ -38,6 +38,7 @@ class Appointment < ApplicationRecord
     email_consent_form_required
     email_consent
     generated_consent_form
+    lloyds_signposted
   ).freeze
 
   enum status: %i(

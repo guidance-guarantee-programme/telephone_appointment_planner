@@ -13,6 +13,15 @@ class BookableSlotsController < ApplicationController
     )
   end
 
+  def lloyds
+    render json: BookableSlot.with_guider_count(
+      current_user,
+      Time.zone.parse(params[:start]),
+      Time.zone.parse(params[:end]),
+      lloyds: true
+    )
+  end
+
   def scoped_to_me?
     params.key?(:mine)
   end

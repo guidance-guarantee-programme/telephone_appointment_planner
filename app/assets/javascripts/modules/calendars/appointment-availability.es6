@@ -34,12 +34,30 @@
 
       this.init();
       this.displayErrorBorder();
+      this.bindSubscriptions();
     }
 
     init() {
       this.$selectedStart = $('.js-selected-start');
       this.$selectedEnd = $('.js-selected-end');
       this.selectedEventColour = 'green';
+    }
+
+    bindSubscriptions() {
+      $.subscribe('lloyds-availability-selected', this.handleAvailabilityFilter.bind(this));
+    }
+
+    handleAvailabilityFilter(e, selected) {
+      this.$el.fullCalendar('removeEventSources');
+
+      if (selected) {
+        this.$el.fullCalendar('addEventSource', this.$el.data('lloyds-slots-path'));
+      }
+      else {
+        this.$el.fullCalendar('addEventSource', this.$el.data('available-slots-path'));
+      }
+
+      this.$el.fullCalendar('refetchEvents');
     }
 
     eventClick(event, jsEvent) {

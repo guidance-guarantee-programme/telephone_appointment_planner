@@ -5,6 +5,26 @@ RSpec.feature 'Agent manages appointments' do
 
   let(:day) { BusinessDays.from_now(5) }
 
+  scenario 'Agent booking a Lloyds referral', js: true do
+    travel_to '2021-04-05 10:00' do
+      given_the_user_is_an_agent(organisation: :tp) do
+        and_slots_exist_for_lloyds
+        and_slots_exist_for_general_availability
+        when_they_attempt_to_book_an_appointment
+        then_they_see_all_availability
+        when_they_choose_lloyds
+        then_they_see_lloyds_availability
+      end
+    end
+  end
+
+  scenario 'Outsider trying to book Lloyds' do
+    given_the_user_is_a_resource_manager do
+      when_they_want_to_book_an_appointment
+      then_they_cannot_specify_lloyds_signposted
+    end
+  end
+
   scenario 'Lancs West guider modifying BSL' do
     given_the_user_is_an_agent(organisation: :lancs_west) do
       when_they_want_to_book_an_appointment
@@ -187,6 +207,40 @@ RSpec.feature 'Agent manages appointments' do
       when_they_edit_the_appointment
       then_they_see_that_the_appointment_was_imported
     end
+  end
+
+  def and_slots_exist_for_lloyds
+    create(:bookable_slot, :wallsend, start_at: Time.zone.parse('2021-04-07 12:30'))
+  end
+
+  def and_slots_exist_for_general_availability
+    # TPAS slot
+    create(:bookable_slot, start_at: Time.zone.parse('2021-04-08 12:30'))
+  end
+
+  def when_they_attempt_to_book_an_appointment
+    @page = Pages::NewAppointment.new.tap(&:load)
+    expect(@page).to be_displayed
+  end
+
+  def then_they_see_all_availability
+    @page.wait_until_calendar_events_visible
+
+    expect(@page).to have_calendar_events(count: 2)
+  end
+
+  def when_they_choose_lloyds
+    @page.lloyds_signposted.set(true)
+  end
+
+  def then_they_see_lloyds_availability
+    @page.wait_until_calendar_events_visible
+
+    expect(@page).to have_calendar_events(count: 1)
+  end
+
+  def then_they_cannot_specify_lloyds_signposted
+    expect(@page).to have_no_lloyds_signposted
   end
 
   def then_bsl_video_is_disabled

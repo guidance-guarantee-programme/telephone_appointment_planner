@@ -192,7 +192,8 @@ class AppointmentsController < ApplicationController
       :consent_postcode,
       :power_of_attorney_evidence,
       :data_subject_consent_evidence,
-      :email_consent
+      :email_consent,
+      :lloyds_signposted
     ]
   end
   # rubocop:enable Metrics/MethodLength

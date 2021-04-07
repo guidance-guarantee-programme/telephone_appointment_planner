@@ -46,11 +46,14 @@ module Pages
     element :postcode, '.t-postcode'
     element :smarter_signposted, '.t-smarter-signposted'
     element :bsl_video, '.t-bsl-video'
+    element :lloyds_signposted, '.t-lloyds-signposted'
 
     element :availability_calendar_off, '.t-availability-calendar-off'
     element :availability_calendar_on, '.t-availability-calendar-on'
     element :guider, '.t-guider'
     element :ad_hoc_start_at, '.t-ad-hoc-start-at'
+
+    elements :calendar_events, '.fc-event'
 
     def ad_hoc_start_at(value)
       execute_script("$('.t-ad-hoc-start-at').val('#{value}')")

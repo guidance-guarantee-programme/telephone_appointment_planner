@@ -113,13 +113,13 @@ class BookableSlot < ApplicationRecord
     where("#{quoted_table_name}.start_at > ?", next_valid_start_date(user))
   end
 
-  def self.with_guider_count(user, from, to) # rubocop:disable AbcSize
+  def self.with_guider_count(user, from, to, lloyds: false) # rubocop:disable AbcSize
     limit_by_organisation = !user.resource_manager?
 
     select("DISTINCT #{quoted_table_name}.start_at, #{quoted_table_name}.end_at, count(1) AS guiders")
       .bookable
       .starting_after_next_valid_start_date(user)
-      .for_organisation(user)
+      .for_organisation(user, lloyds: lloyds)
       .group("#{quoted_table_name}.start_at, #{quoted_table_name}.end_at")
       .within_date_range(from, to, organisation_limit: limit_by_organisation)
       .map do |us|
@@ -127,11 +127,16 @@ class BookableSlot < ApplicationRecord
       end
   end
 
-  def self.for_organisation(user, scoped: true)
-    return where('1 = 1') if scoped && user.tp_agent?
+  def self.for_organisation(user, scoped: true, lloyds: false)
+    scope = joins(:guider)
 
-    joins(:guider)
-      .where(users: { organisation_content_id: user.organisation_content_id })
+    if lloyds
+      scope.where(users: { organisation_content_id: Provider.lloyds_providers.map(&:id) })
+    else
+      return where('1 = 1') if scoped && user.tp_agent?
+
+      scope.where(users: { organisation_content_id: user.organisation_content_id })
+    end
   end
 
   def self.generate_for_guider(guider)
