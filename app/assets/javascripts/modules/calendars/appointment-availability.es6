@@ -4,12 +4,14 @@
 
   class AppointmentAvailabilityCalendar extends Calendar {
     start(el) {
+      let lloydsSignposted = !!$('.js-lloyds-signposted').prop('checked');
+
       this.config = {
         defaultView: 'agendaWeek',
         columnFormat: 'ddd D/M',
         slotDuration: '00:30:00',
         eventBorderColor: '#000',
-        events: el.data('available-slots-path'),
+        events: this.getEventsUrl(lloydsSignposted, el),
         defaultDate: moment(el.data('default-date')),
         header: {
           'right': 'agendaDay agendaThreeDay agendaWeek today jumpToDate prev,next'
@@ -41,6 +43,15 @@
       this.$selectedStart = $('.js-selected-start');
       this.$selectedEnd = $('.js-selected-end');
       this.selectedEventColour = 'green';
+    }
+
+    getEventsUrl(signposted, el) {
+      if(signposted) {
+        return el.data('lloyds-slots-path');
+      }
+      else {
+        return el.data('available-slots-path');
+      }
     }
 
     bindSubscriptions() {

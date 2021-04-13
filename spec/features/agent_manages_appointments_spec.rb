@@ -14,6 +14,8 @@ RSpec.feature 'Agent manages appointments' do
         then_they_see_all_availability
         when_they_choose_lloyds
         then_they_see_lloyds_availability
+        when_they_submit_with_errors
+        then_they_see_lloyds_availability
       end
     end
   end
@@ -207,6 +209,14 @@ RSpec.feature 'Agent manages appointments' do
       when_they_edit_the_appointment
       then_they_see_that_the_appointment_was_imported
     end
+  end
+
+  def when_they_submit_with_errors
+    @page.date_of_birth_day.set '23'
+    @page.date_of_birth_month.set '10'
+    @page.date_of_birth_year.set '1930'
+
+    @page.preview_appointment.click
   end
 
   def and_slots_exist_for_lloyds

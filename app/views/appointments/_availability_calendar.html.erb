@@ -6,7 +6,7 @@
 <%= render 'shared/nojs' %>
 
 <% if current_user.lloyds_signposter? %>
-  <%= form.check_box :lloyds_signposted, label: 'Lloyds Banking Group referral?', class: 't-lloyds-signposted', data: { module: 'lloyds-signposter' } %>
+  <%= form.check_box :lloyds_signposted, label: 'Lloyds Banking Group referral?', class: 't-lloyds-signposted js-lloyds-signposted', data: { module: 'lloyds-signposter' } %>
 <% end %>
 
 <div
