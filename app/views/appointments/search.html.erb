@@ -90,3 +90,34 @@
 <nav aria-label="Pagination">
   <%= paginate @results %>
 </nav>
+
+<% if display_money_helper_banner? %>
+  <div class="modal fade t-money-helper-banner" id="money-helper-modal" tabindex="-1" role="dialog" aria-labelledby="money-helper-modal-label">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="money-helper-modal-label">Money Helper</h4>
+        </div>
+        <div class="modal-body">
+          <p>
+            Thank you for calling Pension Wise today. I just want to let you
+            know that from early June the Pension Wise service will continue as a
+            named service from MoneyHelper. We’re doing this to bring all
+            our money and pension guidance together in one place to make it
+            easier for you to access.
+          </p>
+          <p>
+            FAQs: <a href="https://www.maps.org.uk/moneyhelper/">www.maps.org.uk/moneyhelper</a>
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    $('#money-helper-modal').modal('show');
+  </script>
+<% end %>
