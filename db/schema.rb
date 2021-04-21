@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_24_144158) do
+ActiveRecord::Schema.define(version: 2021_04_21_133500) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
 
@@ -81,8 +82,8 @@ ActiveRecord::Schema.define(version: 2021_03_24_144158) do
     t.datetime "batch_processed_at"
     t.datetime "rescheduled_at"
     t.string "gdpr_consent", default: "", null: false
-    t.string "pension_provider", default: "", null: false
     t.boolean "accessibility_requirements", default: false, null: false
+    t.string "pension_provider", default: "", null: false
     t.datetime "processed_at"
     t.boolean "smarter_signposted", default: false
     t.boolean "bsl_video", default: false, null: false
@@ -102,7 +103,7 @@ ActiveRecord::Schema.define(version: 2021_03_24_144158) do
     t.string "email_consent", default: "", null: false
     t.date "data_subject_date_of_birth"
     t.boolean "lloyds_signposted", default: false, null: false
-    t.index ["guider_id", "start_at"], name: "unique_slot_guider_in_appointment", unique: true, where: "(status <> ALL (ARRAY[6, 7, 8]))"
+    t.index ["guider_id", "start_at"], name: "unique_slot_guider_in_appointment", unique: true, where: "((status <> ALL (ARRAY[6, 7, 8])) AND (start_at > '2021-04-21 00:00:00'::timestamp without time zone))"
     t.index ["start_at"], name: "index_appointments_on_start_at"
   end
 
@@ -220,8 +221,6 @@ ActiveRecord::Schema.define(version: 2021_03_24_144158) do
     t.jsonb "permissions", default: "[]"
     t.integer "position", default: 0, null: false
     t.boolean "active", default: true, null: false
-    t.integer "casebook_guider_id"
-    t.integer "casebook_location_id"
     t.index ["permissions"], name: "index_users_on_permissions", using: :gin
   end
 

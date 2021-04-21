@@ -2,8 +2,6 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::Appointment, '#create' do
   it 'does not allow duplicate bookings' do
-    skip 'This seems to be time-dependent and needs addressing separately'
-
     @slot = create(:bookable_slot, start_at: 2.days.from_now.middle_of_day)
 
     @attributes = {
