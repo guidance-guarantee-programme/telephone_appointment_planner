@@ -1,6 +1,18 @@
 require 'rails_helper'
 
 RSpec.describe AppointmentCancelledNotificationsJob do
+  context 'when the guider is from CAS' do
+    it 'sends to the alias' do
+      appointment = create(:appointment, organisation: :cas)
+
+      expect(AppointmentMailer).to receive(:resource_manager_appointment_cancelled)
+        .with(appointment, 'CAS_PWBooking@cas.org.uk')
+        .and_return(double(deliver_later: true))
+
+      subject.perform(appointment)
+    end
+  end
+
   context 'when the guider is from TPAS' do
     it 'does nothing' do
       appointment = create(:appointment, organisation: :tpas)
