@@ -15,6 +15,8 @@ class AppointmentCancelledNotificationsJob < ApplicationJob
   private
 
   def recipients_for(appointment)
+    return CAS_RECIPIENTS if appointment.cas_guider?
+
     appointment.resource_managers.pluck(:email)
   end
 end
