@@ -53,7 +53,7 @@ module Api
           pension_provider: 'n/a',
           agent: agent,
           smarter_signposted: smarter_signposted,
-          lloyds_signposted: lloyds_signposted
+          lloyds_signposted: lloyds_signposted || false
         }
       end
     end

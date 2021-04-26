@@ -33,4 +33,10 @@ RSpec.describe Api::V1::Appointment, '#create' do
       second.join
     end.to raise_error(ActiveRecord::RecordNotUnique)
   end
+
+  it 'defaults `lloyds_signposted` to false when not provided' do
+    appointment = described_class.new({})
+
+    expect(appointment.model.lloyds_signposted).to be(false)
+  end
 end
