@@ -7,7 +7,7 @@ class BookableSlotsController < ApplicationController
 
   def available
     render json: BookableSlot.with_guider_count(
-      current_user,
+      filtered_user,
       Time.zone.parse(params[:start]),
       Time.zone.parse(params[:end])
     )
@@ -15,10 +15,10 @@ class BookableSlotsController < ApplicationController
 
   def lloyds
     render json: BookableSlot.with_guider_count(
-      current_user,
+      filtered_user,
       Time.zone.parse(params[:start]),
       Time.zone.parse(params[:end]),
-      lloyds: true
+      lloyds: !rescheduling?
     )
   end
 
@@ -27,6 +27,17 @@ class BookableSlotsController < ApplicationController
   end
 
   private
+
+  def rescheduling?
+    params[:rescheduling] == 'true'
+  end
+
+  def filtered_user
+    return current_user unless rescheduling?
+
+    appointment = Appointment.find(params[:id])
+    appointment.guider
+  end
 
   def bookable_slots
     slots = BookableSlot
