@@ -165,6 +165,7 @@ class AppointmentsController < ApplicationController
       :accessibility_requirements,
       :notes,
       :status,
+      :secondary_status,
       :type_of_appointment,
       :where_you_heard,
       :address_line_one,

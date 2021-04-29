@@ -22,7 +22,7 @@ RSpec.feature 'Appointment audit trail' do
     @edit_page = Pages::EditAppointment.new
     @edit_page.load(id: @appointment.id)
     @edit_page.first_name.set @new_name
-    @edit_page.status.select('Incomplete')
+    @edit_page.status.select('No Show')
     @edit_page.submit.click
   end
 
@@ -47,6 +47,6 @@ RSpec.feature 'Appointment audit trail' do
 
     expect(@changes_page.changes_table.change_rows.last).to have_text('Status')
     expect(@changes_page.changes_table.change_rows.last).to have_text('Pending')
-    expect(@changes_page.changes_table.change_rows.last).to have_text('Incomplete')
+    expect(@changes_page.changes_table.change_rows.last).to have_text('No show')
   end
 end

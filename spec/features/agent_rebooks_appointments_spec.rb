@@ -41,7 +41,7 @@ RSpec.feature 'Agent rebooks appointments' do
       :appointment,
       :third_party_booking,
       :with_data_subject_consent_evidence,
-      status: :cancelled_by_customer
+      status: :cancelled_by_customer_sms
     )
   end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_21_133500) do
+ActiveRecord::Schema.define(version: 2021_04_28_095627) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -103,6 +103,7 @@ ActiveRecord::Schema.define(version: 2021_04_21_133500) do
     t.string "email_consent", default: "", null: false
     t.date "data_subject_date_of_birth"
     t.boolean "lloyds_signposted", default: false, null: false
+    t.string "secondary_status", default: "", null: false
     t.index ["guider_id", "start_at"], name: "unique_slot_guider_in_appointment", unique: true, where: "((status <> ALL (ARRAY[6, 7, 8])) AND (start_at > '2021-04-21 00:00:00'::timestamp without time zone))"
     t.index ["start_at"], name: "index_appointments_on_start_at"
   end

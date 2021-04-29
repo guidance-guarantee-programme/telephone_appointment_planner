@@ -211,6 +211,15 @@ RSpec.feature 'Agent manages appointments' do
     end
   end
 
+  scenario 'Agent sets a secondary status', js: true do
+    given_the_user_is_an_agent do
+      and_there_is_an_appointment
+      when_they_edit_the_appointment
+      and_they_select_a_secondary_status
+      then_the_secondary_status_is_marked
+    end
+  end
+
   def when_they_submit_with_errors
     @page.date_of_birth_day.set '23'
     @page.date_of_birth_month.set '10'
@@ -251,6 +260,20 @@ RSpec.feature 'Agent manages appointments' do
 
   def then_they_cannot_specify_lloyds_signposted
     expect(@page).to have_no_lloyds_signposted
+  end
+
+  def and_they_select_a_secondary_status
+    @page.status.select('Pending')
+    expect(@page).to have_no_secondary_status_options
+
+    @page.status.select('Cancelled By Customer')
+    @page.wait_until_secondary_status_options_visible
+    @page.secondary_status.select('Customer forgot')
+    @page.submit.click
+  end
+
+  def then_the_secondary_status_is_marked
+    expect(@page).to have_flash_of_success
   end
 
   def then_bsl_video_is_disabled
@@ -556,7 +579,7 @@ RSpec.feature 'Agent manages appointments' do
   def when_they_cancel_the_appointment_by_order_of_the_customer
     @page = Pages::EditAppointment.new
     @page.load(id: @appointment.id)
-    @page.status.select('Cancelled By Customer')
+    @page.status.select('Cancelled By Customer Sms')
     @page.submit.click
   end
 

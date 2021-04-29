@@ -21,6 +21,8 @@ module Pages
     element :gdpr_consent_no_response,              '.t-gdpr-consent-no-response'
 
     element :status, '.t-status'
+    element :secondary_status, '.t-secondary-status'
+    elements :secondary_status_options, '.t-secondary-status > option:not(:empty)'
     element :submit, '.t-save'
     element :rebook, '.t-rebook'
     element :process, '.t-process'

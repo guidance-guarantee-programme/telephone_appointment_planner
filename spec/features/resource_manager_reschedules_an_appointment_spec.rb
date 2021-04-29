@@ -52,7 +52,7 @@ RSpec.feature 'Resource manager reschedules an appointment', js: true do
   end
 
   def and_there_is_a_cancelled_appointment
-    @appointment = create(:appointment, status: :cancelled_by_customer)
+    @appointment = create(:appointment, status: :cancelled_by_customer_sms)
   end
 
   def and_there_are_several_guiders

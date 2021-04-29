@@ -53,6 +53,38 @@ class Appointment < ApplicationRecord
     cancelled_by_customer_sms
   )
 
+  SECONDARY_STATUSES = {
+    'incomplete' => {
+      '0' => 'Technological issue',
+      '1' => 'Guider issue',
+      '2' => 'Customer issue',
+      '3' => 'Customer had accessibility requirement',
+      '4' => 'Customer believed Pension Wise was mandatory',
+      '5' => 'Customer wanted specific questions answered',
+      '6' => 'Customer did not want to hear all payment options',
+      '7' => 'Customer wanted advice not guidance',
+      '8' => 'Customer behaviour'
+    },
+    'ineligible_pension_type' => {
+      '9'  => 'DB pension only and not considering transferring',
+      '10' => 'Annuity in payment only',
+      '11' => 'State pension only',
+      '12' => 'Overseas pension only',
+      '13' => 'S32 – No GMP Excess'
+    },
+    'cancelled_by_customer' => {
+      '14' => 'Cancelled prior to appointment',
+      '15' => 'Inconvenient time',
+      '16' => 'Customer forgot',
+      '17' => 'Customer changed their mind',
+      '18' => 'Customer not sufficiently prepared to undertake the call',
+      '19' => 'Customer did not agree with data protection policy',
+      '20' => 'Duplicate appointment booked by customer',
+      '21' => 'Customer driving whilst having appointment',
+      '22' => 'Third-party consent not received'
+    }
+  }.freeze
+
   belongs_to :agent, class_name: 'User'
 
   belongs_to :guider, class_name: 'User'
@@ -110,6 +142,7 @@ class Appointment < ApplicationRecord
   validate :validate_phone_digits, if: :tp_agent?
   validate :validate_mobile_digits, if: :tp_agent?
   validate :email_consent_valid, if: :email_consent_form_required?
+  validate :validate_secondary_status
 
   before_validation :format_name, on: :create
   before_create :track_initial_status
@@ -544,6 +577,12 @@ class Appointment < ApplicationRecord
 
   def printed_consent_address?
     [consent_address_line_one, consent_town, consent_postcode].all?(&:present?)
+  end
+
+  def validate_secondary_status
+    if matches = SECONDARY_STATUSES[status] # rubocop:disable GuardClause, AssignmentInCondition
+      errors.add(:secondary_status, 'must be provided for the chosen status') unless matches.key?(secondary_status)
+    end
   end
 
   class << self
