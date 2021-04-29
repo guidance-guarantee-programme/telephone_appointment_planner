@@ -20,6 +20,7 @@ class Appointment < ApplicationRecord
     guider_id
     notes
     status
+    secondary_status
     dc_pot_confirmed
     updated_at
     type_of_appointment
