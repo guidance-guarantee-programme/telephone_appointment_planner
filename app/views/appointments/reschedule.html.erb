@@ -9,7 +9,7 @@
 <%= render 'shared/required_fields_note' %>
 <%= form_for [@appointment], url: appointment_update_reschedule_path(@appointment), layout: :basic do |f| %>
   <div class="row form-group">
-    <%= render 'schedule_form', form: f %>
+    <%= render 'schedule_form', form: f, rescheduling: true %>
   </div>
   <div class="row form-group">
     <div class="col-md-12">

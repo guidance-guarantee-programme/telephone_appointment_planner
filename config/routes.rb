@@ -66,7 +66,10 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     get 'merged', on: :collection
   end
   resources :bookable_slots, only: :index do
-    get 'available', on: :collection
+    collection do
+      get 'available'
+      get 'lloyds'
+    end
   end
 
   resources :groups, only: %i(index destroy)

@@ -40,6 +40,7 @@
   <%= f.hidden_field :county %>
   <%= f.hidden_field :postcode %>
   <%= f.hidden_field :smarter_signposted %>
+  <%= f.hidden_field :lloyds_signposted %>
   <%= f.hidden_field :bsl_video %>
 
   <%= f.hidden_field :data_subject_name %>
@@ -163,6 +164,12 @@
             <tr>
               <td class="active"><b>Smarter signposted referral?</b></td>
               <td><%= @appointment.smarter_signposted? ? 'Yes' : 'No' %></td>
+            </tr>
+            <% end %>
+            <% if current_user.lloyds_signposter? %>
+            <tr>
+              <td class="active"><b>Lloyds Banking Group referral?</b></td>
+              <td><%= @appointment.lloyds_signposted? ? 'Yes' : 'No' %></td>
             </tr>
             <% end %>
           </tbody>

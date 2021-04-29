@@ -68,6 +68,12 @@ class User < ApplicationRecord
     tp? && agent?
   end
 
+  def lloyds_signposter?
+    return true if tp_agent? || administrator?
+
+    Provider.lloyds_providers.map(&:id).include?(organisation_content_id)
+  end
+
   def organisation
     Provider.find(organisation_content_id)&.name
   end

@@ -33,10 +33,10 @@
       </div>
     </div>
     <div id="availability-calendar-on">
-      <%= render 'availability_calendar', form: form %>
+      <%= render 'availability_calendar', form: form, rescheduling: rescheduling %>
     </div>
   <% else %>
     <%= hidden_field_tag :scheduled, true %>
-    <%= render 'availability_calendar', form: form %>
+    <%= render 'availability_calendar', form: form, rescheduling: rescheduling %>
   <% end %>
 </div>
