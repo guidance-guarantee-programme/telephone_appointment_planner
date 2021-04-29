@@ -331,6 +331,10 @@ class Appointment < ApplicationRecord
     end
   end
 
+  def self.secondary_status(key)
+    SECONDARY_STATUSES.values.reduce(&:merge)[key] || '-'
+  end
+
   def self.for_redaction
     where
       .not(first_name: 'redacted')
