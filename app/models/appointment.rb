@@ -586,6 +586,10 @@ class Appointment < ApplicationRecord
   end
 
   def validate_secondary_status
+    return unless created_at && created_at > Time.zone.parse(
+      ENV.fetch('SECONDARY_STATUS_CUT_OFF') { '2021-05-04 09:00' }
+    )
+
     if matches = SECONDARY_STATUSES[status] # rubocop:disable GuardClause, AssignmentInCondition
       errors.add(:secondary_status, 'must be provided for the chosen status') unless matches.key?(secondary_status)
     end

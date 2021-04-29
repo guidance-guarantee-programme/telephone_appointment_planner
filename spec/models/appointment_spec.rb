@@ -228,15 +228,30 @@ RSpec.describe Appointment, type: :model do
     end
 
     context 'when the status would require a secondary status' do
-      it 'is invalid' do
-        subject.status = :incomplete
-        expect(subject).to be_invalid
+      before { subject.created_at = Time.current }
 
-        subject.secondary_status = '0' # technological issue
-        expect(subject).to be_valid
+      context 'when the appointment is past the cut-off date' do
+        it 'is invalid' do
+          allow(ENV).to receive(:fetch).with('SECONDARY_STATUS_CUT_OFF').and_return(2.days.ago.to_s)
 
-        subject.secondary_status = '10' # belongs to ineligible pension type
-        expect(subject).to be_invalid
+          subject.status = :incomplete
+          expect(subject).to be_invalid
+
+          subject.secondary_status = '0' # technological issue
+          expect(subject).to be_valid
+
+          subject.secondary_status = '10' # belongs to ineligible pension type
+          expect(subject).to be_invalid
+        end
+      end
+
+      context 'when it is not past the cut-off date' do
+        it 'is not required' do
+          allow(ENV).to receive(:fetch).with('SECONDARY_STATUS_CUT_OFF').and_return(2.days.from_now.to_s)
+
+          subject.status = :incomplete
+          expect(subject).to be_valid
+        end
       end
     end
 
