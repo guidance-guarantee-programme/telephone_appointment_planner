@@ -235,7 +235,7 @@ RSpec.describe Appointment, type: :model do
         subject.secondary_status = '0' # technological issue
         expect(subject).to be_valid
 
-        subject.secondary_status = '9' # belongs to ineligible pension type
+        subject.secondary_status = '10' # belongs to ineligible pension type
         expect(subject).to be_invalid
       end
     end

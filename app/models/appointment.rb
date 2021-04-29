@@ -63,25 +63,26 @@ class Appointment < ApplicationRecord
       '5' => 'Customer wanted specific questions answered',
       '6' => 'Customer did not want to hear all payment options',
       '7' => 'Customer wanted advice not guidance',
-      '8' => 'Customer behaviour'
+      '8' => 'Customer behaviour',
+      '9' => 'Other'
     },
     'ineligible_pension_type' => {
-      '9'  => 'DB pension only and not considering transferring',
-      '10' => 'Annuity in payment only',
-      '11' => 'State pension only',
-      '12' => 'Overseas pension only',
-      '13' => 'S32 – No GMP Excess'
+      '10' => 'DB pension only and not considering transferring',
+      '11' => 'Annuity in payment only',
+      '12' => 'State pension only',
+      '13' => 'Overseas pension only',
+      '14' => 'S32 – No GMP Excess'
     },
     'cancelled_by_customer' => {
-      '14' => 'Cancelled prior to appointment',
-      '15' => 'Inconvenient time',
-      '16' => 'Customer forgot',
-      '17' => 'Customer changed their mind',
-      '18' => 'Customer not sufficiently prepared to undertake the call',
-      '19' => 'Customer did not agree with data protection policy',
-      '20' => 'Duplicate appointment booked by customer',
-      '21' => 'Customer driving whilst having appointment',
-      '22' => 'Third-party consent not received'
+      '15' => 'Cancelled prior to appointment',
+      '16' => 'Inconvenient time',
+      '17' => 'Customer forgot',
+      '18' => 'Customer changed their mind',
+      '19' => 'Customer not sufficiently prepared to undertake the call',
+      '20' => 'Customer did not agree with data protection policy',
+      '21' => 'Duplicate appointment booked by customer',
+      '22' => 'Customer driving whilst having appointment',
+      '23' => 'Third-party consent not received'
     }
   }.freeze
 
