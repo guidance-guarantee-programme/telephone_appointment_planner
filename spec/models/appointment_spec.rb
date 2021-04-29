@@ -717,6 +717,16 @@ RSpec.describe Appointment, type: :model do
         build_stubbed(:appointment, start_at: BusinessDays.from_now(3))
       end
 
+      context 'when the appointment is not pending' do
+        let(:user) { build_stubbed(:guider) }
+
+        it 'cannot be rescheduled' do
+          appointment.status = :cancelled_by_customer_sms
+
+          expect(result).to be false
+        end
+      end
+
       context 'user is a guider' do
         let(:user) do
           build_stubbed(:guider)
