@@ -208,6 +208,8 @@ class Appointment < ApplicationRecord
   end
 
   def can_be_rescheduled_by?(user)
+    return false unless pending?
+
     user.resource_manager? || start_at >= BusinessDays.from_now(2)
   end
 
