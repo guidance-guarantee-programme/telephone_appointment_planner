@@ -4,35 +4,23 @@
   { title: "Edit appointment for #{@appointment.name}" }
 ) %>
 
-<% if @appointment.lloyds_signposted? %>
-  <div class="alert alert-warning t-lloyds-signposted" role="alert">
-    <p>The appointment was referred by <strong>Lloyds Banking Group</strong></p>
-  </div>
-<% end %>
+<h4>
+  <% if @appointment.lloyds_signposted? %>
+    <span class="label label-default t-lloyds-signposted">Lloyds Banking Group</span>
+  <% end %>
 
-<% if @appointment.third_party_booking? %>
-  <div class="alert alert-warning t-third-party-booked" role="alert">
-    <p>The appointment will be delivered to a <strong>third party</strong> on behalf of the customer</p>
-  </div>
-<% end %>
+  <% if @appointment.third_party_booking? %>
+    <span class="label label-primary t-third-party-booked">Third Party Appointment</span>
+  <% end %>
 
-<% if display_dc_pot_unsure_banner?(@appointment) %>
-  <div class="alert alert-warning t-dc-pot-unsure" role="alert">
-    <p>The customer was <strong>unsure</strong> if they had a DC pension</p>
-  </div>
-<% end %>
+  <% if display_dc_pot_unsure_banner?(@appointment) %>
+    <span class="label label-warning t-dc-pot-unsure">DC Pension Unsure</span>
+  <% end %>
 
-<% if @appointment.imported? %>
-  <div class="alert alert-warning t-appointment-was-imported-message" role="alert">
-    <p>
-      This appointment was automatically imported from Booking Bug,
-      which means that the date of birth is not valid.
-    </p>
-    <p>
-      Please refer to the date of birth in the notes field.
-    </p>
-  </div>
-<% end %>
+  <% if @appointment.imported? %>
+    <span class="label label-info t-appointment-was-imported-message">Booking Bug Imported</span>
+  <% end %>
+</h4>
 
 <% if @appointment.potential_duplicates? %>
   <div class="alert alert-warning" role="alert">
