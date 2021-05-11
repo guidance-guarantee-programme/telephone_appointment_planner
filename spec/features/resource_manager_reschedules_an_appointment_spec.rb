@@ -25,6 +25,28 @@ RSpec.feature 'Resource manager reschedules an appointment', js: true do
     end
   end
 
+  scenario 'Rescheduling calendar respects resource manager grace period reduction' do
+    given_the_user_is_a_resource_manager do
+      travel_to '2021-05-11 13:00 UTC' do
+        and_there_is_an_appointment
+        and_there_are_available_slots_tomorrow
+        when_they_attempt_to_reschedule_the_appointment
+        then_they_see_the_available_slots_tomorrow
+      end
+    end
+  end
+
+  def and_there_are_available_slots_tomorrow
+    create(:bookable_slot, guider: @appointment.guider, start_at: Time.zone.parse('2021-05-12 09:00'))
+  end
+
+  def then_they_see_the_available_slots_tomorrow
+    @page.wait_until_slots_visible
+
+    expect(@page).to have_slots(count: 1)
+    expect(@page.slots.first).to have_text('09:00')
+  end
+
   def and_there_is_an_appointment
     @appointment = create(:appointment)
   end
