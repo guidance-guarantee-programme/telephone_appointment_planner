@@ -10,6 +10,7 @@ module Pages
     element :availability_calendar_on, '.t-availability-calendar-on'
     element :guider, '.t-guider'
     element :ad_hoc_start_at, '.t-ad-hoc-start-at'
+    elements :slots, '.fc-time-grid-event'
 
     def ad_hoc_start_at(value)
       execute_script("$('.t-ad-hoc-start-at').val('#{value}')")

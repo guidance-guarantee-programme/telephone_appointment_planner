@@ -33,7 +33,7 @@ class BookableSlotsController < ApplicationController
   end
 
   def filtered_user
-    return current_user unless rescheduling?
+    return current_user unless rescheduling? && current_user.tp?
 
     appointment = Appointment.find(params[:id])
     appointment.guider
