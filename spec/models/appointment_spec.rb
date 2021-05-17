@@ -231,9 +231,11 @@ RSpec.describe Appointment, type: :model do
       before { subject.created_at = Time.current }
 
       context 'when the appointment is past the cut-off date' do
-        it 'is invalid' do
+        before do
           allow(ENV).to receive(:fetch).with('SECONDARY_STATUS_CUT_OFF').and_return(2.days.ago.to_s)
+        end
 
+        it 'is invalid' do
           subject.status = :incomplete
           expect(subject).to be_invalid
 
@@ -242,6 +244,19 @@ RSpec.describe Appointment, type: :model do
 
           subject.secondary_status = '10' # belongs to ineligible pension type
           expect(subject).to be_invalid
+        end
+
+        context 'when the current user is an agent' do
+          it 'disallows certain secondary statuses' do
+            subject.current_user = build_stubbed(:agent)
+
+            subject.status = :cancelled_by_customer
+            subject.secondary_status = '15' # Cancelled prior to appointment
+            expect(subject).to be_valid
+
+            subject.secondary_status = '17' # Customer forgot
+            expect(subject).to be_invalid
+          end
         end
       end
 

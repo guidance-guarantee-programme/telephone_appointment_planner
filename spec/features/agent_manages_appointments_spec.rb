@@ -268,7 +268,7 @@ RSpec.feature 'Agent manages appointments' do
 
     @page.status.select('Cancelled By Customer')
     @page.wait_until_secondary_status_options_visible
-    @page.secondary_status.select('Customer forgot')
+    @page.secondary_status.select('Cancelled prior to appointment')
     @page.submit.click
   end
 

@@ -200,7 +200,7 @@ class AppointmentsController < ApplicationController
   # rubocop:enable Metrics/MethodLength
 
   def update_params
-    params.require(:appointment).permit(updateable_params)
+    params.require(:appointment).permit(updateable_params).merge(current_user: current_user)
   end
 
   def munge_start_at

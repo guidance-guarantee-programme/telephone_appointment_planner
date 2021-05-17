@@ -4,6 +4,8 @@ class Appointment < ApplicationRecord
 
   acts_as_copy_target
 
+  attr_accessor :current_user
+
   CANCELLED_STATUSES = %i(
     cancelled_by_customer
     cancelled_by_pension_wise
@@ -54,6 +56,7 @@ class Appointment < ApplicationRecord
     cancelled_by_customer_sms
   )
 
+  AGENT_PERMITTED_SECONDARY = '15'.freeze
   SECONDARY_STATUSES = {
     'incomplete' => {
       '0' => 'Technological issue',
@@ -585,13 +588,19 @@ class Appointment < ApplicationRecord
     [consent_address_line_one, consent_town, consent_postcode].all?(&:present?)
   end
 
-  def validate_secondary_status
+  def validate_secondary_status # rubocop:disable AbcSize, PerceivedComplexity, CyclomaticComplexity, MethodLength
     return unless created_at && created_at > Time.zone.parse(
       ENV.fetch('SECONDARY_STATUS_CUT_OFF') { '2021-05-04 09:00' }
     )
 
     if matches = SECONDARY_STATUSES[status] # rubocop:disable GuardClause, AssignmentInCondition
-      errors.add(:secondary_status, 'must be provided for the chosen status') unless matches.key?(secondary_status)
+      unless matches.key?(secondary_status)
+        return errors.add(:secondary_status, 'must be provided for the chosen status')
+      end
+
+      if current_user&.tp_agent? && cancelled_by_customer? && secondary_status != AGENT_PERMITTED_SECONDARY
+        errors.add(:secondary_status, "Contact centre agents should only select 'Cancelled prior to appointment'")
+      end
     end
   end
 

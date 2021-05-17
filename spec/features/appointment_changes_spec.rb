@@ -24,7 +24,7 @@ RSpec.feature 'Appointment audit trail' do
     @edit_page.first_name.set @new_name
     @edit_page.status.select('Cancelled By Customer')
     @edit_page.wait_until_secondary_status_options_visible
-    @edit_page.secondary_status.select('Customer forgot')
+    @edit_page.secondary_status.select('Cancelled prior to appointment')
     @edit_page.submit.click
   end
 
@@ -52,6 +52,6 @@ RSpec.feature 'Appointment audit trail' do
     expect(@changes_page.changes_table.change_rows[1]).to have_text('Cancelled by customer')
 
     expect(@changes_page.changes_table.change_rows[2]).to have_text('Secondary status')
-    expect(@changes_page.changes_table.change_rows[2]).to have_text('Customer forgot')
+    expect(@changes_page.changes_table.change_rows[2]).to have_text('Cancelled prior to appointment')
   end
 end
