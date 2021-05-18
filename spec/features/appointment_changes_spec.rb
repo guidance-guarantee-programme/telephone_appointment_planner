@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.feature 'Appointment audit trail' do
-  scenario 'An agent changes an appointment and reviews the changes' do
+  scenario 'An agent changes an appointment and reviews the changes', js: true do
     given_the_user_is_an_agent do
       and_there_is_an_appointment
       when_they_change_the_appointment
@@ -22,7 +22,9 @@ RSpec.feature 'Appointment audit trail' do
     @edit_page = Pages::EditAppointment.new
     @edit_page.load(id: @appointment.id)
     @edit_page.first_name.set @new_name
-    @edit_page.status.select('Incomplete')
+    @edit_page.status.select('Cancelled By Customer')
+    @edit_page.wait_until_secondary_status_options_visible
+    @edit_page.secondary_status.select('Cancelled prior to appointment')
     @edit_page.submit.click
   end
 
@@ -41,12 +43,15 @@ RSpec.feature 'Appointment audit trail' do
   end
 
   def and_they_can_see_the_change_details
-    expect(@changes_page.changes_table.change_rows.first).to have_text('First name')
-    expect(@changes_page.changes_table.change_rows.first).to have_text(@old_name)
-    expect(@changes_page.changes_table.change_rows.first).to have_text(@new_name)
+    expect(@changes_page.changes_table.change_rows[0]).to have_text('First name')
+    expect(@changes_page.changes_table.change_rows[0]).to have_text(@old_name)
+    expect(@changes_page.changes_table.change_rows[0]).to have_text(@new_name)
 
-    expect(@changes_page.changes_table.change_rows.last).to have_text('Status')
-    expect(@changes_page.changes_table.change_rows.last).to have_text('Pending')
-    expect(@changes_page.changes_table.change_rows.last).to have_text('Incomplete')
+    expect(@changes_page.changes_table.change_rows[1]).to have_text('Status')
+    expect(@changes_page.changes_table.change_rows[1]).to have_text('Pending')
+    expect(@changes_page.changes_table.change_rows[1]).to have_text('Cancelled by customer')
+
+    expect(@changes_page.changes_table.change_rows[2]).to have_text('Secondary status')
+    expect(@changes_page.changes_table.change_rows[2]).to have_text('Cancelled prior to appointment')
   end
 end

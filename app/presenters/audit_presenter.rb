@@ -42,6 +42,10 @@ class AuditPresenter < SimpleDelegator
     Appointment.statuses.key(value.to_i)&.humanize
   end
 
+  def format_secondary_status(value)
+    Appointment.secondary_status(value)
+  end
+
   def self.wrap(objects)
     objects.map { |o| new(o) }
   end

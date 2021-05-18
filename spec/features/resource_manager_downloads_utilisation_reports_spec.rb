@@ -104,7 +104,7 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
   end
 
   def and_there_are_cancelled_appointments
-    create(:appointment, status: :cancelled_by_customer).update(start_at: range_start + 1.day)
+    create(:appointment, status: :cancelled_by_customer_sms).update(start_at: range_start + 1.day)
     create(:appointment, status: :cancelled_by_pension_wise).update(start_at: range_start + 2.days)
   end
 
@@ -113,7 +113,7 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
   end
 
   def and_there_are_cancelled_appointments_outside_the_date_range
-    create(:appointment, status: :cancelled_by_customer).update(start_at: range_start + 10.days)
+    create(:appointment, status: :cancelled_by_customer_sms).update(start_at: range_start + 10.days)
     create(:appointment, status: :cancelled_by_pension_wise).update(start_at: range_start + 11.days)
   end
 

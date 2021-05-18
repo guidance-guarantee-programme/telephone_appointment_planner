@@ -119,7 +119,7 @@ RSpec.describe BookableSlot, type: :model do
         guider: guider,
         start_at: make_time(10, 30),
         end_at: make_time(11, 30),
-        status: :cancelled_by_customer
+        status: :cancelled_by_customer_sms
       )
       create(
         :appointment,
@@ -159,7 +159,7 @@ RSpec.describe BookableSlot, type: :model do
         guider: guider,
         start_at: make_time(10, 30),
         end_at: make_time(11, 30),
-        status: :cancelled_by_customer
+        status: :cancelled_by_customer_sms
       )
       expect(subject).to include slot
     end
@@ -426,7 +426,7 @@ RSpec.describe BookableSlot, type: :model do
             guider: User.guiders.first,
             start_at: make_time(10, 30),
             end_at: make_time(11, 30),
-            status: :cancelled_by_customer
+            status: :cancelled_by_customer_sms
           )
 
           create(

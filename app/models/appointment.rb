@@ -4,6 +4,8 @@ class Appointment < ApplicationRecord
 
   acts_as_copy_target
 
+  attr_accessor :current_user
+
   CANCELLED_STATUSES = %i(
     cancelled_by_customer
     cancelled_by_pension_wise
@@ -20,6 +22,7 @@ class Appointment < ApplicationRecord
     guider_id
     notes
     status
+    secondary_status
     dc_pot_confirmed
     updated_at
     type_of_appointment
@@ -52,6 +55,40 @@ class Appointment < ApplicationRecord
     cancelled_by_pension_wise
     cancelled_by_customer_sms
   )
+
+  AGENT_PERMITTED_SECONDARY = '15'.freeze
+  SECONDARY_STATUSES = {
+    'incomplete' => {
+      '0' => 'Technological issue',
+      '1' => 'Guider issue',
+      '2' => 'Customer issue',
+      '3' => 'Customer had accessibility requirement',
+      '4' => 'Customer believed Pension Wise was mandatory',
+      '5' => 'Customer wanted specific questions answered',
+      '6' => 'Customer did not want to hear all payment options',
+      '7' => 'Customer wanted advice not guidance',
+      '8' => 'Customer behaviour',
+      '9' => 'Other'
+    },
+    'ineligible_pension_type' => {
+      '10' => 'DB pension only and not considering transferring',
+      '11' => 'Annuity in payment only',
+      '12' => 'State pension only',
+      '13' => 'Overseas pension only',
+      '14' => 'S32 – No GMP Excess'
+    },
+    'cancelled_by_customer' => {
+      '15' => 'Cancelled prior to appointment',
+      '16' => 'Inconvenient time',
+      '17' => 'Customer forgot',
+      '18' => 'Customer changed their mind',
+      '19' => 'Customer not sufficiently prepared to undertake the call',
+      '20' => 'Customer did not agree with data protection policy',
+      '21' => 'Duplicate appointment booked by customer',
+      '22' => 'Customer driving whilst having appointment',
+      '23' => 'Third-party consent not received'
+    }
+  }.freeze
 
   belongs_to :agent, class_name: 'User'
 
@@ -110,6 +147,7 @@ class Appointment < ApplicationRecord
   validate :validate_phone_digits, if: :tp_agent?
   validate :validate_mobile_digits, if: :tp_agent?
   validate :email_consent_valid, if: :email_consent_form_required?
+  validate :validate_secondary_status
 
   before_validation :format_name, on: :create
   before_create :track_initial_status
@@ -296,6 +334,10 @@ class Appointment < ApplicationRecord
     elsif rebooked_from.power_of_attorney_evidence.attached?
       power_of_attorney_evidence.attach(rebooked_from.power_of_attorney_evidence.blob)
     end
+  end
+
+  def self.secondary_status(key)
+    SECONDARY_STATUSES.values.reduce(&:merge)[key] || '-'
   end
 
   def self.for_redaction
@@ -544,6 +586,22 @@ class Appointment < ApplicationRecord
 
   def printed_consent_address?
     [consent_address_line_one, consent_town, consent_postcode].all?(&:present?)
+  end
+
+  def validate_secondary_status # rubocop:disable AbcSize, PerceivedComplexity, CyclomaticComplexity, MethodLength
+    return unless created_at && created_at > Time.zone.parse(
+      ENV.fetch('SECONDARY_STATUS_CUT_OFF') { '2021-05-04 09:00' }
+    )
+
+    if matches = SECONDARY_STATUSES[status] # rubocop:disable GuardClause, AssignmentInCondition
+      unless matches.key?(secondary_status)
+        return errors.add(:secondary_status, 'must be provided for the chosen status')
+      end
+
+      if current_user&.tp_agent? && cancelled_by_customer? && secondary_status != AGENT_PERMITTED_SECONDARY
+        errors.add(:secondary_status, "Contact centre agents should only select 'Cancelled prior to appointment'")
+      end
+    end
   end
 
   class << self

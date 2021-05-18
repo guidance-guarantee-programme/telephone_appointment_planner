@@ -71,13 +71,13 @@ RSpec.describe Appointment, type: :model do
     context 'changing from a cancellation back to pending' do
       it 'is invalid when the original slot is taken' do
         @guider      = create(:guider)
-        @cancelled   = create(:appointment, status: :cancelled_by_customer, guider: @guider)
+        @cancelled   = create(:appointment, status: :cancelled_by_customer_sms, guider: @guider)
         @appointment = create(:appointment, guider: @guider)
 
         @cancelled.status = :pending
         expect(@cancelled).to be_invalid
 
-        @appointment.update(status: :cancelled_by_customer)
+        @appointment.update(status: :cancelled_by_customer_sms)
         expect(@cancelled).to be_valid
       end
     end
@@ -225,6 +225,49 @@ RSpec.describe Appointment, type: :model do
   describe 'validations' do
     let(:subject) do
       build_stubbed(:appointment)
+    end
+
+    context 'when the status would require a secondary status' do
+      before { subject.created_at = Time.current }
+
+      context 'when the appointment is past the cut-off date' do
+        before do
+          allow(ENV).to receive(:fetch).with('SECONDARY_STATUS_CUT_OFF').and_return(2.days.ago.to_s)
+        end
+
+        it 'is invalid' do
+          subject.status = :incomplete
+          expect(subject).to be_invalid
+
+          subject.secondary_status = '0' # technological issue
+          expect(subject).to be_valid
+
+          subject.secondary_status = '10' # belongs to ineligible pension type
+          expect(subject).to be_invalid
+        end
+
+        context 'when the current user is an agent' do
+          it 'disallows certain secondary statuses' do
+            subject.current_user = build_stubbed(:agent)
+
+            subject.status = :cancelled_by_customer
+            subject.secondary_status = '15' # Cancelled prior to appointment
+            expect(subject).to be_valid
+
+            subject.secondary_status = '17' # Customer forgot
+            expect(subject).to be_invalid
+          end
+        end
+      end
+
+      context 'when it is not past the cut-off date' do
+        it 'is not required' do
+          allow(ENV).to receive(:fetch).with('SECONDARY_STATUS_CUT_OFF').and_return(2.days.from_now.to_s)
+
+          subject.status = :incomplete
+          expect(subject).to be_valid
+        end
+      end
     end
 
     context 'when specifying adjustments requirements' do
@@ -850,7 +893,9 @@ RSpec.describe Appointment, type: :model do
 
       context 'and the appointment is not pending' do
         it 'does not return the appointment' do
-          appointment = create(:appointment, :api, status: 'cancelled_by_customer', start_at: BusinessDays.from_now(20))
+          appointment = create(
+            :appointment, :api, status: 'cancelled_by_customer_sms', start_at: BusinessDays.from_now(20)
+          )
 
           travel_to(appointment.start_at - 47.hours) do
             expect(Appointment.needing_reminder).to_not include(appointment)
