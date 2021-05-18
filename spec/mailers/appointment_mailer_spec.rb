@@ -372,7 +372,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
         it 'includes the correct messaging' do
           appointment.status = :cancelled_by_pension_wise
 
-          expect(body).to include('unforeseen circumstances')
+          expect(body).to include('unforeseen')
           expect(body).to include('offer you a new date')
         end
       end
