@@ -14,6 +14,14 @@ RSpec.feature 'Resource manager modifies appointments' do
     end
   end
 
+  scenario 'Do not track changes to secondary statuses', js: true do
+    given_the_user_is_a_resource_manager do
+      and_there_is_an_appointment
+      when_they_edit_the_appointment_secondary_status
+      then_they_can_navigate_away_without_warning
+    end
+  end
+
   scenario 'Reassigning the chosen guider alerts both guiders', js: true do
     # create the guiders and appointments up front
     when_there_are_appointments_for_multiple_guiders
@@ -107,6 +115,23 @@ RSpec.feature 'Resource manager modifies appointments' do
         then_they_can_see_the_bookable_slot
       end
     end
+  end
+
+  def and_there_is_an_appointment
+    @appointment = create(:appointment, status: :cancelled_by_customer, secondary_status: '15')
+  end
+
+  def when_they_edit_the_appointment_secondary_status
+    @page = Pages::EditAppointment.new
+    @page.load(id: @appointment.id)
+
+    @page.secondary_status.select('Customer forgot')
+  end
+
+  def then_they_can_navigate_away_without_warning
+    @page.click_on('Appointment search')
+
+    expect(@page).to be_displayed
   end
 
   def and_there_is_a_holiday_for_one_guider
