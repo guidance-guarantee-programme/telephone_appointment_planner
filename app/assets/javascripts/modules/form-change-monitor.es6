@@ -8,7 +8,7 @@
 
       this.initialFormFingerprint = '';
       this.formElements = this.$el.find(
-        'input:not([type=hidden]), select, textarea'
+        'input:not([type=hidden]), select:not([data-no-tracking=true]), textarea'
       );
       this.setInitialFormFingerprint();
       this.bindEvents();
