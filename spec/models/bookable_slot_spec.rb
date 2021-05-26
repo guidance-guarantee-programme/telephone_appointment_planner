@@ -19,6 +19,22 @@ RSpec.describe BookableSlot, type: :model do
     build_stubbed(:guider)
   end
 
+  describe '.find_available_slot' do
+    it 'returns a slot for the correct organisation' do
+      start_at = Time.zone.parse('2021-05-26 13:00')
+
+      %i(tp cas ni wallsend lancs_west).each do |provider|
+        create(:bookable_slot, provider, start_at: start_at)
+      end
+
+      @expected = create(:bookable_slot, :derbyshire_districts, start_at: start_at)
+
+      @allocated = BookableSlot.find_available_slot(start_at, @expected.guider)
+
+      expect(@allocated).to eq(@expected)
+    end
+  end
+
   describe '#next_valid_start_date' do
     context 'user is a guider / agent' do
       context 'outside of a bank holiday period' do
