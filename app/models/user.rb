@@ -64,6 +64,10 @@ class User < ApplicationRecord
     organisation_content_id == Provider::LANCS_WEST.id
   end
 
+  def cita?
+    Provider.lloyds_providers.map(&:id).include?(organisation_content_id)
+  end
+
   def tp_agent?
     tp? && agent?
   end
@@ -71,7 +75,7 @@ class User < ApplicationRecord
   def lloyds_signposter?
     return true if tp_agent? || administrator?
 
-    Provider.lloyds_providers.map(&:id).include?(organisation_content_id)
+    cita?
   end
 
   def organisation

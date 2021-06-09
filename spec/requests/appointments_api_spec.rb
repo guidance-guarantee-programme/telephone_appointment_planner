@@ -70,7 +70,7 @@ RSpec.describe 'POST /api/v1/appointments' do
   end
 
   def and_a_bookable_slot_exists_for_the_given_appointment_date
-    @bookable_slot = create(:bookable_slot, start_at: Time.zone.parse('2017-01-13 12:10'))
+    @bookable_slot = create(:bookable_slot, :wallsend, start_at: Time.zone.parse('2017-01-13 12:10'))
   end
 
   def and_a_resource_manager_exists

@@ -227,6 +227,21 @@ RSpec.describe Appointment, type: :model do
       build_stubbed(:appointment)
     end
 
+    context 'when the appointment is marked for LBGPTL' do
+      let(:subject) { build(:appointment) }
+
+      it 'only permits CITA guiders' do
+        subject.lloyds_signposted = true
+        subject.guider = build_stubbed(:guider, :tpas)
+
+        expect(subject).to be_invalid
+
+        subject.guider = build_stubbed(:guider, :waltham_forest)
+
+        expect(subject).to be_valid
+      end
+    end
+
     context 'when the status would require a secondary status' do
       before { subject.created_at = Time.current }
 
