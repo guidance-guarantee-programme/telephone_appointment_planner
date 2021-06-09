@@ -148,6 +148,7 @@ class Appointment < ApplicationRecord
   validate :validate_mobile_digits, if: :tp_agent?
   validate :email_consent_valid, if: :email_consent_form_required?
   validate :validate_secondary_status
+  validate :validate_lloyds_signposted_guider_allocated, if: :lloyds_signposted?, on: :create
 
   before_validation :format_name, on: :create
   before_create :track_initial_status
@@ -531,6 +532,10 @@ class Appointment < ApplicationRecord
     agent && !agent.pension_wise_api?
   end
 
+  def cita?
+    guider&.cita?
+  end
+
   def validate_adjustment_needs?
     date = created_at || Time.zone.today
 
@@ -602,6 +607,10 @@ class Appointment < ApplicationRecord
         errors.add(:secondary_status, "Contact centre agents should only select 'Cancelled prior to appointment'")
       end
     end
+  end
+
+  def validate_lloyds_signposted_guider_allocated
+    errors.add(:guider, 'The guider is not from an LBGPTL schedule') unless cita?
   end
 
   class << self
