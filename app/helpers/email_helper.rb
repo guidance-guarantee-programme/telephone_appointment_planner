@@ -4,8 +4,8 @@ module EmailHelper
       :p,
       capture(&block),
       style: [
-        'color: #0B0C0C',
-        'font-family: Helvetica, Arial, sans-serif',
+        'color: #000B3B',
+        'font-family: Calibri, Arial, sans-serif',
         'margin: 15px 0',
         'font-size: 16px',
         'line-height: 1.315789474'
