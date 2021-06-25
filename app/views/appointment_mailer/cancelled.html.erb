@@ -1,4 +1,4 @@
-<h1 style="color: #0B0C0C !important;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 20px;line-height: 1.111111111;padding: 15px 0;">
+<h1 style="color: #0F19A0 !important;font-family: Calibri, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 20px;line-height: 1.111111111;padding: 15px 0;">
   We’ve cancelled your appointment
 </h1>
 
@@ -42,12 +42,8 @@
   <% if @appointment.cancelled_by_pension_wise? %>
     If we have not contacted you already, we will offer you a new date for your appointment within 1 working day.
   <% else %>
-    If you didn’t ask us to cancel your appointment or to book a new one, call 0800 138 3944. Please don’t reply to this email.
+    If you didn’t ask us to cancel your appointment or to book a new one, call <strong>0800 138 3944</strong>. Please don’t reply to this email.
   <% end %>
-<% end %>
-
-<%= p do %>
-  Full details of our privacy policy, including information on your rights in relation to the data we hold can be found at <a href="https://www.pensionwise.gov.uk/en/privacy/">https://www.pensionwise.gov.uk/en/privacy</a>.
 <% end %>
 
 <%= render 'shared/email/money_helper' %>
