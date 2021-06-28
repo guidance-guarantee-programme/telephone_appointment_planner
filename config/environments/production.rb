@@ -110,7 +110,7 @@ Rails.application.configure do # rubocop:disable Metrics/BlockLength
     address: ENV['MAILGUN_SMTP_SERVER'],
     user_name: ENV['MAILGUN_SMTP_LOGIN'],
     password: ENV['MAILGUN_SMTP_PASSWORD'],
-    domain: 'pensionwise.gov.uk',
+    domain: 'moneyhelper.org.uk',
     authentication: :plain
   }
 end
