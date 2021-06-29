@@ -1,4 +1,4 @@
-<h1 style="color: #0B0C0C !important;font-family: Helvetica, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 20px;line-height: 1.111111111;padding: 15px 0;">
+<h1 style="color: #0F19A0 !important;font-family: Calibri, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 20px;line-height: 1.111111111;padding: 15px 0;">
   We’ve updated your appointment
 </h1>
 
@@ -12,10 +12,6 @@
 
 <%= render 'shared/email/appointment_details' %>
 
-<%= p do %>
-  Full details of our privacy policy, including information on your rights in relation to the data we hold can be found at <a href="https://www.pensionwise.gov.uk/en/privacy/">https://www.pensionwise.gov.uk/en/privacy</a>.
-<% end %>
-
-<%= render 'shared/email/money_helper' %>
-
 <%= render 'shared/email/preparing_for_appointment' %>
+
+<%= render 'shared/email/money_helper', full_detail: true %>

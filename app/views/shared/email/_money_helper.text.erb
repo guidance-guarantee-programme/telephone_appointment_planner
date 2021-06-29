@@ -1,3 +1,17 @@
-We’re moving to MoneyHelper
+What’s MoneyHelper?
 
-The Pension Wise service will soon be part of MoneyHelper, the easy way to get free help for your money and pensions.
+MoneyHelper is a government backed organisation that provides free and
+impartial guidance on your money and pensions. Further information can be
+found at https://www.moneyhelper.org.uk/about-us.
+
+<% if defined?(full_detail) %>
+MoneyHelper collects and stores personal data for the purpose of delivering
+pensions guidance. Your data will be shared with our delivery partners only
+where it is necessary to provide you with Pension Wise guidance. Full details
+of our privacy policy, including information on your rights in relation to the
+data we hold can be found at https://www.moneyhelper.org.uk/privacy.
+Alternatively, please write to Pension Wise, P.O. Box 10404, LE65 9EH.
+<% else %>
+Full details of our privacy policy, including information on your rights in
+relation to the data we hold can be found at https://www.moneyhelper.org.uk/privacy.
+<% end %>
