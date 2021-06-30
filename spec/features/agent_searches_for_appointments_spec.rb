@@ -72,33 +72,6 @@ RSpec.feature 'Agent searches for appointments' do
     end
   end
 
-  scenario 'TP agent searching after appointment creation', js: true do
-    given_the_user_is_an_agent(organisation: :tp) do
-      when_they_are_directed_to_the_search_page_after_creation
-      then_they_see_the_money_helper_banner
-    end
-  end
-
-  scenario 'Other agent searching after appointment creation', js: true do
-    given_the_user_is_an_agent(organisation: :tpas) do
-      when_they_are_directed_to_the_search_page_after_creation
-      then_they_do_not_see_the_money_helper_banner
-    end
-  end
-
-  def when_they_are_directed_to_the_search_page_after_creation
-    @page = Pages::Search.new
-    @page.load(query: { created: true })
-  end
-
-  def then_they_see_the_money_helper_banner
-    expect(@page).to have_money_helper_banner
-  end
-
-  def then_they_do_not_see_the_money_helper_banner
-    expect(@page).to have_no_money_helper_banner
-  end
-
   def when_they_view_the_search
     @page = Pages::Search.new.tap(&:load)
   end

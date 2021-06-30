@@ -1,6 +1,6 @@
 module Pages
   class Search < Base
-    set_url '/appointments/search{?query*}'
+    set_url '/appointments/search'
 
     element :q,          '.t-q'
     element :date_range, '.t-date-range'

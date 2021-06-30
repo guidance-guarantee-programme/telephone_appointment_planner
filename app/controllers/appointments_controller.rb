@@ -81,7 +81,7 @@ class AppointmentsController < ApplicationController
     if creating? && @appointment.save
       send_notifications(@appointment)
 
-      redirect_to(search_appointments_path(created: true), success: 'Appointment has been created')
+      redirect_to(search_appointments_path, success: 'Appointment has been created')
     else
       render :new
     end
@@ -104,11 +104,6 @@ class AppointmentsController < ApplicationController
     PrintedThirdPartyConsentFormJob.perform_later(appointment)
     EmailThirdPartyConsentFormJob.perform_later(appointment)
   end
-
-  def display_money_helper_banner?
-    params[:created].present? && current_user.tp_agent?
-  end
-  helper_method :display_money_helper_banner?
 
   def postcode_api_key
     ENV.fetch('POSTCODE_API_KEY') { 'iddqd' } # default to test API key
