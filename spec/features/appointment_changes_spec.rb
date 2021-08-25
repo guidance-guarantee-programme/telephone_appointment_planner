@@ -21,7 +21,8 @@ RSpec.feature 'Appointment audit trail' do
     @new_name = 'George'
     @edit_page = Pages::EditAppointment.new
     @edit_page.load(id: @appointment.id)
-    @edit_page.first_name.set @new_name
+    @edit_page.first_name.native.clear # workaround weird chrome-driver bug
+    @edit_page.first_name.set(@new_name)
     @edit_page.status.select('Cancelled By Customer')
     @edit_page.wait_until_secondary_status_options_visible
     @edit_page.secondary_status.select('Cancelled prior to appointment')

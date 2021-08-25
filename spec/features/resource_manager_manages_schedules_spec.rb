@@ -1,8 +1,29 @@
 require 'rails_helper'
 
 RSpec.feature 'Resource manager manages schedules' do
+  include ActiveJob::TestHelper
+
   before do
     allow(GenerateBookableSlotsForUserJob).to receive(:perform_later)
+  end
+
+  scenario 'TPAS resource manager adds a due diligence schedule', js: true do
+    allow(GenerateBookableSlotsForUserJob).to receive(:perform_later).and_call_original
+
+    given_the_user_is_a_resource_manager(organisation: :tpas) do
+      and_there_is_a_tpas_dummy_guider_schedule
+      and_they_add_a_new_schedule
+      and_they_set_the_initial_start_at_date
+      and_they_add_some_time_slots
+
+      perform_enqueued_jobs do
+        when_they_save_the_users_time_slots
+      end
+
+      then_they_are_told_that_the_schedule_has_been_created
+      and_the_guider_has_those_time_slots_available
+      and_the_due_diligence_bookable_slots_are_generated
+    end
   end
 
   scenario 'Successfully adds a new schedule', js: true do
@@ -226,6 +247,14 @@ RSpec.feature 'Resource manager manages schedules' do
     @page = Pages::EditUser.new
     @page.load(id: @guider.id)
     expect(@page.schedules.last.delete).to be_disabled
+  end
+
+  def and_there_is_a_tpas_dummy_guider_schedule
+    @guider = create(:guider, :tpas, :due_diligence)
+  end
+
+  def and_the_due_diligence_bookable_slots_are_generated
+    expect(@guider.bookable_slots.distinct.pluck(:schedule_type)).to eq(%w(due_diligence))
   end
 
   def and_the_guider_bookable_slots_are_regenerated

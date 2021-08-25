@@ -347,7 +347,6 @@ RSpec.feature 'Resource manager manages holidays' do
     @page.events.first.content.click
 
     @page = Pages::EditHoliday.new
-    expect(@page).to be_displayed
     @page.title.set 'Some other holiday title'
     @page.select_user(@guiders.first)
     @page.single_day.set_date_range(
