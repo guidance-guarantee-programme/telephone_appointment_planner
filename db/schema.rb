@@ -138,6 +138,7 @@ ActiveRecord::Schema.define(version: 2021_11_03_165658) do
     t.datetime "end_at", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "schedule_type", default: "pension_wise", null: false
     t.index ["guider_id"], name: "index_bookable_slots_on_guider_id"
     t.index ["start_at", "end_at"], name: "index_bookable_slots_on_start_at_and_end_at"
   end
@@ -224,6 +225,7 @@ ActiveRecord::Schema.define(version: 2021_11_03_165658) do
     t.jsonb "permissions", default: "[]"
     t.integer "position", default: 0, null: false
     t.boolean "active", default: true, null: false
+    t.string "schedule_type", default: "pension_wise", null: false
     t.index ["permissions"], name: "index_users_on_permissions", using: :gin
   end
 

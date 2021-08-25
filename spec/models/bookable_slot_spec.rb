@@ -19,6 +19,25 @@ RSpec.describe BookableSlot, type: :model do
     build_stubbed(:guider)
   end
 
+  describe '#schedule_type' do
+    it 'defaults to pension_wise' do
+      bookable_slot = build(:bookable_slot)
+
+      expect(bookable_slot.schedule_type).to eq(User::PENSION_WISE_SCHEDULE_TYPE)
+    end
+  end
+
+  describe '.create_from_slot!' do
+    it 'infers the schedule type from the given guider' do
+      slot   = build(:slot)
+      guider = build(:guider, :tpas, :due_diligence)
+
+      result = BookableSlot.create_from_slot!(guider, Time.zone.now, slot)
+
+      expect(result.schedule_type).to eq(User::DUE_DILIGENCE_SCHEDULE_TYPE)
+    end
+  end
+
   describe '.find_available_slot' do
     it 'returns a slot for the correct organisation' do
       start_at = Time.zone.parse('2021-05-26 13:00')

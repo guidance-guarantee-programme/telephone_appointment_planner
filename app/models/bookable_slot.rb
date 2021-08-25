@@ -137,7 +137,7 @@ class BookableSlot < ApplicationRecord
     start_at = day.in_time_zone.change(hour: slot.start_hour, min: slot.start_minute)
     end_at   = day.in_time_zone.change(hour: slot.end_hour, min: slot.end_minute)
 
-    find_or_create_by(guider: guider, start_at: start_at, end_at: end_at)
+    find_or_create_by(guider: guider, start_at: start_at, end_at: end_at, schedule_type: guider.schedule_type)
   end
 
   def self.generation_range
