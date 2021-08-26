@@ -32,6 +32,9 @@ RSpec.describe 'GET /api/v1/bookable_slots' do
 
     # excluded as CAS
     create(:bookable_slot, :cas, start_at: Time.zone.parse('2017-01-18 14:00'))
+
+    # excluded as due diligence
+    create(:bookable_slot, :due_diligence, start_at: Time.zone.parse('2017-01-16 14:00'))
   end
 
   def when_the_client_requests_bookable_slots_for_lloyds
@@ -65,6 +68,9 @@ RSpec.describe 'GET /api/v1/bookable_slots' do
 
     # falls after the booking window
     create(:bookable_slot, start_at: 9.weeks.from_now)
+
+    # excluded as due diligence
+    create(:bookable_slot, :due_diligence, start_at: Time.zone.parse('2017-01-16 14:00'))
   end
 
   def when_the_client_requests_bookable_slots
