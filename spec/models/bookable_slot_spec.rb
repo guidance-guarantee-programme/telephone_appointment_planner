@@ -66,8 +66,8 @@ RSpec.describe BookableSlot, type: :model do
         subject { BookableSlot.next_valid_start_date(user) }
 
         it 'takes account of holidays' do
-          travel_to '2020-05-24 12:00' do
-            expect(subject.to_date).to eq('2020-05-26'.to_date)
+          travel_to '2021-08-27 12:00' do
+            expect(subject.to_date).to eq('2021-08-31'.to_date)
           end
         end
       end
