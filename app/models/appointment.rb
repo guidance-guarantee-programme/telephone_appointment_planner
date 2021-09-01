@@ -112,6 +112,7 @@ class Appointment < ApplicationRecord
   scope :not_cancelled, -> { where.not(status: CANCELLED_STATUSES) }
   scope :with_mobile_number, -> { where("mobile like '07%' or phone like '07%'") }
   scope :not_booked_today, -> { where.not(created_at: Time.current.beginning_of_day..Time.current.end_of_day) }
+  scope :for_pension_wise, -> { where(schedule_type: User::PENSION_WISE_SCHEDULE_TYPE) }
 
   validates :agent, presence: true
   validates :start_at, presence: true
@@ -348,7 +349,7 @@ class Appointment < ApplicationRecord
   end
 
   def self.for_organisation(user)
-    return where('1 = 1') if user.tp_agent?
+    return for_pension_wise if user.tp_agent?
 
     joins(:guider)
       .where(users: { organisation_content_id: user.organisation_content_id })
