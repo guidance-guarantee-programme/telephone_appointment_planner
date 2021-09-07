@@ -38,7 +38,7 @@ class BookableSlot < ApplicationRecord
 
     scope = bookable(from, to).within_date_range(from, to)
     scope = scope.joins(:guider).where(users: { organisation_content_id: organisation_id }) if organisation_id
-    scope = scope.where(schedule_type: User::PENSION_WISE_SCHEDULE_TYPE)
+    scope = for_schedule_type(scope: scope)
 
     scope
       .select("#{quoted_table_name}.start_at::date as start_date")
@@ -46,6 +46,10 @@ class BookableSlot < ApplicationRecord
       .order('start_date asc, start_at asc')
       .group_by(&:start_date)
       .transform_values { |value| value.map(&:start_at).uniq }
+  end
+
+  def self.for_schedule_type(schedule_type: User::PENSION_WISE_SCHEDULE_TYPE, scope: self)
+    scope.where(schedule_type: schedule_type)
   end
 
   def self.without_appointments(from = nil, to = nil) # rubocop:disable Metrics/MethodLength
@@ -93,10 +97,11 @@ class BookableSlot < ApplicationRecord
     where("#{quoted_table_name}.start_at > ?", next_valid_start_date(user))
   end
 
-  def self.with_guider_count(user, from, to, lloyds: false)
+  def self.with_guider_count(user, from, to, lloyds: false) # rubocop:disable AbcSize
     select("DISTINCT #{quoted_table_name}.start_at, #{quoted_table_name}.end_at, count(1) AS guiders")
       .bookable
       .starting_after_next_valid_start_date(user)
+      .for_schedule_type
       .for_organisation(user, lloyds: lloyds)
       .group("#{quoted_table_name}.start_at, #{quoted_table_name}.end_at")
       .within_date_range(from, to)
