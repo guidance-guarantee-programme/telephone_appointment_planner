@@ -232,6 +232,10 @@ RSpec.describe Appointment, type: :model do
       end
     end
 
+    context 'when the appointment is for the DD schedule type' do
+      it 'only permits enrolled guiders'
+    end
+
     context 'when the status would require a secondary status' do
       before { subject.created_at = Time.current }
 

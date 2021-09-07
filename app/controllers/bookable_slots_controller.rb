@@ -9,7 +9,8 @@ class BookableSlotsController < ApplicationController
     render json: BookableSlot.with_guider_count(
       filtered_user,
       Time.zone.parse(params[:start]),
-      Time.zone.parse(params[:end])
+      Time.zone.parse(params[:end]),
+      schedule_type: schedule_type
     )
   end
 
@@ -27,6 +28,10 @@ class BookableSlotsController < ApplicationController
   end
 
   private
+
+  def schedule_type
+    params[:schedule_type]
+  end
 
   def rescheduling?
     params[:rescheduling] == 'true'

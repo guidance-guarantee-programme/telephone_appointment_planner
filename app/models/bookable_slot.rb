@@ -20,9 +20,10 @@ class BookableSlot < ApplicationRecord
     BusinessDays.from_now(1).change(hour: 21, min: 0).in_time_zone('London')
   end
 
-  def self.find_available_slot(start_at, agent)
+  def self.find_available_slot(start_at, agent, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE)
     scope = bookable.where(start_at: start_at)
     scope = scope.for_organisation(agent) if agent
+    scope = for_schedule_type(schedule_type: schedule_type, scope: scope)
 
     scope.limit(1).order('RANDOM()').first
   end
@@ -67,6 +68,7 @@ class BookableSlot < ApplicationRecord
               ) OVERLAPS (
                 #{quoted_table_name}.start_at, #{quoted_table_name}.end_at
               )
+              AND appointments.schedule_type = #{quoted_table_name}.schedule_type
             SQL
          )
       .where('appointments.start_at IS NULL')
@@ -97,11 +99,11 @@ class BookableSlot < ApplicationRecord
     where("#{quoted_table_name}.start_at > ?", next_valid_start_date(user))
   end
 
-  def self.with_guider_count(user, from, to, lloyds: false) # rubocop:disable AbcSize
+  def self.with_guider_count(user, from, to, lloyds: false, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE) # rubocop:disable AbcSize, LineLength
     select("DISTINCT #{quoted_table_name}.start_at, #{quoted_table_name}.end_at, count(1) AS guiders")
       .bookable
       .starting_after_next_valid_start_date(user)
-      .for_schedule_type
+      .for_schedule_type(schedule_type: schedule_type)
       .for_organisation(user, lloyds: lloyds)
       .group("#{quoted_table_name}.start_at, #{quoted_table_name}.end_at")
       .within_date_range(from, to)

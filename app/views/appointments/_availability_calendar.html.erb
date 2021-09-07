@@ -13,7 +13,7 @@
   id="AppointmentAvailabilityCalendar"
   class="appointment-availability-calendar"
   data-module="appointment-availability-calendar"
-  data-available-slots-path="<%= available_bookable_slots_path(rescheduling: rescheduling, id: @appointment.id) %>"
+  data-available-slots-path="<%= available_bookable_slots_path(schedule_type: schedule_type, rescheduling: rescheduling, id: @appointment.id) %>"
   data-lloyds-slots-path="<%= lloyds_bookable_slots_path(rescheduling: rescheduling, id: @appointment.id) %>"
   data-default-date="<%= BookableSlot.next_valid_start_date(current_user) %>"
 ></div>

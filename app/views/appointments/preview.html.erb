@@ -42,6 +42,7 @@
   <%= f.hidden_field :smarter_signposted %>
   <%= f.hidden_field :lloyds_signposted %>
   <%= f.hidden_field :bsl_video %>
+  <%= f.hidden_field :schedule_type %>
 
   <%= f.hidden_field :data_subject_name %>
   <%= f.hidden_field :data_subject_date_of_birth %>
@@ -170,6 +171,12 @@
             <tr>
               <td class="active"><b>Lloyds Banking Group referral?</b></td>
               <td><%= @appointment.lloyds_signposted? ? 'Yes' : 'No' %></td>
+            </tr>
+            <% end %>
+            <% if @appointment.due_diligence? %>
+            <tr>
+              <td class="active"><b>Due diligence appointment?</b></td>
+              <td>Yes</td>
             </tr>
             <% end %>
           </tbody>

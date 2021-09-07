@@ -5,6 +5,10 @@
 ) %>
 
 <h4>
+  <% if @appointment.due_diligence? %>
+    <span class="label label-default t-due-diligence-banner">Due Diligence</span>
+  <% end %>
+
   <% if @appointment.lloyds_signposted? %>
     <span class="label label-default t-lloyds-signposted">Lloyds Banking Group</span>
   <% end %>

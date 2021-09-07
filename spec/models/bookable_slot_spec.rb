@@ -177,6 +177,18 @@ RSpec.describe BookableSlot, type: :model do
       expect(subject).to_not include slot
     end
 
+    it 'includes slots that overlap with appointments from different schedules' do
+      create(
+        :appointment,
+        :due_diligence,
+        guider: guider,
+        start_at: make_time(10, 45),
+        end_at: make_time(12, 30),
+        status: :pending
+      )
+      expect(subject).to include slot
+    end
+
     it 'excludes slots with appointments that end inside them' do
       create(
         :appointment,

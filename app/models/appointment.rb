@@ -155,6 +155,10 @@ class Appointment < ApplicationRecord
   before_create :track_initial_status
   before_update :track_status_transitions
 
+  def due_diligence?
+    schedule_type == User::DUE_DILIGENCE_SCHEDULE_TYPE
+  end
+
   def process!(by)
     return if processed_at?
 
@@ -417,7 +421,7 @@ class Appointment < ApplicationRecord
   end
 
   def allocate_slot(agent)
-    slot = BookableSlot.find_available_slot(start_at, agent)
+    slot = BookableSlot.find_available_slot(start_at, agent, schedule_type)
     self.guider = nil
     return unless slot
 

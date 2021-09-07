@@ -55,6 +55,8 @@ module Pages
 
     elements :calendar_events, '.fc-event'
 
+    element :due_diligence_banner, '.t-due-diligence-banner'
+
     def ad_hoc_start_at(value)
       execute_script("$('.t-ad-hoc-start-at').val('#{value}')")
     end
