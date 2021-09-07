@@ -5,11 +5,12 @@
 %>
 
 <h1>Reschedule an appointment for <%= @appointment.name %></h1>
+<h2><%= @appointment.schedule_type %></h2>
 
 <%= render 'shared/required_fields_note' %>
 <%= form_for [@appointment], url: appointment_update_reschedule_path(@appointment), layout: :basic do |f| %>
   <div class="row form-group">
-    <%= render 'schedule_form', form: f, rescheduling: true %>
+    <%= render 'schedule_form', form: f, rescheduling: true, schedule_type: @appointment.schedule_type %>
   </div>
   <div class="row form-group">
     <div class="col-md-12">

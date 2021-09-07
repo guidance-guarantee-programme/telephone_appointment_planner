@@ -18,6 +18,40 @@ RSpec.feature 'Booking due diligence appointments' do
     end
   end
 
+  scenario 'TPAS resource manager attempts to reschedule an DD appointment', js: true do
+    travel_to '2021-04-05 10:00' do
+      given_the_user_is_a_resource_manager(organisation: :tpas) do
+        and_slots_exist_for_general_availability
+        and_slots_exist_for_due_diligence_availability
+        and_an_due_diligence_appointment_exists
+        when_they_attempt_to_reschedule_the_appointment
+        then_they_see_only_due_diligence_availability
+        when_they_reschedule_the_appointment
+        then_the_original_appointment_is_rescheduled
+      end
+    end
+  end
+
+  def and_an_due_diligence_appointment_exists
+    @appointment = create(:appointment, :due_diligence, start_at: Time.zone.parse('2021-04-08 10:30'))
+  end
+
+  def when_they_attempt_to_reschedule_the_appointment
+    @page = Pages::RescheduleAppointment.new
+    @page.load(id: @appointment.id)
+  end
+
+  def when_they_reschedule_the_appointment
+    @page.start_at.set day.change(hour: 14, min: 30).to_s
+    @page.end_at.set   day.change(hour: 15, min: 40).to_s
+
+    @page.reschedule.click
+  end
+
+  def then_the_original_appointment_is_rescheduled
+    expect(@appointment.reload.start_at).to eq(Time.zone.parse('2021-04-08 14:30'))
+  end
+
   def then_the_due_diligence_appointment_is_booked
     @appointment = Appointment.last
     expect(@appointment).to be_due_diligence
