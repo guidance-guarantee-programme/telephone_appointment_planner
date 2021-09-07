@@ -56,7 +56,7 @@
         <span>Reschedule</span>
       <% end %>
     <% end %>
-    <%= link_to new_appointment_path(copy_from: @appointment), title: 'Rebook appointment', class: 'btn btn-info t-rebook' do %>
+    <%= link_to new_appointment_path(copy_from: @appointment, schedule_type: @appointment.schedule_type), title: 'Rebook appointment', class: 'btn btn-info t-rebook' do %>
       <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
       <span>Rebook</span>
     <% end %>
