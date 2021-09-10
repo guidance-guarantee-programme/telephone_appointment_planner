@@ -17,6 +17,39 @@ RSpec.describe 'GET /api/v1/bookable_slots' do
     end
   end
 
+  scenario 'retrieving DD slots for the booking window' do
+    travel_to '2017-01-09 12:00' do
+      given_bookable_slots_for_the_booking_window_exist
+      when_the_client_requests_due_diligence_bookable_slots
+      then_the_response_contains_due_diligence_slots_for_the_booking_window
+    end
+  end
+
+  scenario 'attempting to retrieve slots for invalid schedule types' do
+    when_the_client_requests_slots_for_an_invalid_schedule_type
+    then_the_response_is_unprocessable
+  end
+
+  def when_the_client_requests_slots_for_an_invalid_schedule_type
+    get api_v1_bookable_slots_path(schedule_type: 'whoopsie'), as: :json
+  end
+
+  def then_the_response_is_unprocessable
+    expect(response).to be_unprocessable
+  end
+
+  def when_the_client_requests_due_diligence_bookable_slots
+    get api_v1_bookable_slots_path(schedule_type: 'due_diligence'), as: :json
+  end
+
+  def then_the_response_contains_due_diligence_slots_for_the_booking_window
+    expect(response).to be_ok
+
+    JSON.parse(response.body).tap do |json|
+      expect(json.keys).to eq(%w(2017-01-16))
+    end
+  end
+
   def given_bookable_slots_for_the_booking_window_exist_across_providers
     # included as CITA E&W
     create(:bookable_slot, :wallsend, start_at: Time.zone.parse('2017-01-14 14:00'))
