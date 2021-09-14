@@ -159,6 +159,10 @@ class Appointment < ApplicationRecord
     schedule_type == User::DUE_DILIGENCE_SCHEDULE_TYPE
   end
 
+  def pension_wise?
+    schedule_type == User::PENSION_WISE_SCHEDULE_TYPE
+  end
+
   def process!(by)
     return if processed_at?
 

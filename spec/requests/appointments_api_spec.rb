@@ -3,6 +3,26 @@ require 'rails_helper'
 RSpec.describe 'POST /api/v1/appointments' do
   include ActiveJob::TestHelper
 
+  context 'due diligence appointments' do
+    scenario 'supplying an incorrect schedule type' do
+      given_the_user_is_a_pension_wise_api_user do
+        when_the_client_supplies_an_incorrect_schedule_type
+        then_the_api_responds_unprocessable
+      end
+    end
+
+    scenario 'successfully creating a due diligence appointment' do
+      travel_to '2021-09-14 12:00' do
+        given_the_user_is_a_pension_wise_api_user do
+          and_bookable_slots_exist_for_due_diligence
+          when_the_client_posts_a_due_diligence_appointment_request
+          then_the_service_responds_with_a_201
+          and_the_due_diligence_appointment_is_created
+        end
+      end
+    end
+  end
+
   scenario 'creating a smarter-signposted appointment' do
     travel_to '2017-01-10 12:00' do
       given_the_user_is_a_pension_wise_api_user do
@@ -39,6 +59,48 @@ RSpec.describe 'POST /api/v1/appointments' do
         and_the_errors_are_serialized_in_the_response
       end
     end
+  end
+
+  def and_bookable_slots_exist_for_due_diligence
+    create(:bookable_slot, :due_diligence, start_at: Time.zone.parse('2021-09-16 13:00'))
+  end
+
+  def when_the_client_posts_a_due_diligence_appointment_request
+    @payload = {
+      'start_at'          => '2021-09-16T13:00:00.000Z',
+      'first_name'        => 'Rick',
+      'last_name'         => 'Sanchez',
+      'email'             => 'rick@example.com',
+      'phone'             => '02082524729',
+      'memorable_word'    => 'snootboop',
+      'date_of_birth'     => '1950-02-02',
+      'dc_pot_confirmed'  => true,
+      'where_you_heard'   => '1',
+      'gdpr_consent'      => nil,
+      'lloyds_signposted' => false,
+      'schedule_type'     => 'due_diligence',
+      'accessibility_requirements' => false
+    }
+
+    post api_v1_appointments_path, params: @payload, as: :json
+  end
+
+  def then_the_service_responds_with_a_201
+    expect(response).to be_created
+  end
+
+  def and_the_due_diligence_appointment_is_created
+    expect(Appointment.last).to be_due_diligence
+  end
+
+  def when_the_client_supplies_an_incorrect_schedule_type
+    @payload = { 'schedule_type' => 'bad_times' }
+
+    post api_v1_appointments_path, params: @payload, as: :json
+  end
+
+  def then_the_api_responds_unprocessable
+    expect(response).to be_unprocessable
   end
 
   def when_the_client_posts_an_invalid_appointment_request
@@ -152,6 +214,9 @@ RSpec.describe 'POST /api/v1/appointments' do
         pension_provider: 'n/a',
         lloyds_signposted: true
       )
+
+      # defaults to pension wise when the schedule type is unspecified
+      expect(appointment).to be_pension_wise
     end
   end
 

@@ -18,6 +18,7 @@ module Api
       attr_accessor :agent
       attr_accessor :smarter_signposted
       attr_accessor :lloyds_signposted
+      attr_accessor :schedule_type
 
       attr_reader :model
 
@@ -53,7 +54,8 @@ module Api
           pension_provider: 'n/a',
           agent: agent,
           smarter_signposted: smarter_signposted,
-          lloyds_signposted: lloyds_signposted || false
+          lloyds_signposted: lloyds_signposted || false,
+          schedule_type: schedule_type
         }
       end
     end
