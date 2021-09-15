@@ -42,6 +42,7 @@ class Appointment < ApplicationRecord
     email_consent
     generated_consent_form
     lloyds_signposted
+    unique_reference_number
   ).freeze
 
   enum status: %i(
@@ -133,6 +134,7 @@ class Appointment < ApplicationRecord
   validates :gdpr_consent, inclusion: ['yes', 'no', '']
   validates :status, presence: true
   validates :guider, presence: true
+  validates :unique_reference_number, uniqueness: true, if: :complete_due_diligence?
 
   validate :validate_printed_consent_form_address
   validate :validate_consent_type
@@ -154,6 +156,10 @@ class Appointment < ApplicationRecord
   before_validation :format_name, on: :create
   before_create :track_initial_status
   before_update :track_status_transitions
+
+  def complete_due_diligence?
+    due_diligence? && complete? && unique_reference_number?
+  end
 
   def due_diligence?
     schedule_type == User::DUE_DILIGENCE_SCHEDULE_TYPE

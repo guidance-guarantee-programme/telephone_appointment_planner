@@ -34,7 +34,10 @@
 
 <div class="row">
   <div class="col-md-7">
-    <h1>Edit appointment for <%= @appointment.name %> <span class="text-muted"><span class="sr-only">Booking reference </span>#<%= @appointment.id %></span></h1>
+    <h1>Edit appointment for <%= @appointment.name %>&nbsp;
+      <span class="text-muted"><span class="sr-only">Booking reference </span>#<%= @appointment.id %></span>&nbsp;
+      <% if @appointment.unique_reference_number? %><span class="text-muted"><small><span class="sr-only">Unique reference </span>#<%= @appointment.unique_reference_number %></small></span>&nbsp;<% end %>
+    </h1>
     <%= rebooked_from_heading(@appointment) %>
   </div>
   <div class="col-md-5 action-buttons">

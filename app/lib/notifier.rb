@@ -34,7 +34,7 @@ class Notifier
     Array(appointment.previous_changes.fetch('guider_id', appointment.guider_id))
   end
 
-  def notify_customer # rubocop:disable AbcSize, CyclomaticComplexity, PerceivedComplexity
+  def notify_customer # rubocop:disable AbcSize, CyclomaticComplexity, PerceivedComplexity, MethodLength
     if appointment_cancelled?
       CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::CANCELLED_MESSAGE)
     elsif appointment_missed?
@@ -43,6 +43,7 @@ class Notifier
       CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::UPDATED_MESSAGE)
     end
 
+    DueDiligenceReferenceNumberJob.perform_later(appointment) if due_diligence_appointment_complete?
     PrintedThirdPartyConsentFormJob.perform_later(appointment) if requires_printed_consent_form?
     EmailThirdPartyConsentFormJob.perform_later(appointment) if requires_email_consent_form?
     BslCustomerExitPollJob.set(wait: 24.hours).perform_later(appointment) if bsl_appointment_complete?
@@ -67,6 +68,10 @@ class Notifier
 
   def bsl_appointment_complete?
     appointment.bsl_video? && appointment_complete?
+  end
+
+  def due_diligence_appointment_complete?
+    appointment.due_diligence? && appointment_complete?
   end
 
   def appointment_complete?
