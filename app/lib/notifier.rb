@@ -43,7 +43,7 @@ class Notifier
       CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::UPDATED_MESSAGE)
     end
 
-    DueDiligenceReferenceNumberJob.perform_later(appointment) if due_diligence_appointment_complete?
+    DueDiligenceReferenceNumberJob.perform_now(appointment) if due_diligence_appointment_complete?
     PrintedThirdPartyConsentFormJob.perform_later(appointment) if requires_printed_consent_form?
     EmailThirdPartyConsentFormJob.perform_later(appointment) if requires_email_consent_form?
     BslCustomerExitPollJob.set(wait: 24.hours).perform_later(appointment) if bsl_appointment_complete?

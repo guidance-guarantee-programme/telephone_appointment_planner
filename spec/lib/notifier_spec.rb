@@ -72,10 +72,10 @@ RSpec.describe Notifier, '#call' do
   end
 
   context 'when a DD appointment is completed' do
-    it 'enqueues the DD reference number generation job' do
+    it 'executes the DD reference number generation job synchronously' do
       appointment.update(schedule_type: 'due_diligence', status: :complete)
 
-      expect(DueDiligenceReferenceNumberJob).to receive(:perform_later).with(appointment)
+      expect(DueDiligenceReferenceNumberJob).to receive(:perform_now).with(appointment)
 
       subject.call
     end
