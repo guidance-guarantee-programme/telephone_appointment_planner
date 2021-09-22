@@ -25,7 +25,8 @@ class SummaryDocumentLink
         postcode: appointment.postcode,
         country: 'United Kingdom',
         telephone_appointment: true,
-        schedule_type: appointment.schedule_type
+        schedule_type: appointment.schedule_type,
+        unique_reference_number: appointment.unique_reference_number
       }.to_query(:appointment_summary)
     end
   end
