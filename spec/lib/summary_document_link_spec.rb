@@ -18,4 +18,8 @@ RSpec.describe SummaryDocumentLink do
       'United+Kingdom'
     )
   end
+
+  it 'includes the schedule type' do
+    expect(subject).to include('%5Bschedule_type%5D=pension_wise')
+  end
 end
