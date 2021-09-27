@@ -6,6 +6,6 @@ RSpec.describe DueDiligenceReferenceNumber, '#call' do
 
     reference = described_class.new(@appointment).call
 
-    expect(reference).to match(/\A\d{6}14092021\z/)
+    expect(reference).to match(%r{\A\d{6}/140921\z})
   end
 end

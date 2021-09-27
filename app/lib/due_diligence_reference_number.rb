@@ -8,9 +8,9 @@ class DueDiligenceReferenceNumber
 
   def call
     reference_digits = SecureRandom.random_number(MAX_SIX_DIGIT_REFERENCE).to_s.rjust(MAX_PADDED_DIGITS, '0')
-    reference_date   = appointment.start_at.strftime('%d%m%Y')
+    reference_date   = appointment.start_at.strftime('%d%m%y')
 
-    "#{reference_digits}#{reference_date}"
+    "#{reference_digits}/#{reference_date}"
   end
 
   private
