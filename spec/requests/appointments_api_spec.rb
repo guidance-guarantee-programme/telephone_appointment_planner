@@ -79,6 +79,7 @@ RSpec.describe 'POST /api/v1/appointments' do
       'gdpr_consent'      => nil,
       'lloyds_signposted' => false,
       'schedule_type'     => 'due_diligence',
+      'referrer'          => 'Big Pension Co.',
       'accessibility_requirements' => false
     }
 

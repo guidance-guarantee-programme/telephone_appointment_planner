@@ -217,6 +217,18 @@ RSpec.describe Appointment, type: :model do
       build_stubbed(:appointment)
     end
 
+    context 'when due diligence' do
+      subject { build(:appointment, :due_diligence) }
+
+      it 'requires a referring pension provider' do
+        subject.referrer = ''
+        expect(subject).to be_invalid
+
+        subject.referrer = 'Big Pension Co.'
+        expect(subject).to be_valid
+      end
+    end
+
     context 'when the appointment is marked for LBGPTL' do
       let(:subject) { build(:appointment) }
 

@@ -157,6 +157,9 @@
             {}, { class: 't-where-you-heard form-control' }
       %>
     </div>
+    <% if @appointment.due_diligence? %>
+      <%= f.text_field :referrer, autocomplete: 'off', class: 't-referrer', label: 'Pension Safeguarding Guidance referrer' %>
+    <% end %>
 
     <% if defined?(edit) && edit %>
       <%=

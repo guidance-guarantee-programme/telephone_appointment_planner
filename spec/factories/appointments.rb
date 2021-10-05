@@ -31,6 +31,7 @@ FactoryBot.define do
 
     trait :due_diligence do
       schedule_type { User::DUE_DILIGENCE_SCHEDULE_TYPE }
+      referrer { 'Big Pensions PLC' }
     end
 
     trait :api do

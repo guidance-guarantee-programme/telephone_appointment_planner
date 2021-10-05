@@ -41,6 +41,7 @@ module Pages
     element :type_of_appointment_50_54,             '.t-type-of-appointment-50-54'
     element :suggestion,                            '.t-suggestion'
     element :where_you_heard, '.t-where-you-heard'
+    element :referrer, '.t-referrer'
     element :address_line_one, '.t-address-line-one'
     element :town, '.t-town'
     element :postcode, '.t-postcode'

@@ -42,7 +42,8 @@ module Api
           :accessibility_requirements,
           :notes,
           :smarter_signposted,
-          :lloyds_signposted
+          :lloyds_signposted,
+          :referrer
         ).merge(
           agent: current_user,
           schedule_type: schedule_type

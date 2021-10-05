@@ -125,7 +125,8 @@ RSpec.feature 'Booking due diligence appointments' do
     @page.accessibility_requirements.set false
     @page.gdpr_consent_yes.set true
     @page.type_of_appointment_standard.set true
-    @page.where_you_heard.select 'Other'
+    @page.where_you_heard.select 'A Pension Provider'
+    @page.referrer.set 'Big Pensions PLC'
 
     @page.preview_appointment.click
   end
