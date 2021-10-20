@@ -28,6 +28,10 @@ RSpec.describe AppointmentMailer, type: :mailer do
     it 'contains the due diligence specifics' do
       expect(subject.body.encoded).to include('where the receiving pension scheme proposes to invest')
     end
+
+    it 'has the correct help number' do
+      expect(subject.body.encoded).to include('0800 015 4906')
+    end
   end
 
   describe 'BSL customer exit poll' do
@@ -445,7 +449,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
       let(:body) { subject.body.encoded }
 
       it 'includes information' do
-        expect(body).to include('Our records show that your Pension Wise telephone appointment was missed')
+        expect(body).to include('Our records show that your Pension Wise appointment was missed')
       end
 
       it 'includes the date' do

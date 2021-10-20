@@ -7,7 +7,7 @@
 <% end %>
 
 <%= p do %>
-  Our records show that you missed your Pension Wise phone appointment which was scheduled for:
+  Our records show that you missed your <%= @appointment.type %> appointment which was scheduled for:
 <% end %>
 
 <%= p do %>
@@ -43,7 +43,7 @@
 <% end %>
 
 <%= p do %>
-  To book another appointment, please call <strong>0800 138 3944</strong>. Please don’t reply to this email.
+  To book another appointment, please call <strong><%= @appointment.telephone %></strong>. Please don’t reply to this email.
 <% end %>
 
 <%= render 'shared/email/money_helper' %>

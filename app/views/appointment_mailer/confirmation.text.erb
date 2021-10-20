@@ -2,7 +2,7 @@ We've booked your appointment
 
 Dear <%= @appointment.first_name %>,
 
-Thank you for booking a Pension Wise phone appointment.
+Thank you for booking a <%= @appointment.type %> appointment.
 
 <%= render 'shared/email/appointment_details' %>
 <%= render 'shared/email/preparing_for_appointment' %>

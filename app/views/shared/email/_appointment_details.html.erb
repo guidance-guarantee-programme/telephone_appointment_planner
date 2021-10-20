@@ -56,7 +56,7 @@
   <%= p do %>
     You will be sent further information and a link to access your video
     appointment that only you and the guidance specialist can join. They’ll
-    repeat the memorable word so you know you’re speaking to Pension Wise.
+    repeat the memorable word so you know you’re speaking to <%= @appointment.provider %>.
   <% end %>
 
   <%= p do %>
@@ -64,7 +64,7 @@
   <% end %>
 <% else %>
   <%= p do %>
-    A trained guidance specialist will call you on the number above. They’ll repeat the memorable word so you know you're speaking to Pension Wise.
+    A trained guidance specialist will call you on the number above. They’ll repeat the memorable word so you know you're speaking to <%= @appointment.provider %>.
   <% end %>
 
   <%= p do %>
@@ -74,6 +74,6 @@
   <% end %>
 
   <%= p do %>
-    Call <strong>0800 138 3944</strong> to change or cancel your booking.
+    Call <strong><%= @appointment.telephone %></strong> to change or cancel your booking.
   <% end %>
 <% end %>

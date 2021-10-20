@@ -25,9 +25,9 @@ You should have received further information and a link to access your video app
 
 Email us if you need this information resent or to change or cancel your booking. You may be asked for your booking reference number.
 <% else %>
-A trained guidance specialist will call you on the number above. They'll repeat the memorable word so you know you're speaking to Pension Wise.
+  A trained guidance specialist will call you on the number above. They'll repeat the memorable word so you know you're speaking to <%= @appointment.provider %>.
 
 If you miss the call, you'll need to book another appointment.
 
-Call 0800 138 3944 to change or cancel your booking.
+Call <%= @appointment.telephone %> to change or cancel your booking.
 <% end %>

@@ -27,10 +27,10 @@ class AppointmentMailerPreview < ActionMailer::Preview
     )
   end
 
-  def accessibility_adjustment
+  def adjustment
     appointment = random_appointment
 
-    AppointmentMailer.accessibility_adjustment(appointment, appointment.resource_managers.first)
+    AppointmentMailer.adjustment(appointment, appointment.resource_managers.first)
   end
 
   def due_diligence_confirmation

@@ -7,7 +7,7 @@
 <% end %>
 
 <%= p do %>
-  Thank you for booking a Pension Wise phone appointment.
+  Thank you for booking a <%= @appointment.type %> appointment.
 <% end %>
 
 <%= render 'shared/email/appointment_details' %>
