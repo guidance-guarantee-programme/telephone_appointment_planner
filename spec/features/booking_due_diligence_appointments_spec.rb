@@ -11,6 +11,7 @@ RSpec.feature 'Booking due diligence appointments' do
         when_they_attempt_to_book_an_due_diligence_appointment
         then_they_see_only_due_diligence_availability
         and_they_are_told_they_are_booking_due_diligence
+        and_they_are_presented_with_the_correct_fields
         when_they_fill_in_the_appointment_details
         and_they_accept_the_appointment_preview
         then_the_due_diligence_appointment_is_booked
@@ -41,6 +42,7 @@ RSpec.feature 'Booking due diligence appointments' do
         and_the_appointment_can_be_rebooked
         when_they_attempt_to_rebook
         then_they_see_only_due_diligence_availability
+        and_they_are_presented_with_the_correct_fields
         when_they_rebook_the_appointment
         then_the_new_appointment_is_created
       end
@@ -109,6 +111,18 @@ RSpec.feature 'Booking due diligence appointments' do
     @page.confirm_appointment.click
   end
 
+  def and_they_are_presented_with_the_correct_fields
+    expect(@page).to have_no_third_party_booked
+    expect(@page).to have_no_smarter_signposted
+    expect(@page).to have_no_type_of_appointment_standard
+    expect(@page).to have_no_type_of_appointment_50_54
+    expect(@page).to have_no_gdpr_consent_yes
+    expect(@page).to have_no_gdpr_consent_no
+    expect(@page).to have_no_gdpr_consent_no_response
+
+    expect(@page.hidden_where_you_heard.value).to eq('2') # A Pension Provider
+  end
+
   def when_they_fill_in_the_appointment_details
     @page.start_at.set day.change(hour: 14, min: 30).to_s
     @page.end_at.set   day.change(hour: 15, min: 40).to_s
@@ -123,9 +137,6 @@ RSpec.feature 'Booking due diligence appointments' do
     @page.mobile.set '07715 930 459'
     @page.memorable_word.set 'lozenge'
     @page.accessibility_requirements.set false
-    @page.gdpr_consent_yes.set true
-    @page.type_of_appointment_standard.set true
-    @page.where_you_heard.select 'A Pension Provider'
     @page.referrer.set 'Big Pensions PLC'
 
     @page.preview_appointment.click

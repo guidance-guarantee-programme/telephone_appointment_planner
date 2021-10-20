@@ -14,6 +14,7 @@
     <%= f.text_field :memorable_word, autocomplete: 'off', class: 't-memorable-word', placeholder: 'Pension Wise will use this each time the customer is called', label: required_label(:memorable_word) %>
     <%= render 'shared/date_of_birth_form_field', form: f if defined?(edit) && edit %>
 
+    <% unless @appointment.due_diligence? %>
     <h2 class="h3">Eligibility</h2>
 
     <div class="form-group" data-module="type-of-appointment">
@@ -38,6 +39,7 @@
       <%= f.radio_button :gdpr_consent, 'no', label: 'No', class: 't-gdpr-consent-no' %>
       <%= f.radio_button :gdpr_consent, '', label: 'No response', class: 't-gdpr-consent-no-response' %>
     </div>
+    <% end %>
   </div>
 
   <div class="col-md-6" data-module="checkbox-toggle">
@@ -66,6 +68,7 @@
 
     <%= f.check_box :accessibility_requirements, class: 't-accessibility-requirements', label: 'Do you require an adjustment to access our service?' %>
 
+    <% unless @appointment.due_diligence? %>
     <%= f.check_box :third_party_booking, class: 't-third-party-booked', label: 'Third party appointment?', data: { target: 'consent' } %>
     <div class="col-md-offset-1" id="consent">
       <p><strong>This appointment will be delivered to a third party on behalf of the data subject:</strong></p>
@@ -141,22 +144,29 @@
         <%= f.text_field :consent_postcode, autocomplete: 'off', class: 't-consent-postcode', label: 'Postcode', placeholder: 'Postcode' %>
       </div>
     </div>
+    <% end # unless due diligence %>
 
     <% if bsl_video_visible?(current_user) %>
      <%= f.check_box :bsl_video, class: 't-bsl-video', label: 'BSL video appointment?', disabled: bsl_video_disabled?(current_user) %>
     <% end %>
 
-    <% if current_user.tpas? || current_user.administrator? %>
+    <% if (current_user.tpas? || current_user.administrator?) && !@appointment.due_diligence? %>
       <%= f.check_box :smarter_signposted, class: 't-smarter-signposted', label: 'Smarter signposting referral?' %>
     <% end %>
 
     <%= f.text_area :notes, autocomplete: 'off', class: 't-notes js-notes', rows: 6, placeholder: 'Is the customer hard of hearing? Is English their first language? etc.' %>
+
+    <% if @appointment.due_diligence? %>
+      <%= f.hidden_field :where_you_heard, value: '2', class: 't-hidden-where-you-heard' %>
+    <% else %>
     <div class="form-group">
       <%= f.select :where_you_heard,
             options_for_select(WhereYouHeard::OPTIONS.invert.to_a, @appointment.where_you_heard),
             {}, { class: 't-where-you-heard form-control' }
       %>
     </div>
+    <% end %>
+
     <% if @appointment.due_diligence? %>
       <%= f.text_field :referrer, autocomplete: 'off', class: 't-referrer', label: 'Pension Safeguarding Guidance referrer' %>
     <% end %>
