@@ -267,7 +267,7 @@ RSpec.feature 'Resource manager modifies appointments' do
     deliveries = ActionMailer::Base.deliveries
     expect(deliveries.count).to eq 1
     expect(deliveries.first.to).to eq [@appointment.email]
-    expect(deliveries.first.subject).to eq 'Your Pension Wise Appointment'
+    expect(deliveries.first.subject).to eq 'Pension Wise Appointment'
     expect(deliveries.first.body.encoded).to include 'We=E2=80=99ve updated your appointment'
   end
 

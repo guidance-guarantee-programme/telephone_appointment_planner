@@ -12,6 +12,20 @@ RSpec.describe AppointmentMailer, type: :mailer do
     )
   end
 
+  describe 'Due diligence appointment confirmation' do
+    let(:appointment) { build_stubbed(:appointment, :due_diligence) }
+
+    subject(:mail) { described_class.confirmation(appointment) }
+
+    it 'determines the correct subject' do
+      expect(subject.subject).to eq('Pension Safeguarding Guidance Appointment')
+    end
+
+    it 'is delivered from the correct sender' do
+      expect(subject['From'].unparsed_value).to include('Pension Safeguarding Guidance Bookings')
+    end
+  end
+
   describe 'BSL customer exit poll' do
     let(:mailgun_headers) { JSON.parse(mail['X-Mailgun-Variables'].value) }
     let(:appointment) { build_stubbed(:appointment, bsl_video: true) }
@@ -167,9 +181,10 @@ RSpec.describe AppointmentMailer, type: :mailer do
     end
 
     it 'renders the headers' do
-      expect(mail.subject).to eq('Your Pension Wise Appointment')
+      expect(mail.subject).to eq('Pension Wise Appointment')
       expect(mail.to).to eq([appointment.email])
       expect(mail.from).to eq(['booking.pensionwise@moneyhelper.org.uk'])
+      expect(mail['From'].unparsed_value).to include('Pension Wise')
     end
 
     it 'renders the mailgun specific headers' do
@@ -231,7 +246,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
     end
 
     it 'renders the headers' do
-      expect(mail.subject).to eq('Your Pension Wise Appointment')
+      expect(mail.subject).to eq('Pension Wise Appointment')
       expect(mail.to).to eq([appointment.email])
       expect(mail.from).to eq(['booking.pensionwise@moneyhelper.org.uk'])
     end
@@ -283,7 +298,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
     end
 
     it 'renders the headers' do
-      expect(mail.subject).to eq('Your Pension Wise Appointment')
+      expect(mail.subject).to eq('Pension Wise Appointment')
       expect(mail.to).to eq([appointment.email])
       expect(mail.from).to eq(['booking.pensionwise@moneyhelper.org.uk'])
     end
@@ -357,7 +372,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
     end
 
     it 'renders the headers' do
-      expect(mail.subject).to eq('Your Pension Wise Appointment')
+      expect(mail.subject).to eq('Pension Wise Appointment')
       expect(mail.to).to eq([appointment.email])
       expect(mail.from).to eq(['booking.pensionwise@moneyhelper.org.uk'])
     end
@@ -406,7 +421,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
     end
 
     it 'renders the headers' do
-      expect(mail.subject).to eq('Your Pension Wise Appointment')
+      expect(mail.subject).to eq('Pension Wise Appointment')
       expect(mail.to).to eq([appointment.email])
       expect(mail.from).to eq(['booking.pensionwise@moneyhelper.org.uk'])
     end
