@@ -24,6 +24,10 @@ RSpec.describe AppointmentMailer, type: :mailer do
     it 'is delivered from the correct sender' do
       expect(subject['From'].unparsed_value).to include('Pension Safeguarding Guidance Bookings')
     end
+
+    it 'contains the due diligence specifics' do
+      expect(subject.body.encoded).to include('where the receiving pension scheme proposes to invest')
+    end
   end
 
   describe 'BSL customer exit poll' do
@@ -231,6 +235,10 @@ RSpec.describe AppointmentMailer, type: :mailer do
 
       it 'includes the phone specifics' do
         expect(body).to include('call you on the number')
+      end
+
+      it 'includes the Pension Wise specific preparation instructions' do
+        expect(body).to include('when you want to stop working')
       end
     end
   end

@@ -33,6 +33,10 @@ class AppointmentMailerPreview < ActionMailer::Preview
     AppointmentMailer.accessibility_adjustment(appointment, appointment.resource_managers.first)
   end
 
+  def due_diligence_confirmation
+    AppointmentMailer.confirmation(random_due_diligence_appointment)
+  end
+
   def confirmation
     AppointmentMailer.confirmation(random_appointment)
   end
@@ -67,5 +71,9 @@ class AppointmentMailerPreview < ActionMailer::Preview
 
   def random_appointment
     Appointment.all.sample(1).first || FactoryBot.create(:appointment)
+  end
+
+  def random_due_diligence_appointment
+    Appointment.where(schedule_type: 'due_diligence').sample(1).first || FactoryBot.create(:appointment, :due_diligence)
   end
 end
