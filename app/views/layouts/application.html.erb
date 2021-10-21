@@ -20,6 +20,15 @@
   <% end %>
 <% end %>
 
+<% content_for :content do %>
+   <p class="alert alert-warning">
+   The Pension Wise contact centre number (0800 138 3944) is currently
+   out-of-service. We are working to resolve the issue urgently.
+   </p>
+
+   <%= yield %>
+<% end %>
+
 <% content_for :body_end do %>
   <div data-module="activity-resolve"></div>
   <script>
