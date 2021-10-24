@@ -26,6 +26,20 @@ RSpec.feature 'Agent searches for appointments' do
     expect(@page).to have_results(count: 2)
   end
 
+  scenario 'TPAS users see the appointment type filters' do
+    given_the_user_is_an_agent(organisation: :tpas) do
+      when_they_view_the_search
+      then_they_see_the_type_filters
+    end
+  end
+
+  scenario 'Other users do not see the type filters' do
+    given_the_user_is_an_agent(organisation: :cas) do
+      when_they_view_the_search
+      then_they_do_not_see_the_type_filters
+    end
+  end
+
   scenario 'TPAS users do not see `processed` filters' do
     given_the_user_is_an_agent(organisation: :tpas) do
       when_they_view_the_search
@@ -95,6 +109,16 @@ RSpec.feature 'Agent searches for appointments' do
       when_they_search_for_a_name
       then_they_can_see_those_filtered_appointments_only
     end
+  end
+
+  def then_they_see_the_type_filters
+    expect(@page).to have_pension_wise
+    expect(@page).to have_due_diligence
+  end
+
+  def then_they_do_not_see_the_type_filters
+    expect(@page).to have_no_pension_wise
+    expect(@page).to have_no_due_diligence
   end
 
   def when_they_view_the_search

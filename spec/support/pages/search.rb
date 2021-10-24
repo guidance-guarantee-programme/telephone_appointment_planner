@@ -6,6 +6,10 @@ module Pages
     element :date_range, '.t-date-range'
     element :processed_no, '.t-processed-no'
     element :processed_yes, '.t-processed-yes'
+    element :pension_wise, '.t-pension-wise'
+    element :due_diligence, '.t-due-diligence'
+    element :any, '.t-any'
+
     element :search,     '.t-search'
     element :rebook,     '.t-rebook'
 

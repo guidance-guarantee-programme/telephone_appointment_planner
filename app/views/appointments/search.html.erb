@@ -38,6 +38,13 @@
     <label><%= f.radio_button :processed, 'yes', class: 't-processed-yes' %> Yes</label>
   </div>
   <% end %>
+  <% if current_user.tpas? %>
+  <div class="form-group">
+    <label><%= f.radio_button :appointment_type, 'pension_wise', class: 't-pension-wise' %> Pension Wise</label>
+    <label><%= f.radio_button :appointment_type, 'due_diligence', class: 't-due-diligence' %> Due Diligence</label>
+    <label><%= f.radio_button :appointment_type, '', class: 't-any' %> Any</label>
+  </div>
+  <% end %>
   <div class="form-group">
     <%= f.submit 'Search', class: 't-search btn btn-primary' %>
   </div>

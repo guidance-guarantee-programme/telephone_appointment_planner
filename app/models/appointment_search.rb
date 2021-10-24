@@ -1,16 +1,18 @@
 class AppointmentSearch
-  def initialize(query, start_at, end_at, current_user, processed)
+  def initialize(query, start_at, end_at, current_user, processed, appointment_type) # rubocop:disable ParameterLists
     @query = query
     @start_at = start_at
     @end_at = end_at
     @current_user = current_user
     @processed = processed
+    @appointment_type = appointment_type
   end
 
   def search
     results = @query.present? ? search_with_query : search_without_query
     results = within_date_range(results)
     results = for_current_user(results)
+    results = for_appointment_type(results)
 
     return results if results.count == 1
 
@@ -20,6 +22,17 @@ class AppointmentSearch
   private
 
   attr_reader :current_user
+
+  def for_appointment_type(results)
+    case @appointment_type
+    when 'pension_wise'
+      results.for_pension_wise
+    when 'due_diligence'
+      results.for_due_diligence
+    else
+      results
+    end
+  end
 
   def processed_for_current_user(results)
     return results if current_user.tpas? || @processed.blank?

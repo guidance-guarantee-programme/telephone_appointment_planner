@@ -115,6 +115,7 @@ class Appointment < ApplicationRecord
   scope :with_mobile_number, -> { where("mobile like '07%' or phone like '07%'") }
   scope :not_booked_today, -> { where.not(created_at: Time.current.beginning_of_day..Time.current.end_of_day) }
   scope :for_pension_wise, -> { where(schedule_type: User::PENSION_WISE_SCHEDULE_TYPE) }
+  scope :for_due_diligence, -> { where(schedule_type: User::DUE_DILIGENCE_SCHEDULE_TYPE) }
 
   validates :agent, presence: true
   validates :start_at, presence: true

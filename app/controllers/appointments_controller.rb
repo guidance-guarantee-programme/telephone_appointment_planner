@@ -150,7 +150,7 @@ class AppointmentsController < ApplicationController
   def search_params
     params
       .fetch(:search, {})
-      .permit(:q, :date_range, :processed)
+      .permit(:q, :date_range, :processed, :appointment_type)
       .merge(current_user: current_user)
   end
 
