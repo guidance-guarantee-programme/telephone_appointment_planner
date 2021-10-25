@@ -14,10 +14,12 @@ class BookableSlot < ApplicationRecord
     where("#{quoted_table_name}.start_at > ? AND #{quoted_table_name}.end_at < ?", from, to)
   end
 
-  def self.next_valid_start_date(user = nil)
-    return Time.zone.now if user && user.resource_manager?
+  def self.next_valid_start_date(user = nil, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE)
+    return Time.zone.now if user&.resource_manager?
 
-    BusinessDays.from_now(1).change(hour: 21, min: 0).in_time_zone('London')
+    days_from_now = schedule_type == User::DUE_DILIGENCE_SCHEDULE_TYPE ? 5 : 1
+
+    BusinessDays.from_now(days_from_now).change(hour: 21, min: 0).in_time_zone('London')
   end
 
   def self.find_available_slot(start_at, agent, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE)
@@ -34,7 +36,7 @@ class BookableSlot < ApplicationRecord
   end
 
   def self.grouped(organisation_id = nil, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE) # rubocop:disable AbcSize, MethodLength, LineLength
-    from = next_valid_start_date
+    from = next_valid_start_date(nil, schedule_type)
     to   = BusinessDays.from_now(40).end_of_day
 
     scope = bookable(from, to).within_date_range(from, to)
