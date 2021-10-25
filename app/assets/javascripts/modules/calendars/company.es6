@@ -241,6 +241,8 @@ class CompanyCalendar extends Calendar {
       slots = this.getEventsOfType(events, 'slot');
 
     for (let slot in slots) {
+      $(`#${slots[slot].elementId}`).addClass(`fc-bgevent--bookable-slot-${slots[slot].scheduleType}`);
+
       for (let holiday in holidays) {
         if (
           (
