@@ -23,6 +23,10 @@
   data-filter-select-id="filter_guiders">
 </div>
 
+<% if current_user.tpas? %>
+  <h5 class="t-due-diligence-grace-period">Due diligence grace period: <%= due_diligence_grace_period %></h5>
+<% end %>
+
 <%= form_for(Holiday.new, remote: true, html: { class: 'js-holiday-form' }) do |f| %>
   <%= f.hidden_field :user_id, class: 'js-user-id' %>
   <%= f.hidden_field :title, class: 'js-title' %>
