@@ -185,7 +185,7 @@
 
         <p class="alert alert-warning">
           Full details on our privacy policy, including the customers rights in
-          regards to their personal data, can be found on the Pension Wise website
+          regards to their personal data, can be found on the <% if @appointment.due_diligence? %> MoneyHelper <% else %> Pension Wise <% end %> website
         </p>
       </div>
     </div>
