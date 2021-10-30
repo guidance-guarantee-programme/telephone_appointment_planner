@@ -90,11 +90,11 @@ RSpec.describe BookableSlot, type: :model do
         build_stubbed(:resource_manager)
       end
 
-      it 'is advanced an hour to accomodate TZ weirdness' do
+      it 'is now' do
         now = Chronic.parse('next Monday').in_time_zone
         travel_to(now) do
           actual = BookableSlot.next_valid_start_date(user)
-          expect(actual).to eq now.advance(hours: 1)
+          expect(actual).to eq now
         end
       end
     end
