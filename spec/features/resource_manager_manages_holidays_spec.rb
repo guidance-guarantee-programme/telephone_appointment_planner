@@ -90,7 +90,7 @@ RSpec.feature 'Resource manager manages holidays' do
     end
   end
 
-  scenario 'Deletes a holiday', js: true, retry: 3 do
+  scenario 'Deletes a holiday', js: true, retry: 3, driver: :poltergeist do
     given_the_user_is_a_resource_manager do
       travel_to today do
         and_there_are_guiders_with_multiple_day_holidays

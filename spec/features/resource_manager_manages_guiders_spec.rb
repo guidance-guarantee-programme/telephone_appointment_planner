@@ -56,7 +56,9 @@ RSpec.feature 'Resource manager manages guiders' do
   end
 
   def when_they_remove_a_group
-    @page.groups.first.remove.click
+    accept_confirm do
+      @page.groups.first.remove.click
+    end
   end
 
   def then_the_group_is_unassigned_from_those_guiders
@@ -81,7 +83,7 @@ RSpec.feature 'Resource manager manages guiders' do
 
   def when_they_create_a_new_group
     # simulate the select.js behaviour correctly
-    @page.group.send_keys(%i(t r a i n e e s enter))
+    @page.group.send_keys('TRAINEES', :enter)
     # wait until the new group / tag is selected
     @page.wait_until_chosen_group_visible
 

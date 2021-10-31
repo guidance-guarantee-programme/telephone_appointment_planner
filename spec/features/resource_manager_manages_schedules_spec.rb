@@ -5,7 +5,7 @@ RSpec.feature 'Resource manager manages schedules' do
     allow(GenerateBookableSlotsForUserJob).to receive(:perform_later)
   end
 
-  scenario 'Successfully adds a new schedule', js: true do
+  scenario 'Successfully adds a new schedule', js: true, driver: :poltergeist do
     given_the_user_is_a_resource_manager do
       and_there_is_a_guider
       and_they_add_a_new_schedule
@@ -18,7 +18,7 @@ RSpec.feature 'Resource manager manages schedules' do
     end
   end
 
-  scenario 'Successfully updates a schedule', js: true do
+  scenario 'Successfully updates a schedule', js: true, driver: :poltergeist do
     given_the_user_is_a_resource_manager do
       and_there_is_a_guider
       and_the_guider_has_a_schedule_that_can_be_modified
@@ -53,7 +53,7 @@ RSpec.feature 'Resource manager manages schedules' do
     end
   end
 
-  scenario 'Adds a mid shift schedule', js: true do
+  scenario 'Adds a mid shift schedule', js: true, driver: :poltergeist do
     given_the_user_is_a_resource_manager do
       and_there_is_a_guider
       and_they_add_a_new_schedule
