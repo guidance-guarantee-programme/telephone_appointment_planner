@@ -22,7 +22,7 @@ RSpec.feature 'Resource manager modifies appointments' do
     end
   end
 
-  scenario 'Reassigning the chosen guider alerts both guiders', js: true, driver: :poltergeist do
+  scenario 'Reassigning the chosen guider alerts both guiders', js: true, driver: :poltergeist, retry: 3 do
     # create the guiders and appointments up front
     when_there_are_appointments_for_multiple_guiders
 
