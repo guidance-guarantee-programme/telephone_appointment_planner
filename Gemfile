@@ -66,7 +66,6 @@ source 'https://rubygems.org' do
     gem 'pry-byebug'
     gem 'pusher-fake'
     gem 'rspec-rails'
-    gem 'rspec-retry'
     gem 'rubocop', '0.46.0'
     gem 'site_prism'
     gem 'thin'
