@@ -4,7 +4,7 @@
     <%= active_link_to 'Search', search_appointments_path, wrap_tag: :li %>
     <%= active_link_to 'Book appointment', new_appointment_path, wrap_tag: :li %>
     <% if current_user.tpas? %>
-      <%= active_link_to 'Book due diligence appointment', new_appointment_path(schedule_type: User::DUE_DILIGENCE_SCHEDULE_TYPE), wrap_tag: :li %>
+      <%= active_link_to 'Book PSG appointment', new_appointment_path(schedule_type: User::DUE_DILIGENCE_SCHEDULE_TYPE), wrap_tag: :li %>
     <% end %>
 
     <% if current_user.resource_manager? %>

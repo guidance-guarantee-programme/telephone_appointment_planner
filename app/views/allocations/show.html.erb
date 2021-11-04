@@ -24,7 +24,7 @@
 </div>
 
 <% if current_user.tpas? %>
-  <h5 class="t-due-diligence-grace-period">Due diligence grace period: <%= due_diligence_grace_period %></h5>
+  <h5 class="t-due-diligence-grace-period">PSG grace period: <%= due_diligence_grace_period %></h5>
 <% end %>
 
 <%= form_for(Holiday.new, remote: true, html: { class: 'js-holiday-form' }) do |f| %>

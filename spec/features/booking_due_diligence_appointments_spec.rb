@@ -106,7 +106,7 @@ RSpec.feature 'Booking due diligence appointments' do
   def and_they_accept_the_appointment_preview
     @page = Pages::PreviewAppointment.new
     expect(@page).to be_displayed
-    expect(@page).to have_content('Due diligence appointment')
+    expect(@page).to have_content('PSG appointment')
 
     @page.confirm_appointment.click
   end
