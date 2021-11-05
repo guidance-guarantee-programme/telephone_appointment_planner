@@ -32,6 +32,10 @@ RSpec.describe AppointmentMailer, type: :mailer do
     it 'has the correct help number' do
       expect(subject.body.encoded).to include('0800 015 4906')
     end
+
+    it 'has the correct heading logo' do
+      expect(subject.body.encoded).to include('mhp.jpg')
+    end
   end
 
   describe 'BSL customer exit poll' do
@@ -243,6 +247,10 @@ RSpec.describe AppointmentMailer, type: :mailer do
 
       it 'includes the Pension Wise specific preparation instructions' do
         expect(body).to include('when you want to stop working')
+      end
+
+      it 'includes the correct PW heading logo' do
+        expect(body).to include('pw.jpg')
       end
     end
   end

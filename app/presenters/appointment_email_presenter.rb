@@ -30,4 +30,12 @@ class AppointmentEmailPresenter < SimpleDelegator
       '0800 138 3944'
     end
   end
+
+  def logo_file
+    if due_diligence?
+      'mhp.jpg'
+    else
+      'pw.jpg'
+    end
+  end
 end
