@@ -14,7 +14,7 @@ class SmsCancellationsController < ActionController::Base
   private
 
   def callback_params
-    params.permit(:source_number, :message)
+    params.permit(:source_number, :message, :schedule_type)
   end
 
   def token_authenticate

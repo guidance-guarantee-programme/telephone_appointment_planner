@@ -9,8 +9,8 @@ RSpec.describe 'POST /sms_cancellations', type: :request do
     then_the_service_does_not_grant_access
   end
 
-  scenario 'successfully cancelling an existing appointment' do
-    given_a_pending_appointment_exists
+  scenario 'successfully cancelling an existing Pension Wise appointment' do
+    given_pending_appointments_exist
     when_the_client_requests_cancellation_by_sms
     then_the_service_responds_no_content
     and_the_appointment_is_cancelled
@@ -20,8 +20,9 @@ RSpec.describe 'POST /sms_cancellations', type: :request do
     and_the_resource_managers_are_notified
   end
 
-  def given_a_pending_appointment_exists
-    @appointment = create(:appointment, mobile: '07715930455')
+  def given_pending_appointments_exist
+    @appointment   = create(:appointment, mobile: '07715930455')
+    @due_diligence = create(:appointment, :due_diligence, mobile: '07715930455')
   end
 
   def when_the_client_requests_cancellation_by_sms
@@ -29,7 +30,7 @@ RSpec.describe 'POST /sms_cancellations', type: :request do
 
     token   = ActionController::HttpAuthentication::Token.encode_credentials('deadbeef')
     headers = { 'HTTP_AUTHORIZATION' => token, 'CONTENT_TYPE' => 'application/json' }
-    payload = { 'source_number' => '447715 930 455', 'message' => 'Cancel' }
+    payload = { 'source_number' => '447715 930 455', 'message' => 'Cancel', schedule_type: 'pension_wise' }
 
     post sms_cancellations_path, params: payload.to_json, headers: headers
   end
