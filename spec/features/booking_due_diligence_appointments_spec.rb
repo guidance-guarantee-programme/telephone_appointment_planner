@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-RSpec.feature 'Booking due diligence appointments' do
+RSpec.feature 'Booking due diligence appointments', js: true, driver: :poltergeist do
   let(:day) { BusinessDays.from_now(3) }
 
-  scenario 'TPAS resource manager attempts to book an DD appointment', js: true do
+  scenario 'TPAS resource manager attempts to book an DD appointment' do
     travel_to '2021-04-05 10:00' do
       given_the_user_is_a_resource_manager(organisation: :tpas) do
         and_slots_exist_for_general_availability
@@ -19,7 +19,7 @@ RSpec.feature 'Booking due diligence appointments' do
     end
   end
 
-  scenario 'TPAS resource manager attempts to reschedule an DD appointment', js: true do
+  scenario 'TPAS resource manager attempts to reschedule an DD appointment' do
     travel_to '2021-04-05 10:00' do
       given_the_user_is_a_resource_manager(organisation: :tpas) do
         and_slots_exist_for_general_availability
@@ -33,7 +33,7 @@ RSpec.feature 'Booking due diligence appointments' do
     end
   end
 
-  scenario 'TPAS resource manager attempts to rebook an DD appointment', js: true do
+  scenario 'TPAS resource manager attempts to rebook an DD appointment' do
     travel_to '2021-04-05 10:00' do
       given_the_user_is_a_resource_manager(organisation: :tpas) do
         and_slots_exist_for_general_availability
