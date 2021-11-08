@@ -47,6 +47,8 @@ RSpec.feature 'Resource manager modifies appointments' do
     given_a_browser_session_for(@ben, @jan) do
       then_they_are_notified_of_the_change
     end
+
+    wait_for_ajax_to_complete
   end
 
   scenario 'Rescheduling an appointment notifies the guider and customer', js: true do
@@ -301,5 +303,11 @@ RSpec.feature 'Resource manager modifies appointments' do
     expect(holiday[:end][:_i]).to eq "#{date}T09:10:00.000Z"
 
     expect(Holiday.count).to eq 1
+  end
+
+  def wait_for_ajax_to_complete
+    Timeout.timeout(Capybara.default_max_wait_time) do
+      loop until page.evaluate_script('jQuery.active').zero?
+    end
   end
 end
