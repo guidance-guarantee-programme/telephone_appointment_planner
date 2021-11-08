@@ -14,7 +14,7 @@ class SmsCancellation
       appointment.cancel!
       send_notifications
     else
-      SmsCancellationFailureJob.perform_later(source_number)
+      SmsCancellationFailureJob.perform_later(source_number, schedule_type)
     end
   end
 

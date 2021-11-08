@@ -1,14 +1,25 @@
 require 'rails_helper'
 
 RSpec.describe SmsCancellationSuccessJob, '#perform' do
-  let(:appointment) { create(:appointment, start_at: Time.zone.parse('2019-01-01 13:00 UTC')) }
   let(:client) { double(Notifications::Client, send_sms: true) }
 
-  context 'for a standard appointment' do
+  context 'for Due Diligence' do
+    let(:appointment) { create(:appointment, :due_diligence, start_at: Time.zone.parse('2019-01-01 13:00 UTC')) }
+
+    before do
+      ENV['DUE_DILIGENCE_NOTIFY_API_KEY'] = 'blahblah'
+
+      allow(Notifications::Client).to receive(:new).and_return(client)
+    end
+
+    after do
+      ENV.delete('DUE_DILIGENCE_NOTIFY_API_KEY')
+    end
+
     it 'sends an SMS with the appropriate template' do
       expect(client).to receive(:send_sms).with(
         phone_number: '07715 930 444',
-        template_id: SmsCancellationSuccessJob::STANDARD_TEMPLATE_ID,
+        template_id: SmsCancellationSuccessJob::DUE_DILIGENCE_TEMPLATE_ID,
         reference: appointment.to_param,
         personalisation: {
           date: '1:00pm, 1 Jan 2019 (GMT)'
@@ -19,30 +30,49 @@ RSpec.describe SmsCancellationSuccessJob, '#perform' do
     end
   end
 
-  context 'for a BSL appointment' do
-    it 'sends an SMS with the appropriate template' do
-      appointment.bsl_video = true
+  context 'for Pension Wise' do
+    let(:appointment) { create(:appointment, start_at: Time.zone.parse('2019-01-01 13:00 UTC')) }
 
-      expect(client).to receive(:send_sms).with(
-        phone_number: '07715 930 444',
-        template_id: SmsCancellationSuccessJob::BSL_TEMPLATE_ID,
-        reference: appointment.to_param,
-        personalisation: {
-          date: '1:00pm, 1 Jan 2019 (GMT)'
-        }
-      )
+    context 'for a standard appointment' do
+      it 'sends an SMS with the appropriate template' do
+        expect(client).to receive(:send_sms).with(
+          phone_number: '07715 930 444',
+          template_id: SmsCancellationSuccessJob::STANDARD_TEMPLATE_ID,
+          reference: appointment.to_param,
+          personalisation: {
+            date: '1:00pm, 1 Jan 2019 (GMT)'
+          }
+        )
 
-      described_class.new.perform(appointment)
+        described_class.new.perform(appointment)
+      end
     end
-  end
 
-  before do
-    ENV['NOTIFY_API_KEY'] = 'blahblah'
+    context 'for a BSL appointment' do
+      it 'sends an SMS with the appropriate template' do
+        appointment.bsl_video = true
 
-    allow(Notifications::Client).to receive(:new).and_return(client)
-  end
+        expect(client).to receive(:send_sms).with(
+          phone_number: '07715 930 444',
+          template_id: SmsCancellationSuccessJob::BSL_TEMPLATE_ID,
+          reference: appointment.to_param,
+          personalisation: {
+            date: '1:00pm, 1 Jan 2019 (GMT)'
+          }
+        )
 
-  after do
-    ENV.delete('NOTIFY_API_KEY')
+        described_class.new.perform(appointment)
+      end
+    end
+
+    before do
+      ENV['PENSION_WISE_NOTIFY_API_KEY'] = 'blahblah'
+
+      allow(Notifications::Client).to receive(:new).and_return(client)
+    end
+
+    after do
+      ENV.delete('PENSION_WISE_NOTIFY_API_KEY')
+    end
   end
 end

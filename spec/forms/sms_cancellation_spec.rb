@@ -34,13 +34,18 @@ RSpec.describe SmsCancellation do
   describe '#call' do
     let(:appointment) { create(:appointment, mobile: '07715930455', status: :complete) }
 
+    before { allow(SmsCancellationFailureJob).to receive(:perform_later) }
+
     context 'when the underlying appointment is not pending' do
       it 'does not attempt to cancel and notifies the customer' do
         subject.call
 
         expect(appointment.reload).to be_complete
 
-        assert_enqueued_jobs(1, only: SmsCancellationFailureJob)
+        expect(SmsCancellationFailureJob).to have_received(:perform_later).with(
+          '07715 930 455',
+          'pension_wise'
+        )
       end
     end
 

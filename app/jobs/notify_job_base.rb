@@ -9,11 +9,7 @@ class NotifyJobBase < ApplicationJob
 
   protected
 
-  def client
-    @client ||= Notifications::Client.new(api_key)
-  end
-
-  def api_key
-    ENV['NOTIFY_API_KEY']
+  def api_key(schedule_type)
+    ENV["#{schedule_type.upcase}_NOTIFY_API_KEY"]
   end
 end

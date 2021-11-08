@@ -40,12 +40,12 @@ RSpec.describe PrintedThirdPartyConsentFormJob, '#perform' do
   end
 
   before do
-    ENV['NOTIFY_API_KEY'] = 'blahblah'
+    ENV['PENSION_WISE_NOTIFY_API_KEY'] = 'blahblah'
 
     allow(Notifications::Client).to receive(:new).and_return(client)
   end
 
   after do
-    ENV.delete('NOTIFY_API_KEY')
+    ENV.delete('PENSION_WISE_NOTIFY_API_KEY')
   end
 end
