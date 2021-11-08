@@ -12,7 +12,7 @@ module UserHelpers
     GDS::SSO.test_user
   end
 
-  def given_a_browser_session_for(*users) # rubocop:disable Metrics/MethodLength
+  def given_a_browser_session_for(*users)
     users.each do |user|
       begin
         existing_session      = Capybara.session_name
@@ -22,7 +22,6 @@ module UserHelpers
         yield
       ensure
         Capybara.session_name = existing_session
-        GDS::SSO.test_user    = nil
       end
     end
   end
@@ -30,8 +29,6 @@ module UserHelpers
   def given_the_user(type, organisation = :tpas)
     GDS::SSO.test_user = create(type, organisation)
     yield
-  ensure
-    GDS::SSO.test_user = nil
   end
 
   def given_the_user_is_a_business_analyst(&block)

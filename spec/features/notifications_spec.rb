@@ -9,7 +9,7 @@ RSpec.describe 'Activity notification alerts', js: true do
     create(:guider)
   end
 
-  scenario 'A new high priority activity occurs' do
+  scenario 'A new high priority activity occurs', driver: :poltergeist do
     given_a_browser_session_for(guider, agent) do
       when_they_are_on_their_dashboard
     end

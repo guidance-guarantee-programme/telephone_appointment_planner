@@ -66,7 +66,6 @@ source 'https://rubygems.org' do
     gem 'pry-byebug'
     gem 'pusher-fake'
     gem 'rspec-rails'
-    gem 'rspec-retry'
     gem 'rubocop', '0.46.0'
     gem 'site_prism'
     gem 'thin'
@@ -76,8 +75,10 @@ source 'https://rubygems.org' do
     gem 'chronic'
     gem 'coveralls', require: false
     gem 'database_rewinder'
-    gem 'poltergeist', '1.11.0'
+    gem 'poltergeist'
     gem 'scss_lint', require: false
+    gem 'selenium-webdriver'
+    gem 'webdrivers'
     gem 'webmock'
     gem 'webrick'
   end

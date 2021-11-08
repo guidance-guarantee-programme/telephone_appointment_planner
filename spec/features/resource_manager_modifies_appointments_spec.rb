@@ -22,7 +22,7 @@ RSpec.feature 'Resource manager modifies appointments' do
     end
   end
 
-  scenario 'Reassigning the chosen guider alerts both guiders', js: true do
+  scenario 'Reassigning the chosen guider alerts both guiders', js: true, driver: :poltergeist do
     # create the guiders and appointments up front
     when_there_are_appointments_for_multiple_guiders
 
@@ -47,6 +47,8 @@ RSpec.feature 'Resource manager modifies appointments' do
     given_a_browser_session_for(@ben, @jan) do
       then_they_are_notified_of_the_change
     end
+
+    wait_for_ajax_to_complete
   end
 
   scenario 'Rescheduling an appointment notifies the guider and customer', js: true do
@@ -86,7 +88,7 @@ RSpec.feature 'Resource manager modifies appointments' do
     end
   end
 
-  scenario 'Viewing holidays for all guiders', js: true, retry: 3 do
+  scenario 'Viewing holidays for all guiders', js: true do
     given_the_user_is_a_resource_manager do
       and_there_is_a_holiday_for_all_guiders
       travel_to @holiday.start_at do
@@ -96,7 +98,7 @@ RSpec.feature 'Resource manager modifies appointments' do
     end
   end
 
-  scenario 'Creating a holiday for one guider', js: true, retry: 3 do
+  scenario 'Creating a holiday for one guider', js: true, driver: :poltergeist do
     given_the_user_is_a_resource_manager do
       travel_to BusinessDays.from_now(1) do
         and_there_is_a_guider
@@ -270,7 +272,7 @@ RSpec.feature 'Resource manager modifies appointments' do
   end
 
   def and_click_a_link_while_dismissing_the_warning
-    dismiss_confirm('You have unsaved changes - Save, or undo the changes.') do
+    dismiss_confirm do
       @page.find('.navbar-brand').click
     end
   end
@@ -297,9 +299,15 @@ RSpec.feature 'Resource manager modifies appointments' do
     holiday = @page.calendar.holidays.first
     expect(holiday[:resourceId]).to eq @guider.id
     expect(holiday[:title]).to eq 'Holiday Title'
-    expect(holiday[:start]).to eq "#{date}T09:00:00.000Z"
-    expect(holiday[:end]).to eq "#{date}T09:10:00.000Z"
+    expect(holiday[:start][:_i]).to eq "#{date}T09:00:00.000Z"
+    expect(holiday[:end][:_i]).to eq "#{date}T09:10:00.000Z"
 
     expect(Holiday.count).to eq 1
+  end
+
+  def wait_for_ajax_to_complete
+    Timeout.timeout(Capybara.default_max_wait_time) do
+      loop until page.evaluate_script('jQuery.active').zero?
+    end
   end
 end
