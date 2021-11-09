@@ -36,6 +36,10 @@ RSpec.describe AppointmentMailer, type: :mailer do
     it 'has the correct heading logo' do
       expect(subject.body.encoded).to include('mhp.jpg')
     end
+
+    it 'does not include the Pension Wise mailing address' do
+      expect(subject.body.encoded).not_to include('P.O. Box 10404')
+    end
   end
 
   describe 'BSL customer exit poll' do
@@ -251,6 +255,10 @@ RSpec.describe AppointmentMailer, type: :mailer do
 
       it 'includes the correct PW heading logo' do
         expect(body).to include('pw.jpg')
+      end
+
+      it 'includes the Pension Wise mailing address' do
+        expect(body).to include('P.O. Box 10404')
       end
     end
   end
