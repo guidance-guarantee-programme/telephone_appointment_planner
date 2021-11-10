@@ -90,7 +90,7 @@ RSpec.feature 'Resource manager manages holidays' do
     end
   end
 
-  scenario 'Deletes a holiday', js: true, driver: :poltergeist do
+  scenario 'Deletes a holiday', js: true do
     given_the_user_is_a_resource_manager do
       travel_to today do
         and_there_are_guiders_with_multiple_day_holidays
@@ -381,7 +381,18 @@ RSpec.feature 'Resource manager manages holidays' do
     @page.events.first.content.click
     @page = Pages::EditHoliday.new
     expect(@page).to be_displayed
-    @page.delete.click
+
+    accept_confirm do
+      @page.delete.click
+    end
+
+    wait_for_ajax_to_complete
+  end
+
+  def wait_for_ajax_to_complete
+    Timeout.timeout(Capybara.default_max_wait_time) do
+      loop until page.evaluate_script('jQuery.active').zero?
+    end
   end
 
   def then_it_is_deleted

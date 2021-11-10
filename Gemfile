@@ -62,7 +62,6 @@ source 'https://rubygems.org' do
     gem 'faker'
     gem 'launchy'
     gem 'parallel_tests'
-    gem 'phantomjs'
     gem 'pry-byebug'
     gem 'pusher-fake'
     gem 'rspec-rails'
@@ -75,7 +74,6 @@ source 'https://rubygems.org' do
     gem 'chronic'
     gem 'coveralls', require: false
     gem 'database_rewinder'
-    gem 'poltergeist'
     gem 'scss_lint', require: false
     gem 'selenium-webdriver'
     gem 'webdrivers'

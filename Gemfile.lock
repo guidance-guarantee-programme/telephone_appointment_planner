@@ -132,7 +132,6 @@ GEM
       activesupport
     childprocess (4.1.0)
     chronic (0.10.2)
-    cliver (0.3.2)
     coderay (1.1.2)
     concurrent-ruby (1.1.7)
     connection_pool (2.2.5)
@@ -283,12 +282,7 @@ GEM
     parser (2.6.2.0)
       ast (~> 2.4.0)
     pg (1.2.3)
-    phantomjs (2.1.1.0)
     plek (2.1.1)
-    poltergeist (1.18.1)
-      capybara (>= 2.1, < 4)
-      cliver (~> 0.3.1)
-      websocket-driver (>= 0.2.0)
     postgres-copy (1.4.1)
       activerecord (>= 5.1)
       pg (>= 0.17)
@@ -544,9 +538,7 @@ DEPENDENCIES
   oj!
   parallel_tests!
   pg!
-  phantomjs!
   plek!
-  poltergeist!
   postgres-copy!
   princely!
   pry-byebug!

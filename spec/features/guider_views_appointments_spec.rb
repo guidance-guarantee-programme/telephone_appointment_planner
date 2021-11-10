@@ -43,9 +43,7 @@ RSpec.feature 'Guider views appointments' do
     end
   end
 
-  scenario 'Guider views their own appointments and is notified of appointment changes',
-           js: true,
-           driver: :poltergeist do
+  scenario 'Guider views their own appointments and is notified of appointment changes', js: true do
     given_the_requisite_data
 
     travel_to @appointment.start_at do
