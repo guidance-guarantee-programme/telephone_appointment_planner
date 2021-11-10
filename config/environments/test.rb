@@ -39,7 +39,7 @@ Rails.application.configure do
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 
-  # Precompile in travis to resolve poltergeist timeouts
+  # Precompile in travis to resolve timeouts
   config.assets.compile = ENV['TRAVIS'] ? false : true
 
   # work off jobs inline

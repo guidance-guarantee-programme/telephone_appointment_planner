@@ -45,7 +45,7 @@ module Sections
         }();
       JS
 
-      page.session.driver.click(x, y)
+      parent.find('body').click(x: x.to_i, y: y.to_i)
     end
 
     private

@@ -22,7 +22,7 @@ RSpec.feature 'Resource manager modifies appointments' do
     end
   end
 
-  scenario 'Reassigning the chosen guider alerts both guiders', js: true, driver: :poltergeist do
+  scenario 'Reassigning the chosen guider alerts both guiders', js: true do
     # create the guiders and appointments up front
     when_there_are_appointments_for_multiple_guiders
 
@@ -98,7 +98,7 @@ RSpec.feature 'Resource manager modifies appointments' do
     end
   end
 
-  scenario 'Creating a holiday for one guider', js: true, driver: :poltergeist do
+  scenario 'Creating a holiday for one guider', js: true do
     given_the_user_is_a_resource_manager do
       travel_to BusinessDays.from_now(1) do
         and_there_is_a_guider
@@ -299,8 +299,8 @@ RSpec.feature 'Resource manager modifies appointments' do
     holiday = @page.calendar.holidays.first
     expect(holiday[:resourceId]).to eq @guider.id
     expect(holiday[:title]).to eq 'Holiday Title'
-    expect(holiday[:start][:_i]).to eq "#{date}T09:00:00.000Z"
-    expect(holiday[:end][:_i]).to eq "#{date}T09:10:00.000Z"
+    expect(holiday[:start]).to eq "#{date}T09:00:00.000Z"
+    expect(holiday[:end]).to eq "#{date}T09:10:00.000Z"
 
     expect(Holiday.count).to eq 1
   end

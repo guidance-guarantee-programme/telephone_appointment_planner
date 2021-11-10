@@ -5,7 +5,7 @@ RSpec.feature 'Resource manager manages schedules' do
     allow(GenerateBookableSlotsForUserJob).to receive(:perform_later)
   end
 
-  scenario 'Successfully adds a new schedule', js: true, driver: :poltergeist do
+  scenario 'Successfully adds a new schedule', js: true do
     given_the_user_is_a_resource_manager do
       and_there_is_a_guider
       and_they_add_a_new_schedule
@@ -18,7 +18,7 @@ RSpec.feature 'Resource manager manages schedules' do
     end
   end
 
-  scenario 'Successfully updates a schedule', js: true, driver: :poltergeist do
+  scenario 'Successfully updates a schedule', js: true do
     given_the_user_is_a_resource_manager do
       and_there_is_a_guider
       and_the_guider_has_a_schedule_that_can_be_modified
@@ -53,7 +53,7 @@ RSpec.feature 'Resource manager manages schedules' do
     end
   end
 
-  scenario 'Adds a mid shift schedule', js: true, driver: :poltergeist do
+  scenario 'Adds a mid shift schedule', js: true do
     given_the_user_is_a_resource_manager do
       and_there_is_a_guider
       and_they_add_a_new_schedule
@@ -84,6 +84,7 @@ RSpec.feature 'Resource manager manages schedules' do
   def click_on_day_and_time(day, time)
     page.find('[data-module="guider-slot-picker-calendar"]')
     time = "#{time}:00"
+
     x, y = page.driver.evaluate_script <<-JS
       function() {
         var $calendar = $('[data-module="guider-slot-picker-calendar"]');
@@ -92,7 +93,9 @@ RSpec.feature 'Resource manager manages schedules' do
         return [$header.offset().left + 10, $row.offset().top + 10];
       }();
     JS
-    page.driver.click(x, y)
+
+    # find body and click 'relative' to there
+    page.find('body').click(x: x.to_i, y: y.to_i)
   end
 
   def and_they_add_a_new_schedule
@@ -111,7 +114,9 @@ RSpec.feature 'Resource manager manages schedules' do
   end
 
   def and_they_add_the_default_mid_shift_slots
-    @page.mid.click
+    accept_confirm do
+      @page.mid.click
+    end
   end
 
   def and_the_guider_has_the_mid_shift_time_slots_available
