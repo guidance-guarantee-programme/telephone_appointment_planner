@@ -8,5 +8,9 @@ module Pages
     element :no_activities, '.t-no-activities'
 
     element :organisations, '.t-organisation'
+
+    def choose_slot(time)
+      first('a', text: time).click
+    end
   end
 end

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.feature 'Booking due diligence appointments', js: true, driver: :poltergeist do
+RSpec.feature 'Booking due diligence appointments', js: true do
   let(:day) { BusinessDays.from_now(3) }
 
   scenario 'TPAS resource manager attempts to book an DD appointment' do
@@ -64,8 +64,7 @@ RSpec.feature 'Booking due diligence appointments', js: true, driver: :poltergei
   end
 
   def when_they_rebook_the_appointment
-    @page.start_at.set day.change(hour: 14, min: 30).to_s
-    @page.end_at.set   day.change(hour: 15, min: 40).to_s
+    @page.choose_slot('14:30')
     @page.preview_appointment.click
 
     @page = Pages::PreviewAppointment.new
@@ -88,9 +87,7 @@ RSpec.feature 'Booking due diligence appointments', js: true, driver: :poltergei
   end
 
   def when_they_reschedule_the_appointment
-    @page.start_at.set day.change(hour: 14, min: 30).to_s
-    @page.end_at.set   day.change(hour: 15, min: 40).to_s
-
+    @page.choose_slot('14:30')
     @page.reschedule.click
   end
 
@@ -124,8 +121,7 @@ RSpec.feature 'Booking due diligence appointments', js: true, driver: :poltergei
   end
 
   def when_they_fill_in_the_appointment_details
-    @page.start_at.set day.change(hour: 14, min: 30).to_s
-    @page.end_at.set   day.change(hour: 15, min: 40).to_s
+    @page.choose_slot('14:30')
 
     @page.date_of_birth_day.set '23'
     @page.date_of_birth_month.set '10'
