@@ -40,7 +40,7 @@ module Sections
           var $header = $calendar.find(".fc-resource-cell:contains('#{resource_name}')");
           if ($header.length > 0) {
             var $row = $calendar.find('[data-time="09:00:00"]');
-            return [$header.offset().left + 5, $row.offset().top + 5];
+            return [$header.offset().left + 10, $row.offset().top + 20];
           }
         }();
       JS
