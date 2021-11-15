@@ -49,7 +49,13 @@
                    data-lookup-button="#postcode-lookup-button"
                    data-results-container="#postcode-lookup-results-container"
                    data-output-field-prefix="#appointment"
-                   >Confirmation address <small>required if no email address</small></h2>
+                   >
+                   <% if @appointment.due_diligence? %>
+                     Postal address <small>required if no email (only for summary document)</small>
+                   <% else %>
+                     Confirmation address <small>required if no email address</small>
+                   <% end %>
+    </h2>
     <div class="form-group form-inline postcode-lookup" id="postcode-lookup">
       <label for="appointment_summary_lookup">Postcode or address to search for</label><br>
       <input class="form-control input-md-3 add-right-margin" placeholder="Enter postcode or address" type="text" id="postcode-lookup-input" />
