@@ -384,7 +384,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
       end
 
       it 'includes the full MoneyHelper blurb' do
-        expect(body).to include('Your data will be shared')
+        expect(body).to include('MoneyHelper collects and stores')
       end
     end
   end
