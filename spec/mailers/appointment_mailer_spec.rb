@@ -22,7 +22,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
     end
 
     it 'is delivered from the correct sender' do
-      expect(subject['From'].unparsed_value).to include('Pension Safeguarding Guidance Bookings')
+      expect(subject['From'].unparsed_value).to eq('Pension Safeguarding Guidance Bookings <psg@moneyhelper.org.uk>')
     end
 
     it 'contains the due diligence specifics' do

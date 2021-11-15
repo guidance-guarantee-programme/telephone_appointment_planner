@@ -8,7 +8,11 @@ class AppointmentEmailPresenter < SimpleDelegator
   end
 
   def from
-    "#{type} Bookings <booking.pensionwise@moneyhelper.org.uk>"
+    if due_diligence?
+      "#{type} Bookings <psg@moneyhelper.org.uk>"
+    else
+      "#{type} Bookings <booking.pensionwise@moneyhelper.org.uk>"
+    end
   end
 
   def subject(suffix = 'Appointment')
