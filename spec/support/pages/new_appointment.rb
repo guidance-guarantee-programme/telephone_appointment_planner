@@ -57,6 +57,8 @@ module Pages
 
     elements :calendar_events, '.fc-event'
 
+    elements :fields_with_errors, '.field_with_errors'
+
     element :due_diligence_banner, '.t-due-diligence-banner'
 
     def ad_hoc_start_at(value)

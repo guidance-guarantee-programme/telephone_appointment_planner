@@ -3,6 +3,19 @@ require 'rails_helper'
 RSpec.feature 'Booking due diligence appointments', js: true do
   let(:day) { BusinessDays.from_now(3) }
 
+  scenario 'Failing validation during an initial booking creation' do
+    travel_to '2021-04-05 10:00' do
+      given_the_user_is_a_resource_manager(organisation: :tpas) do
+        and_slots_exist_for_due_diligence_availability
+        when_they_attempt_to_book_an_due_diligence_appointment
+        then_they_see_only_due_diligence_availability
+        when_they_attempt_to_book_with_invalid_fields
+        then_they_see_validation_messages
+        then_they_see_only_due_diligence_availability
+      end
+    end
+  end
+
   scenario 'TPAS resource manager attempts to book an DD appointment' do
     travel_to '2021-04-05 10:00' do
       given_the_user_is_a_resource_manager(organisation: :tpas) do
@@ -47,6 +60,20 @@ RSpec.feature 'Booking due diligence appointments', js: true do
         then_the_new_appointment_is_created
       end
     end
+  end
+
+  def when_they_attempt_to_book_with_invalid_fields
+    @page.choose_slot('14:30')
+
+    @page.date_of_birth_day.set '23'
+    @page.date_of_birth_month.set '10'
+    @page.date_of_birth_year.set '1950'
+
+    @page.preview_appointment.click
+  end
+
+  def then_they_see_validation_messages
+    expect(@page).to have_fields_with_errors
   end
 
   def and_the_appointment_can_be_rebooked
