@@ -155,6 +155,7 @@ class Appointment < ApplicationRecord
   validate :email_consent_valid, if: :email_consent_form_required?
   validate :validate_secondary_status
   validate :validate_lloyds_signposted_guider_allocated, if: :lloyds_signposted?, on: :create
+  validate :validate_guider_schedule_type, on: :update, if: :pension_wise?
 
   before_validation :format_name, on: :create
   before_create :track_initial_status
@@ -630,6 +631,10 @@ class Appointment < ApplicationRecord
 
   def validate_lloyds_signposted_guider_allocated
     errors.add(:guider, 'The guider is not from an LBGPTL schedule') unless cita?
+  end
+
+  def validate_guider_schedule_type
+    errors.add(:guider, 'Cannot be reallocated to a non Pension Wise guider') if guider&.due_diligence?
   end
 
   class << self

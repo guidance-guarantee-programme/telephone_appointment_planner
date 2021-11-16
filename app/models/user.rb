@@ -91,6 +91,10 @@ class User < ApplicationRecord
     bookable_slots.where('start_at > ?', Time.current).delete_all
   end
 
+  def due_diligence?
+    schedule_type == DUE_DILIGENCE_SCHEDULE_TYPE
+  end
+
   def self.guider_organisation_match?(guider, original_guider_id)
     original = find(original_guider_id)
 

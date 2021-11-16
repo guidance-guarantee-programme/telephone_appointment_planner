@@ -217,6 +217,17 @@ RSpec.describe Appointment, type: :model do
       build_stubbed(:appointment)
     end
 
+    context 'when the appointment is for Pension Wise' do
+      it 'cannot be moved to a `due_diligence` enrolled guider' do
+        pension_wise_appointment = create(:appointment)
+        due_diligence_guider     = create(:guider, :due_diligence)
+
+        pension_wise_appointment.guider = due_diligence_guider
+
+        expect(pension_wise_appointment).to be_invalid
+      end
+    end
+
     context 'when due diligence' do
       subject { build(:appointment, :due_diligence) }
 
@@ -242,10 +253,6 @@ RSpec.describe Appointment, type: :model do
 
         expect(subject).to be_valid
       end
-    end
-
-    context 'when the appointment is for the DD schedule type' do
-      it 'only permits enrolled guiders'
     end
 
     context 'when the status would require a secondary status' do
