@@ -174,7 +174,7 @@
     <% end %>
 
     <% if @appointment.due_diligence? %>
-      <%= f.text_field :referrer, autocomplete: 'off', class: 't-referrer', label: 'Pension Safeguarding Guidance referrer' %>
+      <%= f.text_field :referrer, autocomplete: 'off', class: 't-referrer', label: required_label('Pension Safeguarding Guidance referrer') %>
     <% end %>
 
     <% if defined?(edit) && edit %>
