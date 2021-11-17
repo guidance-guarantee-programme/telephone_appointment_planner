@@ -13,6 +13,7 @@ $calendar-holiday-background: darken($color-alto, 10%);
 $calendar-schedule-background: $color-xanadu;
 $calendar-bookable-slot-background: $color-madang;
 $calendar-bookable-slot-due-diligence-background: $color-plum;
+$calendar-appointment-due-diligence-background: $color-blue-violet;
 $calendar-loading-view-background: transparentize($color-white, .2);
 
 $guider-row-height: 120px;
@@ -220,6 +221,11 @@ $guider-row-height: 120px;
   @include striped($calendar-appointment-background);
   z-index: 3;
 }
+
+.fc-event--due-diligence {
+  @include striped($calendar-appointment-due-diligence-background);
+  z-index: 3;
+};
 
 .fc--past {
   @include striped($calendar-past-appointment-background);

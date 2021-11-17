@@ -161,6 +161,10 @@ class CompanyCalendar extends Calendar {
       return;
     }
 
+    if(event.pensionWise === false) {
+      element.addClass('fc-event--due-diligence');
+    }
+
     const resource = this.$el.fullCalendar('getResourceById', event.resourceId),
           $qtipContent = $(`
 
