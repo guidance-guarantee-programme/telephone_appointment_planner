@@ -154,25 +154,27 @@
               <td class="active"><b>Notes</b></td>
               <td><%= simple_format(@appointment.notes) %></td>
             </tr>
-            <tr>
-              <td class="active"><b>Customer research consent</b></td>
-              <td><%= @appointment.customer_research_consent %></td>
-            </tr>
-            <tr>
-              <td class="active"><b>Type of appointment</b></td>
-              <td><%= @appointment.type_of_appointment.humanize %></td>
-            </tr>
-            <% if current_user.tpas? || current_user.administrator? %>
-            <tr>
-              <td class="active"><b>Smarter signposted referral?</b></td>
-              <td><%= @appointment.smarter_signposted? ? 'Yes' : 'No' %></td>
-            </tr>
-            <% end %>
-            <% if current_user.lloyds_signposter? %>
-            <tr>
-              <td class="active"><b>Lloyds Banking Group referral?</b></td>
-              <td><%= @appointment.lloyds_signposted? ? 'Yes' : 'No' %></td>
-            </tr>
+            <% if @appointment.pension_wise? %>
+              <tr>
+                <td class="active"><b>Customer research consent</b></td>
+                <td><%= @appointment.customer_research_consent %></td>
+              </tr>
+              <tr>
+                <td class="active"><b>Type of appointment</b></td>
+                <td><%= @appointment.type_of_appointment.humanize %></td>
+              </tr>
+              <% if current_user.tpas? || current_user.administrator? %>
+              <tr>
+                <td class="active"><b>Smarter signposted referral?</b></td>
+                <td><%= @appointment.smarter_signposted? ? 'Yes' : 'No' %></td>
+              </tr>
+              <% end %>
+              <% if current_user.lloyds_signposter? %>
+              <tr>
+                <td class="active"><b>Lloyds Banking Group referral?</b></td>
+                <td><%= @appointment.lloyds_signposted? ? 'Yes' : 'No' %></td>
+              </tr>
+              <% end %>
             <% end %>
             <% if @appointment.due_diligence? %>
             <tr>
