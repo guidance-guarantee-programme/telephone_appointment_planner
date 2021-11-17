@@ -56,6 +56,23 @@ RSpec.describe Appointment, type: :model do
   end
 
   context 'when the status changes before saving' do
+    context 'when the appointment is for due diligence' do
+      context 'when the status changes from `complete`' do
+        it 'clears the `unique_reference_number`' do
+          appointment = create(
+            :appointment,
+            :due_diligence,
+            status: :complete,
+            unique_reference_number: '123456/123456'
+          )
+
+          appointment.pending!
+
+          expect(appointment.reload.unique_reference_number).to be_blank
+        end
+      end
+    end
+
     it 'stores the associated statuses' do
       appointment = create(:appointment)
 

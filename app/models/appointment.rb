@@ -433,6 +433,8 @@ class Appointment < ApplicationRecord
 
   def track_status_transitions
     track_initial_status if status_changed?
+
+    self.unique_reference_number = '' if status_changed?(from: 'complete') && due_diligence?
   end
 
   def allocate_slot(agent)
