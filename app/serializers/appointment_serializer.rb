@@ -11,6 +11,7 @@ class AppointmentSerializer < ActiveModel::Serializer
   attribute :status
   attribute :cancelled
   attribute :guider_id, key: :resourceId
+  attribute :pension_wise?, key: :pensionWise
 
   def title
     "#{object.first_name} #{object.last_name}"

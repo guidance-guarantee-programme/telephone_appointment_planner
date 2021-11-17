@@ -210,6 +210,16 @@
     }
 
     handleEventChange(event, revertFunc) {
+      if (event.pensionWise === true) {
+        let res = this.$el.fullCalendar('getResourceById', event.resourceId);
+
+        if (res.dueDiligence === true) {
+          alert('This appointment cannot be allocated to a PSG schedule');
+          revertFunc();
+          return;
+        }
+      }
+
       event.hasChanged = true;
 
       this.eventChanges.push({
