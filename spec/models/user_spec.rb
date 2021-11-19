@@ -5,6 +5,14 @@ require 'gds-sso/lint/user_spec'
 RSpec.describe User, type: :model do
   it_behaves_like 'a gds-sso user class'
 
+  describe '#schedule_type' do
+    it 'defaults to pension_wise' do
+      guider = build(:guider)
+
+      expect(guider.schedule_type).to eq(User::PENSION_WISE_SCHEDULE_TYPE)
+    end
+  end
+
   describe '#organisation' do
     it 'returns the correct descriptive text based on organisation membership' do
       tp   = build_stubbed(:guider, :tp)

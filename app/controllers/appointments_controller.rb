@@ -56,6 +56,9 @@ class AppointmentsController < ApplicationController
     @appointment = Appointment.copy_or_new_by(params[:copy_from])
 
     if @appointment
+      # TODO: This should be inferred better
+      @appointment.schedule_type = schedule_type
+
       render :new
     else
       redirect_back warning: I18n.t('appointments.rebooking'), fallback_location: search_appointments_path
@@ -115,6 +118,16 @@ class AppointmentsController < ApplicationController
   end
   helper_method :calendar_scheduling?
 
+  def schedule_type
+    @schedule_type = params.fetch(:schedule_type) { User::PENSION_WISE_SCHEDULE_TYPE }
+  end
+  helper_method :schedule_type
+
+  def due_diligence_schedule_type?
+    schedule_type == User::DUE_DILIGENCE_SCHEDULE_TYPE
+  end
+  helper_method :due_diligence_schedule_type?
+
   def redirect_on_exact_match(result)
     redirect_to(edit_appointment_path(result))
   end
@@ -137,7 +150,7 @@ class AppointmentsController < ApplicationController
   def search_params
     params
       .fetch(:search, {})
-      .permit(:q, :date_range, :processed)
+      .permit(:q, :date_range, :processed, :appointment_type)
       .merge(current_user: current_user)
   end
 
@@ -190,7 +203,9 @@ class AppointmentsController < ApplicationController
       :power_of_attorney_evidence,
       :data_subject_consent_evidence,
       :email_consent,
-      :lloyds_signposted
+      :lloyds_signposted,
+      :schedule_type,
+      :referrer
     ]
   end
   # rubocop:enable Metrics/MethodLength

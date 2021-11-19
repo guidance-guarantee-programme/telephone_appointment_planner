@@ -1,6 +1,12 @@
 module Api
   module V1
     class AppointmentsController < Api::V1::ApplicationController
+      class InvalidScheduleType < StandardError; end
+
+      rescue_from InvalidScheduleType do
+        head :unprocessable_entity
+      end
+
       def create
         @appointment = Api::V1::Appointment.new(appointment_params)
 
@@ -36,8 +42,21 @@ module Api
           :accessibility_requirements,
           :notes,
           :smarter_signposted,
-          :lloyds_signposted
-        ).merge(agent: current_user)
+          :lloyds_signposted,
+          :referrer
+        ).merge(
+          agent: current_user,
+          schedule_type: schedule_type
+        )
+      end
+
+      def schedule_type
+        # TODO: Pull this up and the same in the slots API
+        @schedule_type = params.fetch(:schedule_type) { User::PENSION_WISE_SCHEDULE_TYPE }
+
+        return @schedule_type if User::ALL_SCHEDULE_TYPES.include?(@schedule_type)
+
+        raise InvalidScheduleType
       end
     end
   end

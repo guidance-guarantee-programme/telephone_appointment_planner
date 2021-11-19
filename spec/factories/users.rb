@@ -14,6 +14,10 @@ FactoryBot.define do
       end
     end
 
+    trait :due_diligence do
+      schedule_type { User::DUE_DILIGENCE_SCHEDULE_TYPE }
+    end
+
     factory :business_analyst, traits: [:tpas] do
       permissions { [User::BUSINESS_ANALYST_PERMISSION, User::RESOURCE_MANAGER_PERMISSION] }
     end

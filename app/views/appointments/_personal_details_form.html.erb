@@ -6,14 +6,15 @@
     <%= f.text_field :last_name, autocomplete: 'off', class: 't-last-name', label: required_label(:last_name) %>
     <%= f.email_field :email, autocomplete: 'off', class: 't-email' %>
     <%= f.telephone_field :phone, autocomplete: 'off', class: 't-phone', label: required_label(:phone), 
-      help: '<p>For non-UK numbers include the country dialling code.</p><p><strong>If mobile</strong>: I need to make you aware that in the interest of road safety we will not deliver a Pension Wise appointment if you are driving. This also includes the use of hands-free devices. Please ensure you are not driving at the time of your appointment.</p>'.html_safe
+      help: '<p>For non-UK numbers include the country dialling code.</p><p><strong>If mobile</strong>: I need to make you aware that in the interest of road safety we will not deliver a an appointment if you are driving. This also includes the use of hands-free devices. Please ensure you are not driving at the time of your appointment.</p>'.html_safe
     %>
     <%= f.telephone_field :mobile, autocomplete: 'off', class: 't-mobile',
-      help: 'Pension Wise will use this to send an SMS appointment reminder 7 days and additionally 48 hours before the appointment. Customers can cancel appointments via SMS response.'
+      help: 'We will use this to send an SMS appointment reminder 7 days and additionally 48 hours before the appointment. Customers can cancel appointments via SMS response.'
     %>
-    <%= f.text_field :memorable_word, autocomplete: 'off', class: 't-memorable-word', placeholder: 'Pension Wise will use this each time the customer is called', label: required_label(:memorable_word) %>
+    <%= f.text_field :memorable_word, autocomplete: 'off', class: 't-memorable-word', placeholder: 'We use this each time the customer is called', label: required_label(:memorable_word) %>
     <%= render 'shared/date_of_birth_form_field', form: f if defined?(edit) && edit %>
 
+    <% unless @appointment.due_diligence? %>
     <h2 class="h3">Eligibility</h2>
 
     <div class="form-group" data-module="type-of-appointment">
@@ -38,6 +39,7 @@
       <%= f.radio_button :gdpr_consent, 'no', label: 'No', class: 't-gdpr-consent-no' %>
       <%= f.radio_button :gdpr_consent, '', label: 'No response', class: 't-gdpr-consent-no-response' %>
     </div>
+    <% end %>
   </div>
 
   <div class="col-md-6" data-module="checkbox-toggle">
@@ -47,7 +49,13 @@
                    data-lookup-button="#postcode-lookup-button"
                    data-results-container="#postcode-lookup-results-container"
                    data-output-field-prefix="#appointment"
-                   >Confirmation address <small>required if no email address</small></h2>
+                   >
+                   <% if @appointment.due_diligence? %>
+                     Postal address <small>required if no email (only for summary document)</small>
+                   <% else %>
+                     Confirmation address <small>required if no email address</small>
+                   <% end %>
+    </h2>
     <div class="form-group form-inline postcode-lookup" id="postcode-lookup">
       <label for="appointment_summary_lookup">Postcode or address to search for</label><br>
       <input class="form-control input-md-3 add-right-margin" placeholder="Enter postcode or address" type="text" id="postcode-lookup-input" />
@@ -66,6 +74,7 @@
 
     <%= f.check_box :accessibility_requirements, class: 't-accessibility-requirements', label: 'Do you require an adjustment to access our service?' %>
 
+    <% unless @appointment.due_diligence? %>
     <%= f.check_box :third_party_booking, class: 't-third-party-booked', label: 'Third party appointment?', data: { target: 'consent' } %>
     <div class="col-md-offset-1" id="consent">
       <p><strong>This appointment will be delivered to a third party on behalf of the data subject:</strong></p>
@@ -141,22 +150,32 @@
         <%= f.text_field :consent_postcode, autocomplete: 'off', class: 't-consent-postcode', label: 'Postcode', placeholder: 'Postcode' %>
       </div>
     </div>
+    <% end # unless due diligence %>
 
     <% if bsl_video_visible?(current_user) %>
      <%= f.check_box :bsl_video, class: 't-bsl-video', label: 'BSL video appointment?', disabled: bsl_video_disabled?(current_user) %>
     <% end %>
 
-    <% if current_user.tpas? || current_user.administrator? %>
+    <% if (current_user.tpas? || current_user.administrator?) && !@appointment.due_diligence? %>
       <%= f.check_box :smarter_signposted, class: 't-smarter-signposted', label: 'Smarter signposting referral?' %>
     <% end %>
 
     <%= f.text_area :notes, autocomplete: 'off', class: 't-notes js-notes', rows: 6, placeholder: 'Is the customer hard of hearing? Is English their first language? etc.' %>
+
+    <% if @appointment.due_diligence? %>
+      <%= f.hidden_field :where_you_heard, value: '2', class: 't-hidden-where-you-heard' %>
+    <% else %>
     <div class="form-group">
       <%= f.select :where_you_heard,
             options_for_select(WhereYouHeard::OPTIONS.invert.to_a, @appointment.where_you_heard),
             {}, { class: 't-where-you-heard form-control' }
       %>
     </div>
+    <% end %>
+
+    <% if @appointment.due_diligence? %>
+      <%= f.text_field :referrer, autocomplete: 'off', class: 't-referrer', label: required_label('Pension Safeguarding Guidance referrer') %>
+    <% end %>
 
     <% if defined?(edit) && edit %>
       <%=

@@ -7,6 +7,13 @@
 <% end %>
 
 <ul style="color: #0B0C0C;font-family: Calibri, Arial, sans-serif;margin-top: 15px;margin-bottom: 15px;font-size: 16px;line-height: 1.315789474;">
+  <% if @appointment.due_diligence? %>
+    <li><%= p do %>details of your current pension and provider<% end %></li>
+    <li><%= p do %>details of the pension scheme you are looking to transfer to<% end %></li>
+    <li><%= p do %>details of where the receiving pension scheme proposes to invest your money<% end %></li>
+    <li><%= p do %>any information you have from the current provider for the Red or Amber flags raised by them<% end %></li>
+    <li><%= p do %>details of your other pension arrangements you may have<% end %></li>
+  <% else %>
   <li>
     <%= p do %>
       what type(s) of pension you have? – ask your pension provider whether you have a defined contribution or a defined benefit pension if you are unsure
@@ -27,6 +34,7 @@
       if your pension pot contains any special features, eg a guaranteed annuity rate or a guaranteed pot value at a certain time — ask your provider
     <% end %>
   </li>
+  <% end %>
 </ul>
 
 <%= p do %>
@@ -34,6 +42,10 @@
 <% end %>
 
 <ul style="color: #0B0C0C;font-family: Calibri, Arial, sans-serif;margin-top: 15px;margin-bottom: 15px;font-size: 16px;line-height: 1.315789474;">
+  <% if @appointment.due_diligence? %>
+    <li><%= p do %>sources of income like salary, state benefits, savings and investments<% end %></li>
+    <li><%= p do %>when are you likely to want to access the pension savings<% end %></li>
+  <% else %>
   <li>
     <%= p do %>
       sources of income like salary, state benefits, savings and investments
@@ -54,8 +66,10 @@
       if you want a fixed or flexible income in retirement
     <% end %>
   </li>
+  <% end %>
 </ul>
 
+<% unless @appointment.due_diligence? %>
 <h2 style="color: #0F19A0 !important;font-family: Calibri, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 18px;line-height: 1.111111111;padding: 15px 0;">
   Pension scams
 </h2>
@@ -64,4 +78,5 @@
   Pension scams are on the increase in the UK. A lifetime’s savings can be lost
   in moments. More information on scams can be found at
   <a href="https://www.moneyhelper.org.uk/scams">moneyhelper.org.uk/scams</a>.
+<% end %>
 <% end %>

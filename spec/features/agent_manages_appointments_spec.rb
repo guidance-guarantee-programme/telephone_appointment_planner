@@ -5,6 +5,39 @@ RSpec.feature 'Agent manages appointments' do
 
   let(:day) { BusinessDays.from_now(5) }
 
+  scenario 'TP agent booking a Pension Wise appointment', js: true do
+    travel_to '2021-04-05 10:00' do
+      given_the_user_is_an_agent(organisation: :tp) do
+        and_slots_exist_for_general_availability
+        and_slots_exist_for_due_diligence_availability
+        when_they_attempt_to_book_an_appointment
+        then_they_see_only_general_availability
+      end
+    end
+  end
+
+  scenario 'TPAS user booking a Pension Wise appointment', js: true do
+    travel_to '2021-04-05 10:00' do
+      given_the_user_is_a_resource_manager(organisation: :tpas) do
+        and_slots_exist_for_general_availability
+        and_slots_exist_for_due_diligence_availability
+        when_they_attempt_to_book_an_appointment
+        then_they_see_only_general_availability
+      end
+    end
+  end
+
+  def and_slots_exist_for_due_diligence_availability
+    create(:bookable_slot, :due_diligence, start_at: Time.zone.parse('2021-04-08 14:30'))
+  end
+
+  def then_they_see_only_general_availability
+    @page.wait_until_calendar_events_visible
+
+    expect(@page).to have_calendar_events(count: 1)
+    expect(@page.calendar_events.first).to have_text('April 8th 2021 12:30')
+  end
+
   scenario 'Agent booking a Lloyds referral', js: true do
     travel_to '2021-04-05 10:00' do
       given_the_user_is_an_agent(organisation: :tp) do

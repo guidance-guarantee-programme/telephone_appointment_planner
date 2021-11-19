@@ -5,9 +5,10 @@ class Search
   attr_accessor :q
   attr_accessor :date_range
   attr_accessor :current_user
+  attr_accessor :appointment_type
   attr_writer :processed
 
-  def results # rubocop:disable MethodLength
+  def results # rubocop:disable MethodLength, AbcSize
     range = date_range
             .to_s
             .split(' - ')
@@ -18,7 +19,8 @@ class Search
       range.first.try(:beginning_of_day),
       range.last.try(:end_of_day),
       current_user,
-      processed
+      processed,
+      appointment_type
     ).search
   end
 

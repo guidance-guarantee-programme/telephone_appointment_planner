@@ -1,12 +1,19 @@
 <% content_for(:page_title, t('service.title', page_title: 'Book an appointment')) %>
 <%= breadcrumb({ title: 'Book an appointment' }) %>
 
+<% if @appointment.due_diligence? %>
+<h4>
+  <span class="label label-default t-due-diligence-banner">PSG</span>
+</h4>
+<% end %>
+
 <h1>Book an appointment</h1>
 <%= rebooked_from_heading(@appointment) %>
 
 <%= render 'shared/required_fields_note' %>
 <%= form_for @appointment, url: preview_appointments_path, layout: :basic do |f| %>
   <%= f.hidden_field :rebooked_from_id %>
+  <%= f.hidden_field :schedule_type %>
   <div class="row form-group">
     <div class="col-md-12">
       <h2>Date of birth</h2>
@@ -19,7 +26,7 @@
   <hr>
 
   <div class="row form-group">
-    <%= render 'schedule_form', form: f, rescheduling: false %>
+    <%= render 'schedule_form', form: f, rescheduling: false, schedule_type: @appointment.schedule_type %>
   </div>
 
   <div class="row form-group">

@@ -23,9 +23,15 @@ FactoryBot.define do
     created_at { 1.day.ago }
     accessibility_requirements { false }
     pension_provider { 'n/a' }
+    schedule_type { User::PENSION_WISE_SCHEDULE_TYPE }
 
     factory :imported_appointment do
       date_of_birth { Appointment::FAKE_DATE_OF_BIRTH }
+    end
+
+    trait :due_diligence do
+      schedule_type { User::DUE_DILIGENCE_SCHEDULE_TYPE }
+      referrer { 'Big Pensions PLC' }
     end
 
     trait :api do

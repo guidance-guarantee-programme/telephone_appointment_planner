@@ -7,6 +7,7 @@ module Pages
     elements :appointments, '.fc-event'
     element :next_button, '.fc-next-button'
     element :saved_changes_message, '.t-saved-changes'
+    element :due_diligence_grace_period, '.t-due-diligence-grace-period'
 
     section :action_panel, '.t-action-panel' do
       element :save, '.t-save'

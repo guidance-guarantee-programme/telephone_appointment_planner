@@ -42,6 +42,8 @@ class Appointment < ApplicationRecord
     email_consent
     generated_consent_form
     lloyds_signposted
+    unique_reference_number
+    referrer
   ).freeze
 
   enum status: %i(
@@ -112,6 +114,8 @@ class Appointment < ApplicationRecord
   scope :not_cancelled, -> { where.not(status: CANCELLED_STATUSES) }
   scope :with_mobile_number, -> { where("mobile like '07%' or phone like '07%'") }
   scope :not_booked_today, -> { where.not(created_at: Time.current.beginning_of_day..Time.current.end_of_day) }
+  scope :for_pension_wise, -> { where(schedule_type: User::PENSION_WISE_SCHEDULE_TYPE) }
+  scope :for_due_diligence, -> { where(schedule_type: User::DUE_DILIGENCE_SCHEDULE_TYPE) }
 
   validates :agent, presence: true
   validates :start_at, presence: true
@@ -132,6 +136,8 @@ class Appointment < ApplicationRecord
   validates :gdpr_consent, inclusion: ['yes', 'no', '']
   validates :status, presence: true
   validates :guider, presence: true
+  validates :unique_reference_number, uniqueness: true, if: :complete_due_diligence?
+  validates :referrer, presence: true, if: :due_diligence?, on: :create
 
   validate :validate_printed_consent_form_address
   validate :validate_consent_type
@@ -149,10 +155,23 @@ class Appointment < ApplicationRecord
   validate :email_consent_valid, if: :email_consent_form_required?
   validate :validate_secondary_status
   validate :validate_lloyds_signposted_guider_allocated, if: :lloyds_signposted?, on: :create
+  validate :validate_guider_schedule_type, on: :update, if: :pension_wise?
 
   before_validation :format_name, on: :create
   before_create :track_initial_status
   before_update :track_status_transitions
+
+  def complete_due_diligence?
+    due_diligence? && complete? && unique_reference_number?
+  end
+
+  def due_diligence?
+    schedule_type == User::DUE_DILIGENCE_SCHEDULE_TYPE
+  end
+
+  def pension_wise?
+    schedule_type == User::PENSION_WISE_SCHEDULE_TYPE
+  end
 
   def process!(by)
     return if processed_at?
@@ -348,7 +367,7 @@ class Appointment < ApplicationRecord
   end
 
   def self.for_organisation(user)
-    return where('1 = 1') if user.tp_agent?
+    return for_pension_wise if user.tp_agent?
 
     joins(:guider)
       .where(users: { organisation_content_id: user.organisation_content_id })
@@ -399,8 +418,9 @@ class Appointment < ApplicationRecord
       .pluck(:appointment_id)
   end
 
-  def self.for_sms_cancellation(number)
+  def self.for_sms_cancellation(number, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE)
     pending
+      .where(schedule_type: schedule_type)
       .order(:created_at)
       .find_by("REPLACE(mobile, ' ', '') = :number OR REPLACE(phone, ' ', '') = :number", number: number)
   end
@@ -413,10 +433,12 @@ class Appointment < ApplicationRecord
 
   def track_status_transitions
     track_initial_status if status_changed?
+
+    self.unique_reference_number = '' if status_changed?(from: 'complete') && due_diligence?
   end
 
   def allocate_slot(agent)
-    slot = BookableSlot.find_available_slot(start_at, agent)
+    slot = BookableSlot.find_available_slot(start_at, agent, schedule_type)
     self.guider = nil
     return unless slot
 
@@ -611,6 +633,10 @@ class Appointment < ApplicationRecord
 
   def validate_lloyds_signposted_guider_allocated
     errors.add(:guider, 'The guider is not from an LBGPTL schedule') unless cita?
+  end
+
+  def validate_guider_schedule_type
+    errors.add(:guider, 'Cannot be reallocated to a non Pension Wise guider') if guider&.due_diligence?
   end
 
   class << self

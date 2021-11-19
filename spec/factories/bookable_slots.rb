@@ -27,5 +27,9 @@ FactoryBot.define do
     trait :derbyshire_districts do
       guider { create(:guider, :derbyshire_districts) }
     end
+
+    trait :due_diligence do
+      schedule_type { User::DUE_DILIGENCE_SCHEDULE_TYPE }
+    end
   end
 end

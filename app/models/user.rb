@@ -13,6 +13,11 @@ class User < ApplicationRecord
     CONTACT_CENTRE_TEAM_LEADER_PERMISSION = 'contact_centre_team_leader'.freeze
   ].freeze
 
+  ALL_SCHEDULE_TYPES = [
+    PENSION_WISE_SCHEDULE_TYPE  = 'pension_wise'.freeze,
+    DUE_DILIGENCE_SCHEDULE_TYPE = 'due_diligence'.freeze
+  ].freeze
+
   default_scope { order(:position, :name) }
 
   has_many :schedules, dependent: :destroy
@@ -84,6 +89,10 @@ class User < ApplicationRecord
 
   def delete_future_slots!
     bookable_slots.where('start_at > ?', Time.current).delete_all
+  end
+
+  def due_diligence?
+    schedule_type == DUE_DILIGENCE_SCHEDULE_TYPE
   end
 
   def self.guider_organisation_match?(guider, original_guider_id)

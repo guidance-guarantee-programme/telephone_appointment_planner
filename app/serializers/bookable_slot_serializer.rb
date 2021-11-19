@@ -4,4 +4,7 @@ class BookableSlotSerializer < ActiveModel::Serializer
   attribute :resourceId do
     object.guider_id
   end
+  attribute :scheduleType do
+    object.schedule_type.dasherize
+  end
 end

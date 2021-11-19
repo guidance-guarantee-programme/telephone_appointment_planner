@@ -38,6 +38,13 @@
     <label><%= f.radio_button :processed, 'yes', class: 't-processed-yes' %> Yes</label>
   </div>
   <% end %>
+  <% if current_user.tpas? %>
+  <div class="form-group">
+    <label><%= f.radio_button :appointment_type, 'pension_wise', class: 't-pension-wise' %> Pension Wise</label>
+    <label><%= f.radio_button :appointment_type, 'due_diligence', class: 't-due-diligence' %> PSG</label>
+    <label><%= f.radio_button :appointment_type, '', class: 't-any' %> Any</label>
+  </div>
+  <% end %>
   <div class="form-group">
     <%= f.submit 'Search', class: 't-search btn btn-primary' %>
   </div>
@@ -60,7 +67,7 @@
     <% @results.each do |result| %>
       <% result = AppointmentSearchResultPresenter.new(result) %>
       <tr class="appointment-search-results__row t-result">
-        <td class="appointment-search-results__item"><b class="visible-xs-block">Reference</b><span class="id js-allow-highlighting t-id">#<%= result.id %></span></td>
+        <td class="appointment-search-results__item"><b class="visible-xs-block">Reference</b><span class="id js-allow-highlighting t-id">#<%= result.id %></span><% if result.due_diligence? %> <small>(PSG)</small><% end %></td>
         <td class="appointment-search-results__item"><b class="visible-xs-block">Customer</b><span class="js-allow-highlighting t-name"><%= result.name %></span></td>
         <td class="appointment-search-results__item"><b class="visible-xs-block">Guider</b><span class="js-allow-highlighting"><%= result.guider_name %></span> <small>(<%= result.guider_organisation %>)</small></td>
         <td class="appointment-search-results__item"><b class="visible-xs-block">Appointment Date/Time</b><%= result.date %></td>
@@ -77,7 +84,7 @@
               <span class="sr-only">Reschedule appointment</span>
             <% end %>
           <% end %>
-          <%= link_to new_appointment_path(copy_from: result), title: 'Rebook appointment', class: 'btn btn-info t-rebook' do %>
+          <%= link_to new_appointment_path(copy_from: result, schedule_type: result.schedule_type), title: 'Rebook appointment', class: 'btn btn-info t-rebook' do %>
             <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
             <span class="sr-only">Rebook appointment</span>
           <% end %>

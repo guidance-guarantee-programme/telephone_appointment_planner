@@ -42,6 +42,8 @@
   <%= f.hidden_field :smarter_signposted %>
   <%= f.hidden_field :lloyds_signposted %>
   <%= f.hidden_field :bsl_video %>
+  <%= f.hidden_field :schedule_type %>
+  <%= f.hidden_field :referrer %>
 
   <%= f.hidden_field :data_subject_name %>
   <%= f.hidden_field :data_subject_date_of_birth %>
@@ -152,24 +154,32 @@
               <td class="active"><b>Notes</b></td>
               <td><%= simple_format(@appointment.notes) %></td>
             </tr>
-            <tr>
-              <td class="active"><b>Customer research consent</b></td>
-              <td><%= @appointment.customer_research_consent %></td>
-            </tr>
-            <tr>
-              <td class="active"><b>Type of appointment</b></td>
-              <td><%= @appointment.type_of_appointment.humanize %></td>
-            </tr>
-            <% if current_user.tpas? || current_user.administrator? %>
-            <tr>
-              <td class="active"><b>Smarter signposted referral?</b></td>
-              <td><%= @appointment.smarter_signposted? ? 'Yes' : 'No' %></td>
-            </tr>
+            <% if @appointment.pension_wise? %>
+              <tr>
+                <td class="active"><b>Customer research consent</b></td>
+                <td><%= @appointment.customer_research_consent %></td>
+              </tr>
+              <tr>
+                <td class="active"><b>Type of appointment</b></td>
+                <td><%= @appointment.type_of_appointment.humanize %></td>
+              </tr>
+              <% if current_user.tpas? || current_user.administrator? %>
+              <tr>
+                <td class="active"><b>Smarter signposted referral?</b></td>
+                <td><%= @appointment.smarter_signposted? ? 'Yes' : 'No' %></td>
+              </tr>
+              <% end %>
+              <% if current_user.lloyds_signposter? %>
+              <tr>
+                <td class="active"><b>Lloyds Banking Group referral?</b></td>
+                <td><%= @appointment.lloyds_signposted? ? 'Yes' : 'No' %></td>
+              </tr>
+              <% end %>
             <% end %>
-            <% if current_user.lloyds_signposter? %>
+            <% if @appointment.due_diligence? %>
             <tr>
-              <td class="active"><b>Lloyds Banking Group referral?</b></td>
-              <td><%= @appointment.lloyds_signposted? ? 'Yes' : 'No' %></td>
+              <td class="active"><b>PSG appointment?</b></td>
+              <td>Yes</td>
             </tr>
             <% end %>
           </tbody>
@@ -177,7 +187,7 @@
 
         <p class="alert alert-warning">
           Full details on our privacy policy, including the customers rights in
-          regards to their personal data, can be found on the Pension Wise website
+          regards to their personal data, can be found on the <% if @appointment.due_diligence? %> MoneyHelper <% else %> Pension Wise <% end %> website
         </p>
       </div>
     </div>

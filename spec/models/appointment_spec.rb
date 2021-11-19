@@ -56,6 +56,23 @@ RSpec.describe Appointment, type: :model do
   end
 
   context 'when the status changes before saving' do
+    context 'when the appointment is for due diligence' do
+      context 'when the status changes from `complete`' do
+        it 'clears the `unique_reference_number`' do
+          appointment = create(
+            :appointment,
+            :due_diligence,
+            status: :complete,
+            unique_reference_number: '123456/123456'
+          )
+
+          appointment.pending!
+
+          expect(appointment.reload.unique_reference_number).to be_blank
+        end
+      end
+    end
+
     it 'stores the associated statuses' do
       appointment = create(:appointment)
 
@@ -215,6 +232,29 @@ RSpec.describe Appointment, type: :model do
   describe 'validations' do
     let(:subject) do
       build_stubbed(:appointment)
+    end
+
+    context 'when the appointment is for Pension Wise' do
+      it 'cannot be moved to a `due_diligence` enrolled guider' do
+        pension_wise_appointment = create(:appointment)
+        due_diligence_guider     = create(:guider, :due_diligence)
+
+        pension_wise_appointment.guider = due_diligence_guider
+
+        expect(pension_wise_appointment).to be_invalid
+      end
+    end
+
+    context 'when due diligence' do
+      subject { build(:appointment, :due_diligence) }
+
+      it 'requires a referring pension provider' do
+        subject.referrer = ''
+        expect(subject).to be_invalid
+
+        subject.referrer = 'Big Pension Co.'
+        expect(subject).to be_valid
+      end
     end
 
     context 'when the appointment is marked for LBGPTL' do

@@ -5,6 +5,10 @@
 ) %>
 
 <h4>
+  <% if @appointment.due_diligence? %>
+    <span class="label label-default t-due-diligence-banner">PSG</span>
+  <% end %>
+
   <% if @appointment.lloyds_signposted? %>
     <span class="label label-default t-lloyds-signposted">Lloyds Banking Group</span>
   <% end %>
@@ -30,7 +34,10 @@
 
 <div class="row">
   <div class="col-md-7">
-    <h1>Edit appointment for <%= @appointment.name %> <span class="text-muted"><span class="sr-only">Booking reference </span>#<%= @appointment.id %></span></h1>
+    <h1>Edit appointment for <%= @appointment.name %>&nbsp;
+      <span class="text-muted"><span class="sr-only">Booking reference </span>#<%= @appointment.id %></span>&nbsp;
+      <% if @appointment.unique_reference_number? %><span class="text-muted"><small><span class="sr-only">Unique reference </span>#<%= @appointment.unique_reference_number %></small></span>&nbsp;<% end %>
+    </h1>
     <%= rebooked_from_heading(@appointment) %>
   </div>
   <div class="col-md-5 action-buttons">
@@ -52,7 +59,7 @@
         <span>Reschedule</span>
       <% end %>
     <% end %>
-    <%= link_to new_appointment_path(copy_from: @appointment), title: 'Rebook appointment', class: 'btn btn-info t-rebook' do %>
+    <%= link_to new_appointment_path(copy_from: @appointment, schedule_type: @appointment.schedule_type), title: 'Rebook appointment', class: 'btn btn-info t-rebook' do %>
       <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
       <span>Rebook</span>
     <% end %>

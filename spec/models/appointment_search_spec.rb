@@ -12,8 +12,28 @@ RSpec.describe AppointmentSearch, type: :model do
       ]
     end
 
-    def results(q, start_at, end_at, current_user = create(:agent), processed = '')
-      described_class.new(q, start_at, end_at, current_user, processed).search
+    # rubocop:disable ParameterLists
+    def results(
+      query,
+      start_at,
+      end_at,
+      current_user = create(:agent),
+      processed = '',
+      appointment_type = ''
+    )
+      described_class.new(query, start_at, end_at, current_user, processed, appointment_type).search
+    end
+
+    it 'filters by type' do
+      @appointments.map(&:destroy)
+
+      pw = create(:appointment)
+      dd = create(:appointment, :due_diligence)
+      user = create(:resource_manager)
+
+      expect(results(nil, nil, nil, user, '', '')).to eq([dd, pw])
+      expect(results(nil, nil, nil, user, '', 'pension_wise')).to eq([pw])
+      expect(results(nil, nil, nil, user, '', 'due_diligence')).to eq([dd])
     end
 
     context 'for a non-tpas user' do

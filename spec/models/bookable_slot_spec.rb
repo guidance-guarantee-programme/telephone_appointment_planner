@@ -19,6 +19,25 @@ RSpec.describe BookableSlot, type: :model do
     build_stubbed(:guider)
   end
 
+  describe '#schedule_type' do
+    it 'defaults to pension_wise' do
+      bookable_slot = build(:bookable_slot)
+
+      expect(bookable_slot.schedule_type).to eq(User::PENSION_WISE_SCHEDULE_TYPE)
+    end
+  end
+
+  describe '.create_from_slot!' do
+    it 'infers the schedule type from the given guider' do
+      slot   = build(:slot)
+      guider = build(:guider, :tpas, :due_diligence)
+
+      result = BookableSlot.create_from_slot!(guider, Time.zone.now, slot)
+
+      expect(result.schedule_type).to eq(User::DUE_DILIGENCE_SCHEDULE_TYPE)
+    end
+  end
+
   describe '.find_available_slot' do
     it 'returns a slot for the correct organisation' do
       start_at = Time.zone.parse('2021-05-26 13:00')
@@ -36,6 +55,15 @@ RSpec.describe BookableSlot, type: :model do
   end
 
   describe '#next_valid_start_date' do
+    context 'for the due diligence schedule type' do
+      it 'is effectively 5 days' do
+        travel_to '2021-10-25 10:00' do
+          actual = BookableSlot.next_valid_start_date(user, User::DUE_DILIGENCE_SCHEDULE_TYPE)
+          expect(actual).to eq(Time.zone.parse('2021-11-01 21:00'))
+        end
+      end
+    end
+
     context 'user is a guider / agent' do
       context 'outside of a bank holiday period' do
         before { travel_to('2017-04-06 12:00') }
@@ -156,6 +184,18 @@ RSpec.describe BookableSlot, type: :model do
         status: :pending
       )
       expect(subject).to_not include slot
+    end
+
+    it 'includes slots that overlap with appointments from different schedules' do
+      create(
+        :appointment,
+        :due_diligence,
+        guider: guider,
+        start_at: make_time(10, 45),
+        end_at: make_time(12, 30),
+        status: :pending
+      )
+      expect(subject).to include slot
     end
 
     it 'excludes slots with appointments that end inside them' do

@@ -161,6 +161,10 @@ class CompanyCalendar extends Calendar {
       return;
     }
 
+    if(event.pensionWise === false) {
+      element.addClass('fc-event--due-diligence');
+    }
+
     const resource = this.$el.fullCalendar('getResourceById', event.resourceId),
           $qtipContent = $(`
 
@@ -241,6 +245,8 @@ class CompanyCalendar extends Calendar {
       slots = this.getEventsOfType(events, 'slot');
 
     for (let slot in slots) {
+      $(`#${slots[slot].elementId}`).addClass(`fc-bgevent--bookable-slot-${slots[slot].scheduleType}`);
+
       for (let holiday in holidays) {
         if (
           (

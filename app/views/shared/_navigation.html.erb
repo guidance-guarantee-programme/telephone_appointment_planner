@@ -2,7 +2,10 @@
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Appointments <span class="caret"></span></a>
   <ul class="dropdown-menu">
     <%= active_link_to 'Search', search_appointments_path, wrap_tag: :li %>
-    <%= active_link_to 'Book appointment', new_appointment_path, wrap_tag: :li %>
+    <%= active_link_to 'Book appointment', new_appointment_path, wrap_tag: :li, active: :exact %>
+    <% if current_user.tpas? %>
+      <%= active_link_to 'Book PSG appointment', new_appointment_path(schedule_type: User::DUE_DILIGENCE_SCHEDULE_TYPE), wrap_tag: :li, active: :exact %>
+    <% end %>
 
     <% if current_user.resource_manager? %>
       <%= active_link_to 'Allocations', allocations_path, wrap_tag: :li %>

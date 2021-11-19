@@ -1,4 +1,12 @@
 module AppointmentHelper
+  def due_diligence_grace_period
+    BookableSlot
+      .next_valid_start_date(nil, User::DUE_DILIGENCE_SCHEDULE_TYPE)
+      .to_date
+      .next_day
+      .to_s(:govuk_date)
+  end
+
   def bsl_video_visible?(current_user)
     current_user.administrator? || current_user.tp? || current_user.lancs_west?
   end

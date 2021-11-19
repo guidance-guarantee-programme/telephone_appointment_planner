@@ -2,7 +2,7 @@ Appointment reminder
 
 Dear <%= @appointment.first_name %>,
 
-This is a reminder that you have a Pension Wise phone appointment booked for:
+This is a reminder that you have a <%= @appointment.type %> appointment booked for:
 
 <%= render 'shared/email/appointment_details' %>
 

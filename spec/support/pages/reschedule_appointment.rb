@@ -11,6 +11,7 @@ module Pages
     element :guider, '.t-guider'
     element :ad_hoc_start_at, '.t-ad-hoc-start-at'
     elements :slots, '.fc-time-grid-event'
+    elements :calendar_events, '.fc-event'
 
     def ad_hoc_start_at(value)
       execute_script("$('.t-ad-hoc-start-at').val('#{value}')")

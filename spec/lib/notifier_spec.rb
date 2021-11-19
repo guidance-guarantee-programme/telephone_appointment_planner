@@ -71,6 +71,16 @@ RSpec.describe Notifier, '#call' do
     end
   end
 
+  context 'when a DD appointment is completed' do
+    it 'executes the DD reference number generation job synchronously' do
+      appointment.update(schedule_type: 'due_diligence', status: :complete)
+
+      expect(DueDiligenceReferenceNumberJob).to receive(:perform_now).with(appointment)
+
+      subject.call
+    end
+  end
+
   context 'when the appointment is rescheduled' do
     it 'enqueues the rescheduled notifications' do
       new_guider = create(:guider)

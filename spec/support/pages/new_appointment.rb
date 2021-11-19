@@ -41,6 +41,8 @@ module Pages
     element :type_of_appointment_50_54,             '.t-type-of-appointment-50-54'
     element :suggestion,                            '.t-suggestion'
     element :where_you_heard, '.t-where-you-heard'
+    element :hidden_where_you_heard, '.t-hidden-where-you-heard', visible: false
+    element :referrer, '.t-referrer'
     element :address_line_one, '.t-address-line-one'
     element :town, '.t-town'
     element :postcode, '.t-postcode'
@@ -54,6 +56,10 @@ module Pages
     element :ad_hoc_start_at, '.t-ad-hoc-start-at'
 
     elements :calendar_events, '.fc-event'
+
+    elements :fields_with_errors, '.field_with_errors'
+
+    element :due_diligence_banner, '.t-due-diligence-banner'
 
     def ad_hoc_start_at(value)
       execute_script("$('.t-ad-hoc-start-at').val('#{value}')")

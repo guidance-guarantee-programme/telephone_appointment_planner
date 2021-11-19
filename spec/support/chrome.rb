@@ -15,6 +15,7 @@ Capybara.register_driver :chrome_headless do |app|
   Capybara::Selenium::Driver.new(app, browser: :chrome, capabilities: browser_options)
 end
 
+Capybara.default_normalize_ws = true
 Capybara.default_max_wait_time = 10 if ENV['TRAVIS']
 Capybara.server = :puma, { Silent: true }
 Capybara.javascript_driver = :chrome_headless
