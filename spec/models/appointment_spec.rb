@@ -255,6 +255,23 @@ RSpec.describe Appointment, type: :model do
         subject.referrer = 'Big Pension Co.'
         expect(subject).to be_valid
       end
+
+      it 'cannot overlap existing DD or PW appointments' do
+        travel_to '2021-11-22 13:00' do
+          dd_guider = create(:guider, :due_diligence)
+
+          create(:appointment, :due_diligence, start_at: Time.zone.parse('2021-11-22 15:00'), guider: dd_guider)
+
+          overlapping = build(
+            :appointment,
+            :due_diligence,
+            guider: dd_guider,
+            start_at: Time.zone.parse('2021-11-22 14:30')
+          )
+
+          expect(overlapping).to be_invalid
+        end
+      end
     end
 
     context 'when the appointment is marked for LBGPTL' do

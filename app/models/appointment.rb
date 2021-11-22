@@ -156,6 +156,7 @@ class Appointment < ApplicationRecord
   validate :validate_secondary_status
   validate :validate_lloyds_signposted_guider_allocated, if: :lloyds_signposted?, on: :create
   validate :validate_guider_schedule_type, on: :update, if: :pension_wise?
+  validate :validate_pending_overlaps, if: :due_diligence?, on: :create
 
   before_validation :format_name, on: :create
   before_create :track_initial_status
@@ -637,6 +638,22 @@ class Appointment < ApplicationRecord
 
   def validate_guider_schedule_type
     errors.add(:guider, 'Cannot be reallocated to a non Pension Wise guider') if guider&.due_diligence?
+  end
+
+  def validate_pending_overlaps # rubocop:disable MethodLength
+    return unless self
+                  .class
+                  .pending
+                  .where(guider_id: guider_id)
+                  .where(
+                    '(start_at BETWEEN :start_at AND :end_at) OR (end_at BETWEEN :start_at AND :end_at)',
+                    start_at: start_at,
+                    end_at: end_at
+                  )
+                  .where.not(id: id)
+                  .exists?
+
+    errors.add(:guider_id, 'Overlaps another pending appointment')
   end
 
   class << self
