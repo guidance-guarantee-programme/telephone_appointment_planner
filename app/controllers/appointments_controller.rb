@@ -205,7 +205,8 @@ class AppointmentsController < ApplicationController
       :email_consent,
       :lloyds_signposted,
       :schedule_type,
-      :referrer
+      :referrer,
+      :small_pots
     ]
   end
   # rubocop:enable Metrics/MethodLength

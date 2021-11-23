@@ -49,6 +49,7 @@ module Pages
     element :smarter_signposted, '.t-smarter-signposted'
     element :bsl_video, '.t-bsl-video'
     element :lloyds_signposted, '.t-lloyds-signposted'
+    element :small_pots, '.t-small-pots'
 
     element :availability_calendar_off, '.t-availability-calendar-off'
     element :availability_calendar_on, '.t-availability-calendar-on'

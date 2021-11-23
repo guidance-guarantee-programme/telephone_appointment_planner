@@ -143,6 +143,7 @@ RSpec.feature 'Booking due diligence appointments', js: true do
     expect(@page).to have_no_gdpr_consent_yes
     expect(@page).to have_no_gdpr_consent_no
     expect(@page).to have_no_gdpr_consent_no_response
+    expect(@page).to have_no_small_pots
     expect(@page).to have_text('Postal address')
     expect(@page).to_not have_text('Confirmation address')
 

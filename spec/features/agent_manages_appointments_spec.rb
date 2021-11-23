@@ -12,6 +12,7 @@ RSpec.feature 'Agent manages appointments' do
         and_slots_exist_for_due_diligence_availability
         when_they_attempt_to_book_an_appointment
         then_they_see_only_general_availability
+        and_they_do_not_see_small_pots
       end
     end
   end
@@ -27,8 +28,31 @@ RSpec.feature 'Agent manages appointments' do
     end
   end
 
+  scenario 'TPAS user booking a Pension Wise small pots appointment' do
+    given_the_user_is_a_resource_manager(organisation: :tpas) do
+      and_there_is_a_guider_with_available_slots
+      when_they_attempt_to_book_an_appointment
+      and_they_complete_the_small_pots_booking
+      then_they_see_a_preview_of_the_appointment(small_pots: true)
+      when_they_accept_the_appointment_preview
+      then_the_appointment_is_small_pots
+    end
+  end
+
+  def and_they_complete_the_small_pots_booking
+    fill_in_appointment_details(small_pots: true)
+  end
+
+  def then_the_appointment_is_small_pots
+    then_that_appointment_is_created(small_pots: true)
+  end
+
   def and_slots_exist_for_due_diligence_availability
     create(:bookable_slot, :due_diligence, start_at: Time.zone.parse('2021-04-08 14:30'))
+  end
+
+  def and_they_do_not_see_small_pots
+    expect(@page).to have_no_small_pots
   end
 
   def then_they_see_only_general_availability
@@ -383,7 +407,7 @@ RSpec.feature 'Agent manages appointments' do
     BookableSlot.generate_for_six_weeks
   end
 
-  def fill_in_appointment_details(options = {}) # rubocop:disable CyclomaticComplexity
+  def fill_in_appointment_details(options = {}) # rubocop:disable CyclomaticComplexity, PerceivedComplexity
     @page.date_of_birth_day.set '23'
     @page.date_of_birth_month.set '10'
     @page.date_of_birth_year.set '1950'
@@ -404,6 +428,7 @@ RSpec.feature 'Agent manages appointments' do
     @page.town.set(options[:town]) if options[:town]
     @page.postcode.set(options[:postcode]) if options[:postcode]
     @page.smarter_signposted.set(options[:smarter_signposted]) if options[:smarter_signposted]
+    @page.small_pots.set(options[:small_pots]) if options[:small_pots]
 
     expect(@page).to have_no_bsl_video if options[:bsl_video]
 
@@ -414,7 +439,7 @@ RSpec.feature 'Agent manages appointments' do
     fill_in_appointment_details(options)
   end
 
-  def then_they_see_a_preview_of_the_appointment(smarter_signposted: nil)
+  def then_they_see_a_preview_of_the_appointment(smarter_signposted: nil, small_pots: nil)
     @page = Pages::PreviewAppointment.new
     expect(@page).to be_displayed
 
@@ -431,6 +456,7 @@ RSpec.feature 'Agent manages appointments' do
     expect(@page.preview).to have_content 'Customer research consent Yes'
     expect(@page.preview).to have_content 'Standard'
     expect(@page.preview).to have_content 'Smarter signposted referral? Yes' if smarter_signposted
+    expect(@page.preview).to have_content 'Small pots appointment? Yes' if small_pots
   end
 
   def and_they_fill_in_their_appointment_details_without_an_email
@@ -442,7 +468,7 @@ RSpec.feature 'Agent manages appointments' do
     )
   end
 
-  def then_that_appointment_is_created(smarter_signposted: nil)
+  def then_that_appointment_is_created(smarter_signposted: nil, small_pots: nil)
     @guider.reload
     expect(Appointment.count).to eq 1
     appointment = Appointment.first
@@ -466,6 +492,7 @@ RSpec.feature 'Agent manages appointments' do
     expect(appointment).to be_accessibility_requirements
     expect(appointment).to be_smarter_signposted if smarter_signposted
     expect(appointment).to_not be_bsl_video
+    expect(appointment).to be_small_pots if small_pots
   end
 
   def and_the_customer_gets_an_email_confirmation
