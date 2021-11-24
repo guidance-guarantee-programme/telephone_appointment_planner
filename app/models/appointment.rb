@@ -44,6 +44,7 @@ class Appointment < ApplicationRecord
     lloyds_signposted
     unique_reference_number
     referrer
+    small_pots
   ).freeze
 
   enum status: %i(
