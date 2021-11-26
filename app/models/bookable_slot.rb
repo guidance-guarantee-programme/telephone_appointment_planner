@@ -17,9 +17,22 @@ class BookableSlot < ApplicationRecord
   def self.next_valid_start_date(user = nil, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE)
     return Time.zone.now if user&.resource_manager?
 
-    days_from_now = schedule_type == User::DUE_DILIGENCE_SCHEDULE_TYPE ? 5 : 1
+    if schedule_type == User::DUE_DILIGENCE_SCHEDULE_TYPE
+      next_valid_due_diligence_start_date
+    else
+      BusinessDays.from_now(1).change(hour: 21, min: 0).in_time_zone('London')
+    end
+  end
 
-    BusinessDays.from_now(days_from_now).change(hour: 21, min: 0).in_time_zone('London')
+  def self.next_valid_due_diligence_start_date # rubocop:disable AbcSize
+    case Date.current
+    when '2021-11-30'.to_date..'2021-12-02'.to_date
+      Date.tomorrow.to_time.change(hour: 7).in_time_zone('London')
+    when '2021-12-03'.to_date..'2021-12-05'.to_date
+      Time.zone.parse('2021-12-06 07:00').in_time_zone('London')
+    else
+      BusinessDays.from_now(5).change(hour: 21, min: 0).in_time_zone('London')
+    end
   end
 
   def self.find_available_slot(start_at, agent, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE)
