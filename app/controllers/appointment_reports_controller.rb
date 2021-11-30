@@ -46,7 +46,7 @@ class AppointmentReportsController < ApplicationController
   def report_params
     params
       .require(:appointment_report)
-      .permit(:where, :date_range)
+      .permit(:where, :date_range, :schedule_type)
       .merge(current_user: current_user)
   end
 end

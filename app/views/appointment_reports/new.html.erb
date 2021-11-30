@@ -17,6 +17,17 @@
       %>
     </div>
   </div>
+
+  <% if current_user.tpas? %>
+  <div class="row">
+    <div class="col-md-4">
+      <label>Appointment type</label>
+      <%= f.radio_button :schedule_type, 'pension_wise', label: 'Pension Wise', class: 't-pension-wise' %>
+      <%= f.radio_button :schedule_type, 'due_diligence', label: 'PSG', class: 't-due-diligence' %>
+    </div>
+  </div>
+  <% end %>
+
   <div class="row">
     <div class="col-md-4">
       <%=
