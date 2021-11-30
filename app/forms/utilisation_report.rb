@@ -4,15 +4,13 @@ class UtilisationReport
   include ActiveModel::Model
   include Report
 
-  attr_reader :date_range
-  attr_reader :current_user
+  attr_accessor :date_range
+  attr_accessor :current_user
+
+  attr_writer :schedule_type
 
   validates :date_range, presence: true
-
-  def initialize(params = {})
-    @date_range   = params[:date_range]
-    @current_user = params[:current_user]
-  end
+  validates :schedule_type, presence: true, if: -> { current_user.tpas? }
 
   def generate
     CSV.generate do |csv|
@@ -27,6 +25,12 @@ class UtilisationReport
     "utilisation-report-#{range_title}.csv"
   end
 
+  def schedule_type
+    return User::PENSION_WISE_SCHEDULE_TYPE unless current_user.tpas?
+
+    @schedule_type
+  end
+
   private
 
   def role_scoped(scope)
@@ -39,7 +43,7 @@ class UtilisationReport
 
   def generate_for_day(day)
     day_range = (day.beginning_of_day..day.end_of_day)
-    scope = Appointment.where(start_at: day_range)
+    scope = Appointment.where(start_at: day_range, schedule_type: schedule_type)
     bookable, blocked = bookable_and_blocked(day_range)
 
     [
@@ -52,7 +56,12 @@ class UtilisationReport
   end
 
   def bookable_and_blocked(day_range)
-    scope    = role_scoped(BookableSlot.within_date_range(day_range.begin, day_range.end))
+    scope = role_scoped(
+      BookableSlot
+      .within_date_range(day_range.begin, day_range.end)
+      .where(schedule_type: schedule_type)
+    )
+
     bookable = scope.without_holidays.count
     blocked  = scope.count - bookable
     [bookable, blocked]
