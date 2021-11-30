@@ -1,6 +1,13 @@
 require 'rails_helper'
 
 RSpec.feature 'Resource manager downloads appointment reports' do
+  scenario 'Non TPAS user' do
+    given_the_user_is_a_resource_manager(organisation: :tp) do
+      when_they_visit_the_appointment_report
+      then_they_do_not_see_the_type_field
+    end
+  end
+
   scenario 'by appointment creation date' do
     given_the_user_is_a_resource_manager do
       travel_to now do
@@ -61,6 +68,15 @@ RSpec.feature 'Resource manager downloads appointment reports' do
     BusinessDays.from_now(20).to_date
   end
 
+  def when_they_visit_the_appointment_report
+    @page = Pages::NewAppointmentReport.new.tap(&:load)
+  end
+
+  def then_they_do_not_see_the_type_field
+    expect(@page).to have_no_pension_wise
+    expect(@page).to have_no_due_diligence
+  end
+
   def when_they_attempt_to_download_reports_without_a_date_range
     @page = Pages::NewAppointmentReport.new.tap(&:load)
     @page.where.select 'Appointment creation date'
@@ -75,6 +91,7 @@ RSpec.feature 'Resource manager downloads appointment reports' do
     @appointment_with_created_at  = create(:appointment, created_at: created_at)
     @appointment_with_start_at    = create(:appointment, start_at: start_at)
     @tp_appointment_with_start_at = create(:appointment, start_at: start_at, guider: create(:guider, :tp))
+    @due_diligence_appointment    = create(:appointment, :due_diligence, start_at: start_at)
   end
 
   def and_there_is_an_appointment_at_the_end_of_the_date_range
@@ -85,6 +102,7 @@ RSpec.feature 'Resource manager downloads appointment reports' do
     @page = Pages::NewAppointmentReport.new.tap(&:load)
     @page.where.select 'Appointment creation date'
     @page.date_range.set date_range_enclosing(created_at)
+    @page.pension_wise.set true
     @page.download.click
   end
 
@@ -98,6 +116,7 @@ RSpec.feature 'Resource manager downloads appointment reports' do
     @page = Pages::NewAppointmentReport.new.tap(&:load)
     @page.where.select 'Appointment start'
     @page.date_range.set date_range_enclosing(start_at)
+    @page.pension_wise.set true
     @page.download.click
   end
 

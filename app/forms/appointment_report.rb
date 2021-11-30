@@ -6,13 +6,16 @@ class AppointmentReport
   attr_reader :where
   attr_reader :date_range
   attr_reader :current_user
+  attr_reader :schedule_type
 
   validates :date_range, presence: true
+  validates :schedule_type, presence: true, if: -> { current_user.tpas? }
 
   def initialize(params = {})
     @where = params.fetch(:where, :created_at)
     @date_range = params[:date_range]
     @current_user = params[:current_user]
+    @schedule_type = params[:schedule_type]
   end
 
   def generate # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
@@ -77,6 +80,7 @@ class AppointmentReport
       .select("case when email_consent_form_required is true then 'Yes' else 'No' end as email_consent_form_required")
       .where("#{column} >= ? AND #{column} <= ?", range.begin, range.end.end_of_day)
       .where(organisation_clause)
+      .where(schedule_type: schedule_type)
       .joins('INNER JOIN users guiders ON guiders.id = appointments.guider_id')
       .joins('INNER JOIN users agents ON agents.id = appointments.agent_id')
       .order(where)
@@ -84,6 +88,12 @@ class AppointmentReport
 
   def file_name
     "report-#{range_title}#{where}.csv"
+  end
+
+  def schedule_type
+    return User::PENSION_WISE_SCHEDULE_TYPE unless current_user.tpas?
+
+    @schedule_type
   end
 
   private

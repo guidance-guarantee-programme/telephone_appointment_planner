@@ -1,6 +1,13 @@
 require 'rails_helper'
 
 RSpec.feature 'Resource manager downloads utilisation reports' do
+  scenario 'Non-TPAS user' do
+    given_the_user_is_a_resource_manager(organisation: :tp) do
+      when_they_view_the_report
+      then_they_do_not_see_the_appointment_types
+    end
+  end
+
   scenario 'booked appointments are counted' do
     given_the_user_is_a_resource_manager do
       and_there_are_appointments
@@ -88,8 +95,18 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
     Date.new(2016, 11, 9).beginning_of_day.to_date
   end
 
+  def when_they_view_the_report
+    @page = Pages::NewUtilisationReport.new.tap(&:load)
+  end
+
+  def then_they_do_not_see_the_appointment_types
+    expect(@page).to have_no_pension_wise
+    expect(@page).to have_no_due_diligence
+  end
+
   def when_they_attempt_to_download_reports_without_a_date_range
     @page = Pages::NewUtilisationReport.new.tap(&:load)
+    @page.pension_wise.set true
     @page.download.click
   end
 
@@ -106,6 +123,7 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
   def and_there_are_cancelled_appointments
     create(:appointment, status: :cancelled_by_customer_sms).update(start_at: range_start + 1.day)
     create(:appointment, status: :cancelled_by_pension_wise).update(start_at: range_start + 2.days)
+    create(:appointment, :due_diligence).update(start_at: range_start.at_midday + 5.days)
   end
 
   def and_there_are_appointments_outside_the_date_range
@@ -161,6 +179,7 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
 
     @page = Pages::NewUtilisationReport.new.tap(&:load)
     @page.date_range.set date_range
+    @page.pension_wise.set true
     @page.download.click
   end
 
