@@ -44,6 +44,7 @@
   <%= f.hidden_field :bsl_video %>
   <%= f.hidden_field :schedule_type %>
   <%= f.hidden_field :referrer %>
+  <%= f.hidden_field :small_pots %>
 
   <%= f.hidden_field :data_subject_name %>
   <%= f.hidden_field :data_subject_date_of_birth %>
@@ -173,6 +174,12 @@
               <tr>
                 <td class="active"><b>Lloyds Banking Group referral?</b></td>
                 <td><%= @appointment.lloyds_signposted? ? 'Yes' : 'No' %></td>
+              </tr>
+              <% end %>
+              <% if @appointment.small_pots? %>
+              <tr>
+                <td class="active"><b>Small pots appointment?</b></td>
+                <td><%= @appointment.small_pots? ? 'Yes' : 'No' %></td>
               </tr>
               <% end %>
             <% end %>

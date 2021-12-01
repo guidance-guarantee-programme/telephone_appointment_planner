@@ -44,6 +44,7 @@ class Appointment < ApplicationRecord
     lloyds_signposted
     unique_reference_number
     referrer
+    small_pots
   ).freeze
 
   enum status: %i(
@@ -128,6 +129,7 @@ class Appointment < ApplicationRecord
   validates :dc_pot_confirmed, inclusion: [true, false]
   validates :accessibility_requirements, inclusion: [true, false]
   validates :third_party_booking, inclusion: [true, false]
+  validates :small_pots, inclusion: [true, false]
   validates :data_subject_name, presence: true, if: :third_party_booking?
   validates :data_subject_date_of_birth, presence: true, if: :require_data_subject_date_of_birth?
   validates :notes, presence: true, if: :validate_adjustment_needs?

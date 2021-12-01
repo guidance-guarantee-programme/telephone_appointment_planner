@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_03_165658) do
+ActiveRecord::Schema.define(version: 2021_11_23_180605) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -106,6 +106,7 @@ ActiveRecord::Schema.define(version: 2021_11_03_165658) do
     t.string "schedule_type", default: "pension_wise", null: false
     t.string "unique_reference_number", default: "", null: false
     t.string "referrer", default: "", null: false
+    t.boolean "small_pots", default: false, null: false
     t.index ["guider_id", "start_at"], name: "unique_slot_guider_in_appointment", unique: true, where: "((status <> ALL (ARRAY[6, 7, 8])) AND (start_at > '2021-04-21 00:00:00'::timestamp without time zone))"
     t.index ["guider_id"], name: "index_appointments_on_guider_id"
     t.index ["start_at", "end_at", "guider_id"], name: "index_appointments_on_start_at_and_end_at_and_guider_id"
