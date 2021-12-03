@@ -5,6 +5,20 @@ RSpec.feature 'Agent manages appointments' do
 
   let(:day) { BusinessDays.from_now(5) }
 
+  scenario 'TPAS user viewing allocations calendar' do
+    given_the_user_is_a_resource_manager(organisation: :tpas) do
+      travel_to '2021-12-03 14:00' do
+        when_they_view_the_allocations_calendar
+        then_they_see_the_correct_grace_period
+      end
+
+      travel_to '2021-12-15 13:00' do
+        when_they_view_the_allocations_calendar
+        then_they_see_the_longer_grace_period
+      end
+    end
+  end
+
   scenario 'TP agent booking a Pension Wise appointment', js: true do
     travel_to '2021-04-05 10:00' do
       given_the_user_is_an_agent(organisation: :tp) do
@@ -37,6 +51,18 @@ RSpec.feature 'Agent manages appointments' do
       when_they_accept_the_appointment_preview
       then_the_appointment_is_small_pots
     end
+  end
+
+  def when_they_view_the_allocations_calendar
+    @page = Pages::Allocations.new.tap(&:load)
+  end
+
+  def then_they_see_the_correct_grace_period
+    expect(@page.due_diligence_grace_period).to have_text('6 December 2021')
+  end
+
+  def then_they_see_the_longer_grace_period
+    expect(@page.due_diligence_grace_period).to have_text('23 December 2021')
   end
 
   def and_they_complete_the_small_pots_booking
