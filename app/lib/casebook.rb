@@ -1,3 +1,11 @@
 module Casebook
-  ApiError = Class.new(StandardError)
+  class ApiError < StandardError
+    attr_reader :error
+
+    def initialize(message = '', error = nil)
+      super(message)
+
+      @error = error
+    end
+  end
 end

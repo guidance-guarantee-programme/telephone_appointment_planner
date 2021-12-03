@@ -8,7 +8,7 @@ module Casebook
       response = token.post('/api/v1/appointments', params: payload)
       response.parsed['data']['id']
     rescue OAuth2::Error => e
-      raise ApiError, e.description
+      raise ApiError.new(e.response.status, e)
     end
 
     def cancel(appointment)
@@ -16,7 +16,7 @@ module Casebook
 
       token.delete("/api/v1/appointments/#{appointment.casebook_appointment_id}", params: payload)
     rescue OAuth2::Error => e
-      raise ApiError, e.description
+      raise ApiError.new(e.response.status, e)
     end
 
     private
