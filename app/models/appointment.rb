@@ -461,7 +461,7 @@ class Appointment < ApplicationRecord
   def not_within_grace_period
     return unless new_record? && start_at?
 
-    too_soon = start_at < BookableSlot.next_valid_start_date
+    too_soon = start_at < BookableSlot.next_valid_start_date(nil, schedule_type)
     errors.add(:start_at, 'must be more than two business days from now') if too_soon
   end
 

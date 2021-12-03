@@ -4,6 +4,17 @@ RSpec.describe 'POST /api/v1/appointments' do
   include ActiveJob::TestHelper
 
   context 'due diligence appointments' do
+    scenario 'grace period booking regression' do
+      given_the_user_is_a_pension_wise_api_user do
+        and_a_due_diligence_slot_exists
+
+        travel_to '2021-12-03 13:30' do
+          when_the_client_attempts_to_book_the_slot
+          then_the_service_responds_with_a_201
+        end
+      end
+    end
+
     scenario 'supplying an incorrect schedule type' do
       given_the_user_is_a_pension_wise_api_user do
         when_the_client_supplies_an_incorrect_schedule_type
@@ -12,7 +23,7 @@ RSpec.describe 'POST /api/v1/appointments' do
     end
 
     scenario 'successfully creating a due diligence appointment' do
-      travel_to '2021-09-14 12:00' do
+      travel_to '2021-09-01 12:00' do
         given_the_user_is_a_pension_wise_api_user do
           and_bookable_slots_exist_for_due_diligence
           when_the_client_posts_a_due_diligence_appointment_request
@@ -59,6 +70,33 @@ RSpec.describe 'POST /api/v1/appointments' do
         and_the_errors_are_serialized_in_the_response
       end
     end
+  end
+
+  def and_a_due_diligence_slot_exists
+    create(:bookable_slot, :due_diligence, start_at: Time.zone.parse('2021-12-06 17:20'))
+  end
+
+  def when_the_client_attempts_to_book_the_slot
+    @payload = {
+      'start_at'                   => '2021-12-06 17:20:00 UTC',
+      'first_name'                 => 'Ben',
+      'last_name'                  => 'Jones',
+      'email'                      => 'ben@example.com',
+      'phone'                      => '07715930455',
+      'memorable_word'             => 'Cheese',
+      'date_of_birth'              => '1970-01-01',
+      'dc_pot_confirmed'           => false,
+      'where_you_heard'            => '2',
+      'gdpr_consent'               => 'no',
+      'accessibility_requirements' => '0',
+      'notes'                      => '',
+      'smarter_signposted'         => false,
+      'lloyds_signposted'          => false,
+      'schedule_type'              => 'due_diligence',
+      'referrer'                   => 'MMM'
+    }
+
+    post api_v1_appointments_path, params: @payload, as: :json
   end
 
   def and_bookable_slots_exist_for_due_diligence
@@ -183,10 +221,6 @@ RSpec.describe 'POST /api/v1/appointments' do
 
   def and_the_appointment_is_created_as_a_smarter_signposted_appointment
     expect(Appointment.last).to be_smarter_signposted
-  end
-
-  def then_the_service_responds_with_a_201
-    expect(response).to be_created
   end
 
   def and_the_location_header_describes_the_booking_reference
