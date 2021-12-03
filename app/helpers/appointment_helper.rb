@@ -1,10 +1,10 @@
 module AppointmentHelper
   def due_diligence_grace_period
-    BookableSlot
-      .next_valid_start_date(nil, User::DUE_DILIGENCE_SCHEDULE_TYPE)
-      .to_date
-      .next_day
-      .to_s(:govuk_date)
+    grace = BookableSlot.next_valid_start_date(nil, User::DUE_DILIGENCE_SCHEDULE_TYPE)
+
+    grace = grace.next_day if grace.hour > 20
+
+    grace.to_date.to_s(:govuk_date)
   end
 
   def bsl_video_visible?(current_user)
