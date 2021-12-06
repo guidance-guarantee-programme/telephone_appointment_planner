@@ -8,6 +8,8 @@ class Appointment < ApplicationRecord
 
   DEFAULT_COUNTRY_CODE = 'GB'.freeze
 
+  RESCHEDULING_REASONS = %w[customer_rescheduled office_rescheduled].freeze
+
   CANCELLED_STATUSES = %i[
     cancelled_by_customer
     cancelled_by_pension_wise
@@ -50,6 +52,7 @@ class Appointment < ApplicationRecord
     small_pots
     country_code
     welsh
+    rescheduling_reason
   ].freeze
 
   enum status: { pending: 0, complete: 1, no_show: 2, incomplete: 3, ineligible_age: 4,
@@ -165,6 +168,7 @@ class Appointment < ApplicationRecord
   validate :validate_tp_agent_statuses
   validate :validate_tpas_agent_statuses, if: :status_changed?, on: :update
   validate :validate_gdpr_consent
+  validate :validate_rescheduling_reason, on: :update
 
   before_validation :format_name, on: :create
   before_create :track_initial_status
@@ -365,7 +369,7 @@ class Appointment < ApplicationRecord
   end
 
   def casebook_pushable_guider?
-    guider && guider.casebook_pushable?
+    guider&.casebook_pushable?
   end
 
   def agent_is_pension_wise_api?
@@ -737,6 +741,12 @@ class Appointment < ApplicationRecord
     inclusion << '' if persisted? || due_diligence?
 
     errors.add(:gdpr_consent, :inclusion) unless inclusion.include?(gdpr_consent)
+  end
+
+  def validate_rescheduling_reason
+    return unless start_at_changed?
+
+    errors.add(:rescheduling_reason, 'must be specified') unless RESCHEDULING_REASONS.include?(rescheduling_reason)
   end
 
   class << self

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Casebook::Presenters::Create, '#to_h' do
+RSpec.describe Casebook::Presenters::Create, '#to_h' do # rubocop:disable Metrics/BlockLength
   let(:appointment) { build_stubbed(:appointment, :casebook_guider) }
 
   subject { described_class.new(appointment).to_h[:data][:attributes] }

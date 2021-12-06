@@ -256,7 +256,7 @@ class AppointmentsController < ApplicationController
   def update_reschedule_params
     params
       .require(:appointment)
-      .permit(:end_at, :guider_id)
+      .permit(:end_at, :guider_id, :rescheduling_reason)
       .merge(
         start_at: munge_start_at,
         agent: current_user

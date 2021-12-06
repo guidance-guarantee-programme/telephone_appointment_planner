@@ -26,7 +26,7 @@ module Casebook
     end
 
     def client
-      @client ||= OAuth2::Client.new(client_id, client_secret, site: site, token_url: token_url)
+      @client ||= OAuth2::Client.new(client_id, client_secret, site:, token_url:)
     end
 
     def site

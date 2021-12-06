@@ -5,7 +5,7 @@ module Casebook
         @appointment = appointment
       end
 
-      def to_h # rubocop:disable MethodLength, AbcSize
+      def to_h # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
         {
           data: {
             attributes: {
