@@ -131,6 +131,10 @@ FactoryBot.define do
     trait :casebook_rebooked do
       rebooked_from { create(:appointment, :casebook_guider, :casebook_pushed) }
     end
+
+    trait :pension_wise_rescheduled do
+      rescheduling_reason { 'office_rescheduled' }
+    end
   end
 end
 # rubocop:enable Metrics/BlockLength

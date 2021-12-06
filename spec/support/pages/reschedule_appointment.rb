@@ -5,6 +5,8 @@ module Pages
     element :end_at,   '.t-end-at', visible: false
     element :reschedule, '.t-reschedule'
     element :slot_unavailable_message, '.t-slot-unavailable-message'
+    element :customer_rescheduled, '.t-customer-rescheduled'
+    element :pension_wise_rescheduled, '.t-pension-wise-rescheduled'
 
     element :availability_calendar_off, '.t-availability-calendar-off'
     element :availability_calendar_on, '.t-availability-calendar-on'

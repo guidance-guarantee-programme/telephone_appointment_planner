@@ -120,6 +120,7 @@ ActiveRecord::Schema.define(version: 2024_02_13_111659) do
     t.string "nudge_eligibility_reason", default: "", null: false
     t.string "country_code", default: "GB", null: false
     t.integer "casebook_appointment_id"
+    t.string "rescheduling_reason", default: "", null: false
     t.index ["guider_id", "start_at"], name: "unique_slot_guider_in_appointment", unique: true, where: "((status <> ALL (ARRAY[5, 6, 7, 8])) AND (start_at > '2022-07-02 00:00:00'::timestamp without time zone))"
     t.index ["guider_id"], name: "index_appointments_on_guider_id"
     t.index ["schedule_type"], name: "index_appointments_on_schedule_type"

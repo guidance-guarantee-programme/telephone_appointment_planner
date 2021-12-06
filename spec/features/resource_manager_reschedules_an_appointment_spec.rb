@@ -153,6 +153,7 @@ RSpec.feature 'Resource manager reschedules an appointment', js: true do
     expect(@page.slots.first).to have_text('09:00 1 guider available')
 
     @page.slots.first.click
+    @page.pension_wise_rescheduled.set(true)
     @page.reschedule.click
   end
 
@@ -262,6 +263,7 @@ RSpec.feature 'Resource manager reschedules an appointment', js: true do
 
   def and_reschedule_the_appointment
     provide_scheduling_details
+    @page.customer_rescheduled.set(true)
     @page.reschedule.click
   end
 

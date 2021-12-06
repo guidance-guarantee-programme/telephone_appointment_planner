@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe RescheduleCasebookAppointmentJob, '#perform' do
+RSpec.describe RescheduleCasebookAppointmentJob, '#perform' do # rubocop:disable Metrics/BlockLength
   context 'when the appointment is not for a casebook-enlisted guider' do
     it 'does not attempt to cancel or push' do
       appointment = build_stubbed(:appointment)
@@ -9,7 +9,7 @@ RSpec.describe RescheduleCasebookAppointmentJob, '#perform' do
     end
   end
 
-  context 'when the appointment is for a casebook-enlisted guider' do
+  context 'when the appointment is for a casebook-enlisted guider' do # rubocop:disable Metrics/BlockLength
     let(:push) { instance_double(Casebook::Push) }
     let(:cancel) { instance_double(Casebook::Cancel) }
 
@@ -26,11 +26,11 @@ RSpec.describe RescheduleCasebookAppointmentJob, '#perform' do
 
       it 'notifies bugsnag' do
         allow(cancel).to receive(:call).and_raise(Casebook::ApiError)
-        allow(Bugsnag).to receive(:notify).with(instance_of(Casebook::ApiError))
+        allow(Bugsnag).to receive(:notify).twice
 
         described_class.perform_now(appointment)
 
-        expect(Bugsnag).to have_received(:notify)
+        expect(Bugsnag).to have_received(:notify).twice
       end
     end
 

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe PushCasebookAppointmentJob, '#perform' do
-  context 'when the appointment is pushable' do
+RSpec.describe PushCasebookAppointmentJob, '#perform' do # rubocop:disable Metrics/BlockLength
+  context 'when the appointment is pushable' do # rubocop:disable Metrics/BlockLength
     let(:appointment) { double(:appointment, rebooked_from: nil, push_to_casebook?: true) }
     let(:casebook_push) { instance_double(Casebook::Push) }
     let(:casebook_cancel) { instance_double(Casebook::Cancel) }

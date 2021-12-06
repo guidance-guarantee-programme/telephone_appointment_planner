@@ -13,7 +13,6 @@ module Casebook
 
     private
 
-    attr_reader :appointment
-    attr_reader :api
+    attr_reader :appointment, :api
   end
 end
