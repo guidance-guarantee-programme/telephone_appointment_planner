@@ -144,7 +144,46 @@
     }
 
     eventDrop(event, delta, revertFunc) {
-      this.handleEventChange(event, revertFunc);
+      if (delta.hours() != 0 || delta.minutes() != 0) {
+        this.$modal = $('#rescheduling-reasons-modal');
+
+        this.$modal.one('hide.bs.modal', event, () => {
+          // if they try to navigate away without specifying a reason, revert
+          if (event.reschedulingReason === undefined) {
+            revertFunc();
+          }
+        });
+
+        this.$modal.find('.js-modal-title').text(`Reason for rescheduling ${event.title} #${event.id}`);
+        this.$modal.find('.js-save').on(
+          'click',
+          {event: event, revertFunc: revertFunc},
+          this.assignReschedulingReason.bind(this)
+        );
+
+        // reset form fields
+        $('input[name="rescheduling_reason"]').prop('checked', false);
+
+        this.$modal.modal({keyboard: false});
+      }
+      else {
+        this.handleEventChange(event, revertFunc);
+      }
+    }
+
+    assignReschedulingReason(e) {
+      let reason = $('input[name="rescheduling_reason"]:checked').val();
+
+      if(reason === undefined) {
+        alert('You must specify a reason for rescheduling');
+      }
+      else {
+        e.data.event.reschedulingReason = reason;
+
+        this.handleEventChange(e.data.event, e.data.revertFunc);
+        this.$modal.modal('hide');
+      }
+
     }
 
     styleEvents(event, element) {
@@ -281,7 +320,8 @@
             id: eventObj.id,
             guider_id: eventObj.resourceId,
             start_at: eventObj.start,
-            end_at: eventObj.end
+            end_at: eventObj.end,
+            rescheduling_reason: eventObj.reschedulingReason
           });
 
           outputEventIds.push(eventObj.id);

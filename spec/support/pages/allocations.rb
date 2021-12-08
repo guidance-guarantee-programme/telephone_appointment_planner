@@ -13,6 +13,12 @@ module Pages
       element :save, '.t-save'
     end
 
+    section :rescheduling_reason_modal, '.t-rescheduling-reason-modal' do
+      element :pension_wise, '.t-pension-wise-rescheduled'
+      element :customer, '.t-customer-rescheduled'
+      element :save, '.t-save'
+    end
+
     section :calendar, Sections::Calendar, '.t-calendar'
 
     def reassign(appointment, guider:)
