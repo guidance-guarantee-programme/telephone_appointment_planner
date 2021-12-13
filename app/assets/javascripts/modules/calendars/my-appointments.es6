@@ -65,6 +65,10 @@
 
         element.addClass('fc-event--cancelled');
       }
+
+      if(event.pensionWise === false) {
+        element.addClass('fc-event--due-diligence');
+      }
     }
 
     eventDataTransform(json) {
