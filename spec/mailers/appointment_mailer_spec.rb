@@ -256,10 +256,6 @@ RSpec.describe AppointmentMailer, type: :mailer do
       it 'includes the correct PW heading logo' do
         expect(body).to include('pw.jpg')
       end
-
-      it 'includes the Pension Wise mailing address' do
-        expect(body).to include('P.O. Box 10404')
-      end
     end
   end
 
