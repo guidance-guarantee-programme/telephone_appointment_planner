@@ -225,6 +225,10 @@ $guider-row-height: 120px;
 .fc-event--due-diligence {
   @include striped($calendar-appointment-due-diligence-background);
   z-index: 3;
+
+  &.fc--past {
+    @include striped(lighten($calendar-appointment-due-diligence-background, 20%));
+  }
 };
 
 .fc--past {
