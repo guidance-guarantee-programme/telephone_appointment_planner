@@ -14,7 +14,7 @@ class PrintedThirdPartyConsentFormPresenter
       address_line_4: appointment.consent_address_line_three,
       address_line_5: appointment.consent_town,
       address_line_6: appointment.consent_county,
-      postcode: appointment.consent_postcode
+      address_line_7: appointment.consent_postcode
     }
   end
 
