@@ -29,7 +29,7 @@ RSpec.describe PrintedThirdPartyConsentFormJob, '#perform' do
           address_line_4: 'Somewhere',
           address_line_5: 'Some Town',
           address_line_6: 'Some County',
-          postcode: 'SS1 1SS'
+          address_line_7: 'SS1 1SS'
         }
       )
 
