@@ -63,6 +63,12 @@
       <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
       <span>Rebook</span>
     <% end %>
+    <% if current_user.tp? %>
+      <%= link_to appointment_email_confirmation_path(@appointment), title: 'Resend', class: 'btn btn-info t-resend-email-confirmation', method: :post, data: { confirm: 'Resend the appointment confirmation email?' } do %>
+        <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+        <span>Resend</span>
+      <% end %>
+    <% end %>
   </div>
 </div>
 

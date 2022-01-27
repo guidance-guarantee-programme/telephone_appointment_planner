@@ -164,6 +164,10 @@ class Appointment < ApplicationRecord
   before_create :track_initial_status
   before_update :track_status_transitions
 
+  def resend_email_confirmation
+    CustomerUpdateJob.perform_later(self, CustomerUpdateActivity::CONFIRMED_MESSAGE)
+  end
+
   def complete_due_diligence?
     due_diligence? && complete? && unique_reference_number?
   end

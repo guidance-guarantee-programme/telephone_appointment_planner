@@ -27,6 +27,7 @@ module Pages
     element :submit, '.t-save'
     element :rebook, '.t-rebook'
     element :process, '.t-process'
+    element :resend_email_confirmation, '.t-resend-email-confirmation'
 
     element :third_party_booked,                    '.t-third-party-booked'
     element :data_subject_name,                     '.t-data-subject-name'

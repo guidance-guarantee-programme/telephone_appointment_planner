@@ -1,6 +1,15 @@
 require 'rails_helper'
 
 RSpec.feature 'Guider edits an appointment' do
+  scenario 'TP user resends an appointment confirmation email', js: true do
+    given_the_user_is_an_agent(organisation: :tp) do
+      when_they_edit_an_existing_appointment
+      and_they_resend_the_customer_email_confirmation
+      then_the_customer_email_confirmation_is_sent
+      and_they_see_a_success_message
+    end
+  end
+
   scenario 'Successfully editing an appointment' do
     given_the_user_is_a_guider(organisation: :cas) do
       and_they_have_an_appointment
@@ -24,6 +33,27 @@ RSpec.feature 'Guider edits an appointment' do
       when_they_save_the_changes
       then_the_power_of_attorney_evidence_is_attached
     end
+  end
+
+  def when_they_edit_an_existing_appointment
+    @appointment = create(:appointment)
+
+    @page = Pages::EditAppointment.new
+    @page.load(id: @appointment.id)
+
+    expect(@page).to be_displayed
+  end
+
+  def and_they_resend_the_customer_email_confirmation
+    accept_confirm do
+      @page.resend_email_confirmation.click
+    end
+  end
+
+  def then_the_customer_email_confirmation_is_sent
+    expect(@page).to have_flash_of_success
+
+    expect(ActionMailer::Base.deliveries.first.subject).to eq('Pension Wise Appointment')
   end
 
   def and_they_have_a_third_party_booking
