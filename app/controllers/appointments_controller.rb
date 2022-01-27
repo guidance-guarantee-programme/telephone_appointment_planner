@@ -48,6 +48,7 @@ class AppointmentsController < ApplicationController
       Notifier.new(@appointment, current_user).call
       redirect_to edit_appointment_path(@appointment), success: 'Appointment has been modified'
     else
+      flash[:danger] = 'The appointment has not been updated. Please correct the errors to continue.'
       render :edit
     end
   end
