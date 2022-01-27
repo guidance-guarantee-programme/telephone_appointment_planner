@@ -5,6 +5,15 @@ RSpec.feature 'Agent manages appointments' do
 
   let(:day) { BusinessDays.from_now(5) }
 
+  scenario 'Attempting to update an appointment with invalid fields' do
+    given_the_user_is_a_resource_manager(organisation: :tpas) do
+      and_an_appointment_exists
+      when_they_edit_the_appointment
+      and_set_invalid_fields
+      then_they_see_an_error_banner
+    end
+  end
+
   scenario 'TPAS user viewing allocations calendar' do
     given_the_user_is_a_resource_manager(organisation: :tpas) do
       travel_to '2021-12-03 14:00' do
@@ -706,5 +715,18 @@ RSpec.feature 'Agent manages appointments' do
 
   def then_they_see_that_the_appointment_was_imported
     expect(@page).to have_appointment_was_imported_message
+  end
+
+  def and_an_appointment_exists
+    @appointment = create(:appointment)
+  end
+
+  def and_set_invalid_fields
+    @page.first_name.set ''
+    @page.submit.click
+  end
+
+  def then_they_see_an_error_banner
+    expect(@page).to have_flash_of_danger
   end
 end
