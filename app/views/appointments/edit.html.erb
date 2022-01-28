@@ -42,9 +42,9 @@
   </div>
   <div class="col-md-5 action-buttons">
     <% if can_process?(current_user, @appointment) %>
-      <%= link_to appointment_process_path(@appointment), method: :post, title: 'Mark as Processed', class: 'btn btn-info t-process' do %>
+      <%= link_to appointment_process_path(@appointment), method: :post, title: 'Process', class: 'btn btn-info t-process' do %>
         <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
-        <span>Mark as Processed</span>
+        <span>Process</span>
       <% end %>
     <% end %>
     <% if @appointment.can_create_summary? %>
@@ -62,6 +62,12 @@
     <%= link_to new_appointment_path(copy_from: @appointment, schedule_type: @appointment.schedule_type), title: 'Rebook appointment', class: 'btn btn-info t-rebook' do %>
       <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
       <span>Rebook</span>
+    <% end %>
+    <% if current_user.tp? %>
+      <%= link_to appointment_email_confirmation_path(@appointment), title: 'Resend', class: 'btn btn-info t-resend-email-confirmation', method: :post, data: { confirm: 'Resend the appointment confirmation email?' } do %>
+        <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+        <span>Resend</span>
+      <% end %>
     <% end %>
   </div>
 </div>
