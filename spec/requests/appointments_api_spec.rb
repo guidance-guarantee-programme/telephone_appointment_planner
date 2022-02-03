@@ -4,17 +4,6 @@ RSpec.describe 'POST /api/v1/appointments' do
   include ActiveJob::TestHelper
 
   context 'due diligence appointments' do
-    scenario 'grace period booking regression' do
-      given_the_user_is_a_pension_wise_api_user do
-        and_a_due_diligence_slot_exists
-
-        travel_to '2021-12-03 13:30' do
-          when_the_client_attempts_to_book_the_slot
-          then_the_service_responds_with_a_201
-        end
-      end
-    end
-
     scenario 'supplying an incorrect schedule type' do
       given_the_user_is_a_pension_wise_api_user do
         when_the_client_supplies_an_incorrect_schedule_type

@@ -119,7 +119,7 @@ RSpec.describe 'GET /api/v1/bookable_slots' do
     JSON.parse(response.body).tap do |json|
       expect(json['2017-01-16']).to eq(%w(2017-01-16T12:00:00.000Z 2017-01-16T15:00:00.000Z))
 
-      expect(json.keys).to eq(%w(2017-01-11 2017-01-13 2017-01-16 2017-02-27))
+      expect(json.keys).to eq(%w(2017-01-13 2017-01-16 2017-02-27))
     end
   end
 end

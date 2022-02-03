@@ -62,25 +62,6 @@ RSpec.describe BookableSlot, type: :model do
           expect(actual).to eq(Time.zone.parse('2021-11-01 21:00'))
         end
       end
-
-      {
-        '2021-11-30 13:00' => '2021-12-01 07:00',
-        '2021-12-01 13:00' => '2021-12-02 07:00',
-        '2021-12-02 13:00' => '2021-12-03 07:00',
-        '2021-12-03 13:00' => '2021-12-06 07:00',
-        '2021-12-04 13:00' => '2021-12-06 07:00',
-        '2021-12-05 13:00' => '2021-12-06 07:00',
-        '2021-12-06 13:00' => '2021-12-13 21:00'
-      }.each do |current_date, expected_date|
-        context "When the date is #{current_date.to_date}" do
-          it "next valid start date is #{expected_date.to_date}" do
-            travel_to current_date do
-              actual = BookableSlot.next_valid_start_date(user, User::DUE_DILIGENCE_SCHEDULE_TYPE)
-              expect(actual).to eq(Time.zone.parse(expected_date))
-            end
-          end
-        end
-      end
     end
 
     context 'user is a guider / agent' do

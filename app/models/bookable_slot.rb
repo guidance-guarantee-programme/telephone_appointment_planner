@@ -10,28 +10,38 @@ class BookableSlot < ApplicationRecord
     end
   end
 
-  def self.within_date_range(from, to)
+  def self.within_date_range(from, to, organisation_limit: false)
+    return limit_by_organisation(from, to) if organisation_limit
+
     where("#{quoted_table_name}.start_at > ? AND #{quoted_table_name}.end_at < ?", from, to)
+  end
+
+  def self.limit_by_organisation(from, to) # rubocop:disable MethodLength
+    tpas_start_at = BusinessDays.from_now(2).change(hour: 21, min: 0).in_time_zone('London')
+
+    joins(:guider)
+      .where(
+        '
+         (users.organisation_content_id = :tpas_id
+           AND bookable_slots.start_at > :tpas_start_at AND bookable_slots.end_at < :end_at)
+         OR
+         (users.organisation_content_id != :tpas_id
+           AND bookable_slots.start_at > :start_at AND bookable_slots.end_at < :end_at)
+        ',
+        tpas_id: Provider::TPAS.id,
+        tpas_start_at: tpas_start_at,
+        start_at: from,
+        end_at: to
+      )
   end
 
   def self.next_valid_start_date(user = nil, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE)
     return Time.zone.now if user&.resource_manager?
 
     if schedule_type == User::DUE_DILIGENCE_SCHEDULE_TYPE
-      next_valid_due_diligence_start_date
+      BusinessDays.from_now(5).change(hour: 21, min: 0).in_time_zone('London')
     else
       BusinessDays.from_now(1).change(hour: 21, min: 0).in_time_zone('London')
-    end
-  end
-
-  def self.next_valid_due_diligence_start_date # rubocop:disable AbcSize
-    case Date.current
-    when '2021-11-30'.to_date..'2021-12-02'.to_date
-      Date.tomorrow.to_time.change(hour: 7).in_time_zone('London')
-    when '2021-12-03'.to_date..'2021-12-05'.to_date
-      Time.zone.parse('2021-12-06 07:00').in_time_zone('London')
-    else
-      BusinessDays.from_now(5).change(hour: 21, min: 0).in_time_zone('London')
     end
   end
 
@@ -52,7 +62,9 @@ class BookableSlot < ApplicationRecord
     from = next_valid_start_date(nil, schedule_type)
     to   = BusinessDays.from_now(40).end_of_day
 
-    scope = bookable(from, to).within_date_range(from, to)
+    limit_by_organisation = schedule_type == User::PENSION_WISE_SCHEDULE_TYPE
+
+    scope = bookable(from, to).within_date_range(from, to, organisation_limit: limit_by_organisation)
     scope = scope.joins(:guider).where(users: { organisation_content_id: organisation_id }) if organisation_id
     scope = for_schedule_type(schedule_type: schedule_type, scope: scope)
 
@@ -114,14 +126,16 @@ class BookableSlot < ApplicationRecord
     where("#{quoted_table_name}.start_at > ?", next_valid_start_date(user))
   end
 
-  def self.with_guider_count(user, from, to, lloyds: false, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE) # rubocop:disable AbcSize, LineLength
+  def self.with_guider_count(user, from, to, lloyds: false, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE) # rubocop:disable AbcSize, LineLength, MethodLength
+    limit_by_organisation = !user.resource_manager?
+
     select("DISTINCT #{quoted_table_name}.start_at, #{quoted_table_name}.end_at, count(1) AS guiders")
       .bookable
       .starting_after_next_valid_start_date(user)
       .for_schedule_type(schedule_type: schedule_type)
       .for_organisation(user, lloyds: lloyds)
       .group("#{quoted_table_name}.start_at, #{quoted_table_name}.end_at")
-      .within_date_range(from, to)
+      .within_date_range(from, to, organisation_limit: limit_by_organisation)
       .map do |us|
         { guiders: us.attributes['guiders'], start: us.start_at, end: us.end_at, selected: false }
       end

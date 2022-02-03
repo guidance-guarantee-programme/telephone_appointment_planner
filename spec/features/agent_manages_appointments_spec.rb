@@ -16,11 +16,6 @@ RSpec.feature 'Agent manages appointments' do
 
   scenario 'TPAS user viewing allocations calendar' do
     given_the_user_is_a_resource_manager(organisation: :tpas) do
-      travel_to '2021-12-03 14:00' do
-        when_they_view_the_allocations_calendar
-        then_they_see_the_correct_grace_period
-      end
-
       travel_to '2021-12-15 13:00' do
         when_they_view_the_allocations_calendar
         then_they_see_the_longer_grace_period
@@ -64,10 +59,6 @@ RSpec.feature 'Agent manages appointments' do
 
   def when_they_view_the_allocations_calendar
     @page = Pages::Allocations.new.tap(&:load)
-  end
-
-  def then_they_see_the_correct_grace_period
-    expect(@page.due_diligence_grace_period).to have_text('6 December 2021')
   end
 
   def then_they_see_the_longer_grace_period
