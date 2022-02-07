@@ -1,0 +1,12 @@
+The appointment was changed by an agent
+
+Reference number:
+<%= @appointment.id %>
+
+The following details were changed:
+
+<% @appointment.last_changed_attributes.each do |attribute| %>
+  * <%= attribute %>
+<% end %>
+
+<%= edit_appointment_url(@appointment) %>

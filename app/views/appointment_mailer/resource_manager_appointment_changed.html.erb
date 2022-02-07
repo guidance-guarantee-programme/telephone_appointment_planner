@@ -1,0 +1,25 @@
+<h1 style="color: #0F19A0 !important;font-family: Calibri, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 20px;line-height: 1.111111111;padding: 15px 0;">
+  The appointment was changed by an agent
+</h1>
+
+<%= p do %>
+  Reference number:
+  <br>
+  <strong class="emphasize">
+    <%= @appointment.id %>
+  </strong>
+<% end %>
+
+<%= p do %>
+  The following details were changed:
+<% end %>
+
+<ul>
+  <% @appointment.last_changed_attributes.each do |attribute| %>
+    <li><%= attribute %></li>
+  <% end %>
+</ul>
+
+<%= p do %>
+  <%= link_to 'View the appointment', edit_appointment_url(@appointment) %>
+<% end %>
