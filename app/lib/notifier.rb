@@ -1,4 +1,15 @@
 class Notifier
+  NOTIFY_RESOURCE_MANAGER_ATTRIBUTES = %w(
+    first_name
+    last_name
+    email
+    phone
+    mobile
+    notes
+    date_of_birth
+    data_subject_consent_obtained
+  ).freeze
+
   def initialize(appointment, modifying_agent = nil)
     @appointment = appointment
     @modifying_agent = modifying_agent
@@ -21,6 +32,8 @@ class Notifier
       AppointmentRescheduledNotificationsJob.perform_later(appointment)
     elsif requires_adjustment_notification?
       AdjustmentNotificationsJob.perform_later(appointment)
+    elsif requires_agent_changed_notification?
+      AgentChangedNotificationsJob.perform_later(appointment)
     end
   end
 
@@ -77,6 +90,15 @@ class Notifier
   def appointment_complete?
     appointment.previous_changes.slice('status').present? &&
       appointment.complete?
+  end
+
+  def requires_agent_changed_notification?
+    modifying_agent&.tp_agent? && change_notifies_resource_managers?
+  end
+
+  def change_notifies_resource_managers?
+    appointment.previous_changes.any? &&
+      (appointment.previous_changes.keys & NOTIFY_RESOURCE_MANAGER_ATTRIBUTES).present?
   end
 
   def appointment_details_changed?
