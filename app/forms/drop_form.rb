@@ -8,6 +8,7 @@ class DropForm
   IGNORED_MESSAGE_TYPES = %w(
     adjustment
     accessibility_adjustment
+    resource_manager_email_dropped
     resource_manager_appointment_created
     resource_manager_appointment_cancelled
     resource_manager_appointment_rescheduled
@@ -41,6 +42,8 @@ class DropForm
       message_type,
       appointment
     )
+
+    EmailDropNotificationsJob.perform_later(appointment)
   end
 
   private

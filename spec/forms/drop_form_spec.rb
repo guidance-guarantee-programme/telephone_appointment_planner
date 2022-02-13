@@ -71,13 +71,15 @@ RSpec.describe DropForm, '#create_activity' do
     end
 
     context 'when everything is validated' do
-      it 'creates the drop activity' do
+      it 'creates the drop activity and enqueues the notifications job' do
         expect(DropActivity).to receive(:from).with(
           params['event'],
           params['description'],
           params['message_type'],
           appointment
         )
+
+        expect(EmailDropNotificationsJob).to receive(:perform_later).with(appointment)
 
         subject.create_activity
       end
