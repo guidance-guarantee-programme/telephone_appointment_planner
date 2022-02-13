@@ -1,18 +1,20 @@
 # Preview all emails at http://localhost:3000/rails/mailers/appointment_mailer
 class AppointmentMailerPreview < ActionMailer::Preview
-<<<<<<< HEAD
   def resource_manager_email_dropped
     appointment = random_appointment
 
     AppointmentMailer.resource_manager_email_dropped(
-=======
+      appointment,
+      appointment.resource_managers.first.email
+    )
+  end
+
   def resource_manager_appointment_changed
     appointment = random_appointment
 
     appointment.update_attribute(:first_name, 'Benjamin')
 
     AppointmentMailer.resource_manager_appointment_changed(
->>>>>>> 298653f (Notify resource managers when appointments change)
       appointment,
       appointment.resource_managers.first.email
     )
