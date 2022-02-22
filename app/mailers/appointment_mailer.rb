@@ -7,6 +7,12 @@ class AppointmentMailer < ApplicationMailer
     mail to: recipient, subject: @appointment.subject('Email Failure')
   end
 
+  def resource_manager_appointment_changed(appointment, recipient)
+    mailgun_headers('resource_manager_appointment_changed', appointment.id)
+    @appointment = decorate(appointment)
+    mail to: recipient, subject: @appointment.subject('Appointment Updated')
+  end
+
   def resource_manager_appointment_rescheduled(appointment, recipient)
     mailgun_headers('resource_manager_appointment_rescheduled', appointment.id)
     @appointment = decorate(appointment)

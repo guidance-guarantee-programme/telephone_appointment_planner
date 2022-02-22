@@ -42,4 +42,8 @@ class AppointmentEmailPresenter < SimpleDelegator
       'pw.jpg'
     end
   end
+
+  def last_changed_attributes
+    audits.last.audited_changes.keys.map(&:humanize)
+  end
 end

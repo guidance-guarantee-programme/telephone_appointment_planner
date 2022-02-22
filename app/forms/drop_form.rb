@@ -10,6 +10,7 @@ class DropForm
     accessibility_adjustment
     resource_manager_email_dropped
     resource_manager_appointment_created
+    resource_manager_appointment_changed
     resource_manager_appointment_cancelled
     resource_manager_appointment_rescheduled
   ).freeze

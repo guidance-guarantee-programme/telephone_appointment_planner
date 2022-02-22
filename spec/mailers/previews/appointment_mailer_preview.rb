@@ -9,6 +9,17 @@ class AppointmentMailerPreview < ActionMailer::Preview
     )
   end
 
+  def resource_manager_appointment_changed
+    appointment = random_appointment
+
+    appointment.update_attribute(:first_name, 'Benjamin')
+
+    AppointmentMailer.resource_manager_appointment_changed(
+      appointment,
+      appointment.resource_managers.first.email
+    )
+  end
+
   def resource_manager_appointment_created
     appointment = random_appointment
 

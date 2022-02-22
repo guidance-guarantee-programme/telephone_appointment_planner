@@ -108,6 +108,23 @@ RSpec.describe AppointmentMailer, type: :mailer do
     end
   end
 
+  describe 'Resource Manager Appointment Changed' do
+    let(:resource_manager) { 'supervisors@maps.org.uk' }
+    let(:appointment) { create(:appointment) }
+
+    before { appointment.update_attribute(:first_name, 'George') }
+
+    subject(:mail) { described_class.resource_manager_appointment_changed(appointment, resource_manager) }
+
+    it 'renders the body specifics' do
+      expect(subject.body.encoded).to match(%q(http://localhost:3001/appointments/\d+/edit))
+    end
+
+    it 'renders the names of changed attributes' do
+      expect(subject.body.encoded).to match('First name')
+    end
+  end
+
   describe 'Resource Manager Appointment Rescheduled' do
     subject(:mail) { described_class.resource_manager_appointment_rescheduled(appointment, resource_manager) }
 

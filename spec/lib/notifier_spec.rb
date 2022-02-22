@@ -15,6 +15,42 @@ RSpec.describe Notifier, '#call' do
     allow(mailer).to receive(:deliver)
   end
 
+  context 'when an appointment is otherwise altered' do
+    context 'when effected by a TP agent' do
+      let(:modifying_agent) { create(:agent, :tp) }
+
+      context 'when the changed attribute should notify' do
+        it 'updates the resource managers' do
+          appointment.update_attribute(:first_name, 'Daisy')
+
+          expect(AgentChangedNotificationsJob).to receive(:perform_later).with(appointment)
+
+          subject.call
+        end
+      end
+
+      context 'when the changed attribute should not notify' do
+        it 'does not update resource managers' do
+          appointment.update_attribute(:data_subject_name, 'Smithson')
+
+          expect(AgentChangedNotificationsJob).to_not receive(:perform_later).with(appointment)
+
+          subject.call
+        end
+      end
+    end
+
+    context 'when effected by another type of user' do
+      it 'does not update resource managers' do
+        appointment.update_attribute(:first_name, 'Daisy')
+
+        expect(AgentChangedNotificationsJob).to_not receive(:perform_later).with(appointment)
+
+        subject.call
+      end
+    end
+  end
+
   context 'when an appointment is updated to include an ’adjustment’' do
     context 'when the person effecting the change is a TP agent' do
       let(:modifying_agent) { create(:agent, :tp) }
