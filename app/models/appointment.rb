@@ -8,7 +8,7 @@ class Appointment < ApplicationRecord
 
   DEFAULT_COUNTRY_CODE = 'GB'.freeze
 
-  RESCHEDULING_REASONS = %w[customer_rescheduled office_rescheduled].freeze
+  RESCHEDULING_REASONS = %w[client_rescheduled office_rescheduled].freeze
 
   CANCELLED_STATUSES = %i[
     cancelled_by_customer

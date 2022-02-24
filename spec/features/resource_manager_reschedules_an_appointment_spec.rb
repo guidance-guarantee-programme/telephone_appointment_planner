@@ -263,7 +263,7 @@ RSpec.feature 'Resource manager reschedules an appointment', js: true do
 
   def and_reschedule_the_appointment
     provide_scheduling_details
-    @page.customer_rescheduled.set(true)
+    @page.client_rescheduled.set(true)
     @page.reschedule.click
   end
 

@@ -98,6 +98,8 @@ RSpec.feature 'Guider views appointments' do
 
     # this is being triggered for test purposes only
     @page.wait_until_rescheduling_reason_modal_visible
+    @page.rescheduling_reason_modal.wait_until_pension_wise_visible
+
     @page.rescheduling_reason_modal.pension_wise.set(true)
     @page.rescheduling_reason_modal.save.click
 

@@ -21,12 +21,12 @@ module Casebook
       private
 
       def cancel_status
-        appointment.rescheduling_reason.presence || case appointment.status
-                                                    when 'cancelled_by_customer', 'cancelled_by_customer_sms'
-                                                      CLIENT_CANCELLED
-                                                    else
-                                                      OFFICE_CANCELLED
-                                                    end
+        case appointment.status
+        when 'cancelled_by_customer', 'cancelled_by_customer_sms'
+          CLIENT_CANCELLED
+        else
+          OFFICE_CANCELLED
+        end
       end
 
       attr_reader :appointment

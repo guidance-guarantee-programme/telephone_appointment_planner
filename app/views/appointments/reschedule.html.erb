@@ -9,13 +9,13 @@
 <%= render 'shared/required_fields_note' %>
 <%= form_for [@appointment], url: appointment_update_reschedule_path(@appointment), layout: :basic do |f| %>
   <% if current_user.tp? %>
-    <%= f.hidden_field :rescheduling_reason, value: 'customer_rescheduled' %>
+    <%= f.hidden_field :rescheduling_reason, value: 'client_rescheduled' %>
   <% else %>
     <div class="row form-group">
       <div class="col-md-12">
         <label><%= required_label('Reason for rescheduling') %></label>
         <div class="radio">
-          <%= f.radio_button :rescheduling_reason, 'customer_rescheduled', label: 'Customer rescheduled', class: 't-customer-rescheduled' %>
+          <%= f.radio_button :rescheduling_reason, 'client_rescheduled', label: 'Client rescheduled', class: 't-client-rescheduled' %>
         </div>
         <div class="radio">
           <%= f.radio_button :rescheduling_reason, 'office_rescheduled', label: 'Pension Wise rescheduled', class: 't-pension-wise-rescheduled' %>
