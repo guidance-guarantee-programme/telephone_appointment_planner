@@ -15,7 +15,7 @@ module Pages
 
     section :rescheduling_reason_modal, '.t-rescheduling-reason-modal' do
       element :pension_wise, '.t-pension-wise-rescheduled'
-      element :customer, '.t-customer-rescheduled'
+      element :client, '.t-client-rescheduled'
       element :save, '.t-save'
     end
 

@@ -690,7 +690,7 @@ RSpec.feature 'Agent manages appointments' do
 
     expect(appointment).to be_rescheduled_at
     expect(appointment).not_to be_batch_processed_at
-    expect(appointment.rescheduling_reason).to eq('customer_rescheduled')
+    expect(appointment.rescheduling_reason).to eq('client_rescheduled')
   end
 
   def then_the_appointments_first_name_is_changed

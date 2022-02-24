@@ -19,10 +19,21 @@ module Casebook
       raise ApiError.new(e.response.status, e)
     end
 
+    def reschedule(appointment)
+      payload = Presenters::Reschedule.new(appointment).to_h
+
+      response = token.post("/api/v1/appointments/#{appointment.casebook_appointment_id}/reschedule", params: payload)
+      response.parsed['data']['id']
+    rescue OAuth2::Error => e
+      raise ApiError.new(e.response.status, e)
+    end
+
     private
 
     def token
-      @token ||= client.client_credentials.get_token(scope: 'appointments:create appointments:destroy')
+      @token ||= client.client_credentials.get_token(
+        scope: 'appointments:create appointments:destroy appointments:reschedule'
+      )
     end
 
     def client

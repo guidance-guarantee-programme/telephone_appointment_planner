@@ -5,14 +5,6 @@ RSpec.describe Casebook::Presenters::Cancel, '#to_h' do
 
   subject { described_class.new(appointment).to_h[:data][:attributes] }
 
-  context 'when rescheduling' do
-    let(:appointment) { build_stubbed(:appointment, :casebook_guider, :pension_wise_rescheduled) }
-
-    it 'provides the rescheduling reason' do
-      expect(subject).to eq(cancel_status: 'office_rescheduled')
-    end
-  end
-
   context 'when cancelling as usual' do
     it 'is correctly presented' do
       expect(subject).to eq(cancel_status: 'office_cancelled')
