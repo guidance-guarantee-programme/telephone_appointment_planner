@@ -22,10 +22,7 @@ module AppointmentHelper
   end
 
   def display_dc_pot_unsure_banner?(appointment)
-    return if appointment.dc_pot_confirmed?
-    return if appointment.tp_guider? || appointment.tpas_guider?
-
-    true
+    !appointment.dc_pot_confirmed?
   end
 
   def processed_tick(appointment)
