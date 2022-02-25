@@ -17,6 +17,14 @@ RSpec.describe 'GET /api/v1/bookable_slots' do
     end
   end
 
+  scenario 'retrieving slots for a given day' do
+    travel_to '2017-01-09 12:00' do
+      given_bookable_slots_for_the_booking_window_exist
+      when_the_client_requests_bookable_slots_for_a_given_day
+      then_the_response_contains_unique_slots_for_the_given_day
+    end
+  end
+
   scenario 'retrieving DD slots for the booking window' do
     travel_to '2017-01-09 12:00' do
       given_bookable_slots_for_the_booking_window_exist
@@ -120,6 +128,20 @@ RSpec.describe 'GET /api/v1/bookable_slots' do
       expect(json['2017-01-16']).to eq(%w(2017-01-16T12:00:00.000Z 2017-01-16T15:00:00.000Z))
 
       expect(json.keys).to eq(%w(2017-01-13 2017-01-16 2017-02-27))
+    end
+  end
+
+  def when_the_client_requests_bookable_slots_for_a_given_day
+    get api_v1_bookable_slots_path(params: { day: '2017-01-16' }, as: :json)
+  end
+
+  def then_the_response_contains_unique_slots_for_the_given_day
+    expect(response).to be_ok
+
+    JSON.parse(response.body).tap do |json|
+      expect(json['2017-01-16']).to eq(%w(2017-01-16T12:00:00.000Z 2017-01-16T15:00:00.000Z))
+
+      expect(json.keys).to eq(%w(2017-01-16))
     end
   end
 end

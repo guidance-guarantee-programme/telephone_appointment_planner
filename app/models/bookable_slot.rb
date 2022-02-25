@@ -18,6 +18,7 @@ class BookableSlot < ApplicationRecord
 
   def self.limit_by_organisation(from, to) # rubocop:disable MethodLength
     tpas_start_at = BusinessDays.from_now(2).change(hour: 21, min: 0).in_time_zone('London')
+    tpas_start_at = from if from > tpas_start_at
 
     joins(:guider)
       .where(
@@ -58,10 +59,8 @@ class BookableSlot < ApplicationRecord
       .without_holidays
   end
 
-  def self.grouped(organisation_id = nil, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE) # rubocop:disable AbcSize, MethodLength, LineLength
-    from = next_valid_start_date(nil, schedule_type)
-    to   = BusinessDays.from_now(40).end_of_day
-
+  def self.grouped(organisation_id = nil, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE, day = nil) # rubocop:disable AbcSize, MethodLength, LineLength
+    from, to = date_range(schedule_type, day)
     limit_by_organisation = schedule_type == User::PENSION_WISE_SCHEDULE_TYPE
 
     scope = bookable(from, to).within_date_range(from, to, organisation_limit: limit_by_organisation)
@@ -74,6 +73,14 @@ class BookableSlot < ApplicationRecord
       .order('start_date asc, start_at asc')
       .group_by(&:start_date)
       .transform_values { |value| value.map(&:start_at).uniq }
+  end
+
+  def self.date_range(schedule_type, day)
+    if day
+      [Time.zone.parse(day).beginning_of_day, Time.zone.parse(day).end_of_day]
+    else
+      [next_valid_start_date(nil, schedule_type), BusinessDays.from_now(40).end_of_day]
+    end
   end
 
   def self.for_schedule_type(schedule_type: User::PENSION_WISE_SCHEDULE_TYPE, scope: self)
