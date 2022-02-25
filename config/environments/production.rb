@@ -108,7 +108,7 @@ Rails.application.configure do
     address: ENV['MAILGUN_SMTP_SERVER'],
     user_name: ENV['MAILGUN_SMTP_LOGIN'],
     password: ENV['MAILGUN_SMTP_PASSWORD'],
-    domain: 'moneyhelper.org.uk',
+    domain: ENV['MAILGUN_SMTP_DOMAIN'],
     authentication: :plain
   }
 end
