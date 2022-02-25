@@ -8,10 +8,14 @@ module Api
       end
 
       def index
-        render json: BookableSlot.grouped(filtered_provider_ids, schedule_type)
+        render json: BookableSlot.grouped(filtered_provider_ids, schedule_type, day)
       end
 
       private
+
+      def day
+        params[:day]
+      end
 
       def schedule_type
         @schedule_type = params.fetch(:schedule_type) { User::PENSION_WISE_SCHEDULE_TYPE }
