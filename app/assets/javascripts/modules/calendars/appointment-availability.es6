@@ -102,6 +102,7 @@
 
       // force the events to have hrefs to allow them to be focusable via tabbing
       element.attr('href', '#');
+      element.attr('title', `${event.start.format('HH:mm')} ${event.guiders} guider(s)`);
 
       element.html(`
         <span class="sr-only">${event.start.format('dddd, MMMM Do YYYY')}</span>
