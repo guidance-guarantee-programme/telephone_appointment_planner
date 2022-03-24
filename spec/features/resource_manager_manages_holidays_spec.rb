@@ -389,7 +389,11 @@ RSpec.feature 'Resource manager manages holidays' do
 
   def wait_for_ajax_to_complete
     Timeout.timeout(Capybara.default_max_wait_time) do
-      loop until page.evaluate_script('jQuery.active').zero?
+      begin
+        loop until page.evaluate_script('jQuery.active').zero?
+      rescue Selenium::WebDriver::Error::JavascriptError # rubocop:disable HandleExceptions
+        # the underlying page went away
+      end
     end
   end
 
