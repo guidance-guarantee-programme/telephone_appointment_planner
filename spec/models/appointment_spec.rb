@@ -195,6 +195,16 @@ RSpec.describe Appointment, type: :model do
     end
   end
 
+  describe '`#future?` does not respect timezones regression' do
+    it 'must apply the local offset when checking' do
+      appointment = build_stubbed(:appointment, start_at: Time.zone.parse('2017-03-30 12:20 UTC'))
+
+      travel_to '2017-03-30 11:41 UTC' do
+        expect(appointment).not_to be_future
+      end
+    end
+  end
+
   describe 'Phantom audits bug regression' do
     it 'defaults `mobile` and `notes` to empty strings' do
       expect(described_class.new).to have_attributes(
