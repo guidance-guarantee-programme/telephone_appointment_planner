@@ -5,6 +5,12 @@
 )
 %>
 
+<% if @schedules.none? %>
+  <div class="alert alert-warning" role="alert">
+    <p>If this guider is newly enrolled please remember to add them to any existing holiday blocks eg for bank holidays.</p>
+  </div>
+<% end %>
+
 <h1>Manage schedules for <%=@guider.name %></h1>
 
 <div class="row">
