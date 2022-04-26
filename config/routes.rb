@@ -14,6 +14,8 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
         resources :dropped_summary_documents, only: :create
       end
 
+      resources :nudge_appointments, only: :create
+
       resources :summary_documents, only: :create
     end
   end

@@ -244,6 +244,16 @@ RSpec.describe Appointment, type: :model do
       build_stubbed(:appointment)
     end
 
+    context 'when the appointment is nudged' do
+      context 'when the customer requested SMS confirmation' do
+        it 'requires a mobile number'
+      end
+
+      context 'when the customer’s age is less than 50' do
+        it 'requires the eligiblity reason'
+      end
+    end
+
     context 'when the appointment is for Pension Wise' do
       it 'cannot be moved to a `due_diligence` enrolled guider' do
         pension_wise_appointment = create(:appointment)

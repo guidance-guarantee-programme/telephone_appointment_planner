@@ -148,7 +148,7 @@ class Appointment < ApplicationRecord
   validate :valid_within_booking_window
   validate :date_of_birth_valid
   validate :data_subject_date_of_birth_valid
-  validate :email_valid, if: :pension_wise_api?, on: :create
+  validate :email_valid, if: :validate_email?, on: :create
   validate :address_or_email_valid, if: :regular_agent?, on: :create
   validate :validate_guider_organisation, on: :update
   validate :validate_guider_available, on: :update
@@ -166,6 +166,10 @@ class Appointment < ApplicationRecord
 
   def resend_email_confirmation
     CustomerUpdateJob.perform_later(self, CustomerUpdateActivity::CONFIRMED_MESSAGE)
+  end
+
+  def sms_confirmation?
+    nudge_confirmation == 'sms'
   end
 
   def complete_due_diligence?
@@ -662,6 +666,10 @@ class Appointment < ApplicationRecord
                   .exists?
 
     errors.add(:guider_id, 'Overlaps another pending appointment')
+  end
+
+  def validate_email?
+    pension_wise_api? && !sms_confirmation?
   end
 
   class << self
