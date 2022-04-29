@@ -850,6 +850,14 @@ RSpec.describe Appointment, type: :model do
         it 'is true' do
           expect(result).to be true
         end
+
+        context 'when the appointment is PSG' do
+          it 'is false' do
+            appointment.schedule_type = 'due_diligence'
+
+            expect(result).to be false
+          end
+        end
       end
 
       context 'user is a resource manager' do

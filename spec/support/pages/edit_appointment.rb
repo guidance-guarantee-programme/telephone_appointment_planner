@@ -28,6 +28,7 @@ module Pages
     element :rebook, '.t-rebook'
     element :process, '.t-process'
     element :resend_email_confirmation, '.t-resend-email-confirmation'
+    element :reschedule, '.t-reschedule'
 
     element :third_party_booked,                    '.t-third-party-booked'
     element :data_subject_name,                     '.t-data-subject-name'

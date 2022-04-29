@@ -16,6 +16,8 @@ module Pages
     sections :results, '.t-result' do
       element :id, '.t-id'
       element :name, '.t-name'
+      element :reschedule, '.t-reschedule'
+      element :edit, '.t-edit'
     end
 
     elements :processed, '.t-processed'

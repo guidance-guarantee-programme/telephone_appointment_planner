@@ -54,7 +54,7 @@
       <% end %>
     <% end %>
     <% if @appointment.can_be_rescheduled_by?(current_user) %>
-      <%= link_to appointment_reschedule_path(@appointment), title: 'Reschedule appointment', class: 'btn btn-info' do %>
+      <%= link_to appointment_reschedule_path(@appointment), title: 'Reschedule appointment', class: 'btn btn-info t-reschedule' do %>
         <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
         <span>Reschedule</span>
       <% end %>
