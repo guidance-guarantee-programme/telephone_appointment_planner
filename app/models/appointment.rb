@@ -274,8 +274,10 @@ class Appointment < ApplicationRecord
 
   def can_be_rescheduled_by?(user)
     return false unless pending?
+    return true if user.resource_manager?
+    return false if due_diligence?
 
-    user.resource_manager? || start_at >= BusinessDays.from_now(2)
+    start_at >= BusinessDays.from_now(2)
   end
 
   def can_create_summary?

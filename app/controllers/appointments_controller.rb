@@ -23,6 +23,12 @@ class AppointmentsController < ApplicationController
 
   def reschedule
     @appointment = Appointment.find(params[:appointment_id])
+
+    unless @appointment.can_be_rescheduled_by?(current_user)
+      return redirect_to search_appointments_path,
+                         warning: 'You cannot reschedule this appointment.'
+    end
+
     @appointment.start_at = nil
     @appointment.end_at = nil
   end

@@ -1,6 +1,23 @@
 require 'rails_helper'
 
 RSpec.feature 'Guider edits an appointment' do
+  scenario 'Guider attempts to reschedule a PSG appointment' do
+    given_the_user_is_a_guider(organisation: :tpas) do
+      and_an_existing_psg_appointment_exists
+      when_they_view_the_appointments
+      then_the_appointment_cannot_be_rescheduled
+      when_they_edit_the_appointment_then_it_cannot_be_rescheduled
+    end
+  end
+
+  scenario 'Guider attempts to reschedule a PSG appointment directly' do
+    given_the_user_is_a_guider(organisation: :tpas) do
+      and_an_existing_psg_appointment_exists
+      when_the_guider_attempts_to_reschedule_an_appointment_directly
+      then_they_are_redirected_to_the_search_page_with_a_warning
+    end
+  end
+
   scenario 'TP user resends an appointment confirmation email', js: true do
     given_the_user_is_an_agent(organisation: :tp) do
       when_they_edit_an_existing_appointment
@@ -33,6 +50,39 @@ RSpec.feature 'Guider edits an appointment' do
       when_they_save_the_changes
       then_the_power_of_attorney_evidence_is_attached
     end
+  end
+
+  def when_the_guider_attempts_to_reschedule_an_appointment_directly
+    @page = Pages::RescheduleAppointment.new
+    @page.load(id: @appointment_one.id)
+  end
+
+  def then_they_are_redirected_to_the_search_page_with_a_warning
+    @page = Pages::Search.new
+    expect(@page).to be_displayed
+  end
+
+  def and_an_existing_psg_appointment_exists
+    # two appointments otherwise the search results redirect to the only one
+    @appointment_one = create(:appointment, :due_diligence)
+    @appointment_two = create(:appointment, :due_diligence)
+  end
+
+  def when_they_view_the_appointments
+    @page = Pages::Search.new.tap(&:load)
+  end
+
+  def then_the_appointment_cannot_be_rescheduled
+    @page.results.each { |result| expect(result).to have_no_reschedule }
+  end
+
+  def when_they_edit_the_appointment_then_it_cannot_be_rescheduled
+    @page.results.first.edit.click
+
+    @page = Pages::EditAppointment.new
+    expect(@page).to be_displayed
+
+    expect(@page).to have_no_reschedule
   end
 
   def when_they_edit_an_existing_appointment
