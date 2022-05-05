@@ -20,6 +20,7 @@ module Api
       attr_accessor :lloyds_signposted
       attr_accessor :schedule_type
       attr_accessor :referrer
+      attr_accessor :nudged
 
       attr_reader :model
 
@@ -57,7 +58,8 @@ module Api
           smarter_signposted: smarter_signposted,
           lloyds_signposted: lloyds_signposted || false,
           schedule_type: schedule_type,
-          referrer: referrer.to_s
+          referrer: referrer.to_s,
+          nudged: nudged || false
         }
       end
     end

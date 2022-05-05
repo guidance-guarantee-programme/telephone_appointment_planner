@@ -43,7 +43,8 @@ module Api
           :notes,
           :smarter_signposted,
           :lloyds_signposted,
-          :referrer
+          :referrer,
+          :nudged
         ).merge(
           agent: current_user,
           schedule_type: schedule_type
