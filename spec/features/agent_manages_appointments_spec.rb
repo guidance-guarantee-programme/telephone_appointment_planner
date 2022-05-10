@@ -5,6 +5,24 @@ RSpec.feature 'Agent manages appointments' do
 
   let(:day) { BusinessDays.from_now(5) }
 
+  scenario 'TP agent booking a stronger nudge appointment' do
+    given_the_user_is_an_agent(organisation: :tp) do
+      and_there_is_a_guider_with_available_slots
+      when_they_attempt_to_book_an_appointment
+      and_they_complete_the_stronger_nudge_booking
+      then_they_see_a_preview_of_the_appointment(stronger_nudge: true)
+      when_they_accept_the_appointment_preview
+      then_the_appointment_is_stronger_nudge
+    end
+  end
+
+  scenario 'Non TP agent does not see the stronger nudge checkbox' do
+    given_the_user_is_a_resource_manager(organisation: :tpas) do
+      when_they_attempt_to_book_an_appointment
+      then_they_do_not_see_the_stronger_nudge_checkbox
+    end
+  end
+
   scenario 'Attempting to update an appointment with invalid fields' do
     given_the_user_is_a_resource_manager(organisation: :tpas) do
       and_an_appointment_exists
@@ -55,6 +73,18 @@ RSpec.feature 'Agent manages appointments' do
       when_they_accept_the_appointment_preview
       then_the_appointment_is_small_pots
     end
+  end
+
+  def then_they_do_not_see_the_stronger_nudge_checkbox
+    expect(@page).to have_no_stronger_nudged
+  end
+
+  def and_they_complete_the_stronger_nudge_booking
+    fill_in_appointment_details(stronger_nudge: true)
+  end
+
+  def then_the_appointment_is_stronger_nudge
+    then_that_appointment_is_created(stronger_nudge: true)
   end
 
   def when_they_view_the_allocations_calendar
@@ -455,6 +485,7 @@ RSpec.feature 'Agent manages appointments' do
     @page.postcode.set(options[:postcode]) if options[:postcode]
     @page.smarter_signposted.set(options[:smarter_signposted]) if options[:smarter_signposted]
     @page.small_pots.set(options[:small_pots]) if options[:small_pots]
+    @page.stronger_nudged.set(options[:stronger_nudge]) if options[:stronger_nudge]
 
     expect(@page).to have_no_bsl_video if options[:bsl_video]
 
@@ -465,7 +496,7 @@ RSpec.feature 'Agent manages appointments' do
     fill_in_appointment_details(options)
   end
 
-  def then_they_see_a_preview_of_the_appointment(smarter_signposted: nil, small_pots: nil)
+  def then_they_see_a_preview_of_the_appointment(options = {})
     @page = Pages::PreviewAppointment.new
     expect(@page).to be_displayed
 
@@ -481,8 +512,9 @@ RSpec.feature 'Agent manages appointments' do
     expect(@page.preview).to have_content 'something'
     expect(@page.preview).to have_content 'Customer research consent Yes'
     expect(@page.preview).to have_content 'Standard'
-    expect(@page.preview).to have_content 'Smarter signposted referral? Yes' if smarter_signposted
-    expect(@page.preview).to have_content 'Small pots appointment? Yes' if small_pots
+    expect(@page.preview).to have_content 'Smarter signposted referral? Yes' if options[:smarter_signposted]
+    expect(@page.preview).to have_content 'Small pots appointment? Yes' if options[:small_pots]
+    expect(@page.preview).to have_content 'Stronger Nudge appointment? Yes' if options[:stronger_nudge]
   end
 
   def and_they_fill_in_their_appointment_details_without_an_email
@@ -494,7 +526,7 @@ RSpec.feature 'Agent manages appointments' do
     )
   end
 
-  def then_that_appointment_is_created(smarter_signposted: nil, small_pots: nil)
+  def then_that_appointment_is_created(options = {})
     @guider.reload
     expect(Appointment.count).to eq 1
     appointment = Appointment.first
@@ -516,9 +548,10 @@ RSpec.feature 'Agent manages appointments' do
     expect(appointment.type_of_appointment).to eq('standard')
     expect(appointment.where_you_heard).to eq(17)
     expect(appointment).to be_accessibility_requirements
-    expect(appointment).to be_smarter_signposted if smarter_signposted
+    expect(appointment).to be_smarter_signposted if options[:smarter_signposted]
     expect(appointment).to_not be_bsl_video
-    expect(appointment).to be_small_pots if small_pots
+    expect(appointment).to be_small_pots if options[:small_pots]
+    expect(appointment).to be_nudged if options[:stronger_nudge]
   end
 
   def and_the_customer_gets_an_email_confirmation

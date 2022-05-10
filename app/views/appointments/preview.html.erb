@@ -45,6 +45,7 @@
   <%= f.hidden_field :schedule_type %>
   <%= f.hidden_field :referrer %>
   <%= f.hidden_field :small_pots %>
+  <%= f.hidden_field :nudged %>
 
   <%= f.hidden_field :data_subject_name %>
   <%= f.hidden_field :data_subject_date_of_birth %>
@@ -164,6 +165,12 @@
                 <td class="active"><b>Type of appointment</b></td>
                 <td><%= @appointment.type_of_appointment.humanize %></td>
               </tr>
+              <% if current_user.tp_agent? %>
+              <tr>
+                <td class="active"><b>Stronger Nudge appointment?</b></td>
+                <td><%= @appointment.nudged? ? 'Yes' : 'No' %></td>
+              </tr>
+              <% end %>
               <% if current_user.tpas? || current_user.administrator? %>
               <tr>
                 <td class="active"><b>Smarter signposted referral?</b></td>
