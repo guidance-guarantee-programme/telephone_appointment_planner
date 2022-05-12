@@ -153,7 +153,7 @@
     <% end # unless due diligence %>
 
     <% if current_user.tp_agent? %>
-      <%= f.check_box :nudged, class: 't-nudge-flag', label: 'Stronger Nudge appointment?' %>
+      <%= f.check_box :nudged, class: 't-nudge-flag', label: 'Stronger Nudge signposting?' %>
     <% end %>
 
     <% if bsl_video_visible?(current_user) %>
