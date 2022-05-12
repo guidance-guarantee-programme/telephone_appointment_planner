@@ -159,6 +159,7 @@ class Appointment < ApplicationRecord
   validate :validate_lloyds_signposted_guider_allocated, if: :lloyds_signposted?, on: :create
   validate :validate_guider_schedule_type, on: :update, if: :pension_wise?
   validate :validate_pending_overlaps, if: :due_diligence?, on: :create
+  validate :validate_signposting
 
   before_validation :format_name, on: :create
   before_create :track_initial_status
@@ -670,6 +671,12 @@ class Appointment < ApplicationRecord
 
   def validate_email?
     pension_wise_api? && !sms_confirmation?
+  end
+
+  def validate_signposting
+    message = 'Cannot be both Stronger Nudge and Lloyds Banking Group signposted'
+
+    errors.add(:nudged, message) if nudged? && lloyds_signposted?
   end
 
   class << self

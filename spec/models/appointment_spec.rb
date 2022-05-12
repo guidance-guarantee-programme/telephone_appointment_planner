@@ -245,12 +245,11 @@ RSpec.describe Appointment, type: :model do
     end
 
     context 'when the appointment is nudged' do
-      context 'when the customer requested SMS confirmation' do
-        it 'requires a mobile number'
-      end
+      it 'cannot be LBGPTL' do
+        subject.nudged = true
+        subject.lloyds_signposted = true
 
-      context 'when the customer’s age is less than 50' do
-        it 'requires the eligiblity reason'
+        expect(subject).to be_invalid
       end
     end
 
