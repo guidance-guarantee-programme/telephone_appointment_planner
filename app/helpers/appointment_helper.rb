@@ -21,6 +21,10 @@ module AppointmentHelper
     value ? 'Yes' : 'No'
   end
 
+  def display_nudge_banner?(appointment, current_user)
+    appointment.nudged? && (current_user.administrator? || current_user.tp?)
+  end
+
   def display_dc_pot_unsure_banner?(appointment)
     !appointment.dc_pot_confirmed?
   end
