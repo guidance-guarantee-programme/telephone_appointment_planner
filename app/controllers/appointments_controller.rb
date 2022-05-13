@@ -213,7 +213,8 @@ class AppointmentsController < ApplicationController
       :lloyds_signposted,
       :schedule_type,
       :referrer,
-      :small_pots
+      :small_pots,
+      :nudged
     ]
   end
   # rubocop:enable Metrics/MethodLength

@@ -1,14 +1,8 @@
 module Api
   module V1
-    class AppointmentsController < Api::V1::ApplicationController
-      class InvalidScheduleType < StandardError; end
-
-      rescue_from InvalidScheduleType do
-        head :unprocessable_entity
-      end
-
+    class NudgeAppointmentsController < Api::V1::ApplicationController
       def create
-        @appointment = Api::V1::Appointment.new(appointment_params)
+        @appointment = Api::V1::NudgeAppointment.new(appointment_params)
 
         if @appointment.create
           send_notifications(@appointment.model)
@@ -23,6 +17,7 @@ module Api
       def send_notifications(appointment)
         AdjustmentNotificationsJob.perform_later(appointment) if appointment.adjustments?
         WebsiteAppointmentSlackPingerJob.perform_later
+        NudgeSmsAppointmentConfirmationJob.perform_later(appointment) if appointment.sms_confirmation?
         CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::CONFIRMED_MESSAGE)
         AppointmentCreatedNotificationsJob.perform_later(appointment)
       end
@@ -34,30 +29,14 @@ module Api
           :last_name,
           :email,
           :phone,
+          :mobile,
+          :nudge_confirmation,
+          :nudge_eligibility_reason,
           :memorable_word,
           :date_of_birth,
-          :dc_pot_confirmed,
-          :where_you_heard,
-          :gdpr_consent,
           :accessibility_requirements,
-          :notes,
-          :smarter_signposted,
-          :lloyds_signposted,
-          :referrer,
-          :nudged
-        ).merge(
-          agent: current_user,
-          schedule_type: schedule_type
-        )
-      end
-
-      def schedule_type
-        # TODO: Pull this up and the same in the slots API
-        @schedule_type = params.fetch(:schedule_type) { User::PENSION_WISE_SCHEDULE_TYPE }
-
-        return @schedule_type if User::ALL_SCHEDULE_TYPES.include?(@schedule_type)
-
-        raise InvalidScheduleType
+          :notes
+        ).merge(agent: current_user)
       end
     end
   end

@@ -1,0 +1,7 @@
+<% content_for(:activity_message, flush: true) do %>
+  <span class="glyphicon glyphicon-phone" aria-hidden="true"></span>
+  <strong>The system</strong>
+  sent an appointment confirmation SMS to
+  <strong><%= nudge_sms_confirmation_activity.appointment.mobile %></strong>
+<% end %>
+<%= render 'activities/activity', activity: nudge_sms_confirmation_activity, details: details, hide: hide %>

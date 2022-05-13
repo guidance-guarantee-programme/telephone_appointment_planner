@@ -1,0 +1,2 @@
+class NudgeSmsConfirmationActivity < Activity
+end

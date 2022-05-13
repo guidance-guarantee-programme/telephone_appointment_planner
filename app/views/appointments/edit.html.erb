@@ -5,6 +5,10 @@
 ) %>
 
 <h4>
+  <% if display_nudge_banner?(@appointment, current_user) %>
+    <span class="label label-default t-nudged">Nudged</span>
+  <% end %>
+
   <% if @appointment.due_diligence? %>
     <span class="label label-default t-due-diligence-banner">PSG</span>
   <% end %>

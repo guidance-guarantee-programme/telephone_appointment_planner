@@ -39,4 +39,10 @@ RSpec.describe Api::V1::Appointment, '#create' do
 
     expect(appointment.model.lloyds_signposted).to be(false)
   end
+
+  it 'defaults `nudged` to false when not provided' do
+    appointment = described_class.new({})
+
+    expect(appointment.model.nudged).to be(false)
+  end
 end

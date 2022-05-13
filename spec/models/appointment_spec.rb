@@ -244,6 +244,15 @@ RSpec.describe Appointment, type: :model do
       build_stubbed(:appointment)
     end
 
+    context 'when the appointment is nudged' do
+      it 'cannot be LBGPTL' do
+        subject.nudged = true
+        subject.lloyds_signposted = true
+
+        expect(subject).to be_invalid
+      end
+    end
+
     context 'when the appointment is for Pension Wise' do
       it 'cannot be moved to a `due_diligence` enrolled guider' do
         pension_wise_appointment = create(:appointment)
