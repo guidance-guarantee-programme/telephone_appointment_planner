@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::Appointment, '#create' do
+  it 'defaults nudged correctly' do
+    expect(described_class.new(nudged: '').nudged).to be false
+  end
+
   skip 'does not allow duplicate bookings' do
     @slot = create(:bookable_slot, start_at: 2.days.from_now.middle_of_day)
 

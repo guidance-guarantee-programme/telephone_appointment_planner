@@ -20,9 +20,10 @@ module Api
       attr_accessor :lloyds_signposted
       attr_accessor :schedule_type
       attr_accessor :referrer
-      attr_accessor :nudged
 
       attr_reader :model
+
+      attr_writer :nudged
 
       def initialize(*)
         super
@@ -33,6 +34,10 @@ module Api
       def create
         model.allocate
         model.save
+      end
+
+      def nudged
+        @nudged == 'true' || @nudged == true
       end
 
       delegate :errors, :accessibility_requirements?, to: :model
@@ -59,7 +64,7 @@ module Api
           lloyds_signposted: lloyds_signposted || false,
           schedule_type: schedule_type,
           referrer: referrer.to_s,
-          nudged: nudged || false
+          nudged: nudged
         }
       end
     end
