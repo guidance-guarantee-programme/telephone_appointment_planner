@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_25_172936) do
+ActiveRecord::Schema.define(version: 2022_05_15_124400) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -115,6 +115,7 @@ ActiveRecord::Schema.define(version: 2022_04_25_172936) do
     t.string "nudge_eligibility_reason", default: "", null: false
     t.index ["guider_id", "start_at"], name: "unique_slot_guider_in_appointment", unique: true, where: "((status <> ALL (ARRAY[6, 7, 8])) AND (start_at > '2021-04-21 00:00:00'::timestamp without time zone))"
     t.index ["guider_id"], name: "index_appointments_on_guider_id"
+    t.index ["schedule_type"], name: "index_appointments_on_schedule_type"
     t.index ["start_at", "end_at", "guider_id"], name: "index_appointments_on_start_at_and_end_at_and_guider_id"
     t.index ["start_at"], name: "index_appointments_on_start_at"
   end
@@ -149,6 +150,7 @@ ActiveRecord::Schema.define(version: 2022_04_25_172936) do
     t.datetime "updated_at", null: false
     t.string "schedule_type", default: "pension_wise", null: false
     t.index ["guider_id"], name: "index_bookable_slots_on_guider_id"
+    t.index ["schedule_type"], name: "index_bookable_slots_on_schedule_type"
     t.index ["start_at", "end_at"], name: "index_bookable_slots_on_start_at_and_end_at"
   end
 
@@ -237,7 +239,9 @@ ActiveRecord::Schema.define(version: 2022_04_25_172936) do
     t.string "schedule_type", default: "pension_wise", null: false
     t.integer "casebook_guider_id"
     t.integer "casebook_location_id"
+    t.index ["organisation_content_id"], name: "index_users_on_organisation_content_id"
     t.index ["permissions"], name: "index_users_on_permissions", using: :gin
+    t.index ["schedule_type"], name: "index_users_on_schedule_type"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
