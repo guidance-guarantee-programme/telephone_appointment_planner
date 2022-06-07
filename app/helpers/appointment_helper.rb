@@ -25,6 +25,14 @@ module AppointmentHelper
     appointment.nudged? && (current_user.administrator? || current_user.tp?)
   end
 
+  def display_nudge_eligibility?(appointment)
+    appointment.nudged? && appointment.age_at_appointment < 50
+  end
+
+  def nudge_banner_text(appointment)
+    "Customer aged under 50 and eligible due to #{appointment.nudge_eligibility_reason.humanize}"
+  end
+
   def display_dc_pot_unsure_banner?(appointment)
     !appointment.dc_pot_confirmed?
   end
