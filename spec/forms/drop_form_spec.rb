@@ -83,6 +83,20 @@ RSpec.describe DropForm, '#create_activity' do
 
         subject.create_activity
       end
+
+      context 'when the description contains a btinternet email' do
+        before do
+          params['description'] = 'myemail@btinternet.com'
+        end
+
+        it 'logs out the maildrop for logentries' do
+          allow(Rails.logger).to receive(:info)
+
+          subject.create_activity
+
+          expect(Rails.logger).to have_received(:info).with('Mail drop for @btinternet')
+        end
+      end
     end
   end
 end
