@@ -74,7 +74,7 @@ RSpec.feature 'Agent searches for appointments' do
     given_appointments_exist_across_multiple_organisations
     given_the_user_is_a_resource_manager(organisation: :tpas) do
       when_they_search_for_nothing
-      then_they_are_redirected_to_their_single_appointment_for('George')
+      then_they_can_see_all_appointments
     end
   end
 
@@ -180,7 +180,7 @@ RSpec.feature 'Agent searches for appointments' do
 
   def then_they_can_see_all_appointments
     expected = @appointments.map { |a| "##{a.id}" }
-    actual = @page.results.map(&:id).map(&:text)
+    actual = @page.results.map(&:id).map(&:text).sort
     expect(actual).to eq expected
   end
 
