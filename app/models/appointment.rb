@@ -386,6 +386,7 @@ class Appointment < ApplicationRecord
 
   def self.for_organisation(user)
     return for_pension_wise if user.tp_agent?
+    return all if user.tpas_agent?
 
     joins(:guider)
       .where(users: { organisation_content_id: user.organisation_content_id })

@@ -1,24 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Appointment, type: :model do
-  describe '#summarised?' do
-    context 'when the appointment has a summary activity' do
-      it 'is true' do
-        appointment = create(:appointment, :digital_summarised)
-
-        expect(appointment).to be_summarised
-      end
-    end
-
-    context 'when the appointment has no summary activity' do
-      it 'is false' do
-        appointment = create(:appointment)
-
-        expect(appointment).not_to be_summarised
-      end
-    end
-  end
-
   describe '.for_organisation' do
     subject { described_class.for_organisation(user).pluck(:id).sort }
 
@@ -33,6 +15,14 @@ RSpec.describe Appointment, type: :model do
 
       it 'returns only pension wise across all organisations' do
         expect(subject).to eq([@pw, @wf].map(&:id).sort)
+      end
+    end
+
+    context 'for TPAS agents (guiders/resource managers)' do
+      let(:user) { create(:resource_manager, :tpas) }
+
+      it 'returns all types and organisations' do
+        expect(subject).to eq([@pw, @wf, @dd].map(&:id).sort)
       end
     end
 
