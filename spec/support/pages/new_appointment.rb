@@ -2,6 +2,8 @@ module Pages
   class NewAppointment < Base
     set_url '/appointments/new{?query*}'
 
+    elements :slots, '.fc-time-grid-event'
+
     element :first_name,                            '.t-first-name'
     element :last_name,                             '.t-last-name'
     element :email,                                 '.t-email'

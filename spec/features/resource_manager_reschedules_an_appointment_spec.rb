@@ -1,6 +1,37 @@
 require 'rails_helper'
 
 RSpec.feature 'Resource manager reschedules an appointment', js: true do
+  scenario 'TPAS resource manager reschedules another organisation’s appointment' do
+    given_the_user_is_a_resource_manager(organisation: :tpas) do
+      travel_to '2022-06-20 13:00' do
+        and_there_is_a_tpas_guider_slot
+        and_there_is_a_cas_guider_slot
+        and_there_is_a_cas_appointment
+        when_they_attempt_to_reschedule_the_appointment
+        then_they_see_only_cas_slots
+      end
+    end
+  end
+
+  def and_there_is_a_tpas_guider_slot
+    create(:bookable_slot, start_at: Time.zone.parse('2022-06-24 09:00'))
+  end
+
+  def and_there_is_a_cas_guider_slot
+    create(:bookable_slot, :cas, start_at: Time.zone.parse('2022-06-24 11:00'))
+  end
+
+  def and_there_is_a_cas_appointment
+    @appointment = create(:appointment, organisation: :cas)
+  end
+
+  def then_they_see_only_cas_slots
+    @page.wait_until_slots_visible
+
+    expect(@page).to have_slots(count: 1)
+    expect(@page.slots.first).to have_text('11:00')
+  end
+
   scenario 'Rebooking with ad-hoc allocation' do
     given_the_user_is_a_resource_manager do
       and_there_is_a_cancelled_appointment
@@ -14,7 +45,7 @@ RSpec.feature 'Resource manager reschedules an appointment', js: true do
 
   scenario 'Rescheduling with ad-hoc allocation' do
     given_the_user_is_a_resource_manager do
-      travel_to '2017-12-27 13:00 UTC' do
+      travel_to '2017-12-27 13:00 utc' do
         and_there_is_an_appointment
         and_there_are_several_guiders
         when_they_attempt_to_reschedule_the_appointment

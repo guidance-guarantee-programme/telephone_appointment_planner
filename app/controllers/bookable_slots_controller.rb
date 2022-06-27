@@ -10,7 +10,8 @@ class BookableSlotsController < ApplicationController
       filtered_user,
       Time.zone.parse(params[:start]),
       Time.zone.parse(params[:end]),
-      schedule_type: schedule_type
+      schedule_type: schedule_type,
+      scoped: !rescheduling?
     )
   end
 
@@ -38,7 +39,7 @@ class BookableSlotsController < ApplicationController
   end
 
   def filtered_user
-    return current_user unless rescheduling? && current_user.tp?
+    return current_user unless rescheduling? && (current_user.tp? || current_user.tpas_agent?)
 
     appointment = Appointment.find(params[:id])
     appointment.guider

@@ -1,6 +1,17 @@
 require 'rails_helper'
 
 RSpec.feature 'Agent rebooks appointments' do
+  scenario 'TPAS agent rebooks an appointment', js: true do
+    given_the_user_is_a_resource_manager(organisation: :tpas) do
+      travel_to '2022-06-20 09:00' do
+        and_there_is_cross_organisational_availability
+        and_an_existing_appointment_for_tpas
+        when_they_attempt_to_rebook_an_appointment
+        then_they_see_cross_organisational_availability
+      end
+    end
+  end
+
   scenario 'Agent rebooks an appointment' do
     given_the_user_is_an_agent do
       and_there_is_an_appointment
@@ -17,6 +28,23 @@ RSpec.feature 'Agent rebooks appointments' do
       when_they_attempt_to_rebook_an_appointment
       then_they_are_told_to_change_the_original_appointment_status
     end
+  end
+
+  def and_there_is_cross_organisational_availability
+    create(:bookable_slot, start_at: Time.zone.parse('2022-06-24 09:00'))
+    create(:bookable_slot, :cas, start_at: Time.zone.parse('2022-06-24 11:00'))
+  end
+
+  def and_an_existing_appointment_for_tpas
+    @appointment = create(:appointment, organisation: :tpas, status: :cancelled_by_customer_sms)
+  end
+
+  def then_they_see_cross_organisational_availability
+    @page = Pages::NewAppointment.new
+    expect(@page).to be_displayed
+
+    @page.wait_until_slots_visible
+    expect(@page).to have_slots(count:2)
   end
 
   def and_there_is_a_pending_appointment

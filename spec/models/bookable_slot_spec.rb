@@ -16,7 +16,7 @@ RSpec.describe BookableSlot, type: :model do
   end
 
   let(:user) do
-    build_stubbed(:guider)
+    build_stubbed(:guider, :tp)
   end
 
   describe '#schedule_type' do
@@ -358,14 +358,15 @@ RSpec.describe BookableSlot, type: :model do
 
         # TP can see all slots irrespectively
         expect(result(@guider_tp).first).to include(guiders: 4)
-        # TPAS can see their own slot
-        expect(result(@guider_tpas).first).to include(guiders: 1)
+        # TPAS can see all slots
+        expect(result(@guider_tpas).first).to include(guiders: 4)
         # CAS can see their own slots
         expect(result(@guiders_cas.first).first).to include(guiders: 2)
       end
     end
 
     context 'three guiders with bookable slots' do
+      let(:user) { build_stubbed(:agent) }
       let(:guiders) do
         create_list(:guider, 3)
       end
