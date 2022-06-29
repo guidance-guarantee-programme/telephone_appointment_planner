@@ -15,6 +15,7 @@ source 'http://insecure.rails-assets.org' do
   gem 'rails-assets-moment', '2.15.1'
   gem 'rails-assets-pusher'
   gem 'rails-assets-qTip2'
+  gem 'rails-assets-uri.js'
   gem 'rails-assets-zloirock--core-js', '2.5.1'
 end
 

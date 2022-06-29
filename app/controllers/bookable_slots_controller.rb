@@ -43,6 +43,8 @@ class BookableSlotsController < ApplicationController
 
     appointment = Appointment.find(params[:id])
     appointment.guider
+  rescue ActiveRecord::RecordNotFound
+    current_user
   end
 
   def bookable_slots

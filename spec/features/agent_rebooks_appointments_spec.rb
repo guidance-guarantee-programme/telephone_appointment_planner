@@ -1,12 +1,26 @@
 require 'rails_helper'
 
 RSpec.feature 'Agent rebooks appointments' do
-  scenario 'TPAS agent rebooks an appointment', js: true do
+  scenario 'CAS agent rebooks an appointment seeing only their availability', js: true do
+    given_the_user_is_a_resource_manager(organisation: :cas) do
+      travel_to '2022-06-20 09:00' do
+        and_there_is_cross_organisational_availability
+        and_an_existing_appointment_for_cas
+        when_they_attempt_to_rebook_an_appointment
+        then_they_see_only_their_availability
+        and_they_do_not_see_the_all_availability_toggle
+      end
+    end
+  end
+
+  scenario 'TPAS agent rebooks an appointment seeing cross-organisation availability', js: true do
     given_the_user_is_a_resource_manager(organisation: :tpas) do
       travel_to '2022-06-20 09:00' do
         and_there_is_cross_organisational_availability
         and_an_existing_appointment_for_tpas
         when_they_attempt_to_rebook_an_appointment
+        they_default_to_their_own_availability
+        when_they_select_all_availability
         then_they_see_cross_organisational_availability
       end
     end
@@ -30,6 +44,19 @@ RSpec.feature 'Agent rebooks appointments' do
     end
   end
 
+  def and_an_existing_appointment_for_cas
+    @appointment = create(:appointment, organisation: :cas, status: :cancelled_by_customer_sms)
+  end
+
+  def then_they_see_only_their_availability
+    @page = Pages::NewAppointment.new
+    expect(@page).to be_displayed
+
+    @page.wait_until_slots_visible
+    expect(@page).to have_slots(count: 1)
+    expect(@page.slots.first).to have_text('11:00 1 guider')
+  end
+
   def and_there_is_cross_organisational_availability
     create(:bookable_slot, start_at: Time.zone.parse('2022-06-24 09:00'))
     create(:bookable_slot, :cas, start_at: Time.zone.parse('2022-06-24 11:00'))
@@ -44,7 +71,24 @@ RSpec.feature 'Agent rebooks appointments' do
     expect(@page).to be_displayed
 
     @page.wait_until_slots_visible
-    expect(@page).to have_slots(count:2)
+    expect(@page).to have_slots(count: 2)
+  end
+
+  def they_default_to_their_own_availability
+    @page = Pages::NewAppointment.new
+    expect(@page).to be_displayed
+
+    @page.wait_until_slots_visible
+    expect(@page).to have_slots(count: 1)
+    expect(@page.slots.first).to have_text('09:00 1 guider')
+  end
+
+  def when_they_select_all_availability
+    @page.all_availability.check
+  end
+
+  def and_they_do_not_see_the_all_availability_toggle
+    expect(@page).to have_no_all_availability
   end
 
   def and_there_is_a_pending_appointment

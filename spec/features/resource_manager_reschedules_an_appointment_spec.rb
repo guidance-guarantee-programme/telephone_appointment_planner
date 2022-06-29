@@ -9,6 +9,7 @@ RSpec.feature 'Resource manager reschedules an appointment', js: true do
         and_there_is_a_cas_appointment
         when_they_attempt_to_reschedule_the_appointment
         then_they_see_only_cas_slots
+        and_they_do_not_see_the_all_availability_toggle
       end
     end
   end
@@ -30,6 +31,10 @@ RSpec.feature 'Resource manager reschedules an appointment', js: true do
 
     expect(@page).to have_slots(count: 1)
     expect(@page.slots.first).to have_text('11:00')
+  end
+
+  def and_they_do_not_see_the_all_availability_toggle
+    expect(@page).to have_no_all_availability
   end
 
   scenario 'Rebooking with ad-hoc allocation' do

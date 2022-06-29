@@ -214,7 +214,8 @@ class AppointmentsController < ApplicationController
       :schedule_type,
       :referrer,
       :small_pots,
-      :nudged
+      :nudged,
+      :all_availability
     ]
   end
   # rubocop:enable Metrics/MethodLength

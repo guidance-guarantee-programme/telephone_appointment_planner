@@ -1,10 +1,11 @@
-/* global Calendar, moment */
+/* global Calendar, moment, URI */
 {
   'use strict';
 
   class AppointmentAvailabilityCalendar extends Calendar {
     start(el) {
-      let lloydsSignposted = !!$('.js-lloyds-signposted').prop('checked');
+      let lloydsSignposted = !!$('.js-lloyds-signposted').prop('checked'),
+        showAll = !!$('.js-all-availability').prop('checked');
 
       this.config = {
         defaultView: 'agendaWeek',
@@ -37,6 +38,10 @@
       this.init();
       this.displayErrorBorder();
       this.bindSubscriptions();
+
+      if($('.js-all-availability').length) {
+        this.handleAllAvailabilityFilter(this, showAll);
+      }
     }
 
     init() {
@@ -56,6 +61,24 @@
 
     bindSubscriptions() {
       $.subscribe('lloyds-availability-selected', this.handleAvailabilityFilter.bind(this));
+      $.subscribe('all-availability-selected', this.handleAllAvailabilityFilter.bind(this));
+    }
+
+    handleAllAvailabilityFilter(e, selected) {
+      this.$el.fullCalendar('removeEventSources');
+
+      let slotsPath = this.$el.data('available-slots-path'),
+      newPath = '';
+
+      if (selected) {
+        newPath = URI(slotsPath).addSearch('rescheduling', 'false');
+      }
+      else {
+        newPath = URI(slotsPath).addSearch('rescheduling', 'true');
+      }
+
+      this.$el.fullCalendar('addEventSource', newPath.toString());
+      this.$el.fullCalendar('refetchEvents');
     }
 
     handleAvailabilityFilter(e, selected) {

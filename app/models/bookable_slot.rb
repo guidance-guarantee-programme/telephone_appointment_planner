@@ -133,7 +133,7 @@ class BookableSlot < ApplicationRecord
     where("#{quoted_table_name}.start_at > ?", next_valid_start_date(user))
   end
 
-  def self.with_guider_count(user, from, to, lloyds: false, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE, scoped: true) # rubocop:disable AbcSize, LineLength, MethodLength
+  def self.with_guider_count(user, from, to, lloyds: false, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE, scoped: true) # rubocop:disable AbcSize, LineLength, MethodLength, ParameterLists
     limit_by_organisation = !user.resource_manager? && !user.tpas_agent?
 
     select("DISTINCT #{quoted_table_name}.start_at, #{quoted_table_name}.end_at, count(1) AS guiders")

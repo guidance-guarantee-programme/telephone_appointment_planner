@@ -707,7 +707,7 @@ RSpec.describe Appointment, type: :model do
     context 'when booking as a TPAS agent' do
       it 'includes TP guiders' do
         tpas_resource_manager = create(:resource_manager, :tpas)
-        tp_guider   = guider_with_slot(:tp)
+        tp_guider = guider_with_slot(:tp)
 
         subject.start_at = appointment_start_time
         subject.end_at   = appointment_end_time

@@ -370,6 +370,7 @@ GEM
     rails-assets-qTip2 (3.0.2)
       rails-assets-imagesloaded (>= 3.0.0)
       rails-assets-jquery (>= 1.6.0)
+    rails-assets-uri.js (1.19.11)
     rails-assets-zloirock--core-js (2.5.1)
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
@@ -571,6 +572,7 @@ DEPENDENCIES
   rails-assets-moment (= 2.15.1)!
   rails-assets-pusher!
   rails-assets-qTip2!
+  rails-assets-uri.js!
   rails-assets-zloirock--core-js (= 2.5.1)!
   rspec-rails!
   rubocop (= 0.46.0)!

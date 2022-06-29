@@ -5,6 +5,10 @@
 
 <%= render 'shared/nojs' %>
 
+<% if current_user.tpas_agent? && !rescheduling %>
+  <%= form.check_box :all_availability, label: 'Show all availability?', class: 't-all-availability js-all-availability', data: { module: 'all-availability' } %>
+<% end %>
+
 <% if current_user.lloyds_signposter? %>
   <%= form.check_box :lloyds_signposted, label: 'Lloyds Banking Group referral?', class: 't-lloyds-signposted js-lloyds-signposted', disabled: rescheduling, data: { module: 'lloyds-signposter' } %>
 <% end %>
