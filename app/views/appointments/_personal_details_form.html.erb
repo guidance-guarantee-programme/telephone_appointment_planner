@@ -152,8 +152,8 @@
     </div>
     <% end # unless due diligence %>
 
-    <% if current_user.tp_agent? %>
-      <%= f.check_box :nudged, class: 't-nudge-flag', label: 'Stronger Nudge signposting?' %>
+    <% if current_user.tp_agent? || current_user.tpas_agent? %>
+      <%= f.check_box :nudged, class: 't-nudge-flag', label: 'Stronger Nudge signposting?', disabled: current_user.tpas_agent? %>
     <% end %>
 
     <% if bsl_video_visible?(current_user) %>

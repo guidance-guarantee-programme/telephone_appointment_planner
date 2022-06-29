@@ -16,10 +16,10 @@ RSpec.feature 'Agent manages appointments' do
     end
   end
 
-  scenario 'Non TP agent does not see the stronger nudge checkbox' do
+  scenario 'TPAS agent sees the disabled stronger nudge checkbox' do
     given_the_user_is_a_resource_manager(organisation: :tpas) do
       when_they_attempt_to_book_an_appointment
-      then_they_do_not_see_the_stronger_nudge_checkbox
+      then_they_see_the_disabled_stronger_nudge_checkbox
     end
   end
 
@@ -75,8 +75,8 @@ RSpec.feature 'Agent manages appointments' do
     end
   end
 
-  def then_they_do_not_see_the_stronger_nudge_checkbox
-    expect(@page).to have_no_stronger_nudged
+  def then_they_see_the_disabled_stronger_nudge_checkbox
+    expect(@page.stronger_nudged).to be_disabled
   end
 
   def and_they_complete_the_stronger_nudge_booking
