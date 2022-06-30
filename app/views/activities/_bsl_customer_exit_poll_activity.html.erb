@@ -1,5 +1,5 @@
 <% content_for(:activity_message, flush: true) do %>
   <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
-  <strong>The system</strong> sent an exit poll email to <strong><%= bsl_customer_exit_poll_activity.appointment.name %></strong>
+  <strong>The system</strong> sent an exit poll to <strong><%= bsl_customer_exit_poll_activity.appointment.name %></strong>
 <% end %>
 <%= render 'activities/activity', activity: bsl_customer_exit_poll_activity, details: details, hide: hide %>
