@@ -84,5 +84,31 @@ FactoryBot.define do
         Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'evidence.pdf'), 'application/pdf')
       end
     end
+
+    trait :digital_summarised do
+      status { 'complete' }
+
+      after(:create) do |appointment|
+        create(
+          :activity,
+          type: 'SummaryDocumentActivity',
+          message: 'digital',
+          appointment: appointment
+        )
+      end
+    end
+
+    trait :postal_summarised do
+      status { 'complete' }
+
+      after(:create) do |appointment|
+        create(
+          :activity,
+          type: 'SummaryDocumentActivity',
+          message: 'postal',
+          appointment: appointment
+        )
+      end
+    end
   end
 end

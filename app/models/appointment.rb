@@ -289,6 +289,10 @@ class Appointment < ApplicationRecord
     complete? || ineligible_age? || ineligible_pension_type?
   end
 
+  def summarised?
+    activities.where(type: 'SummaryDocumentActivity', message: 'digital').exists?
+  end
+
   def future?
     start_at.advance(hours: -1) > Time.zone.now
   end

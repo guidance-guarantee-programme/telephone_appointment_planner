@@ -22,7 +22,7 @@ source 'https://rubygems.org' do
   gem 'active_link_to'
   gem 'active_model_serializers'
   gem 'audited'
-  gem 'azure-storage-blob'
+  gem 'azure-storage-blob', '~> 2.0.3'
   gem 'bh'
   gem 'bootsnap'
   gem 'bootstrap-kaminari-views'
@@ -76,6 +76,7 @@ source 'https://rubygems.org' do
     gem 'database_rewinder'
     gem 'scss_lint', require: false
     gem 'selenium-webdriver'
+    gem 'vcr'
     gem 'webdrivers'
     gem 'webmock'
     gem 'webrick'

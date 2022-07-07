@@ -1,6 +1,50 @@
 require 'rails_helper'
 
 RSpec.describe Appointment, type: :model do
+  describe '#summarised?' do
+    context 'when the appointment has a summary activity' do
+      it 'is true' do
+        appointment = create(:appointment, :digital_summarised)
+
+        expect(appointment).to be_summarised
+      end
+    end
+
+    context 'when the appointment has no summary activity' do
+      it 'is false' do
+        appointment = create(:appointment)
+
+        expect(appointment).not_to be_summarised
+      end
+    end
+  end
+
+  describe '.for_organisation' do
+    subject { described_class.for_organisation(user).pluck(:id).sort }
+
+    before do
+      @dd = create(:appointment, :due_diligence)
+      @pw = create(:appointment)
+      @wf = create(:appointment, organisation: :waltham_forest)
+    end
+
+    context 'for TP agents' do
+      let(:user) { create(:agent, :tp) }
+
+      it 'returns only pension wise across all organisations' do
+        expect(subject).to eq([@pw, @wf].map(&:id).sort)
+      end
+    end
+
+    context 'for other roles' do
+      let(:user) { create(:resource_manager, :waltham_forest) }
+
+      it 'is scoped to their organisation' do
+        expect(subject).to eq([@wf.id])
+      end
+    end
+  end
+
   describe '#mobile?' do
     context 'when the appointment has mobileish number' do
       it 'is true' do

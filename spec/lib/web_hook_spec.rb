@@ -24,7 +24,7 @@ RSpec.describe WebHook, '#call' do
         )
     end
 
-    subject { described_class.new('https://example.com') }
+    subject { described_class.new('https://example.com/') }
 
     context 'when successful' do
       let(:status_code) { 200 }
@@ -40,7 +40,7 @@ RSpec.describe WebHook, '#call' do
       let(:status_code) { 500 }
 
       it 'raises an error' do
-        expect { subject.call(json) }.to raise_error(Faraday::ClientError)
+        expect { subject.call(json) }.to raise_error(Faraday::ServerError)
       end
     end
   end
