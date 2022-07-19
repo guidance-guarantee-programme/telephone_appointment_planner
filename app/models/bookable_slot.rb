@@ -133,14 +133,14 @@ class BookableSlot < ApplicationRecord
     where("#{quoted_table_name}.start_at > ?", next_valid_start_date(user))
   end
 
-  def self.with_guider_count(user, from, to, lloyds: false, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE, scoped: true) # rubocop:disable AbcSize, LineLength, MethodLength, ParameterLists
+  def self.with_guider_count(user, from, to, lloyds: false, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE, scoped: true, internal: false, external: false) # rubocop:disable AbcSize, LineLength, MethodLength, ParameterLists
     limit_by_organisation = !user.resource_manager? && !user.tpas_agent?
 
     select("DISTINCT #{quoted_table_name}.start_at, #{quoted_table_name}.end_at, count(1) AS guiders")
       .bookable
       .starting_after_next_valid_start_date(user)
       .for_schedule_type(schedule_type: schedule_type)
-      .for_organisation(user, lloyds: lloyds, scoped: scoped)
+      .for_organisation(user, lloyds: lloyds, scoped: scoped, internal: internal, external: external)
       .group("#{quoted_table_name}.start_at, #{quoted_table_name}.end_at")
       .within_date_range(from, to, organisation_limit: limit_by_organisation)
       .map do |us|
@@ -148,11 +148,15 @@ class BookableSlot < ApplicationRecord
       end
   end
 
-  def self.for_organisation(user, scoped: true, lloyds: false)
+  def self.for_organisation(user, scoped: true, lloyds: false, internal: false, external: false) # rubocop:disable AbcSize, MethodLength, CyclomaticComplexity, LineLength, PerceivedComplexity
     scope = joins(:guider)
 
     if lloyds
       scope.where(users: { organisation_content_id: Provider.lloyds_providers.map(&:id) })
+    elsif internal
+      scope.where(users: { organisation_content_id: user.organisation_content_id })
+    elsif external
+      scope.where.not(users: { organisation_content_id: user.organisation_content_id })
     else
       return where('1 = 1') if scoped && (user.tp_agent? || user.tpas_agent?)
 

@@ -51,7 +51,7 @@ module Pages
     element :smarter_signposted, '.t-smarter-signposted'
     element :bsl_video, '.t-bsl-video'
     element :lloyds_signposted, '.t-lloyds-signposted'
-    element :all_availability, '.t-all-availability'
+    element :internal_availability, '.t-internal-availability'
     element :small_pots, '.t-small-pots'
     element :stronger_nudged, '.t-nudge-flag'
 

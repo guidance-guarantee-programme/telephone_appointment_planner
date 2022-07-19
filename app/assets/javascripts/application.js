@@ -11,7 +11,6 @@
 // about supported directives.
 //
 //= require moment
-//= require uri.js/URI
 //= require fullcalendar
 //= require fullcalendar-scheduler
 //= require qTip2

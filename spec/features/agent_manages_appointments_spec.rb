@@ -59,6 +59,7 @@ RSpec.feature 'Agent manages appointments' do
         and_slots_exist_for_general_availability
         and_slots_exist_for_due_diligence_availability
         when_they_attempt_to_book_an_appointment
+        and_choose_internal_availability
         then_they_see_only_general_availability
       end
     end
@@ -116,6 +117,10 @@ RSpec.feature 'Agent manages appointments' do
 
     expect(@page).to have_calendar_events(count: 1)
     expect(@page.calendar_events.first).to have_text('April 8th 2021 12:30')
+  end
+
+  def and_choose_internal_availability
+    @page.internal_availability.check
   end
 
   scenario 'Agent booking a Lloyds referral', js: true do

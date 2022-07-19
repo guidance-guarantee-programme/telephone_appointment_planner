@@ -1,11 +1,11 @@
-/* global Calendar, moment, URI */
+/* global Calendar, moment */
 {
   'use strict';
 
   class AppointmentAvailabilityCalendar extends Calendar {
     start(el) {
       let lloydsSignposted = !!$('.js-lloyds-signposted').prop('checked'),
-        showAll = !!$('.js-all-availability').prop('checked');
+        showAll = !!$('.js-internal-availability').prop('checked');
 
       this.config = {
         defaultView: 'agendaWeek',
@@ -39,8 +39,8 @@
       this.displayErrorBorder();
       this.bindSubscriptions();
 
-      if($('.js-all-availability').length) {
-        this.handleAllAvailabilityFilter(this, showAll);
+      if($('.js-internal-availability').length) {
+        this.handleInternalAvailabilityFilter(this, showAll);
       }
     }
 
@@ -61,23 +61,19 @@
 
     bindSubscriptions() {
       $.subscribe('lloyds-availability-selected', this.handleAvailabilityFilter.bind(this));
-      $.subscribe('all-availability-selected', this.handleAllAvailabilityFilter.bind(this));
+      $.subscribe('internal-availability-selected', this.handleInternalAvailabilityFilter.bind(this));
     }
 
-    handleAllAvailabilityFilter(e, selected) {
+    handleInternalAvailabilityFilter(e, selected) {
       this.$el.fullCalendar('removeEventSources');
 
-      let slotsPath = this.$el.data('available-slots-path'),
-      newPath = '';
-
       if (selected) {
-        newPath = URI(slotsPath).addSearch('rescheduling', 'false');
+        this.$el.fullCalendar('addEventSource', this.$el.data('internal-slots-path'));
       }
       else {
-        newPath = URI(slotsPath).addSearch('rescheduling', 'true');
+        this.$el.fullCalendar('addEventSource', this.$el.data('external-slots-path'));
       }
 
-      this.$el.fullCalendar('addEventSource', newPath.toString());
       this.$el.fullCalendar('refetchEvents');
     }
 

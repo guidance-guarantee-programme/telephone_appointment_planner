@@ -10,7 +10,7 @@ module Pages
     element :availability_calendar_on, '.t-availability-calendar-on'
     element :guider, '.t-guider'
     element :ad_hoc_start_at, '.t-ad-hoc-start-at'
-    element :all_availability, '.t-all-availability'
+    element :internal_availability, '.t-internal-availability'
     elements :slots, '.fc-time-grid-event'
     elements :calendar_events, '.fc-event'
 

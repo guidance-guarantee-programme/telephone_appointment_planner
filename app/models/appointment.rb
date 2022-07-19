@@ -4,7 +4,7 @@ class Appointment < ApplicationRecord
 
   acts_as_copy_target
 
-  attr_accessor :current_user, :all_availability
+  attr_accessor :current_user, :internal_availability
 
   CANCELLED_STATUSES = %i(
     cancelled_by_customer

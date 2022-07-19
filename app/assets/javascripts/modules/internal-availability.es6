@@ -2,7 +2,7 @@
 {
   'use strict';
 
-  class AllAvailability extends TapBase {
+  class InternalAvailability extends TapBase {
     start(el) {
       super.start(el);
 
@@ -14,9 +14,9 @@
     }
 
     handleChange() {
-      $.publish('all-availability-selected', !!this.$el.prop('checked'));
+      $.publish('internal-availability-selected', !!this.$el.prop('checked'));
     }
   }
 
-  window.GOVUKAdmin.Modules.AllAvailability = AllAvailability;
+  window.GOVUKAdmin.Modules.InternalAvailability = InternalAvailability;
 }

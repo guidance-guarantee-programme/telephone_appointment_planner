@@ -10,8 +10,27 @@ class BookableSlotsController < ApplicationController
       filtered_user,
       Time.zone.parse(params[:start]),
       Time.zone.parse(params[:end]),
+      schedule_type: schedule_type
+    )
+  end
+
+  def internal
+    render json: BookableSlot.with_guider_count(
+      filtered_user,
+      Time.zone.parse(params[:start]),
+      Time.zone.parse(params[:end]),
       schedule_type: schedule_type,
-      scoped: !rescheduling?
+      internal: true
+    )
+  end
+
+  def external
+    render json: BookableSlot.with_guider_count(
+      filtered_user,
+      Time.zone.parse(params[:start]),
+      Time.zone.parse(params[:end]),
+      schedule_type: schedule_type,
+      external: true
     )
   end
 

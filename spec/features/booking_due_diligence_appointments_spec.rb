@@ -88,6 +88,7 @@ RSpec.feature 'Booking due diligence appointments', js: true do
 
     @page = Pages::NewAppointment.new
     expect(@page).to be_displayed
+    @page.internal_availability.check
   end
 
   def when_they_rebook_the_appointment
@@ -189,6 +190,7 @@ RSpec.feature 'Booking due diligence appointments', js: true do
     @page.load(query: { schedule_type: User::DUE_DILIGENCE_SCHEDULE_TYPE })
 
     expect(@page).to be_displayed
+    @page.internal_availability.check
   end
 
   def and_they_are_told_they_are_booking_due_diligence
