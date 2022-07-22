@@ -21,10 +21,6 @@ module AppointmentHelper
     value ? 'Yes' : 'No'
   end
 
-  def display_nudge_banner?(appointment, current_user)
-    appointment.nudged? && (current_user.administrator? || current_user.tp?)
-  end
-
   def display_nudge_eligibility?(appointment)
     appointment.nudged? && appointment.age_at_appointment < 50
   end
