@@ -5,7 +5,7 @@
 ) %>
 
 <h4>
-  <% if display_nudge_banner?(@appointment, current_user) %>
+  <% if @appointment.nudged? %>
     <span class="label label-default t-nudged">Nudged</span></span>
   <% end %>
 
