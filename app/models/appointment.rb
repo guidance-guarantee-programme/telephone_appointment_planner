@@ -176,6 +176,10 @@ class Appointment < ApplicationRecord
     internal_availability.present? && internal_availability == '1'
   end
 
+  def print_confirmation?
+    address? && !email?
+  end
+
   def sms_confirmation?
     nudge_confirmation == 'sms'
   end

@@ -1,4 +1,4 @@
-class Notifier
+class Notifier # rubocop:disable ClassLength
   NOTIFY_RESOURCE_MANAGER_ATTRIBUTES = %w(
     first_name
     last_name
@@ -57,6 +57,7 @@ class Notifier
     end
 
     DueDiligenceReferenceNumberJob.perform_now(appointment) if due_diligence_appointment_complete?
+    PrintedConfirmationJob.perform_later(appointment) if appointment_rescheduled?
     PrintedThirdPartyConsentFormJob.perform_later(appointment) if requires_printed_consent_form?
     EmailThirdPartyConsentFormJob.perform_later(appointment) if requires_email_consent_form?
     BslCustomerExitPollJob.set(wait: 24.hours).perform_later(appointment) if bsl_appointment_complete?
