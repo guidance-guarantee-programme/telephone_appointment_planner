@@ -4,11 +4,9 @@ class BslCustomerExitPollJob < NotifyJobBase
   queue_as :default
 
   def perform(appointment)
-    if appointment.mobile?
-      send_sms(appointment)
-    else
-      AppointmentMailer.bsl_customer_exit_poll(appointment)
-    end
+    send_sms(appointment) if appointment.mobile?
+
+    AppointmentMailer.bsl_customer_exit_poll(appointment) if appointment.email?
 
     BslCustomerExitPollActivity.from(appointment)
   end
