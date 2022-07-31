@@ -53,7 +53,7 @@ RSpec.describe 'POST /api/v1/summary_documents' do
   def when_the_client_posts_an_invalid_summary_document_request
     payload = {
       appointment_id: 0,
-      owner_uid: SecureRandom.uuid,
+      owner_uid: '',
       delivery_method: ''
     }
 
@@ -67,7 +67,6 @@ RSpec.describe 'POST /api/v1/summary_documents' do
   def and_the_errors_are_serialized_in_the_response
     JSON.parse(response.body).tap do |json|
       expect(json).to have_key('appointment')
-      expect(json).to have_key('owner')
     end
   end
 
