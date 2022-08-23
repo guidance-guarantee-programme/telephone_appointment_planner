@@ -94,7 +94,7 @@ RSpec.describe DropForm, '#create_activity' do
 
           subject.create_activity
 
-          expect(Rails.logger).to have_received(:info).with('Mail drop for @btinternet')
+          expect(Rails.logger).to have_received(:info).with("Mail drop for @btinternet #{appointment.to_param}")
         end
       end
     end
