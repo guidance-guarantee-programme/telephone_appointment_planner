@@ -12,7 +12,7 @@ module AppointmentHelper
   end
 
   def bsl_video_visible?(current_user)
-    current_user.administrator? || current_user.tp? || current_user.lancs_west?
+    current_user.administrator? || current_user.tp? || current_user.lancs_west? || current_user.tpas_agent?
   end
 
   def bsl_video_disabled?(current_user)
