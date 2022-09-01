@@ -341,6 +341,28 @@ RSpec.describe BookableSlot, type: :model do
   end
 
   describe '#with_guider_count' do
+    context 'when a TPAS agent' do
+      it 'excludes external org slots inside the grace period start' do
+        [
+          @tpas_guider = create(:guider, :tpas),
+          @cas_guider  = create(:guider, :cas)
+        ].each do |guider|
+          create(
+            :bookable_slot,
+            guider: guider,
+            start_at: make_time(10, 30),
+            end_at: make_time(11, 30)
+          )
+        end
+
+        travel_to '2022-09-08 07:00' do
+          expect(result(@cas_guider)).to be_empty
+
+          expect(result(@tpas_guider).first).to include(guiders: 1)
+        end
+      end
+    end
+
     describe 'requesting with differing providers' do
       it 'sees the correct slots based on organisational membership' do
         [

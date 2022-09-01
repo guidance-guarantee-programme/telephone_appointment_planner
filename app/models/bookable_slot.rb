@@ -129,8 +129,28 @@ class BookableSlot < ApplicationRecord
     sanitize_sql(["AND (#{table}.start_at > ? AND #{table}.end_at < ?)", from, to])
   end
 
-  def self.starting_after_next_valid_start_date(user)
-    where("#{quoted_table_name}.start_at > ?", next_valid_start_date(user))
+  def self.starting_after_next_valid_start_date(user, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE) # rubocop:disable MethodLength, LineLength
+    normal_scope = where("#{quoted_table_name}.start_at > ?", next_valid_start_date(user))
+
+    return normal_scope if schedule_type == User::DUE_DILIGENCE_SCHEDULE_TYPE
+
+    if user.tpas_agent?
+      from = BusinessDays.from_now(1).change(hour: 21, min: 0).in_time_zone('London')
+
+      joins(:guider)
+        .where(
+          '
+           (users.organisation_content_id = :tpas_id AND bookable_slots.start_at > :tpas_start_at)
+           OR
+           (users.organisation_content_id != :tpas_id AND bookable_slots.start_at > :start_at)
+          ',
+          tpas_id: Provider::TPAS.id,
+          tpas_start_at: Time.zone.now,
+          start_at: from
+        )
+    else
+      normal_scope
+    end
   end
 
   def self.with_guider_count(user, from, to, lloyds: false, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE, scoped: true, internal: false, external: false) # rubocop:disable AbcSize, LineLength, MethodLength, ParameterLists
@@ -138,7 +158,7 @@ class BookableSlot < ApplicationRecord
 
     select("DISTINCT #{quoted_table_name}.start_at, #{quoted_table_name}.end_at, count(1) AS guiders")
       .bookable
-      .starting_after_next_valid_start_date(user)
+      .starting_after_next_valid_start_date(user, schedule_type: schedule_type)
       .for_schedule_type(schedule_type: schedule_type)
       .for_organisation(user, lloyds: lloyds, scoped: scoped, internal: internal, external: external)
       .group("#{quoted_table_name}.start_at, #{quoted_table_name}.end_at")
