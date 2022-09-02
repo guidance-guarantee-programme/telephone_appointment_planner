@@ -160,6 +160,7 @@ class Appointment < ApplicationRecord
   validate :validate_guider_schedule_type, on: :update, if: :pension_wise?
   validate :validate_pending_overlaps, if: :due_diligence?, on: :create
   validate :validate_signposting
+  validate :validate_small_pots, if: :small_pots?
 
   before_validation :format_name, on: :create
   before_create :track_initial_status
@@ -686,6 +687,12 @@ class Appointment < ApplicationRecord
     message = 'Cannot be both Stronger Nudge and Lloyds Banking Group signposted'
 
     errors.add(:nudged, message) if nudged? && lloyds_signposted?
+  end
+
+  def validate_small_pots
+    message = 'Small pots appointments may only be assigned to TPAS guiders'
+
+    errors.add(:small_pots, message) unless guider&.tpas?
   end
 
   class << self
