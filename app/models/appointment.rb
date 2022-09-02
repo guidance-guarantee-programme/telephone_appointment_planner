@@ -285,7 +285,11 @@ class Appointment < ApplicationRecord
     start_at >= BusinessDays.from_now(2)
   end
 
-  def can_create_summary?
+  def can_create_summary?(agent = nil)
+    if agent&.tpas_agent?
+      return false unless guider.tpas?
+    end
+
     complete? || ineligible_age? || ineligible_pension_type?
   end
 

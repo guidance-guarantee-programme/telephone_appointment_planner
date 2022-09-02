@@ -963,6 +963,27 @@ RSpec.describe Appointment, type: :model do
         it 'is true' do
           expect(result).to be true
         end
+
+        context 'a TPAS agent' do
+          let(:agent) { build_stubbed(:resource_manager, :tpas) }
+          let(:result) { Appointment.new(status: status, guider: guider).can_create_summary?(agent) }
+
+          context 'attempts to create a summary belonging to another organisation' do
+            let(:guider) { build(:guider, :cas) }
+
+            it 'is false' do
+              expect(result).to be false
+            end
+          end
+
+          context 'attempts to create a summary belonging to them' do
+            let(:guider) { build_stubbed(:guider, :tpas) }
+
+            it 'is true' do
+              expect(result).to be true
+            end
+          end
+        end
       end
     end
 

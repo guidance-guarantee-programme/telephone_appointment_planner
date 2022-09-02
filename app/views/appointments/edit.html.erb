@@ -69,7 +69,7 @@
           </div>
         </div>
       </span>
-    <% elsif @appointment.can_create_summary? %>
+    <% elsif @appointment.can_create_summary?(current_user) %>
       <%= link_to SummaryDocumentLink.generate(@appointment), title: 'Create summary', class: 'btn btn-info', target: '_blank' do %>
         <span class="glyphicon glyphicon-print" aria-hidden="true"></span>
         <span>Create Summary</span>
