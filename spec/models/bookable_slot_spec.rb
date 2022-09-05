@@ -347,12 +347,14 @@ RSpec.describe BookableSlot, type: :model do
           @tpas_guider = create(:guider, :tpas),
           @cas_guider  = create(:guider, :cas)
         ].each do |guider|
-          create(
-            :bookable_slot,
-            guider: guider,
-            start_at: make_time(10, 30),
-            end_at: make_time(11, 30)
-          )
+          travel_to '2022-09-01 09:00' do
+            create(
+              :bookable_slot,
+              guider: guider,
+              start_at: make_time(10, 30),
+              end_at: make_time(11, 30)
+            )
+          end
         end
 
         travel_to '2022-09-08 07:00' do
