@@ -639,7 +639,7 @@ class Appointment < ApplicationRecord
     [consent_address_line_one, consent_town, consent_postcode].all?(&:present?)
   end
 
-  def validate_secondary_status # rubocop:disable AbcSize, PerceivedComplexity, CyclomaticComplexity, MethodLength
+  def validate_secondary_status
     return unless created_at && created_at > Time.zone.parse(
       ENV.fetch('SECONDARY_STATUS_CUT_OFF') { '2021-05-04 09:00' }
     )
@@ -649,8 +649,28 @@ class Appointment < ApplicationRecord
         return errors.add(:secondary_status, 'must be provided for the chosen status')
       end
 
-      if current_user&.tp_agent? && cancelled_by_customer? && secondary_status != AGENT_PERMITTED_SECONDARY
-        errors.add(:secondary_status, "Contact centre agents should only select 'Cancelled prior to appointment'")
+      validate_tp_agent_statuses
+      validate_tpas_agent_statuses
+    end
+  end
+
+  def validate_tp_agent_statuses
+    if current_user&.tp_agent? && cancelled_by_customer? && secondary_status != AGENT_PERMITTED_SECONDARY # rubocop:disable GuardClause, LineLength
+      errors.add(:secondary_status, "Contact centre agents should only select 'Cancelled prior to appointment'")
+    end
+  end
+
+  def validate_tpas_agent_statuses # rubocop:disable AbcSize, CyclomaticComplexity, MethodLength
+    if current_user&.tpas_agent? && !guider&.tpas? # rubocop:disable GuardClause
+      unless ineligible_age? || ineligible_pension_type? || cancelled_by_customer?
+        errors.add(:status, "Must be one of 'Ineligible Age', 'Ineligible Pension Type', 'Cancelled by Customer'")
+
+        if secondary_status != AGENT_PERMITTED_SECONDARY
+          errors.add(
+            :secondary_status,
+            "For external appointmnts, agents should only select 'Cancelled prior to appointment'"
+          )
+        end
       end
     end
   end

@@ -402,6 +402,27 @@ RSpec.describe Appointment, type: :model do
             expect(subject).to be_invalid
           end
         end
+
+        context 'when the user is a TPAS agent' do
+          context 'and the appointment is external' do
+            subject { build(:appointment, organisation: :cas) }
+
+            it 'only permits particular statuses' do
+              subject.current_user = build_stubbed(:resource_manager, :tpas)
+
+              subject.status = :ineligible_age
+              expect(subject).to be_valid
+
+              subject.status = :ineligible_pension_type
+              subject.secondary_status = '10' # DB only
+              expect(subject).to be_valid
+
+              subject.status = :cancelled_by_customer
+              subject.secondary_status = '15' # Cancelled prior
+              expect(subject).to be_valid
+            end
+          end
+        end
       end
 
       context 'when it is not past the cut-off date' do
