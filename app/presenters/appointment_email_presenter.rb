@@ -1,4 +1,8 @@
 class AppointmentEmailPresenter < SimpleDelegator
+  def hrh_bank_holiday?
+    start_at.to_date == '2022-09-19'.to_date
+  end
+
   def type
     if due_diligence?
       'Pension Safeguarding Guidance'
