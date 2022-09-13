@@ -463,7 +463,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
 
           expect(body).to include('unforeseen')
           expect(body).to include('offer you a new date')
-          expect(body).not_to include('passing of Her Majesty')
+          expect(body).not_to include('Her Majesty')
         end
 
         context 'when the appointment occurs 19/09/22' do
@@ -471,7 +471,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
             appointment.status = :cancelled_by_pension_wise
             appointment.start_at = Time.zone.parse('2022-09-19 13:00')
 
-            expect(body).to include('passing of Her Majesty')
+            expect(body).to include('Her Majesty')
           end
         end
       end
