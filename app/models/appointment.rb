@@ -280,7 +280,7 @@ class Appointment < ApplicationRecord
 
   def can_be_rescheduled_by?(user)
     return false unless pending?
-    return true if user.resource_manager?
+    return true if user.resource_manager? && owned_by_my_organisation?(user)
     return false if due_diligence?
 
     start_at >= BusinessDays.from_now(2)
@@ -450,6 +450,10 @@ class Appointment < ApplicationRecord
   end
 
   private
+
+  def owned_by_my_organisation?(me)
+    me.organisation_content_id == guider.organisation_content_id
+  end
 
   def track_initial_status
     status_transitions << StatusTransition.new(status: status)

@@ -981,6 +981,14 @@ RSpec.describe Appointment, type: :model do
         it 'is true' do
           expect(result).to be true
         end
+
+        context 'when the appointment is for another organisation' do
+          let(:user) { build_stubbed(:resource_manager, :cas) }
+
+          it 'is false' do
+            expect(result).to be false
+          end
+        end
       end
     end
   end
