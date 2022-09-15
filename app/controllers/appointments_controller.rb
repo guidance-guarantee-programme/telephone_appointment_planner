@@ -50,6 +50,7 @@ class AppointmentsController < ApplicationController
 
   def update
     @appointment = Appointment.find(params[:id])
+    @appointment.current_user = current_user
     if @appointment.update(update_params)
       Notifier.new(@appointment, current_user).call
       redirect_to edit_appointment_path(@appointment), success: 'Appointment has been modified'

@@ -161,6 +161,8 @@ class Appointment < ApplicationRecord
   validate :validate_pending_overlaps, if: :due_diligence?, on: :create
   validate :validate_signposting
   validate :validate_small_pots, if: :small_pots?
+  validate :validate_tp_agent_statuses
+  validate :validate_tpas_agent_statuses
 
   before_validation :format_name, on: :create
   before_create :track_initial_status
@@ -643,18 +645,17 @@ class Appointment < ApplicationRecord
     [consent_address_line_one, consent_town, consent_postcode].all?(&:present?)
   end
 
-  def validate_secondary_status
+  def validate_secondary_status # rubocop:disable AbcSize, CyclomaticComplexity
     return unless created_at && created_at > Time.zone.parse(
       ENV.fetch('SECONDARY_STATUS_CUT_OFF') { '2021-05-04 09:00' }
     )
+
+    return if current_user&.tpas_agent? && !guider.tpas?
 
     if matches = SECONDARY_STATUSES[status] # rubocop:disable GuardClause, AssignmentInCondition
       unless matches.key?(secondary_status)
         return errors.add(:secondary_status, 'must be provided for the chosen status')
       end
-
-      validate_tp_agent_statuses
-      validate_tpas_agent_statuses
     end
   end
 
@@ -664,17 +665,17 @@ class Appointment < ApplicationRecord
     end
   end
 
-  def validate_tpas_agent_statuses # rubocop:disable AbcSize, CyclomaticComplexity, MethodLength
-    if current_user&.tpas_agent? && !guider&.tpas? # rubocop:disable GuardClause
+  def validate_tpas_agent_statuses # rubocop:disable AbcSize, CyclomaticComplexity, MethodLength, PerceivedComplexity
+    if current_user&.tpas_agent? && !guider.tpas? # rubocop:disable GuardClause
       unless ineligible_age? || ineligible_pension_type? || cancelled_by_customer?
         errors.add(:status, "Must be one of 'Ineligible Age', 'Ineligible Pension Type', 'Cancelled by Customer'")
+      end
 
-        if secondary_status != AGENT_PERMITTED_SECONDARY
-          errors.add(
-            :secondary_status,
-            "For external appointmnts, agents should only select 'Cancelled prior to appointment'"
-          )
-        end
+      if cancelled_by_customer? && secondary_status != AGENT_PERMITTED_SECONDARY
+        errors.add(
+          :secondary_status,
+          "For external appointments, agents should only select 'Cancelled prior to appointment'"
+        )
       end
     end
   end
