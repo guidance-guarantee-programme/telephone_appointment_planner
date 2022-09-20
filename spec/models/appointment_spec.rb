@@ -762,7 +762,7 @@ RSpec.describe Appointment, type: :model do
         subject.start_at = appointment_start_time
         subject.end_at   = appointment_end_time
 
-        subject.allocate(agent: tpas_resource_manager)
+        subject.allocate(agent: tpas_resource_manager, scoped: true)
         expect(subject.guider).to eq(tp_guider)
       end
 

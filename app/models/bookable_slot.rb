@@ -46,9 +46,9 @@ class BookableSlot < ApplicationRecord
     end
   end
 
-  def self.find_available_slot(start_at, agent, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE)
+  def self.find_available_slot(start_at, agent, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE, scoped = true)
     scope = bookable.where(start_at: start_at)
-    scope = scope.for_organisation(agent) if agent
+    scope = scope.for_organisation(agent, scoped: scoped) if agent
     scope = for_schedule_type(schedule_type: schedule_type, scope: scope)
 
     scope.limit(1).order('RANDOM()').first

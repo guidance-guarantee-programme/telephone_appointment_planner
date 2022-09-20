@@ -38,7 +38,7 @@ class AppointmentsController < ApplicationController
     @prior_guider = @appointment.guider
     @appointment.assign_attributes(update_reschedule_params)
     @appointment.mark_rescheduled!
-    @appointment.allocate(via_slot: calendar_scheduling?, agent: @prior_guider)
+    @appointment.allocate(via_slot: calendar_scheduling?, agent: @prior_guider, scoped: false)
 
     if @appointment.save
       Notifier.new(@appointment, current_user).call
@@ -75,7 +75,7 @@ class AppointmentsController < ApplicationController
 
   def preview
     @appointment = Appointment.new(create_params.merge(agent: current_user))
-    @appointment.allocate(via_slot: calendar_scheduling?, agent: current_user)
+    @appointment.allocate(via_slot: calendar_scheduling?, agent: current_user, scoped: true)
 
     if @appointment.valid?
       render :preview
@@ -86,7 +86,7 @@ class AppointmentsController < ApplicationController
 
   def create
     @appointment = Appointment.new(create_params.merge(agent: current_user))
-    @appointment.allocate(via_slot: calendar_scheduling?, agent: current_user)
+    @appointment.allocate(via_slot: calendar_scheduling?, agent: current_user, scoped: true)
     @appointment.copy_attachments!
 
     if creating? && @appointment.save

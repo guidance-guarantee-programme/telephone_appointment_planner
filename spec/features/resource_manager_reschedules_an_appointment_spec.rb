@@ -14,6 +14,49 @@ RSpec.feature 'Resource manager reschedules an appointment', js: true do
     end
   end
 
+  scenario 'TPAS resource manager reschedules their own organisation’s appointment' do
+    given_the_user_is_a_resource_manager(organisation: :tpas) do
+      travel_to '2022-06-20 13:00' do
+        and_there_are_matching_available_slots_across_multiple_organisations
+        and_there_is_a_tpas_appointment
+        when_they_attempt_to_reschedule_the_appointment
+        and_they_choose_the_one_available_slot
+        then_the_appointment_is_rescheduled_still_belonging_to_tpas
+      end
+    end
+  end
+
+  def and_there_are_matching_available_slots_across_multiple_organisations
+    start_at = Time.zone.parse('2022-06-24 09:00')
+
+    create(:bookable_slot, start_at: start_at)
+    create(:bookable_slot, :cas, start_at: start_at)
+    create(:bookable_slot, :ni, start_at: start_at)
+    create(:bookable_slot, :lancs_west, start_at: start_at)
+    create(:bookable_slot, :derbyshire_districts, start_at: start_at)
+    create(:bookable_slot, :wallsend, start_at: start_at)
+  end
+
+  def and_there_is_a_tpas_appointment
+    @appointment = create(:appointment, organisation: :tpas)
+  end
+
+  def and_they_choose_the_one_available_slot
+    @page.wait_until_slots_visible
+
+    expect(@page).to have_slots(count: 1)
+    expect(@page.slots.first).to have_text('09:00 1 guider available')
+
+    @page.slots.first.click
+    @page.reschedule.click
+  end
+
+  def then_the_appointment_is_rescheduled_still_belonging_to_tpas
+    @page = Pages::EditAppointment.new
+    expect(@page).to be_displayed(id: @appointment.id)
+    expect(@page).to have_flash_of_success
+  end
+
   def and_there_is_a_tpas_guider_slot
     create(:bookable_slot, start_at: Time.zone.parse('2022-06-24 09:00'))
   end
