@@ -5,6 +5,10 @@
 
 <%= render 'shared/nojs' %>
 
+<% if current_user.tpas_agent? && !rescheduling && @appointment.pension_wise? %>
+  <%= form.check_box :internal_availability, label: 'Internal availability', class: 't-internal-availability js-internal-availability', data: { module: 'internal-availability' } %>
+<% end %>
+
 <% if current_user.lloyds_signposter? %>
   <%= form.check_box :lloyds_signposted, label: 'Lloyds Banking Group referral?', class: 't-lloyds-signposted js-lloyds-signposted', disabled: rescheduling, data: { module: 'lloyds-signposter' } %>
 <% end %>
@@ -15,6 +19,8 @@
   data-module="appointment-availability-calendar"
   data-available-slots-path="<%= available_bookable_slots_path(schedule_type: schedule_type, rescheduling: rescheduling, id: @appointment.id) %>"
   data-lloyds-slots-path="<%= lloyds_bookable_slots_path(rescheduling: rescheduling, id: @appointment.id) %>"
+  data-internal-slots-path="<%= internal_bookable_slots_path(schedule_type: schedule_type, rescheduling: rescheduling, id: @appointment.id) %>"
+  data-external-slots-path="<%= external_bookable_slots_path(schedule_type: schedule_type, rescheduling: rescheduling, id: @appointment.id) %>"
   data-default-date="<%= BookableSlot.next_valid_start_date(current_user) %>"
 ></div>
 <%= form.hidden_field :start_at, class: 't-start-at js-selected-start' %>

@@ -46,6 +46,7 @@ class AppointmentSearch
 
   def for_current_user(results)
     return results.for_pension_wise if current_user.tp_agent?
+    return results if current_user.tpas_agent?
 
     results.where(users: { organisation_content_id: current_user.organisation_content_id })
   end

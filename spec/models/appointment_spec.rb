@@ -36,6 +36,14 @@ RSpec.describe Appointment, type: :model do
       end
     end
 
+    context 'for TPAS agents (guiders/resource managers)' do
+      let(:user) { create(:resource_manager, :tpas) }
+
+      it 'returns all types and organisations' do
+        expect(subject).to eq([@pw, @wf, @dd].map(&:id).sort)
+      end
+    end
+
     context 'for other roles' do
       let(:user) { create(:resource_manager, :waltham_forest) }
 
@@ -288,6 +296,17 @@ RSpec.describe Appointment, type: :model do
       build_stubbed(:appointment)
     end
 
+    context 'when the appointment is small pots' do
+      subject { build_stubbed(:appointment, organisation: :cas) }
+
+      it 'cannot belong to a non-TPAS guider' do
+        subject.small_pots = true
+        subject.guider     = build(:guider, :cas)
+
+        expect(subject).to be_invalid
+      end
+    end
+
     context 'when the appointment is nudged' do
       it 'cannot be LBGPTL' do
         subject.nudged = true
@@ -381,6 +400,27 @@ RSpec.describe Appointment, type: :model do
 
             subject.secondary_status = '17' # Customer forgot
             expect(subject).to be_invalid
+          end
+        end
+
+        context 'when the user is a TPAS agent' do
+          context 'and the appointment is external' do
+            subject { build(:appointment, organisation: :cas) }
+
+            it 'only permits particular statuses' do
+              subject.current_user = build_stubbed(:resource_manager, :tpas)
+
+              subject.status = :ineligible_age
+              expect(subject).to be_valid
+
+              subject.status = :ineligible_pension_type
+              subject.secondary_status = '10' # DB only
+              expect(subject).to be_valid
+
+              subject.status = :cancelled_by_customer
+              subject.secondary_status = '15' # Cancelled prior
+              expect(subject).to be_valid
+            end
           end
         end
       end
@@ -715,20 +755,14 @@ RSpec.describe Appointment, type: :model do
     end
 
     context 'when booking as a TPAS agent' do
-      it 'excludes TP guiders' do
+      it 'includes TP guiders' do
         tpas_resource_manager = create(:resource_manager, :tpas)
-        tp_resource_manager   = create(:resource_manager, :tp)
-
-        tp_guider   = guider_with_slot(:tp)
-        tpas_guider = guider_with_slot(:tpas)
+        tp_guider = guider_with_slot(:tp)
 
         subject.start_at = appointment_start_time
         subject.end_at   = appointment_end_time
 
-        subject.allocate(agent: tpas_resource_manager)
-        expect(subject.guider).to eq(tpas_guider)
-
-        subject.allocate(agent: tp_resource_manager)
+        subject.allocate(agent: tpas_resource_manager, scoped: true)
         expect(subject.guider).to eq(tp_guider)
       end
 
@@ -947,6 +981,14 @@ RSpec.describe Appointment, type: :model do
         it 'is true' do
           expect(result).to be true
         end
+
+        context 'when the appointment is for another organisation' do
+          let(:user) { build_stubbed(:resource_manager, :cas) }
+
+          it 'is false' do
+            expect(result).to be false
+          end
+        end
       end
     end
   end
@@ -960,6 +1002,27 @@ RSpec.describe Appointment, type: :model do
 
         it 'is true' do
           expect(result).to be true
+        end
+
+        context 'a TPAS agent' do
+          let(:agent) { build_stubbed(:resource_manager, :tpas) }
+          let(:result) { Appointment.new(status: status, guider: guider).can_create_summary?(agent) }
+
+          context 'attempts to create a summary belonging to another organisation' do
+            let(:guider) { build(:guider, :cas) }
+
+            it 'is false' do
+              expect(result).to be false
+            end
+          end
+
+          context 'attempts to create a summary belonging to them' do
+            let(:guider) { build_stubbed(:guider, :tpas) }
+
+            it 'is true' do
+              expect(result).to be true
+            end
+          end
         end
       end
     end

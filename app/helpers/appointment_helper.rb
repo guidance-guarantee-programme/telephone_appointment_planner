@@ -7,8 +7,12 @@ module AppointmentHelper
     grace.to_date.to_s(:govuk_date)
   end
 
+  def stronger_nudge_visible?(current_user, appointment)
+    (current_user.tp_agent? || current_user.tpas_agent?) && appointment.pension_wise?
+  end
+
   def bsl_video_visible?(current_user)
-    current_user.administrator? || current_user.tp? || current_user.lancs_west?
+    current_user.administrator? || current_user.tp? || current_user.lancs_west? || current_user.tpas_agent?
   end
 
   def bsl_video_disabled?(current_user)

@@ -2,6 +2,8 @@ module Pages
   class NewAppointment < Base
     set_url '/appointments/new{?query*}'
 
+    elements :slots, '.fc-time-grid-event'
+
     element :first_name,                            '.t-first-name'
     element :last_name,                             '.t-last-name'
     element :email,                                 '.t-email'
@@ -49,6 +51,7 @@ module Pages
     element :smarter_signposted, '.t-smarter-signposted'
     element :bsl_video, '.t-bsl-video'
     element :lloyds_signposted, '.t-lloyds-signposted'
+    element :internal_availability, '.t-internal-availability'
     element :small_pots, '.t-small-pots'
     element :stronger_nudged, '.t-nudge-flag'
 

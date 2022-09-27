@@ -4,7 +4,7 @@ class Appointment < ApplicationRecord
 
   acts_as_copy_target
 
-  attr_accessor :current_user
+  attr_accessor :current_user, :internal_availability
 
   CANCELLED_STATUSES = %i(
     cancelled_by_customer
@@ -160,6 +160,9 @@ class Appointment < ApplicationRecord
   validate :validate_guider_schedule_type, on: :update, if: :pension_wise?
   validate :validate_pending_overlaps, if: :due_diligence?, on: :create
   validate :validate_signposting
+  validate :validate_small_pots, if: :small_pots?
+  validate :validate_tp_agent_statuses
+  validate :validate_tpas_agent_statuses
 
   before_validation :format_name, on: :create
   before_create :track_initial_status
@@ -241,9 +244,9 @@ class Appointment < ApplicationRecord
     status.start_with?('cancelled')
   end
 
-  def allocate(via_slot: true, agent: nil)
+  def allocate(via_slot: true, agent: nil, scoped: false)
     if via_slot
-      allocate_slot(agent)
+      allocate_slot(agent, scoped)
     else
       return unless start_at?
 
@@ -279,13 +282,17 @@ class Appointment < ApplicationRecord
 
   def can_be_rescheduled_by?(user)
     return false unless pending?
-    return true if user.resource_manager?
+    return true if user.resource_manager? && owned_by_my_organisation?(user)
     return false if due_diligence?
 
     start_at >= BusinessDays.from_now(2)
   end
 
-  def can_create_summary?
+  def can_create_summary?(agent = nil)
+    if agent&.tpas_agent?
+      return false unless guider.tpas?
+    end
+
     complete? || ineligible_age? || ineligible_pension_type?
   end
 
@@ -386,6 +393,7 @@ class Appointment < ApplicationRecord
 
   def self.for_organisation(user)
     return for_pension_wise if user.tp_agent?
+    return all if user.tpas_agent?
 
     joins(:guider)
       .where(users: { organisation_content_id: user.organisation_content_id })
@@ -445,6 +453,10 @@ class Appointment < ApplicationRecord
 
   private
 
+  def owned_by_my_organisation?(me)
+    me.organisation_content_id == guider.organisation_content_id
+  end
+
   def track_initial_status
     status_transitions << StatusTransition.new(status: status)
   end
@@ -455,8 +467,8 @@ class Appointment < ApplicationRecord
     self.unique_reference_number = '' if status_changed?(from: 'complete') && due_diligence?
   end
 
-  def allocate_slot(agent)
-    slot = BookableSlot.find_available_slot(start_at, agent, schedule_type)
+  def allocate_slot(agent, scoped)
+    slot = BookableSlot.find_available_slot(start_at, agent, schedule_type, scoped)
     self.guider = nil
     return unless slot
 
@@ -633,18 +645,37 @@ class Appointment < ApplicationRecord
     [consent_address_line_one, consent_town, consent_postcode].all?(&:present?)
   end
 
-  def validate_secondary_status # rubocop:disable AbcSize, PerceivedComplexity, CyclomaticComplexity, MethodLength
+  def validate_secondary_status # rubocop:disable AbcSize, CyclomaticComplexity
     return unless created_at && created_at > Time.zone.parse(
       ENV.fetch('SECONDARY_STATUS_CUT_OFF') { '2021-05-04 09:00' }
     )
+
+    return if current_user&.tpas_agent? && !guider.tpas?
 
     if matches = SECONDARY_STATUSES[status] # rubocop:disable GuardClause, AssignmentInCondition
       unless matches.key?(secondary_status)
         return errors.add(:secondary_status, 'must be provided for the chosen status')
       end
+    end
+  end
 
-      if current_user&.tp_agent? && cancelled_by_customer? && secondary_status != AGENT_PERMITTED_SECONDARY
-        errors.add(:secondary_status, "Contact centre agents should only select 'Cancelled prior to appointment'")
+  def validate_tp_agent_statuses
+    if current_user&.tp_agent? && cancelled_by_customer? && secondary_status != AGENT_PERMITTED_SECONDARY # rubocop:disable GuardClause, LineLength
+      errors.add(:secondary_status, "Contact centre agents should only select 'Cancelled prior to appointment'")
+    end
+  end
+
+  def validate_tpas_agent_statuses # rubocop:disable AbcSize, CyclomaticComplexity, MethodLength, PerceivedComplexity
+    if current_user&.tpas_agent? && !guider.tpas? # rubocop:disable GuardClause
+      unless ineligible_age? || ineligible_pension_type? || cancelled_by_customer?
+        errors.add(:status, "Must be one of 'Ineligible Age', 'Ineligible Pension Type', 'Cancelled by Customer'")
+      end
+
+      if cancelled_by_customer? && secondary_status != AGENT_PERMITTED_SECONDARY
+        errors.add(
+          :secondary_status,
+          "For external appointments, agents should only select 'Cancelled prior to appointment'"
+        )
       end
     end
   end
@@ -681,6 +712,12 @@ class Appointment < ApplicationRecord
     message = 'Cannot be both Stronger Nudge and Lloyds Banking Group signposted'
 
     errors.add(:nudged, message) if nudged? && lloyds_signposted?
+  end
+
+  def validate_small_pots
+    message = 'Small pots appointments may only be assigned to TPAS guiders'
+
+    errors.add(:small_pots, message) unless guider&.tpas?
   end
 
   class << self

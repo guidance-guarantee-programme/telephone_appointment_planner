@@ -36,6 +36,15 @@ RSpec.describe AppointmentSearch, type: :model do
       expect(results(nil, nil, nil, user, '', 'due_diligence')).to eq([dd])
     end
 
+    context 'for a TPAS guider and resource manager' do
+      it 'returns all organisation’s appointments' do
+        wallsend = create(:appointment, organisation: :wallsend)
+        guider = build(:guider, :tpas)
+
+        expect(results(nil, nil, nil, guider, '', '')).to include(wallsend)
+      end
+    end
+
     context 'for a non-tpas user' do
       it 'respects the `processed` flag' do
         processed   = create(:appointment, organisation: :cas, processed_at: Time.current)

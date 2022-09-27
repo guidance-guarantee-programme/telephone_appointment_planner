@@ -37,7 +37,7 @@ class BookableSlot < ApplicationRecord
   end
 
   def self.next_valid_start_date(user = nil, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE)
-    return Time.zone.now if user&.resource_manager?
+    return Time.zone.now if user&.resource_manager? || user&.tpas_agent?
 
     if schedule_type == User::DUE_DILIGENCE_SCHEDULE_TYPE
       BusinessDays.from_now(5).change(hour: 21, min: 0).in_time_zone('London')
@@ -46,9 +46,9 @@ class BookableSlot < ApplicationRecord
     end
   end
 
-  def self.find_available_slot(start_at, agent, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE)
+  def self.find_available_slot(start_at, agent, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE, scoped = true)
     scope = bookable.where(start_at: start_at)
-    scope = scope.for_organisation(agent) if agent
+    scope = scope.for_organisation(agent, scoped: scoped) if agent
     scope = for_schedule_type(schedule_type: schedule_type, scope: scope)
 
     scope.limit(1).order('RANDOM()').first
@@ -129,18 +129,38 @@ class BookableSlot < ApplicationRecord
     sanitize_sql(["AND (#{table}.start_at > ? AND #{table}.end_at < ?)", from, to])
   end
 
-  def self.starting_after_next_valid_start_date(user)
-    where("#{quoted_table_name}.start_at > ?", next_valid_start_date(user))
+  def self.starting_after_next_valid_start_date(user, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE) # rubocop:disable MethodLength, LineLength
+    normal_scope = where("#{quoted_table_name}.start_at > ?", next_valid_start_date(user))
+
+    return normal_scope if schedule_type == User::DUE_DILIGENCE_SCHEDULE_TYPE
+
+    if user.tpas_agent?
+      from = BusinessDays.from_now(1).change(hour: 21, min: 0).in_time_zone('London')
+
+      joins(:guider)
+        .where(
+          '
+           (users.organisation_content_id = :tpas_id AND bookable_slots.start_at > :tpas_start_at)
+           OR
+           (users.organisation_content_id != :tpas_id AND bookable_slots.start_at > :start_at)
+          ',
+          tpas_id: Provider::TPAS.id,
+          tpas_start_at: Time.zone.now,
+          start_at: from
+        )
+    else
+      normal_scope
+    end
   end
 
-  def self.with_guider_count(user, from, to, lloyds: false, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE) # rubocop:disable AbcSize, LineLength, MethodLength
-    limit_by_organisation = !user.resource_manager?
+  def self.with_guider_count(user, from, to, lloyds: false, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE, scoped: true, internal: false, external: false) # rubocop:disable AbcSize, LineLength, MethodLength, ParameterLists
+    limit_by_organisation = !user.resource_manager? && !user.tpas_agent?
 
     select("DISTINCT #{quoted_table_name}.start_at, #{quoted_table_name}.end_at, count(1) AS guiders")
       .bookable
-      .starting_after_next_valid_start_date(user)
+      .starting_after_next_valid_start_date(user, schedule_type: schedule_type)
       .for_schedule_type(schedule_type: schedule_type)
-      .for_organisation(user, lloyds: lloyds)
+      .for_organisation(user, lloyds: lloyds, scoped: scoped, internal: internal, external: external)
       .group("#{quoted_table_name}.start_at, #{quoted_table_name}.end_at")
       .within_date_range(from, to, organisation_limit: limit_by_organisation)
       .map do |us|
@@ -148,13 +168,17 @@ class BookableSlot < ApplicationRecord
       end
   end
 
-  def self.for_organisation(user, scoped: true, lloyds: false)
+  def self.for_organisation(user, scoped: true, lloyds: false, internal: false, external: false) # rubocop:disable AbcSize, MethodLength, CyclomaticComplexity, LineLength, PerceivedComplexity
     scope = joins(:guider)
 
     if lloyds
       scope.where(users: { organisation_content_id: Provider.lloyds_providers.map(&:id) })
+    elsif internal
+      scope.where(users: { organisation_content_id: user.organisation_content_id })
+    elsif external
+      scope.where.not(users: { organisation_content_id: user.organisation_content_id })
     else
-      return where('1 = 1') if scoped && user.tp_agent?
+      return where('1 = 1') if scoped && (user.tp_agent? || user.tpas_agent?)
 
       scope.where(users: { organisation_content_id: user.organisation_content_id })
     end

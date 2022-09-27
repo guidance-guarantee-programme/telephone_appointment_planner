@@ -10,7 +10,28 @@ class BookableSlotsController < ApplicationController
       filtered_user,
       Time.zone.parse(params[:start]),
       Time.zone.parse(params[:end]),
-      schedule_type: schedule_type
+      schedule_type: schedule_type,
+      internal: rescheduling?
+    )
+  end
+
+  def internal
+    render json: BookableSlot.with_guider_count(
+      filtered_user,
+      Time.zone.parse(params[:start]),
+      Time.zone.parse(params[:end]),
+      schedule_type: schedule_type,
+      internal: true
+    )
+  end
+
+  def external
+    render json: BookableSlot.with_guider_count(
+      filtered_user,
+      Time.zone.parse(params[:start]),
+      Time.zone.parse(params[:end]),
+      schedule_type: schedule_type,
+      external: true
     )
   end
 
@@ -38,10 +59,12 @@ class BookableSlotsController < ApplicationController
   end
 
   def filtered_user
-    return current_user unless rescheduling? && current_user.tp?
+    return current_user unless rescheduling? && (current_user.tp? || current_user.tpas_agent?)
 
     appointment = Appointment.find(params[:id])
     appointment.guider
+  rescue ActiveRecord::RecordNotFound
+    current_user
   end
 
   def bookable_slots

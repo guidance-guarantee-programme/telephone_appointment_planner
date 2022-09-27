@@ -18,6 +18,13 @@ RSpec.feature 'Guider edits an appointment' do
     end
   end
 
+  scenario 'TPAS agent can resend an appointment confirmation email' do
+    given_the_user_is_a_resource_manager(organisation: :tpas) do
+      when_they_edit_an_existing_appointment
+      then_they_can_resend_the_customer_email_confirmation
+    end
+  end
+
   scenario 'TP user resends an appointment confirmation email', js: true do
     given_the_user_is_an_agent(organisation: :tp) do
       when_they_edit_an_existing_appointment
@@ -98,6 +105,10 @@ RSpec.feature 'Guider edits an appointment' do
     accept_confirm do
       @page.resend_email_confirmation.click
     end
+  end
+
+  def then_they_can_resend_the_customer_email_confirmation
+    expect(@page).to have_resend_email_confirmation
   end
 
   def then_the_customer_email_confirmation_is_sent

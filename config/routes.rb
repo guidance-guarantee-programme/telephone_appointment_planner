@@ -73,6 +73,8 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   resources :bookable_slots, only: :index do
     collection do
       get 'available'
+      get 'internal'
+      get 'external'
       get 'lloyds'
     end
   end

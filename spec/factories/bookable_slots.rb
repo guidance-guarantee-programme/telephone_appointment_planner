@@ -30,6 +30,7 @@ FactoryBot.define do
 
     trait :due_diligence do
       schedule_type { User::DUE_DILIGENCE_SCHEDULE_TYPE }
+      guider { create(:guider, :due_diligence) }
     end
   end
 end

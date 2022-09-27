@@ -10,6 +10,8 @@ module Pages
     element :availability_calendar_on, '.t-availability-calendar-on'
     element :guider, '.t-guider'
     element :ad_hoc_start_at, '.t-ad-hoc-start-at'
+    element :internal_availability, '.t-internal-availability'
+    element :reschedule, '.t-reschedule'
     elements :slots, '.fc-time-grid-event'
     elements :calendar_events, '.fc-event'
 
