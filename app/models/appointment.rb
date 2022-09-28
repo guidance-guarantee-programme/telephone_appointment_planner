@@ -285,7 +285,7 @@ class Appointment < ApplicationRecord
     return true if user.resource_manager? && owned_by_my_organisation?(user)
     return false if due_diligence?
 
-    start_at >= BusinessDays.from_now(2)
+    start_at >= BookableSlot.next_valid_start_date
   end
 
   def can_create_summary?(agent = nil)
