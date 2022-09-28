@@ -13,6 +13,7 @@
 
 <%= form_for @appointment, layout: :basic do |f| %>
   <%= hidden_field_tag :scheduled, calendar_scheduling? %>
+  <%= f.hidden_field :internal_availability %>
   <%= f.hidden_field :rebooked_from_id %>
   <%= f.hidden_field :date_of_birth %>
   <%= f.hidden_field :start_at %>

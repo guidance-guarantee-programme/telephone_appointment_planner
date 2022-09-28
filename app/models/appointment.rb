@@ -172,6 +172,10 @@ class Appointment < ApplicationRecord
     CustomerUpdateJob.perform_later(self, CustomerUpdateActivity::CONFIRMED_MESSAGE)
   end
 
+  def internal_availability?
+    internal_availability.present? && internal_availability == '1'
+  end
+
   def sms_confirmation?
     nudge_confirmation == 'sms'
   end

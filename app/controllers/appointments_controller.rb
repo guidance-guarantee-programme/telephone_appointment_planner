@@ -73,9 +73,13 @@ class AppointmentsController < ApplicationController
     end
   end
 
-  def preview
+  def preview # rubocop:disable MethodLength
     @appointment = Appointment.new(create_params.merge(agent: current_user))
-    @appointment.allocate(via_slot: calendar_scheduling?, agent: current_user, scoped: true)
+    @appointment.allocate(
+      via_slot: calendar_scheduling?,
+      agent: current_user,
+      scoped: !@appointment.internal_availability?
+    )
 
     if @appointment.valid?
       render :preview
@@ -84,9 +88,13 @@ class AppointmentsController < ApplicationController
     end
   end
 
-  def create
+  def create # rubocop:disable AbcSize, MethodLength
     @appointment = Appointment.new(create_params.merge(agent: current_user))
-    @appointment.allocate(via_slot: calendar_scheduling?, agent: current_user, scoped: true)
+    @appointment.allocate(
+      via_slot: calendar_scheduling?,
+      agent: current_user,
+      scoped: !@appointment.internal_availability?
+    )
     @appointment.copy_attachments!
 
     if creating? && @appointment.save
