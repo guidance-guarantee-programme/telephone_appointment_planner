@@ -37,6 +37,17 @@ RSpec.feature 'Resource manager reschedules an appointment', js: true do
     end
   end
 
+  scenario 'TPAS resource manager creates an appointment from external availability' do
+    given_the_user_is_a_resource_manager(organisation: :tpas) do
+      travel_to '2022-06-20 13:00' do
+        and_there_are_many_tpas_slots_and_one_external_slot
+        when_they_choose_the_external_slot
+        and_they_place_a_booking
+        then_the_resulting_appointment_is_correctly_allocated_to_cas
+      end
+    end
+  end
+
   scenario 'CAS resource manager creates an appointment' do
     given_the_user_is_a_resource_manager(organisation: :cas) do
       travel_to '2022-06-20 13:00' do
@@ -46,6 +57,20 @@ RSpec.feature 'Resource manager reschedules an appointment', js: true do
         then_the_resulting_appointment_is_correctly_allocated_to_cas
       end
     end
+  end
+
+  def and_there_are_many_tpas_slots_and_one_external_slot
+    start_at = Time.zone.parse('2022-06-24 09:00')
+
+    create(:bookable_slot, :cas, start_at: start_at)
+    # create many TPAS slots to increase the chance of random selection
+    create_list(:bookable_slot, 10, start_at: start_at)
+  end
+
+  def when_they_choose_the_external_slot
+    @page = Pages::NewAppointment.new.tap(&:load)
+    @page.wait_until_slots_visible
+    @page.choose_slot('09:00')
   end
 
   def when_they_choose_their_slot

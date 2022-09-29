@@ -481,6 +481,7 @@ RSpec.feature 'Agent manages appointments' do
     @page.accessibility_requirements.set true
     @page.notes.set 'something'
     @page.gdpr_consent_yes.set true
+    @page.internal_availability.set true if @page.has_internal_availability?
     @page.start_at.set day.change(hour: 9, min: 30).to_s
     @page.end_at.set day.change(hour: 10, min: 40).to_s
     @page.type_of_appointment_standard.set true
