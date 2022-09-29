@@ -93,6 +93,14 @@ RSpec.describe Notifier, '#call' do
 
       subject.call
     end
+
+    it 'enqueues the consent form email job when the consent email changes' do
+      appointment.update(email_consent: 'smurfette@example.com', email_consent_form_required: true)
+
+      expect(EmailThirdPartyConsentFormJob).to receive(:perform_later).with(appointment)
+
+      subject.call
+    end
   end
 
   context 'when a BSL appointment is completed' do
