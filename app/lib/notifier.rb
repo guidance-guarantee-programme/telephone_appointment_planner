@@ -75,7 +75,7 @@ class Notifier
   end
 
   def requires_email_consent_form?
-    appointment.previous_changes.slice('email_consent_form_required').present? &&
+    appointment.previous_changes.slice('email_consent_form_required', 'email_consent').present? &&
       appointment.email_consent_form_required?
   end
 
