@@ -172,6 +172,10 @@ class Appointment < ApplicationRecord
     CustomerUpdateJob.perform_later(self, CustomerUpdateActivity::CONFIRMED_MESSAGE)
   end
 
+  def internal_availability?
+    internal_availability.present? && internal_availability == '1'
+  end
+
   def sms_confirmation?
     nudge_confirmation == 'sms'
   end
@@ -468,7 +472,9 @@ class Appointment < ApplicationRecord
   end
 
   def allocate_slot(agent, scoped)
-    slot = BookableSlot.find_available_slot(start_at, agent, schedule_type, scoped)
+    args = agent&.tpas_agent? && pension_wise? && scoped ? { external: true } : {}
+
+    slot = BookableSlot.find_available_slot(start_at, agent, schedule_type, scoped, **args)
     self.guider = nil
     return unless slot
 

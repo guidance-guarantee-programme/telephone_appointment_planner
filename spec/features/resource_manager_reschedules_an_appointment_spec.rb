@@ -26,6 +26,105 @@ RSpec.feature 'Resource manager reschedules an appointment', js: true do
     end
   end
 
+  scenario 'TPAS resource manager creates an appointment from internal availability' do
+    given_the_user_is_a_resource_manager(organisation: :tpas) do
+      travel_to '2022-06-20 13:00' do
+        and_there_are_matching_available_slots_across_multiple_organisations
+        when_they_choose_an_internal_slot
+        and_they_place_a_booking
+        then_the_resulting_appointment_is_correctly_allocated
+      end
+    end
+  end
+
+  scenario 'TPAS resource manager creates an appointment from external availability' do
+    given_the_user_is_a_resource_manager(organisation: :tpas) do
+      travel_to '2022-06-20 13:00' do
+        and_there_are_many_tpas_slots_and_one_external_slot
+        when_they_choose_the_external_slot
+        and_they_place_a_booking
+        then_the_resulting_appointment_is_correctly_allocated_to_cas
+      end
+    end
+  end
+
+  scenario 'CAS resource manager creates an appointment' do
+    given_the_user_is_a_resource_manager(organisation: :cas) do
+      travel_to '2022-06-20 13:00' do
+        and_there_are_matching_available_slots_across_multiple_organisations
+        when_they_choose_their_slot
+        and_they_place_a_booking
+        then_the_resulting_appointment_is_correctly_allocated_to_cas
+      end
+    end
+  end
+
+  def and_there_are_many_tpas_slots_and_one_external_slot
+    start_at = Time.zone.parse('2022-06-24 09:00')
+
+    create(:bookable_slot, :cas, start_at: start_at)
+    # create many TPAS slots to increase the chance of random selection
+    create_list(:bookable_slot, 10, start_at: start_at)
+  end
+
+  def when_they_choose_the_external_slot
+    @page = Pages::NewAppointment.new.tap(&:load)
+    @page.wait_until_slots_visible
+    @page.choose_slot('09:00')
+  end
+
+  def when_they_choose_their_slot
+    @page = Pages::NewAppointment.new.tap(&:load)
+    expect(@page).to have_no_internal_availability
+
+    @page.wait_until_slots_visible
+    @page.choose_slot('09:00')
+  end
+
+  def then_the_resulting_appointment_is_correctly_allocated_to_cas
+    @page.confirm_appointment.click
+
+    @page = Pages::EditAppointment.new
+    expect(@page).to be_displayed
+
+    expect(@page.guider).to have_text('CAS')
+  end
+
+  def when_they_choose_an_internal_slot
+    @page = Pages::NewAppointment.new.tap(&:load)
+    @page.internal_availability.set true
+    @page.wait_until_slots_visible
+    @page.choose_slot('09:00')
+  end
+
+  def and_they_place_a_booking
+    @page.date_of_birth_day.set '23'
+    @page.date_of_birth_month.set '10'
+    @page.date_of_birth_year.set '1950'
+    @page.first_name.set 'Some'
+    @page.last_name.set 'Person'
+    @page.email.set 'email@example.org'
+    @page.phone.set '0208 252 4729'
+    @page.mobile.set '07715 930 459'
+    @page.memorable_word.set 'lozenge'
+    @page.gdpr_consent_yes.set true
+    @page.type_of_appointment_standard.set true
+    @page.where_you_heard.select 'Other'
+    @page.preview_appointment.click
+
+    @page = Pages::PreviewAppointment.new
+    expect(@page).to be_displayed
+  end
+
+  def then_the_resulting_appointment_is_correctly_allocated
+    @page.confirm_appointment.click
+
+    @page = Pages::EditAppointment.new
+    expect(@page).to be_displayed
+
+    expect(@page.guider).to have_text('TPAS')
+  end
+
   def and_there_are_matching_available_slots_across_multiple_organisations
     start_at = Time.zone.parse('2022-06-24 09:00')
 
