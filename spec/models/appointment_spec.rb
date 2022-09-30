@@ -615,16 +615,12 @@ RSpec.describe Appointment, type: :model do
       expect(subject.errors[:dc_pot_confirmed]).to be_empty
     end
 
-    context 'when created by an API agent' do
-      it 'requires a reasonably valid email' do
-        appointment = build(
-          :appointment,
-          email: 'a.com',
-          agent: build(:pension_wise_api_user)
-        )
+    it 'requires a reasonably valid email' do
+      appointment = build(:appointment, email: 'a.com')
+      expect(appointment).to_not be_valid
 
-        expect(appointment).to_not be_valid
-      end
+      appointment.email = 'ben.@ben.com'
+      expect(appointment).to_not be_valid
     end
 
     context 'when created by a non-API agent' do

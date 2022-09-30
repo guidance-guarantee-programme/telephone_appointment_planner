@@ -140,6 +140,7 @@ class Appointment < ApplicationRecord
   validates :guider, presence: true
   validates :unique_reference_number, uniqueness: true, if: :complete_due_diligence?
   validates :referrer, presence: true, if: :due_diligence?, on: :create
+  validates :email, email: true, unless: :sms_confirmation?
 
   validate :validate_printed_consent_form_address
   validate :validate_consent_type
@@ -148,7 +149,6 @@ class Appointment < ApplicationRecord
   validate :valid_within_booking_window
   validate :date_of_birth_valid
   validate :data_subject_date_of_birth_valid
-  validate :email_valid, if: :validate_email?, on: :create
   validate :address_or_email_valid, if: :regular_agent?, on: :create
   validate :validate_guider_organisation, on: :update
   validate :validate_guider_available, on: :update
@@ -708,10 +708,6 @@ class Appointment < ApplicationRecord
                   .exists?
 
     errors.add(:guider_id, 'Overlaps another pending appointment')
-  end
-
-  def validate_email?
-    pension_wise_api? && !sms_confirmation?
   end
 
   def validate_signposting
