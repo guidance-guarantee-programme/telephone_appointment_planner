@@ -65,6 +65,7 @@
     }
 
     handleInternalAvailabilityFilter(e, selected) {
+      this.$el.fullCalendar('unselect');
       this.$el.fullCalendar('removeEventSources');
 
       if (selected) {
@@ -74,7 +75,13 @@
         this.$el.fullCalendar('addEventSource', this.$el.data('external-slots-path'));
       }
 
+      this.clearSelection();
       this.$el.fullCalendar('refetchEvents');
+    }
+
+    clearSelection() {
+      this.$selectedStart.val('');
+      this.$selectedEnd.val('');
     }
 
     handleAvailabilityFilter(e, selected) {
