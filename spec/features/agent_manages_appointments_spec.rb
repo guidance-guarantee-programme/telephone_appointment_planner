@@ -200,6 +200,7 @@ RSpec.feature 'Agent manages appointments' do
       and_the_customer_gets_an_email_confirmation
       and_a_printed_consent_form_job_is_enqueued
       and_an_email_consent_form_job_is_enqueued
+      and_a_printed_confirmation_job_is_enqueued
     end
   end
 
@@ -566,6 +567,10 @@ RSpec.feature 'Agent manages appointments' do
 
   def and_a_printed_consent_form_job_is_enqueued
     assert_enqueued_jobs(1, only: PrintedThirdPartyConsentFormJob)
+  end
+
+  def and_a_printed_confirmation_job_is_enqueued
+    assert_enqueued_jobs(1, only: PrintedConfirmationJob)
   end
 
   def and_an_email_consent_form_job_is_enqueued

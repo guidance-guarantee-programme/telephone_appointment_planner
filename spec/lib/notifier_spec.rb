@@ -134,6 +134,16 @@ RSpec.describe Notifier, '#call' do
 
       subject.call
     end
+
+    context 'with a postal address' do
+      it 'enqueues a printed confirmation' do
+        appointment.update_attribute(:start_at, Time.zone.parse('2022-07-27 13:00'))
+
+        expect(PrintedConfirmationJob).to receive(:perform_later).with(appointment)
+
+        subject.call
+      end
+    end
   end
 
   context 'when the appointment is without an associated email' do
