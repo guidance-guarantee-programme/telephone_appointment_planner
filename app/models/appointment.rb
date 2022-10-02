@@ -357,14 +357,6 @@ class Appointment < ApplicationRecord
     phone.start_with?('07') || mobile.start_with?('07')
   end
 
-  def mark_batch_processed!
-    transaction do
-      touch(:batch_processed_at)
-
-      PrintBatchActivity.from(self)
-    end
-  end
-
   def cancel!
     without_auditing do
       transaction do
@@ -418,13 +410,6 @@ class Appointment < ApplicationRecord
       appointment.rebooked_from_id   = id
       appointment.batch_processed_at = nil
     end
-  end
-
-  def self.needing_print_confirmation
-    pending
-      .not_booked_today
-      .where(batch_processed_at: nil, email: '')
-      .where.not(address_line_one: '')
   end
 
   def self.needing_sms_reminder
