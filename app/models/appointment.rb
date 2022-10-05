@@ -162,7 +162,7 @@ class Appointment < ApplicationRecord
   validate :validate_signposting
   validate :validate_small_pots, if: :small_pots?
   validate :validate_tp_agent_statuses
-  validate :validate_tpas_agent_statuses
+  validate :validate_tpas_agent_statuses, if: :status_changed?, on: :update
 
   before_validation :format_name, on: :create
   before_create :track_initial_status

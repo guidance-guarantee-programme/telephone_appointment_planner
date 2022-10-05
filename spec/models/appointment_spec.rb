@@ -410,6 +410,8 @@ RSpec.describe Appointment, type: :model do
             it 'only permits particular statuses' do
               subject.current_user = build_stubbed(:resource_manager, :tpas)
 
+              expect(subject).to be_valid
+
               subject.status = :ineligible_age
               expect(subject).to be_valid
 
