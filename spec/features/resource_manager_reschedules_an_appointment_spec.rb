@@ -181,12 +181,14 @@ RSpec.feature 'Resource manager reschedules an appointment', js: true do
 
   scenario 'Rebooking with ad-hoc allocation' do
     given_the_user_is_a_resource_manager do
-      and_there_is_a_cancelled_appointment
-      and_there_are_several_guiders
-      when_they_attempt_to_rebook_the_appointment
-      and_select_ad_hoc_allocation
-      and_rebook_the_appointment
-      then_the_appointment_is_rebooked
+      travel_to '2017-12-27 13:00 utc' do
+        and_there_is_a_cancelled_appointment
+        and_there_are_several_guiders
+        when_they_attempt_to_rebook_the_appointment
+        and_select_ad_hoc_allocation
+        and_rebook_the_appointment
+        then_the_appointment_is_rebooked
+      end
     end
   end
 
