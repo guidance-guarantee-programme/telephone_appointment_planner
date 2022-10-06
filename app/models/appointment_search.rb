@@ -1,4 +1,6 @@
 class AppointmentSearch
+  REFERENCE_REGEX = /\A\d{1,7}\z/
+
   def initialize(query, start_at, end_at, current_user, processed, appointment_type) # rubocop:disable ParameterLists
     @query = query
     @start_at = start_at
@@ -62,13 +64,10 @@ class AppointmentSearch
   end
 
   def within_date_range(results)
-    if @start_at && @end_at
-      results
-        .where('start_at > ?', @start_at)
-        .where('end_at < ?', @end_at)
-    else
-      results
-    end
+    @start_at = 3.months.ago.beginning_of_day unless @start_at
+    @end_at   = 1.month.from_now.end_of_day unless @end_at
+
+    results.where('start_at between ? and ?', @start_at, @end_at)
   end
 
   def search_without_query
@@ -78,10 +77,12 @@ class AppointmentSearch
   end
 
   def search_with_query
-    Appointment
-      .joins(:guider)
-      .includes(:guider)
-      .select('appointments.*')
-      .where(ilike(%w(appointments.id appointments.first_name appointments.last_name users.name)))
+    scope = Appointment.joins(:guider).includes(:guider).select('appointments.*')
+
+    if REFERENCE_REGEX === @query # rubocop:disable CaseEquality
+      scope.where(id: @query)
+    else
+      scope.where(ilike(%w(appointments.first_name appointments.last_name users.name)))
+    end
   end
 end
