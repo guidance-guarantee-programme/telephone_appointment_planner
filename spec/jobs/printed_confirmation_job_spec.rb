@@ -48,6 +48,16 @@ RSpec.describe PrintedConfirmationJob, '#perform' do
       expect(appointment.activities.first).to be_an(PrintedConfirmationActivity)
     end
 
+    context 'when the appointment is for PSG' do
+      it 'does not send a letter' do
+        appointment.schedule_type = 'due_diligence'
+
+        expect(client).to_not receive(:send_letter)
+
+        described_class.new.perform(appointment)
+      end
+    end
+
     context 'when the appointment was rescheduled' do
       it 'uses the rescheduling template ID instead' do
         appointment.rescheduled_at = Time.current
@@ -65,11 +75,13 @@ RSpec.describe PrintedConfirmationJob, '#perform' do
 
   before do
     ENV['PENSION_WISE_NOTIFY_API_KEY'] = 'blahblah'
+    ENV['DUE_DILIGENCE_NOTIFY_API_KEY'] = 'blehbleh'
 
     allow(Notifications::Client).to receive(:new).and_return(client)
   end
 
   after do
     ENV.delete('PENSION_WISE_NOTIFY_API_KEY')
+    ENV.delete('DUE_DILIGENCE_NOTIFY_API_KEY')
   end
 end
