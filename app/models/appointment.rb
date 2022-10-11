@@ -177,7 +177,7 @@ class Appointment < ApplicationRecord
   end
 
   def print_confirmation?
-    address? && !email?
+    pension_wise? && address? && !email?
   end
 
   def sms_confirmation?
