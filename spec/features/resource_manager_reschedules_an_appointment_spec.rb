@@ -69,6 +69,8 @@ RSpec.feature 'Resource manager reschedules an appointment', js: true do
 
   def when_they_choose_the_external_slot
     @page = Pages::NewAppointment.new.tap(&:load)
+    @page.next_period.click
+
     @page.wait_until_slots_visible
     @page.choose_slot('09:00')
   end
@@ -77,6 +79,7 @@ RSpec.feature 'Resource manager reschedules an appointment', js: true do
     @page = Pages::NewAppointment.new.tap(&:load)
     expect(@page).to have_no_internal_availability
 
+    @page.next_period.click
     @page.wait_until_slots_visible
     @page.choose_slot('09:00')
   end
@@ -93,6 +96,7 @@ RSpec.feature 'Resource manager reschedules an appointment', js: true do
   def when_they_choose_an_internal_slot
     @page = Pages::NewAppointment.new.tap(&:load)
     @page.internal_availability.set true
+    @page.next_period.click
     @page.wait_until_slots_visible
     @page.choose_slot('09:00')
   end
@@ -141,6 +145,7 @@ RSpec.feature 'Resource manager reschedules an appointment', js: true do
   end
 
   def and_they_choose_the_one_available_slot
+    @page.next_period.click
     @page.wait_until_slots_visible
 
     expect(@page).to have_slots(count: 1)
@@ -169,6 +174,7 @@ RSpec.feature 'Resource manager reschedules an appointment', js: true do
   end
 
   def then_they_see_only_cas_slots
+    @page.next_period.click
     @page.wait_until_slots_visible
 
     expect(@page).to have_slots(count: 1)
