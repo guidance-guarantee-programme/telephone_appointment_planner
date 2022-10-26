@@ -2,6 +2,7 @@ module Pages
   class NewAppointment < Base
     set_url '/appointments/new{?query*}'
 
+    element :next_period, '.fc-next-button'
     elements :slots, '.fc-time-grid-event'
 
     element :first_name,                            '.t-first-name'

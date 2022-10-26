@@ -47,7 +47,7 @@ RSpec.feature 'Agent manages appointments' do
         and_slots_exist_for_general_availability
         and_slots_exist_for_due_diligence_availability
         when_they_attempt_to_book_an_appointment
-        then_they_see_only_general_availability
+        then_they_see_only_general_availability(navigate_next: false)
         and_they_do_not_see_small_pots
       end
     end
@@ -112,7 +112,8 @@ RSpec.feature 'Agent manages appointments' do
     expect(@page).to have_no_small_pots
   end
 
-  def then_they_see_only_general_availability
+  def then_they_see_only_general_availability(navigate_next: true)
+    @page.next_period.click if navigate_next
     @page.wait_until_calendar_events_visible
 
     expect(@page).to have_calendar_events(count: 1)

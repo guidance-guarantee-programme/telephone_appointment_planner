@@ -11,7 +11,7 @@ RSpec.feature 'Booking due diligence appointments', js: true do
         then_they_see_only_due_diligence_availability
         when_they_attempt_to_book_with_invalid_fields
         then_they_see_validation_messages
-        then_they_see_only_due_diligence_availability
+        then_they_see_only_due_diligence_availability(navigate_next: false)
       end
     end
   end
@@ -173,7 +173,8 @@ RSpec.feature 'Booking due diligence appointments', js: true do
     create(:bookable_slot, :due_diligence, start_at: Time.zone.parse('2021-04-08 14:30'))
   end
 
-  def then_they_see_only_due_diligence_availability
+  def then_they_see_only_due_diligence_availability(navigate_next: true)
+    @page.next_period.click if navigate_next
     @page.wait_until_calendar_events_visible
 
     # they're deduplicated properly given one is PW and one is DD
