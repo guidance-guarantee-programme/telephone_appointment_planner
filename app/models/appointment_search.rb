@@ -65,7 +65,7 @@ class AppointmentSearch
 
   def within_date_range(results)
     @start_at = 3.months.ago.beginning_of_day unless @start_at
-    @end_at   = 1.month.from_now.end_of_day unless @end_at
+    @end_at   = 3.months.from_now.end_of_day unless @end_at
 
     results.where('start_at between ? and ?', @start_at, @end_at)
   end
