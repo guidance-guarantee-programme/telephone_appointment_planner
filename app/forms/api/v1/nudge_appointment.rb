@@ -16,6 +16,7 @@ module Api
       attr_accessor :agent
       attr_accessor :nudge_confirmation
       attr_accessor :nudge_eligibility_reason
+      attr_accessor :gdpr_consent
 
       attr_reader :model
 
@@ -34,7 +35,7 @@ module Api
 
       private
 
-      def to_params # rubocop:disable MethodLength
+      def to_params # rubocop:disable MethodLength, AbcSize
         {
           start_at: start_at,
           first_name: first_name,
@@ -46,7 +47,6 @@ module Api
           memorable_word: memorable_word,
           dc_pot_confirmed: true,
           where_you_heard: '2', # A Pension Provider
-          gdpr_consent: '',
           accessibility_requirements: accessibility_requirements,
           notes: notes,
           agent: agent,
@@ -55,7 +55,8 @@ module Api
           schedule_type: 'pension_wise',
           nudged: true,
           nudge_confirmation: nudge_confirmation,
-          nudge_eligibility_reason: nudge_eligibility_reason
+          nudge_eligibility_reason: nudge_eligibility_reason,
+          gdpr_consent: gdpr_consent
         }
       end
     end
