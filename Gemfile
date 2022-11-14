@@ -72,7 +72,6 @@ source 'https://rubygems.org' do
 
   group :test do
     gem 'chronic'
-    gem 'coveralls', require: false
     gem 'database_rewinder'
     gem 'scss_lint', require: false
     gem 'selenium-webdriver'

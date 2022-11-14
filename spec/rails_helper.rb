@@ -16,11 +16,6 @@ require_relative 'support/sections/calendar'
 require_relative 'support/sections/multiple_day'
 require_relative 'support/sections/single_day'
 
-if ENV['TRAVIS']
-  require 'coveralls'
-  Coveralls.wear!
-end
-
 ActiveRecord::Migration.maintain_test_schema!
 
 Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
