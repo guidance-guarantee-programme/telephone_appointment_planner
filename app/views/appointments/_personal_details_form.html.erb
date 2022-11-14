@@ -37,7 +37,9 @@
       <p><strong>Customer research consent</strong></p>
       <%= f.radio_button :gdpr_consent, 'yes', label: 'Yes', class: 't-gdpr-consent-yes' %>
       <%= f.radio_button :gdpr_consent, 'no', label: 'No', class: 't-gdpr-consent-no' %>
-      <%= f.radio_button :gdpr_consent, '', label: 'No response', class: 't-gdpr-consent-no-response' %>
+      <% if @appointment.persisted? %>
+      <%= f.radio_button :gdpr_consent, '', label: 'No response', class: 't-gdpr-consent-no-response', disabled: true %>
+      <% end %>
     </div>
     <% end %>
   </div>

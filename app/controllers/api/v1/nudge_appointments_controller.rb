@@ -35,7 +35,8 @@ module Api
           :memorable_word,
           :date_of_birth,
           :accessibility_requirements,
-          :notes
+          :notes,
+          :gdpr_consent
         ).merge(agent: current_user)
       end
     end

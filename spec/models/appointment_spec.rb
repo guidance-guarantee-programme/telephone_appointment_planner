@@ -286,6 +286,24 @@ RSpec.describe Appointment, type: :model do
       build_stubbed(:appointment)
     end
 
+    context 'when the appointment is new' do
+      subject { build(:appointment) }
+
+      it 'does not permit an empty GDPR consent' do
+        subject.gdpr_consent = ''
+
+        expect(subject).to be_invalid
+      end
+    end
+
+    context 'when the appointment is not new' do
+      it 'permits an empty GDPR consent' do
+        subject.gdpr_consent = ''
+
+        expect(subject).to be_valid
+      end
+    end
+
     context 'when the appointment is small pots' do
       subject { build_stubbed(:appointment, organisation: :cas) }
 

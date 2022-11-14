@@ -135,7 +135,6 @@ class Appointment < ApplicationRecord
   validates :notes, presence: true, if: :validate_adjustment_needs?
   validates :type_of_appointment, inclusion: %w(standard 50-54)
   validates :where_you_heard, inclusion: WhereYouHeard.options_for_inclusion, on: :create, unless: :rebooked_from_id?
-  validates :gdpr_consent, inclusion: ['yes', 'no', '']
   validates :status, presence: true
   validates :guider, presence: true
   validates :unique_reference_number, uniqueness: true, if: :complete_due_diligence?
@@ -163,6 +162,7 @@ class Appointment < ApplicationRecord
   validate :validate_small_pots, if: :small_pots?
   validate :validate_tp_agent_statuses
   validate :validate_tpas_agent_statuses, if: :status_changed?, on: :update
+  validate :validate_gdpr_consent
 
   before_validation :format_name, on: :create
   before_create :track_initial_status
@@ -709,6 +709,13 @@ class Appointment < ApplicationRecord
     message = 'Small pots appointments may only be assigned to TPAS guiders'
 
     errors.add(:small_pots, message) unless guider&.tpas?
+  end
+
+  def validate_gdpr_consent
+    inclusion = %w(yes no)
+    inclusion << '' if persisted? || due_diligence?
+
+    errors.add(:gdpr_consent, :inclusion) unless inclusion.include?(gdpr_consent)
   end
 
   class << self

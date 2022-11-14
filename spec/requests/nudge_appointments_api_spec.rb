@@ -52,7 +52,8 @@ RSpec.describe 'POST /api/v1/nudge_appointments' do
       'date_of_birth'              => '1950-02-02',
       'accessibility_requirements' => '1',
       'notes'                      => 'These are my accessibility needs.',
-      'nudge_eligibility_reason'   => ''
+      'nudge_eligibility_reason'   => '',
+      'gdpr_consent'               => 'yes'
     }
 
     post api_v1_nudge_appointments_path, params: @payload, as: :json
@@ -71,7 +72,8 @@ RSpec.describe 'POST /api/v1/nudge_appointments' do
       'date_of_birth'              => '1975-02-02',
       'accessibility_requirements' => '0',
       'notes'                      => '',
-      'nudge_eligibility_reason'   => 'protected_pension_age'
+      'nudge_eligibility_reason'   => 'protected_pension_age',
+      'gdpr_consent'               => 'yes'
     }
 
     post api_v1_nudge_appointments_path, params: @payload, as: :json
@@ -91,9 +93,9 @@ RSpec.describe 'POST /api/v1/nudge_appointments' do
         memorable_word: 'snootboop',
         dc_pot_confirmed: true,
         where_you_heard: 2,
-        gdpr_consent: '',
         accessibility_requirements: false,
-        nudge_eligibility_reason: 'protected_pension_age'
+        nudge_eligibility_reason: 'protected_pension_age',
+        gdpr_consent: 'yes'
       )
 
       expect(appointment).to be_pension_wise
@@ -122,7 +124,7 @@ RSpec.describe 'POST /api/v1/nudge_appointments' do
         memorable_word: 'snootboop',
         dc_pot_confirmed: true,
         where_you_heard: 2,
-        gdpr_consent: '',
+        gdpr_consent: 'yes',
         accessibility_requirements: true
       )
 
