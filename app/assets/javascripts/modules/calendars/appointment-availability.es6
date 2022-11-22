@@ -21,6 +21,10 @@
           agendaThreeDay: {
             type: 'agenda',
             duration: { days: 3 }
+          },
+          agendaWeek: {
+            type: 'agenda',
+            duration: { days: 3 }
           }
         }
       };
