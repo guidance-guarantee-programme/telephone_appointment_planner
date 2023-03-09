@@ -58,9 +58,9 @@ module Sections
           var $calendar = $('.t-calendar');
           var view = $calendar.fullCalendar('getView');
 
-          var allEvents = $calendar
-            .fullCalendar('clientEvents');
-          return $.grep(allEvents, function(event) {
+          var allEvents = $calendar.fullCalendar('clientEvents');
+
+          $.grep(allEvents, function(event) {
             if (event.allDay) {
               return event.start >= view.intervalStart && event.start <= view.intervalEnd;
             } else {
@@ -68,6 +68,15 @@ module Sections
                 event.start >= view.intervalStart && event.end <= view.intervalEnd;
             }
           });
+
+          return $.map(allEvents, function(event) {
+            if (('holiday' == '#{event_type}' || 'slot' == '#{event_type}') && $.isFunction(event.start.format)) {
+              event.start = event.start.format();
+              event.end = event.end.format();
+            }
+
+            return event;
+          })
         }();
       JS
     end

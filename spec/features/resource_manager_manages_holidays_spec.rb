@@ -179,18 +179,18 @@ RSpec.feature 'Resource manager manages holidays' do
       [
         {
           title: 'Holiday Title',
-          start_at: '2016-10-18T14:00:00.000Z',
-          end_at: '2016-10-18T16:00:00.000Z'
+          start_at: '2016-10-18T14:00:00Z',
+          end_at: '2016-10-18T16:00:00Z'
         },
         {
           title: 'Holiday Title',
-          start_at: '2016-10-19T14:00:00.000Z',
-          end_at: '2016-10-19T16:00:00.000Z'
+          start_at: '2016-10-19T14:00:00Z',
+          end_at: '2016-10-19T16:00:00Z'
         },
         {
           title: 'Holiday Title',
-          start_at: '2016-10-20T14:00:00.000Z',
-          end_at: '2016-10-20T16:00:00.000Z'
+          start_at: '2016-10-20T14:00:00Z',
+          end_at: '2016-10-20T16:00:00Z'
         }
       ]
     )
@@ -201,13 +201,13 @@ RSpec.feature 'Resource manager manages holidays' do
       [
         {
           title: 'First user holiday',
-          start_at: '2016-10-18T09:00:00.000Z',
-          end_at: '2016-10-18T11:00:00.000Z'
+          start_at: '2016-10-18T09:00:00Z',
+          end_at: '2016-10-18T11:00:00Z'
         },
         {
           title: 'Merged Holiday',
-          start_at: '2016-10-18T13:00:00.000Z',
-          end_at: '2016-10-18T14:00:00.000Z'
+          start_at: '2016-10-18T13:00:00Z',
+          end_at: '2016-10-18T14:00:00Z'
         }
       ]
     )
@@ -219,8 +219,8 @@ RSpec.feature 'Resource manager manages holidays' do
       [
         {
           title: 'Second user holiday',
-          start_at: '2016-10-25T09:00:00.000Z',
-          end_at: '2016-10-25T14:00:00.000Z'
+          start_at: '2016-10-25T09:00:00Z',
+          end_at: '2016-10-25T14:00:00Z'
 
         },
         {
@@ -276,8 +276,8 @@ RSpec.feature 'Resource manager manages holidays' do
 
     expect_holidays_to_match(
       title:    'Holiday Title',
-      start_at: '2016-10-18T14:00:00.000Z',
-      end_at:   '2016-10-18T16:00:00.000Z'
+      start_at: '2016-10-18T14:00:00Z',
+      end_at:   '2016-10-18T16:00:00Z'
     )
   end
 
@@ -370,8 +370,8 @@ RSpec.feature 'Resource manager manages holidays' do
     expect(@page).to be_displayed
     expect_holidays_to_match(
       title:    'Some other holiday title',
-      start_at: '2016-10-18T12:00:00.000Z',
-      end_at:   '2016-10-18T18:00:00.000Z'
+      start_at: '2016-10-18T12:00:00Z',
+      end_at:   '2016-10-18T18:00:00Z'
     )
   end
 

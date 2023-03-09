@@ -183,7 +183,7 @@ RSpec.feature 'Guider views appointments' do
   end
 
   def and_they_can_see_their_holiday_for_today
-    event = @page.calendar.holidays.first
+    event = @page.calendar.holidays.last
     expect(Time.zone.parse(event[:start])).to eq @holiday.start_at
     expect(Time.zone.parse(event[:end])).to eq @holiday.end_at
   end
@@ -218,7 +218,7 @@ RSpec.feature 'Guider views appointments' do
   end
 
   def and_they_see_their_schedule_for_tomorrow
-    event = @page.calendar.slots.first
+    event = @page.calendar.slots.last
     expect(Time.zone.parse(event[:start])).to eq @bookable_slots.second.start_at
     expect(Time.zone.parse(event[:end])).to eq @bookable_slots.second.end_at
   end
