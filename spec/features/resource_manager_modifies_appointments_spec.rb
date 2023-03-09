@@ -299,8 +299,8 @@ RSpec.feature 'Resource manager modifies appointments' do
     holiday = @page.calendar.holidays.first
     expect(holiday[:resourceId]).to eq @guider.id
     expect(holiday[:title]).to eq 'Holiday Title'
-    expect(holiday[:start]).to eq "#{date}T09:00:00.000Z"
-    expect(holiday[:end]).to eq "#{date}T09:10:00.000Z"
+    expect(holiday[:start]).to eq "#{date}T09:00:00Z"
+    expect(holiday[:end]).to eq "#{date}T09:10:00Z"
 
     expect(Holiday.count).to eq 1
   end
