@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe BookableSlot, type: :model do
   def make_time(hour, minute)
     BusinessDays
-      .from_now(5)
+      .from_now(6)
       .change(hour: hour, min: minute)
   end
 
@@ -385,7 +385,6 @@ RSpec.describe BookableSlot, type: :model do
       it 'sees the correct slots based on organisational membership' do
         [
           @guider_tpas = create(:guider, :tpas),
-          @guider_tp   = create(:agent_and_guider, :tp),
           @guiders_cas = create_list(:guider, 2, :cas)
         ].flatten.each do |guider|
           create(
@@ -396,10 +395,8 @@ RSpec.describe BookableSlot, type: :model do
           )
         end
 
-        # TP can see all slots irrespectively
-        expect(result(@guider_tp).first).to include(guiders: 4)
         # TPAS can see all slots
-        expect(result(@guider_tpas).first).to include(guiders: 4)
+        expect(result(@guider_tpas).first).to include(guiders: 3)
         # CAS can see their own slots
         expect(result(@guiders_cas.first).first).to include(guiders: 2)
       end

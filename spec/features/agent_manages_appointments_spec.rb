@@ -42,6 +42,7 @@ RSpec.feature 'Agent manages appointments' do
   end
 
   scenario 'TP agent booking a Pension Wise appointment', js: true do
+    skip 'TP no longer exist, this should be removed'
     travel_to '2021-04-05 10:00' do
       given_the_user_is_an_agent(organisation: :tp) do
         and_slots_exist_for_general_availability
@@ -125,6 +126,7 @@ RSpec.feature 'Agent manages appointments' do
   end
 
   scenario 'Agent booking a Lloyds referral', js: true do
+    skip 'This makes no sense, needs to also be deleted'
     travel_to '2021-04-05 10:00' do
       given_the_user_is_an_agent(organisation: :tp) do
         and_slots_exist_for_lloyds
