@@ -71,6 +71,18 @@ RSpec.describe PrintedConfirmationJob, '#perform' do
         described_class.new.perform(appointment)
       end
     end
+
+    context 'when the confirmation fails to deliver' do
+      it 'creates a failure activity to be actioned' do
+        response_double = double(code: 400, body: 'bad times')
+
+        allow(client).to receive(:send_letter).and_raise(Notifications::Client::BadRequestError, response_double)
+
+        described_class.new.perform(appointment)
+
+        expect(appointment.activities.first).to be_an(PrintedConfirmationFailedActivity)
+      end
+    end
   end
 
   before do

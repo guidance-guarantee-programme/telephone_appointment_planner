@@ -1,0 +1,5 @@
+<% content_for(:activity_message, flush: true) do %>
+  <span class="glyphicon glyphicon-print" aria-hidden="true"></span>
+  <strong>The system</strong> attempted to send a <%= printed_confirmation_failed_activity.message %> letter but it failed
+<% end %>
+<%= render 'activities/activity', activity: printed_confirmation_failed_activity, details: details, hide: hide %>
