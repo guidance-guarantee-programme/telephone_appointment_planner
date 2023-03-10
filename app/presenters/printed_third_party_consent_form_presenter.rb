@@ -5,7 +5,6 @@ class PrintedThirdPartyConsentFormPresenter
 
   def to_h # rubocop:disable MethodLength, AbcSize
     {
-      cas: cas_guider,
       reference: appointment.to_param,
       third_party_name: appointment.name,
       address_line_1: appointment.data_subject_name,
@@ -21,8 +20,4 @@ class PrintedThirdPartyConsentFormPresenter
   private
 
   attr_reader :appointment
-
-  def cas_guider
-    appointment.cas_guider? ? 'Yes' : 'No'
-  end
 end

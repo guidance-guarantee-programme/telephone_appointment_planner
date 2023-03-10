@@ -20,7 +20,6 @@ RSpec.describe PrintedThirdPartyConsentFormJob, '#perform' do
         template_id: PrintedThirdPartyConsentFormJob::TEMPLATE_ID,
         reference: appointment.to_param,
         personalisation: {
-          cas: 'No',
           reference: appointment.to_param,
           third_party_name: appointment.name,
           address_line_1: appointment.data_subject_name,
