@@ -79,7 +79,7 @@ class BookableSlot < ApplicationRecord
     if day
       [Time.zone.parse(day).beginning_of_day, Time.zone.parse(day).end_of_day]
     else
-      [next_valid_start_date(nil, schedule_type), BusinessDays.from_now(40).end_of_day]
+      [next_valid_start_date(nil, schedule_type), BusinessDays.from_now(55).end_of_day]
     end
   end
 
@@ -209,6 +209,6 @@ class BookableSlot < ApplicationRecord
   end
 
   def self.generation_range
-    Time.zone.now.to_date..8.weeks.from_now.to_date
+    Time.zone.now.to_date..BusinessDays.from_now(55).to_date
   end
 end

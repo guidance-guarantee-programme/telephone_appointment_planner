@@ -490,8 +490,8 @@ class Appointment < ApplicationRecord
   def valid_within_booking_window
     return unless start_at
 
-    too_late = start_at > BusinessDays.from_now(45)
-    errors.add(:start_at, 'must be less than 45 business days from now') if too_late
+    too_late = start_at > BusinessDays.from_now(55)
+    errors.add(:start_at, 'must be less than 55 business days from now') if too_late
   end
 
   def data_subject_date_of_birth_valid
