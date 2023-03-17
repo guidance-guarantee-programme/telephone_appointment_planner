@@ -6,7 +6,7 @@
     <%= f.text_field :last_name, autocomplete: 'off', class: 't-last-name', label: required_label(:last_name) %>
     <%= f.email_field :email, autocomplete: 'off', class: 't-email' %>
     <%= f.telephone_field :phone, autocomplete: 'off', class: 't-phone', label: required_label(:phone), 
-      help: '<p>For non-UK numbers include the country dialling code.</p><p><strong>If mobile</strong>: I need to make you aware that in the interest of road safety we will not deliver a an appointment if you are driving. This also includes the use of hands-free devices. Please ensure you are not driving at the time of your appointment.</p>'.html_safe
+      help: '<p>For non-UK numbers include the country dialling code.</p>'.html_safe
     %>
     <%= f.telephone_field :mobile, autocomplete: 'off', class: 't-mobile',
       help: 'We will use this to send an SMS appointment reminder 7 days and additionally 48 hours before the appointment. Customers can cancel appointments via SMS response.'
