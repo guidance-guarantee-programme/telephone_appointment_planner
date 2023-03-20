@@ -20,6 +20,7 @@ class Appointment < ApplicationRecord
   NON_NOTIFY_COLUMNS = %w(
     agent_id
     guider_id
+    rescheduled_at
     notes
     status
     secondary_status

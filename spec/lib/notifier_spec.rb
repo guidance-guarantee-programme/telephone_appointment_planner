@@ -226,4 +226,14 @@ RSpec.describe Notifier, '#call' do
       )
     end
   end
+
+  context 'when the `rescheduled_at` column is touched' do
+    it 'does not send a customer email' do
+      expect(CustomerUpdateJob).to_not receive(:perform_later)
+
+      appointment.touch(:rescheduled_at)
+
+      subject.call
+    end
+  end
 end
