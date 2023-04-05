@@ -975,6 +975,9 @@ RSpec.describe Appointment, type: :model do
     end
 
     context 'appointment is less than two days in the future' do
+      before { travel_to '2023-04-01 13:00' }
+      after { travel_back }
+
       let(:appointment) do
         build_stubbed(:appointment, start_at: BusinessDays.from_now(1))
       end
