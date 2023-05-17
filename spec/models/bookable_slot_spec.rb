@@ -64,6 +64,32 @@ RSpec.describe BookableSlot, type: :model do
       end
     end
 
+    context 'when the user is from TPAS' do
+      context 'as a guider' do
+        let(:user) { build_stubbed(:guider, :tpas) }
+
+        it 'respects the lockdown period' do
+          travel_to '2023-03-01 10:00' do
+            actual = BookableSlot.next_valid_start_date(user)
+
+            expect(actual).to eq(Time.zone.parse('2023-03-02 21:00'))
+          end
+        end
+      end
+
+      context 'as a resource manager' do
+        let(:user) { build_stubbed(:resource_manager, :tpas) }
+
+        it 'skips the lockdown period' do
+          travel_to '2023-03-01 10:00' do
+            actual = BookableSlot.next_valid_start_date(user)
+
+            expect(actual).to eq(Time.zone.parse('2023-03-01 10:00'))
+          end
+        end
+      end
+    end
+
     context 'user is a guider / agent' do
       context 'outside of a bank holiday period' do
         before { travel_to('2017-04-06 12:00') }
