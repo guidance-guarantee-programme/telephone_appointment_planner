@@ -81,6 +81,10 @@ class User < ApplicationRecord
     tpas? && (guider? || resource_manager?)
   end
 
+  def tpas_resource_manager?
+    tpas? && resource_manager?
+  end
+
   def lloyds_signposter?
     return true if tp_agent? || administrator?
 
