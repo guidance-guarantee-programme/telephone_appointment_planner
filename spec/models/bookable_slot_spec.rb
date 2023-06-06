@@ -72,7 +72,7 @@ RSpec.describe BookableSlot, type: :model do
           travel_to '2023-03-01 10:00' do
             actual = BookableSlot.next_valid_start_date(user)
 
-            expect(actual).to eq(Time.zone.parse('2023-03-02 21:00'))
+            expect(actual).to eq(Time.zone.parse('2023-03-08 21:00'))
           end
         end
       end
@@ -379,8 +379,10 @@ RSpec.describe BookableSlot, type: :model do
         create(:bookable_slot, guider: @tpas_guider, start_at: Time.zone.parse('2022-09-08 10:30am'))
 
         travel_to '2022-09-06 07:00' do
-          expect(result(@tpas_guider).first).to include(guiders: 2)
+          # when contextually rescheduling
+          expect(result([@tpas_resource_manager, @tpas_guider]).first).to include(guiders: 2)
 
+          expect(result(@tpas_guider).first).to include(guiders: 1)
           expect(result(@cas_guider).first).to include(guiders: 1)
         end
 

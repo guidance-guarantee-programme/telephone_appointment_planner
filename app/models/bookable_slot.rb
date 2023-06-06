@@ -39,7 +39,7 @@ class BookableSlot < ApplicationRecord
   def self.next_valid_start_date(user = nil, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE)
     return Time.zone.now if user&.resource_manager?
 
-    if schedule_type == User::DUE_DILIGENCE_SCHEDULE_TYPE
+    if schedule_type == User::DUE_DILIGENCE_SCHEDULE_TYPE || user&.tpas_guider?
       BusinessDays.from_now(5).change(hour: 21, min: 0).in_time_zone('London')
     else
       BusinessDays.from_now(1).change(hour: 21, min: 0).in_time_zone('London')
