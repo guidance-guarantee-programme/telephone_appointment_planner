@@ -37,9 +37,9 @@ class BookableSlot < ApplicationRecord
   end
 
   def self.next_valid_start_date(user = nil, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE)
-    return Time.zone.now if user&.resource_manager? || user&.tpas_agent?
+    return Time.zone.now if user&.resource_manager?
 
-    if schedule_type == User::DUE_DILIGENCE_SCHEDULE_TYPE
+    if schedule_type == User::DUE_DILIGENCE_SCHEDULE_TYPE || user&.tpas_guider?
       BusinessDays.from_now(5).change(hour: 21, min: 0).in_time_zone('London')
     else
       BusinessDays.from_now(1).change(hour: 21, min: 0).in_time_zone('London')
@@ -130,7 +130,8 @@ class BookableSlot < ApplicationRecord
   end
 
   def self.starting_after_next_valid_start_date(user, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE) # rubocop:disable MethodLength, LineLength
-    normal_scope = where("#{quoted_table_name}.start_at > ?", next_valid_start_date(user))
+    starting_from = next_valid_start_date(user, schedule_type)
+    normal_scope = where("#{quoted_table_name}.start_at > ?", starting_from)
 
     return normal_scope if schedule_type == User::DUE_DILIGENCE_SCHEDULE_TYPE
 
@@ -145,7 +146,7 @@ class BookableSlot < ApplicationRecord
            (users.organisation_content_id != :tpas_id AND bookable_slots.start_at > :start_at)
           ',
           tpas_id: Provider::TPAS.id,
-          tpas_start_at: Time.zone.now,
+          tpas_start_at: starting_from,
           start_at: from
         )
     else
@@ -154,11 +155,15 @@ class BookableSlot < ApplicationRecord
   end
 
   def self.with_guider_count(user, from, to, lloyds: false, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE, scoped: true, internal: false, external: false) # rubocop:disable AbcSize, LineLength, MethodLength, ParameterLists
+    users = Array(user)
+    agent = users.one? ? user : users.first
+    user  = users.last
+
     limit_by_organisation = !user.resource_manager? && !user.tpas_agent?
 
     select("DISTINCT #{quoted_table_name}.start_at, #{quoted_table_name}.end_at, count(1) AS guiders")
       .bookable
-      .starting_after_next_valid_start_date(user, schedule_type: schedule_type)
+      .starting_after_next_valid_start_date(agent, schedule_type: schedule_type)
       .for_schedule_type(schedule_type: schedule_type)
       .for_organisation(user, lloyds: lloyds, scoped: scoped, internal: internal, external: external)
       .group("#{quoted_table_name}.start_at, #{quoted_table_name}.end_at")

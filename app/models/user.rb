@@ -77,8 +77,16 @@ class User < ApplicationRecord
     tp? && agent?
   end
 
+  def tpas_guider?
+    tpas? && guider?
+  end
+
   def tpas_agent?
     tpas? && (guider? || resource_manager?)
+  end
+
+  def tpas_resource_manager?
+    tpas? && resource_manager?
   end
 
   def lloyds_signposter?

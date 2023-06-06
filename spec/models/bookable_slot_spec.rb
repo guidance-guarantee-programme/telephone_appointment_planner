@@ -64,6 +64,32 @@ RSpec.describe BookableSlot, type: :model do
       end
     end
 
+    context 'when the user is from TPAS' do
+      context 'as a guider' do
+        let(:user) { build_stubbed(:guider, :tpas) }
+
+        it 'respects the lockdown period' do
+          travel_to '2023-03-01 10:00' do
+            actual = BookableSlot.next_valid_start_date(user)
+
+            expect(actual).to eq(Time.zone.parse('2023-03-08 21:00'))
+          end
+        end
+      end
+
+      context 'as a resource manager' do
+        let(:user) { build_stubbed(:resource_manager, :tpas) }
+
+        it 'skips the lockdown period' do
+          travel_to '2023-03-01 10:00' do
+            actual = BookableSlot.next_valid_start_date(user)
+
+            expect(actual).to eq(Time.zone.parse('2023-03-01 10:00'))
+          end
+        end
+      end
+    end
+
     context 'user is a guider / agent' do
       context 'outside of a bank holiday period' do
         before { travel_to('2017-04-06 12:00') }
@@ -343,26 +369,28 @@ RSpec.describe BookableSlot, type: :model do
   end
 
   describe '#with_guider_count' do
-    context 'when a TPAS agent' do
+    context 'when TPAS' do
       it 'excludes external org slots inside the grace period start' do
-        [
-          @tpas_guider = create(:guider, :tpas),
-          @cas_guider  = create(:guider, :cas)
-        ].each do |guider|
-          travel_to '2022-09-01 09:00' do
-            create(
-              :bookable_slot,
-              guider: guider,
-              start_at: make_time(10, 30),
-              end_at: make_time(11, 30)
-            )
-          end
+        @tpas_resource_manager = create(:resource_manager, :tpas)
+        @tpas_guider = create(:guider, :tpas)
+        @cas_guider  = create(:guider, :cas)
+
+        create(:bookable_slot, guider: @cas_guider, start_at: Time.zone.parse('2022-09-08 10:30am'))
+        create(:bookable_slot, guider: @tpas_guider, start_at: Time.zone.parse('2022-09-08 10:30am'))
+
+        travel_to '2022-09-06 07:00' do
+          # when contextually rescheduling
+          expect(result([@tpas_resource_manager, @tpas_guider]).first).to include(guiders: 2)
+
+          expect(result(@tpas_guider).first).to include(guiders: 1)
+          expect(result(@cas_guider).first).to include(guiders: 1)
         end
 
         travel_to '2022-09-08 07:00' do
+          expect(result(@tpas_guider)).to be_empty
           expect(result(@cas_guider)).to be_empty
 
-          expect(result(@tpas_guider).first).to include(guiders: 1)
+          expect(result(@tpas_resource_manager).first).to include(guiders: 1)
         end
       end
     end

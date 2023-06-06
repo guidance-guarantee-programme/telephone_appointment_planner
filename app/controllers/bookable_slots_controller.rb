@@ -59,10 +59,13 @@ class BookableSlotsController < ApplicationController
   end
 
   def filtered_user
-    return current_user unless rescheduling? && (current_user.tp? || current_user.tpas_agent?)
-
     appointment = Appointment.find(params[:id])
-    appointment.guider
+
+    if rescheduling? && current_user.tpas_agent?
+      [current_user, appointment.guider]
+    else
+      appointment.guider
+    end
   rescue ActiveRecord::RecordNotFound
     current_user
   end
