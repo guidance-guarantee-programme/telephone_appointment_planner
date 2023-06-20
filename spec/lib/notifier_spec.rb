@@ -12,7 +12,7 @@ RSpec.describe Notifier, '#call' do
     allow(AppointmentMailer).to receive(:confirmation) { mailer }
     allow(AppointmentMailer).to receive(:missed) { mailer }
     allow(AppointmentMailer).to receive(:updated) { mailer }
-    allow(mailer).to receive(:deliver)
+    allow(mailer).to receive(:deliver_now)
   end
 
   context 'when an appointment is otherwise altered' do

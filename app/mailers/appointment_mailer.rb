@@ -1,4 +1,8 @@
 class AppointmentMailer < ApplicationMailer
+  rescue_from Net::SMTPUnknownError do |exception|
+    Rails.logger.error(exception)
+  end
+
   default subject: -> { @appointment.subject }, from: -> { @appointment.from }
 
   def resource_manager_email_dropped(appointment, recipient)

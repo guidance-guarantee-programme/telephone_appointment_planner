@@ -16,13 +16,13 @@ class CustomerUpdateJob < ActiveJob::Base
   def send_email(appointment, message)
     case message
     when CustomerUpdateActivity::CANCELLED_MESSAGE
-      AppointmentMailer.cancelled(appointment).deliver
+      AppointmentMailer.cancelled(appointment).deliver_now
     when CustomerUpdateActivity::CONFIRMED_MESSAGE
-      AppointmentMailer.confirmation(appointment).deliver
+      AppointmentMailer.confirmation(appointment).deliver_now
     when CustomerUpdateActivity::MISSED_MESSAGE
-      AppointmentMailer.missed(appointment).deliver
+      AppointmentMailer.missed(appointment).deliver_now
     when CustomerUpdateActivity::UPDATED_MESSAGE
-      AppointmentMailer.updated(appointment).deliver
+      AppointmentMailer.updated(appointment).deliver_now
     end
   end
 end
