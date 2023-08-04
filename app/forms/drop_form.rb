@@ -32,21 +32,23 @@ class DropForm
   validates :message_type, presence: true, exclusion: { in: IGNORED_MESSAGE_TYPES }
   validates :environment, inclusion: { in: %w(production) }
 
-  def create_activity
-    return unless valid?
+  def create_activity # rubocop:disable MethodLength
+    if valid?
+      verify_token!
 
-    verify_token!
+      DropActivity.from(
+        event,
+        description,
+        message_type,
+        appointment
+      )
 
-    DropActivity.from(
-      event,
-      description,
-      message_type,
-      appointment
-    )
+      EmailDropNotificationsJob.perform_later(appointment)
 
-    EmailDropNotificationsJob.perform_later(appointment)
-
-    log_btinternet_drops
+      log_btinternet_drops
+    else
+      logger.info(errors.full_messages)
+    end
   end
 
   private
