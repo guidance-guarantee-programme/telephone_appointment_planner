@@ -177,7 +177,7 @@ RSpec.feature 'Guider views appointments' do
   end
 
   def and_they_see_their_schedule_for_today
-    event = @page.calendar.slots.first
+    event = @page.calendar.slots.sort { |x, y| x[:start] <=> y[:start] }.first
     expect(Time.zone.parse(event[:start])).to eq @bookable_slots.first.start_at
     expect(Time.zone.parse(event[:end])).to eq @bookable_slots.first.end_at
   end
