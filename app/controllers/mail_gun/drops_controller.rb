@@ -11,17 +11,22 @@ module MailGun
 
     private
 
-    def drop_params
-      params.permit(
-        :event,
-        :description,
-        :appointment_id,
-        :message_type,
-        :environment,
-        :timestamp,
-        :token,
-        :signature
-      )
+    def drop_params # rubocop:disable AbcSize, MethodLength
+      event_data = params['event-data']
+
+      description = event_data['delivery-status'][:description].presence ||
+                    event_data['delivery-status'][:message].presence
+
+      {
+        event: event_data[:event],
+        description: description,
+        message_type: event_data['user-variables'][:message_type],
+        environment: event_data['user-variables'][:environment],
+        appointment_id: event_data['user-variables'][:appointment_id],
+        timestamp: params[:signature][:timestamp],
+        token: params[:signature][:token],
+        signature: params[:signature][:signature]
+      }
     end
   end
 end
