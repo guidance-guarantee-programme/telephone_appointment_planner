@@ -39,18 +39,13 @@ class SummaryDocumentApi
     {
       url: api_uri,
       request: {
-        timeout: read_timeout,
-        open_timeout: open_timeout
+        timeout: timeout
       }
     }
   end
 
-  def open_timeout
+  def timeout
     ENV.fetch('SUMMARY_DOCUMENT_API_OPEN_TIMEOUT', 2).to_i
-  end
-
-  def read_timeout
-    ENV.fetch('SUMMARY_DOCUMENT_API_READ_TIMEOUT', 2).to_i
   end
 
   def api_uri
