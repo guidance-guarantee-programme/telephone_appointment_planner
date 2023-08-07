@@ -19,7 +19,7 @@ class WebHook
       faraday.request  :json
       faraday.response :raise_error
       faraday.use      :instrumentation
-      faraday.adapter  Faraday.default_adapter
+      faraday.adapter  :http
     end
   end
 

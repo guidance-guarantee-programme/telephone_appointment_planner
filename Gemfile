@@ -30,6 +30,7 @@ source 'https://rubygems.org' do
   gem 'capitalize-names', require: 'capitalize_names'
   gem 'faraday'
   gem 'faraday-conductivity'
+  gem 'faraday-http'
   gem 'faraday_middleware'
   gem 'font-awesome-rails'
   gem 'foreman'

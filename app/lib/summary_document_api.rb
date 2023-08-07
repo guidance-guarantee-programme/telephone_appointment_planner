@@ -29,7 +29,7 @@ class SummaryDocumentApi
       faraday.response :raise_error
       faraday.response :json
       faraday.use :instrumentation
-      faraday.adapter Faraday.default_adapter
+      faraday.adapter :http
       faraday.authorization :Bearer, bearer_token if bearer_token
       faraday.headers[:accept] = 'application/json'
     end
