@@ -10,6 +10,13 @@ RSpec.describe 'POST /mail_gun/drops' do
     end
   end
 
+  scenario 'an invalid message type payload responds OK' do
+    with_a_configured_token('deadbeef') do
+      when_mail_gun_posts_an_ignored_drop_notification
+      and_the_service_responds_ok
+    end
+  end
+
   def with_a_configured_token(token)
     existing = ENV['MAILGUN_API_TOKEN']
 
@@ -40,6 +47,29 @@ RSpec.describe 'POST /mail_gun/drops' do
           "message_type": 'booking_created',
           "environment": 'production',
           "appointment_id": @appointment.to_param
+        }
+      }
+    }
+
+    post mail_gun_drops_path, params: payload, as: :json
+  end
+
+  def when_mail_gun_posts_an_ignored_drop_notification
+    payload = {
+      "signature": {
+        "token": 'secret',
+        "timestamp": '1474638633',
+        "signature": 'abf02bef01e803bea52213cb092a31dc2174f63bcc2382ba25732f4c84e084c1'
+      },
+      "event-data": {
+        "event": 'dropped',
+        "delivery-status": {
+          "message": '',
+          "description": 'the reasoning'
+        },
+        "user-variables": {
+          "message_type": 'resource_manager_email_dropped',
+          "environment": 'production'
         }
       }
     }
