@@ -126,12 +126,14 @@ RSpec.feature 'Booking due diligence appointments', js: true do
   def then_the_due_diligence_appointment_is_booked
     @appointment = Appointment.last
     expect(@appointment).to be_due_diligence
+    expect(@appointment.country_code).to eq('FR')
   end
 
   def and_they_accept_the_appointment_preview
     @page = Pages::PreviewAppointment.new
     expect(@page).to be_displayed
     expect(@page).to have_content('PSG appointment')
+    expect(@page).to have_content('France')
 
     @page.confirm_appointment.click
   end
@@ -160,6 +162,7 @@ RSpec.feature 'Booking due diligence appointments', js: true do
     @page.first_name.set 'Some'
     @page.last_name.set 'Person'
     @page.email.set 'email@example.org'
+    @page.country_of_residence.select('France')
     @page.phone.set '0208 252 4729'
     @page.mobile.set '07715 930 459'
     @page.memorable_word.set 'lozenge'

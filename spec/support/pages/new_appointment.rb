@@ -8,6 +8,7 @@ module Pages
     element :first_name,                            '.t-first-name'
     element :last_name,                             '.t-last-name'
     element :email,                                 '.t-email'
+    element :country_of_residence,                  '.t-country-of-residence'
     element :phone,                                 '.t-phone'
     element :mobile,                                '.t-mobile'
     element :date_of_birth_day,                     '.t-date-of-birth-day'

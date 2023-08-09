@@ -25,6 +25,7 @@
   <%= f.hidden_field :first_name %>
   <%= f.hidden_field :last_name %>
   <%= f.hidden_field :email %>
+  <%= f.hidden_field :country_code %>
   <%= f.hidden_field :phone %>
   <%= f.hidden_field :mobile %>
   <%= f.hidden_field :memorable_word %>
@@ -103,6 +104,12 @@
                 <%= display_with_newline(@appointment.county) %>
                 <%= @appointment.postcode %>
               </td>
+            </tr>
+            <% end %>
+            <% if @appointment.due_diligence? %>
+            <tr>
+              <td class="active"><b>Country of residence</b></td>
+              <td><%= country_name(@appointment.country_code) %></td>
             </tr>
             <% end %>
             <tr>

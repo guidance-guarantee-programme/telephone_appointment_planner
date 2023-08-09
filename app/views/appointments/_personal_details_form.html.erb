@@ -5,6 +5,12 @@
     <%= f.text_field :first_name, autocomplete: 'off', class: 't-first-name', label: required_label(:first_name) %>
     <%= f.text_field :last_name, autocomplete: 'off', class: 't-last-name', label: required_label(:last_name) %>
     <%= f.email_field :email, autocomplete: 'off', class: 't-email' %>
+    <% if @appointment.due_diligence? %>
+      <div class="form-group">
+        <%= f.label :country_code, required_label('Country of residence') %>
+        <%= f.country_select :country_code, { priority_countries: ['GB'] }, class: 't-country-of-residence form-control' %>
+      </div>
+    <% end %>
     <%= f.telephone_field :phone, autocomplete: 'off', class: 't-phone', label: required_label(:phone), 
       help: '<p>For non-UK numbers include the country dialling code.</p>'.html_safe
     %>
