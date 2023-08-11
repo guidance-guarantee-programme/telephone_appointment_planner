@@ -33,6 +33,7 @@ module Api
           :first_name,
           :last_name,
           :email,
+          :country_code,
           :phone,
           :memorable_word,
           :date_of_birth,

@@ -118,6 +118,7 @@ RSpec.describe 'POST /api/v1/appointments' do
       'lloyds_signposted' => false,
       'schedule_type'     => 'due_diligence',
       'referrer'          => 'Big Pension Co.',
+      'country_code'      => 'FR',
       'accessibility_requirements' => false
     }
 
@@ -129,7 +130,10 @@ RSpec.describe 'POST /api/v1/appointments' do
   end
 
   def and_the_due_diligence_appointment_is_created
-    expect(Appointment.last).to be_due_diligence
+    expect(Appointment.last).to have_attributes(
+      schedule_type: 'due_diligence',
+      country_code: 'FR'
+    )
   end
 
   def when_the_client_supplies_an_incorrect_schedule_type
@@ -265,6 +269,7 @@ RSpec.describe 'POST /api/v1/appointments' do
         first_name: 'Rick',
         last_name: 'Sanchez',
         email: 'rick@example.com',
+        country_code: 'GB',
         phone: '02082524729',
         memorable_word: 'snootboop',
         dc_pot_confirmed: true,
