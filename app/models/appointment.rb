@@ -48,6 +48,7 @@ class Appointment < ApplicationRecord
     unique_reference_number
     referrer
     small_pots
+    country_code
   ).freeze
 
   enum status: %i(
