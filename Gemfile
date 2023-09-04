@@ -75,9 +75,8 @@ source 'https://rubygems.org' do
     gem 'chronic'
     gem 'database_rewinder'
     gem 'scss_lint', require: false
-    gem 'selenium-webdriver', '3.142.7'
+    gem 'selenium-webdriver'
     gem 'vcr'
-    gem 'webdrivers', '4.4.1'
     gem 'webmock'
     gem 'webrick'
   end
