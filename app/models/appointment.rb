@@ -6,6 +6,8 @@ class Appointment < ApplicationRecord
 
   attr_accessor :current_user, :internal_availability
 
+  DEFAULT_COUNTRY_CODE = 'GB'.freeze
+
   CANCELLED_STATUSES = %i(
     cancelled_by_customer
     cancelled_by_pension_wise
@@ -46,6 +48,7 @@ class Appointment < ApplicationRecord
     unique_reference_number
     referrer
     small_pots
+    country_code
   ).freeze
 
   enum status: %i(

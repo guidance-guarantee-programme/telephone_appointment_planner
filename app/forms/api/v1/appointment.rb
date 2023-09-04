@@ -24,6 +24,7 @@ module Api
       attr_reader :model
 
       attr_writer :nudged
+      attr_writer :country_code
 
       def initialize(*)
         super
@@ -40,6 +41,10 @@ module Api
         @nudged == 'true' || @nudged == true
       end
 
+      def country_code
+        @country_code || ::Appointment::DEFAULT_COUNTRY_CODE
+      end
+
       delegate :errors, :accessibility_requirements?, to: :model
 
       private
@@ -50,6 +55,7 @@ module Api
           first_name: first_name,
           last_name: last_name,
           email: email,
+          country_code: country_code,
           phone: phone,
           date_of_birth: date_of_birth,
           memorable_word: memorable_word,

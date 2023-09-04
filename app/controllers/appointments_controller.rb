@@ -184,6 +184,7 @@ class AppointmentsController < ApplicationController
       :first_name,
       :last_name,
       :email,
+      :country_code,
       :phone,
       :mobile,
       :date_of_birth,

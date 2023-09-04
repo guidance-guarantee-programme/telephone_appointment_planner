@@ -1,4 +1,9 @@
 module AppointmentHelper
+  def country_name(code)
+    country = ISO3166::Country[code]
+    country.translations[I18n.locale.to_s]
+  end
+
   def due_diligence_grace_period
     grace = BookableSlot.next_valid_start_date(nil, User::DUE_DILIGENCE_SCHEDULE_TYPE)
 

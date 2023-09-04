@@ -28,6 +28,7 @@ source 'https://rubygems.org' do
   gem 'bootstrap-kaminari-views'
   gem 'bugsnag'
   gem 'capitalize-names', require: 'capitalize_names'
+  gem 'country_select'
   gem 'faraday'
   gem 'faraday-conductivity'
   gem 'faraday-http'
