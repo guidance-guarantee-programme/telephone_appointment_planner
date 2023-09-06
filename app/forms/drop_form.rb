@@ -45,19 +45,12 @@ class DropForm
 
       EmailDropNotificationsJob.perform_later(appointment)
 
-      log_btinternet_drops
     else
       logger.info(errors.full_messages)
     end
   end
 
   private
-
-  def log_btinternet_drops
-    return unless description.include? 'btinternet'
-
-    Rails.logger.info "Mail drop for @btinternet #{appointment_id}"
-  end
 
   def appointment
     Appointment.find(appointment_id)
