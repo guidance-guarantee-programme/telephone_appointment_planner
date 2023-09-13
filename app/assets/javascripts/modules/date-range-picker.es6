@@ -7,7 +7,7 @@
       this.config = {
         timePicker24Hour: true,
         locale: {
-          format: 'D MMM YYYY'
+          format: 'DD/MM/YYYY'
         }
       };
 
