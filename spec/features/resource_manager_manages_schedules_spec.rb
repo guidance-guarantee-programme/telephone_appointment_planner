@@ -125,6 +125,8 @@ RSpec.feature 'Resource manager manages schedules' do
   end
 
   def and_they_set_the_initial_start_at_date
+    expect(@page.start_at.value).to eq(Time.current.strftime('%d %b %Y'))
+
     @page.start_at.set '30 Sep 2016'
   end
 
