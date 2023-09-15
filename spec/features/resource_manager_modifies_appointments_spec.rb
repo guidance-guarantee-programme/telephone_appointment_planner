@@ -29,6 +29,7 @@ RSpec.feature 'Resource manager modifies appointments' do
     # start Ben and Jan's sessions to subscribe on the pusher channel
     given_a_browser_session_for(@ben, @jan) do
       when_they_view_their_appointments
+      wait_for_ajax_to_complete
     end
 
     # start resource manager's session and reassign the appointment
@@ -46,6 +47,7 @@ RSpec.feature 'Resource manager modifies appointments' do
     # go back to Ben and Jan's sessions and check for the notifications
     given_a_browser_session_for(@ben, @jan) do
       then_they_are_notified_of_the_change
+      wait_for_ajax_to_complete
     end
 
     wait_for_ajax_to_complete
