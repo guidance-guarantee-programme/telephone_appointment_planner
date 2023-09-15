@@ -3,7 +3,7 @@ class AppointmentCsvPresenter
     @appointment = appointment
   end
 
-  def to_h # rubocop:disable AbcSize, MethodLength
+  def to_h # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     {
       'Date'               => Time.zone.today.to_s(:govuk_date),
       'Reference'          => appointment.id,

@@ -82,7 +82,7 @@ class HolidaysController < ApplicationController
       .merge(bank_holiday: false)
   end
 
-  def batch_create_params # rubocop:disable Metrics/MethodLength
+  def batch_create_params
     params
       .require(:holiday)
       .permit(

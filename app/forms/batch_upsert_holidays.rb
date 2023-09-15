@@ -1,4 +1,4 @@
-class BatchUpsertHolidays # rubocop:disable ClassLength
+class BatchUpsertHolidays # rubocop:disable Metrics/ClassLength
   include ActiveModel::Model
   include DateRangePickerHelper
   extend ActiveModel::Naming
@@ -86,7 +86,7 @@ class BatchUpsertHolidays # rubocop:disable ClassLength
     end
   end
 
-  def create_holidays_for_user(user) # rubocop:disable AbcSize
+  def create_holidays_for_user(user) # rubocop:disable Metrics/AbcSize
     (start_at.to_date..single_day_recur_end_at.to_date).each do |day|
       next if day.on_weekend?
 

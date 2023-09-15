@@ -4,7 +4,7 @@ class EmailValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
     return unless value.present?
 
-    if invalid_format?(value) || trailing_dot_in_username?(value) # rubocop:disable GuardClause
+    if invalid_format?(value) || trailing_dot_in_username?(value) # rubocop:disable Style/GuardClause
       record.errors.add(attribute, :invalid, value: value)
     end
   end

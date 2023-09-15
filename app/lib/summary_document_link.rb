@@ -6,7 +6,7 @@ class SummaryDocumentLink
       "#{url}/appointment_summaries/new?#{query(appointment)}"
     end
 
-    def query(appointment) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+    def query(appointment) # rubocop:disable Metrics/AbcSize
       date_of_appointment = appointment.start_at.to_date
       {
         first_name: appointment.first_name,

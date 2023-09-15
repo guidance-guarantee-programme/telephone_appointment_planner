@@ -472,7 +472,7 @@ RSpec.feature 'Agent manages appointments' do
     BookableSlot.generate_for_six_weeks
   end
 
-  def fill_in_appointment_details(options = {}) # rubocop:disable CyclomaticComplexity, PerceivedComplexity
+  def fill_in_appointment_details(options = {}) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     @page.date_of_birth_day.set '23'
     @page.date_of_birth_month.set '10'
     @page.date_of_birth_year.set '1950'

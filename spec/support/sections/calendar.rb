@@ -31,7 +31,7 @@ module Sections
       JS
     end
 
-    def select_holiday_range(resource_name) # rubocop:disable Metrics/MethodLength
+    def select_holiday_range(resource_name)
       wait_until_rendered
 
       x, y = evaluate_script <<-JS

@@ -68,7 +68,8 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'pusher-fake'
   gem 'rspec-rails'
-  gem 'rubocop', '0.46.0'
+  gem 'rubocop', require: false
+  gem 'rubocop-rails', require: false
   gem 'site_prism'
   gem 'thin'
 end

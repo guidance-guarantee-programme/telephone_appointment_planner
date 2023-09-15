@@ -3,7 +3,7 @@ class PrintedThirdPartyConsentFormPresenter
     @appointment = appointment
   end
 
-  def to_h # rubocop:disable MethodLength, AbcSize
+  def to_h # rubocop:disable Metrics/AbcSize
     {
       reference: appointment.to_param,
       third_party_name: appointment.name,

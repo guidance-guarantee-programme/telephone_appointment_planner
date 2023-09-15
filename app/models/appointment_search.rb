@@ -1,7 +1,7 @@
 class AppointmentSearch
   REFERENCE_REGEX = /\A\d{1,7}\z/
 
-  def initialize(query, start_at, end_at, current_user, processed, appointment_type) # rubocop:disable ParameterLists
+  def initialize(query, start_at, end_at, current_user, processed, appointment_type) # rubocop:disable Metrics/ParameterLists
     @query = query
     @start_at = start_at
     @end_at = end_at
@@ -79,7 +79,7 @@ class AppointmentSearch
   def search_with_query
     scope = Appointment.joins(:guider).includes(:guider).select('appointments.*')
 
-    if REFERENCE_REGEX === @query # rubocop:disable CaseEquality
+    if REFERENCE_REGEX === @query # rubocop:disable Style/CaseEquality
       scope.where(id: @query)
     else
       scope.where(ilike(%w(appointments.first_name appointments.last_name users.name)))

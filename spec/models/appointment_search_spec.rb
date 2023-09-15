@@ -12,7 +12,7 @@ RSpec.describe AppointmentSearch, type: :model do
       ]
     end
 
-    # rubocop:disable ParameterLists
+    # rubocop:disable Metrics/ParameterLists
     def results(
       query,
       start_at,

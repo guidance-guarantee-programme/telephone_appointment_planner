@@ -8,7 +8,7 @@ class Search
   attr_accessor :appointment_type
   attr_writer :processed
 
-  def results # rubocop:disable MethodLength, AbcSize
+  def results # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     range = date_range
             .to_s
             .split(' - ')

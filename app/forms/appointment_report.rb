@@ -1,4 +1,4 @@
-# rubocop:disable LineLength
+# rubocop:disable Layout/LineLength
 class AppointmentReport
   include ActiveModel::Model
   include Report

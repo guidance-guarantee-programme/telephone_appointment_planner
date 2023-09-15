@@ -35,7 +35,7 @@ module Api
 
       private
 
-      def to_params # rubocop:disable MethodLength, AbcSize
+      def to_params # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
         {
           start_at: start_at,
           first_name: first_name,

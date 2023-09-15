@@ -32,7 +32,7 @@ class DropForm
   validates :message_type, presence: true, exclusion: { in: IGNORED_MESSAGE_TYPES }
   validates :environment, inclusion: { in: %w(production) }
 
-  def create_activity # rubocop:disable MethodLength
+  def create_activity
     if valid?
       verify_token!
 
