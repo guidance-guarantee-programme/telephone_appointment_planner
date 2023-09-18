@@ -4,7 +4,7 @@ class Redactor
   end
 
   def call
-    return unless appointment = Appointment.find(reference) # rubocop:disable AssignmentInCondition
+    return unless appointment = Appointment.find(reference) # rubocop:disable Lint/AssignmentInCondition
 
     ActiveRecord::Base.transaction do
       Appointment.without_auditing do
@@ -30,7 +30,7 @@ class Redactor
     appointment.generated_consent_form.purge
   end
 
-  def redact_appointment(appointment) # rubocop:disable MethodLength
+  def redact_appointment(appointment) # rubocop:disable Metrics/MethodLength
     appointment.update(
       first_name: 'redacted',
       last_name: 'redacted',

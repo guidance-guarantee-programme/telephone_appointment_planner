@@ -22,7 +22,7 @@ module Api
         AppointmentCreatedNotificationsJob.perform_later(appointment)
       end
 
-      def appointment_params # rubocop:disable Metrics/MethodLength
+      def appointment_params
         params.permit(
           :start_at,
           :first_name,

@@ -16,7 +16,7 @@ RSpec.describe CustomerUpdateJob, '#perform' do
     it 'logs an activity' do
       appointment = create(:appointment)
 
-      allow(AppointmentMailer).to receive(:updated).and_raise(Net::SMTPSyntaxError)
+      allow(AppointmentMailer).to receive(:updated).and_raise(Net::SMTPSyntaxError.new(nil))
 
       described_class.new.perform(appointment, CustomerUpdateActivity::UPDATED_MESSAGE)
 

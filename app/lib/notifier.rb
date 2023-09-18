@@ -1,4 +1,4 @@
-class Notifier # rubocop:disable ClassLength
+class Notifier # rubocop:disable Metrics/ClassLength
   NOTIFY_RESOURCE_MANAGER_ATTRIBUTES = %w(
     first_name
     last_name
@@ -47,7 +47,7 @@ class Notifier # rubocop:disable ClassLength
     Array(appointment.previous_changes.fetch('guider_id', appointment.guider_id))
   end
 
-  def notify_customer # rubocop:disable AbcSize, CyclomaticComplexity, PerceivedComplexity, MethodLength
+  def notify_customer # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     if appointment_cancelled?
       CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::CANCELLED_MESSAGE)
     elsif appointment_missed?

@@ -3,7 +3,7 @@ class PrintedConfirmationPresenter
     @appointment = appointment
   end
 
-  def to_h # rubocop:disable AbcSize, MethodLength
+  def to_h # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     {
       reference: appointment.to_param,
       date: date,

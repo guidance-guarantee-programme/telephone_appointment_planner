@@ -12,7 +12,7 @@ module Pages
     section :multiple_day, Sections::MultipleDay, '.t-multi-day-container'
     section :single_day, Sections::SingleDay, '.t-single-day-container'
 
-    def set_recur_end_at(date) # rubocop:disable AccessorMethodName
+    def set_recur_end_at(date) # rubocop:disable Naming/AccessorMethodName
       recur_end_at.set I18n.l(date, format: :date_range_picker)
       execute_script '$(".daterangepicker").hide();'
     end

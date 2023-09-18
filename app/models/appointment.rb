@@ -375,7 +375,7 @@ class Appointment < ApplicationRecord
     gdpr_consent == '' ? 'No response' : gdpr_consent.titleize
   end
 
-  def copy_attachments! # rubocop:disable AbcSize
+  def copy_attachments! # rubocop:disable Metrics/AbcSize
     return unless rebooked_from_id?
 
     if rebooked_from.data_subject_consent_evidence.attached?
@@ -528,7 +528,7 @@ class Appointment < ApplicationRecord
       errors.add(:email, 'Please supply either an email or confirmation address')
     end
 
-    if email? && address? # rubocop:disable GuardClause
+    if email? && address? # rubocop:disable Style/GuardClause
       errors.add(:email, 'Please supply only an email or confirmation address, not both')
     end
   end
@@ -618,7 +618,7 @@ class Appointment < ApplicationRecord
       errors.add(:printed_consent_form_required, 'cannot be checked when power of attorney is specified')
     end
 
-    if email_consent_form_required? && power_of_attorney? # rubocop:disable GuardClause
+    if email_consent_form_required? && power_of_attorney? # rubocop:disable Style/GuardClause
       errors.add(:email_consent_form_required, 'cannot be checked when power of attorney is specified')
     end
   end
@@ -626,7 +626,7 @@ class Appointment < ApplicationRecord
   def validate_consent_type
     return unless third_party_booking?
 
-    if power_of_attorney? && data_subject_consent_obtained? # rubocop:disable GuardClause
+    if power_of_attorney? && data_subject_consent_obtained? # rubocop:disable Style/GuardClause
       errors.add(
         :third_party_booking,
         "you may only specify 'data subject consent obtained', 'power of attorney' or neither"
@@ -644,14 +644,14 @@ class Appointment < ApplicationRecord
     [consent_address_line_one, consent_town, consent_postcode].all?(&:present?)
   end
 
-  def validate_secondary_status # rubocop:disable AbcSize, CyclomaticComplexity
+  def validate_secondary_status # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
     return unless created_at && created_at > Time.zone.parse(
       ENV.fetch('SECONDARY_STATUS_CUT_OFF') { '2021-05-04 09:00' }
     )
 
     return if current_user&.tpas_agent? && !guider.tpas?
 
-    if matches = SECONDARY_STATUSES[status] # rubocop:disable GuardClause, AssignmentInCondition
+    if matches = SECONDARY_STATUSES[status] # rubocop:disable Style/GuardClause, Lint/AssignmentInCondition
       unless matches.key?(secondary_status)
         return errors.add(:secondary_status, 'must be provided for the chosen status')
       end
@@ -659,13 +659,13 @@ class Appointment < ApplicationRecord
   end
 
   def validate_tp_agent_statuses
-    if current_user&.tp_agent? && cancelled_by_customer? && secondary_status != AGENT_PERMITTED_SECONDARY # rubocop:disable GuardClause, LineLength
+    if current_user&.tp_agent? && cancelled_by_customer? && secondary_status != AGENT_PERMITTED_SECONDARY # rubocop:disable Style/GuardClause, Layout/LineLength
       errors.add(:secondary_status, "Contact centre agents should only select 'Cancelled prior to appointment'")
     end
   end
 
-  def validate_tpas_agent_statuses # rubocop:disable AbcSize, CyclomaticComplexity, MethodLength, PerceivedComplexity
-    if current_user&.tpas_agent? && !guider.tpas? # rubocop:disable GuardClause
+  def validate_tpas_agent_statuses # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+    if current_user&.tpas_agent? && !guider.tpas? # rubocop:disable Style/GuardClause
       unless ineligible_age? || ineligible_pension_type? || cancelled_by_customer?
         errors.add(:status, "Must be one of 'Ineligible Age', 'Ineligible Pension Type', 'Cancelled by Customer'")
       end
@@ -687,7 +687,7 @@ class Appointment < ApplicationRecord
     errors.add(:guider, 'Cannot be reallocated to a non Pension Wise guider') if guider&.due_diligence?
   end
 
-  def validate_pending_overlaps # rubocop:disable MethodLength
+  def validate_pending_overlaps # rubocop:disable Metrics/MethodLength
     return unless self
                   .class
                   .pending

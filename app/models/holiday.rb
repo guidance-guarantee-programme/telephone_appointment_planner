@@ -6,7 +6,7 @@ class Holiday < ApplicationRecord
   validates :start_at, presence: true
   validates :end_at, presence: true
 
-  def self.merged_for_calendar_view(start_at, end_at, user) # rubocop:disable MethodLength
+  def self.merged_for_calendar_view(start_at, end_at, user)
     select(
       <<-SQL
         DISTINCT ON(holidays.bank_holiday, holidays.all_day, holidays.start_at, holidays.end_at, holidays.title)

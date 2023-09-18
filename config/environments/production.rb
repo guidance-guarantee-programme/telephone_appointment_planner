@@ -1,6 +1,6 @@
 EXCEPTIONS = %w(controller action format id).freeze
 
-Rails.application.configure do # rubocop:disable Metrics/BlockLength
+Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
   config.active_storage.service = :amazon
 
