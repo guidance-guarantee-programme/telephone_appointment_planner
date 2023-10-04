@@ -72,6 +72,53 @@ RSpec.describe 'POST /api/v1/appointments' do
     end
   end
 
+  scenario 'when a customer journey booking is placed' do
+    travel_to '2023-10-04 13:00' do
+      given_the_user_is_a_pension_wise_api_user do
+        and_an_unbookable_tpas_slot_exists
+        and_a_cita_bookable_slot_exists
+        when_the_client_posts_the_appointment_request
+        then_the_service_responds_with_a_201
+        and_the_appointment_is_correctly_allocated_to_cita
+      end
+    end
+  end
+
+  def and_an_unbookable_tpas_slot_exists
+    # create lots of these to work the random allocator
+    create_list(:bookable_slot, 10, start_at: Time.zone.parse('2023-10-08 14:00'))
+  end
+
+  def and_a_cita_bookable_slot_exists
+    @expected = create(:bookable_slot, :wallsend, start_at: Time.zone.parse('2023-10-08 14:00'))
+  end
+
+  def when_the_client_posts_the_appointment_request
+    @payload = {
+      'start_at'                   => '2023-10-08 14:00:00 UTC',
+      'first_name'                 => 'George',
+      'last_name'                  => 'Daisy',
+      'email'                      => 'george@example.com',
+      'phone'                      => '07715930455',
+      'memorable_word'             => 'Cheesy',
+      'date_of_birth'              => '1970-01-01',
+      'dc_pot_confirmed'           => false,
+      'where_you_heard'            => '2',
+      'gdpr_consent'               => 'no',
+      'accessibility_requirements' => '0',
+      'notes'                      => '',
+      'smarter_signposted'         => false,
+      'lloyds_signposted'          => false,
+      'referrer'                   => 'MMM'
+    }
+
+    post api_v1_appointments_path, params: @payload, as: :json
+  end
+
+  def and_the_appointment_is_correctly_allocated_to_cita
+    expect(Appointment.last.guider_id).to eq(@expected.guider_id)
+  end
+
   def and_a_due_diligence_slot_exists
     create(:bookable_slot, :due_diligence, start_at: Time.zone.parse('2021-12-06 17:20'))
   end

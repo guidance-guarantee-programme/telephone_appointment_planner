@@ -52,6 +52,22 @@ RSpec.describe BookableSlot, type: :model do
 
       expect(@allocated).to eq(@expected)
     end
+
+    context 'when a customer books via the website' do
+      it 'honours the TPAS/ops booking window' do
+        travel_to '2023-10-02 13:00' do
+          agent = double(pension_wise_api?: true)
+
+          # falls outside the starting window
+          slot = create(:bookable_slot, start_at: Time.zone.parse('2023-10-04 13:00'))
+          expect(BookableSlot.find_available_slot(slot.start_at, agent)).to be_nil
+
+          # falls inside the starting window
+          slot = create(:bookable_slot, start_at: Time.zone.parse('2023-10-14 13:00'))
+          expect(BookableSlot.find_available_slot(slot.start_at, agent)).to eq(slot)
+        end
+      end
+    end
   end
 
   describe '#next_valid_start_date' do
