@@ -33,7 +33,7 @@ module Api
       end
 
       def create
-        model.allocate
+        model.allocate(agent: agent)
         model.save
       end
 

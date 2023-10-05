@@ -47,8 +47,10 @@ class BookableSlot < ApplicationRecord
   end
 
   def self.find_available_slot(start_at, agent, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE, scoped = true, external: false) # rubocop:disable Layout/LineLength
-    scope = bookable.where(start_at: start_at)
-    scope = scope.for_organisation(agent, scoped: scoped, external: external) if agent
+    scope = bookable
+    scope = scope.limit_by_organisation(start_at.beginning_of_day, start_at.end_of_day) if agent&.pension_wise_api?
+    scope = scope.where(start_at: start_at)
+    scope = scope.for_organisation(agent, scoped: scoped, external: external) if agent && !agent.pension_wise_api?
     scope = for_schedule_type(schedule_type: schedule_type, scope: scope)
 
     scope.limit(1).order('RANDOM()').first
