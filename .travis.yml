@@ -22,8 +22,8 @@ before_script:
 - nvm install 16
 - nvm use 16
 - npm install
-- npx @puppeteer/browsers install chromedriver@116.0.5845.96 --path $PWD/bin
-- export PATH=$PWD/bin/chromedriver/linux-116.0.5845.96/chromedriver-linux64:$PATH
+- npx @puppeteer/browsers install chromedriver@118.0.5993.70 --path $PWD/bin
+- export PATH=$PWD/bin/chromedriver/linux-118.0.5993.70/chromedriver-linux64:$PATH
 - gem install bundler
 - bundle exec rails assets:precompile RAILS_ENV=test
 - bundle exec rails db:create db:migrate RAILS_ENV=test
