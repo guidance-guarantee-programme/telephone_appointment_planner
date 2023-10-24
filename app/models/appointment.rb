@@ -176,6 +176,10 @@ class Appointment < ApplicationRecord
     CustomerUpdateJob.perform_later(self, CustomerUpdateActivity::CONFIRMED_MESSAGE)
   end
 
+  def resend_print_confirmation
+    PrintedConfirmationJob.perform_later(self)
+  end
+
   def internal_availability?
     internal_availability.present? && internal_availability == '1'
   end

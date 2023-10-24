@@ -5,6 +5,15 @@ RSpec.feature 'Agent manages appointments' do
 
   let(:day) { BusinessDays.from_now(5) }
 
+  scenario 'Resending a printed confirmation letter', js: true do
+    given_the_user_is_a_resource_manager(organisation: :tpas) do
+      and_an_appointment_with_an_address_exists
+      when_they_edit_the_appointment
+      and_they_resend_the_printed_confirmation
+      then_the_printed_confirmation_is_sent
+    end
+  end
+
   scenario 'TP agent booking a stronger nudge appointment' do
     given_the_user_is_an_agent(organisation: :tp) do
       and_there_is_a_guider_with_available_slots
@@ -75,6 +84,20 @@ RSpec.feature 'Agent manages appointments' do
       when_they_accept_the_appointment_preview
       then_the_appointment_is_small_pots
     end
+  end
+
+  def and_an_appointment_with_an_address_exists
+    @appointment = create(:appointment, :with_address)
+  end
+
+  def and_they_resend_the_printed_confirmation
+    accept_confirm do
+      @page.resend_print_confirmation.click
+    end
+  end
+
+  def then_the_printed_confirmation_is_sent
+    expect(@page.flash_of_success).to have_text('letter was resent')
   end
 
   def then_they_see_the_stronger_nudge_checkbox
