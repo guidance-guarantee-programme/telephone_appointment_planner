@@ -386,8 +386,3 @@ Style/RedundantReturn:
     - 'app/models/appointment.rb'
     - 'app/models/drop_activity.rb'
 
-# Offense count: 3
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Style/RedundantSort:
-  Exclude:
-    - 'spec/features/guider_views_appointments_spec.rb'

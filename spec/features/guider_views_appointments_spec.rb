@@ -177,13 +177,13 @@ RSpec.feature 'Guider views appointments' do
   end
 
   def and_they_see_their_schedule_for_today
-    event = @page.calendar.slots.sort { |x, y| x[:start] <=> y[:start] }.first
+    event = @page.calendar.slots.min_by { |slot| slot[:start] }
     expect(Time.zone.parse(event[:start])).to eq @bookable_slots.first.start_at
     expect(Time.zone.parse(event[:end])).to eq @bookable_slots.first.end_at
   end
 
   def and_they_can_see_their_holiday_for_today
-    event = @page.calendar.holidays.sort { |x, y| x[:start] <=> y[:start] }.last
+    event = @page.calendar.holidays.max_by { |slot| slot[:start] }
     expect(Time.zone.parse(event[:start])).to eq @holiday.start_at
     expect(Time.zone.parse(event[:end])).to eq @holiday.end_at
   end
@@ -216,7 +216,7 @@ RSpec.feature 'Guider views appointments' do
   end
 
   def and_they_see_their_schedule_for_tomorrow
-    event = @page.calendar.slots.sort { |x, y| x[:start] <=> y[:start] }.last
+    event = @page.calendar.slots.max_by { |slot| slot[:start] }
     expect(Time.zone.parse(event[:start])).to eq @bookable_slots.second.start_at
     expect(Time.zone.parse(event[:end])).to eq @bookable_slots.second.end_at
   end
