@@ -186,9 +186,9 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
   def then_they_see_a_count_of_booked_appointments
     expect_csv(
       [
-        ['2016-11-07', '0', '0', '0', '0'],
-        ['2016-11-08', '1', '0', '0', '0'],
-        ['2016-11-09', '1', '0', '0', '0']
+        %w[2016-11-07 0 0 0 0],
+        %w[2016-11-08 1 0 0 0],
+        %w[2016-11-09 1 0 0 0]
       ]
     )
   end
@@ -196,9 +196,9 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
   def then_they_see_a_count_of_cancelled_appointments
     expect_csv(
       [
-        ['2016-11-07', '0', '0', '0', '0'],
-        ['2016-11-08', '0', '0', '0', '1'],
-        ['2016-11-09', '0', '0', '0', '1']
+        %w[2016-11-07 0 0 0 0],
+        %w[2016-11-08 0 0 0 1],
+        %w[2016-11-09 0 0 0 1]
       ]
     )
   end
@@ -206,9 +206,9 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
   def then_they_dont_see_the_appointments
     expect_csv(
       [
-        ['2016-11-07', '0', '0', '0', '0'],
-        ['2016-11-08', '0', '0', '0', '0'],
-        ['2016-11-09', '0', '0', '0', '0']
+        %w[2016-11-07 0 0 0 0],
+        %w[2016-11-08 0 0 0 0],
+        %w[2016-11-09 0 0 0 0]
       ]
     )
   end
@@ -216,9 +216,9 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
   def then_they_dont_see_the_cancelled_appointments
     expect_csv(
       [
-        ['2016-11-07', '0', '0', '0', '0'],
-        ['2016-11-08', '0', '0', '0', '0'],
-        ['2016-11-09', '0', '0', '0', '0']
+        %w[2016-11-07 0 0 0 0],
+        %w[2016-11-08 0 0 0 0],
+        %w[2016-11-09 0 0 0 0]
       ]
     )
   end
@@ -226,9 +226,9 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
   def then_they_see_the_bookable_slots
     expect_csv(
       [
-        ['2016-11-07', '0', '1', '0', '0'],
-        ['2016-11-08', '0', '1', '0', '0'],
-        ['2016-11-09', '0', '1', '0', '0']
+        %w[2016-11-07 0 1 0 0],
+        %w[2016-11-08 0 1 0 0],
+        %w[2016-11-09 0 1 0 0]
       ]
     )
   end
@@ -236,9 +236,9 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
   def then_they_see_the_bookable_slots_obscured_by_appointments
     expect_csv(
       [
-        ['2016-11-07', '0', '0', '0', '0'],
-        ['2016-11-08', '1', '1', '0', '0'],
-        ['2016-11-09', '1', '1', '0', '0']
+        %w[2016-11-07 0 0 0 0],
+        %w[2016-11-08 1 1 0 0],
+        %w[2016-11-09 1 1 0 0]
       ]
     )
   end
@@ -246,9 +246,9 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
   def then_they_do_not_see_the_bookable_slots
     expect_csv(
       [
-        ['2016-11-07', '0', '0', '0', '0'],
-        ['2016-11-08', '0', '0', '0', '0'],
-        ['2016-11-09', '0', '0', '0', '0']
+        %w[2016-11-07 0 0 0 0],
+        %w[2016-11-08 0 0 0 0],
+        %w[2016-11-09 0 0 0 0]
       ]
     )
   end
@@ -256,9 +256,9 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
   def then_they_see_the_blocked_bookable_slots
     expect_csv(
       [
-        ['2016-11-07', '0', '0', '0', '0'],
-        ['2016-11-08', '0', '0', '2', '0'],
-        ['2016-11-09', '0', '0', '0', '0']
+        %w[2016-11-07 0 0 0 0],
+        %w[2016-11-08 0 0 2 0],
+        %w[2016-11-09 0 0 0 0]
       ]
     )
   end
