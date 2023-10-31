@@ -419,8 +419,3 @@ Style/SymbolArray:
     - 'spec/features/resource_manager_downloads_utilisation_reports_spec.rb'
     - 'spec/models/appointment_spec.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Style/WhileUntilModifier:
-  Exclude:
-    - 'spec/features/guider_views_appointments_spec.rb'
