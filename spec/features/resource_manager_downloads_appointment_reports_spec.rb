@@ -151,32 +151,32 @@ RSpec.feature 'Resource manager downloads appointment reports' do
 
   def expect_appointment_csv(appointment)
     expect(@page.csv.count).to eq 2
-    expect(@page.csv.first).to eq [
-      :created_at,
-      :booked_by,
-      :guider,
-      :date,
-      :duration,
-      :status,
-      :status_changed,
-      :summary_document_created,
-      :first_name,
-      :last_name,
-      :notes,
-      :gdpr_consent,
-      :date_of_birth,
-      :booking_reference,
-      :memorable_word,
-      :phone,
-      :mobile,
-      :email,
-      :third_party_booking,
-      :data_subject_consent_obtained,
-      :data_subject_consent_attached,
-      :power_of_attorney,
-      :power_of_attorney_attached,
-      :printed_consent_form_required,
-      :email_consent_form_required
+    expect(@page.csv.first).to eq %i[
+      created_at
+      booked_by
+      guider
+      date
+      duration
+      status
+      status_changed
+      summary_document_created
+      first_name
+      last_name
+      notes
+      gdpr_consent
+      date_of_birth
+      booking_reference
+      memorable_word
+      phone
+      mobile
+      email
+      third_party_booking
+      data_subject_consent_obtained
+      data_subject_consent_attached
+      power_of_attorney
+      power_of_attorney_attached
+      printed_consent_form_required
+      email_consent_form_required
     ]
 
     expect(@page.csv.second).to match_array [

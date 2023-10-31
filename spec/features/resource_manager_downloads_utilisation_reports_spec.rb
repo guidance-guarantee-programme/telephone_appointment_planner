@@ -270,7 +270,7 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
     expect(@page.content_disposition).to eq "attachment; filename=#{expected_file_name}"
 
     expected_csv = [
-      [:date, :booked_appointments, :bookable_slots, :blocked_slots, :cancelled_appointments]
+      %i[date booked_appointments bookable_slots blocked_slots cancelled_appointments]
     ] + csv
     expect(@page.csv).to eq(expected_csv)
   end

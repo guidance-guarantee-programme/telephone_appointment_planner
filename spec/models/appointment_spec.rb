@@ -593,17 +593,17 @@ RSpec.describe Appointment, type: :model do
       end
     end
 
-    required = [
-      :start_at,
-      :end_at,
-      :first_name,
-      :last_name,
-      :phone,
-      :memorable_word,
-      :guider,
-      :agent,
-      :date_of_birth,
-      :dc_pot_confirmed
+    required = %i[
+      start_at
+      end_at
+      first_name
+      last_name
+      phone
+      memorable_word
+      guider
+      agent
+      date_of_birth
+      dc_pot_confirmed
     ]
     required.each do |field|
       it "validate presence of #{field}" do
