@@ -654,7 +654,7 @@ class Appointment < ApplicationRecord
     return if current_user&.tpas_agent? && !guider.tpas?
 
     if (matches = SECONDARY_STATUSES[status]) && !matches.key?(secondary_status)
-      return errors.add(:secondary_status, 'must be provided for the chosen status')
+      errors.add(:secondary_status, 'must be provided for the chosen status')
     end
   end
 

@@ -14,7 +14,7 @@ class DropActivity < Activity
   end
 
   def self.owner(appointment, message_type)
-    return appointment.agent if message_type == 'booking_created'
+    appointment.agent if message_type == 'booking_created'
   end
 
   def owner_required?
