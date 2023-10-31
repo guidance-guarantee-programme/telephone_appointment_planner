@@ -368,12 +368,3 @@ Style/OrAssignment:
 # Configuration parameters: PreferredDelimiters.
 Style/PercentLiteralDelimiters:
   Enabled: false
-
-# Offense count: 4
-# This cop supports safe autocorrection (--autocorrect).
-Style/RedundantBegin:
-  Exclude:
-    - 'app/models/pension_provider.rb'
-    - 'spec/features/resource_manager_manages_holidays_spec.rb'
-    - 'spec/forms/drop_form_spec.rb'
-    - 'spec/support/user_helpers.rb'

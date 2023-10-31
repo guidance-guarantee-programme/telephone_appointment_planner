@@ -14,15 +14,13 @@ module UserHelpers
 
   def given_a_browser_session_for(*users)
     users.each do |user|
-      begin
-        existing_session      = Capybara.session_name
-        Capybara.session_name = user.to_param
-        GDS::SSO.test_user    = user
+      existing_session      = Capybara.session_name
+      Capybara.session_name = user.to_param
+      GDS::SSO.test_user    = user
 
-        yield
-      ensure
-        Capybara.session_name = existing_session
-      end
+      yield
+    ensure
+      Capybara.session_name = existing_session
     end
   end
 
