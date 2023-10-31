@@ -391,11 +391,3 @@ Style/RedundantReturn:
 Style/RedundantSort:
   Exclude:
     - 'spec/features/guider_views_appointments_spec.rb'
-
-# Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: ConvertCodeThatCanStartToReturnNil, AllowedMethods, MaxChainLength.
-# AllowedMethods: present?, blank?, presence, try, try!
-Style/SafeNavigation:
-  Exclude:
-    - 'app/models/appointment.rb'

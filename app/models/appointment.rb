@@ -352,7 +352,7 @@ class Appointment < ApplicationRecord
   end
 
   def agent_is_pension_wise_api?
-    agent && agent.pension_wise_api?
+    agent&.pension_wise_api?
   end
 
   def unable_to_assign?
