@@ -305,9 +305,7 @@ class Appointment < ApplicationRecord
   end
 
   def can_create_summary?(agent = nil)
-    if agent&.tpas_agent?
-      return false unless guider.tpas?
-    end
+    return false if agent&.tpas_agent? && !guider.tpas?
 
     complete? || ineligible_age? || ineligible_pension_type?
   end
@@ -655,10 +653,8 @@ class Appointment < ApplicationRecord
 
     return if current_user&.tpas_agent? && !guider.tpas?
 
-    if matches = SECONDARY_STATUSES[status] # rubocop:disable Style/GuardClause, Lint/AssignmentInCondition
-      unless matches.key?(secondary_status)
-        return errors.add(:secondary_status, 'must be provided for the chosen status')
-      end
+    if (matches = SECONDARY_STATUSES[status]) && !matches.key?(secondary_status)
+      return errors.add(:secondary_status, 'must be provided for the chosen status')
     end
   end
 
