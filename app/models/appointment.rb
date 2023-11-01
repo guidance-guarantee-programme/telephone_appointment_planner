@@ -651,9 +651,9 @@ class Appointment < ApplicationRecord
 
     return if current_user&.tpas_agent? && !guider.tpas?
 
-    if (matches = SECONDARY_STATUSES[status]) && !matches.key?(secondary_status)
-      errors.add(:secondary_status, 'must be provided for the chosen status')
-    end
+    return unless (matches = SECONDARY_STATUSES[status]) && !matches.key?(secondary_status)
+
+    errors.add(:secondary_status, 'must be provided for the chosen status')
   end
 
   def validate_tp_agent_statuses
@@ -668,12 +668,13 @@ class Appointment < ApplicationRecord
         errors.add(:status, "Must be one of 'Ineligible Age', 'Ineligible Pension Type', 'Cancelled by Customer'")
       end
 
-      if cancelled_by_customer? && secondary_status != AGENT_PERMITTED_SECONDARY
-        errors.add(
-          :secondary_status,
-          "For external appointments, agents should only select 'Cancelled prior to appointment'"
-        )
-      end
+      return unless cancelled_by_customer? && secondary_status != AGENT_PERMITTED_SECONDARY
+
+      errors.add(
+        :secondary_status,
+        "For external appointments, agents should only select 'Cancelled prior to appointment'"
+      )
+
     end
   end
 
