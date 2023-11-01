@@ -356,10 +356,3 @@ Style/OptionalBooleanParameter:
   Exclude:
     - 'app/models/bookable_slot.rb'
     - 'app/models/provider.rb'
-
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-Style/OrAssignment:
-  Exclude:
-    - 'app/models/appointment_search.rb'
-
