@@ -308,12 +308,6 @@ Style/ExpandPathArguments:
     - 'spec/rails_helper.rb'
 
 # Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Style/ExplicitBlockArgument:
-  Exclude:
-    - 'app/helpers/date_of_birth_helper.rb'
-
-# Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Style/GlobalStdStream:
   Exclude:
