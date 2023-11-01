@@ -343,13 +343,6 @@ Style/HashSyntax:
   Enabled: false
 
 # Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-Style/IfUnlessModifier:
-  Exclude:
-    - 'app/forms/drop_form.rb'
-    - 'app/models/appointment.rb'
-
-# Offense count: 2
 # Configuration parameters: AllowedMethods.
 # AllowedMethods: respond_to_missing?
 Style/OptionalBooleanParameter:
