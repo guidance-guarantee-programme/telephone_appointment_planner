@@ -1,15 +1,17 @@
-class User < ApplicationRecord
+class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
   include GDS::SSO::User
 
   RESOURCE_MANAGER_EXCEPTIONS = %w(6f338640-808d-0133-2100-36ff48a3bf62).freeze
 
   ALL_PERMISSIONS = [
+    SIGNIN_PERMISSION           = 'signin'.freeze,
     ADMINISTRATOR_PERMISSION    = 'administrator'.freeze,
     PENSION_WISE_API_PERMISSION = 'pension_wise_api'.freeze,
     RESOURCE_MANAGER_PERMISSION = 'resource_manager'.freeze,
     GUIDER_PERMISSION           = 'guider'.freeze,
     AGENT_PERMISSION            = 'agent'.freeze,
     BUSINESS_ANALYST_PERMISSION = 'business_analyst'.freeze,
+    USER_UPDATE_PERMISSION      = 'user_update_permission'.freeze,
     CONTACT_CENTRE_TEAM_LEADER_PERMISSION = 'contact_centre_team_leader'.freeze
   ].freeze
 
@@ -17,6 +19,8 @@ class User < ApplicationRecord
     PENSION_WISE_SCHEDULE_TYPE  = 'pension_wise'.freeze,
     DUE_DILIGENCE_SCHEDULE_TYPE = 'due_diligence'.freeze
   ].freeze
+
+  after_update :terminate_guider_availability
 
   default_scope { order(:position, :name) }
 
@@ -111,5 +115,22 @@ class User < ApplicationRecord
     original = find(original_guider_id)
 
     guider.organisation_content_id == original.organisation_content_id
+  end
+
+  protected
+
+  def terminate_guider_availability
+    return unless permissions_previously_changed?
+    return unless permission_revoked?(GUIDER_PERMISSION) || permission_revoked?(SIGNIN_PERMISSION)
+
+    transaction do
+      update!(active: false)
+      delete_future_slots!
+    end
+  end
+
+  def permission_revoked?(permission)
+    permissions_previous_change.first.include?(permission) &&
+      permissions_previous_change.last.exclude?(permission)
   end
 end

@@ -56,7 +56,7 @@ FactoryBot.define do
     end
 
     factory :pension_wise_api_user do
-      permissions { Array(User::PENSION_WISE_API_PERMISSION) }
+      permissions { [User::PENSION_WISE_API_PERMISSION, User::USER_UPDATE_PERMISSION] }
     end
   end
 end
