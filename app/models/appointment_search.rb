@@ -82,7 +82,7 @@ class AppointmentSearch
     if REFERENCE_REGEX === @query # rubocop:disable Style/CaseEquality
       scope.where(id: @query)
     else
-      scope.where(ilike(%w(appointments.first_name appointments.last_name users.name)))
+      scope.where(ilike(%w[appointments.first_name appointments.last_name users.name]))
     end
   end
 end

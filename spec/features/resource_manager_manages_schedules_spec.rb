@@ -256,7 +256,7 @@ RSpec.feature 'Resource manager manages schedules' do
   end
 
   def and_the_due_diligence_bookable_slots_are_generated
-    expect(@guider.bookable_slots.distinct.pluck(:schedule_type)).to eq(%w(due_diligence))
+    expect(@guider.bookable_slots.distinct.pluck(:schedule_type)).to eq(%w[due_diligence])
   end
 
   def and_the_guider_bookable_slots_are_regenerated

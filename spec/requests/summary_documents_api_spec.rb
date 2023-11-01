@@ -72,7 +72,7 @@ RSpec.describe 'POST /api/v1/summary_documents' do
 
   def and_the_pending_errors_are_serialized_in_the_response
     JSON.parse(response.body).tap do |json|
-      expect(json.keys).to eq(%w(appointment))
+      expect(json.keys).to eq(%w[appointment])
     end
   end
 

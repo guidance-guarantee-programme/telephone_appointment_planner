@@ -63,14 +63,14 @@ class Redactor
 
   def redact_activities(appointment)
     appointment.activities.where(
-      type: %w(
+      type: %w[
         AuditActivity
         ReminderActivity
         SmsReminderActivity
         SmsCancellationActivity
         DropActivity
         DroppedSummaryDocumentActivity
-      )
+      ]
     ).destroy_all
   end
 

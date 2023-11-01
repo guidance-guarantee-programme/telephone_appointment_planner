@@ -146,7 +146,7 @@ RSpec.feature 'Agent searches for appointments' do
   def then_they_see_appointments_across_multiple_organisations
     expect(@page).to have_results(count: 3)
 
-    %w(George Daisy Becky).each { |name| expect(@page).to have_text(name) }
+    %w[George Daisy Becky].each { |name| expect(@page).to have_text(name) }
   end
 
   def then_they_are_redirected_to_their_single_appointment_for(name)

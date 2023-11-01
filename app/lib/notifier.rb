@@ -1,5 +1,5 @@
 class Notifier # rubocop:disable Metrics/ClassLength
-  NOTIFY_RESOURCE_MANAGER_ATTRIBUTES = %w(
+  NOTIFY_RESOURCE_MANAGER_ATTRIBUTES = %w[
     first_name
     last_name
     email
@@ -8,7 +8,7 @@ class Notifier # rubocop:disable Metrics/ClassLength
     notes
     date_of_birth
     data_subject_consent_obtained
-  ).freeze
+  ].freeze
 
   def initialize(appointment, modifying_agent = nil)
     @appointment = appointment

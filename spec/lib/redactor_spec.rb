@@ -50,7 +50,7 @@ RSpec.describe Redactor do
 
       expect(appointment.audits).to be_empty
       # all activities except `AssignmentActivity` will be redacted
-      expect(appointment.activities.map(&:class).map(&:name)).to eq(%w(AssignmentActivity CreateActivity))
+      expect(appointment.activities.map(&:class).map(&:name)).to eq(%w[AssignmentActivity CreateActivity])
     end
   end
 end

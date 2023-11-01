@@ -33,7 +33,7 @@ Rails.application.routes.draw do
     patch 'deactivate'
     patch 'activate'
   end
-  resources :activities, only: %i(index create) do
+  resources :activities, only: %i[index create] do
     collection do
       get 'high-priority', action: :high_priority
     end
@@ -42,12 +42,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :groups, only: %i(index create destroy)
+  resources :groups, only: %i[index create destroy]
   resources :customers
   resource :my_appointments, only: :show
   resource :company_calendar, only: :show
-  resources :appointments, only: %i(new index show edit update create) do
-    resource :reissue, only: %i(new create)
+  resources :appointments, only: %i[new index show edit update create] do
+    resource :reissue, only: %i[new create]
     resource :consent, only: :show
     resource :process, only: :create
     resource :email_confirmation, only: :create
@@ -63,7 +63,7 @@ Rails.application.routes.draw do
     get :reschedule
   end
   resource :allocations, only: :show
-  resources :holidays, only: %i(index new create edit) do
+  resources :holidays, only: %i[index new create edit] do
     collection do
       post 'batch_create'
       patch 'batch_upsert'
@@ -80,12 +80,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :groups, only: %i(index destroy)
+  resources :groups, only: %i[index destroy]
 
-  resources :appointment_reports, only: %i(new) do
+  resources :appointment_reports, only: %i[new] do
     get 'create', on: :collection, action: :create
   end
-  resources :utilisation_reports, only: %i(new) do
+  resources :utilisation_reports, only: %i[new] do
     get 'create', on: :collection, action: :create
   end
 

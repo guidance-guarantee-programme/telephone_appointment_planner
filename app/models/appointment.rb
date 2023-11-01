@@ -1,6 +1,6 @@
 # rubocop:disable Metrics/ClassLength
 class Appointment < ApplicationRecord
-  audited on: %i(create update)
+  audited on: %i[create update]
 
   acts_as_copy_target
 
@@ -8,18 +8,18 @@ class Appointment < ApplicationRecord
 
   DEFAULT_COUNTRY_CODE = 'GB'.freeze
 
-  CANCELLED_STATUSES = %i(
+  CANCELLED_STATUSES = %i[
     cancelled_by_customer
     cancelled_by_pension_wise
     cancelled_by_customer_sms
-  ).freeze
+  ].freeze
 
   APPOINTMENT_LENGTH_MINUTES = 70.minutes.freeze
 
   FAKE_DATE_OF_BIRTH = Date.parse('1900-01-01').freeze
   ACCESSIBILITY_NOTES_CUTOFF = Date.parse('2019-09-25').freeze
 
-  NON_NOTIFY_COLUMNS = %w(
+  NON_NOTIFY_COLUMNS = %w[
     agent_id
     guider_id
     rescheduled_at
@@ -49,9 +49,9 @@ class Appointment < ApplicationRecord
     referrer
     small_pots
     country_code
-  ).freeze
+  ].freeze
 
-  enum status: %i(
+  enum status: %i[
     pending
     complete
     no_show
@@ -61,7 +61,7 @@ class Appointment < ApplicationRecord
     cancelled_by_customer
     cancelled_by_pension_wise
     cancelled_by_customer_sms
-  )
+  ]
 
   AGENT_PERMITTED_SECONDARY = '15'.freeze
   SECONDARY_STATUSES = {
@@ -137,7 +137,7 @@ class Appointment < ApplicationRecord
   validates :data_subject_name, presence: true, if: :third_party_booking?
   validates :data_subject_date_of_birth, presence: true, if: :require_data_subject_date_of_birth?
   validates :notes, presence: true, if: :validate_adjustment_needs?
-  validates :type_of_appointment, inclusion: %w(standard 50-54)
+  validates :type_of_appointment, inclusion: %w[standard 50-54]
   validates :where_you_heard, inclusion: WhereYouHeard.options_for_inclusion, on: :create, unless: :rebooked_from_id?
   validates :status, presence: true
   validates :guider, presence: true
@@ -716,7 +716,7 @@ class Appointment < ApplicationRecord
   end
 
   def validate_gdpr_consent
-    inclusion = %w(yes no)
+    inclusion = %w[yes no]
     inclusion << '' if persisted? || due_diligence?
 
     errors.add(:gdpr_consent, :inclusion) unless inclusion.include?(gdpr_consent)

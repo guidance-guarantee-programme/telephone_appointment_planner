@@ -14,7 +14,7 @@ class UtilisationReport
 
   def generate
     CSV.generate do |csv|
-      csv << %i(date booked_appointments bookable_slots blocked_slots cancelled_appointments)
+      csv << %i[date booked_appointments bookable_slots blocked_slots cancelled_appointments]
       range.each do |day|
         csv << generate_for_day(day)
       end

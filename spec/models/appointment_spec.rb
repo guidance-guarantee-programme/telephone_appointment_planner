@@ -133,7 +133,7 @@ RSpec.describe Appointment, type: :model do
       appointment.update(status: 'cancelled_by_pension_wise')
 
       expect(appointment.status_transitions.map(&:status)).to match_array(
-        %w(pending cancelled_by_pension_wise)
+        %w[pending cancelled_by_pension_wise]
       )
     end
 
@@ -1005,7 +1005,7 @@ RSpec.describe Appointment, type: :model do
   describe '#can_create_summary?' do
     let(:result) { Appointment.new(status: status).can_create_summary? }
 
-    %i(complete ineligible_age ineligible_pension_type).each do |status|
+    %i[complete ineligible_age ineligible_pension_type].each do |status|
       context "when status is #{status}" do
         let(:status) { status }
 
@@ -1036,7 +1036,7 @@ RSpec.describe Appointment, type: :model do
       end
     end
 
-    %i(pending no_show incomplete cancelled_by_customer cancelled_by_pension_wise).each do |status|
+    %i[pending no_show incomplete cancelled_by_customer cancelled_by_pension_wise].each do |status|
       context "when status is #{status}" do
         let(:status) { status }
 

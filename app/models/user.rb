@@ -1,7 +1,7 @@
 class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
   include GDS::SSO::User
 
-  RESOURCE_MANAGER_EXCEPTIONS = %w(6f338640-808d-0133-2100-36ff48a3bf62).freeze
+  RESOURCE_MANAGER_EXCEPTIONS = %w[6f338640-808d-0133-2100-36ff48a3bf62].freeze
 
   ALL_PERMISSIONS = [
     SIGNIN_PERMISSION           = 'signin'.freeze,

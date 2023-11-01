@@ -217,7 +217,7 @@ RSpec.describe 'POST /api/v1/appointments' do
 
   def and_the_errors_are_serialized_in_the_response
     JSON.parse(response.body).tap do |json|
-      expect(json.keys).to eq(%w(first_name last_name))
+      expect(json.keys).to eq(%w[first_name last_name])
     end
   end
 

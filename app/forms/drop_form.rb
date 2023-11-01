@@ -5,7 +5,7 @@ TokenVerificationFailure = Class.new(StandardError)
 class DropForm
   include ActiveModel::Model
 
-  IGNORED_MESSAGE_TYPES = %w(
+  IGNORED_MESSAGE_TYPES = %w[
     adjustment
     accessibility_adjustment
     resource_manager_email_dropped
@@ -13,7 +13,7 @@ class DropForm
     resource_manager_appointment_changed
     resource_manager_appointment_cancelled
     resource_manager_appointment_rescheduled
-  ).freeze
+  ].freeze
 
   attr_accessor :event
   attr_accessor :description
@@ -30,7 +30,7 @@ class DropForm
   validates :event, presence: true
   validates :appointment_id, presence: true
   validates :message_type, presence: true, exclusion: { in: IGNORED_MESSAGE_TYPES }
-  validates :environment, inclusion: { in: %w(production) }
+  validates :environment, inclusion: { in: %w[production] }
 
   def create_activity
     if valid?

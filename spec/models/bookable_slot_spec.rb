@@ -42,7 +42,7 @@ RSpec.describe BookableSlot, type: :model do
     it 'returns a slot for the correct organisation' do
       start_at = Time.zone.parse('2021-05-26 13:00')
 
-      %i(tp cas ni wallsend lancs_west).each do |provider|
+      %i[tp cas ni wallsend lancs_west].each do |provider|
         create(:bookable_slot, provider, start_at: start_at)
       end
 
