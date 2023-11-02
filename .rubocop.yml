@@ -39,3 +39,9 @@ Metrics/AbcSize:
 Style/ExpandPathArguments:
   Exclude:
     - 'spec/rails_helper.rb'
+
+Rails/UnknownEnv:
+  Exclude:
+    - 'config/initializers/govuk_admin_template.rb'
+    - 'lib/tasks/jobs.rake'
+

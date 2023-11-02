@@ -256,14 +256,9 @@ Rails/SkipsModelValidations:
     - 'spec/mailers/appointment_mailer_spec.rb'
     - 'spec/mailers/previews/appointment_mailer_preview.rb'
 
-# Offense count: 4
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: strict, flexible
-Rails/TimeZone:
-  Exclude:
-    - 'spec/features/resource_manager_modifies_appointments_spec.rb'
-    - 'spec/models/bookable_slot_spec.rb'
+
+
+# ---
 
 # Offense count: 1
 # Configuration parameters: Include.
@@ -271,18 +266,6 @@ Rails/TimeZone:
 Rails/UniqueValidationWithoutIndex:
   Exclude:
     - 'app/models/schedule.rb'
-
-# Offense count: 2
-# Configuration parameters: Severity, Environments.
-# Environments: development, test, production
-Rails/UnknownEnv:
-  Exclude:
-    - 'config/initializers/govuk_admin_template.rb'
-    - 'lib/tasks/jobs.rake'
-
-
-
-# ---
 
 # Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).
