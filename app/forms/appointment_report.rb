@@ -3,10 +3,7 @@ class AppointmentReport
   include ActiveModel::Model
   include Report
 
-  attr_reader :where
-  attr_reader :date_range
-  attr_reader :current_user
-  attr_reader :schedule_type
+  attr_reader :where, :date_range, :current_user, :schedule_type
 
   validates :date_range, presence: true
   validates :schedule_type, presence: true, if: -> { current_user.tpas? }

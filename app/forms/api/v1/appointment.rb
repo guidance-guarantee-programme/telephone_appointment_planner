@@ -3,28 +3,13 @@ module Api
     class Appointment
       include ActiveModel::Model
 
-      attr_accessor :start_at
-      attr_accessor :first_name
-      attr_accessor :last_name
-      attr_accessor :email
-      attr_accessor :phone
-      attr_accessor :memorable_word
-      attr_accessor :date_of_birth
-      attr_accessor :dc_pot_confirmed
-      attr_accessor :where_you_heard
-      attr_accessor :gdpr_consent
-      attr_accessor :accessibility_requirements
-      attr_accessor :notes
-      attr_accessor :agent
-      attr_accessor :smarter_signposted
-      attr_accessor :lloyds_signposted
-      attr_accessor :schedule_type
-      attr_accessor :referrer
+      attr_accessor :start_at, :first_name, :last_name, :email, :phone, :memorable_word, :date_of_birth,
+                    :dc_pot_confirmed, :where_you_heard, :gdpr_consent, :accessibility_requirements,
+                    :notes, :agent, :smarter_signposted, :lloyds_signposted, :schedule_type, :referrer
 
       attr_reader :model
 
-      attr_writer :nudged
-      attr_writer :country_code
+      attr_writer :nudged, :country_code
 
       def initialize(*)
         super

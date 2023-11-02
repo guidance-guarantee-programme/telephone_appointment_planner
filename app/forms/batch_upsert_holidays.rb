@@ -1,15 +1,9 @@
-class BatchUpsertHolidays # rubocop:disable Metrics/ClassLength
+class BatchUpsertHolidays
   include ActiveModel::Model
   include DateRangePickerHelper
   extend ActiveModel::Naming
 
-  attr_reader :title
-  attr_reader :users
-  attr_reader :all_day
-  attr_reader :start_at
-  attr_reader :end_at
-  attr_reader :recur
-  attr_reader :single_day_recur_end_at
+  attr_reader :title, :users, :all_day, :start_at, :end_at, :recur, :single_day_recur_end_at
 
   alias single_day_start_at start_at
   alias single_day_end_at end_at

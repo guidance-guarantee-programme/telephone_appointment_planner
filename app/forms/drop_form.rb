@@ -15,14 +15,7 @@ class DropForm
     resource_manager_appointment_rescheduled
   ].freeze
 
-  attr_accessor :event
-  attr_accessor :description
-  attr_accessor :appointment_id
-  attr_accessor :environment
-  attr_accessor :message_type
-  attr_accessor :timestamp
-  attr_accessor :token
-  attr_accessor :signature
+  attr_accessor :event, :description, :appointment_id, :environment, :message_type, :timestamp, :token, :signature
 
   validates :timestamp, presence: true
   validates :token, presence: true

@@ -4,8 +4,7 @@ class UtilisationReport
   include ActiveModel::Model
   include Report
 
-  attr_accessor :date_range
-  attr_accessor :current_user
+  attr_accessor :date_range, :current_user
 
   attr_writer :schedule_type
 

@@ -28,7 +28,5 @@ class CreateGroupAssignments
     user.colleagues.find(user_ids)
   end
 
-  attr_reader :user_ids
-  attr_reader :names
-  attr_reader :user
+  attr_reader :user_ids, :names, :user
 end

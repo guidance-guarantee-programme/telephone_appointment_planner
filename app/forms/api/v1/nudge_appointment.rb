@@ -3,20 +3,9 @@ module Api
     class NudgeAppointment
       include ActiveModel::Model
 
-      attr_accessor :start_at
-      attr_accessor :first_name
-      attr_accessor :last_name
-      attr_accessor :email
-      attr_accessor :phone
-      attr_accessor :mobile
-      attr_accessor :memorable_word
-      attr_accessor :date_of_birth
-      attr_accessor :accessibility_requirements
-      attr_accessor :notes
-      attr_accessor :agent
-      attr_accessor :nudge_confirmation
-      attr_accessor :nudge_eligibility_reason
-      attr_accessor :gdpr_consent
+      attr_accessor :start_at, :first_name, :last_name, :email, :phone, :mobile, :memorable_word, :date_of_birth,
+                    :accessibility_requirements, :notes, :agent, :nudge_confirmation, :nudge_eligibility_reason,
+                    :gdpr_consent
 
       attr_reader :model
 

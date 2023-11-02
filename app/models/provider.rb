@@ -33,8 +33,7 @@ class Provider
     new('Wiltshire', '39885a5e-ecd4-486f-b6d1-12e2f2053806')
   ].freeze
 
-  attr_reader :name
-  attr_reader :id
+  attr_reader :name, :id
 
   def symbol_name
     name.underscore.tr(' ', '_').to_sym

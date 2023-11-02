@@ -2,10 +2,7 @@ class Search
   include ActiveModel::Model
   include DateRangePickerHelper
 
-  attr_accessor :q
-  attr_accessor :date_range
-  attr_accessor :current_user
-  attr_accessor :appointment_type
+  attr_accessor :q, :date_range, :current_user, :appointment_type
   attr_writer :processed
 
   def results # rubocop:disable Metrics/MethodLength, Metrics/AbcSize

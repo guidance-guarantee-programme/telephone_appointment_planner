@@ -280,32 +280,9 @@ Rails/UnknownEnv:
     - 'config/initializers/govuk_admin_template.rb'
     - 'lib/tasks/jobs.rake'
 
-# Offense count: 75
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: separated, grouped
-Style/AccessorGrouping:
-  Exclude:
-    - 'app/forms/api/v1/appointment.rb'
-    - 'app/forms/api/v1/nudge_appointment.rb'
-    - 'app/forms/appointment_report.rb'
-    - 'app/forms/batch_upsert_holidays.rb'
-    - 'app/forms/create_group_assignments.rb'
-    - 'app/forms/destroy_group_assignments.rb'
-    - 'app/forms/drop_form.rb'
-    - 'app/forms/reissue_summary.rb'
-    - 'app/forms/search.rb'
-    - 'app/forms/sms_cancellation.rb'
-    - 'app/forms/utilisation_report.rb'
-    - 'app/lib/notifier.rb'
-    - 'app/models/appointment.rb'
-    - 'app/models/provider.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Style/ExpandPathArguments:
-  Exclude:
-    - 'spec/rails_helper.rb'
+
+# ---
 
 # Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).

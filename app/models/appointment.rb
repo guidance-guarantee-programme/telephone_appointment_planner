@@ -4,7 +4,7 @@ class Appointment < ApplicationRecord
 
   acts_as_copy_target
 
-  attr_accessor :current_user, :internal_availability
+  attr_accessor :current_user, :internal_availability, :ad_hoc_start_at
 
   DEFAULT_COUNTRY_CODE = 'GB'.freeze
 
@@ -110,8 +110,6 @@ class Appointment < ApplicationRecord
   has_one_attached :power_of_attorney_evidence
   has_one_attached :data_subject_consent_evidence
   has_one_attached :generated_consent_form
-
-  attr_accessor :ad_hoc_start_at
 
   delegate :resource_managers, to: :guider
 

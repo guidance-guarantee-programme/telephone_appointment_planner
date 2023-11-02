@@ -1,9 +1,7 @@
 class ReissueSummary
   include ActiveModel::Model
 
-  attr_accessor :current_user
-  attr_accessor :appointment
-  attr_accessor :email
+  attr_accessor :current_user, :appointment, :email
 
   validates :email, presence: true
 

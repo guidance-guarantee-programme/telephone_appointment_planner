@@ -14,8 +14,7 @@ class DestroyGroupAssignments
 
   private
 
-  attr_reader :user_ids
-  attr_reader :group_id
+  attr_reader :user_ids, :group_id
 
   def destroy_orphaned_group
     group = Group.find(group_id)

@@ -1,4 +1,4 @@
-class Notifier # rubocop:disable Metrics/ClassLength
+class Notifier
   NOTIFY_RESOURCE_MANAGER_ATTRIBUTES = %w[
     first_name
     last_name
@@ -121,6 +121,5 @@ class Notifier # rubocop:disable Metrics/ClassLength
     appointment.previous_changes.slice('guider_id', 'start_at').present?
   end
 
-  attr_reader :appointment
-  attr_reader :modifying_agent
+  attr_reader :appointment, :modifying_agent
 end
