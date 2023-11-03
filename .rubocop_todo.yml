@@ -179,12 +179,7 @@ Rails/BelongsTo:
   Exclude:
     - 'app/models/holiday.rb'
 
-# Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: NilOrEmpty, NotPresent, UnlessPresent.
-Rails/Blank:
-  Exclude:
-    - 'app/validators/email_validator.rb'
+
 
 # ---
 

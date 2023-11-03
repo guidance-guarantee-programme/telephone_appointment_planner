@@ -2,7 +2,7 @@ class EmailValidator < ActiveModel::EachValidator
   VALID_REGEX = /.+@.+\..+/
 
   def validate_each(record, attribute, value)
-    return unless value.present?
+    return if value.blank?
 
     if invalid_format?(value) || trailing_dot_in_username?(value) # rubocop:disable Style/GuardClause
       record.errors.add(attribute, :invalid, value: value)
