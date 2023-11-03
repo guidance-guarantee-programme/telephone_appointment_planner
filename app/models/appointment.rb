@@ -103,9 +103,9 @@ class Appointment < ApplicationRecord
 
   belongs_to :rebooked_from, class_name: 'Appointment', optional: true
 
-  has_many :activities, -> { order('created_at DESC') }
+  has_many :activities, -> { order('created_at DESC') }, dependent: :destroy
 
-  has_many :status_transitions
+  has_many :status_transitions, dependent: :destroy
 
   has_one_attached :power_of_attorney_evidence
   has_one_attached :data_subject_consent_evidence

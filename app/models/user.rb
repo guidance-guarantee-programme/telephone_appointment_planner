@@ -26,13 +26,14 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
 
   has_many :schedules, dependent: :destroy
   has_many :bookable_slots, dependent: :destroy, foreign_key: :guider_id
-  has_many :appointments, foreign_key: :guider_id
+  has_many :appointments, foreign_key: :guider_id, dependent: :destroy
   has_many :holidays, dependent: :destroy
 
-  has_many :group_assignments
+  has_many :group_assignments, dependent: :destroy
   has_many :groups, through: :group_assignments
-  has_many :activities, -> { order('created_at DESC') }, foreign_key: :owner_id
-  has_many :colleagues, class_name: 'User', primary_key: :organisation_content_id, foreign_key: :organisation_content_id
+  has_many :activities, -> { order('created_at DESC') }, foreign_key: :owner_id, dependent: :destroy
+  has_many :colleagues, class_name: 'User', primary_key: :organisation_content_id,
+                        foreign_key: :organisation_content_id
 
   scope :guiders, -> { where('permissions @> ?', %(["#{GUIDER_PERMISSION}"])) }
   scope :active, -> { where(active: true) }

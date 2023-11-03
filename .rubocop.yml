@@ -45,3 +45,7 @@ Rails/UnknownEnv:
     - 'config/initializers/govuk_admin_template.rb'
     - 'lib/tasks/jobs.rake'
 
+Rails/InverseOf:
+  Exclude:
+    - 'app/models/appointment.rb'
+    - 'app/models/user.rb'
