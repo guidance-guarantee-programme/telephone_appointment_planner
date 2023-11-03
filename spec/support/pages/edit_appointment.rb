@@ -28,6 +28,7 @@ module Pages
     element :rebook, '.t-rebook'
     element :process, '.t-process'
     element :resend_email_confirmation, '.t-resend-email-confirmation'
+    element :resend_print_confirmation, '.t-resend-print-confirmation'
     element :reschedule, '.t-reschedule'
     element :reissue_summary, '.t-reissue-summary'
 

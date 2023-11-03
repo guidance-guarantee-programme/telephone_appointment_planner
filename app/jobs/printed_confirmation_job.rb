@@ -9,13 +9,17 @@ class PrintedConfirmationJob < NotifyJobBase
 
     client = Notifications::Client.new(api_key(appointment.schedule_type))
 
-    client.send_letter(
-      template_id: template_id(appointment),
-      reference: appointment.to_param,
-      personalisation: personalisation
-    )
+    begin
+      client.send_letter(
+        template_id: template_id(appointment),
+        reference: appointment.to_param,
+        personalisation: personalisation
+      )
 
-    PrintedConfirmationActivity.from(appointment)
+      PrintedConfirmationActivity.from(appointment)
+    rescue Notifications::Client::BadRequestError
+      PrintedConfirmationFailedActivity.from(appointment)
+    end
   end
 
   private

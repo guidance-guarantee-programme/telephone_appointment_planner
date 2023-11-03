@@ -86,9 +86,15 @@
       <span>Rebook</span>
     <% end %>
     <% if current_user.tp? || current_user.tpas_agent? %>
-      <%= link_to appointment_email_confirmation_path(@appointment), title: 'Resend', class: 'btn btn-info t-resend-email-confirmation', method: :post, data: { confirm: 'Resend the appointment confirmation email?' } do %>
+      <%= link_to appointment_email_confirmation_path(@appointment), title: 'Resend appointment confirmation email', class: 'btn btn-info t-resend-email-confirmation', method: :post, data: { confirm: 'Resend the appointment confirmation email?' } do %>
         <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
         <span>Resend</span>
+      <% end %>
+      <% if @appointment.print_confirmation? %>
+        <%= link_to appointment_print_confirmation_path(@appointment), title: 'Resend appointment confirmation letter', class: 'btn btn-info t-resend-print-confirmation', method: :post, data: { confirm: 'Resend the appointment confirmation letter?' } do %>
+          <span class="glyphicon glyphicon-print" aria-hidden="true"></span>
+          <span>Resend</span>
+        <% end %>
       <% end %>
     <% end %>
   </div>
