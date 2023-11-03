@@ -81,7 +81,7 @@ FactoryBot.define do
     trait :with_data_subject_consent_evidence do
       data_subject_consent_obtained { true }
       data_subject_consent_evidence do
-        Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'evidence.pdf'), 'application/pdf')
+        Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/evidence.pdf'), 'application/pdf')
       end
     end
 

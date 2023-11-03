@@ -194,14 +194,8 @@ Rails/EnumHash:
   Exclude:
     - 'app/models/appointment.rb'
 
-# Offense count: 3
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: slashes, arguments
-Rails/FilePath:
-  Exclude:
-    - 'spec/factories/appointments.rb'
-    - 'spec/features/guider_edits_an_appointment_spec.rb'
+
+# ---
 
 # Offense count: 3
 # This cop supports unsafe autocorrection (--autocorrect-all).
@@ -212,8 +206,6 @@ Rails/FindEach:
     - 'app/forms/batch_upsert_holidays.rb'
     - 'app/lib/scheduled_reporting_summary.rb'
     - 'spec/features/scheduled_reporting_summary_spec.rb'
-
-# ---
 # Offense count: 1
 # Configuration parameters: Include.
 # Include: app/models/**/*.rb
