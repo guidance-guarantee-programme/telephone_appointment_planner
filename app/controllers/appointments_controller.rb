@@ -240,7 +240,7 @@ class AppointmentsController < ApplicationController
       params[:appointment][:start_at]
     else
       ad_hoc_start_at = params[:appointment][:ad_hoc_start_at]
-      ad_hoc_start_at.present? ? ad_hoc_start_at : params[:appointment][:start_at]
+      ad_hoc_start_at.presence || params[:appointment][:start_at]
     end
   end
 

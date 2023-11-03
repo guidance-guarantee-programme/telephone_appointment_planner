@@ -230,12 +230,9 @@ Rails/InverseOf:
     - 'app/models/appointment.rb'
     - 'app/models/user.rb'
 
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-Rails/Presence:
-  Exclude:
-    - 'app/controllers/appointments_controller.rb'
-    - 'app/models/appointment.rb'
+
+# ---
+
 
 # Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).
@@ -255,10 +252,6 @@ Rails/SkipsModelValidations:
     - 'spec/lib/notifier_spec.rb'
     - 'spec/mailers/appointment_mailer_spec.rb'
     - 'spec/mailers/previews/appointment_mailer_preview.rb'
-
-
-
-# ---
 
 # Offense count: 1
 # Configuration parameters: Include.

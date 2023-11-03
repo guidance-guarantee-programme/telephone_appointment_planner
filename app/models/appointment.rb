@@ -228,7 +228,7 @@ class Appointment < ApplicationRecord
   end
 
   def canonical_sms_number
-    mobile.present? ? mobile : phone
+    mobile.presence || phone
   end
 
   def potential_duplicates
