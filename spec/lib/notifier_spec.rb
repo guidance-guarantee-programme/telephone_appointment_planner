@@ -183,7 +183,7 @@ RSpec.describe Notifier, '#call' do
       end
 
       it 'does not create a CustomerUpdateActvity' do
-        expect { subject.call }.to_not change { CustomerUpdateActivity.count }
+        expect { subject.call }.to_not(change { CustomerUpdateActivity.count })
       end
     end
   end

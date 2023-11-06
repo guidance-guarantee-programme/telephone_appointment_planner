@@ -854,7 +854,7 @@ RSpec.describe Appointment, type: :model do
         it 'does not assign to a guider' do
           subject.start_at = appointment_start_time
           subject.end_at = appointment_end_time
-          expect { subject.allocate }.to_not change { subject.guider }
+          expect { subject.allocate }.to_not(change { subject.guider })
         end
       end
 
@@ -871,7 +871,7 @@ RSpec.describe Appointment, type: :model do
         it 'does not assign to a guider' do
           subject.start_at = appointment_start_time
           subject.end_at = appointment_end_time
-          expect { subject.allocate }.to_not change { subject.guider }
+          expect { subject.allocate }.to_not(change { subject.guider })
         end
       end
 
@@ -887,7 +887,7 @@ RSpec.describe Appointment, type: :model do
         it 'does not assign to a guider' do
           subject.start_at = appointment_start_time
           subject.end_at = appointment_end_time
-          expect { subject.allocate }.to_not change { subject.guider }
+          expect { subject.allocate }.to_not(change { subject.guider })
         end
       end
     end

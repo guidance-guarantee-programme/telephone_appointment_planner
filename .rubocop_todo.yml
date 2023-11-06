@@ -49,18 +49,7 @@ Layout/HashAlignment:
     - 'spec/requests/appointments_api_spec.rb'
     - 'spec/requests/nudge_appointments_api_spec.rb'
 
-# Offense count: 5
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowedMethods, AllowedPatterns.
-Lint/AmbiguousBlockAssociation:
-  Exclude:
-    - 'spec/forms/destroy_group_assignments_spec.rb'
-    - 'spec/lib/notifier_spec.rb'
-    - 'spec/models/appointment_spec.rb'
-
-
 # ---
-
 
 # Offense count: 1
 # Configuration parameters: AllowedMethods, AllowedPatterns.

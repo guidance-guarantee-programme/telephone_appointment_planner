@@ -21,7 +21,7 @@ RSpec.describe DestroyGroupAssignments, '#call' do
     it 'does not destroy the group' do
       user = create(:user)
       user.groups << group
-      expect { subject.call }.to_not change { Group.count }
+      expect { subject.call }.to_not(change { Group.count })
     end
   end
 
