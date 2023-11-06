@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe DropActivity, '.from' do
   let(:appointment) { create(:appointment) }
 
@@ -40,3 +41,4 @@ RSpec.describe DropActivity, '.from' do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

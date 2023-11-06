@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe Redactor do
   describe '.redact_for_gdpr' do
     it 'redacts records yet to be redacted, greater than 2 years old' do
@@ -54,3 +55,4 @@ RSpec.describe Redactor do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

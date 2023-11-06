@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe DueDiligenceReferenceNumberJob, '#perform' do
   context 'when the number is unique' do
     it 'updates the appointment URN' do
@@ -40,3 +41,4 @@ RSpec.describe DueDiligenceReferenceNumberJob, '#perform' do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.feature 'Scheduled reporting summary' do
   scenario 'When there is no availability' do
     when_the_scheduled_report_runs
@@ -76,3 +77,4 @@ RSpec.feature 'Scheduled reporting summary' do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

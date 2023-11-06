@@ -1,6 +1,7 @@
 require 'rails_helper'
 require 'securerandom'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe 'POST /sms_cancellations', type: :request do
   include ActiveJob::TestHelper
 
@@ -72,3 +73,4 @@ RSpec.describe 'POST /sms_cancellations', type: :request do
     expect(response.location).to end_with('/auth/gds')
   end
 end
+# rubocop:enable Metrics/BlockLength

@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe Holiday, type: :model do
   describe 'validations' do
     it 'requires all_day' do
@@ -174,3 +175,4 @@ RSpec.describe Holiday, type: :model do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

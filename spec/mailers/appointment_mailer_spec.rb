@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe AppointmentMailer, type: :mailer do
   let(:appointment) do
     build_stubbed(
@@ -534,3 +535,4 @@ RSpec.describe AppointmentMailer, type: :mailer do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

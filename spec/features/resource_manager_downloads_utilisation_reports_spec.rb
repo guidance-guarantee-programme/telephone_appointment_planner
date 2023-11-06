@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.feature 'Resource manager downloads utilisation reports' do
   scenario 'Non-TPAS user' do
     given_the_user_is_a_resource_manager(organisation: :tp) do
@@ -275,3 +276,4 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
     expect(@page.csv).to eq(expected_csv)
   end
 end
+# rubocop:enable Metrics/BlockLength

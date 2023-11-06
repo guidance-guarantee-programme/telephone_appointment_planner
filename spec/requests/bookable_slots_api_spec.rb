@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe 'GET /api/v1/bookable_slots' do
   scenario 'retrieving Lloyds slots for the booking window' do
     travel_to '2017-01-09 12:00' do
@@ -145,3 +146,4 @@ RSpec.describe 'GET /api/v1/bookable_slots' do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

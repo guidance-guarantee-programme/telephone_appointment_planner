@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.feature 'Resource manager downloads appointment reports' do
   scenario 'Non TPAS user' do
     given_the_user_is_a_resource_manager(organisation: :tp) do
@@ -202,3 +203,4 @@ RSpec.feature 'Resource manager downloads appointment reports' do
     ]
   end
 end
+# rubocop:enable Metrics/BlockLength

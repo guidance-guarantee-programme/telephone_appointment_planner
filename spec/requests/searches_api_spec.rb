@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe 'GET /api/v1/searches' do
   scenario 'searching for appointments' do
     given_the_user_is_a_pension_wise_api_user do
@@ -48,3 +49,4 @@ RSpec.describe 'GET /api/v1/searches' do
     expect(response).to be_forbidden
   end
 end
+# rubocop:enable Metrics/BlockLength

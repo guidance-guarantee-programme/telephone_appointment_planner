@@ -2,6 +2,7 @@ require 'rails_helper'
 
 require 'gds-sso/lint/user_spec'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe User, type: :model do
   it_behaves_like 'a gds-sso user class'
 
@@ -109,3 +110,4 @@ RSpec.describe User, type: :model do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

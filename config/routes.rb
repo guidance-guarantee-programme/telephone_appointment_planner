@@ -1,5 +1,6 @@
 require 'sidekiq/web'
 
+# rubocop:disable Metrics/BlockLength
 Rails.application.routes.draw do
   mount GovukAdminTemplate::Engine, at: '/style-guide' if Rails.env.development?
 
@@ -91,3 +92,4 @@ Rails.application.routes.draw do
 
   mount Sidekiq::Web, at: '/sidekiq', constraints: AuthenticatedUser.new
 end
+# rubocop:enable Metrics/BlockLength

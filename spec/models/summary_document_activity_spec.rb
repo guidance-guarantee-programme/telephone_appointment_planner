@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe SummaryDocumentActivity do
   before do
     allow(PusherActivityCreatedJob).to receive(:perform_later)
@@ -65,3 +66,4 @@ RSpec.describe SummaryDocumentActivity do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

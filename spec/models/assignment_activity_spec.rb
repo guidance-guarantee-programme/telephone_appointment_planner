@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe AssignmentActivity do
   describe '.from' do
     let(:appointment) { create(:appointment) }
@@ -54,3 +55,4 @@ RSpec.describe AssignmentActivity do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe PrintedConfirmationJob, '#perform' do
   let(:appointment) { build_stubbed(:appointment) }
   let(:client) { double(Notifications::Client, send_letter: true) }
@@ -97,3 +98,4 @@ RSpec.describe PrintedConfirmationJob, '#perform' do
     ENV.delete('DUE_DILIGENCE_NOTIFY_API_KEY')
   end
 end
+# rubocop:enable Metrics/BlockLength

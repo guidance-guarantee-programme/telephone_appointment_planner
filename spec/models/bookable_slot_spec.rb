@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe BookableSlot, type: :model do
   def make_time(hour, minute)
     BusinessDays
@@ -629,3 +630,4 @@ RSpec.describe BookableSlot, type: :model do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

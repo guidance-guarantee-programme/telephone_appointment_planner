@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.feature 'Agent searches for appointments' do
   scenario 'TPAS users see all types of appointments' do
     given_the_user_is_a_resource_manager(organisation: :tpas) do
@@ -217,3 +218,4 @@ RSpec.feature 'Agent searches for appointments' do
     @page.search.click
   end
 end
+# rubocop:enable Metrics/BlockLength

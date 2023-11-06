@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.feature 'Guider edits an appointment' do
   scenario 'Guider attempts to reschedule a PSG appointment' do
     given_the_user_is_a_guider(organisation: :tpas) do
@@ -194,3 +195,4 @@ RSpec.feature 'Guider edits an appointment' do
     expect(@page).to have_flash_of_success
   end
 end
+# rubocop:enable Metrics/BlockLength

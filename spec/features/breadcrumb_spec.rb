@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.feature 'Breadcrumb' do
   describe 'Edit appointment after viewing allocations' do
     it 'shows the correct breadcrumb link' do
@@ -125,3 +126,4 @@ RSpec.feature 'Breadcrumb' do
     )
   end
 end
+# rubocop:enable Metrics/BlockLength

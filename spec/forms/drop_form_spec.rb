@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe DropForm, '#create_activity' do
   let(:appointment) { create(:appointment) }
   let(:params) do
@@ -84,3 +85,4 @@ RSpec.describe DropForm, '#create_activity' do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe MessageActivity do
   describe '.create' do
     before do
@@ -36,3 +37,4 @@ RSpec.describe MessageActivity do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

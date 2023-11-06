@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe AppointmentRemindersJob, '#perform' do
   before do
     allow(Appointment).to receive(:needing_reminder).and_return [appointment]
@@ -38,3 +39,4 @@ RSpec.describe AppointmentRemindersJob, '#perform' do
     expect(activity.owner).to eq appointment.guider
   end
 end
+# rubocop:enable Metrics/BlockLength

@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.feature 'Booking due diligence appointments', js: true do
   let(:day) { BusinessDays.from_now(3) }
 
@@ -201,3 +202,4 @@ RSpec.feature 'Booking due diligence appointments', js: true do
     expect(@page).to have_due_diligence_banner
   end
 end
+# rubocop:enable Metrics/BlockLength

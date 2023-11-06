@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe Api::V1::Appointment, '#create' do
   it 'defaults nudged correctly' do
     expect(described_class.new(nudged: '').nudged).to be false
@@ -50,3 +51,4 @@ RSpec.describe Api::V1::Appointment, '#create' do
     expect(appointment.model.nudged).to be(false)
   end
 end
+# rubocop:enable Metrics/BlockLength

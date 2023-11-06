@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.feature 'Resource manager manages holidays' do
   let(:users) do
     [
@@ -412,3 +413,4 @@ RSpec.feature 'Resource manager manages holidays' do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe 'POST /mail_gun/drops' do
   scenario 'inbound hooks create activity entries' do
     with_a_configured_token('deadbeef') do
@@ -85,3 +86,4 @@ RSpec.describe 'POST /mail_gun/drops' do
     expect(response).to be_successful
   end
 end
+# rubocop:enable Metrics/BlockLength

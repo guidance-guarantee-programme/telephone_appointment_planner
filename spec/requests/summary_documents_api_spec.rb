@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe 'POST /api/v1/summary_documents' do
   scenario 'create a valid summary document activity' do
     given_the_user_is_a_pension_wise_api_user do
@@ -80,3 +81,4 @@ RSpec.describe 'POST /api/v1/summary_documents' do
     expect(response).to be_created
   end
 end
+# rubocop:enable Metrics/BlockLength

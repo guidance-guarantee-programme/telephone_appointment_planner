@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/BlockLength
 namespace :jobs do
   namespace :wipe do
     desc 'wipes data across all providers'
@@ -33,3 +34,4 @@ namespace :jobs do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

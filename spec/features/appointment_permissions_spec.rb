@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.feature 'Editing appointments and permissions' do
   scenario 'TP agent can edit other’s appointments' do
     given_the_user_is_an_agent do # TP agent
@@ -36,3 +37,4 @@ RSpec.feature 'Editing appointments and permissions' do
     expect(@page).to have_permissions_warning
   end
 end
+# rubocop:enable Metrics/BlockLength

@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.feature 'Reissuing summary documents digitally' do
   scenario 'A non-digitally summarised appointment' do
     given_the_user_is_a_resource_manager do
@@ -65,3 +66,4 @@ RSpec.feature 'Reissuing summary documents digitally' do
     @page.wait_until_reissue_modal_invisible
   end
 end
+# rubocop:enable Metrics/BlockLength

@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe Appointment, type: :model do
   describe '#summarised?' do
     context 'when the appointment has a summary activity' do
@@ -1131,3 +1132,4 @@ RSpec.describe Appointment, type: :model do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

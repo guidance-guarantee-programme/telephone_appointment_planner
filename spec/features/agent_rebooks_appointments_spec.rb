@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.feature 'Agent rebooks appointments' do
   scenario 'CAS agent rebooks an appointment seeing only their availability', js: true do
     given_the_user_is_a_resource_manager(organisation: :cas) do
@@ -157,3 +158,4 @@ RSpec.feature 'Agent rebooks appointments' do
     expect(@page.original_appointment.text).to eq("Rebooked from ##{@appointment.id}")
   end
 end
+# rubocop:enable Metrics/BlockLength

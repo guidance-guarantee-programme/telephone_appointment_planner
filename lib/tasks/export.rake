@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/BlockLength
 namespace :export do
   QUERIES = {
     'MAPS_PWBLZ_TAPAPPOINT_' => 'id, guider_id, start_at, end_at, status, agent_id, rebooked_from_id, pension_provider,
@@ -58,3 +59,4 @@ namespace :export do
     )
   end
 end
+# rubocop:enable Metrics/BlockLength

@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.feature 'Guider views appointments' do
   scenario 'Guider views their own appointments', js: true do
     given_the_user_is_both_guider_and_manager do
@@ -259,3 +260,4 @@ RSpec.feature 'Guider views appointments' do
     expect(@page.calendar.guiders).to_not include @deactivated_guider.name
   end
 end
+# rubocop:enable Metrics/BlockLength

@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe AuditActivity do
   describe '.from' do
     before do
@@ -52,3 +53,4 @@ RSpec.describe AuditActivity do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.feature 'Resource manager manages schedules' do
   include ActiveJob::TestHelper
 
@@ -267,3 +268,4 @@ RSpec.feature 'Resource manager manages schedules' do
     expect(GenerateBookableSlotsForUserJob).to_not have_received(:perform_later)
   end
 end
+# rubocop:enable Metrics/BlockLength

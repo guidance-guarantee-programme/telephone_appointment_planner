@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.feature 'Resource manager reschedules an appointment', js: true do
   scenario 'TPAS resource manager reschedules another organisation’s appointment' do
     given_the_user_is_a_resource_manager(organisation: :tpas) do
@@ -301,3 +302,4 @@ RSpec.feature 'Resource manager reschedules an appointment', js: true do
     @page.guider.select(@guider_two.name)
   end
 end
+# rubocop:enable Metrics/BlockLength

@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.feature 'Agent manages appointments' do
   include ActiveJob::TestHelper
 
@@ -791,3 +792,4 @@ RSpec.feature 'Agent manages appointments' do
     expect(@page).to have_flash_of_danger
   end
 end
+# rubocop:enable Metrics/BlockLength

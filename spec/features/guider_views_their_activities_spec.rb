@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.feature 'Guider views their activities' do
   let(:guider) do
     create(:guider)
@@ -53,3 +54,4 @@ RSpec.feature 'Guider views their activities' do
     expect(@page).to have_no_activity
   end
 end
+# rubocop:enable Metrics/BlockLength

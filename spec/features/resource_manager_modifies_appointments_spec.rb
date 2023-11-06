@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.feature 'Resource manager modifies appointments' do
   scenario 'Avoid navigating away with unsaved modifications', js: true do
     given_the_user_is_a_resource_manager do
@@ -313,3 +314,4 @@ RSpec.feature 'Resource manager modifies appointments' do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

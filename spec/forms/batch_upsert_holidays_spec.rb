@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe BatchUpsertHolidays do
   describe 'validations' do
     subject do
@@ -164,3 +165,4 @@ RSpec.describe BatchUpsertHolidays do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

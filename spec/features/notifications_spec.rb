@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe 'Activity notification alerts', js: true do
   let(:agent) do
     create(:agent)
@@ -117,3 +118,4 @@ end
 def then_the_high_priority_activity_is_resolved
   expect(@page.activity_feed.high_priority_activities.first).to have_content('Resolved Successfully')
 end
+# rubocop:enable Metrics/BlockLength

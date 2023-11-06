@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe Notifier, '#call' do
   subject { described_class.new(appointment, modifying_agent) }
   let!(:appointment) { create(:appointment) }
@@ -237,3 +238,4 @@ RSpec.describe Notifier, '#call' do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

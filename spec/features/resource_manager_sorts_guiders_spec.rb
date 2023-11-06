@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.feature 'Resource manager sorts guiders' do
   scenario 'Resource manager sorts guiders', js: true do
     given_the_user_is_a_resource_manager do
@@ -32,3 +33,4 @@ RSpec.feature 'Resource manager sorts guiders' do
     expect(@page.guiders.map(&:text)).to eq @guiders.reverse.map(&:name)
   end
 end
+# rubocop:enable Metrics/BlockLength
