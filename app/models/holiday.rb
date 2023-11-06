@@ -1,5 +1,5 @@
 class Holiday < ApplicationRecord
-  belongs_to :user, required: false
+  belongs_to :user, optional: true
 
   validates :user, presence: true, unless: :bank_holiday?
   validates :all_day, inclusion: [true, false]

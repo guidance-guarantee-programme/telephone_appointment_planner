@@ -173,14 +173,6 @@ Rails/ApplicationJob:
     - 'app/jobs/slack_pinger_job.rb'
     - 'app/jobs/website_appointment_slack_pinger_job.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Rails/BelongsTo:
-  Exclude:
-    - 'app/models/holiday.rb'
-
-
-
 # ---
 
 # Offense count: 3
@@ -192,6 +184,7 @@ Rails/FindEach:
     - 'app/forms/batch_upsert_holidays.rb'
     - 'app/lib/scheduled_reporting_summary.rb'
     - 'spec/features/scheduled_reporting_summary_spec.rb'
+
 # Offense count: 1
 # Configuration parameters: Include.
 # Include: app/models/**/*.rb
