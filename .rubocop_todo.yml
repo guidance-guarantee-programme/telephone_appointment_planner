@@ -88,19 +88,9 @@ Lint/MissingCopEnableDirective:
     - 'app/models/bookable_slot.rb'
     - 'spec/models/appointment_search_spec.rb'
 
-# Offense count: 14
-# This cop supports safe autocorrection (--autocorrect).
-Lint/RedundantCopDisableDirective:
-  Exclude:
-    - 'app/controllers/appointments_controller.rb'
-    - 'app/forms/api/v1/nudge_appointment.rb'
-    - 'app/forms/search.rb'
-    - 'app/models/appointment.rb'
-    - 'app/models/appointment_search.rb'
-    - 'app/models/bookable_slot.rb'
-    - 'app/presenters/appointment_csv_presenter.rb'
-    - 'app/presenters/printed_confirmation_presenter.rb'
-    - 'spec/features/resource_manager_manages_holidays_spec.rb'
+
+
+# ---
 
 # Offense count: 118
 # Configuration parameters: CountComments, CountAsOne, AllowedMethods, AllowedPatterns.
@@ -118,11 +108,6 @@ Metrics/MethodLength:
 Metrics/PerceivedComplexity:
   Max: 9
 
-# Offense count: 74
-# This cop supports safe autocorrection (--autocorrect).
-Migration/DepartmentName:
-  Enabled: false
-
 # Offense count: 2
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: EnforcedStyleForLeadingUnderscores.
@@ -132,9 +117,6 @@ Naming/MemoizedInstanceVariableName:
     - 'app/controllers/schedules_controller.rb'
     - 'spec/features/notifications_spec.rb'
 
-
-
-# ---
 
 # Offense count: 3
 # This cop supports unsafe autocorrection (--autocorrect-all).

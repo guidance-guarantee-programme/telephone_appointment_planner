@@ -647,12 +647,12 @@ class Appointment < ApplicationRecord
   end
 
   def validate_tp_agent_statuses
-    if current_user&.tp_agent? && cancelled_by_customer? && secondary_status != AGENT_PERMITTED_SECONDARY # rubocop:disable Style/GuardClause, Layout/LineLength
+    if current_user&.tp_agent? && cancelled_by_customer? && secondary_status != AGENT_PERMITTED_SECONDARY # rubocop:disable Style/GuardClause
       errors.add(:secondary_status, "Contact centre agents should only select 'Cancelled prior to appointment'")
     end
   end
 
-  def validate_tpas_agent_statuses # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+  def validate_tpas_agent_statuses # rubocop:disable Metrics/CyclomaticComplexity
     if current_user&.tpas_agent? && !guider.tpas? # rubocop:disable Style/GuardClause
       unless ineligible_age? || ineligible_pension_type? || cancelled_by_customer?
         errors.add(:status, "Must be one of 'Ineligible Age', 'Ineligible Pension Type', 'Cancelled by Customer'")
@@ -676,7 +676,7 @@ class Appointment < ApplicationRecord
     errors.add(:guider, 'Cannot be reallocated to a non Pension Wise guider') if guider&.due_diligence?
   end
 
-  def validate_pending_overlaps # rubocop:disable Metrics/MethodLength
+  def validate_pending_overlaps
     return unless self
                   .class
                   .pending

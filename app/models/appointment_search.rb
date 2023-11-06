@@ -79,7 +79,7 @@ class AppointmentSearch
   def search_with_query
     scope = Appointment.joins(:guider).includes(:guider).select('appointments.*')
 
-    if REFERENCE_REGEX === @query # rubocop:disable Style/CaseEquality
+    if REFERENCE_REGEX === @query
       scope.where(id: @query)
     else
       scope.where(ilike(%w[appointments.first_name appointments.last_name users.name]))

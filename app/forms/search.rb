@@ -5,7 +5,7 @@ class Search
   attr_accessor :q, :date_range, :current_user, :appointment_type
   attr_writer :processed
 
-  def results # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+  def results
     range = date_range
             .to_s
             .split(' - ')
