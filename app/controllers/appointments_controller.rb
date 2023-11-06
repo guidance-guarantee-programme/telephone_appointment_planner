@@ -33,7 +33,7 @@ class AppointmentsController < ApplicationController
     @appointment.end_at = nil
   end
 
-  def update_reschedule
+  def update_reschedule # rubocop:disable Metrics/MethodLength
     @appointment = Appointment.find(params[:appointment_id])
     @prior_guider = @appointment.guider
     @appointment.assign_attributes(update_reschedule_params)
@@ -73,7 +73,7 @@ class AppointmentsController < ApplicationController
     end
   end
 
-  def preview
+  def preview # rubocop:disable Metrics/MethodLength
     @appointment = Appointment.new(create_params.merge(agent: current_user))
     @appointment.allocate(
       via_slot: calendar_scheduling?,
@@ -88,7 +88,7 @@ class AppointmentsController < ApplicationController
     end
   end
 
-  def create
+  def create # rubocop:disable Metrics/MethodLength
     @appointment = Appointment.new(create_params.merge(agent: current_user))
     @appointment.allocate(
       via_slot: calendar_scheduling?,

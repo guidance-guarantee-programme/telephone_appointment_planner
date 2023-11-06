@@ -36,7 +36,7 @@ namespace :export do
     )
   end
 
-  def export_to_azure_blob(key, model_class)
+  def export_to_azure_blob(key, model_class) # rubocop:disable Metrics/MethodLength
     from_timestamp = ENV.fetch('FROM') { 3.months.ago }
 
     model_class.public_send(:acts_as_copy_target)

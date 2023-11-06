@@ -22,7 +22,7 @@ class BankHolidayExcluder
     ]
   end
 
-  def create_all_day_bank_holidays_for_organisation(organisation_id)
+  def create_all_day_bank_holidays_for_organisation(organisation_id) # rubocop:disable Metrics/MethodLength
     active_guider_ids_for_organisation(organisation_id).each do |guider_id|
       permitted_date_pairs.each do |date_pair|
         Holiday.create!(

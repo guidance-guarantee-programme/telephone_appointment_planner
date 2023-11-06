@@ -23,7 +23,7 @@ module BreadcrumbHelper
     search_appointments_path
   end
 
-  def previous_page_title
+  def previous_page_title # rubocop:disable Metrics/MethodLength
     case "#{previous_controller}##{previous_action}"
     when 'allocations#show'
       'Allocations'

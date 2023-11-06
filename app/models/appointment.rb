@@ -676,7 +676,7 @@ class Appointment < ApplicationRecord
     errors.add(:guider, 'Cannot be reallocated to a non Pension Wise guider') if guider&.due_diligence?
   end
 
-  def validate_pending_overlaps
+  def validate_pending_overlaps # rubocop:disable Metrics/MethodLength
     return unless self
                   .class
                   .pending

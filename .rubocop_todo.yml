@@ -98,10 +98,7 @@ Lint/MissingCopEnableDirective:
 Metrics/BlockLength:
   Max: 901
 
-# Offense count: 1
-# Configuration parameters: CountComments, CountAsOne, AllowedMethods, AllowedPatterns.
-Metrics/MethodLength:
-  Max: 23
+
 
 # Offense count: 1
 # Configuration parameters: AllowedMethods, AllowedPatterns.

@@ -47,7 +47,7 @@ class Notifier
     Array(appointment.previous_changes.fetch('guider_id', appointment.guider_id))
   end
 
-  def notify_customer # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+  def notify_customer # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     if appointment_cancelled?
       CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::CANCELLED_MESSAGE)
     elsif appointment_missed?

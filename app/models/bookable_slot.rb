@@ -16,7 +16,7 @@ class BookableSlot < ApplicationRecord
     where("#{quoted_table_name}.start_at > ? AND #{quoted_table_name}.end_at < ?", from, to)
   end
 
-  def self.limit_by_organisation(from, to)
+  def self.limit_by_organisation(from, to) # rubocop:disable Metrics/MethodLength
     tpas_start_at = BusinessDays.from_now(5).change(hour: 21, min: 0).in_time_zone('London')
     tpas_start_at = from if from > tpas_start_at
 
@@ -61,7 +61,7 @@ class BookableSlot < ApplicationRecord
       .without_holidays
   end
 
-  def self.grouped(organisation_id = nil, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE, day = nil) # rubocop:disable Metrics/AbcSize
+  def self.grouped(organisation_id = nil, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE, day = nil) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     from, to = date_range(schedule_type, day)
     limit_by_organisation = schedule_type == User::PENSION_WISE_SCHEDULE_TYPE
 
@@ -89,7 +89,7 @@ class BookableSlot < ApplicationRecord
     scope.where(schedule_type: schedule_type)
   end
 
-  def self.without_appointments(from = nil, to = nil)
+  def self.without_appointments(from = nil, to = nil) # rubocop:disable Metrics/MethodLength
     joins(<<-SQL
             LEFT JOIN appointments ON
               appointments.guider_id = #{quoted_table_name}.guider_id
@@ -110,7 +110,7 @@ class BookableSlot < ApplicationRecord
       .where('appointments.start_at IS NULL')
   end
 
-  def self.without_holidays
+  def self.without_holidays # rubocop:disable Metrics/MethodLength
     joins(<<-SQL
           LEFT JOIN holidays ON
             -- The holiday is specifically for the user, or it is for everyone
@@ -131,7 +131,7 @@ class BookableSlot < ApplicationRecord
     sanitize_sql(["AND (#{table}.start_at > ? AND #{table}.end_at < ?)", from, to])
   end
 
-  def self.starting_after_next_valid_start_date(user, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE)
+  def self.starting_after_next_valid_start_date(user, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE) # rubocop:disable Metrics/MethodLength
     starting_from = next_valid_start_date(user, schedule_type)
     normal_scope = where("#{quoted_table_name}.start_at > ?", starting_from)
 
@@ -156,7 +156,7 @@ class BookableSlot < ApplicationRecord
     end
   end
 
-  def self.with_guider_count(user, from, to, lloyds: false, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE, scoped: true, internal: false, external: false) # rubocop:disable Metrics/AbcSize, Layout/LineLength, Metrics/ParameterLists
+  def self.with_guider_count(user, from, to, lloyds: false, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE, scoped: true, internal: false, external: false) # rubocop:disable Metrics/AbcSize, Layout/LineLength, Metrics/ParameterLists, Metrics/MethodLength
     users = Array(user)
     agent = users.one? ? user : users.first
     user  = users.last
@@ -175,7 +175,7 @@ class BookableSlot < ApplicationRecord
       end
   end
 
-  def self.for_organisation(user, scoped: true, lloyds: false, internal: false, external: false) # rubocop:disable Metrics/CyclomaticComplexity
+  def self.for_organisation(user, scoped: true, lloyds: false, internal: false, external: false) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/MethodLength
     scope = joins(:guider)
 
     if lloyds

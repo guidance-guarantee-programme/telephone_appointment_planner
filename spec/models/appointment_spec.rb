@@ -772,7 +772,7 @@ RSpec.describe Appointment, type: :model do
         expect(subject.guider).to eq(tp_guider)
       end
 
-      def guider_with_slot(provider)
+      def guider_with_slot(provider) # rubocop:disable Metrics/MethodLength
         guider = create(:guider, provider)
         guider.schedules.build(
           start_at: appointment_start_time.beginning_of_day,

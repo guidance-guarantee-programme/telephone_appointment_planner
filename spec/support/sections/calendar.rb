@@ -31,7 +31,7 @@ module Sections
       JS
     end
 
-    def select_holiday_range(resource_name)
+    def select_holiday_range(resource_name) # rubocop:disable Metrics/MethodLength
       wait_until_rendered
 
       x, y = evaluate_script <<-JS
@@ -50,7 +50,7 @@ module Sections
 
     private
 
-    def background_events(event_type)
+    def background_events(event_type) # rubocop:disable Metrics/MethodLength
       wait_until_rendered
 
       evaluate_script(<<-JS).map(&:with_indifferent_access)
