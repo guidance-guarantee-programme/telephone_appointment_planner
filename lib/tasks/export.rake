@@ -1,16 +1,16 @@
+QUERIES = {
+  'MAPS_PWBLZ_TAPAPPOINT_' => 'id, guider_id, start_at, end_at, status, agent_id, rebooked_from_id, pension_provider,
+                               where_you_heard, gdpr_consent, created_at, updated_at, schedule_type, nudged,
+                               nudge_confirmation, nudge_eligibility_reason, rescheduled_at',
+  'MAPS_PWBLZ_TAPBKSLT_'   => 'id, guider_id, start_at, end_at, created_at, updated_at',
+  'MAPS_PWBLZ_TAPHLD_'     => 'id, user_id, start_at, end_at, created_at, updated_at',
+  'MAPS_PWBLZ_TAPREPSUM_'  => 'id, organisation, two_week_availability, four_week_availability,
+                               first_available_slot_on, created_at, updated_at',
+  'MAPS_PWBLZ_TAPUSR_'     => 'id, organisation_slug, organisation_content_id, created_at, updated_at'
+}.freeze
+
 # rubocop:disable Metrics/BlockLength
 namespace :export do
-  QUERIES = {
-    'MAPS_PWBLZ_TAPAPPOINT_' => 'id, guider_id, start_at, end_at, status, agent_id, rebooked_from_id, pension_provider,
-                                 where_you_heard, gdpr_consent, created_at, updated_at, schedule_type, nudged,
-                                 nudge_confirmation, nudge_eligibility_reason, rescheduled_at',
-    'MAPS_PWBLZ_TAPBKSLT_'   => 'id, guider_id, start_at, end_at, created_at, updated_at',
-    'MAPS_PWBLZ_TAPHLD_'     => 'id, user_id, start_at, end_at, created_at, updated_at',
-    'MAPS_PWBLZ_TAPREPSUM_'  => 'id, organisation, two_week_availability, four_week_availability,
-                                 first_available_slot_on, created_at, updated_at',
-    'MAPS_PWBLZ_TAPUSR_'     => 'id, organisation_slug, organisation_content_id, created_at, updated_at'
-  }.freeze
-
   desc 'Export CSV data to blob storage for analysis FROM=timestamp (default 3 months)'
   task blob: :environment do
     export_to_azure_blob('MAPS_PWBLZ_TAPAPPOINT_', Appointment)

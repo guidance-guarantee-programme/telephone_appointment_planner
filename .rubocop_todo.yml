@@ -58,13 +58,6 @@ Lint/AmbiguousBlockAssociation:
     - 'spec/lib/notifier_spec.rb'
     - 'spec/models/appointment_spec.rb'
 
-# Offense count: 1
-# Configuration parameters: AllowedMethods.
-# AllowedMethods: enums
-Lint/ConstantDefinitionInBlock:
-  Exclude:
-    - 'lib/tasks/export.rake'
-
 
 # ---
 
