@@ -63,3 +63,8 @@ Naming/VariableNumber:
     - 'spec/requests/summary_document_dropped_api_spec.rb'
     - 'spec/requests/summary_documents_api_spec.rb'
     - 'spec/support/pages/new_appointment.rb'
+
+Layout/ClosingHeredocIndentation:
+  Exclude:
+    - 'app/forms/appointment_report.rb'
+    - 'app/models/bookable_slot.rb'

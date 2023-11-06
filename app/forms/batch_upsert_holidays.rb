@@ -104,6 +104,7 @@ class BatchUpsertHolidays
 
   def end_at_comes_after_start_at
     return if end_at > start_at
+
     if all_day
       errors.add(:multi_day_end_at, 'must come after date from')
     else
