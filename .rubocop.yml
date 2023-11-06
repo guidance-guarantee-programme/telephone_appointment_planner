@@ -49,3 +49,17 @@ Rails/InverseOf:
   Exclude:
     - 'app/models/appointment.rb'
     - 'app/models/user.rb'
+
+Naming/VariableNumber:
+  Exclude:
+    - 'app/lib/summary_document_link.rb'
+    - 'app/presenters/printed_confirmation_presenter.rb'
+    - 'app/presenters/printed_third_party_consent_form_presenter.rb'
+    - 'spec/features/customer_downloads_consent_form_spec.rb'
+    - 'spec/jobs/printed_confirmation_job_spec.rb'
+    - 'spec/jobs/printed_third_party_consent_form_job_spec.rb'
+    - 'spec/requests/appointments_api_spec.rb'
+    - 'spec/requests/nudge_appointments_api_spec.rb'
+    - 'spec/requests/summary_document_dropped_api_spec.rb'
+    - 'spec/requests/summary_documents_api_spec.rb'
+    - 'spec/support/pages/new_appointment.rb'

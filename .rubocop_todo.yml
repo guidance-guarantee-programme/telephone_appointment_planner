@@ -132,30 +132,9 @@ Naming/MemoizedInstanceVariableName:
     - 'app/controllers/schedules_controller.rb'
     - 'spec/features/notifications_spec.rb'
 
-# Offense count: 1
-# Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
-# AllowedNames: as, at, by, cc, db, id, if, in, io, ip, of, on, os, pp, to
-Naming/MethodParameterName:
-  Exclude:
-    - 'app/models/appointment.rb'
 
-# Offense count: 39
-# Configuration parameters: EnforcedStyle, CheckMethodNames, CheckSymbols, AllowedIdentifiers, AllowedPatterns.
-# SupportedStyles: snake_case, normalcase, non_integer
-# AllowedIdentifiers: capture3, iso8601, rfc1123_date, rfc822, rfc2822, rfc3339, x86_64
-Naming/VariableNumber:
-  Exclude:
-    - 'app/lib/summary_document_link.rb'
-    - 'app/presenters/printed_confirmation_presenter.rb'
-    - 'app/presenters/printed_third_party_consent_form_presenter.rb'
-    - 'spec/features/customer_downloads_consent_form_spec.rb'
-    - 'spec/jobs/printed_confirmation_job_spec.rb'
-    - 'spec/jobs/printed_third_party_consent_form_job_spec.rb'
-    - 'spec/requests/appointments_api_spec.rb'
-    - 'spec/requests/nudge_appointments_api_spec.rb'
-    - 'spec/requests/summary_document_dropped_api_spec.rb'
-    - 'spec/requests/summary_documents_api_spec.rb'
-    - 'spec/support/pages/new_appointment.rb'
+
+# ---
 
 # Offense count: 3
 # This cop supports unsafe autocorrection (--autocorrect-all).
@@ -172,8 +151,6 @@ Rails/ApplicationJob:
     - 'app/jobs/customer_update_job.rb'
     - 'app/jobs/slack_pinger_job.rb'
     - 'app/jobs/website_appointment_slack_pinger_job.rb'
-
-# ---
 
 # Offense count: 3
 # This cop supports unsafe autocorrection (--autocorrect-all).

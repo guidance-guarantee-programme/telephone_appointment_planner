@@ -442,8 +442,8 @@ class Appointment < ApplicationRecord
 
   private
 
-  def owned_by_my_organisation?(me)
-    me.organisation_content_id == guider.organisation_content_id
+  def owned_by_my_organisation?(myself)
+    myself.organisation_content_id == guider.organisation_content_id
   end
 
   def track_initial_status
