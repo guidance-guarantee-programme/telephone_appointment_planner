@@ -723,3 +723,4 @@ end
 module Models
   Appointment = ::Appointment
 end
+# rubocop:enable Metrics/ClassLength

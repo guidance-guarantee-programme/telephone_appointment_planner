@@ -101,3 +101,4 @@ class AppointmentReport
     { guiders: { organisation_content_id: current_user.organisation_content_id } }
   end
 end
+# rubocop:enable Layout/LineLength

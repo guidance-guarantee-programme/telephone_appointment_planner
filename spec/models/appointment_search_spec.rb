@@ -24,6 +24,7 @@ RSpec.describe AppointmentSearch, type: :model do
     )
       described_class.new(query, start_at, end_at, current_user, processed, appointment_type).search
     end
+    # rubocop:enable Metrics/ParameterLists
 
     it 'filters by type' do
       @appointments.map(&:destroy)

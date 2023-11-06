@@ -219,3 +219,4 @@ class BookableSlot < ApplicationRecord
     Time.zone.now.to_date..BusinessDays.from_now(55).to_date
   end
 end
+# rubocop:enable Metrics/ClassLength

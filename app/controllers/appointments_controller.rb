@@ -265,3 +265,4 @@ class AppointmentsController < ApplicationController
     params[:edit_appointment].nil?
   end
 end
+# rubocop:enable Metrics/ClassLength

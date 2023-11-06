@@ -77,19 +77,6 @@ Lint/DuplicateMethods:
     - 'app/forms/appointment_report.rb'
     - 'app/forms/reissue_summary.rb'
 
-# Offense count: 6
-# Configuration parameters: MaximumRangeSize.
-Lint/MissingCopEnableDirective:
-  Exclude:
-    - 'app/controllers/appointments_controller.rb'
-    - 'app/forms/appointment_report.rb'
-    - 'app/forms/drop_form.rb'
-    - 'app/models/appointment.rb'
-    - 'app/models/bookable_slot.rb'
-    - 'spec/models/appointment_search_spec.rb'
-
-
-
 # ---
 
 
