@@ -65,17 +65,6 @@ Lint/ConstantDefinitionInBlock:
   Exclude:
     - 'lib/tasks/export.rake'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Lint/DeprecatedOpenSSLConstant:
-  Exclude:
-    - 'app/forms/drop_form.rb'
-
-# Offense count: 2
-Lint/DuplicateMethods:
-  Exclude:
-    - 'app/forms/appointment_report.rb'
-    - 'app/forms/reissue_summary.rb'
 
 # ---
 
