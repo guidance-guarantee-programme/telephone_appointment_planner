@@ -6,28 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 149
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowMultipleStyles, EnforcedHashRocketStyle, EnforcedColonStyle, EnforcedLastArgumentHashStyle.
-# SupportedHashRocketStyles: key, separator, table
-# SupportedColonStyles: key, separator, table
-# SupportedLastArgumentHashStyles: always_inspect, always_ignore, ignore_implicit, ignore_explicit
-Layout/HashAlignment:
-  Exclude:
-    - 'app/helpers/user_helper.rb'
-    - 'app/jobs/sms_cancellation_failure_job.rb'
-    - 'app/lib/where_you_heard.rb'
-    - 'app/presenters/appointment_csv_presenter.rb'
-    - 'lib/tasks/export.rake'
-    - 'spec/features/resource_manager_manages_holidays_spec.rb'
-    - 'spec/forms/drop_form_spec.rb'
-    - 'spec/mailers/appointment_mailer_spec.rb'
-    - 'spec/models/bookable_slot_spec.rb'
-    - 'spec/requests/appointments_api_spec.rb'
-    - 'spec/requests/nudge_appointments_api_spec.rb'
-
-# ---
-
 # Offense count: 1
 # Configuration parameters: AllowedMethods, AllowedPatterns.
 Metrics/PerceivedComplexity:
@@ -116,10 +94,3 @@ Style/GlobalStdStream:
 Style/HashSyntax:
   Enabled: false
 
-# Offense count: 2
-# Configuration parameters: AllowedMethods.
-# AllowedMethods: respond_to_missing?
-Style/OptionalBooleanParameter:
-  Exclude:
-    - 'app/models/bookable_slot.rb'
-    - 'app/models/provider.rb'

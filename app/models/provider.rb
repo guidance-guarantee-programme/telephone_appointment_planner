@@ -1,14 +1,14 @@
 class Provider
-  def initialize(name, id, cita = true)
+  def initialize(name, id, cita: true)
     @name = name
     @id = id
     @cita = cita
   end
 
   ALL_ORGANISATIONS = [
-    TPAS = new('TPAS', '14a48488-a42f-422d-969d-526e30922fe4', false),
-    TP   = new('TP', '41075b50-6385-4e8b-a17d-a7b9aae5d220', false),
-    CAS  = new('CAS', '0c686436-de02-4d92-8dc7-26c97bb7c5bb', false),
+    TPAS = new('TPAS', '14a48488-a42f-422d-969d-526e30922fe4', cita: false),
+    TP   = new('TP', '41075b50-6385-4e8b-a17d-a7b9aae5d220', cita: false),
+    CAS  = new('CAS', '0c686436-de02-4d92-8dc7-26c97bb7c5bb', cita: false),
     NI   = new('NI', '1de9b76c-c349-4e2a-a3a7-bb0f59b0807e'),
     WALLSEND = new('Wallsend', 'b805d50f-2f56-4dc7-a3cd-0e3ef2ce1e6e'),
     LANCS_WEST = new('Lancs West', 'c554946e-7b79-4446-b2cd-d930f668e54b'),

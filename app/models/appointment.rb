@@ -459,7 +459,7 @@ class Appointment < ApplicationRecord
   def allocate_slot(agent, scoped)
     args = agent&.tpas_agent? && pension_wise? && scoped ? { external: true } : {}
 
-    slot = BookableSlot.find_available_slot(start_at, agent, schedule_type, scoped, **args)
+    slot = BookableSlot.find_available_slot(start_at, agent, schedule_type, scoped: scoped, **args)
     self.guider = nil
     return unless slot
 
