@@ -74,7 +74,7 @@ class BatchUpsertHolidays
 
   def create_holidays
     ActiveRecord::Base.transaction do
-      User.where(id: users).each do |user|
+      User.where(id: users).find_each do |user|
         recur ? create_holidays_for_user(user) : create_holiday_for_user(user)
       end
     end

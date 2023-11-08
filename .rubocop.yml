@@ -94,4 +94,11 @@ Rails/SkipsModelValidations:
     - 'spec/lib/notifier_spec.rb'
     - 'spec/mailers/appointment_mailer_spec.rb'
     - 'spec/mailers/previews/appointment_mailer_preview.rb'
-    
+
+Rails/HasManyOrHasOneDependent:
+  Exclude:
+    - 'app/models/user.rb'
+
+Rails/FindEach:
+  Exclude:
+    - 'app/lib/scheduled_reporting_summary.rb'

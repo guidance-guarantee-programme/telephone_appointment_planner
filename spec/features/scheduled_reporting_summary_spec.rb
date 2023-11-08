@@ -68,7 +68,7 @@ RSpec.feature 'Scheduled reporting summary' do
   end
 
   def then_the_availability_is_summarised
-    ReportingSummary.all.each do |entry|
+    ReportingSummary.all.find_each do |entry|
       expect(entry).to have_attributes(
         two_week_availability: false,
         four_week_availability: false,
