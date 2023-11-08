@@ -80,10 +80,6 @@ Rails/UniqueValidationWithoutIndex:
   Exclude:
     - 'app/models/schedule.rb'
 
-# Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Style/GlobalStdStream:
-  Exclude:
-    - 'config/environments/production.rb'
+
 
 
