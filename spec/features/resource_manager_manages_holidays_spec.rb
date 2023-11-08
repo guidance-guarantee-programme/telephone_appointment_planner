@@ -133,7 +133,7 @@ RSpec.feature 'Resource manager manages holidays' do
     users.each do |user|
       create(
         :holiday,
-        user: user,
+        user:,
         title: 'Merged Holiday',
         start_at: today + 4.hours,
         end_at: today + 5.hours

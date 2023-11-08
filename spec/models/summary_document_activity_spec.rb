@@ -10,10 +10,10 @@ RSpec.describe SummaryDocumentActivity do
   let(:message) { 'message' }
   let(:params) do
     {
-      user: user,
+      user:,
       owner: appointment.try(:guider),
-      appointment: appointment,
-      message: message
+      appointment:,
+      message:
     }
   end
 
@@ -56,7 +56,7 @@ RSpec.describe SummaryDocumentActivity do
           appointment_id: appointment.id,
           owner_id: appointment.guider.id,
           user_id: user.id,
-          message: message
+          message:
         )
       end
 

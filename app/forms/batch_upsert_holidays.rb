@@ -87,16 +87,16 @@ class BatchUpsertHolidays
       starting = Time.utc(day.year, day.month, day.day, start_at.hour, start_at.min)
       ending   = Time.utc(day.year, day.month, day.day, end_at.hour, end_at.min)
 
-      create_holiday_for_user(user, starting: starting, ending: ending)
+      create_holiday_for_user(user, starting:, ending:)
     end
   end
 
   def create_holiday_for_user(user, starting: start_at, ending: end_at)
     Holiday.create!(
-      title: title,
-      all_day: all_day,
+      title:,
+      all_day:,
       bank_holiday: false,
-      user: user,
+      user:,
       start_at: starting,
       end_at: ending
     )

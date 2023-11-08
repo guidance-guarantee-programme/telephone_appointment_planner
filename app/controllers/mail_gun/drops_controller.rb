@@ -19,7 +19,7 @@ module MailGun
 
       {
         event: event_data[:event],
-        description: description,
+        description:,
         message_type: event_data.dig('user-variables', :message_type),
         environment: event_data.dig('user-variables', :environment),
         appointment_id: event_data.dig('user-variables', :appointment_id),

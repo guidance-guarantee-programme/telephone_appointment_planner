@@ -2,7 +2,7 @@
 class BookableSlot < ApplicationRecord
   belongs_to :guider, class_name: 'User'
 
-  scope :for_guider, ->(guider) { where(guider: guider) }
+  scope :for_guider, ->(guider) { where(guider:) }
 
   def self.generate_for_six_weeks
     User.guiders.each do |guider|
@@ -30,7 +30,7 @@ class BookableSlot < ApplicationRecord
            AND bookable_slots.start_at > :start_at AND bookable_slots.end_at < :end_at)
         ',
         tpas_id: Provider::TPAS.id,
-        tpas_start_at: tpas_start_at,
+        tpas_start_at:,
         start_at: from,
         end_at: to
       )
@@ -49,9 +49,9 @@ class BookableSlot < ApplicationRecord
   def self.find_available_slot(start_at, agent, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE, scoped: true, external: false) # rubocop:disable Layout/LineLength
     scope = bookable
     scope = scope.limit_by_organisation(start_at.beginning_of_day, start_at.end_of_day) if agent&.pension_wise_api?
-    scope = scope.where(start_at: start_at)
-    scope = scope.for_organisation(agent, scoped: scoped, external: external) if agent && !agent.pension_wise_api?
-    scope = for_schedule_type(schedule_type: schedule_type, scope: scope)
+    scope = scope.where(start_at:)
+    scope = scope.for_organisation(agent, scoped:, external:) if agent && !agent.pension_wise_api?
+    scope = for_schedule_type(schedule_type:, scope:)
 
     scope.limit(1).order('RANDOM()').first
   end
@@ -67,7 +67,7 @@ class BookableSlot < ApplicationRecord
 
     scope = bookable(from, to).within_date_range(from, to, organisation_limit: limit_by_organisation)
     scope = scope.joins(:guider).where(users: { organisation_content_id: organisation_id }) if organisation_id
-    scope = for_schedule_type(schedule_type: schedule_type, scope: scope)
+    scope = for_schedule_type(schedule_type:, scope:)
 
     scope
       .select("#{quoted_table_name}.start_at::date as start_date")
@@ -86,7 +86,7 @@ class BookableSlot < ApplicationRecord
   end
 
   def self.for_schedule_type(schedule_type: User::PENSION_WISE_SCHEDULE_TYPE, scope: self)
-    scope.where(schedule_type: schedule_type)
+    scope.where(schedule_type:)
   end
 
   def self.without_appointments(from = nil, to = nil) # rubocop:disable Metrics/MethodLength
@@ -165,9 +165,9 @@ class BookableSlot < ApplicationRecord
 
     select("DISTINCT #{quoted_table_name}.start_at, #{quoted_table_name}.end_at, count(1) AS guiders")
       .bookable
-      .starting_after_next_valid_start_date(agent, schedule_type: schedule_type)
-      .for_schedule_type(schedule_type: schedule_type)
-      .for_organisation(user, lloyds: lloyds, scoped: scoped, internal: internal, external: external)
+      .starting_after_next_valid_start_date(agent, schedule_type:)
+      .for_schedule_type(schedule_type:)
+      .for_organisation(user, lloyds:, scoped:, internal:, external:)
       .group("#{quoted_table_name}.start_at, #{quoted_table_name}.end_at")
       .within_date_range(from, to, organisation_limit: limit_by_organisation)
       .map do |us|
@@ -212,7 +212,7 @@ class BookableSlot < ApplicationRecord
     start_at = day.in_time_zone.change(hour: slot.start_hour, min: slot.start_minute)
     end_at   = day.in_time_zone.change(hour: slot.end_hour, min: slot.end_minute)
 
-    find_or_create_by(guider: guider, start_at: start_at, end_at: end_at, schedule_type: guider.schedule_type)
+    find_or_create_by(guider:, start_at:, end_at:, schedule_type: guider.schedule_type)
   end
 
   def self.generation_range

@@ -2,24 +2,22 @@ class PrintedConfirmationJob < NotifyJobBase
   TEMPLATE_ID = '0d35b423-5e0f-456b-a36b-699f951a3be3'.freeze
   RESCHEDULE_TEMPLATE_ID = '343292a1-2158-450b-8e82-b9097150e5b2'.freeze
 
-  def perform(appointment)
+  def perform(appointment) # rubocop:disable Metrics/MethodLength
     return unless api_key(appointment.schedule_type) && appointment.print_confirmation?
 
     personalisation = PrintedConfirmationPresenter.new(appointment).to_h
 
     client = Notifications::Client.new(api_key(appointment.schedule_type))
 
-    begin
-      client.send_letter(
-        template_id: template_id(appointment),
-        reference: appointment.to_param,
-        personalisation: personalisation
-      )
+    client.send_letter(
+      template_id: template_id(appointment),
+      reference: appointment.to_param,
+      personalisation:
+    )
 
-      PrintedConfirmationActivity.from(appointment)
-    rescue Notifications::Client::BadRequestError
-      PrintedConfirmationFailedActivity.from(appointment)
-    end
+    PrintedConfirmationActivity.from(appointment)
+  rescue Notifications::Client::BadRequestError
+    PrintedConfirmationFailedActivity.from(appointment)
   end
 
   private

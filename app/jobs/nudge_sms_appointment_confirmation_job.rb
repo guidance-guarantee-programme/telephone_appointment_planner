@@ -25,6 +25,6 @@ class NudgeSmsAppointmentConfirmationJob < NotifyJobBase
   end
 
   def create_activity(appointment)
-    NudgeSmsConfirmationActivity.create!(appointment: appointment, owner: appointment.guider)
+    NudgeSmsConfirmationActivity.create!(appointment:, owner: appointment.guider)
   end
 end

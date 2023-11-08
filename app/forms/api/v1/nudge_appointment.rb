@@ -26,26 +26,26 @@ module Api
 
       def to_params # rubocop:disable Metrics/MethodLength
         {
-          start_at: start_at,
-          first_name: first_name,
-          last_name: last_name,
+          start_at:,
+          first_name:,
+          last_name:,
           email: email.to_s,
-          phone: phone,
+          phone:,
           mobile: mobile.to_s,
-          date_of_birth: date_of_birth,
-          memorable_word: memorable_word,
+          date_of_birth:,
+          memorable_word:,
           dc_pot_confirmed: true,
           where_you_heard: '2', # A Pension Provider
-          accessibility_requirements: accessibility_requirements,
-          notes: notes,
-          agent: agent,
+          accessibility_requirements:,
+          notes:,
+          agent:,
           smarter_signposted: false,
           lloyds_signposted: false,
           schedule_type: 'pension_wise',
           nudged: true,
-          nudge_confirmation: nudge_confirmation,
-          nudge_eligibility_reason: nudge_eligibility_reason,
-          gdpr_consent: gdpr_consent
+          nudge_confirmation:,
+          nudge_eligibility_reason:,
+          gdpr_consent:
         }
       end
     end

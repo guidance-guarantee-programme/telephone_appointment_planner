@@ -168,7 +168,7 @@ class AppointmentsController < ApplicationController
     params
       .fetch(:search, {})
       .permit(:q, :date_range, :processed, :appointment_type)
-      .merge(current_user: current_user)
+      .merge(current_user:)
   end
 
   def date_range_params
@@ -232,7 +232,7 @@ class AppointmentsController < ApplicationController
   # rubocop:enable Metrics/MethodLength
 
   def update_params
-    params.require(:appointment).permit(updateable_params).merge(current_user: current_user)
+    params.require(:appointment).permit(updateable_params).merge(current_user:)
   end
 
   def munge_start_at

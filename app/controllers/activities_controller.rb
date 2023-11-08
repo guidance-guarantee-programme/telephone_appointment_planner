@@ -41,7 +41,7 @@ class ActivitiesController < ApplicationController
       .merge(
         user: current_user,
         owner: appointment.guider,
-        appointment: appointment
+        appointment:
       )
   end
 

@@ -11,7 +11,7 @@ namespace :statuses do
           status = status.is_a?(Array) ? status.last : status
 
           appointment.status_transitions.create!(
-            status: status,
+            status:,
             created_at: audit.created_at,
             updated_at: audit.created_at
           )

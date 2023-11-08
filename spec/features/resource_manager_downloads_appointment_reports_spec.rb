@@ -89,10 +89,10 @@ RSpec.feature 'Resource manager downloads appointment reports' do
   end
 
   def and_there_are_data
-    @appointment_with_created_at  = create(:appointment, created_at: created_at)
-    @appointment_with_start_at    = create(:appointment, start_at: start_at)
-    @tp_appointment_with_start_at = create(:appointment, start_at: start_at, guider: create(:guider, :tp))
-    @due_diligence_appointment    = create(:appointment, :due_diligence, start_at: start_at)
+    @appointment_with_created_at  = create(:appointment, created_at:)
+    @appointment_with_start_at    = create(:appointment, start_at:)
+    @tp_appointment_with_start_at = create(:appointment, start_at:, guider: create(:guider, :tp))
+    @due_diligence_appointment    = create(:appointment, :due_diligence, start_at:)
   end
 
   def and_there_is_an_appointment_at_the_end_of_the_date_range

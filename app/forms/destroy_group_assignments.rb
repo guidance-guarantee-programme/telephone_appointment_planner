@@ -6,7 +6,7 @@ class DestroyGroupAssignments
 
   def call
     GroupAssignment
-      .where(user_id: user_ids, group_id: group_id)
+      .where(user_id: user_ids, group_id:)
       .delete_all
 
     destroy_orphaned_group

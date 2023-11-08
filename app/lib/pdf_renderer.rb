@@ -4,7 +4,7 @@ class PdfRenderer
   end
 
   def call
-    html = ConsentsController.render(:create, assigns: { appointment: appointment })
+    html = ConsentsController.render(:create, assigns: { appointment: })
     pdf  = Princely::Pdf.new.pdf_from_string(html)
 
     StringIO.new(pdf)

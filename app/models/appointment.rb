@@ -51,9 +51,9 @@ class Appointment < ApplicationRecord
     country_code
   ].freeze
 
-  enum status: { :pending => 0, :complete => 1, :no_show => 2, :incomplete => 3, :ineligible_age => 4,
-                 :ineligible_pension_type => 5, :cancelled_by_customer => 6, :cancelled_by_pension_wise => 7,
-                 :cancelled_by_customer_sms => 8 }
+  enum status: { pending: 0, complete: 1, no_show: 2, incomplete: 3, ineligible_age: 4,
+                 ineligible_pension_type: 5, cancelled_by_customer: 6, cancelled_by_pension_wise: 7,
+                 cancelled_by_customer_sms: 8 }
 
   AGENT_PERMITTED_SECONDARY = '15'.freeze
   SECONDARY_STATUSES = {
@@ -224,10 +224,10 @@ class Appointment < ApplicationRecord
   end
 
   def potential_duplicates
-    self.class.where.not(id: id)
+    self.class.where.not(id:)
         .where(
-          first_name: first_name,
-          last_name: last_name,
+          first_name:,
+          last_name:,
           start_at: start_at.beginning_of_day..start_at.end_of_day
         )
         .order(:id)
@@ -435,9 +435,9 @@ class Appointment < ApplicationRecord
 
   def self.for_sms_cancellation(number, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE)
     pending
-      .where(schedule_type: schedule_type)
+      .where(schedule_type:)
       .order(:created_at)
-      .find_by("REPLACE(mobile, ' ', '') = :number OR REPLACE(phone, ' ', '') = :number", number: number)
+      .find_by("REPLACE(mobile, ' ', '') = :number OR REPLACE(phone, ' ', '') = :number", number:)
   end
 
   private
@@ -447,7 +447,7 @@ class Appointment < ApplicationRecord
   end
 
   def track_initial_status
-    status_transitions << StatusTransition.new(status: status)
+    status_transitions << StatusTransition.new(status:)
   end
 
   def track_status_transitions
@@ -459,7 +459,7 @@ class Appointment < ApplicationRecord
   def allocate_slot(agent, scoped)
     args = agent&.tpas_agent? && pension_wise? && scoped ? { external: true } : {}
 
-    slot = BookableSlot.find_available_slot(start_at, agent, schedule_type, scoped: scoped, **args)
+    slot = BookableSlot.find_available_slot(start_at, agent, schedule_type, scoped:, **args)
     self.guider = nil
     return unless slot
 
@@ -548,8 +548,8 @@ class Appointment < ApplicationRecord
   def existing_appointment?
     self.class
         .not_cancelled
-        .where(guider_id: guider_id, start_at: start_at)
-        .where.not(id: id)
+        .where(guider_id:, start_at:)
+        .where.not(id:)
         .exists?
   end
 
@@ -680,13 +680,13 @@ class Appointment < ApplicationRecord
     return unless self
                   .class
                   .pending
-                  .where(guider_id: guider_id)
+                  .where(guider_id:)
                   .where(
                     '(start_at BETWEEN :start_at AND :end_at) OR (end_at BETWEEN :start_at AND :end_at)',
-                    start_at: start_at,
-                    end_at: end_at
+                    start_at:,
+                    end_at:
                   )
-                  .where.not(id: id)
+                  .where.not(id:)
                   .exists?
 
     errors.add(:guider_id, 'Overlaps another pending appointment')

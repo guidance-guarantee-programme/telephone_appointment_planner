@@ -18,7 +18,7 @@ module Api
       end
 
       def create
-        model.allocate(agent: agent)
+        model.allocate(agent:)
         model.save
       end
 
@@ -36,26 +36,26 @@ module Api
 
       def to_params # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
         {
-          start_at: start_at,
-          first_name: first_name,
-          last_name: last_name,
-          email: email,
-          country_code: country_code,
-          phone: phone,
-          date_of_birth: date_of_birth,
-          memorable_word: memorable_word,
-          dc_pot_confirmed: dc_pot_confirmed,
-          where_you_heard: where_you_heard,
+          start_at:,
+          first_name:,
+          last_name:,
+          email:,
+          country_code:,
+          phone:,
+          date_of_birth:,
+          memorable_word:,
+          dc_pot_confirmed:,
+          where_you_heard:,
           gdpr_consent: gdpr_consent.to_s,
-          accessibility_requirements: accessibility_requirements,
-          notes: notes,
+          accessibility_requirements:,
+          notes:,
           pension_provider: 'n/a',
-          agent: agent,
-          smarter_signposted: smarter_signposted,
+          agent:,
+          smarter_signposted:,
           lloyds_signposted: lloyds_signposted || false,
-          schedule_type: schedule_type,
+          schedule_type:,
           referrer: referrer.to_s,
-          nudged: nudged
+          nudged:
         }
       end
     end

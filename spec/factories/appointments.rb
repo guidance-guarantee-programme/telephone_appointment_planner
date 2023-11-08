@@ -94,7 +94,7 @@ FactoryBot.define do
           :activity,
           type: 'SummaryDocumentActivity',
           message: 'digital',
-          appointment: appointment
+          appointment:
         )
       end
     end
@@ -107,7 +107,7 @@ FactoryBot.define do
           :activity,
           type: 'SummaryDocumentActivity',
           message: 'postal',
-          appointment: appointment
+          appointment:
         )
       end
     end

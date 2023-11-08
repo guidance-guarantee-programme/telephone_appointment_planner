@@ -7,8 +7,8 @@ module MailgunHeaders
 
   def headers_hash(message_type, appointment_id)
     {
-      message_type: message_type,
-      appointment_id: appointment_id,
+      message_type:,
+      appointment_id:,
       environment: Rails.env
     }.to_json
   end

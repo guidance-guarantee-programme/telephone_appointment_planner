@@ -490,7 +490,7 @@ RSpec.feature 'Agent manages appointments' do
     ]
     @schedule = @guider.schedules.build(
       start_at: day.beginning_of_day,
-      slots: slots
+      slots:
     )
     @schedule.save!
     BookableSlot.generate_for_six_weeks

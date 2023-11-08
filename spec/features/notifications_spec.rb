@@ -70,7 +70,7 @@ end
 
 def and_they_have_an_appointment
   start_at = BusinessDays.from_now(10).change(hour: 9)
-  @appointment ||= create(:appointment, start_at: start_at, guider: guider, agent: agent)
+  @appointment ||= create(:appointment, start_at:, guider:, agent:)
 end
 
 def when_they_are_on_their_dashboard

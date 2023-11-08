@@ -5,7 +5,7 @@ class SummaryDocumentApi
   def reissue_digital_summary(reference, email, current_user)
     connection.put(
       "/api/v1/appointment_summaries/#{reference}",
-      { email: email, initiator_uid: current_user.uid }.to_json,
+      { email:, initiator_uid: current_user.uid }.to_json,
       'Content-Type' => 'application/json'
     )
 
@@ -39,7 +39,7 @@ class SummaryDocumentApi
     {
       url: api_uri,
       request: {
-        timeout: timeout
+        timeout:
       }
     }
   end

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'PUT /auth/gds/api/users/:id' do
+RSpec.describe 'PUT /auth/gds/api/users/:id' do # rubocop:disable Metrics/BlockLength
   scenario 'Signon pushing an existing, newly disabled user' do
     given_the_user_is_a_pension_wise_api_user do
       given_the_guider_exists

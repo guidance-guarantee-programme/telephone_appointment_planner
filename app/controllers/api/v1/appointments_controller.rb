@@ -48,7 +48,7 @@ module Api
           :nudged
         ).merge(
           agent: current_user,
-          schedule_type: schedule_type
+          schedule_type:
         )
       end
 

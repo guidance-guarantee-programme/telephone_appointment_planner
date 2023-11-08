@@ -7,7 +7,7 @@ class DroppedSummaryDocumentActivity < Activity
 
   def self.from(appointment)
     create!(
-      appointment: appointment,
+      appointment:,
       owner: appointment.guider,
       message: MESSAGE
     )

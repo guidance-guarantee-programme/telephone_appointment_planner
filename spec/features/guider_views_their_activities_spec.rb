@@ -28,8 +28,8 @@ RSpec.feature 'Guider views their activities' do
 
   def and_they_have_some_appointments
     @appointments = [
-      create(:appointment, start_at: 2.hours.from_now, guider: guider),
-      create(:appointment, start_at: 3.hours.from_now, guider: guider)
+      create(:appointment, start_at: 2.hours.from_now, guider:),
+      create(:appointment, start_at: 3.hours.from_now, guider:)
     ]
   end
 

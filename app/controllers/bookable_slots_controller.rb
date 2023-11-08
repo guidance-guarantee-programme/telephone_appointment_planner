@@ -10,7 +10,7 @@ class BookableSlotsController < ApplicationController
       filtered_user,
       Time.zone.parse(params[:start]),
       Time.zone.parse(params[:end]),
-      schedule_type: schedule_type,
+      schedule_type:,
       internal: rescheduling?
     )
   end
@@ -20,7 +20,7 @@ class BookableSlotsController < ApplicationController
       filtered_user,
       Time.zone.parse(params[:start]),
       Time.zone.parse(params[:end]),
-      schedule_type: schedule_type,
+      schedule_type:,
       internal: true
     )
   end
@@ -30,7 +30,7 @@ class BookableSlotsController < ApplicationController
       filtered_user,
       Time.zone.parse(params[:start]),
       Time.zone.parse(params[:end]),
-      schedule_type: schedule_type,
+      schedule_type:,
       external: true
     )
   end

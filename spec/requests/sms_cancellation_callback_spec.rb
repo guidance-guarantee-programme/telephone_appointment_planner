@@ -33,7 +33,7 @@ RSpec.describe 'POST /sms_cancellations', type: :request do
     headers = { 'HTTP_AUTHORIZATION' => token, 'CONTENT_TYPE' => 'application/json' }
     payload = { 'source_number' => '447715 930 455', 'message' => 'Cancel', schedule_type: 'pension_wise' }
 
-    post sms_cancellations_path, params: payload.to_json, headers: headers
+    post sms_cancellations_path, params: payload.to_json, headers:
   end
 
   def then_the_service_responds_no_content

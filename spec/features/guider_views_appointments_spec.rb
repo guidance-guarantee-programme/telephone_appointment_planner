@@ -120,8 +120,8 @@ RSpec.feature 'Guider views appointments' do
   def and_there_are_appointments_for_multiple_guiders
     start_at = BusinessDays.from_now(10).change(hour: 14)
     # this would appear 'today'
-    @appointment = create(:appointment, guider: current_user, start_at: start_at)
-    @other_appointment = create(:appointment, guider: create(:guider), start_at: start_at)
+    @appointment = create(:appointment, guider: current_user, start_at:)
+    @other_appointment = create(:appointment, guider: create(:guider), start_at:)
     # this would appear 'tomorrow'
     @appointment_tomorrow = create(
       :appointment,

@@ -14,7 +14,7 @@ RSpec.describe DropActivity, '.from' do
 
     it 'creates an activity entry assigned to the agent' do
       expect(subject).to have_attributes(
-        appointment: appointment,
+        appointment:,
         owner: appointment.agent,
         message: 'Drop - message'
       )

@@ -6,7 +6,7 @@ Capybara.register_driver :chrome_headless do |app|
     args: %w[headless no-sandbox disable-gpu window-size=1500,2500]
   )
 
-  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options:)
 end
 
 Capybara.w3c_click_offset = false

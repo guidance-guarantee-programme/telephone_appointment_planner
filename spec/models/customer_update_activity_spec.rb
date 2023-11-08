@@ -16,7 +16,7 @@ RSpec.describe CustomerUpdateActivity do
       expect(subject).to have_attributes(
         appointment_id: appointment.id,
         owner_id: appointment.guider.id,
-        message: message
+        message:
       )
     end
 

@@ -37,7 +37,7 @@ class SmsAppointmentReminderJob < NotifyJobBase
 
   def create_activity(appointment)
     SmsReminderActivity.create!(
-      appointment: appointment,
+      appointment:,
       owner: appointment.guider
     )
   end

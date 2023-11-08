@@ -63,9 +63,9 @@ RSpec.feature 'Resource manager reschedules an appointment', js: true do
   def and_there_are_many_tpas_slots_and_one_external_slot
     start_at = Time.zone.parse('2022-06-24 09:00')
 
-    create(:bookable_slot, :cas, start_at: start_at)
+    create(:bookable_slot, :cas, start_at:)
     # create many TPAS slots to increase the chance of random selection
-    create_list(:bookable_slot, 10, start_at: start_at)
+    create_list(:bookable_slot, 10, start_at:)
   end
 
   def when_they_choose_the_external_slot
@@ -133,12 +133,12 @@ RSpec.feature 'Resource manager reschedules an appointment', js: true do
   def and_there_are_matching_available_slots_across_multiple_organisations
     start_at = Time.zone.parse('2022-06-24 09:00')
 
-    create(:bookable_slot, start_at: start_at)
-    create(:bookable_slot, :cas, start_at: start_at)
-    create(:bookable_slot, :ni, start_at: start_at)
-    create(:bookable_slot, :lancs_west, start_at: start_at)
-    create(:bookable_slot, :derbyshire_districts, start_at: start_at)
-    create(:bookable_slot, :wallsend, start_at: start_at)
+    create(:bookable_slot, start_at:)
+    create(:bookable_slot, :cas, start_at:)
+    create(:bookable_slot, :ni, start_at:)
+    create(:bookable_slot, :lancs_west, start_at:)
+    create(:bookable_slot, :derbyshire_districts, start_at:)
+    create(:bookable_slot, :wallsend, start_at:)
   end
 
   def and_there_is_a_tpas_appointment

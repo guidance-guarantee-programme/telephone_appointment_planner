@@ -3,7 +3,7 @@ class AppointmentReminderJob < ApplicationJob
 
   def perform(appointment)
     ReminderActivity.create!(
-      appointment: appointment,
+      appointment:,
       owner: appointment.guider
     )
     AppointmentMailer.reminder(appointment).deliver_later

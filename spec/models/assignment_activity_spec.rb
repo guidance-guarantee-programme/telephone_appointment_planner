@@ -16,7 +16,7 @@ RSpec.describe AssignmentActivity do
         expect(subject).to be_a(described_class)
 
         expect(subject).to have_attributes(
-          appointment: appointment,
+          appointment:,
           owner: appointment.guider,
           prior_owner: nil,
           message: 'assigned'
@@ -42,7 +42,7 @@ RSpec.describe AssignmentActivity do
         expect(subject).to be_a(described_class)
 
         expect(subject).to have_attributes(
-          prior_owner: prior_owner,
+          prior_owner:,
           owner: appointment.guider,
           appointment_id: appointment.id,
           message: 'reassigned'

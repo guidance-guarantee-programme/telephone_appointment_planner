@@ -117,8 +117,8 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
 
   def and_there_are_appointments
     guider = create(:guider)
-    create(:appointment, guider: guider).update(start_at: range_start.at_midday + 1.day)
-    create(:appointment, guider: guider).update(start_at: range_start.at_midday + 2.days)
+    create(:appointment, guider:).update(start_at: range_start.at_midday + 1.day)
+    create(:appointment, guider:).update(start_at: range_start.at_midday + 2.days)
   end
 
   def and_there_are_cancelled_appointments
@@ -144,10 +144,10 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
 
   def and_there_are_bookable_slots_obscured_by_appointments
     guider = create(:guider)
-    appointment1 = create(:appointment, guider: guider)
+    appointment1 = create(:appointment, guider:)
     appointment1.update(start_at: range_start.at_midday + 1.day)
 
-    appointment2 = create(:appointment, guider: guider)
+    appointment2 = create(:appointment, guider:)
     appointment2.update(start_at: range_start.at_midday + 2.days)
 
     create(:bookable_slot, start_at: appointment1.start_at)
@@ -168,8 +168,8 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
   def and_there_are_bookable_slots_obscured_by_a_user_holiday
     guider = create(:guider)
     holiday = create(:holiday, user: guider, start_at: range_start + 1.day, end_at: range_start + 2.days)
-    create(:bookable_slot, guider: guider, start_at: holiday.start_at + 1.hour)
-    create(:bookable_slot, guider: guider, start_at: holiday.start_at + 5.hours)
+    create(:bookable_slot, guider:, start_at: holiday.start_at + 1.hour)
+    create(:bookable_slot, guider:, start_at: holiday.start_at + 5.hours)
   end
 
   def when_they_download_utilisation_reports

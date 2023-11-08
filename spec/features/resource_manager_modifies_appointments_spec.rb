@@ -144,7 +144,7 @@ RSpec.feature 'Resource manager modifies appointments' do
     @holiday = create(
       :holiday,
       user: create(:guider),
-      start_at: start_at,
+      start_at:,
       end_at: start_at + 1.hour
     )
   end
@@ -153,7 +153,7 @@ RSpec.feature 'Resource manager modifies appointments' do
     start_at = BusinessDays.from_now(3).change(hour: 9)
     @holiday = create(
       :bank_holiday,
-      start_at: start_at,
+      start_at:,
       end_at: start_at + 1.hour
     )
   end

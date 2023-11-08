@@ -29,7 +29,7 @@ class SmsCancellation
   end
 
   def appointment
-    @appointment ||= Appointment.for_sms_cancellation(normalised_source_number, schedule_type: schedule_type)
+    @appointment ||= Appointment.for_sms_cancellation(normalised_source_number, schedule_type:)
   end
 
   def normalised_source_number

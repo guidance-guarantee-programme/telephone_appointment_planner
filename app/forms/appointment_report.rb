@@ -77,7 +77,7 @@ class AppointmentReport
       .select("case when email_consent_form_required is true then 'Yes' else 'No' end as email_consent_form_required")
       .where("#{column} >= ? AND #{column} <= ?", range.begin, range.end.end_of_day)
       .where(organisation_clause)
-      .where(schedule_type: schedule_type)
+      .where(schedule_type:)
       .joins('INNER JOIN users guiders ON guiders.id = appointments.guider_id')
       .joins('INNER JOIN users agents ON agents.id = appointments.agent_id')
       .order(where)

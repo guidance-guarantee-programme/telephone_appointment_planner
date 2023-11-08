@@ -21,7 +21,7 @@ RSpec.describe WebHook, '#call' do
           headers: { 'Content-Type' => 'application/json' }
         ).to_return(
           status: status_code,
-          body: body
+          body:
         )
     end
 

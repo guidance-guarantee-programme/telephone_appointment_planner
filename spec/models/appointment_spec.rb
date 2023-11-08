@@ -792,7 +792,7 @@ RSpec.describe Appointment, type: :model do
 
         create(
           :bookable_slot,
-          guider: guider,
+          guider:,
           start_at: appointment_start_time,
           end_at: appointment_end_time
         )
@@ -1004,7 +1004,7 @@ RSpec.describe Appointment, type: :model do
   end
 
   describe '#can_create_summary?' do
-    let(:result) { Appointment.new(status: status).can_create_summary? }
+    let(:result) { Appointment.new(status:).can_create_summary? }
 
     %i[complete ineligible_age ineligible_pension_type].each do |status|
       context "when status is #{status}" do
@@ -1016,7 +1016,7 @@ RSpec.describe Appointment, type: :model do
 
         context 'a TPAS agent' do
           let(:agent) { build_stubbed(:resource_manager, :tpas) }
-          let(:result) { Appointment.new(status: status, guider: guider).can_create_summary?(agent) }
+          let(:result) { Appointment.new(status:, guider:).can_create_summary?(agent) }
 
           context 'attempts to create a summary belonging to another organisation' do
             let(:guider) { build(:guider, :cas) }

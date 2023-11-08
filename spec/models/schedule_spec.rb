@@ -38,8 +38,8 @@ RSpec.describe Schedule, type: :model do
     context 'schedule has ended' do
       it 'is false' do
         user = create(:user)
-        create(:schedule, user: user, start_at: 5.days.ago)
-        create(:schedule, user: user, start_at: 3.days.ago)
+        create(:schedule, user:, start_at: 5.days.ago)
+        create(:schedule, user:, start_at: 3.days.ago)
         schedule = Schedule.with_end_at.first
         expect(schedule).to_not be_modifiable
       end
