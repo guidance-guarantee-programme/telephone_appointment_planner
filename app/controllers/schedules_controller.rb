@@ -51,7 +51,7 @@ class SchedulesController < ApplicationController
   end
 
   def load_current_guider
-    @guider ||= current_user.colleagues.guiders.find(params[:user_id])
+    @guider = current_user.colleagues.guiders.find(params[:user_id])
   end
 
   def load_current_schedule
