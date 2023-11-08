@@ -82,3 +82,16 @@ Layout/HashAlignment:
     - 'spec/models/bookable_slot_spec.rb'
     - 'spec/requests/appointments_api_spec.rb'
     - 'spec/requests/nudge_appointments_api_spec.rb'
+
+Rails/UniqueValidationWithoutIndex:
+  Exclude:
+    - 'app/models/schedule.rb'
+
+Rails/SkipsModelValidations:
+  Exclude:
+    - 'app/controllers/users_controller.rb'
+    - 'app/models/appointment.rb'
+    - 'spec/lib/notifier_spec.rb'
+    - 'spec/mailers/appointment_mailer_spec.rb'
+    - 'spec/mailers/previews/appointment_mailer_preview.rb'
+    
