@@ -634,7 +634,7 @@ class Appointment < ApplicationRecord
     [consent_address_line_one, consent_town, consent_postcode].all?(&:present?)
   end
 
-  def validate_secondary_status # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
+  def validate_secondary_status # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     return unless created_at && created_at > Time.zone.parse(
       ENV.fetch('SECONDARY_STATUS_CUT_OFF') { '2021-05-04 09:00' }
     )
@@ -652,7 +652,7 @@ class Appointment < ApplicationRecord
     end
   end
 
-  def validate_tpas_agent_statuses # rubocop:disable Metrics/CyclomaticComplexity
+  def validate_tpas_agent_statuses # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     if current_user&.tpas_agent? && !guider.tpas? # rubocop:disable Style/GuardClause
       unless ineligible_age? || ineligible_pension_type? || cancelled_by_customer?
         errors.add(:status, "Must be one of 'Ineligible Age', 'Ineligible Pension Type', 'Cancelled by Customer'")

@@ -175,7 +175,7 @@ class BookableSlot < ApplicationRecord
       end
   end
 
-  def self.for_organisation(user, scoped: true, lloyds: false, internal: false, external: false) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/MethodLength
+  def self.for_organisation(user, scoped: true, lloyds: false, internal: false, external: false) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
     scope = joins(:guider)
 
     if lloyds
