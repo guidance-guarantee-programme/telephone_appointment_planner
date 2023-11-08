@@ -102,3 +102,9 @@ Rails/HasManyOrHasOneDependent:
 Rails/FindEach:
   Exclude:
     - 'app/lib/scheduled_reporting_summary.rb'
+
+Rails/ApplicationController:
+  Exclude:
+    - 'app/controllers/api/v1/bookable_slots_controller.rb'
+    - 'app/controllers/mail_gun/drops_controller.rb'
+    - 'app/controllers/sms_cancellations_controller.rb'

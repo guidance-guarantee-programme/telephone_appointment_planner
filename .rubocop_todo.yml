@@ -19,12 +19,3 @@ Naming/MemoizedInstanceVariableName:
   Exclude:
     - 'app/controllers/schedules_controller.rb'
     - 'spec/features/notifications_spec.rb'
-
-
-# Offense count: 3
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Rails/ApplicationController:
-  Exclude:
-    - 'app/controllers/api/v1/bookable_slots_controller.rb'
-    - 'app/controllers/mail_gun/drops_controller.rb'
-    - 'app/controllers/sms_cancellations_controller.rb'
