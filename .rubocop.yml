@@ -3,23 +3,24 @@ inherit_from: .rubocop_todo.yml
 require: rubocop-rails
 
 AllCops:
+  NewCops: disable
   Exclude:
     - 'bin/*'
     - 'db/**/*'
     - 'vendor/**/*'
   TargetRubyVersion: 3.2
 
-Documentation:
+Style/Documentation:
   Enabled: false
 
 Lint/SuppressedException:
   Exclude:
     - Rakefile
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 120
 
-Style/FileName:
+Naming/FileName:
   Exclude:
     - bin/scss-lint
 
