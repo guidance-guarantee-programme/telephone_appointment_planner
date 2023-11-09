@@ -1,4 +1,5 @@
-class Notifier # rubocop:disable Metrics/ClassLength
+# rubocop:disable Metrics/ClassLength
+class Notifier
   NOTIFY_RESOURCE_MANAGER_ATTRIBUTES = %w[
     first_name
     last_name
@@ -133,3 +134,4 @@ class Notifier # rubocop:disable Metrics/ClassLength
 
   attr_reader :appointment, :modifying_agent
 end
+# rubocop:enable Metrics/ClassLength
