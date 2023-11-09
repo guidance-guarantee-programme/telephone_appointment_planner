@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.feature 'User views appointment activities' do
   scenario 'User creates a message activity', js: true do
     given_the_user_has_no_permissions do
@@ -90,3 +91,4 @@ RSpec.feature 'User views appointment activities' do
     expect(activity.text).to include "#{current_user.name} changed the thing"
   end
 end
+# rubocop:enable Metrics/BlockLength

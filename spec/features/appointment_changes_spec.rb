@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.feature 'Appointment audit trail' do
   scenario 'An agent changes an appointment and reviews the changes', js: true do
     given_the_user_is_an_agent do
@@ -56,3 +57,4 @@ RSpec.feature 'Appointment audit trail' do
     expect(@changes_page.changes_table.change_rows[2]).to have_text('Cancelled prior to appointment')
   end
 end
+# rubocop:enable Metrics/BlockLength

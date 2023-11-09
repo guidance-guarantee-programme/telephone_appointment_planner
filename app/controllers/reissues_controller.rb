@@ -18,8 +18,8 @@ class ReissuesController < ApplicationController
       .fetch(:reissue_summary, {})
       .permit(:email)
       .merge(
-        appointment: appointment,
-        current_user: current_user
+        appointment:,
+        current_user:
       )
   end
 

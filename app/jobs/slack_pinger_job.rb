@@ -1,4 +1,4 @@
-class SlackPingerJob < ActiveJob::Base
+class SlackPingerJob < ApplicationJob
   queue_as :default
 
   def perform

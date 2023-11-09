@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe AssignmentActivity do
   describe '.from' do
     let(:appointment) { create(:appointment) }
@@ -15,7 +16,7 @@ RSpec.describe AssignmentActivity do
         expect(subject).to be_a(described_class)
 
         expect(subject).to have_attributes(
-          appointment: appointment,
+          appointment:,
           owner: appointment.guider,
           prior_owner: nil,
           message: 'assigned'
@@ -41,7 +42,7 @@ RSpec.describe AssignmentActivity do
         expect(subject).to be_a(described_class)
 
         expect(subject).to have_attributes(
-          prior_owner: prior_owner,
+          prior_owner:,
           owner: appointment.guider,
           appointment_id: appointment.id,
           message: 'reassigned'
@@ -54,3 +55,4 @@ RSpec.describe AssignmentActivity do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

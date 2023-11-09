@@ -23,7 +23,7 @@ RSpec.describe CreateGroupAssignments, '#call' do
     before do
       group = create(:group, name: 'Another Group')
 
-      users.first.group_assignments.create(group: group)
+      users.first.group_assignments.create(group:)
     end
 
     it 'only assigns to the other user' do

@@ -11,7 +11,7 @@ module MailGun
 
     private
 
-    def drop_params # rubocop:disable Metrics/AbcSize
+    def drop_params # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       event_data = params['event-data']
 
       description = event_data.dig('delivery-status', :description).presence ||
@@ -19,7 +19,7 @@ module MailGun
 
       {
         event: event_data[:event],
-        description: description,
+        description:,
         message_type: event_data.dig('user-variables', :message_type),
         environment: event_data.dig('user-variables', :environment),
         appointment_id: event_data.dig('user-variables', :appointment_id),

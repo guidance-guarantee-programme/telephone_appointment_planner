@@ -28,6 +28,7 @@ class Schedule < ApplicationRecord
 
   def modifiable?
     return true unless end_at
+
     end_at > Time.zone.now.end_of_day
   end
 

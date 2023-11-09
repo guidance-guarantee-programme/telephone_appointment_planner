@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe 'GET /api/v1/bookable_slots' do
   scenario 'retrieving Lloyds slots for the booking window' do
     travel_to '2017-01-09 12:00' do
@@ -54,7 +55,7 @@ RSpec.describe 'GET /api/v1/bookable_slots' do
     expect(response).to be_ok
 
     JSON.parse(response.body).tap do |json|
-      expect(json.keys).to eq(%w(2017-01-21))
+      expect(json.keys).to eq(%w[2017-01-21])
     end
   end
 
@@ -86,7 +87,7 @@ RSpec.describe 'GET /api/v1/bookable_slots' do
     expect(response).to be_ok
 
     JSON.parse(response.body).tap do |json|
-      expect(json.keys).to eq(%w(2017-01-14 2017-01-15))
+      expect(json.keys).to eq(%w[2017-01-14 2017-01-15])
     end
   end
 
@@ -125,9 +126,9 @@ RSpec.describe 'GET /api/v1/bookable_slots' do
     expect(response).to be_ok
 
     JSON.parse(response.body).tap do |json|
-      expect(json['2017-01-16']).to eq(%w(2017-01-16T12:00:00.000Z 2017-01-16T15:00:00.000Z))
+      expect(json['2017-01-16']).to eq(%w[2017-01-16T12:00:00.000Z 2017-01-16T15:00:00.000Z])
 
-      expect(json.keys).to eq(%w(2017-01-13 2017-01-16 2017-02-19 2017-03-05))
+      expect(json.keys).to eq(%w[2017-01-13 2017-01-16 2017-02-19 2017-03-05])
     end
   end
 
@@ -139,9 +140,10 @@ RSpec.describe 'GET /api/v1/bookable_slots' do
     expect(response).to be_ok
 
     JSON.parse(response.body).tap do |json|
-      expect(json['2017-01-16']).to eq(%w(2017-01-16T12:00:00.000Z 2017-01-16T15:00:00.000Z))
+      expect(json['2017-01-16']).to eq(%w[2017-01-16T12:00:00.000Z 2017-01-16T15:00:00.000Z])
 
-      expect(json.keys).to eq(%w(2017-01-16))
+      expect(json.keys).to eq(%w[2017-01-16])
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

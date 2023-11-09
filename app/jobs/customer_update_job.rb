@@ -1,4 +1,4 @@
-class CustomerUpdateJob < ActiveJob::Base
+class CustomerUpdateJob < ApplicationJob
   queue_as :default
 
   def perform(appointment, message)

@@ -34,7 +34,7 @@ class AppointmentCsvPresenter
   end
 
   def time
-    "#{appointment.start_at.to_time.to_s(:govuk_time)} #{appointment.timezone}" # rubocop:disable Rails/Date
+    "#{appointment.start_at.to_time.to_s(:govuk_time)} #{appointment.timezone}"
   end
 
   def letter_type

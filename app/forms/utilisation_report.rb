@@ -4,8 +4,7 @@ class UtilisationReport
   include ActiveModel::Model
   include Report
 
-  attr_accessor :date_range
-  attr_accessor :current_user
+  attr_accessor :date_range, :current_user
 
   attr_writer :schedule_type
 
@@ -14,7 +13,7 @@ class UtilisationReport
 
   def generate
     CSV.generate do |csv|
-      csv << %i(date booked_appointments bookable_slots blocked_slots cancelled_appointments)
+      csv << %i[date booked_appointments bookable_slots blocked_slots cancelled_appointments]
       range.each do |day|
         csv << generate_for_day(day)
       end
@@ -43,7 +42,7 @@ class UtilisationReport
 
   def generate_for_day(day)
     day_range = (day.beginning_of_day..day.end_of_day)
-    scope = Appointment.where(start_at: day_range, schedule_type: schedule_type)
+    scope = Appointment.where(start_at: day_range, schedule_type:)
     bookable, blocked = bookable_and_blocked(day_range)
 
     [
@@ -59,7 +58,7 @@ class UtilisationReport
     scope = role_scoped(
       BookableSlot
       .within_date_range(day_range.begin, day_range.end)
-      .where(schedule_type: schedule_type)
+      .where(schedule_type:)
     )
 
     bookable = scope.without_holidays.count

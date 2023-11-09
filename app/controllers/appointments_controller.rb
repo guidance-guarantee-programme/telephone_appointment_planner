@@ -33,7 +33,7 @@ class AppointmentsController < ApplicationController
     @appointment.end_at = nil
   end
 
-  def update_reschedule # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+  def update_reschedule # rubocop:disable Metrics/MethodLength
     @appointment = Appointment.find(params[:appointment_id])
     @prior_guider = @appointment.guider
     @appointment.assign_attributes(update_reschedule_params)
@@ -88,7 +88,7 @@ class AppointmentsController < ApplicationController
     end
   end
 
-  def create # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+  def create # rubocop:disable Metrics/MethodLength
     @appointment = Appointment.new(create_params.merge(agent: current_user))
     @appointment.allocate(
       via_slot: calendar_scheduling?,
@@ -168,7 +168,7 @@ class AppointmentsController < ApplicationController
     params
       .fetch(:search, {})
       .permit(:q, :date_range, :processed, :appointment_type)
-      .merge(current_user: current_user)
+      .merge(current_user:)
   end
 
   def date_range_params
@@ -180,59 +180,59 @@ class AppointmentsController < ApplicationController
 
   # rubocop:disable Metrics/MethodLength
   def updateable_params
-    [
-      :first_name,
-      :last_name,
-      :email,
-      :country_code,
-      :phone,
-      :mobile,
-      :date_of_birth,
-      :memorable_word,
-      :accessibility_requirements,
-      :notes,
-      :status,
-      :secondary_status,
-      :type_of_appointment,
-      :where_you_heard,
-      :address_line_one,
-      :address_line_two,
-      :address_line_three,
-      :town,
-      :county,
-      :postcode,
-      :gdpr_consent,
-      :smarter_signposted,
-      :bsl_video,
-      :third_party_booking,
-      :data_subject_name,
-      :data_subject_age,
-      :data_subject_date_of_birth,
-      :data_subject_consent_obtained,
-      :email_consent_form_required,
-      :printed_consent_form_required,
-      :power_of_attorney,
-      :consent_address_line_one,
-      :consent_address_line_two,
-      :consent_address_line_three,
-      :consent_town,
-      :consent_county,
-      :consent_postcode,
-      :power_of_attorney_evidence,
-      :data_subject_consent_evidence,
-      :email_consent,
-      :lloyds_signposted,
-      :schedule_type,
-      :referrer,
-      :small_pots,
-      :nudged,
-      :internal_availability
+    %i[
+      first_name
+      last_name
+      email
+      country_code
+      phone
+      mobile
+      date_of_birth
+      memorable_word
+      accessibility_requirements
+      notes
+      status
+      secondary_status
+      type_of_appointment
+      where_you_heard
+      address_line_one
+      address_line_two
+      address_line_three
+      town
+      county
+      postcode
+      gdpr_consent
+      smarter_signposted
+      bsl_video
+      third_party_booking
+      data_subject_name
+      data_subject_age
+      data_subject_date_of_birth
+      data_subject_consent_obtained
+      email_consent_form_required
+      printed_consent_form_required
+      power_of_attorney
+      consent_address_line_one
+      consent_address_line_two
+      consent_address_line_three
+      consent_town
+      consent_county
+      consent_postcode
+      power_of_attorney_evidence
+      data_subject_consent_evidence
+      email_consent
+      lloyds_signposted
+      schedule_type
+      referrer
+      small_pots
+      nudged
+      internal_availability
     ]
   end
   # rubocop:enable Metrics/MethodLength
 
   def update_params
-    params.require(:appointment).permit(updateable_params).merge(current_user: current_user)
+    params.require(:appointment).permit(updateable_params).merge(current_user:)
   end
 
   def munge_start_at
@@ -240,14 +240,14 @@ class AppointmentsController < ApplicationController
       params[:appointment][:start_at]
     else
       ad_hoc_start_at = params[:appointment][:ad_hoc_start_at]
-      ad_hoc_start_at.present? ? ad_hoc_start_at : params[:appointment][:start_at]
+      ad_hoc_start_at.presence || params[:appointment][:start_at]
     end
   end
 
   def create_params
     params
       .require(:appointment)
-      .permit(updateable_params.concat(%i(ad_hoc_start_at guider_id end_at rebooked_from_id)))
+      .permit(updateable_params.concat(%i[ad_hoc_start_at guider_id end_at rebooked_from_id]))
       .merge(start_at: munge_start_at)
   end
 
@@ -265,3 +265,4 @@ class AppointmentsController < ApplicationController
     params[:edit_appointment].nil?
   end
 end
+# rubocop:enable Metrics/ClassLength

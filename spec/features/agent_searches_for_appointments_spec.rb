@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.feature 'Agent searches for appointments' do
   scenario 'TPAS users see all types of appointments' do
     given_the_user_is_a_resource_manager(organisation: :tpas) do
@@ -146,7 +147,7 @@ RSpec.feature 'Agent searches for appointments' do
   def then_they_see_appointments_across_multiple_organisations
     expect(@page).to have_results(count: 3)
 
-    %w(George Daisy Becky).each { |name| expect(@page).to have_text(name) }
+    %w[George Daisy Becky].each { |name| expect(@page).to have_text(name) }
   end
 
   def then_they_are_redirected_to_their_single_appointment_for(name)
@@ -217,3 +218,4 @@ RSpec.feature 'Agent searches for appointments' do
     @page.search.click
   end
 end
+# rubocop:enable Metrics/BlockLength

@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe 'Activity notification alerts', js: true do
   let(:agent) do
     create(:agent)
@@ -69,7 +70,7 @@ end
 
 def and_they_have_an_appointment
   start_at = BusinessDays.from_now(10).change(hour: 9)
-  @appointment ||= create(:appointment, start_at: start_at, guider: guider, agent: agent)
+  @appointment ||= create(:appointment, start_at:, guider:, agent:)
 end
 
 def when_they_are_on_their_dashboard
@@ -117,3 +118,4 @@ end
 def then_the_high_priority_activity_is_resolved
   expect(@page.activity_feed.high_priority_activities.first).to have_content('Resolved Successfully')
 end
+# rubocop:enable Metrics/BlockLength

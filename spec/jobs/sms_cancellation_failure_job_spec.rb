@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe SmsCancellationFailureJob, '#perform' do
   let(:number) { '07715 930 455' }
   let(:client) { double(Notifications::Client, send_sms: true) }
@@ -48,3 +49,4 @@ RSpec.describe SmsCancellationFailureJob, '#perform' do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe 'POST /api/v1/summary_documents' do
   scenario 'create a valid summary document activity' do
     given_the_user_is_a_pension_wise_api_user do
@@ -72,7 +73,7 @@ RSpec.describe 'POST /api/v1/summary_documents' do
 
   def and_the_pending_errors_are_serialized_in_the_response
     JSON.parse(response.body).tap do |json|
-      expect(json.keys).to eq(%w(appointment))
+      expect(json.keys).to eq(%w[appointment])
     end
   end
 
@@ -80,3 +81,4 @@ RSpec.describe 'POST /api/v1/summary_documents' do
     expect(response).to be_created
   end
 end
+# rubocop:enable Metrics/BlockLength

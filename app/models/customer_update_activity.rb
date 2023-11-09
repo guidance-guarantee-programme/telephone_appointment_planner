@@ -6,9 +6,9 @@ class CustomerUpdateActivity < Activity
 
   def self.from(appointment, message)
     create!(
-      appointment: appointment,
+      appointment:,
       owner: appointment.guider,
-      message: message
+      message:
     )
   end
 end

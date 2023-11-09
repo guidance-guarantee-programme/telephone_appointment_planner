@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.feature 'Resource manager downloads appointment reports' do
   scenario 'Non TPAS user' do
     given_the_user_is_a_resource_manager(organisation: :tp) do
@@ -88,10 +89,10 @@ RSpec.feature 'Resource manager downloads appointment reports' do
   end
 
   def and_there_are_data
-    @appointment_with_created_at  = create(:appointment, created_at: created_at)
-    @appointment_with_start_at    = create(:appointment, start_at: start_at)
-    @tp_appointment_with_start_at = create(:appointment, start_at: start_at, guider: create(:guider, :tp))
-    @due_diligence_appointment    = create(:appointment, :due_diligence, start_at: start_at)
+    @appointment_with_created_at  = create(:appointment, created_at:)
+    @appointment_with_start_at    = create(:appointment, start_at:)
+    @tp_appointment_with_start_at = create(:appointment, start_at:, guider: create(:guider, :tp))
+    @due_diligence_appointment    = create(:appointment, :due_diligence, start_at:)
   end
 
   def and_there_is_an_appointment_at_the_end_of_the_date_range
@@ -151,32 +152,32 @@ RSpec.feature 'Resource manager downloads appointment reports' do
 
   def expect_appointment_csv(appointment)
     expect(@page.csv.count).to eq 2
-    expect(@page.csv.first).to eq [
-      :created_at,
-      :booked_by,
-      :guider,
-      :date,
-      :duration,
-      :status,
-      :status_changed,
-      :summary_document_created,
-      :first_name,
-      :last_name,
-      :notes,
-      :gdpr_consent,
-      :date_of_birth,
-      :booking_reference,
-      :memorable_word,
-      :phone,
-      :mobile,
-      :email,
-      :third_party_booking,
-      :data_subject_consent_obtained,
-      :data_subject_consent_attached,
-      :power_of_attorney,
-      :power_of_attorney_attached,
-      :printed_consent_form_required,
-      :email_consent_form_required
+    expect(@page.csv.first).to eq %i[
+      created_at
+      booked_by
+      guider
+      date
+      duration
+      status
+      status_changed
+      summary_document_created
+      first_name
+      last_name
+      notes
+      gdpr_consent
+      date_of_birth
+      booking_reference
+      memorable_word
+      phone
+      mobile
+      email
+      third_party_booking
+      data_subject_consent_obtained
+      data_subject_consent_attached
+      power_of_attorney
+      power_of_attorney_attached
+      printed_consent_form_required
+      email_consent_form_required
     ]
 
     expect(@page.csv.second).to match_array [
@@ -202,3 +203,4 @@ RSpec.feature 'Resource manager downloads appointment reports' do
     ]
   end
 end
+# rubocop:enable Metrics/BlockLength

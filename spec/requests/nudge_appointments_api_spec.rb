@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe 'POST /api/v1/nudge_appointments' do
   include ActiveJob::TestHelper
 
@@ -149,3 +150,4 @@ RSpec.describe 'POST /api/v1/nudge_appointments' do
     assert_enqueued_jobs(1, only: NudgeSmsAppointmentConfirmationJob)
   end
 end
+# rubocop:enable Metrics/BlockLength

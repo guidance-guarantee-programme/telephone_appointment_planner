@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe DropForm, '#create_activity' do
   let(:appointment) { create(:appointment) }
   let(:params) do
@@ -17,14 +18,12 @@ RSpec.describe DropForm, '#create_activity' do
   let(:token) { 'deadbeef' }
 
   around do |example|
-    begin
-      existing = ENV['MAILGUN_API_TOKEN']
+    existing = ENV['MAILGUN_API_TOKEN']
 
-      ENV['MAILGUN_API_TOKEN'] = token
-      example.run
-    ensure
-      ENV['MAILGUN_API_TOKEN'] = existing
-    end
+    ENV['MAILGUN_API_TOKEN'] = token
+    example.run
+  ensure
+    ENV['MAILGUN_API_TOKEN'] = existing
   end
 
   subject { described_class.new(params) }
@@ -86,3 +85,4 @@ RSpec.describe DropForm, '#create_activity' do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

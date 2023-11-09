@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe AppointmentSearch, type: :model do
   describe '#search' do
     before do
@@ -23,6 +24,7 @@ RSpec.describe AppointmentSearch, type: :model do
     )
       described_class.new(query, start_at, end_at, current_user, processed, appointment_type).search
     end
+    # rubocop:enable Metrics/ParameterLists
 
     it 'filters by type' do
       @appointments.map(&:destroy)
@@ -94,7 +96,7 @@ RSpec.describe AppointmentSearch, type: :model do
       date_range_end = 40.days.from_now.to_date
       start_at = date_range_start + 5.hours
       end_at = start_at + 1.hour
-      appointment = create(:appointment, start_at: start_at, end_at: end_at)
+      appointment = create(:appointment, start_at:, end_at:)
       results = results(nil, date_range_start, date_range_end)
       expect(results).to eq [appointment]
     end
@@ -109,3 +111,4 @@ RSpec.describe AppointmentSearch, type: :model do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

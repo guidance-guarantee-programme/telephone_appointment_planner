@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.feature 'Guider views appointments' do
   scenario 'Guider views their own appointments', js: true do
     given_the_user_is_both_guider_and_manager do
@@ -119,8 +120,8 @@ RSpec.feature 'Guider views appointments' do
   def and_there_are_appointments_for_multiple_guiders
     start_at = BusinessDays.from_now(10).change(hour: 14)
     # this would appear 'today'
-    @appointment = create(:appointment, guider: current_user, start_at: start_at)
-    @other_appointment = create(:appointment, guider: create(:guider), start_at: start_at)
+    @appointment = create(:appointment, guider: current_user, start_at:)
+    @other_appointment = create(:appointment, guider: create(:guider), start_at:)
     # this would appear 'tomorrow'
     @appointment_tomorrow = create(
       :appointment,
@@ -177,13 +178,13 @@ RSpec.feature 'Guider views appointments' do
   end
 
   def and_they_see_their_schedule_for_today
-    event = @page.calendar.slots.sort { |x, y| x[:start] <=> y[:start] }.first
+    event = @page.calendar.slots.min_by { |slot| slot[:start] }
     expect(Time.zone.parse(event[:start])).to eq @bookable_slots.first.start_at
     expect(Time.zone.parse(event[:end])).to eq @bookable_slots.first.end_at
   end
 
   def and_they_can_see_their_holiday_for_today
-    event = @page.calendar.holidays.sort { |x, y| x[:start] <=> y[:start] }.last
+    event = @page.calendar.holidays.max_by { |slot| slot[:start] }
     expect(Time.zone.parse(event[:start])).to eq @holiday.start_at
     expect(Time.zone.parse(event[:end])).to eq @holiday.end_at
   end
@@ -205,9 +206,7 @@ RSpec.feature 'Guider views appointments' do
   def when_they_advance_a_working_day
     next_working_day = BusinessDays.from_now(1).to_date
 
-    until Date.parse(@page.date.text) == next_working_day
-      @page.next_week_day.click
-    end
+    @page.next_week_day.click until Date.parse(@page.date.text) == next_working_day
   end
 
   def then_they_see_the_appointment_for_that_day
@@ -218,7 +217,7 @@ RSpec.feature 'Guider views appointments' do
   end
 
   def and_they_see_their_schedule_for_tomorrow
-    event = @page.calendar.slots.sort { |x, y| x[:start] <=> y[:start] }.last
+    event = @page.calendar.slots.max_by { |slot| slot[:start] }
     expect(Time.zone.parse(event[:start])).to eq @bookable_slots.second.start_at
     expect(Time.zone.parse(event[:end])).to eq @bookable_slots.second.end_at
   end
@@ -261,3 +260,4 @@ RSpec.feature 'Guider views appointments' do
     expect(@page.calendar.guiders).to_not include @deactivated_guider.name
   end
 end
+# rubocop:enable Metrics/BlockLength

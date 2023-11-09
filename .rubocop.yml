@@ -35,3 +35,80 @@ Metrics/AbcSize:
   Exclude:
     - 'spec/features/*'
     - 'spec/requests/*'
+
+Style/ExpandPathArguments:
+  Exclude:
+    - 'spec/rails_helper.rb'
+
+Rails/UnknownEnv:
+  Exclude:
+    - 'config/initializers/govuk_admin_template.rb'
+    - 'lib/tasks/jobs.rake'
+
+Rails/InverseOf:
+  Exclude:
+    - 'app/models/appointment.rb'
+    - 'app/models/user.rb'
+
+Naming/VariableNumber:
+  Exclude:
+    - 'app/lib/summary_document_link.rb'
+    - 'app/presenters/printed_confirmation_presenter.rb'
+    - 'app/presenters/printed_third_party_consent_form_presenter.rb'
+    - 'spec/features/customer_downloads_consent_form_spec.rb'
+    - 'spec/jobs/printed_confirmation_job_spec.rb'
+    - 'spec/jobs/printed_third_party_consent_form_job_spec.rb'
+    - 'spec/requests/appointments_api_spec.rb'
+    - 'spec/requests/nudge_appointments_api_spec.rb'
+    - 'spec/requests/summary_document_dropped_api_spec.rb'
+    - 'spec/requests/summary_documents_api_spec.rb'
+    - 'spec/support/pages/new_appointment.rb'
+
+Layout/ClosingHeredocIndentation:
+  Exclude:
+    - 'app/forms/appointment_report.rb'
+    - 'app/models/bookable_slot.rb'
+
+Layout/HashAlignment:
+  Exclude:
+    - 'app/helpers/user_helper.rb'
+    - 'app/jobs/sms_cancellation_failure_job.rb'
+    - 'app/lib/where_you_heard.rb'
+    - 'app/presenters/appointment_csv_presenter.rb'
+    - 'lib/tasks/export.rake'
+    - 'spec/features/resource_manager_manages_holidays_spec.rb'
+    - 'spec/forms/drop_form_spec.rb'
+    - 'spec/mailers/appointment_mailer_spec.rb'
+    - 'spec/models/bookable_slot_spec.rb'
+    - 'spec/requests/appointments_api_spec.rb'
+    - 'spec/requests/nudge_appointments_api_spec.rb'
+
+Rails/UniqueValidationWithoutIndex:
+  Exclude:
+    - 'app/models/schedule.rb'
+
+Rails/SkipsModelValidations:
+  Exclude:
+    - 'app/controllers/users_controller.rb'
+    - 'app/models/appointment.rb'
+    - 'spec/lib/notifier_spec.rb'
+    - 'spec/mailers/appointment_mailer_spec.rb'
+    - 'spec/mailers/previews/appointment_mailer_preview.rb'
+
+Rails/HasManyOrHasOneDependent:
+  Exclude:
+    - 'app/models/user.rb'
+
+Rails/FindEach:
+  Exclude:
+    - 'app/lib/scheduled_reporting_summary.rb'
+
+Rails/ApplicationController:
+  Exclude:
+    - 'app/controllers/api/v1/bookable_slots_controller.rb'
+    - 'app/controllers/mail_gun/drops_controller.rb'
+    - 'app/controllers/sms_cancellations_controller.rb'
+
+Naming/MemoizedInstanceVariableName:
+  Exclude:
+    - 'spec/features/notifications_spec.rb'

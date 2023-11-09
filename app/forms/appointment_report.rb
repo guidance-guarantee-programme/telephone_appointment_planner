@@ -3,10 +3,7 @@ class AppointmentReport
   include ActiveModel::Model
   include Report
 
-  attr_reader :where
-  attr_reader :date_range
-  attr_reader :current_user
-  attr_reader :schedule_type
+  attr_reader :where, :date_range, :current_user
 
   validates :date_range, presence: true
   validates :schedule_type, presence: true, if: -> { current_user.tpas? }
@@ -80,7 +77,7 @@ class AppointmentReport
       .select("case when email_consent_form_required is true then 'Yes' else 'No' end as email_consent_form_required")
       .where("#{column} >= ? AND #{column} <= ?", range.begin, range.end.end_of_day)
       .where(organisation_clause)
-      .where(schedule_type: schedule_type)
+      .where(schedule_type:)
       .joins('INNER JOIN users guiders ON guiders.id = appointments.guider_id')
       .joins('INNER JOIN users agents ON agents.id = appointments.agent_id')
       .order(where)
@@ -104,3 +101,4 @@ class AppointmentReport
     { guiders: { organisation_content_id: current_user.organisation_content_id } }
   end
 end
+# rubocop:enable Layout/LineLength

@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.feature 'Resource manager modifies appointments' do
   scenario 'Avoid navigating away with unsaved modifications', js: true do
     given_the_user_is_a_resource_manager do
@@ -143,7 +144,7 @@ RSpec.feature 'Resource manager modifies appointments' do
     @holiday = create(
       :holiday,
       user: create(:guider),
-      start_at: start_at,
+      start_at:,
       end_at: start_at + 1.hour
     )
   end
@@ -152,7 +153,7 @@ RSpec.feature 'Resource manager modifies appointments' do
     start_at = BusinessDays.from_now(3).change(hour: 9)
     @holiday = create(
       :bank_holiday,
-      start_at: start_at,
+      start_at:,
       end_at: start_at + 1.hour
     )
   end
@@ -214,8 +215,8 @@ RSpec.feature 'Resource manager modifies appointments' do
     @ben = create(:guider, name: 'Ben Lovell')
     @jan = create(:guider, name: 'Jan Schwifty')
 
-    @appointment = create(:appointment, guider: @ben, start_at: '2021-03-11 09:00'.to_time.in_time_zone)
-    @other_appointment = create(:appointment, guider: @jan, start_at: '2021-03-11 09:30'.to_time.in_time_zone)
+    @appointment = create(:appointment, guider: @ben, start_at: Time.zone.parse('2021-03-11 09:00'))
+    @other_appointment = create(:appointment, guider: @jan, start_at: Time.zone.parse('2021-03-11 09:30'))
   end
 
   def then_they_see_the_holiday_for_one_guider
@@ -313,3 +314,4 @@ RSpec.feature 'Resource manager modifies appointments' do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

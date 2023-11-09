@@ -1,7 +1,7 @@
 class SchedulesController < ApplicationController
   before_action :authorise_for_resource_managers!
   before_action :load_current_guider
-  before_action :load_current_schedule, only: [:edit, :update]
+  before_action :load_current_schedule, only: %i[edit update]
 
   def new
     @schedule = @guider.schedules.build
@@ -51,7 +51,7 @@ class SchedulesController < ApplicationController
   end
 
   def load_current_guider
-    @guider ||= current_user.colleagues.guiders.find(params[:user_id])
+    @guider = current_user.colleagues.guiders.find(params[:user_id])
   end
 
   def load_current_schedule

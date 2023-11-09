@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.feature 'Resource manager processes an appointment' do
   scenario 'Processing is not visible to TPAS members' do
     given_the_user_is_a_resource_manager do
@@ -32,15 +33,15 @@ RSpec.feature 'Resource manager processes an appointment' do
   end
 
   def and_appointments_exist_for(organisation)
-    create_list(:appointment, 2, organisation: organisation)
+    create_list(:appointment, 2, organisation:)
   end
 
   def and_processed_appointments_exist_for(organisation)
-    create_list(:appointment, 2, :processed, organisation: organisation)
+    create_list(:appointment, 2, :processed, organisation:)
   end
 
   def and_a_processed_appointment_exists_for(organisation)
-    create(:appointment, :processed, organisation: organisation)
+    create(:appointment, :processed, organisation:)
   end
 
   def when_they_view_the_appointments
@@ -68,7 +69,7 @@ RSpec.feature 'Resource manager processes an appointment' do
   end
 
   def and_an_appointment_exists_for(organisation)
-    @appointment = create(:appointment, organisation: organisation)
+    @appointment = create(:appointment, organisation:)
   end
 
   def when_they_edit_the_appointment
@@ -96,3 +97,4 @@ RSpec.feature 'Resource manager processes an appointment' do
     expect(@page.activity_feed).to have_text('processed this appointment')
   end
 end
+# rubocop:enable Metrics/BlockLength

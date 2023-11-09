@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe AppointmentCancelledNotificationsJob do
   context 'when the guider is from CAS' do
     it 'sends to the alias' do
@@ -50,3 +51,4 @@ RSpec.describe AppointmentCancelledNotificationsJob do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

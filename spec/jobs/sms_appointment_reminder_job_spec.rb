@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe SmsAppointmentReminderJob, '#perform' do
   let(:client) { double(Notifications::Client, send_sms: true) }
 
@@ -88,3 +89,4 @@ RSpec.describe SmsAppointmentReminderJob, '#perform' do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

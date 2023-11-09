@@ -8,7 +8,7 @@ class CreateGroupAssignments
   def call
     users.each do |user|
       groups.each do |group|
-        user.group_assignments.find_or_create_by(group: group)
+        user.group_assignments.find_or_create_by(group:)
       end
     end
   end
@@ -18,7 +18,7 @@ class CreateGroupAssignments
   def groups
     @groups ||= names.map do |name|
       Group.find_or_create_by(
-        name: name,
+        name:,
         organisation_content_id: user.organisation_content_id
       )
     end
@@ -28,7 +28,5 @@ class CreateGroupAssignments
     user.colleagues.find(user_ids)
   end
 
-  attr_reader :user_ids
-  attr_reader :names
-  attr_reader :user
+  attr_reader :user_ids, :names, :user
 end

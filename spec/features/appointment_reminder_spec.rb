@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.feature 'Appointment reminders' do
   scenario 'when less than 48 hours before the appointment it sends a reminder' do
     given_it_is_a_monday_not_near_a_bank_holiday do
@@ -47,3 +48,4 @@ RSpec.feature 'Appointment reminders' do
       .to be_empty
   end
 end
+# rubocop:enable Metrics/BlockLength

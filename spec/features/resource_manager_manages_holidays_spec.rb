@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.feature 'Resource manager manages holidays' do
   let(:users) do
     [
@@ -132,7 +133,7 @@ RSpec.feature 'Resource manager manages holidays' do
     users.each do |user|
       create(
         :holiday,
-        user: user,
+        user:,
         title: 'Merged Holiday',
         start_at: today + 4.hours,
         end_at: today + 5.hours
@@ -389,11 +390,9 @@ RSpec.feature 'Resource manager manages holidays' do
 
   def wait_for_ajax_to_complete
     Timeout.timeout(Capybara.default_max_wait_time) do
-      begin
-        loop until page.evaluate_script('jQuery.active').zero?
-      rescue Selenium::WebDriver::Error::JavascriptError # rubocop:disable Lint/HandleExceptions
-        # the underlying page went away
-      end
+      loop until page.evaluate_script('jQuery.active').zero?
+    rescue Selenium::WebDriver::Error::JavascriptError
+      # the underlying page went away
     end
   end
 
@@ -414,3 +413,4 @@ RSpec.feature 'Resource manager manages holidays' do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

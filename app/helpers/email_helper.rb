@@ -1,5 +1,5 @@
 module EmailHelper
-  def p(&block)
+  def p(&block) # rubocop:disable Metrics/MethodLength
     content_tag(
       :p,
       capture(&block),

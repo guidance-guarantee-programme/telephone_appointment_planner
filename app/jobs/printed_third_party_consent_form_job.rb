@@ -11,7 +11,7 @@ class PrintedThirdPartyConsentFormJob < NotifyJobBase
     client.send_letter(
       template_id: TEMPLATE_ID,
       reference: appointment.to_param,
-      personalisation: personalisation
+      personalisation:
     )
 
     PrintedThirdPartyConsentFormActivity.from(appointment)

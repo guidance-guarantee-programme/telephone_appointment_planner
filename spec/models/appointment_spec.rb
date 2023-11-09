@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe Appointment, type: :model do
   describe '#summarised?' do
     context 'when the appointment has a summary activity' do
@@ -133,7 +134,7 @@ RSpec.describe Appointment, type: :model do
       appointment.update(status: 'cancelled_by_pension_wise')
 
       expect(appointment.status_transitions.map(&:status)).to match_array(
-        %w(pending cancelled_by_pension_wise)
+        %w[pending cancelled_by_pension_wise]
       )
     end
 
@@ -593,17 +594,17 @@ RSpec.describe Appointment, type: :model do
       end
     end
 
-    required = [
-      :start_at,
-      :end_at,
-      :first_name,
-      :last_name,
-      :phone,
-      :memorable_word,
-      :guider,
-      :agent,
-      :date_of_birth,
-      :dc_pot_confirmed
+    required = %i[
+      start_at
+      end_at
+      first_name
+      last_name
+      phone
+      memorable_word
+      guider
+      agent
+      date_of_birth
+      dc_pot_confirmed
     ]
     required.each do |field|
       it "validate presence of #{field}" do
@@ -772,7 +773,7 @@ RSpec.describe Appointment, type: :model do
         expect(subject.guider).to eq(tp_guider)
       end
 
-      def guider_with_slot(provider)
+      def guider_with_slot(provider) # rubocop:disable Metrics/MethodLength
         guider = create(:guider, provider)
         guider.schedules.build(
           start_at: appointment_start_time.beginning_of_day,
@@ -791,7 +792,7 @@ RSpec.describe Appointment, type: :model do
 
         create(
           :bookable_slot,
-          guider: guider,
+          guider:,
           start_at: appointment_start_time,
           end_at: appointment_end_time
         )
@@ -853,7 +854,7 @@ RSpec.describe Appointment, type: :model do
         it 'does not assign to a guider' do
           subject.start_at = appointment_start_time
           subject.end_at = appointment_end_time
-          expect { subject.allocate }.to_not change { subject.guider }
+          expect { subject.allocate }.to_not(change { subject.guider })
         end
       end
 
@@ -870,7 +871,7 @@ RSpec.describe Appointment, type: :model do
         it 'does not assign to a guider' do
           subject.start_at = appointment_start_time
           subject.end_at = appointment_end_time
-          expect { subject.allocate }.to_not change { subject.guider }
+          expect { subject.allocate }.to_not(change { subject.guider })
         end
       end
 
@@ -886,7 +887,7 @@ RSpec.describe Appointment, type: :model do
         it 'does not assign to a guider' do
           subject.start_at = appointment_start_time
           subject.end_at = appointment_end_time
-          expect { subject.allocate }.to_not change { subject.guider }
+          expect { subject.allocate }.to_not(change { subject.guider })
         end
       end
     end
@@ -1003,9 +1004,9 @@ RSpec.describe Appointment, type: :model do
   end
 
   describe '#can_create_summary?' do
-    let(:result) { Appointment.new(status: status).can_create_summary? }
+    let(:result) { Appointment.new(status:).can_create_summary? }
 
-    %i(complete ineligible_age ineligible_pension_type).each do |status|
+    %i[complete ineligible_age ineligible_pension_type].each do |status|
       context "when status is #{status}" do
         let(:status) { status }
 
@@ -1015,7 +1016,7 @@ RSpec.describe Appointment, type: :model do
 
         context 'a TPAS agent' do
           let(:agent) { build_stubbed(:resource_manager, :tpas) }
-          let(:result) { Appointment.new(status: status, guider: guider).can_create_summary?(agent) }
+          let(:result) { Appointment.new(status:, guider:).can_create_summary?(agent) }
 
           context 'attempts to create a summary belonging to another organisation' do
             let(:guider) { build(:guider, :cas) }
@@ -1036,7 +1037,7 @@ RSpec.describe Appointment, type: :model do
       end
     end
 
-    %i(pending no_show incomplete cancelled_by_customer cancelled_by_pension_wise).each do |status|
+    %i[pending no_show incomplete cancelled_by_customer cancelled_by_pension_wise].each do |status|
       context "when status is #{status}" do
         let(:status) { status }
 
@@ -1131,3 +1132,4 @@ RSpec.describe Appointment, type: :model do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

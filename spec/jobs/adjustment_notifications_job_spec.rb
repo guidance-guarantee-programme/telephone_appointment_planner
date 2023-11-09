@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe AdjustmentNotificationsJob, '#perform' do
   context 'when the guider is CAS' do
     it 'sends to their alias' do
@@ -41,3 +42,4 @@ RSpec.describe AdjustmentNotificationsJob, '#perform' do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

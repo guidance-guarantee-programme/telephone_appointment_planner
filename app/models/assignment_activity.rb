@@ -18,7 +18,7 @@ class AssignmentActivity < Activity
     create!(
       user_id: audit.user_id,
       message: ASSIGNED,
-      appointment: appointment,
+      appointment:,
       owner: appointment.guider
     )
   end
@@ -28,7 +28,7 @@ class AssignmentActivity < Activity
     create!(
       user_id: audit.user_id,
       message: REASSIGNED,
-      appointment: appointment,
+      appointment:,
       owner: appointment.guider,
       prior_owner_id: prior_owner.id
     )

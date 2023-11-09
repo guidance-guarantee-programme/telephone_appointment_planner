@@ -64,8 +64,8 @@ class AppointmentSearch
   end
 
   def within_date_range(results)
-    @start_at = 3.months.ago.beginning_of_day unless @start_at
-    @end_at   = 3.months.from_now.end_of_day unless @end_at
+    @start_at ||= 3.months.ago.beginning_of_day
+    @end_at ||= 3.months.from_now.end_of_day
 
     results.where('start_at between ? and ?', @start_at, @end_at)
   end
@@ -79,10 +79,10 @@ class AppointmentSearch
   def search_with_query
     scope = Appointment.joins(:guider).includes(:guider).select('appointments.*')
 
-    if REFERENCE_REGEX === @query # rubocop:disable Style/CaseEquality
+    if REFERENCE_REGEX === @query
       scope.where(id: @query)
     else
-      scope.where(ilike(%w(appointments.first_name appointments.last_name users.name)))
+      scope.where(ilike(%w[appointments.first_name appointments.last_name users.name]))
     end
   end
 end

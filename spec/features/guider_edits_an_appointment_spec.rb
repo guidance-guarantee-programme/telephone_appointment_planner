@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.feature 'Guider edits an appointment' do
   scenario 'Guider attempts to reschedule a PSG appointment' do
     given_the_user_is_a_guider(organisation: :tpas) do
@@ -124,7 +125,7 @@ RSpec.feature 'Guider edits an appointment' do
   def and_they_attach_the_consent_evidence
     expect(@page).to have_data_subject_consent_evidence
 
-    @page.attach_file('Data subject consent evidence', Rails.root.join('spec', 'fixtures', 'evidence.pdf'))
+    @page.attach_file('Data subject consent evidence', Rails.root.join('spec/fixtures/evidence.pdf'))
   end
 
   def when_they_save_the_changes
@@ -139,7 +140,7 @@ RSpec.feature 'Guider edits an appointment' do
     @page.data_subject_consent_obtained.set(false)
     @page.power_of_attorney.set(true)
 
-    @page.attach_file('Power of attorney evidence', Rails.root.join('spec', 'fixtures', 'evidence.pdf'))
+    @page.attach_file('Power of attorney evidence', Rails.root.join('spec/fixtures/evidence.pdf'))
   end
 
   def then_the_power_of_attorney_evidence_is_attached
@@ -194,3 +195,4 @@ RSpec.feature 'Guider edits an appointment' do
     expect(@page).to have_flash_of_success
   end
 end
+# rubocop:enable Metrics/BlockLength

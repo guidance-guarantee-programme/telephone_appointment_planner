@@ -2,7 +2,7 @@ class DropActivity < Activity
   def self.from(event, description, message_type, appointment)
     create!(
       message: "#{event.humanize} - #{description}",
-      appointment: appointment,
+      appointment:,
       owner: owner(appointment, message_type)
     ).tap do |activity|
       PusherHighPriorityCountChangedJob.perform_later(activity.owner) if activity.owner
@@ -14,7 +14,7 @@ class DropActivity < Activity
   end
 
   def self.owner(appointment, message_type)
-    return appointment.agent if message_type == 'booking_created'
+    appointment.agent if message_type == 'booking_created'
   end
 
   def owner_required?

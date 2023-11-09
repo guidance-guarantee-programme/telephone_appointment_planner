@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/BlockLength
 FactoryBot.define do
   factory :appointment do
     transient do
@@ -81,7 +82,7 @@ FactoryBot.define do
     trait :with_data_subject_consent_evidence do
       data_subject_consent_obtained { true }
       data_subject_consent_evidence do
-        Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'evidence.pdf'), 'application/pdf')
+        Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/evidence.pdf'), 'application/pdf')
       end
     end
 
@@ -93,7 +94,7 @@ FactoryBot.define do
           :activity,
           type: 'SummaryDocumentActivity',
           message: 'digital',
-          appointment: appointment
+          appointment:
         )
       end
     end
@@ -106,9 +107,10 @@ FactoryBot.define do
           :activity,
           type: 'SummaryDocumentActivity',
           message: 'postal',
-          appointment: appointment
+          appointment:
         )
       end
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

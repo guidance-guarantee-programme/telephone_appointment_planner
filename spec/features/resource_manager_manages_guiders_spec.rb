@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.feature 'Resource manager manages guiders' do
   scenario 'Viewing and filtering by groups', js: true do
     given_the_user_is_a_resource_manager do
@@ -185,3 +186,4 @@ RSpec.feature 'Resource manager manages guiders' do
     expect(@guider.bookable_slots).to_not be_empty
   end
 end
+# rubocop:enable Metrics/BlockLength

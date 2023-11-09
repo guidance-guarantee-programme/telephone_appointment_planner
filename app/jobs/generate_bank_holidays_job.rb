@@ -17,9 +17,9 @@ class GenerateBankHolidaysJob < ApplicationJob
 
   def create_bank_holiday(title, start_at, end_at)
     Holiday.find_or_create_by!(
-      title: title,
-      start_at: start_at,
-      end_at: end_at,
+      title:,
+      start_at:,
+      end_at:,
       all_day: true,
       bank_holiday: true
     )

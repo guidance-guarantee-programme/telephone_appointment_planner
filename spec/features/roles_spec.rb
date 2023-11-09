@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.feature 'Roles' do
   context 'Administrators' do
     scenario 'Can see the organisation selection' do
@@ -281,3 +282,4 @@ RSpec.feature 'Roles' do
     @page = Pages::SortGuiders.new.tap(&:load)
   end
 end
+# rubocop:enable Metrics/BlockLength

@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe Redactor do
   describe '.redact_for_gdpr' do
     it 'redacts records yet to be redacted, greater than 2 years old' do
@@ -50,7 +51,8 @@ RSpec.describe Redactor do
 
       expect(appointment.audits).to be_empty
       # all activities except `AssignmentActivity` will be redacted
-      expect(appointment.activities.map(&:class).map(&:name)).to eq(%w(AssignmentActivity CreateActivity))
+      expect(appointment.activities.map(&:class).map(&:name)).to eq(%w[AssignmentActivity CreateActivity])
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

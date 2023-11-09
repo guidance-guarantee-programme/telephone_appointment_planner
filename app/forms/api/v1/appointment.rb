@@ -3,28 +3,13 @@ module Api
     class Appointment
       include ActiveModel::Model
 
-      attr_accessor :start_at
-      attr_accessor :first_name
-      attr_accessor :last_name
-      attr_accessor :email
-      attr_accessor :phone
-      attr_accessor :memorable_word
-      attr_accessor :date_of_birth
-      attr_accessor :dc_pot_confirmed
-      attr_accessor :where_you_heard
-      attr_accessor :gdpr_consent
-      attr_accessor :accessibility_requirements
-      attr_accessor :notes
-      attr_accessor :agent
-      attr_accessor :smarter_signposted
-      attr_accessor :lloyds_signposted
-      attr_accessor :schedule_type
-      attr_accessor :referrer
+      attr_accessor :start_at, :first_name, :last_name, :email, :phone, :memorable_word, :date_of_birth,
+                    :dc_pot_confirmed, :where_you_heard, :gdpr_consent, :accessibility_requirements,
+                    :notes, :agent, :smarter_signposted, :lloyds_signposted, :schedule_type, :referrer
 
       attr_reader :model
 
-      attr_writer :nudged
-      attr_writer :country_code
+      attr_writer :nudged, :country_code
 
       def initialize(*)
         super
@@ -33,7 +18,7 @@ module Api
       end
 
       def create
-        model.allocate(agent: agent)
+        model.allocate(agent:)
         model.save
       end
 
@@ -49,28 +34,28 @@ module Api
 
       private
 
-      def to_params # rubocop:disable Metrics/AbcSize
+      def to_params # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
         {
-          start_at: start_at,
-          first_name: first_name,
-          last_name: last_name,
-          email: email,
-          country_code: country_code,
-          phone: phone,
-          date_of_birth: date_of_birth,
-          memorable_word: memorable_word,
-          dc_pot_confirmed: dc_pot_confirmed,
-          where_you_heard: where_you_heard,
+          start_at:,
+          first_name:,
+          last_name:,
+          email:,
+          country_code:,
+          phone:,
+          date_of_birth:,
+          memorable_word:,
+          dc_pot_confirmed:,
+          where_you_heard:,
           gdpr_consent: gdpr_consent.to_s,
-          accessibility_requirements: accessibility_requirements,
-          notes: notes,
+          accessibility_requirements:,
+          notes:,
           pension_provider: 'n/a',
-          agent: agent,
-          smarter_signposted: smarter_signposted,
+          agent:,
+          smarter_signposted:,
           lloyds_signposted: lloyds_signposted || false,
-          schedule_type: schedule_type,
+          schedule_type:,
           referrer: referrer.to_s,
-          nudged: nudged
+          nudged:
         }
       end
     end

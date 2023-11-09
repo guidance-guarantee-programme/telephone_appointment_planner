@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe SummaryDocumentActivity do
   before do
     allow(PusherActivityCreatedJob).to receive(:perform_later)
@@ -9,10 +10,10 @@ RSpec.describe SummaryDocumentActivity do
   let(:message) { 'message' }
   let(:params) do
     {
-      user: user,
+      user:,
       owner: appointment.try(:guider),
-      appointment: appointment,
-      message: message
+      appointment:,
+      message:
     }
   end
 
@@ -55,7 +56,7 @@ RSpec.describe SummaryDocumentActivity do
           appointment_id: appointment.id,
           owner_id: appointment.guider.id,
           user_id: user.id,
-          message: message
+          message:
         )
       end
 
@@ -65,3 +66,4 @@ RSpec.describe SummaryDocumentActivity do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe 'POST /api/v1/appointments' do
   include ActiveJob::TestHelper
 
@@ -217,7 +218,7 @@ RSpec.describe 'POST /api/v1/appointments' do
 
   def and_the_errors_are_serialized_in_the_response
     JSON.parse(response.body).tap do |json|
-      expect(json.keys).to eq(%w(first_name last_name))
+      expect(json.keys).to eq(%w[first_name last_name])
     end
   end
 
@@ -345,3 +346,4 @@ RSpec.describe 'POST /api/v1/appointments' do
     assert_enqueued_jobs(1, only: AppointmentCreatedNotificationsJob)
   end
 end
+# rubocop:enable Metrics/BlockLength

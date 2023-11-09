@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe MessageActivity do
   describe '.create' do
     before do
@@ -11,10 +12,10 @@ RSpec.describe MessageActivity do
     let(:message) { 'message' }
     let(:params) do
       {
-        user: user,
+        user:,
         owner: appointment.guider,
-        appointment: appointment,
-        message: message
+        appointment:,
+        message:
       }
     end
 
@@ -27,7 +28,7 @@ RSpec.describe MessageActivity do
         appointment_id: appointment.id,
         owner_id: appointment.guider.id,
         user_id: user.id,
-        message: message
+        message:
       )
     end
 
@@ -36,3 +37,4 @@ RSpec.describe MessageActivity do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

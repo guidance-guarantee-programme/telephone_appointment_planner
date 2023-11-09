@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe PrintedThirdPartyConsentFormJob, '#perform' do
   let(:appointment) { build_stubbed(:appointment) }
   let(:client) { double(Notifications::Client, send_letter: true) }
@@ -48,3 +49,4 @@ RSpec.describe PrintedThirdPartyConsentFormJob, '#perform' do
     ENV.delete('PENSION_WISE_NOTIFY_API_KEY')
   end
 end
+# rubocop:enable Metrics/BlockLength

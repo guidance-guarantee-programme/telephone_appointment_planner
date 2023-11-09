@@ -1,9 +1,9 @@
 class Activity < ApplicationRecord
-  HIGH_PRIORITY_ACTIVITY_CLASS_NAMES = %w(
+  HIGH_PRIORITY_ACTIVITY_CLASS_NAMES = %w[
     DropActivity
     DroppedSummaryDocumentActivity
     PrintedConfirmationFailedActivity
-  ).freeze
+  ].freeze
 
   belongs_to :appointment
   belongs_to :user, optional: true

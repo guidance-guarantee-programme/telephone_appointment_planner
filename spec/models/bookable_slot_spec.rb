@@ -1,10 +1,11 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe BookableSlot, type: :model do
   def make_time(hour, minute)
     BusinessDays
       .from_now(6)
-      .change(hour: hour, min: minute)
+      .change(hour:, min: minute)
   end
 
   def result(current_user = user)
@@ -42,11 +43,11 @@ RSpec.describe BookableSlot, type: :model do
     it 'returns a slot for the correct organisation' do
       start_at = Time.zone.parse('2021-05-26 13:00')
 
-      %i(tp cas ni wallsend lancs_west).each do |provider|
-        create(:bookable_slot, provider, start_at: start_at)
+      %i[tp cas ni wallsend lancs_west].each do |provider|
+        create(:bookable_slot, provider, start_at:)
       end
 
-      @expected = create(:bookable_slot, :derbyshire_districts, start_at: start_at)
+      @expected = create(:bookable_slot, :derbyshire_districts, start_at:)
 
       @allocated = BookableSlot.find_available_slot(start_at, @expected.guider)
 
@@ -147,12 +148,16 @@ RSpec.describe BookableSlot, type: :model do
       it 'respects timezones eg DST/BST' do
         # DST
         travel_to '2020-01-01 13:00' do
-          expect(BookableSlot.next_valid_start_date(user)).to eq('2020-01-02 21:00 UTC'.to_time.in_time_zone('London'))
+          expect(BookableSlot.next_valid_start_date(user))
+            .to eq(Time.zone.parse('2020-01-02 21:00 UTC')
+            .in_time_zone('London'))
         end
 
         # BST
         travel_to '2020-04-14 13:00' do
-          expect(BookableSlot.next_valid_start_date(user)).to eq('2020-04-15 21:00 UTC'.to_time.in_time_zone('London'))
+          expect(BookableSlot.next_valid_start_date(user))
+            .to eq(Time.zone.parse('2020-04-15 21:00 UTC')
+            .in_time_zone('London'))
         end
       end
     end
@@ -180,7 +185,7 @@ RSpec.describe BookableSlot, type: :model do
     let!(:slot) do
       create(
         :bookable_slot,
-        guider: guider,
+        guider:,
         start_at: make_time(10, 30),
         end_at: make_time(11, 30)
       )
@@ -193,7 +198,7 @@ RSpec.describe BookableSlot, type: :model do
     it 'excludes slots with appointments' do
       create(
         :appointment,
-        guider: guider,
+        guider:,
         start_at: make_time(10, 30),
         end_at: make_time(11, 30),
         status: :pending
@@ -204,14 +209,14 @@ RSpec.describe BookableSlot, type: :model do
     it 'excludes slots with both a cancelled and a pending appointment' do
       create(
         :appointment,
-        guider: guider,
+        guider:,
         start_at: make_time(10, 30),
         end_at: make_time(11, 30),
         status: :cancelled_by_customer_sms
       )
       create(
         :appointment,
-        guider: guider,
+        guider:,
         start_at: make_time(10, 30),
         end_at: make_time(11, 30),
         status: :pending
@@ -222,7 +227,7 @@ RSpec.describe BookableSlot, type: :model do
     it 'excludes slots with appointments that start inside them' do
       create(
         :appointment,
-        guider: guider,
+        guider:,
         start_at: make_time(10, 45),
         end_at: make_time(12, 30),
         status: :pending
@@ -234,7 +239,7 @@ RSpec.describe BookableSlot, type: :model do
       create(
         :appointment,
         :due_diligence,
-        guider: guider,
+        guider:,
         start_at: make_time(10, 45),
         end_at: make_time(12, 30),
         status: :pending
@@ -245,7 +250,7 @@ RSpec.describe BookableSlot, type: :model do
     it 'excludes slots with appointments that end inside them' do
       create(
         :appointment,
-        guider: guider,
+        guider:,
         start_at: make_time(9, 45),
         end_at: make_time(10, 35),
         status: :pending
@@ -256,7 +261,7 @@ RSpec.describe BookableSlot, type: :model do
     it 'includes slots with cancelled appointments' do
       create(
         :appointment,
-        guider: guider,
+        guider:,
         start_at: make_time(10, 30),
         end_at: make_time(11, 30),
         status: :cancelled_by_customer_sms
@@ -273,7 +278,7 @@ RSpec.describe BookableSlot, type: :model do
     let!(:slot) do
       create(
         :bookable_slot,
-        guider: guider,
+        guider:,
         start_at: make_time(10, 30),
         end_at: make_time(11, 30)
       )
@@ -433,7 +438,7 @@ RSpec.describe BookableSlot, type: :model do
         ].flatten.each do |guider|
           create(
             :bookable_slot,
-            guider: guider,
+            guider:,
             start_at: make_time(10, 30),
             end_at: make_time(11, 30)
           )
@@ -456,7 +461,7 @@ RSpec.describe BookableSlot, type: :model do
         guiders.each do |guider|
           create(
             :bookable_slot,
-            guider: guider,
+            guider:,
             start_at: make_time(10, 30),
             end_at: make_time(11, 30)
           )
@@ -502,8 +507,8 @@ RSpec.describe BookableSlot, type: :model do
           create(
             :bookable_slot,
             guider: create(:guider),
-            start_at: start_at,
-            end_at: end_at
+            start_at:,
+            end_at:
           )
 
           expect(result.count).to eq 2
@@ -625,3 +630,4 @@ RSpec.describe BookableSlot, type: :model do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

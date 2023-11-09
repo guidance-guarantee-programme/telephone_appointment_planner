@@ -1,4 +1,4 @@
-class WebsiteAppointmentSlackPingerJob < ActiveJob::Base
+class WebsiteAppointmentSlackPingerJob < ApplicationJob
   queue_as :default
 
   def perform

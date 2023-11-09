@@ -1,15 +1,9 @@
-class BatchUpsertHolidays # rubocop:disable Metrics/ClassLength
+class BatchUpsertHolidays
   include ActiveModel::Model
   include DateRangePickerHelper
   extend ActiveModel::Naming
 
-  attr_reader :title
-  attr_reader :users
-  attr_reader :all_day
-  attr_reader :start_at
-  attr_reader :end_at
-  attr_reader :recur
-  attr_reader :single_day_recur_end_at
+  attr_reader :title, :users, :all_day, :start_at, :end_at, :recur, :single_day_recur_end_at
 
   alias single_day_start_at start_at
   alias single_day_end_at end_at
@@ -80,7 +74,7 @@ class BatchUpsertHolidays # rubocop:disable Metrics/ClassLength
 
   def create_holidays
     ActiveRecord::Base.transaction do
-      User.where(id: users).each do |user|
+      User.where(id: users).find_each do |user|
         recur ? create_holidays_for_user(user) : create_holiday_for_user(user)
       end
     end
@@ -93,16 +87,16 @@ class BatchUpsertHolidays # rubocop:disable Metrics/ClassLength
       starting = Time.utc(day.year, day.month, day.day, start_at.hour, start_at.min)
       ending   = Time.utc(day.year, day.month, day.day, end_at.hour, end_at.min)
 
-      create_holiday_for_user(user, starting: starting, ending: ending)
+      create_holiday_for_user(user, starting:, ending:)
     end
   end
 
   def create_holiday_for_user(user, starting: start_at, ending: end_at)
     Holiday.create!(
-      title: title,
-      all_day: all_day,
+      title:,
+      all_day:,
       bank_holiday: false,
-      user: user,
+      user:,
       start_at: starting,
       end_at: ending
     )
@@ -110,6 +104,7 @@ class BatchUpsertHolidays # rubocop:disable Metrics/ClassLength
 
   def end_at_comes_after_start_at
     return if end_at > start_at
+
     if all_day
       errors.add(:multi_day_end_at, 'must come after date from')
     else

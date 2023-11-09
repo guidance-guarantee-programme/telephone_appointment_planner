@@ -23,10 +23,10 @@ module UserHelper
       [
         group.name,
         group.name,
-        data: {
+        { data: {
           icon: 'glyphicon-tag',
           children_to_select: group.user_ids
-        }
+        } }
       ]
     end
   end
@@ -38,9 +38,9 @@ module UserHelper
       [
         guider.name,
         guider.id,
-        data: {
+        { data: {
           icon: 'glyphicon-user'
-        }
+        } }
       ]
     end
   end

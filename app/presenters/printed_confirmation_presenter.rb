@@ -6,8 +6,8 @@ class PrintedConfirmationPresenter
   def to_h # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     {
       reference: appointment.to_param,
-      date: date,
-      time: time,
+      date:,
+      time:,
       phone: appointment.phone,
       memorable_word: appointment.memorable_word(obscure: true),
       address_line_1: fullname,
@@ -31,7 +31,7 @@ class PrintedConfirmationPresenter
   end
 
   def time
-    "#{appointment.start_at.to_time.to_s(:govuk_time)} #{appointment.timezone}" # rubocop:disable Rails/Date
+    "#{appointment.start_at.to_time.to_s(:govuk_time)} #{appointment.timezone}"
   end
 
   attr_reader :appointment

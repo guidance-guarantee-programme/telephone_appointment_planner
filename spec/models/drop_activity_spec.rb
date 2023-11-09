@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe DropActivity, '.from' do
   let(:appointment) { create(:appointment) }
 
@@ -13,7 +14,7 @@ RSpec.describe DropActivity, '.from' do
 
     it 'creates an activity entry assigned to the agent' do
       expect(subject).to have_attributes(
-        appointment: appointment,
+        appointment:,
         owner: appointment.agent,
         message: 'Drop - message'
       )
@@ -40,3 +41,4 @@ RSpec.describe DropActivity, '.from' do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

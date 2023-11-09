@@ -30,6 +30,6 @@ class UtilisationReportsController < ApplicationController
     params
       .fetch(:utilisation_report, {})
       .permit(:date_range, :schedule_type)
-      .merge(current_user: current_user)
+      .merge(current_user:)
   end
 end

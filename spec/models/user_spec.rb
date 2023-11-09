@@ -2,6 +2,7 @@ require 'rails_helper'
 
 require 'gds-sso/lint/user_spec'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe User, type: :model do
   it_behaves_like 'a gds-sso user class'
 
@@ -103,9 +104,10 @@ RSpec.describe User, type: :model do
   describe '#bookable_slots' do
     it 'destroys them when the user is destroyed' do
       guider = create(:guider)
-      create(:bookable_slot, guider: guider)
-      create(:bookable_slot, guider: guider)
+      create(:bookable_slot, guider:)
+      create(:bookable_slot, guider:)
       expect { guider.destroy }.to change { BookableSlot.count }.by(-2)
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

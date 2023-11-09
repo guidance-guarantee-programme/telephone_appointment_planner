@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe BatchUpsertHolidays do
   describe 'validations' do
     subject do
@@ -36,7 +37,7 @@ RSpec.describe BatchUpsertHolidays do
         {
           users: users.map(&:id),
           title: 'Holiday name',
-          all_day: all_day,
+          all_day:,
           multi_day_start_at: '20/10/2016',
           multi_day_end_at: '20/10/2016'
         }
@@ -68,15 +69,15 @@ RSpec.describe BatchUpsertHolidays do
           title: 'Holiday name',
           all_day: true,
           user: users.first,
-          start_at: start_at,
-          end_at: end_at
+          start_at:,
+          end_at:
         )
         expect(results.second).to have_attributes(
           title: 'Holiday name',
           all_day: true,
           user: users.second,
-          start_at: start_at,
-          end_at: end_at
+          start_at:,
+          end_at:
         )
       end
 
@@ -84,7 +85,7 @@ RSpec.describe BatchUpsertHolidays do
         it 'destroys the old holidays' do
           previous_holidays = create_list(:holiday, 2).pluck(:id)
           described_class.new(
-            options.merge(previous_holidays: previous_holidays)
+            options.merge(previous_holidays:)
           ).call
 
           expect(results.count).to eq 2
@@ -101,7 +102,7 @@ RSpec.describe BatchUpsertHolidays do
         {
           users: users.map(&:id),
           title: 'Holiday name',
-          all_day: all_day,
+          all_day:,
           single_day_start_at: '12/10/2016',
           'single_day_start_at(4i)': '12',
           'single_day_start_at(5i)': '0',
@@ -139,15 +140,15 @@ RSpec.describe BatchUpsertHolidays do
           title: 'Holiday name',
           all_day: false,
           user: users.first,
-          start_at: start_at,
-          end_at: end_at
+          start_at:,
+          end_at:
         )
         expect(results.second).to have_attributes(
           title: 'Holiday name',
           all_day: false,
           user: users.second,
-          start_at: start_at,
-          end_at: end_at
+          start_at:,
+          end_at:
         )
       end
 
@@ -155,7 +156,7 @@ RSpec.describe BatchUpsertHolidays do
         it 'destroys the old holidays' do
           previous_holidays = create_list(:holiday, 2).pluck(:id)
           described_class.new(
-            options.merge(previous_holidays: previous_holidays)
+            options.merge(previous_holidays:)
           ).call
 
           expect(results.count).to eq 2
@@ -164,3 +165,4 @@ RSpec.describe BatchUpsertHolidays do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

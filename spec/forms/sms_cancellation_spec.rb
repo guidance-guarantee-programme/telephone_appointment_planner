@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe SmsCancellation do
   include ActiveJob::TestHelper
 
@@ -60,3 +61,4 @@ RSpec.describe SmsCancellation do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

@@ -27,7 +27,7 @@ module Api
         AppointmentCreatedNotificationsJob.perform_later(appointment)
       end
 
-      def appointment_params
+      def appointment_params # rubocop:disable Metrics/MethodLength
         params.permit(
           :start_at,
           :first_name,
@@ -48,7 +48,7 @@ module Api
           :nudged
         ).merge(
           agent: current_user,
-          schedule_type: schedule_type
+          schedule_type:
         )
       end
 

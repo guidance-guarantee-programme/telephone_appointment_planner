@@ -1,25 +1,25 @@
 # rubocop:disable Metrics/ClassLength
 class Appointment < ApplicationRecord
-  audited on: %i(create update)
+  audited on: %i[create update]
 
   acts_as_copy_target
 
-  attr_accessor :current_user, :internal_availability
+  attr_accessor :current_user, :internal_availability, :ad_hoc_start_at
 
   DEFAULT_COUNTRY_CODE = 'GB'.freeze
 
-  CANCELLED_STATUSES = %i(
+  CANCELLED_STATUSES = %i[
     cancelled_by_customer
     cancelled_by_pension_wise
     cancelled_by_customer_sms
-  ).freeze
+  ].freeze
 
   APPOINTMENT_LENGTH_MINUTES = 70.minutes.freeze
 
   FAKE_DATE_OF_BIRTH = Date.parse('1900-01-01').freeze
   ACCESSIBILITY_NOTES_CUTOFF = Date.parse('2019-09-25').freeze
 
-  NON_NOTIFY_COLUMNS = %w(
+  NON_NOTIFY_COLUMNS = %w[
     agent_id
     guider_id
     rescheduled_at
@@ -49,19 +49,11 @@ class Appointment < ApplicationRecord
     referrer
     small_pots
     country_code
-  ).freeze
+  ].freeze
 
-  enum status: %i(
-    pending
-    complete
-    no_show
-    incomplete
-    ineligible_age
-    ineligible_pension_type
-    cancelled_by_customer
-    cancelled_by_pension_wise
-    cancelled_by_customer_sms
-  )
+  enum status: { pending: 0, complete: 1, no_show: 2, incomplete: 3, ineligible_age: 4,
+                 ineligible_pension_type: 5, cancelled_by_customer: 6, cancelled_by_pension_wise: 7,
+                 cancelled_by_customer_sms: 8 }
 
   AGENT_PERMITTED_SECONDARY = '15'.freeze
   SECONDARY_STATUSES = {
@@ -103,15 +95,13 @@ class Appointment < ApplicationRecord
 
   belongs_to :rebooked_from, class_name: 'Appointment', optional: true
 
-  has_many :activities, -> { order('created_at DESC') }
+  has_many :activities, -> { order('created_at DESC') }, dependent: :destroy
 
-  has_many :status_transitions
+  has_many :status_transitions, dependent: :destroy
 
   has_one_attached :power_of_attorney_evidence
   has_one_attached :data_subject_consent_evidence
   has_one_attached :generated_consent_form
-
-  attr_accessor :ad_hoc_start_at
 
   delegate :resource_managers, to: :guider
 
@@ -137,7 +127,7 @@ class Appointment < ApplicationRecord
   validates :data_subject_name, presence: true, if: :third_party_booking?
   validates :data_subject_date_of_birth, presence: true, if: :require_data_subject_date_of_birth?
   validates :notes, presence: true, if: :validate_adjustment_needs?
-  validates :type_of_appointment, inclusion: %w(standard 50-54)
+  validates :type_of_appointment, inclusion: %w[standard 50-54]
   validates :where_you_heard, inclusion: WhereYouHeard.options_for_inclusion, on: :create, unless: :rebooked_from_id?
   validates :status, presence: true
   validates :guider, presence: true
@@ -230,14 +220,14 @@ class Appointment < ApplicationRecord
   end
 
   def canonical_sms_number
-    mobile.present? ? mobile : phone
+    mobile.presence || phone
   end
 
   def potential_duplicates
-    self.class.where.not(id: id)
+    self.class.where.not(id:)
         .where(
-          first_name: first_name,
-          last_name: last_name,
+          first_name:,
+          last_name:,
           start_at: start_at.beginning_of_day..start_at.end_of_day
         )
         .order(:id)
@@ -305,9 +295,7 @@ class Appointment < ApplicationRecord
   end
 
   def can_create_summary?(agent = nil)
-    if agent&.tpas_agent?
-      return false unless guider.tpas?
-    end
+    return false if agent&.tpas_agent? && !guider.tpas?
 
     complete? || ineligible_age? || ineligible_pension_type?
   end
@@ -354,7 +342,7 @@ class Appointment < ApplicationRecord
   end
 
   def agent_is_pension_wise_api?
-    agent && agent.pension_wise_api?
+    agent&.pension_wise_api?
   end
 
   def unable_to_assign?
@@ -447,19 +435,19 @@ class Appointment < ApplicationRecord
 
   def self.for_sms_cancellation(number, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE)
     pending
-      .where(schedule_type: schedule_type)
+      .where(schedule_type:)
       .order(:created_at)
-      .find_by("REPLACE(mobile, ' ', '') = :number OR REPLACE(phone, ' ', '') = :number", number: number)
+      .find_by("REPLACE(mobile, ' ', '') = :number OR REPLACE(phone, ' ', '') = :number", number:)
   end
 
   private
 
-  def owned_by_my_organisation?(me)
-    me.organisation_content_id == guider.organisation_content_id
+  def owned_by_my_organisation?(myself)
+    myself.organisation_content_id == guider.organisation_content_id
   end
 
   def track_initial_status
-    status_transitions << StatusTransition.new(status: status)
+    status_transitions << StatusTransition.new(status:)
   end
 
   def track_status_transitions
@@ -471,7 +459,7 @@ class Appointment < ApplicationRecord
   def allocate_slot(agent, scoped)
     args = agent&.tpas_agent? && pension_wise? && scoped ? { external: true } : {}
 
-    slot = BookableSlot.find_available_slot(start_at, agent, schedule_type, scoped, **args)
+    slot = BookableSlot.find_available_slot(start_at, agent, schedule_type, scoped:, **args)
     self.guider = nil
     return unless slot
 
@@ -528,9 +516,7 @@ class Appointment < ApplicationRecord
   end
 
   def address_or_email_valid
-    unless address? || email?
-      errors.add(:email, 'Please supply either an email or confirmation address')
-    end
+    errors.add(:email, 'Please supply either an email or confirmation address') unless address? || email?
 
     if email? && address? # rubocop:disable Style/GuardClause
       errors.add(:email, 'Please supply only an email or confirmation address, not both')
@@ -562,8 +548,8 @@ class Appointment < ApplicationRecord
   def existing_appointment?
     self.class
         .not_cancelled
-        .where(guider_id: guider_id, start_at: start_at)
-        .where.not(id: id)
+        .where(guider_id:, start_at:)
+        .where.not(id:)
         .exists?
   end
 
@@ -648,38 +634,37 @@ class Appointment < ApplicationRecord
     [consent_address_line_one, consent_town, consent_postcode].all?(&:present?)
   end
 
-  def validate_secondary_status # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
+  def validate_secondary_status # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     return unless created_at && created_at > Time.zone.parse(
       ENV.fetch('SECONDARY_STATUS_CUT_OFF') { '2021-05-04 09:00' }
     )
 
     return if current_user&.tpas_agent? && !guider.tpas?
 
-    if matches = SECONDARY_STATUSES[status] # rubocop:disable Style/GuardClause, Lint/AssignmentInCondition
-      unless matches.key?(secondary_status)
-        return errors.add(:secondary_status, 'must be provided for the chosen status')
-      end
-    end
+    return unless (matches = SECONDARY_STATUSES[status]) && !matches.key?(secondary_status)
+
+    errors.add(:secondary_status, 'must be provided for the chosen status')
   end
 
   def validate_tp_agent_statuses
-    if current_user&.tp_agent? && cancelled_by_customer? && secondary_status != AGENT_PERMITTED_SECONDARY # rubocop:disable Style/GuardClause, Layout/LineLength
+    if current_user&.tp_agent? && cancelled_by_customer? && secondary_status != AGENT_PERMITTED_SECONDARY # rubocop:disable Style/GuardClause
       errors.add(:secondary_status, "Contact centre agents should only select 'Cancelled prior to appointment'")
     end
   end
 
-  def validate_tpas_agent_statuses # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+  def validate_tpas_agent_statuses # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     if current_user&.tpas_agent? && !guider.tpas? # rubocop:disable Style/GuardClause
       unless ineligible_age? || ineligible_pension_type? || cancelled_by_customer?
         errors.add(:status, "Must be one of 'Ineligible Age', 'Ineligible Pension Type', 'Cancelled by Customer'")
       end
 
-      if cancelled_by_customer? && secondary_status != AGENT_PERMITTED_SECONDARY
-        errors.add(
-          :secondary_status,
-          "For external appointments, agents should only select 'Cancelled prior to appointment'"
-        )
-      end
+      return unless cancelled_by_customer? && secondary_status != AGENT_PERMITTED_SECONDARY
+
+      errors.add(
+        :secondary_status,
+        "For external appointments, agents should only select 'Cancelled prior to appointment'"
+      )
+
     end
   end
 
@@ -695,13 +680,13 @@ class Appointment < ApplicationRecord
     return unless self
                   .class
                   .pending
-                  .where(guider_id: guider_id)
+                  .where(guider_id:)
                   .where(
                     '(start_at BETWEEN :start_at AND :end_at) OR (end_at BETWEEN :start_at AND :end_at)',
-                    start_at: start_at,
-                    end_at: end_at
+                    start_at:,
+                    end_at:
                   )
-                  .where.not(id: id)
+                  .where.not(id:)
                   .exists?
 
     errors.add(:guider_id, 'Overlaps another pending appointment')
@@ -720,7 +705,7 @@ class Appointment < ApplicationRecord
   end
 
   def validate_gdpr_consent
-    inclusion = %w(yes no)
+    inclusion = %w[yes no]
     inclusion << '' if persisted? || due_diligence?
 
     errors.add(:gdpr_consent, :inclusion) unless inclusion.include?(gdpr_consent)
@@ -738,3 +723,4 @@ end
 module Models
   Appointment = ::Appointment
 end
+# rubocop:enable Metrics/ClassLength
