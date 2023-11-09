@@ -19,7 +19,7 @@
     }
 
     getUrlParameter(name) {
-      const replacedName = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]'),
+      const replacedName = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]'),
         regex = new RegExp(`[\\?&]${replacedName}=([^&#]*)`),
         results = regex.exec(location.search);
 
