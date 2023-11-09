@@ -25,7 +25,7 @@
 
       let chosenStatus = this.$el.val();
 
-      if (this.$secondaryOptions.hasOwnProperty(chosenStatus)) {
+      if (Object.prototype.hasOwnProperty.call(this.$secondaryOptions, chosenStatus)) {
         let options = this.$secondaryOptions[chosenStatus];
 
         for (let key in options) {
