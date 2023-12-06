@@ -136,9 +136,9 @@ RSpec.feature 'Resource manager reschedules an appointment', js: true do
     create(:bookable_slot, start_at:)
     create(:bookable_slot, :cas, start_at:)
     create(:bookable_slot, :ni, start_at:)
-    create(:bookable_slot, :lancs_west, start_at:)
+    create(:bookable_slot, :lancashire_west, start_at:)
     create(:bookable_slot, :derbyshire_districts, start_at:)
-    create(:bookable_slot, :wallsend, start_at:)
+    create(:bookable_slot, :north_tyneside, start_at:)
   end
 
   def and_there_is_a_tpas_appointment

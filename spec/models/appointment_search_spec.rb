@@ -40,10 +40,10 @@ RSpec.describe AppointmentSearch, type: :model do
 
     context 'for a TPAS guider and resource manager' do
       it 'returns all organisation’s appointments' do
-        wallsend = create(:appointment, organisation: :wallsend)
+        north_tyneside = create(:appointment, organisation: :north_tyneside)
         guider = build(:guider, :tpas)
 
-        expect(results(nil, nil, nil, guider, '', '')).to include(wallsend)
+        expect(results(nil, nil, nil, guider, '', '')).to include(north_tyneside)
       end
     end
 

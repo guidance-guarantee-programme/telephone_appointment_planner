@@ -70,7 +70,7 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
     organisation_content_id == Provider::NI.id
   end
 
-  def lancs_west?
+  def lancashire_west?
     organisation_content_id == Provider::LANCS_WEST.id
   end
 
