@@ -23,7 +23,7 @@ RSpec.describe AppointmentCreatedNotificationsJob do
 
   context 'when the guider is from another organisation' do
     it 'enqueues email notifications for the organisation resource managers' do
-      appointment = create(:appointment, organisation: :wallsend)
+      appointment = create(:appointment, organisation: :north_tyneside)
 
       expect(AppointmentMailer).to receive(:resource_manager_appointment_created)
         .with(appointment, 'rm@example.com')

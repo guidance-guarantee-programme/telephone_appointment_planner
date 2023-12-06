@@ -41,7 +41,7 @@ RSpec.describe AppointmentRescheduledNotificationsJob do
 
   context 'when the guider is from another organisation' do
     it 'sends notifications to the resource managers' do
-      appointment = create(:appointment, organisation: :wallsend)
+      appointment = create(:appointment, organisation: :north_tyneside)
 
       expect(AppointmentMailer).to receive(:resource_manager_appointment_rescheduled)
         .with(appointment, 'rm@example.com')

@@ -41,7 +41,7 @@ RSpec.describe AppointmentCancelledNotificationsJob do
 
   context 'when the appointment is not for TPAS' do
     it 'alerts the resource managers by email' do
-      appointment = create(:appointment, organisation: :wallsend)
+      appointment = create(:appointment, organisation: :north_tyneside)
 
       expect(AppointmentMailer).to receive(:resource_manager_appointment_cancelled)
         .with(appointment, 'rm@example.com')

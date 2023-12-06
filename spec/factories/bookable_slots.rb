@@ -17,12 +17,12 @@ FactoryBot.define do
       guider { create(:guider, :ni) }
     end
 
-    trait :wallsend do
-      guider { create(:guider, :wallsend) }
+    trait :north_tyneside do
+      guider { create(:guider, :north_tyneside) }
     end
 
-    trait :lancs_west do
-      guider { create(:guider, :lancs_west) }
+    trait :lancashire_west do
+      guider { create(:guider, :lancashire_west) }
     end
 
     trait :derbyshire_districts do

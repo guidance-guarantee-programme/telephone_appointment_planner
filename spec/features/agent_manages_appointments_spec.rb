@@ -173,7 +173,7 @@ RSpec.feature 'Agent manages appointments' do
   end
 
   scenario 'Lancs West guider modifying BSL' do
-    given_the_user_is_an_agent(organisation: :lancs_west) do
+    given_the_user_is_an_agent(organisation: :lancashire_west) do
       when_they_want_to_book_an_appointment
       then_they_can_specify_bsl_video
     end
@@ -375,7 +375,7 @@ RSpec.feature 'Agent manages appointments' do
   end
 
   def and_slots_exist_for_lloyds
-    create(:bookable_slot, :wallsend, start_at: Time.zone.parse('2021-04-07 12:30'))
+    create(:bookable_slot, :north_tyneside, start_at: Time.zone.parse('2021-04-07 12:30'))
   end
 
   def and_slots_exist_for_general_availability

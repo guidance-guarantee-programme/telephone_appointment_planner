@@ -61,7 +61,7 @@ RSpec.describe 'GET /api/v1/bookable_slots' do
 
   def given_bookable_slots_for_the_booking_window_exist_across_providers
     # included as CITA E&W
-    create(:bookable_slot, :wallsend, start_at: Time.zone.parse('2017-01-14 14:00'))
+    create(:bookable_slot, :north_tyneside, start_at: Time.zone.parse('2017-01-14 14:00'))
 
     # included as PWNI
     create(:bookable_slot, :ni, start_at: Time.zone.parse('2017-01-15 14:00'))
