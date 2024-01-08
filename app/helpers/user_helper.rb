@@ -1,4 +1,10 @@
 module UserHelper
+  def psg_banner(guider)
+    return unless guider.due_diligence?
+
+    content_tag(:small, ' (PSG)')
+  end
+
   def can_process?(current_user, appointment)
     !current_user.tpas? && !appointment.processed_at?
   end
