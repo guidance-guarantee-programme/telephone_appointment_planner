@@ -22,7 +22,6 @@ module Api
 
       def send_notifications(appointment)
         AdjustmentNotificationsJob.perform_later(appointment) if appointment.adjustments?
-        WebsiteAppointmentSlackPingerJob.perform_later
         CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::CONFIRMED_MESSAGE)
         AppointmentCreatedNotificationsJob.perform_later(appointment)
       end
