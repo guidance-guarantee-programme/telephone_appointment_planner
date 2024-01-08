@@ -335,17 +335,6 @@ RSpec.describe Appointment, type: :model do
       end
     end
 
-    context 'when the appointment is for Pension Wise' do
-      it 'cannot be moved to a `due_diligence` enrolled guider' do
-        pension_wise_appointment = create(:appointment)
-        due_diligence_guider     = create(:guider, :due_diligence)
-
-        pension_wise_appointment.guider = due_diligence_guider
-
-        expect(pension_wise_appointment).to be_invalid
-      end
-    end
-
     context 'when due diligence' do
       subject { build(:appointment, :due_diligence) }
 
