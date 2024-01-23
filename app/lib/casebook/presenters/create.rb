@@ -16,7 +16,7 @@ module Casebook
               email: appointment.email,
               starts_at: starts_at.iso8601,
               ends_at: ends_at.iso8601,
-              notes: "Pension Wise online booking. #{appointment.notes}",
+              notes: 'Pension Wise online booking.',
               user_id: appointment.guider.casebook_guider_id,
               channel: 'telephone',
               location_id: appointment.guider.casebook_location_id
