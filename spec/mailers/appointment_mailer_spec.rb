@@ -9,7 +9,8 @@ RSpec.describe AppointmentMailer, type: :mailer do
       start_at: DateTime.new(2016, 10, 23).in_time_zone,
       memorable_word: 'mailertest',
       accessibility_requirements: true,
-      third_party_booking: true
+      third_party_booking: true,
+      dc_pot_confirmed: false
     )
   end
 
@@ -226,6 +227,8 @@ RSpec.describe AppointmentMailer, type: :mailer do
       expect(subject.body.encoded).to include('they require help')
       # include the third party booking disclaimer
       expect(subject.body.encoded).to include('appointment on behalf')
+      # include the DC unsure disclaimer
+      expect(subject.body.encoded).to include('unsure if they have a DC')
     end
   end
 

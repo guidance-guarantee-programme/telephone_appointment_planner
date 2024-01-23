@@ -6,6 +6,10 @@ The customer has indicated they require help or an accessibility adjustment to a
 The customer has indicated they are attending an appointment on behalf of an individual
 <% end %>
 
+<% if !@appointment.dc_pot_confirmed? %>
+The customer has indicated that they are unsure if they have a DC pension
+<% end %>
+
 Reference number:
 <%= @appointment.id %>
 
