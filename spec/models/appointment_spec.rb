@@ -2,6 +2,16 @@ require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
 RSpec.describe Appointment, type: :model do
+  describe '#adjustments?' do
+    context 'when the customer is DC unsure' do
+      it 'is true' do
+        appointment = build(:appointment, dc_pot_confirmed: false)
+
+        expect(appointment).to be_adjustments
+      end
+    end
+  end
+
   describe '#summarised?' do
     context 'when the appointment has a summary activity' do
       it 'is true' do

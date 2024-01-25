@@ -1,4 +1,4 @@
-class Notifier
+class Notifier # rubocop:disable Metrics/ClassLength
   NOTIFY_RESOURCE_MANAGER_ATTRIBUTES = %w[
     first_name
     last_name
@@ -66,8 +66,9 @@ class Notifier
   def requires_adjustment_notification?
     return unless modifying_agent&.tp_agent?
 
-    appointment.previous_changes.slice('accessibility_requirements', 'third_party_booking').present? &&
-      appointment.adjustments?
+    appointment.previous_changes.slice(
+      'accessibility_requirements', 'third_party_booking', 'dc_pot_confirmed'
+    ).present? && appointment.adjustments?
   end
 
   def requires_printed_consent_form?
