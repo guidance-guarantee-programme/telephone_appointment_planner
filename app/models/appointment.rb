@@ -212,7 +212,10 @@ class Appointment < ApplicationRecord
   end
 
   def adjustments?
-    accessibility_requirements? || third_party_booking? || (!dc_pot_confirmed? && pension_wise?)
+    return true if accessibility_requirements? || third_party_booking?
+    return false if tpas_guider?
+
+    !dc_pot_confirmed? && pension_wise?
   end
 
   def address?
