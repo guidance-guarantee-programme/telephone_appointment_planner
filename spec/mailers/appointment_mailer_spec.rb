@@ -230,6 +230,14 @@ RSpec.describe AppointmentMailer, type: :mailer do
       # include the DC unsure disclaimer
       expect(subject.body.encoded).to include('unsure if they have a DC')
     end
+
+    context 'when `Appointment#adjustments?` is false' do
+      it 'does nothing' do
+        allow(appointment).to receive(:adjustments?).and_return(false)
+
+        expect(mail.message).to be_an(ActionMailer::Base::NullMail)
+      end
+    end
   end
 
   describe 'Confirmation' do

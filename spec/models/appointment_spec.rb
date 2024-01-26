@@ -5,10 +5,45 @@ RSpec.describe Appointment, type: :model do
   describe '#adjustments?' do
     context 'when the customer is DC unsure' do
       context 'when the appointment is Pension Wise' do
-        it 'is true' do
-          appointment = build(:appointment, dc_pot_confirmed: false)
+        context 'when the guider is Pension Ops/TPAS' do
+          context 'when the only adjustment is DC unsure' do
+            it 'is false' do
+              appointment = build(:appointment, dc_pot_confirmed: false)
 
-          expect(appointment).to be_adjustments
+              expect(appointment).not_to be_adjustments
+            end
+          end
+
+          context 'when there are other adjustments as well as DC unsure' do
+            it 'is true' do
+              appointment = build(:appointment, dc_pot_confirmed: false, accessibility_requirements: true)
+
+              expect(appointment).to be_adjustments
+            end
+          end
+        end
+
+        context 'when the guider is any other org' do
+          context 'when there is only the DC unsure adjustment' do
+            it 'is true' do
+              appointment = build(:appointment, organisation: :cas, dc_pot_confirmed: false)
+
+              expect(appointment).to be_adjustments
+            end
+          end
+
+          context 'when there are multiple adjustments' do
+            it 'is true' do
+              appointment = build(
+                :appointment,
+                organisation: :cas,
+                dc_pot_confirmed: false,
+                accessibility_requirements: true
+              )
+
+              expect(appointment).to be_adjustments
+            end
+          end
         end
       end
 

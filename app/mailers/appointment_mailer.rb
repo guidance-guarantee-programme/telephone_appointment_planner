@@ -36,6 +36,8 @@ class AppointmentMailer < ApplicationMailer
   end
 
   def adjustment(appointment, recipient)
+    return unless appointment.adjustments?
+
     mailgun_headers('adjustment', appointment.id)
     @appointment = decorate(appointment)
     mail to: recipient, subject: @appointment.subject('Appointment Adjustment')
