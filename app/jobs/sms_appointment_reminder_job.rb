@@ -6,13 +6,12 @@ class SmsAppointmentReminderJob < NotifyJobBase
   def perform(appointment)
     return unless api_key(appointment.schedule_type)
 
-    send_sms_reminder(appointment)
-    create_activity(appointment)
+    create_activity(appointment) if send_sms_reminder(appointment)
   end
 
   private
 
-  def send_sms_reminder(appointment)
+  def send_sms_reminder(appointment) # rubocop:disable Metrics/MethodLength
     client = Notifications::Client.new(api_key(appointment.schedule_type))
 
     client.send_sms(
@@ -23,6 +22,10 @@ class SmsAppointmentReminderJob < NotifyJobBase
         date: "#{appointment.start_at.to_s(:govuk_date_short)} (#{appointment.timezone})"
       }
     )
+  rescue Notifications::Client::BadRequestError
+    SmsReminderFailureActivity.from(appointment)
+
+    false
   end
 
   def template_for(appointment)
