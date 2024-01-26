@@ -4,10 +4,20 @@ require 'rails_helper'
 RSpec.describe Appointment, type: :model do
   describe '#adjustments?' do
     context 'when the customer is DC unsure' do
-      it 'is true' do
-        appointment = build(:appointment, dc_pot_confirmed: false)
+      context 'when the appointment is Pension Wise' do
+        it 'is true' do
+          appointment = build(:appointment, dc_pot_confirmed: false)
 
-        expect(appointment).to be_adjustments
+          expect(appointment).to be_adjustments
+        end
+      end
+
+      context 'when the appointment is PSG' do
+        it 'is false' do
+          appointment = build(:appointment, :due_diligence, dc_pot_confirmed: false)
+
+          expect(appointment).not_to be_adjustments
+        end
       end
     end
   end
