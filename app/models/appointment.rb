@@ -150,7 +150,6 @@ class Appointment < ApplicationRecord
   validate :validate_mobile_digits, if: :tp_agent?
   validate :validate_secondary_status
   validate :validate_lloyds_signposted_guider_allocated, if: :lloyds_signposted?, on: :create
-  validate :validate_guider_schedule_type, on: :update, if: :pension_wise?
   validate :validate_pending_overlaps, if: :due_diligence?, on: :create
   validate :validate_signposting
   validate :validate_small_pots, if: :small_pots?
@@ -673,10 +672,6 @@ class Appointment < ApplicationRecord
 
   def validate_lloyds_signposted_guider_allocated
     errors.add(:guider, 'The guider is not from an LBGPTL schedule') unless cita?
-  end
-
-  def validate_guider_schedule_type
-    errors.add(:guider, 'Cannot be reallocated to a non Pension Wise guider') if guider&.due_diligence?
   end
 
   def validate_pending_overlaps # rubocop:disable Metrics/MethodLength

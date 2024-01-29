@@ -37,7 +37,7 @@
                 <span class="sr-only">Select <%= guider.name %></span>
               </label>
             </td>
-            <td><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span class="name"><%= guider.name %></span></td>
+            <td><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span class="name"><%= guider.name %><%= psg_banner(guider) %></span></td>
             <td>
               <% guider.groups.each do |group| %>
                 <span class="label label-info <%= dom_id(group) %> t-group"><%= group.name %></span>
