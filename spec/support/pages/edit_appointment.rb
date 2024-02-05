@@ -30,7 +30,6 @@ module Pages
     element :resend_email_confirmation, '.t-resend-email-confirmation'
     element :resend_print_confirmation, '.t-resend-print-confirmation'
     element :reschedule, '.t-reschedule'
-    element :reissue_summary, '.t-reissue-summary'
 
     element :third_party_booked,                    '.t-third-party-booked'
     element :data_subject_name,                     '.t-data-subject-name'
@@ -62,12 +61,6 @@ module Pages
       element :unresolved_activities, '.t-unresolved-activity'
       element :resolve_activity_button, '.t-resolve-activity'
       element :more_activity_link, '.t-activity-more'
-    end
-
-    section :reissue_modal, '.t-reissue-modal' do
-      element :errors, '.t-errors'
-      element :email, '.t-email'
-      element :save, '.t-save'
     end
 
     section :breadcrumb, '.t-breadcrumb' do

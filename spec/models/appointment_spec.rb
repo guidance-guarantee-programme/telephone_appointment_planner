@@ -57,24 +57,6 @@ RSpec.describe Appointment, type: :model do
     end
   end
 
-  describe '#summarised?' do
-    context 'when the appointment has a summary activity' do
-      it 'is true' do
-        appointment = create(:appointment, :digital_summarised)
-
-        expect(appointment).to be_summarised
-      end
-    end
-
-    context 'when the appointment has no summary activity' do
-      it 'is false' do
-        appointment = create(:appointment)
-
-        expect(appointment).not_to be_summarised
-      end
-    end
-  end
-
   describe '.for_organisation' do
     subject { described_class.for_organisation(user).pluck(:id).sort }
 
