@@ -2,6 +2,24 @@ require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
 RSpec.describe Appointment, type: :model do
+  describe '#summarised?' do
+    context 'when it has an summary activity' do
+      it 'is true' do
+        appointment = create(:appointment, :digital_summarised)
+
+        expect(appointment).to be_summarised
+      end
+    end
+
+    context 'when it does not have a summary activity' do
+      it 'is false' do
+        appointment = create(:appointment)
+
+        expect(appointment).not_to be_summarised
+      end
+    end
+  end
+
   describe '#adjustments?' do
     context 'when the customer is DC unsure' do
       context 'when the appointment is Pension Wise' do

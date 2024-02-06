@@ -1,4 +1,13 @@
 module AppointmentHelper
+  def summary_prompt_data(appointment)
+    return {} unless appointment.summarised?
+
+    {}.tap do |prompt|
+      prompt[:confirm] = 'Completing the Summary Document Generator will result in a newly issued summary document. ' \
+                         'Are you sure?'
+    end
+  end
+
   def country_name(code)
     country = ISO3166::Country[code]
     country.translations[I18n.locale.to_s]

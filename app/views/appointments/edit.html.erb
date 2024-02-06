@@ -56,7 +56,7 @@
       <% end %>
     <% end %>
     <% if @appointment.can_create_summary?(current_user) %>
-      <%= link_to SummaryDocumentLink.generate(@appointment), title: 'Create summary', class: 'btn btn-info', target: '_blank', data: { confirm: 'Completing this will result in a newly issued summary document. Are you sure?' } do %>
+      <%= link_to SummaryDocumentLink.generate(@appointment), title: 'Create summary', class: 'btn btn-info', target: '_blank', data: summary_prompt_data(@appointment) do %>
         <span class="glyphicon glyphicon-print" aria-hidden="true"></span>
         <span>Create Summary</span>
       <% end %>
