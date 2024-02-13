@@ -127,6 +127,7 @@ class Appointment < ApplicationRecord
   validates :data_subject_name, presence: true, if: :third_party_booking?
   validates :data_subject_date_of_birth, presence: true, if: :require_data_subject_date_of_birth?
   validates :notes, presence: true, if: :validate_adjustment_needs?
+  validates :notes, length: { maximum: 1000 }, allow_blank: true
   validates :type_of_appointment, inclusion: %w[standard 50-54]
   validates :where_you_heard, inclusion: WhereYouHeard.options_for_inclusion, on: :create, unless: :rebooked_from_id?
   validates :status, presence: true

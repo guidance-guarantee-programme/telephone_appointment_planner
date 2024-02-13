@@ -179,7 +179,7 @@
       <%= f.check_box :smarter_signposted, class: 't-smarter-signposted', label: 'Smarter signposting referral?' %>
     <% end %>
 
-    <%= f.text_area :notes, autocomplete: 'off', class: 't-notes js-notes', rows: 6, placeholder: 'Is the customer hard of hearing? Is English their first language? etc.' %>
+    <%= f.text_area :notes, autocomplete: 'off', maxlength: 1000, class: 't-notes js-notes js-character-limit-input', rows: 6, placeholder: 'Is the customer hard of hearing? Is English their first language? etc.', data: { module: 'character-limit', maxlength: 1000 } %>
 
     <% if @appointment.due_diligence? %>
       <%= f.hidden_field :where_you_heard, value: '2', class: 't-hidden-where-you-heard' %>
