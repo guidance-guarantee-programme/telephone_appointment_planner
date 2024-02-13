@@ -342,6 +342,14 @@ RSpec.describe Appointment, type: :model do
       build_stubbed(:appointment)
     end
 
+    describe '#notes' do
+      it 'has a maxlength of 1000 characters' do
+        subject.notes = 'a' * 1001
+
+        expect(subject).to be_invalid
+      end
+    end
+
     context 'when the appointment is new' do
       subject { build(:appointment) }
 
