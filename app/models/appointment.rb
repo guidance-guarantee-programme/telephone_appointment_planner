@@ -304,7 +304,7 @@ class Appointment < ApplicationRecord
   end
 
   def summarised?
-    activities.where(type: 'SummaryDocumentActivity', message: 'digital').exists?
+    activities.where(type: 'SummaryDocumentActivity').size.positive?
   end
 
   def future?

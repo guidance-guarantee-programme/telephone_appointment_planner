@@ -55,22 +55,8 @@
         <span>Process</span>
       <% end %>
     <% end %>
-    <% if @appointment.summarised? %>
-      <span class="reissue-modal" data-module="reissue-modal" data-uri="<%= new_appointment_reissue_path(@appointment) %>">
-        <button class="btn btn-info js-reissue-button t-reissue-summary">
-          <span class="glyphicon glyphicon-print" aria-hidden="true"></span>
-          <span>Reissue Summary</span>
-        </button>
-
-        <div class="modal <%= 'fade' unless Rails.env.test? %> js-reissue-modal t-reissue-modal" tabindex="-1" role="dialog">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-            </div>
-          </div>
-        </div>
-      </span>
-    <% elsif @appointment.can_create_summary?(current_user) %>
-      <%= link_to SummaryDocumentLink.generate(@appointment), title: 'Create summary', class: 'btn btn-info', target: '_blank' do %>
+    <% if @appointment.can_create_summary?(current_user) %>
+      <%= link_to SummaryDocumentLink.generate(@appointment), title: 'Create summary', class: 'btn btn-info', target: '_blank', data: summary_prompt_data(@appointment) do %>
         <span class="glyphicon glyphicon-print" aria-hidden="true"></span>
         <span>Create Summary</span>
       <% end %>
