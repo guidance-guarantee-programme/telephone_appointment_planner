@@ -9,7 +9,7 @@ RSpec.describe RescheduleCasebookAppointmentJob, '#perform' do # rubocop:disable
     end
   end
 
-  context 'when the appointment is for a casebook-enlisted guider' do # rubocop:disable Metrics/BlockLength
+  context 'when the appointment is for a casebook-enlisted guider' do
     let(:reschedule) { instance_double(Casebook::Reschedule) }
 
     before do
@@ -37,12 +37,6 @@ RSpec.describe RescheduleCasebookAppointmentJob, '#perform' do # rubocop:disable
         described_class.perform_now(appointment)
 
         expect(reschedule).to have_received(:call)
-      end
-    end
-
-    context 'and the appointment was not yet pushed to casebook' do
-      context 'and the appointment has already been processed manually' do
-        it 'does what exactly?'
       end
     end
   end

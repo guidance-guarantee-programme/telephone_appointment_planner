@@ -2,6 +2,10 @@ require 'oauth2'
 
 module Casebook
   class Api
+    def initialize(client: nil)
+      @client = client
+    end
+
     def create(appointment)
       payload = Presenters::Create.new(appointment).to_h
 
