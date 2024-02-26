@@ -10,6 +10,10 @@ The customer has indicated they are attending an appointment on behalf of an ind
 The customer has indicated that they are unsure if they have a DC pension
 <% end %>
 
+<% if @appointment.potential_duplicates? %>
+The appointment has been identified as a potential duplicate booking
+<% end %>
+
 Reference number:
 <%= @appointment.id %>
 

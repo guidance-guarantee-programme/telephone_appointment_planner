@@ -240,6 +240,7 @@ class Appointment < ApplicationRecord
   def adjustments?
     return true if accessibility_requirements? || third_party_booking?
     return false if tpas_guider?
+    return true if potential_duplicates? && pension_wise?
 
     !dc_pot_confirmed? && pension_wise?
   end
