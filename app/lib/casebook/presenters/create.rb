@@ -16,7 +16,7 @@ module Casebook
               email: appointment.email,
               starts_at: starts_at.iso8601,
               ends_at: ends_at.iso8601,
-              notes: 'Pension Wise online booking.',
+              notes:,
               user_id: appointment.guider.casebook_guider_id,
               channel: 'telephone',
               location_id: appointment.guider.casebook_location_id
@@ -26,6 +26,16 @@ module Casebook
       end
 
       private
+
+      def notes
+        "Pension Wise online booking.#{duplicates}"
+      end
+
+      def duplicates
+        return '' unless appointment.potential_duplicates?
+
+        " Possible duplicate appointments: #{appointment.potential_duplicates.pluck(:id).to_sentence} [TAP]"
+      end
 
       def starts_at
         return appointment.start_at if gmt?
