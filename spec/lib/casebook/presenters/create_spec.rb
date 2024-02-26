@@ -19,6 +19,20 @@ RSpec.describe Casebook::Presenters::Create, '#to_h' do # rubocop:disable Metric
     )
   end
 
+  context 'when the appointment has potential duplicates' do
+    before do
+      allow(appointment).to receive(:potential_duplicates).and_return(
+        build_stubbed_list(:appointment, 2)
+      )
+    end
+
+    it 'includes the references in the notes' do
+      expect(subject[:notes]).to match(
+        /Possible duplicate appointments: \d+ and \d+ \[TAP\]$/
+      )
+    end
+  end
+
   describe 'appointment start and end time' do
     context 'during BST' do
       it 'is shifted an hour to allow for timezone differences' do
