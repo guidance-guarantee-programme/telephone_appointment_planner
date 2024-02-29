@@ -297,9 +297,7 @@ class Appointment < ApplicationRecord
     start_at >= BookableSlot.next_valid_start_date
   end
 
-  def can_create_summary?(agent = nil)
-    return false if agent&.tpas_agent? && !guider.tpas?
-
+  def can_create_summary?
     complete? || ineligible_age? || ineligible_pension_type?
   end
 
