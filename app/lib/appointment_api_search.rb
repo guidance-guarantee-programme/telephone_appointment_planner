@@ -8,7 +8,10 @@ class AppointmentApiSearch
     return search_by_reference if /\A\d+\Z/.match?(query.to_s)
 
     Appointment
-      .where('last_name ILIKE :query OR email ILIKE :query', query: "%#{query}%")
+      .where(
+        'last_name ILIKE :query OR email ILIKE :query OR data_subject_name ILIKE :query OR email_consent ILIKE :query',
+        query: "%#{query}%"
+      )
       .order(created_at: :desc)
       .limit(20)
   end
