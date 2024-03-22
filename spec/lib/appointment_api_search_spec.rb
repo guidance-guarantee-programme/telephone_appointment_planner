@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe AppointmentApiSearch do
+RSpec.describe AppointmentApiSearch do # rubocop:disable Metrics/BlockLength
   context 'with a blank query' do
     it 'returns an empty array' do
       expect(described_class.new('').call).to eq([])
@@ -23,6 +23,18 @@ RSpec.describe AppointmentApiSearch do
       # by name
       expect(described_class.new('jones').call).to eq([@appointment])
       # by email
+      expect(described_class.new('bleh@exam').call).to eq([@other])
+    end
+  end
+
+  context 'with a consent name or email for third party' do
+    it 'returns the matching results' do
+      @appointment = create(:appointment, data_subject_name: 'Jones')
+      @other       = create(:appointment, email_consent: 'bleh@example.com')
+
+      # by consent name
+      expect(described_class.new('jones').call).to eq([@appointment])
+      # by consent email
       expect(described_class.new('bleh@exam').call).to eq([@other])
     end
   end
