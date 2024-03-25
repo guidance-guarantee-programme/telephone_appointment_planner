@@ -341,7 +341,7 @@ RSpec.feature 'Agent manages appointments' do
     end
   end
 
-  scenario 'Agent marks an appointment as no-show' do
+  scenario 'Agent marks an appointment as no-show', js: true do
     given_the_user_is_an_agent do
       and_there_is_an_appointment
       when_they_mark_the_appointment_as_missed
@@ -759,6 +759,8 @@ RSpec.feature 'Agent manages appointments' do
     @page = Pages::EditAppointment.new
     @page.load(id: @appointment.id)
     @page.status.select('No Show')
+    @page.wait_until_secondary_status_options_visible
+    @page.secondary_status.select('UK number invalid')
     @page.submit.click
   end
 

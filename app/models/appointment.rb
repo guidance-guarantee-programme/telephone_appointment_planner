@@ -86,6 +86,12 @@ class Appointment < ApplicationRecord
       '21' => 'Duplicate appointment booked by customer',
       '22' => 'Customer driving whilst having appointment',
       '23' => 'Third-party consent not received'
+    },
+    'no_show' => {
+      '24' => 'UK number valid – customer did not answer',
+      '25' => 'UK number invalid',
+      '26' => 'Overseas number valid – customer did not answer',
+      '27' => 'Overseas number invalid'
     }
   }.freeze
 
@@ -636,9 +642,7 @@ class Appointment < ApplicationRecord
   end
 
   def validate_secondary_status # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
-    return unless created_at && created_at > Time.zone.parse(
-      ENV.fetch('SECONDARY_STATUS_CUT_OFF') { '2021-05-04 09:00' }
-    )
+    return if no_show? && created_at < Time.zone.parse(ENV.fetch('SECONDARY_STATUS_CUT_OFF') { '2021-05-04 09:00' })
 
     return if current_user&.tpas_agent? && !guider.tpas?
 

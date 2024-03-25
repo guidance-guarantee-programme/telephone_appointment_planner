@@ -435,11 +435,7 @@ RSpec.describe Appointment, type: :model do
     context 'when the status would require a secondary status' do
       before { subject.created_at = Time.current }
 
-      context 'when the appointment is past the cut-off date' do
-        before do
-          allow(ENV).to receive(:fetch).with('SECONDARY_STATUS_CUT_OFF').and_return(2.days.ago.to_s)
-        end
-
+      context 'for secondary statuses without cut-off mandated' do
         it 'is invalid' do
           subject.status = :incomplete
           expect(subject).to be_invalid
@@ -449,6 +445,12 @@ RSpec.describe Appointment, type: :model do
 
           subject.secondary_status = '10' # belongs to ineligible pension type
           expect(subject).to be_invalid
+
+          subject.status = :no_show
+          expect(subject).to be_invalid
+
+          subject.secondary_status = '25' # UK number invalid
+          expect(subject).to be_valid
         end
 
         context 'when the current user is an agent' do
@@ -488,11 +490,11 @@ RSpec.describe Appointment, type: :model do
         end
       end
 
-      context 'when it is not past the cut-off date' do
+      context 'for no show - when it is not past the cut-off date' do
         it 'is not required' do
           allow(ENV).to receive(:fetch).with('SECONDARY_STATUS_CUT_OFF').and_return(2.days.from_now.to_s)
 
-          subject.status = :incomplete
+          subject.status = :no_show
           expect(subject).to be_valid
         end
       end
