@@ -50,7 +50,6 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
     colleagues
       .where('permissions @> ?', %(["#{RESOURCE_MANAGER_PERMISSION}"]))
       .enabled
-      .active
       .unexcluded
   end
 
