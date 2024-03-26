@@ -21,6 +21,7 @@
   <%= f.hidden_field :end_at %>
   <%= f.hidden_field :guider_id %>
   <%= f.hidden_field :third_party_booking %>
+  <%= f.hidden_field :welsh %>
 
   <%= f.hidden_field :first_name %>
   <%= f.hidden_field :last_name %>
@@ -201,6 +202,12 @@
             <% if @appointment.due_diligence? %>
             <tr>
               <td class="active"><b>PSG appointment?</b></td>
+              <td>Yes</td>
+            </tr>
+            <% end %>
+            <% if @appointment.welsh? %>
+            <tr>
+              <td class="active"><b>Welsh language appointment?</b></td>
               <td>Yes</td>
             </tr>
             <% end %>
