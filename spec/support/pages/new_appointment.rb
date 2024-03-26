@@ -17,6 +17,7 @@ module Pages
     element :memorable_word,                        '.t-memorable-word'
     element :accessibility_requirements,            '.t-accessibility-requirements'
 
+    element :welsh,                                 '.t-welsh'
     element :third_party_booked,                    '.t-third-party-booked'
     element :data_subject_name,                     '.t-data-subject-name'
     element :data_subject_date_of_birth_day,        '.t-data-subject-date-of-birth-day'

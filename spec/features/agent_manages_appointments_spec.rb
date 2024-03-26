@@ -514,6 +514,7 @@ RSpec.feature 'Agent manages appointments' do
     @page.end_at.set day.change(hour: 10, min: 40).to_s
     @page.type_of_appointment_standard.set true
     @page.where_you_heard.select 'Other'
+    @page.welsh.set true
     @page.address_line_one.set(options[:address_line_one]) if options[:address_line_one]
     @page.town.set(options[:town]) if options[:town]
     @page.postcode.set(options[:postcode]) if options[:postcode]
@@ -549,6 +550,7 @@ RSpec.feature 'Agent manages appointments' do
     expect(@page.preview).to have_content 'Smarter signposted referral? Yes' if options[:smarter_signposted]
     expect(@page.preview).to have_content 'Small pots appointment? Yes' if options[:small_pots]
     expect(@page.preview).to have_content 'Stronger Nudge appointment? Yes' if options[:stronger_nudge]
+    expect(@page.preview).to have_content 'Welsh language appointment? Yes'
   end
 
   def and_they_fill_in_their_appointment_details_without_an_email
@@ -586,6 +588,7 @@ RSpec.feature 'Agent manages appointments' do
     expect(appointment).to_not be_bsl_video
     expect(appointment).to be_small_pots if options[:small_pots]
     expect(appointment).to be_nudged if options[:stronger_nudge]
+    expect(appointment).to be_welsh
   end
 
   def and_the_customer_gets_an_email_confirmation
