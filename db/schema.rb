@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_02_13_111659) do
+ActiveRecord::Schema.define(version: 2024_03_26_090221) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -119,6 +119,7 @@ ActiveRecord::Schema.define(version: 2024_02_13_111659) do
     t.string "nudge_confirmation", default: "", null: false
     t.string "nudge_eligibility_reason", default: "", null: false
     t.string "country_code", default: "GB", null: false
+    t.boolean "welsh", default: false, null: false
     t.index ["guider_id", "start_at"], name: "unique_slot_guider_in_appointment", unique: true, where: "((status <> ALL (ARRAY[5, 6, 7, 8])) AND (start_at > '2022-07-02 00:00:00'::timestamp without time zone))"
     t.index ["guider_id"], name: "index_appointments_on_guider_id"
     t.index ["schedule_type"], name: "index_appointments_on_schedule_type"
