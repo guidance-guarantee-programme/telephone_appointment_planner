@@ -228,6 +228,7 @@ RSpec.feature 'Agent manages appointments' do
       and_a_printed_consent_form_job_is_enqueued
       and_an_email_consent_form_job_is_enqueued
       and_a_printed_confirmation_job_is_enqueued
+      and_the_system_attempts_to_push_to_casebook
     end
   end
 
@@ -462,6 +463,10 @@ RSpec.feature 'Agent manages appointments' do
 
     @page.email_consent_form_required.set(true)
     expect(@page).to have_email_consent
+  end
+
+  def and_the_system_attempts_to_push_to_casebook
+    assert_enqueued_jobs(1, only: PushCasebookAppointmentJob)
   end
 
   def and_they_enter_a_standard_date_of_birth
@@ -711,6 +716,7 @@ RSpec.feature 'Agent manages appointments' do
 
     expect(appointment).to be_rescheduled_at
     expect(appointment).not_to be_batch_processed_at
+    expect(appointment.rescheduling_reason).to eq('client_rescheduled')
   end
 
   def then_the_appointments_first_name_is_changed
@@ -752,7 +758,7 @@ RSpec.feature 'Agent manages appointments' do
   end
 
   def then_the_customer_does_not_get_a_cancellation_email
-    expect(ActionMailer::Base.deliveries).to be_empty
+    assert_no_enqueued_jobs(only: CustomerUpdateJob)
   end
 
   def when_they_mark_the_appointment_as_missed

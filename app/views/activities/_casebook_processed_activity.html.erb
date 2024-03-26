@@ -1,0 +1,5 @@
+<% content_for(:activity_message, flush: true) do %>
+  <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
+  The appointment was successfully published to casebook
+<% end %>
+<%= render 'activities/activity', activity: casebook_processed_activity, details: details, hide: hide %>

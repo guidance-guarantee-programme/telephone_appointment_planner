@@ -46,6 +46,10 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
     end
   end
 
+  def casebook_pushable?
+    casebook_guider_id? && casebook_location_id?
+  end
+
   def resource_managers
     colleagues
       .where('permissions @> ?', %(["#{RESOURCE_MANAGER_PERMISSION}"]))
@@ -74,7 +78,7 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
   end
 
   def cita?
-    Provider.lloyds_providers.map(&:id).include?(organisation_content_id)
+    Provider.find(organisation_content_id)&.cita?
   end
 
   def tp_agent?

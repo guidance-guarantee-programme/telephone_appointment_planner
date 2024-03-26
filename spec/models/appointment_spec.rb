@@ -21,6 +21,19 @@ RSpec.describe Appointment, type: :model do
   end
 
   describe '#adjustments?' do
+    context 'when the appointment is Pension Wise' do
+      context 'when the guider is not Pension Ops' do
+        context 'when the adjustment is potential duplicates' do
+          it 'is true' do
+            appointment = build_stubbed(:appointment_for_casebook_creation, organisation: :cas)
+            allow(appointment).to receive(:potential_duplicates?).and_return(true)
+
+            expect(appointment).to be_adjustments
+          end
+        end
+      end
+    end
+
     context 'when the customer is DC unsure' do
       context 'when the appointment is Pension Wise' do
         context 'when the guider is Pension Ops/TPAS' do
@@ -141,14 +154,71 @@ RSpec.describe Appointment, type: :model do
     end
   end
 
-  describe '#cancel!' do
-    it 'does not audit any changes' do
+  describe '#process_casebook_cancellation!' do
+    it 'creates the cancelled activity for auditing' do
       appointment = create(:appointment)
+
+      appointment.process_casebook_cancellation!
+
+      expect(appointment.activities.first).to be_an_instance_of(CasebookCancelledActivity)
+    end
+  end
+
+  describe '#process_casebook!' do
+    it 'processes the appointment and logs an activity' do
+      appointment = create(:appointment)
+
+      appointment.process_casebook!('123')
+
+      expect(appointment).to be_processed_at
+      expect(appointment.casebook_appointment_id).to eq(123)
+      expect(appointment.activities.first).to be_an_instance_of(CasebookProcessedActivity)
+    end
+  end
+
+  describe '#push_to_casebook?' do
+    context 'when it is pushable' do
+      it 'returns truthily' do
+        # regular pushable guider, pending, unprocessed and unpushed
+        appointment = build_stubbed(:appointment, :casebook_guider)
+        expect(appointment).to be_push_to_casebook
+
+        # regular pushable guider, unpushe, unprocessed but not pending
+        appointment = build_stubbed(:appointment, :casebook_guider, status: :complete)
+        expect(appointment).not_to be_push_to_casebook
+
+        # not a pushable guider, pending, unprocessed and unpushed
+        appointment = build_stubbed(:appointment)
+        expect(appointment).not_to be_push_to_casebook
+
+        # already pushed to casebook, pending and unprocessed
+        appointment = build_stubbed(:appointment, :casebook_guider, :casebook_pushed)
+        expect(appointment).not_to be_push_to_casebook
+
+        # marked as processed, unpushed, pending, pushable guider
+        appointment = build_stubbed(:appointment, :casebook_guider, :processed)
+        expect(appointment).not_to be_push_to_casebook
+      end
+    end
+  end
+
+  describe '#cancel!' do
+    include ActiveJob::TestHelper
+
+    let(:appointment) { create(:appointment) }
+
+    it 'does not audit any changes' do
       appointment.audits.destroy_all
 
       appointment.cancel!
 
       expect(appointment.reload.audits).to be_empty
+    end
+
+    it 'enqueues a casebook cancellation' do
+      assert_enqueued_jobs(1, only: CancelCasebookAppointmentJob) do
+        appointment.cancel!
+      end
     end
   end
 
