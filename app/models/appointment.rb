@@ -306,7 +306,7 @@ class Appointment < ApplicationRecord
   end
 
   def future?
-    start_at > Time.zone.now
+    start_at.advance(hours: -1) > Time.zone.now
   end
 
   def age_at_appointment
