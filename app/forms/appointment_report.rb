@@ -41,6 +41,14 @@ class AppointmentReport
                 AS status
               SQL
              )
+      .select(<<-SQL
+                CASE appointments.secondary_status
+                  #{Appointment::SECONDARY_STATUSES.values.reduce({}, :merge).map { |k, v| "WHEN '#{k}' THEN '#{v.sub('–', '-')}'" }.join("\n")}
+                  ELSE ''
+                END
+                AS secondary_status
+              SQL
+             )
       .select('(SELECT MAX(created_at) FROM status_transitions WHERE appointment_id = appointments.id) as status_changed')
       .select(<<-SQL
                 CASE WHEN EXISTS(SELECT 1 FROM Activities WHERE type = 'SummaryDocumentActivity' AND appointment_id = appointments.id) THEN 'Yes'
