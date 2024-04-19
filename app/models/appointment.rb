@@ -85,7 +85,8 @@ class Appointment < ApplicationRecord
       '20' => 'Customer did not agree with data protection policy',
       '21' => 'Duplicate appointment booked by customer',
       '22' => 'Customer driving whilst having appointment',
-      '23' => 'Third-party consent not received'
+      '23' => 'Third-party consent not received',
+      '28' => 'Customer wanted PSG appointment'
     },
     'no_show' => {
       '24' => 'UK number valid – customer did not answer',
