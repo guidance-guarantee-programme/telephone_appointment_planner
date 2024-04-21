@@ -180,7 +180,7 @@ RSpec.feature 'Agent searches for appointments' do
   end
 
   def then_they_can_see_all_appointments
-    expected = @appointments.map { |a| "##{a.id}" }
+    expected = @appointments.map { |a| "##{a.id}" }.sort
     actual = @page.results.map(&:id).map(&:text).sort
     expect(actual).to eq expected
   end

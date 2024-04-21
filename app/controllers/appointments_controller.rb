@@ -227,6 +227,7 @@ class AppointmentsController < ApplicationController
       small_pots
       nudged
       internal_availability
+      welsh
     ]
   end
   # rubocop:enable Metrics/MethodLength

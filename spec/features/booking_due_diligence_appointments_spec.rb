@@ -140,6 +140,7 @@ RSpec.feature 'Booking due diligence appointments', js: true do
   end
 
   def and_they_are_presented_with_the_correct_fields
+    expect(@page).to have_no_welsh
     expect(@page).to have_no_third_party_booked
     expect(@page).to have_no_smarter_signposted
     expect(@page).to have_no_type_of_appointment_standard

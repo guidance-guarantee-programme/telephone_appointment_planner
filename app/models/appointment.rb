@@ -49,6 +49,7 @@ class Appointment < ApplicationRecord
     referrer
     small_pots
     country_code
+    welsh
   ].freeze
 
   enum status: { pending: 0, complete: 1, no_show: 2, incomplete: 3, ineligible_age: 4,
@@ -361,6 +362,12 @@ class Appointment < ApplicationRecord
     phone.start_with?('07') || mobile.start_with?('07')
   end
 
+  def owned_by_my_organisation?(myself)
+    return true unless guider
+
+    myself.organisation_content_id == guider.organisation_content_id
+  end
+
   def cancel!
     without_auditing do
       transaction do
@@ -449,10 +456,6 @@ class Appointment < ApplicationRecord
   end
 
   private
-
-  def owned_by_my_organisation?(myself)
-    myself.organisation_content_id == guider.organisation_content_id
-  end
 
   def track_initial_status
     status_transitions << StatusTransition.new(status:)
