@@ -19,6 +19,7 @@ module Api
         NudgeSmsAppointmentConfirmationJob.perform_later(appointment) if appointment.sms_confirmation?
         CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::CONFIRMED_MESSAGE)
         AppointmentCreatedNotificationsJob.perform_later(appointment)
+        PushCasebookAppointmentJob.perform_later(appointment)
       end
 
       def appointment_params # rubocop:disable Metrics/MethodLength
