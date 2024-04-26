@@ -16,6 +16,7 @@ RSpec.describe 'POST /api/v1/nudge_appointments' do
         and_the_customer_receives_a_confirmation_email
         and_the_resource_manager_receives_an_accessibility_notification
         and_the_resource_manager_receives_a_new_appointment_notification
+        and_the_system_enqueues_a_casebook_push_if_needed
       end
     end
   end
@@ -29,6 +30,7 @@ RSpec.describe 'POST /api/v1/nudge_appointments' do
         then_the_service_responds_with_a_201
         and_the_sms_confirmed_appointment_is_created
         and_the_customer_receives_an_sms_confirmation
+        and_the_system_enqueues_a_casebook_push_if_needed
       end
     end
   end
@@ -148,6 +150,10 @@ RSpec.describe 'POST /api/v1/nudge_appointments' do
 
   def and_the_customer_receives_an_sms_confirmation
     assert_enqueued_jobs(1, only: NudgeSmsAppointmentConfirmationJob)
+  end
+
+  def and_the_system_enqueues_a_casebook_push_if_needed
+    assert_enqueued_jobs(1, only: PushCasebookAppointmentJob)
   end
 end
 # rubocop:enable Metrics/BlockLength
