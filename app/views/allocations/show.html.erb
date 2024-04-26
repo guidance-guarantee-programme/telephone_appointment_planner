@@ -53,3 +53,32 @@
     <input type="hidden" name="changes" id="event-changes">
   <% end %>
 </div>
+
+<div class="modal fade t-rescheduling-reason-modal" id="rescheduling-reasons-modal" tabindex="-1" role="dialog" aria-labelledby="rescheduling-reasons-modal-label">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title js-modal-title" id="rescheduling-reasons-modal-label">Reason for rescheduling</h4>
+      </div>
+      <div class="modal-body">
+        <div class="radio">
+          <div class="form-group">
+            <div class="radio">
+              <label>
+                <input class="t-client-rescheduled" type="radio" value="client_rescheduled" name="rescheduling_reason" id="client_rescheduled"> Client rescheduled
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input class="t-pension-wise-rescheduled" type="radio" value="office_rescheduled" name="rescheduling_reason" id="office_rescheduled"> Office rescheduled
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary js-save t-save">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

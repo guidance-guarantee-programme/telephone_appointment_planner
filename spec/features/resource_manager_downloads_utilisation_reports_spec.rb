@@ -117,23 +117,23 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
 
   def and_there_are_appointments
     guider = create(:guider)
-    create(:appointment, guider:).update(start_at: range_start.at_midday + 1.day)
-    create(:appointment, guider:).update(start_at: range_start.at_midday + 2.days)
+    create(:appointment, guider:, start_at: range_start.at_midday + 1.day)
+    create(:appointment, guider:, start_at: range_start.at_midday + 2.days)
   end
 
   def and_there_are_cancelled_appointments
-    create(:appointment, status: :cancelled_by_customer_sms).update(start_at: range_start + 1.day)
-    create(:appointment, status: :cancelled_by_pension_wise).update(start_at: range_start + 2.days)
-    create(:appointment, :due_diligence).update(start_at: range_start.at_midday + 5.days)
+    create(:appointment, status: :cancelled_by_customer_sms, start_at: range_start + 1.day)
+    create(:appointment, status: :cancelled_by_pension_wise, start_at: range_start + 2.days)
+    create(:appointment, :due_diligence, start_at: range_start.at_midday + 5.days)
   end
 
   def and_there_are_appointments_outside_the_date_range
-    create(:appointment).update(start_at: range_start + 20.days)
+    create(:appointment, start_at: range_start + 20.days)
   end
 
   def and_there_are_cancelled_appointments_outside_the_date_range
-    create(:appointment, status: :cancelled_by_customer_sms).update(start_at: range_start + 10.days)
-    create(:appointment, status: :cancelled_by_pension_wise).update(start_at: range_start + 11.days)
+    create(:appointment, status: :cancelled_by_customer_sms, start_at: range_start + 10.days)
+    create(:appointment, status: :cancelled_by_pension_wise, start_at: range_start + 11.days)
   end
 
   def and_there_are_bookable_slots
@@ -144,11 +144,9 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
 
   def and_there_are_bookable_slots_obscured_by_appointments
     guider = create(:guider)
-    appointment1 = create(:appointment, guider:)
-    appointment1.update(start_at: range_start.at_midday + 1.day)
 
-    appointment2 = create(:appointment, guider:)
-    appointment2.update(start_at: range_start.at_midday + 2.days)
+    appointment1 = create(:appointment, guider:, start_at: range_start.at_midday + 1.day)
+    appointment2 = create(:appointment, guider:, start_at: range_start.at_midday + 2.days)
 
     create(:bookable_slot, start_at: appointment1.start_at)
     create(:bookable_slot, start_at: appointment2.start_at)

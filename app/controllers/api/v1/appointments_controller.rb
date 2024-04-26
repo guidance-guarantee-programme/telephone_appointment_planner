@@ -24,6 +24,7 @@ module Api
         AdjustmentNotificationsJob.perform_later(appointment) if appointment.adjustments?
         CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::CONFIRMED_MESSAGE)
         AppointmentCreatedNotificationsJob.perform_later(appointment)
+        PushCasebookAppointmentJob.perform_later(appointment)
       end
 
       def appointment_params # rubocop:disable Metrics/MethodLength

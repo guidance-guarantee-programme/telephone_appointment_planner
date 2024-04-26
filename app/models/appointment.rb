@@ -8,6 +8,8 @@ class Appointment < ApplicationRecord
 
   DEFAULT_COUNTRY_CODE = 'GB'.freeze
 
+  RESCHEDULING_REASONS = %w[client_rescheduled office_rescheduled].freeze
+
   CANCELLED_STATUSES = %i[
     cancelled_by_customer
     cancelled_by_pension_wise
@@ -50,6 +52,7 @@ class Appointment < ApplicationRecord
     small_pots
     country_code
     welsh
+    rescheduling_reason
   ].freeze
 
   enum status: { pending: 0, complete: 1, no_show: 2, incomplete: 3, ineligible_age: 4,
@@ -165,6 +168,7 @@ class Appointment < ApplicationRecord
   validate :validate_tp_agent_statuses
   validate :validate_tpas_agent_statuses, if: :status_changed?, on: :update
   validate :validate_gdpr_consent
+  validate :validate_rescheduling_reason, on: :update
 
   before_validation :format_name, on: :create
   before_create :track_initial_status
@@ -202,6 +206,20 @@ class Appointment < ApplicationRecord
     schedule_type == User::PENSION_WISE_SCHEDULE_TYPE
   end
 
+  def process_casebook!(casebook_identifier)
+    without_auditing do
+      transaction do
+        update!(processed_at: Time.zone.now, casebook_appointment_id: casebook_identifier)
+
+        CasebookProcessedActivity.create!(appointment: self)
+      end
+    end
+  end
+
+  def process_casebook_cancellation!
+    CasebookCancelledActivity.create!(appointment: self)
+  end
+
   def process!(by)
     return if processed_at?
 
@@ -222,6 +240,7 @@ class Appointment < ApplicationRecord
   def adjustments?
     return true if accessibility_requirements? || third_party_booking?
     return false if tpas_guider?
+    return true if potential_duplicates? && pension_wise?
 
     !dc_pot_confirmed? && pension_wise?
   end
@@ -350,6 +369,10 @@ class Appointment < ApplicationRecord
     guider&.tp?
   end
 
+  def casebook_pushable_guider?
+    guider&.casebook_pushable?
+  end
+
   def agent_is_pension_wise_api?
     agent&.pension_wise_api?
   end
@@ -373,6 +396,7 @@ class Appointment < ApplicationRecord
       transaction do
         update!(status: :cancelled_by_customer_sms)
 
+        CancelCasebookAppointmentJob.perform_later(self)
         SmsCancellationActivity.from(self)
       end
     end
@@ -453,6 +477,10 @@ class Appointment < ApplicationRecord
       .where(schedule_type:)
       .order(:created_at)
       .find_by("REPLACE(mobile, ' ', '') = :number OR REPLACE(phone, ' ', '') = :number", number:)
+  end
+
+  def push_to_casebook?
+    pending? && casebook_pushable_guider? && !casebook_appointment_id? && !processed_at?
   end
 
   private
@@ -714,6 +742,12 @@ class Appointment < ApplicationRecord
     inclusion << '' if persisted? || due_diligence?
 
     errors.add(:gdpr_consent, :inclusion) unless inclusion.include?(gdpr_consent)
+  end
+
+  def validate_rescheduling_reason
+    return unless start_at_changed?
+
+    errors.add(:rescheduling_reason, 'must be specified') unless RESCHEDULING_REASONS.include?(rescheduling_reason)
   end
 
   class << self

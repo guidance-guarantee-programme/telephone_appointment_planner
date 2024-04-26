@@ -1,0 +1,5 @@
+<% content_for(:activity_message, flush: true) do %>
+  <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
+  The appointment was cancelled in casebook
+<% end %>
+<%= render 'activities/activity', activity: casebook_cancelled_activity, details: details, hide: hide %>

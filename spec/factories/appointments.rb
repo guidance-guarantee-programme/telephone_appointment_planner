@@ -111,6 +111,40 @@ FactoryBot.define do
         )
       end
     end
+
+    trait :casebook_guider do
+      # a randomly selected, valid production casebook guider ID
+      guider do
+        create(
+          :guider,
+          organisation,
+          casebook_guider_id: 90_939,
+          casebook_location_id: 26_089
+        )
+      end
+    end
+
+    factory :appointment_for_casebook_creation, traits: %i[casebook_guider] do
+      first_name { 'Daisy' }
+      last_name { 'George' }
+      start_at { Time.zone.parse('2024-02-22 13:00') }
+    end
+
+    factory :appointment_for_casebook_cancellation, traits: %i[casebook_guider casebook_pushed] do
+      status { 'cancelled_by_customer' }
+    end
+
+    trait :casebook_pushed do
+      casebook_appointment_id { 1 }
+    end
+
+    trait :casebook_rebooked do
+      rebooked_from { create(:appointment, :casebook_guider, :casebook_pushed) }
+    end
+
+    trait :pension_wise_rescheduled do
+      rescheduling_reason { 'office_rescheduled' }
+    end
   end
 end
 # rubocop:enable Metrics/BlockLength

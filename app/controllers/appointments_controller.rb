@@ -118,6 +118,7 @@ class AppointmentsController < ApplicationController
 
   def send_notifications(appointment)
     AdjustmentNotificationsJob.perform_later(appointment) if appointment.adjustments?
+    PushCasebookAppointmentJob.perform_later(appointment)
     CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::CONFIRMED_MESSAGE)
     PrintedConfirmationJob.perform_later(appointment)
     AppointmentCreatedNotificationsJob.perform_later(appointment)
@@ -255,7 +256,7 @@ class AppointmentsController < ApplicationController
   def update_reschedule_params
     params
       .require(:appointment)
-      .permit(:end_at, :guider_id)
+      .permit(:end_at, :guider_id, :rescheduling_reason)
       .merge(
         start_at: munge_start_at,
         agent: current_user
