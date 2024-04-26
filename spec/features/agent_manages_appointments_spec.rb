@@ -51,19 +51,6 @@ RSpec.feature 'Agent manages appointments' do
     end
   end
 
-  scenario 'TP agent booking a Pension Wise appointment', js: true do
-    skip 'TP no longer exist, this should be removed'
-    travel_to '2021-04-05 10:00' do
-      given_the_user_is_an_agent(organisation: :tp) do
-        and_slots_exist_for_general_availability
-        and_slots_exist_for_due_diligence_availability
-        when_they_attempt_to_book_an_appointment
-        then_they_see_only_general_availability(navigate_next: false)
-        and_they_do_not_see_small_pots
-      end
-    end
-  end
-
   scenario 'TPAS user booking a Pension Wise appointment', js: true do
     travel_to '2021-04-05 10:00' do
       given_the_user_is_a_resource_manager(organisation: :tpas) do
@@ -147,22 +134,6 @@ RSpec.feature 'Agent manages appointments' do
 
   def and_choose_internal_availability
     @page.internal_availability.check
-  end
-
-  scenario 'Agent booking a Lloyds referral', js: true do
-    skip 'This makes no sense, needs to also be deleted'
-    travel_to '2021-04-05 10:00' do
-      given_the_user_is_an_agent(organisation: :tp) do
-        and_slots_exist_for_lloyds
-        and_slots_exist_for_general_availability
-        when_they_attempt_to_book_an_appointment
-        then_they_see_all_availability
-        when_they_choose_lloyds
-        then_they_see_lloyds_availability
-        when_they_submit_with_errors
-        then_they_see_lloyds_availability
-      end
-    end
   end
 
   scenario 'Outsider trying to book Lloyds' do

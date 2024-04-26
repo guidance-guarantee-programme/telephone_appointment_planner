@@ -11,8 +11,6 @@ RSpec.describe 'Activity notification alerts', js: true do
   end
 
   scenario 'A new high priority activity occurs' do
-    skip 'this is flakey, will address'
-
     given_a_browser_session_for(guider, agent) do
       when_they_are_on_their_dashboard
     end
