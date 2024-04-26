@@ -513,6 +513,22 @@ RSpec.describe Appointment, type: :model do
       end
     end
 
+    context 'when the appointment is marked for Welsh language' do
+      it 'permits only Cardiff & Vale and Pension Ops guiders' do
+        subject = build(:appointment)
+
+        subject.welsh = true
+        subject.guider = build_stubbed(:guider, :tpas)
+        expect(subject).to be_valid
+
+        subject.guider = build_stubbed(:guider, :cardiff_and_vale)
+        expect(subject).to be_valid
+
+        subject.guider = build_stubbed(:guider, :waltham_forest)
+        expect(subject).to be_invalid
+      end
+    end
+
     context 'when the appointment is marked for LBGPTL' do
       let(:subject) { build(:appointment) }
 

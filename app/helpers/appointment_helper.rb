@@ -22,7 +22,7 @@ module AppointmentHelper
   end
 
   def welsh_visible?(current_user)
-    current_user.cardiff_and_vale?
+    current_user.cardiff_and_vale? || current_user.tpas_agent?
   end
 
   def stronger_nudge_visible?(current_user, appointment)

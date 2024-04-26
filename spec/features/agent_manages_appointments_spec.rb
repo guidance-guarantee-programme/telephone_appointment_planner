@@ -7,9 +7,19 @@ RSpec.feature 'Agent manages appointments' do
   let(:day) { BusinessDays.from_now(5) }
 
   scenario 'Non Cardiff and Vale cannot place Welsh bookings' do
-    given_the_user_is_a_resource_manager do
+    given_the_user_is_a_resource_manager(organisation: :waltham_forest) do
       when_they_try_to_book_an_appointment
       then_they_do_not_see_the_welsh_language_option
+    end
+  end
+
+  scenario 'Pension Ops/TPAS can place Welsh language bookings' do
+    given_the_user_is_a_resource_manager(organisation: :tpas) do
+      and_there_is_a_guider_with_available_slots(organisation: :tpas)
+      when_they_attempt_to_book_a_welsh_appointment
+      then_they_see_a_preview_of_the_appointment(welsh: true)
+      when_they_accept_the_appointment_preview
+      then_the_appointment_is_welsh
     end
   end
 
