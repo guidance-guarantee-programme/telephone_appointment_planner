@@ -27,7 +27,7 @@ RSpec.describe Casebook::Api do # rubocop:disable Metrics/BlockLength
               last_name: 'George',
               location_id: 26_089,
               mobile_phone: '07715 930 444',
-              notes: 'Pension Wise online booking.',
+              notes: "Pension Wise online booking ##{appointment.id}.",
               starts_at: '2024-02-22T13:00:00Z',
               user_id: 90_939
             }
@@ -75,7 +75,7 @@ RSpec.describe Casebook::Api do # rubocop:disable Metrics/BlockLength
               last_name: 'George',
               location_id: 26_089,
               mobile_phone: '07715 930 444',
-              notes: 'Pension Wise online booking.',
+              notes: "Pension Wise online booking ##{appointment.id}.",
               starts_at: '2024-02-22T13:00:00Z',
               user_id: 90_939,
               reschedule_status: 'office_rescheduled'
