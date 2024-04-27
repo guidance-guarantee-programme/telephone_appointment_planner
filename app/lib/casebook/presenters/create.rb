@@ -12,7 +12,7 @@ module Casebook
               first_name: appointment.first_name,
               last_name: appointment.last_name,
               date_of_birth: appointment.date_of_birth.to_s,
-              mobile_phone: appointment.canonical_sms_number,
+              mobile_phone: appointment.canonical_sms_number.gsub(/\D/, ''),
               email: appointment.email,
               starts_at: starts_at.iso8601,
               ends_at: ends_at.iso8601,

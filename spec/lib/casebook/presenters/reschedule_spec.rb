@@ -10,7 +10,7 @@ RSpec.describe Casebook::Presenters::Reschedule, '#to_h' do
       first_name: appointment.first_name,
       last_name: appointment.last_name,
       date_of_birth: '1945-01-01',
-      mobile_phone: '07715 930 444',
+      mobile_phone: '07715930444',
       email: 'someone@example.com',
       notes: "Pension Wise online booking ##{appointment.id}.",
       user_id: appointment.guider.casebook_guider_id,
