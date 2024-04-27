@@ -28,7 +28,7 @@ module Casebook
       private
 
       def notes
-        "Pension Wise online booking.#{duplicates}"
+        "Pension Wise online booking ##{appointment.id}.#{duplicates}"
       end
 
       def duplicates
