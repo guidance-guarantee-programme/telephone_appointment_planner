@@ -123,13 +123,13 @@ RSpec.feature 'Guider edits an appointment' do
   end
 
   def then_they_see_the_existing_details
-    start_date = @appointment.start_at.to_date.to_s(:govuk_date_short)
-    start_at_time = @appointment.start_at.to_s(:govuk_time)
-    end_at_time = @appointment.end_at.to_s(:govuk_time)
+    start_date = @appointment.start_at.to_date.to_formatted_s(:govuk_date_short)
+    start_at_time = @appointment.start_at.to_formatted_s(:govuk_time)
+    end_at_time = @appointment.end_at.to_formatted_s(:govuk_time)
 
     expect(@page.guider.text).to start_with(@appointment.guider.name)
     expect(@page.date_time.text).to eq("#{start_date}, #{start_at_time} - #{end_at_time}")
-    expect(@page.created_date.text).to eq(@appointment.created_at.in_time_zone('London').to_s(:govuk_date_short))
+    expect(@page.created_date.text).to eq(@appointment.created_at.in_time_zone('London').to_fs(:govuk_date_short))
     expect(@page.first_name.value).to eq(@appointment.first_name)
     expect(@page.last_name.value).to eq(@appointment.last_name)
     expect(@page.email.value).to eq(@appointment.email)

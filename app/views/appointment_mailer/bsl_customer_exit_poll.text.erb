@@ -2,7 +2,7 @@ We’d appreciate your feedback
 
 Dear <%= @appointment.first_name %>,
 
-You recently had a Pension Wise BSL video appointment on <%= @appointment.start_at.to_date.to_s(:govuk_date) %>.
+You recently had a Pension Wise BSL video appointment on <%= @appointment.start_at.to_date.to_formatted_s(:govuk_date) %>.
 
 We'd appreciate your feedback on the interpreter service you received. You also
 have the option of sending video feedback:

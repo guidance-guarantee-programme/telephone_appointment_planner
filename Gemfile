@@ -28,6 +28,7 @@ gem 'bootsnap'
 gem 'bootstrap-kaminari-views'
 gem 'bugsnag'
 gem 'capitalize-names', require: 'capitalize_names'
+gem 'concurrent-ruby', '1.3.4'
 gem 'country_select'
 gem 'faraday'
 gem 'faraday-conductivity'
@@ -49,7 +50,7 @@ gem 'princely'
 gem 'puma'
 gem 'pusher'
 gem 'rack-cors'
-gem 'rails', '~> 6.1.0'
+gem 'rails', '~> 7.0.8'
 gem 'sassc-rails'
 gem 'select2-rails'
 gem 'sidekiq'
@@ -86,7 +87,7 @@ group :test do
 end
 
 group :development do
-  gem 'listen', '~> 3.0.5'
+  gem 'listen'
 end
 
 group :staging, :production do

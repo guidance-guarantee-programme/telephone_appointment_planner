@@ -107,7 +107,7 @@ class AppointmentsController < ApplicationController
         success: I18n.t(
           'appointments.success',
           reference: @appointment.id,
-          date: @appointment.start_at.to_s(:govuk_date_short)
+          date: @appointment.start_at.to_formatted_s(:govuk_date_short)
         )
       )
     else

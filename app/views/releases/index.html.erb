@@ -19,7 +19,7 @@
     <% @releases.each do |release| %>
       <tr>
         <td><%= release.summary %></td>
-        <td><%= release.released_on.to_s(:govuk_date) %></td>
+        <td><%= release.released_on.to_formatted_s(:govuk_date) %></td>
       </tr>
     <% end %>
   </tbody>

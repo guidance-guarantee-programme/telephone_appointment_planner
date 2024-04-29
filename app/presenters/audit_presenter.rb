@@ -8,7 +8,7 @@ class AuditPresenter < SimpleDelegator
   end
 
   def timestamp
-    created_at.in_time_zone('London').to_s(:govuk_date_short)
+    created_at.in_time_zone('London').to_formatted_s(:govuk_date_short)
   end
 
   def changes

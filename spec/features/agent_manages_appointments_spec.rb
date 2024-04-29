@@ -571,7 +571,7 @@ RSpec.feature 'Agent manages appointments' do
 
     expect(@page).to have_duplicates if options[:duplicates]
 
-    expect(@page.preview).to have_content "#{day.to_date.to_s(:govuk_date)} 9:30am"
+    expect(@page.preview).to have_content "#{day.to_date.to_formatted_s(:govuk_date)} 9:30am"
     expect(@page.preview).to have_content '(will last around 60 minutes)'
 
     expect(@page.preview).to have_content '23 October 1950'

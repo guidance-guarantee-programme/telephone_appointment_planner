@@ -18,7 +18,7 @@ module AppointmentHelper
 
     grace = grace.next_day if grace.hour > 20
 
-    grace.to_date.to_s(:govuk_date)
+    grace.to_date.to_formatted_s(:govuk_date)
   end
 
   def welsh_visible?(current_user)
