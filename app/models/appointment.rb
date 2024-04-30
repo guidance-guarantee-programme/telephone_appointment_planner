@@ -258,7 +258,8 @@ class Appointment < ApplicationRecord
         .where(
           first_name:,
           last_name:,
-          start_at: start_at.beginning_of_day..start_at.end_of_day
+          date_of_birth:,
+          status: :pending
         )
         .order(:id)
         .take(10)
