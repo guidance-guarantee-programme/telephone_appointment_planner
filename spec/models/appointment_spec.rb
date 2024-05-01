@@ -215,6 +215,22 @@ RSpec.describe Appointment, type: :model do
       expect(appointment.reload.audits).to be_empty
     end
 
+    context 'when successfully cancelling a casebook appointment' do
+      let(:appointment) { create(:appointment, casebook_appointment_id: 999, status: :cancelled_by_customer_sms) }
+
+      it 'persists the cancellation status prior to enqueuing the `CancelCasebookAppointmentJob`' do
+        cancellation_double = double(Casebook::Cancel)
+        allow(Casebook::Cancel).to receive(:new).and_return(cancellation_double)
+        allow(cancellation_double).to receive(:call)
+
+        perform_enqueued_jobs do
+          appointment.cancel!
+        end
+
+        expect(cancellation_double).to have_received(:call)
+      end
+    end
+
     it 'enqueues a casebook cancellation' do
       assert_enqueued_jobs(1, only: CancelCasebookAppointmentJob) do
         appointment.cancel!

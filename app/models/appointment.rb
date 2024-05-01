@@ -396,10 +396,10 @@ class Appointment < ApplicationRecord
     without_auditing do
       transaction do
         update!(status: :cancelled_by_customer_sms)
-
-        CancelCasebookAppointmentJob.perform_later(self)
         SmsCancellationActivity.from(self)
       end
+
+      CancelCasebookAppointmentJob.perform_later(self)
     end
   end
 
