@@ -30,7 +30,7 @@ class Notifier
   def notify_casebook
     if appointment_cancelled?
       CancelCasebookAppointmentJob.perform_later(appointment)
-    elsif appointment_rescheduled?
+    elsif appointment_reallocated?
       RescheduleCasebookAppointmentJob.perform_later(appointment)
     end
   end
@@ -38,7 +38,7 @@ class Notifier
   def notify_resource_managers
     if appointment_cancelled?
       AppointmentCancelledNotificationsJob.perform_later(appointment)
-    elsif appointment_rescheduled?
+    elsif appointment_reallocated?
       AppointmentRescheduledNotificationsJob.perform_later(appointment)
     elsif requires_adjustment_notification?
       AdjustmentNotificationsJob.perform_later(appointment)
@@ -128,8 +128,12 @@ class Notifier
       appointment.no_show?
   end
 
-  def appointment_rescheduled?
+  def appointment_reallocated?
     appointment.previous_changes.slice('guider_id', 'start_at').present?
+  end
+
+  def appointment_rescheduled?
+    appointment.previous_changes.slice('start_at').present?
   end
 
   attr_reader :appointment, :modifying_agent
