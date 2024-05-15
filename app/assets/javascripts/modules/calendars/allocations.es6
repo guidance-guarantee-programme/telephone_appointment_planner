@@ -1,4 +1,4 @@
-/* global CompanyCalendar */
+/* global CompanyCalendar, Pusher */
 {
   'use strict';
 
@@ -37,6 +37,16 @@
 
       this.setCalendarToCorrectHeight();
       this.setupUndo();
+    }
+
+    viewRender(view) {
+      const channel = Pusher.instance.subscribe('telephone_appointment_planner');
+      channel.bind(`${view.start.format('YYYY-MM-DD')}-${this.config.userOrganisationId}`, this.handlePushEvent.bind(this));
+    }
+
+    handlePushEvent() {
+      this.$el.fullCalendar('removeEvents');
+      this.$el.fullCalendar('refetchEvents');
     }
 
     select(start, end, jsEvent, view, resource) {

@@ -19,6 +19,7 @@
   id="AllocationsCalendar"
   class="company-calendar js-calendar t-calendar"
   data-module="allocations-calendar"
+  data-config='{ "userOrganisationId": "<%= current_user.organisation_content_id %>"}'
   data-default-date="<%= Time.zone.now %>"
   data-filter-select-id="filter_guiders">
 </div>
