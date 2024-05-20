@@ -81,6 +81,10 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
     Provider.find(organisation_content_id)&.cita?
   end
 
+  def cardiff_and_vale?
+    organisation_content_id == Provider::CARDIFF_AND_VALE.id
+  end
+
   def tp_agent?
     tp? && agent?
   end

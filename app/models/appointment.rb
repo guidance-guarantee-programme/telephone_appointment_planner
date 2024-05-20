@@ -169,6 +169,7 @@ class Appointment < ApplicationRecord
   validate :validate_tpas_agent_statuses, if: :status_changed?, on: :update
   validate :validate_gdpr_consent
   validate :validate_rescheduling_reason, on: :update
+  validate :validate_welsh_language
 
   before_validation :format_name, on: :create
   before_create :track_initial_status
@@ -749,6 +750,12 @@ class Appointment < ApplicationRecord
     return unless start_at_changed?
 
     errors.add(:rescheduling_reason, 'must be specified') unless RESCHEDULING_REASONS.include?(rescheduling_reason)
+  end
+
+  def validate_welsh_language
+    return unless welsh? && guider
+
+    errors.add(:welsh, 'cannot be set for external availability') unless guider.tpas? || guider.cardiff_and_vale?
   end
 
   class << self
