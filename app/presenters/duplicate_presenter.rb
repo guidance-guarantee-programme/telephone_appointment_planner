@@ -4,7 +4,7 @@ class DuplicatePresenter < SimpleDelegator
   end
 
   def organisation_name
-    provider.name
+    provider&.name
   end
 
   def start
@@ -23,7 +23,9 @@ class DuplicatePresenter < SimpleDelegator
     super.humanize
   end
 
-  delegate :email, to: :provider
+  def email
+    provider&.email
+  end
 
   private
 
