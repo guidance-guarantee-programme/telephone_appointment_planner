@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_26_090221) do
+ActiveRecord::Schema.define(version: 2024_05_30_142914) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -89,12 +89,12 @@ ActiveRecord::Schema.define(version: 2024_03_26_090221) do
     t.datetime "batch_processed_at"
     t.datetime "rescheduled_at"
     t.string "gdpr_consent", default: "", null: false
-    t.boolean "accessibility_requirements", default: false, null: false
     t.string "pension_provider", default: "", null: false
+    t.boolean "accessibility_requirements", default: false, null: false
     t.datetime "processed_at"
-    t.boolean "smarter_signposted", default: false
-    t.boolean "bsl_video", default: false, null: false
     t.boolean "third_party_booking", default: false, null: false
+    t.integer "casebook_appointment_id"
+    t.boolean "smarter_signposted", default: false
     t.string "data_subject_name", default: "", null: false
     t.integer "data_subject_age"
     t.boolean "data_subject_consent_obtained", default: false, null: false
@@ -106,6 +106,7 @@ ActiveRecord::Schema.define(version: 2024_03_26_090221) do
     t.string "consent_town", default: "", null: false
     t.string "consent_county", default: "", null: false
     t.string "consent_postcode", default: "", null: false
+    t.boolean "bsl_video", default: false, null: false
     t.boolean "email_consent_form_required", default: false, null: false
     t.string "email_consent", default: "", null: false
     t.date "data_subject_date_of_birth"
@@ -115,13 +116,13 @@ ActiveRecord::Schema.define(version: 2024_03_26_090221) do
     t.string "unique_reference_number", default: "", null: false
     t.string "referrer", default: "", null: false
     t.boolean "small_pots", default: false, null: false
+    t.string "rescheduling_reason", default: "", null: false
     t.boolean "nudged", default: false, null: false
     t.string "nudge_confirmation", default: "", null: false
     t.string "nudge_eligibility_reason", default: "", null: false
     t.string "country_code", default: "GB", null: false
-    t.integer "casebook_appointment_id"
     t.boolean "welsh", default: false, null: false
-    t.string "rescheduling_reason", default: "", null: false
+    t.string "cancelled_via", default: "", null: false
     t.index ["guider_id", "start_at"], name: "unique_slot_guider_in_appointment", unique: true, where: "((status <> ALL (ARRAY[5, 6, 7, 8])) AND (start_at > '2022-07-02 00:00:00'::timestamp without time zone))"
     t.index ["guider_id"], name: "index_appointments_on_guider_id"
     t.index ["schedule_type"], name: "index_appointments_on_schedule_type"
@@ -245,10 +246,10 @@ ActiveRecord::Schema.define(version: 2024_03_26_090221) do
     t.jsonb "permissions", default: "[]"
     t.integer "position", default: 0, null: false
     t.boolean "active", default: true, null: false
-    t.string "schedule_type", default: "pension_wise", null: false
     t.integer "casebook_guider_id"
     t.integer "casebook_location_id"
-    t.index ["organisation_content_id"], name: "index_users_on_organisation_content_id"
+    t.string "schedule_type", default: "pension_wise", null: false
+    t.index ["organisation_content_id"], name: "users_organisation_content_id_idx"
     t.index ["permissions"], name: "index_users_on_permissions", using: :gin
     t.index ["schedule_type"], name: "index_users_on_schedule_type"
   end

@@ -209,6 +209,12 @@
         )
       %>
     <%= f.select(:secondary_status, [], {}, { class: 't-secondary-status js-secondary-status', data: { 'no-tracking' => true }}) %>
+
+    <div class="form-group js-cancelled-via" style="display: none">
+      <p><strong>Customer cancelled via</strong></p>
+      <%= f.radio_button :cancelled_via, 'phone', label: 'Phone', class: 't-cancelled-via-phone' %>
+      <%= f.radio_button :cancelled_via, 'email', label: 'Email or CRM', class: 't-cancelled-via-email-or-crm' %>
+    </div>
     <% end %>
 
   </div>

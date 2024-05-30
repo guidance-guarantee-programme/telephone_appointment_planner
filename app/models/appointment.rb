@@ -53,6 +53,7 @@ class Appointment < ApplicationRecord
     country_code
     welsh
     rescheduling_reason
+    cancelled_via
   ].freeze
 
   enum status: { pending: 0, complete: 1, no_show: 2, incomplete: 3, ineligible_age: 4,
@@ -147,6 +148,7 @@ class Appointment < ApplicationRecord
   validates :referrer, presence: true, if: :due_diligence?, on: :create
   validates :email, email: true, unless: :sms_confirmation?
   validates :email_consent, presence: true, email: true, if: :email_consent_form_required?
+  validates :cancelled_via, inclusion: %w[phone email], on: :update, if: :cancelled_prior_to_appointment?
 
   validate :validate_printed_consent_form_address
   validate :validate_consent_type
@@ -622,6 +624,10 @@ class Appointment < ApplicationRecord
     date = created_at || Time.zone.today
 
     accessibility_requirements? && date > ACCESSIBILITY_NOTES_CUTOFF
+  end
+
+  def cancelled_prior_to_appointment?
+    secondary_status == '15'
   end
 
   def validate_phone_digits
