@@ -169,7 +169,7 @@ class Appointment < ApplicationRecord
   validate :validate_tpas_agent_statuses, if: :status_changed?, on: :update
   validate :validate_gdpr_consent
   validate :validate_rescheduling_reason, on: :update
-  validate :validate_welsh_language
+  validate :validate_welsh_language, on: :create
 
   before_validation :format_name, on: :create
   before_create :track_initial_status
