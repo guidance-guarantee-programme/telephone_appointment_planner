@@ -35,6 +35,12 @@ class AppointmentMailer < ApplicationMailer
     mail to: recipient, subject: @appointment.subject('Appointment Created')
   end
 
+  def potential_duplicates(appointment)
+    mailgun_headers('potential_duplicates', appointment.id)
+    @appointment = decorate(appointment)
+    mail to: ApplicationJob::OPS_SUPERVISOR, subject: @appointment.subject('Potential Duplicates')
+  end
+
   def adjustment(appointment, recipient)
     return unless appointment.adjustments?
 

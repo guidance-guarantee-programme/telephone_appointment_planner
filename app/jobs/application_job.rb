@@ -1,11 +1,12 @@
 class ApplicationJob < ActiveJob::Base
   CAS_RECIPIENTS = Array('CAS_PWBooking@cas.org.uk').freeze
+  OPS_SUPERVISOR = 'supervisors@maps.org.uk'.freeze
 
   protected
 
   def recipients_for(appointment)
     if appointment.tpas_guider?
-      Array('supervisors@maps.org.uk')
+      Array(OPS_SUPERVISOR)
     elsif appointment.cas_guider?
       CAS_RECIPIENTS
     else

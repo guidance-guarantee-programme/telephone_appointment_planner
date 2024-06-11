@@ -13,7 +13,19 @@ RSpec.describe Notifier, '#call' do
     allow(AppointmentMailer).to receive(:confirmation) { mailer }
     allow(AppointmentMailer).to receive(:missed) { mailer }
     allow(AppointmentMailer).to receive(:updated) { mailer }
+    allow(AppointmentMailer).to receive(:potential_duplicates) { mailer }
     allow(mailer).to receive(:deliver_now)
+    allow(mailer).to receive(:deliver_later)
+  end
+
+  context 'when the appointment has potential duplicates' do
+    it 'sends the correct email notification' do
+      allow(appointment).to receive(:potential_duplicates?).and_return(true)
+      expect(AppointmentMailer).to receive(:potential_duplicates).and_return(mailer)
+      expect(mailer).to receive(:deliver_later)
+
+      subject.call
+    end
   end
 
   context 'when an appointment is otherwise altered' do
