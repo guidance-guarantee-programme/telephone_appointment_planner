@@ -364,7 +364,7 @@ GEM
     parser (3.2.2.3)
       ast (~> 2.4.1)
       racc
-    pg (1.5.4)
+    pg (1.5.6)
     plek (2.1.1)
     postgres-copy (1.4.1)
       activerecord (>= 5.1)
