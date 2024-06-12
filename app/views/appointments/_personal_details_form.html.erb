@@ -85,10 +85,10 @@
 
     <%= f.check_box :accessibility_requirements, class: 't-accessibility-requirements', label: 'Do you require an adjustment to access our service?' %>
 
-    <% unless @appointment.due_diligence? %>
     <% if welsh_visible?(current_user) %>
       <%= f.check_box :welsh, class: 't-welsh', label: 'Welsh language appointment?', disabled: !@appointment.owned_by_my_organisation?(current_user) %>
     <% end %>
+    <% unless @appointment.due_diligence? %>
     <%= f.check_box :third_party_booking, class: 't-third-party-booked', label: 'Third party appointment?', data: { target: 'consent' } %>
     <div class="col-md-offset-1" id="consent">
       <p><strong>This appointment will be delivered to a third party on behalf of the data subject:</strong></p>
