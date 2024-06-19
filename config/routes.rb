@@ -12,6 +12,8 @@ Rails.application.routes.draw do
       resources :bookable_slots, only: :index
 
       resources :appointments, only: :create do
+        resource :cancel, only: :create
+
         resources :dropped_summary_documents, only: :create
       end
 
