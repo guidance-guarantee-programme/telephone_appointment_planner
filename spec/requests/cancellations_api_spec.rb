@@ -18,8 +18,21 @@ RSpec.describe 'POST /api/v1/appointments/{id}/cancel' do # rubocop:disable Metr
     end
   end
 
+  scenario 'when the appointment does not exist' do
+    given_the_user_is_a_pension_wise_api_user do
+      when_the_client_posts_a_valid_request_for_a_missing_appointment
+      then_the_service_responds_with_a_422
+    end
+  end
+
   def and_a_pending_appointment_exists
     @appointment = create(:appointment, date_of_birth: '1970-01-01')
+  end
+
+  def when_the_client_posts_a_valid_request_for_a_missing_appointment
+    @payload = { 'date_of_birth' => '1970-01-01' }
+
+    post api_v1_appointment_cancel_path(appointment_id: '999', params: @payload, as: :json)
   end
 
   def when_the_client_posts_a_valid_cancellation_request
@@ -30,6 +43,10 @@ RSpec.describe 'POST /api/v1/appointments/{id}/cancel' do # rubocop:disable Metr
 
   def then_the_service_responds_with_a_201 # rubocop:disable Naming/VariableNumber
     expect(response.status).to eq(201)
+  end
+
+  def then_the_service_responds_with_a_422 # rubocop:disable Naming/VariableNumber
+    expect(response.status).to eq(422)
   end
 
   def and_the_appointment_is_cancelled
