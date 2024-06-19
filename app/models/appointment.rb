@@ -14,6 +14,7 @@ class Appointment < ApplicationRecord
     cancelled_by_customer
     cancelled_by_pension_wise
     cancelled_by_customer_sms
+    cancelled_by_customer_online
   ].freeze
 
   APPOINTMENT_LENGTH_MINUTES = 70.minutes.freeze
