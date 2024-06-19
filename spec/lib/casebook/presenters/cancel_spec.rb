@@ -12,7 +12,7 @@ RSpec.describe Casebook::Presenters::Cancel, '#to_h' do
 
     context 'when it was customer cancelled' do
       it 'is correctly presented' do
-        %w[cancelled_by_customer cancelled_by_customer_sms].each do |status|
+        %w[cancelled_by_customer cancelled_by_customer_sms cancelled_by_customer_online].each do |status|
           appointment.status = status
 
           expect(subject).to eq(cancel_status: 'customer_cancelled')
