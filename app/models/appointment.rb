@@ -50,7 +50,7 @@ class Appointment < ApplicationRecord
 
   enum status: { pending: 0, complete: 1, no_show: 2, incomplete: 3, ineligible_age: 4,
                  ineligible_pension_type: 5, cancelled_by_customer: 6, cancelled_by_pension_wise: 7,
-                 cancelled_by_customer_sms: 8 }
+                 cancelled_by_customer_sms: 8, cancelled_by_customer_online: 9 }
 
   AGENT_PERMITTED_SECONDARY = '15'.freeze
   SECONDARY_STATUSES = {
@@ -396,6 +396,19 @@ class Appointment < ApplicationRecord
 
       CancelCasebookAppointmentJob.perform_later(self)
     end
+  end
+
+  def self_serve_cancel!
+    without_auditing do
+      transaction do
+        update!(status: :cancelled_by_customer_online)
+        CustomerOnlineCancellationActivity.from(self)
+      end
+
+      SmsCancellationSuccessJob.perform_later(self) if mobile?
+    end
+
+    true
   end
 
   def customer_research_consent
