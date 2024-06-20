@@ -1,4 +1,12 @@
 class AppointmentEmailPresenter < SimpleDelegator
+  def online_cancellation_url
+    ENV['ONLINE_CANCELLATION_URL']
+  end
+
+  def online_cancellation?
+    online_cancellation_url && !due_diligence?
+  end
+
   def hrh_bank_holiday?
     start_at.to_date == '2022-09-19'.to_date
   end
