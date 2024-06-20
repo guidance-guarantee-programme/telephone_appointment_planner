@@ -14,6 +14,9 @@ RSpec.describe AppointmentMailer, type: :mailer do
     )
   end
 
+  before { ENV['ONLINE_CANCELLATION_URL'] = 'https://bleh.com' }
+  after { ENV['ONLINE_CANCELLATION_URL'] = nil }
+
   describe 'Potential duplicates notification' do
     let(:appointment) { build_stubbed(:appointment) }
 
@@ -59,6 +62,10 @@ RSpec.describe AppointmentMailer, type: :mailer do
 
     it 'does not include the Pension Wise mailing address' do
       expect(subject.body.encoded).not_to include('P.O. Box 10404')
+    end
+
+    it 'does not include the cancellation link' do
+      expect(subject.body.encoded).not_to include('bleh.com')
     end
   end
 
@@ -306,6 +313,10 @@ RSpec.describe AppointmentMailer, type: :mailer do
       it 'includes the correct PW heading logo' do
         expect(body).to include('pw.jpg')
       end
+
+      it 'includes the cancellation link' do
+        expect(body).to include('bleh.com')
+      end
     end
   end
 
@@ -357,6 +368,10 @@ RSpec.describe AppointmentMailer, type: :mailer do
 
       it 'includes the reference number' do
         expect(body).to include(appointment.id.to_s)
+      end
+
+      it 'includes the cancellation link' do
+        expect(body).to include('bleh.com')
       end
     end
   end
@@ -431,6 +446,10 @@ RSpec.describe AppointmentMailer, type: :mailer do
 
       it 'includes the full MoneyHelper blurb' do
         expect(body).to include('MoneyHelper collects and stores')
+      end
+
+      it 'includes the cancellation link' do
+        expect(body).to include('bleh.com')
       end
     end
   end
