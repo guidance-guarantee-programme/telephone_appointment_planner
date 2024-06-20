@@ -111,7 +111,8 @@ RSpec.describe 'POST /api/v1/appointments' do
       'notes'                      => '',
       'smarter_signposted'         => false,
       'lloyds_signposted'          => false,
-      'referrer'                   => 'MMM'
+      'referrer'                   => 'MMM',
+      'rebooked_from_id'           => '1234567'
     }
 
     post api_v1_appointments_path, params: @payload, as: :json
@@ -245,7 +246,8 @@ RSpec.describe 'POST /api/v1/appointments' do
       'gdpr_consent'     => 'yes',
       'accessibility_requirements' => true,
       'notes' => 'I am hard of hearing',
-      'lloyds_signposted' => true
+      'lloyds_signposted' => true,
+      'rebooked_from_id'  => '1234567'
     }
 
     post api_v1_appointments_path, params: @payload, as: :json
@@ -327,7 +329,8 @@ RSpec.describe 'POST /api/v1/appointments' do
         accessibility_requirements: true,
         notes: 'I am hard of hearing',
         pension_provider: 'n/a',
-        lloyds_signposted: true
+        lloyds_signposted: true,
+        rebooked_from_id: 1_234_567
       )
 
       # defaults to pension wise when the schedule type is unspecified
