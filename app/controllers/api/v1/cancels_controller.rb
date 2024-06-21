@@ -19,7 +19,7 @@ module Api
       end
 
       def cancellation_params
-        params.permit(:appointment_id, :date_of_birth)
+        params.permit(:appointment_id, :date_of_birth, :secondary_status)
       end
     end
   end

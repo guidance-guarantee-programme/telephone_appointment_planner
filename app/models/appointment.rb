@@ -96,6 +96,17 @@ class Appointment < ApplicationRecord
       '25' => 'UK number invalid',
       '26' => 'Overseas number valid – customer did not answer',
       '27' => 'Overseas number invalid'
+    },
+    'cancelled_by_customer_online' => {
+      '32' => 'Inconvenient time',
+      '33' => 'Wait time until appointment',
+      '34' => 'Changed mind',
+      '35' => 'Not prepared enough',
+      '36' => 'Booked multiple appointments',
+      '37' => 'Appointment no longer required',
+      '38' => 'Received guidance from alternative source',
+      '39' => 'Booked wrong type of appointment',
+      '40' => 'Other'
     }
   }.freeze
 
@@ -399,10 +410,10 @@ class Appointment < ApplicationRecord
     end
   end
 
-  def self_serve_cancel!
+  def self_serve_cancel!(secondary_status)
     without_auditing do
       transaction do
-        update!(status: :cancelled_by_customer_online)
+        update!(status: :cancelled_by_customer_online, secondary_status:)
         CustomerOnlineCancellationActivity.from(self)
       end
 

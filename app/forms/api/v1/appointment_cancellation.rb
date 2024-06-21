@@ -3,12 +3,12 @@ module Api
     class AppointmentCancellation
       include ActiveModel::Model
 
-      attr_accessor :appointment_id, :date_of_birth
+      attr_accessor :appointment_id, :date_of_birth, :secondary_status
 
       def cancel
         return false unless appointment
 
-        appointment.self_serve_cancel!
+        appointment.self_serve_cancel!(secondary_status)
       end
 
       def model

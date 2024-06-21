@@ -6,7 +6,11 @@ RSpec.describe Api::V1::AppointmentCancellation, '#cancel' do
       @appointment = create(:appointment)
 
       expect(
-        described_class.new(appointment_id: @appointment.id, date_of_birth: @appointment.date_of_birth).cancel
+        described_class.new(
+          appointment_id: @appointment.id,
+          date_of_birth: @appointment.date_of_birth,
+          secondary_status: '32'
+        ).cancel
       ).to be_truthy
     end
   end
@@ -16,7 +20,11 @@ RSpec.describe Api::V1::AppointmentCancellation, '#cancel' do
       @appointment = create(:appointment, status: :cancelled_by_customer_sms)
 
       expect(
-        described_class.new(appointment_id: @appointment.id, date_of_birth: @appointment.date_of_birth).cancel
+        described_class.new(
+          appointment_id: @appointment.id,
+          date_of_birth: @appointment.date_of_birth,
+          secondary_status: '32'
+        ).cancel
       ).to be_falsey
     end
   end

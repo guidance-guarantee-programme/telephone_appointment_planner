@@ -9,6 +9,7 @@ RSpec.describe 'POST /api/v1/appointments/{id}/cancel' do # rubocop:disable Metr
       when_the_client_posts_a_valid_cancellation_request
       then_the_service_responds_with_a_201
       and_the_appointment_is_cancelled
+      and_the_cancellation_reason_is_recorded
       and_a_customer_online_cancellation_activity_is_created
       and_the_guider_is_notified
       and_the_resource_managers_are_notified
@@ -30,13 +31,13 @@ RSpec.describe 'POST /api/v1/appointments/{id}/cancel' do # rubocop:disable Metr
   end
 
   def when_the_client_posts_a_valid_request_for_a_missing_appointment
-    @payload = { 'date_of_birth' => '1970-01-01' }
+    @payload = { 'date_of_birth' => '1970-01-01', 'secondary_status' => '32' }
 
     post api_v1_appointment_cancel_path(appointment_id: '999', params: @payload, as: :json)
   end
 
   def when_the_client_posts_a_valid_cancellation_request
-    @payload = { 'date_of_birth' => '1970-01-01' }
+    @payload = { 'date_of_birth' => '1970-01-01', 'secondary_status' => '32' }
 
     post api_v1_appointment_cancel_path(@appointment, params: @payload, as: :json)
   end
@@ -51,6 +52,10 @@ RSpec.describe 'POST /api/v1/appointments/{id}/cancel' do # rubocop:disable Metr
 
   def and_the_appointment_is_cancelled
     expect(@appointment.reload).to be_cancelled_by_customer_online
+  end
+
+  def and_the_cancellation_reason_is_recorded
+    expect(@appointment.secondary_status).to eq('32') # Inconvenient time
   end
 
   def and_a_customer_online_cancellation_activity_is_created
