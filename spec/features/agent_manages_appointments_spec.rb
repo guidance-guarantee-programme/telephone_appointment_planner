@@ -434,6 +434,8 @@ RSpec.feature 'Agent manages appointments' do
     @page.status.select('Cancelled By Customer')
     @page.wait_until_secondary_status_options_visible
     @page.secondary_status.select('Cancelled prior to appointment')
+    @page.wait_until_cancelled_via_phone_visible
+    @page.cancelled_via_phone.set(true)
     @page.submit.click
   end
 

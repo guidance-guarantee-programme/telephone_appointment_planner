@@ -547,6 +547,17 @@ RSpec.describe Appointment, type: :model do
     context 'when the status would require a secondary status' do
       before { subject.created_at = Time.current }
 
+      context 'when cancelled prior to appointment' do
+        it 'requires cancelled via' do
+          subject.status = :cancelled_by_customer
+          subject.secondary_status = '15' # Cancelled prior to appointment
+          expect(subject).to be_invalid
+
+          subject.cancelled_via = 'phone'
+          expect(subject).to be_valid
+        end
+      end
+
       context 'for secondary statuses without cut-off mandated' do
         it 'is invalid' do
           subject.status = :incomplete
@@ -571,6 +582,7 @@ RSpec.describe Appointment, type: :model do
 
             subject.status = :cancelled_by_customer
             subject.secondary_status = '15' # Cancelled prior to appointment
+            subject.cancelled_via = 'phone'
             expect(subject).to be_valid
 
             subject.secondary_status = '17' # Customer forgot

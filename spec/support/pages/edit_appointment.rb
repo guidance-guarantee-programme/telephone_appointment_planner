@@ -20,6 +20,8 @@ module Pages
     element :gdpr_consent_yes,                      '.t-gdpr-consent-yes'
     element :gdpr_consent_no,                       '.t-gdpr-consent-no'
     element :gdpr_consent_no_response,              '.t-gdpr-consent-no-response'
+    element :cancelled_via_phone,                   '.t-cancelled-via-phone'
+    element :cancelled_via_email,                   '.t-cancelled-via-email'
 
     element :status, '.t-status'
     element :secondary_status, '.t-secondary-status'
