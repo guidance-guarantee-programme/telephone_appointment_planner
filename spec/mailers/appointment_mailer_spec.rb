@@ -14,6 +14,24 @@ RSpec.describe AppointmentMailer, type: :mailer do
     )
   end
 
+  describe 'Potential duplicates notification' do
+    let(:appointment) { build_stubbed(:appointment) }
+
+    subject(:mail) { described_class.potential_duplicates(appointment) }
+
+    it 'determines the correct subject' do
+      expect(subject.subject).to eq('Pension Wise Potential Duplicates')
+    end
+
+    it 'is delivered to the ops supervisor mailbox' do
+      expect(subject.to).to eq(['supervisors@maps.org.uk'])
+    end
+
+    it 'contains the duplicates details' do
+      expect(subject.body.encoded).to include('identified as a potential duplicate')
+    end
+  end
+
   describe 'Due diligence appointment confirmation' do
     let(:appointment) { build_stubbed(:appointment, :due_diligence) }
 

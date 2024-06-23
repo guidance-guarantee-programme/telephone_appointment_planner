@@ -35,7 +35,7 @@ class Notifier
     end
   end
 
-  def notify_resource_managers
+  def notify_resource_managers # rubocop:disable Metrics/MethodLength
     if appointment_cancelled?
       AppointmentCancelledNotificationsJob.perform_later(appointment)
     elsif appointment_reallocated?
@@ -45,6 +45,10 @@ class Notifier
     elsif requires_agent_changed_notification?
       AgentChangedNotificationsJob.perform_later(appointment)
     end
+
+    return unless requires_potential_duplicates_notification?
+
+    AppointmentMailer.potential_duplicates(appointment).deliver_later
   end
 
   def notify_guiders
@@ -71,6 +75,10 @@ class Notifier
     PrintedThirdPartyConsentFormJob.perform_later(appointment) if requires_printed_consent_form?
     EmailThirdPartyConsentFormJob.perform_later(appointment) if requires_email_consent_form?
     BslCustomerExitPollJob.set(wait: 24.hours).perform_later(appointment) if bsl_appointment_complete?
+  end
+
+  def requires_potential_duplicates_notification?
+    appointment.potential_duplicates?
   end
 
   def requires_adjustment_notification?

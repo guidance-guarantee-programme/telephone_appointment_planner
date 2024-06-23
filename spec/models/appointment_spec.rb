@@ -21,19 +21,6 @@ RSpec.describe Appointment, type: :model do
   end
 
   describe '#adjustments?' do
-    context 'when the appointment is Pension Wise' do
-      context 'when the guider is not Pension Ops' do
-        context 'when the adjustment is potential duplicates' do
-          it 'is true' do
-            appointment = build_stubbed(:appointment_for_casebook_creation, organisation: :cas)
-            allow(appointment).to receive(:potential_duplicates?).and_return(true)
-
-            expect(appointment).to be_adjustments
-          end
-        end
-      end
-    end
-
     context 'when the customer is DC unsure' do
       context 'when the appointment is Pension Wise' do
         context 'when the guider is Pension Ops/TPAS' do

@@ -22,6 +22,7 @@ module Api
 
       def send_notifications(appointment)
         AdjustmentNotificationsJob.perform_later(appointment) if appointment.adjustments?
+        AppointmentMailer.potential_duplicates(appointment).deliver_later if appointment.potential_duplicates?
         CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::CONFIRMED_MESSAGE)
         AppointmentCreatedNotificationsJob.perform_later(appointment)
         PushCasebookAppointmentJob.perform_later(appointment)
