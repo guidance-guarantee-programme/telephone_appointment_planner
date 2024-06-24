@@ -28,6 +28,10 @@
 
       let chosenStatus = this.$el.val();
 
+      if (chosenStatus != 'cancelled_by_customer') {
+        this.$cancelledVia.hide();
+      }
+
       if (Object.prototype.hasOwnProperty.call(this.$secondaryOptions, chosenStatus)) {
         let options = this.$secondaryOptions[chosenStatus];
 
