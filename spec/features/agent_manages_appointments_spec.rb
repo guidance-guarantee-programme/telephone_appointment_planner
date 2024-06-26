@@ -243,8 +243,6 @@ RSpec.feature 'Agent manages appointments' do
       when_they_accept_the_appointment_preview
       then_that_appointment_is_created
       and_the_customer_gets_an_email_confirmation
-      and_a_printed_consent_form_job_is_enqueued
-      and_an_email_consent_form_job_is_enqueued
       and_a_printed_confirmation_job_is_enqueued
       and_the_system_attempts_to_push_to_casebook
     end
@@ -466,23 +464,6 @@ RSpec.feature 'Agent manages appointments' do
     expect(@page).to have_data_subject_date_of_birth_day
     expect(@page).to have_data_subject_date_of_birth_month
     expect(@page).to have_data_subject_date_of_birth_year
-
-    expect(@page).to have_no_data_subject_consent_evidence
-    expect(@page).to have_no_power_of_attorney_evidence
-
-    @page.data_subject_consent_obtained.set(true)
-    @page.power_of_attorney.set(true)
-
-    expect(@page).to have_no_data_subject_consent_evidence
-    expect(@page).to have_no_power_of_attorney_evidence
-
-    expect(@page).to have_no_printed_consent_form_postcode_lookup
-
-    @page.printed_consent_form_required.set(true)
-    expect(@page).to have_printed_consent_form_postcode_lookup
-
-    @page.email_consent_form_required.set(true)
-    expect(@page).to have_email_consent
   end
 
   def and_the_system_attempts_to_push_to_casebook
@@ -620,16 +601,8 @@ RSpec.feature 'Agent manages appointments' do
     assert_enqueued_jobs(1, only: CustomerUpdateJob)
   end
 
-  def and_a_printed_consent_form_job_is_enqueued
-    assert_enqueued_jobs(1, only: PrintedThirdPartyConsentFormJob)
-  end
-
   def and_a_printed_confirmation_job_is_enqueued
     assert_enqueued_jobs(1, only: PrintedConfirmationJob)
-  end
-
-  def and_an_email_consent_form_job_is_enqueued
-    assert_enqueued_jobs(1, only: EmailThirdPartyConsentFormJob)
   end
 
   def and_the_customer_gets_an_updated_email_confirmation

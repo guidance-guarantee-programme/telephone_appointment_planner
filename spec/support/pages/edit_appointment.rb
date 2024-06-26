@@ -38,14 +38,6 @@ module Pages
     element :data_subject_date_of_birth_day,        '.t-data-subject-date-of-birth-day'
     element :data_subject_date_of_birth_month,      '.t-data-subject-date-of-birth-month'
     element :data_subject_date_of_birth_year,       '.t-data-subject-date-of-birth-year'
-    element :data_subject_consent_obtained,         '.t-data-subject-consent-obtained'
-    element :data_subject_consent_evidence,         '.t-data-subject-consent-evidence'
-    element :consent_download,                      '.t-consent-download'
-    element :power_of_attorney,                     '.t-power-of-attorney'
-    element :power_of_attorney_evidence,            '.t-power-of-attorney-evidence'
-    element :power_of_attorney_download,            '.t-power-of-attorney-download'
-    element :printed_consent_form_required,         '.t-printed-consent-form-required'
-    element :printed_consent_form_postcode_lookup,  '.t-printed-consent-form-postcode-lookup'
 
     element :permissions_warning, '.t-permissions'
 

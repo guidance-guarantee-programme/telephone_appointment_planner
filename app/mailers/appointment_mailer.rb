@@ -97,14 +97,6 @@ class AppointmentMailer < ApplicationMailer
     mail to: @appointment.email
   end
 
-  def consent_form(appointment)
-    return unless appointment.email_consent?
-
-    mailgun_headers('consent_form', appointment.id)
-    @appointment = decorate(appointment)
-    mail to: @appointment.email_consent, subject: 'Pension Wise Third Party Consent Form'
-  end
-
   private
 
   def decorate(appointment)

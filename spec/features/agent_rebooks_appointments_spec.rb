@@ -132,7 +132,6 @@ RSpec.feature 'Agent rebooks appointments' do
 
     @page = Pages::NewAppointment.new
     expect(@page).to be_displayed
-    expect(@page).to have_data_subject_consent_evidence_copied
   end
 
   def then_the_details_are_copied_over

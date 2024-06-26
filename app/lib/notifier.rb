@@ -8,7 +8,6 @@ class Notifier
     mobile
     notes
     date_of_birth
-    data_subject_consent_obtained
   ].freeze
 
   def initialize(appointment, modifying_agent = nil)
@@ -61,7 +60,7 @@ class Notifier
     Array(appointment.previous_changes.fetch('guider_id', appointment.guider_id))
   end
 
-  def notify_customer # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+  def notify_customer # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     if appointment_cancelled?
       CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::CANCELLED_MESSAGE)
     elsif appointment_missed?
@@ -72,8 +71,6 @@ class Notifier
 
     DueDiligenceReferenceNumberJob.perform_now(appointment) if due_diligence_appointment_complete?
     PrintedConfirmationJob.perform_later(appointment) if appointment_rescheduled?
-    PrintedThirdPartyConsentFormJob.perform_later(appointment) if requires_printed_consent_form?
-    EmailThirdPartyConsentFormJob.perform_later(appointment) if requires_email_consent_form?
     BslCustomerExitPollJob.set(wait: 24.hours).perform_later(appointment) if bsl_appointment_complete?
   end
 
@@ -87,16 +84,6 @@ class Notifier
     appointment.previous_changes.slice(
       'accessibility_requirements', 'third_party_booking', 'dc_pot_confirmed'
     ).present? && appointment.adjustments?
-  end
-
-  def requires_printed_consent_form?
-    appointment.previous_changes.slice('printed_consent_form_required').present? &&
-      appointment.printed_consent_form_required?
-  end
-
-  def requires_email_consent_form?
-    appointment.previous_changes.slice('email_consent_form_required', 'email_consent').present? &&
-      appointment.email_consent_form_required?
   end
 
   def bsl_appointment_complete?
