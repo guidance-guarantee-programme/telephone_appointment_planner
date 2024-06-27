@@ -3,5 +3,7 @@ class CasebookJob < ApplicationJob
     Bugsnag.notify(error)
   end
 
+  retry_on Faraday::TimeoutError, wait: :exponentially_longer
+
   queue_as :default
 end
