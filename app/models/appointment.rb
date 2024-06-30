@@ -14,6 +14,7 @@ class Appointment < ApplicationRecord
     cancelled_by_customer
     cancelled_by_pension_wise
     cancelled_by_customer_sms
+    cancelled_by_customer_online
   ].freeze
 
   APPOINTMENT_LENGTH_MINUTES = 70.minutes.freeze
@@ -50,7 +51,7 @@ class Appointment < ApplicationRecord
 
   enum status: { pending: 0, complete: 1, no_show: 2, incomplete: 3, ineligible_age: 4,
                  ineligible_pension_type: 5, cancelled_by_customer: 6, cancelled_by_pension_wise: 7,
-                 cancelled_by_customer_sms: 8 }
+                 cancelled_by_customer_sms: 8, cancelled_by_customer_online: 9 }
 
   AGENT_PERMITTED_SECONDARY = '15'.freeze
   SECONDARY_STATUSES = {
@@ -93,6 +94,15 @@ class Appointment < ApplicationRecord
       '25' => 'UK number invalid',
       '26' => 'Overseas number valid – customer did not answer',
       '27' => 'Overseas number invalid'
+    },
+    'cancelled_by_customer_online' => {
+      '32' => 'Inconvenient time',
+      '33' => 'Changed mind',
+      '34' => 'Not prepared enough',
+      '35' => 'Booked multiple appointments',
+      '36' => 'Appointment no longer required',
+      '37' => 'Booked wrong type of appointment',
+      '38' => 'Other'
     }
   }.freeze
 
@@ -394,6 +404,19 @@ class Appointment < ApplicationRecord
 
       CancelCasebookAppointmentJob.perform_later(self)
     end
+  end
+
+  def self_serve_cancel!(secondary_status)
+    without_auditing do
+      transaction do
+        update!(status: :cancelled_by_customer_online, secondary_status:)
+        CustomerOnlineCancellationActivity.from(self)
+      end
+
+      SmsCancellationSuccessJob.perform_later(self) if mobile?
+    end
+
+    true
   end
 
   def customer_research_consent

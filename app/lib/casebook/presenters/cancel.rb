@@ -22,7 +22,7 @@ module Casebook
 
       def cancel_status
         case appointment.status
-        when 'cancelled_by_customer', 'cancelled_by_customer_sms'
+        when 'cancelled_by_customer', 'cancelled_by_customer_sms', 'cancelled_by_customer_online'
           CLIENT_CANCELLED
         else
           OFFICE_CANCELLED
