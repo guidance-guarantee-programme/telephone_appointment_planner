@@ -47,19 +47,6 @@ RSpec.feature 'Guider edits an appointment' do
     end
   end
 
-  scenario 'Attaching consent evidence to an existing appointment', js: true do
-    given_the_user_is_a_guider do
-      and_they_have_a_third_party_booking
-      when_they_attempt_to_edit_the_appointment
-      and_they_attach_the_consent_evidence
-      when_they_save_the_changes
-      then_the_appointment_has_attached_evidence
-      when_they_attach_power_of_attorney_evidence
-      when_they_save_the_changes
-      then_the_power_of_attorney_evidence_is_attached
-    end
-  end
-
   def when_the_guider_attempts_to_reschedule_an_appointment_directly
     @page = Pages::RescheduleAppointment.new
     @page.load(id: @appointment_one.id)
@@ -122,29 +109,8 @@ RSpec.feature 'Guider edits an appointment' do
     @appointment = create(:appointment, :third_party_booking, :data_subject_consented)
   end
 
-  def and_they_attach_the_consent_evidence
-    expect(@page).to have_data_subject_consent_evidence
-
-    @page.attach_file('Data subject consent evidence', Rails.root.join('spec/fixtures/evidence.pdf'))
-  end
-
   def when_they_save_the_changes
     @page.submit.click
-  end
-
-  def then_the_appointment_has_attached_evidence
-    expect(@page).to have_consent_download
-  end
-
-  def when_they_attach_power_of_attorney_evidence
-    @page.data_subject_consent_obtained.set(false)
-    @page.power_of_attorney.set(true)
-
-    @page.attach_file('Power of attorney evidence', Rails.root.join('spec/fixtures/evidence.pdf'))
-  end
-
-  def then_the_power_of_attorney_evidence_is_attached
-    expect(@page).to have_power_of_attorney_download
   end
 
   def and_they_have_an_appointment

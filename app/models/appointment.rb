@@ -38,14 +38,6 @@ class Appointment < ApplicationRecord
     data_subject_name
     data_subject_age
     data_subject_date_of_birth
-    power_of_attorney
-    data_subject_consent_obtained
-    printed_consent_form_required
-    data_subject_consent_evidence
-    power_of_attorney_evidence
-    email_consent_form_required
-    email_consent
-    generated_consent_form
     lloyds_signposted
     unique_reference_number
     referrer
@@ -150,12 +142,8 @@ class Appointment < ApplicationRecord
   validates :unique_reference_number, uniqueness: true, if: :complete_due_diligence?
   validates :referrer, presence: true, if: :due_diligence?, on: :create
   validates :email, email: true, unless: :sms_confirmation?
-  validates :email_consent, presence: true, email: true, if: :email_consent_form_required?
   validates :cancelled_via, inclusion: %w[phone email], on: :update, if: :cancelled_prior_to_appointment?
 
-  validate :validate_printed_consent_form_address
-  validate :validate_consent_type
-  validate :validate_power_of_attorney_or_consent
   validate :not_within_grace_period, unless: :agent_is_resource_manager?
   validate :valid_within_booking_window
   validate :date_of_birth_valid
@@ -642,45 +630,6 @@ class Appointment < ApplicationRecord
     return if mobile.blank?
 
     errors.add(:mobile, 'must have at least 10 digits') if mobile.gsub(/[^\d]/, '').length < 10
-  end
-
-  def validate_printed_consent_form_address
-    return unless third_party_booking? && printed_consent_form_required?
-
-    errors.add(:printed_consent_form_required, 'must supply a valid address') unless printed_consent_address?
-  end
-
-  def validate_power_of_attorney_or_consent
-    return unless third_party_booking?
-
-    if printed_consent_form_required? && power_of_attorney?
-      errors.add(:printed_consent_form_required, 'cannot be checked when power of attorney is specified')
-    end
-
-    if email_consent_form_required? && power_of_attorney? # rubocop:disable Style/GuardClause
-      errors.add(:email_consent_form_required, 'cannot be checked when power of attorney is specified')
-    end
-  end
-
-  def validate_consent_type
-    return unless third_party_booking?
-
-    if power_of_attorney? && data_subject_consent_obtained? # rubocop:disable Style/GuardClause
-      errors.add(
-        :third_party_booking,
-        "you may only specify 'data subject consent obtained', 'power of attorney' or neither"
-      )
-    end
-  end
-
-  def email_consent_valid
-    unless /.+@.+\..+/ === email_consent.to_s # rubocop:disable Style/CaseEquality, Style/GuardClause
-      errors.add(:email_consent, 'must be valid')
-    end
-  end
-
-  def printed_consent_address?
-    [consent_address_line_one, consent_town, consent_postcode].all?(&:present?)
   end
 
   def validate_secondary_status # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity

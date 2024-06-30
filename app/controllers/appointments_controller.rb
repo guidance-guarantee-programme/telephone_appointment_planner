@@ -123,8 +123,6 @@ class AppointmentsController < ApplicationController
     CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::CONFIRMED_MESSAGE)
     PrintedConfirmationJob.perform_later(appointment)
     AppointmentCreatedNotificationsJob.perform_later(appointment)
-    PrintedThirdPartyConsentFormJob.perform_later(appointment)
-    EmailThirdPartyConsentFormJob.perform_later(appointment)
   end
 
   def postcode_api_key
