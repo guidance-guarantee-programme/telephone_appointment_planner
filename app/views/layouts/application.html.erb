@@ -20,6 +20,16 @@
   <% end %>
 <% end %>
 
+<% content_for :content do %>
+  <p class="alert alert-warning">
+  MaPS phone lines and webchat will be closed between 26-27 February 2026.
+  Please raise Pension Wise operational queries or requests via <a
+  href="mailto:supervisors@maps.org.uk">supervisors@maps.org.uk</a>.
+  </p>
+
+  <%= yield %>
+<% end %>
+
 <% content_for :body_end do %>
   <div data-module="activity-resolve"></div>
   <script>
