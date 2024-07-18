@@ -246,20 +246,21 @@ class Appointment < ApplicationRecord
     mobile.presence || phone
   end
 
-  def potential_duplicates
-    self.class.where.not(id:)
-        .where(
-          first_name:,
-          last_name:,
-          date_of_birth:,
-          status: :pending
-        )
-        .order(:id)
-        .take(10)
+  def potential_duplicates(only_pending: true)
+    scope = self.class.where.not(id:)
+                .where(
+                  first_name:,
+                  last_name:,
+                  date_of_birth:
+                )
+
+    scope = scope.where(status: :pending) if only_pending
+
+    scope.order(:id).take(20)
   end
 
-  def potential_duplicates?
-    potential_duplicates.size.positive?
+  def potential_duplicates?(only_pending: true)
+    potential_duplicates(only_pending:).size.positive?
   end
 
   def imported?
