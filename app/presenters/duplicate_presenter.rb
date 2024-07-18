@@ -20,7 +20,7 @@ class DuplicatePresenter < SimpleDelegator
   end
 
   def status
-    super.humanize
+    super&.humanize
   end
 
   def email
