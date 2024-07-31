@@ -1,6 +1,8 @@
 sudo: false
 dist: focal
 language: ruby
+addons:
+  chrome: stable
 services:
 - redis-server
 - postgresql
