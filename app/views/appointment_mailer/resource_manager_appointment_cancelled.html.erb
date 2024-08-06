@@ -1,5 +1,5 @@
 <h1 style="color: #0F19A0 !important;font-family: Calibri, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 20px;line-height: 1.111111111;padding: 15px 0;">
-  An appointment was cancelled
+  An appointment was cancelled <%= '(online)' if @appointment.cancelled_by_customer_online? %>
 </h1>
 
 <%= p do %>
