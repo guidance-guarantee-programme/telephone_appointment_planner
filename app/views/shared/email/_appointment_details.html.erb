@@ -71,6 +71,9 @@
     Our team are here to help you, please treat them with respect. If you are verbally abusive toward them, they have the right to end the call and you may have to rebook.
   <% end %>
 
+  <h2 style="color: #0F19A0 !important;font-family: Calibri, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 18px;line-height: 1.111111111;padding: 15px 0;">
+    Change or cancel your appointment
+  </h2>
   <%= p do %>
     <strong>
       If you miss the call, you’ll need to book another appointment.
@@ -79,5 +82,11 @@
 
   <%= p do %>
     Call <strong><%= @appointment.telephone %></strong> to change or cancel your booking.
+  <% end %>
+
+  <% if @appointment.online_cancellation? %>
+    <%= p do %>
+      If you wish to cancel your Pension Wise appointment you can <strong><%= link_to 'do this online', @appointment.online_cancellation_url %></strong>.
+    <% end %>
   <% end %>
 <% end %>

@@ -26,7 +26,8 @@ class AppointmentMailer < ApplicationMailer
   def resource_manager_appointment_cancelled(appointment, recipient)
     mailgun_headers('resource_manager_appointment_cancelled', appointment.id)
     @appointment = decorate(appointment)
-    mail to: recipient, subject: @appointment.subject('Appointment Cancelled')
+    subject = "Appointment Cancelled#{' (online)' if @appointment.cancelled_by_customer_online?}"
+    mail to: recipient, subject: @appointment.subject(subject)
   end
 
   def resource_manager_appointment_created(appointment, recipient)
