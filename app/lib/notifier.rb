@@ -75,7 +75,7 @@ class Notifier
   end
 
   def requires_potential_duplicates_notification?
-    appointment.potential_duplicates?
+    appointment.pending? && appointment.potential_duplicates?
   end
 
   def requires_adjustment_notification?

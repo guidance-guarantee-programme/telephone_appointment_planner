@@ -19,12 +19,24 @@ RSpec.describe Notifier, '#call' do
   end
 
   context 'when the appointment has potential duplicates' do
-    it 'sends the correct email notification' do
-      allow(appointment).to receive(:potential_duplicates?).and_return(true)
-      expect(AppointmentMailer).to receive(:potential_duplicates).and_return(mailer)
-      expect(mailer).to receive(:deliver_later)
+    context 'when the appointment is pending' do
+      it 'sends the correct email notification' do
+        allow(appointment).to receive(:potential_duplicates?).and_return(true)
+        expect(AppointmentMailer).to receive(:potential_duplicates).and_return(mailer)
+        expect(mailer).to receive(:deliver_later)
 
-      subject.call
+        subject.call
+      end
+    end
+
+    context 'when the appointment is not pending' do
+      it 'does not send the notification' do
+        allow(appointment).to receive(:pending?).and_return(false)
+        allow(appointment).to receive(:potential_duplicates?).and_return(true)
+        expect(AppointmentMailer).not_to receive(:potential_duplicates)
+
+        subject.call
+      end
     end
   end
 
