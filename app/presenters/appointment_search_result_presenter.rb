@@ -4,7 +4,7 @@ class AppointmentSearchResultPresenter < SimpleDelegator
   delegate :name, :organisation, to: :guider, prefix: true
 
   def status
-    super.titleize
+    super&.titleize
   end
 
   def created_at

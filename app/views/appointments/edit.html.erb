@@ -38,9 +38,9 @@
   <% end %>
 </h4>
 
-<% if @appointment.potential_duplicates? %>
+<% if @appointment.potential_duplicates?(only_pending: false) %>
   <div class="alert alert-warning" role="alert">
-    <p>This appointment <strong><%= link_to 'may be duplicated', appointment_duplicates_path(@appointment) %></strong></p>
+    <p>The customer’s details <strong><%= link_to 'match other appointment records', appointment_duplicates_path(@appointment) %></strong></p>
   </div>
 <% end %>
 
