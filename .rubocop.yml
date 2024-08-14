@@ -37,6 +37,10 @@ Metrics/AbcSize:
     - 'spec/features/*'
     - 'spec/requests/*'
 
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/helpers/*'
+
 Style/ExpandPathArguments:
   Exclude:
     - 'spec/rails_helper.rb'

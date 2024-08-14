@@ -72,7 +72,7 @@ module AppointmentHelper
   def rebooked_from_heading(appointment)
     return unless appointment.rebooked_from_id?
 
-    online = appointment.cancelled_by_customer_online? ? 'online ' : ''
+    online = appointment.rebooked_from.cancelled_by_customer_online? ? 'online ' : ''
 
     content_tag(
       :h2,
