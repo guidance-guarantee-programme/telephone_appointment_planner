@@ -1,6 +1,20 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::AppointmentCancellation, '#cancel' do
+RSpec.describe Api::V1::AppointmentCancellation, '#cancel' do # rubocop:disable Metrics/BlockLength
+  context 'when the appointment is PSG' do
+    it 'returns false' do
+      @appointment = create(:appointment, :due_diligence)
+
+      expect(
+        described_class.new(
+          appointment_id: @appointment.id,
+          date_of_birth: @appointment.date_of_birth,
+          secondary_status: '32'
+        ).cancel
+      ).to be_falsey
+    end
+  end
+
   context 'when the appointment matches the required criteria' do
     it 'returns true' do
       @appointment = create(:appointment)

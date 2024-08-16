@@ -18,7 +18,12 @@ module Api
       private
 
       def appointment
-        @appointment ||= ::Appointment.find_by(id: appointment_id, date_of_birth:, status: :pending)
+        @appointment ||= ::Appointment.find_by(
+          id: appointment_id,
+          date_of_birth:,
+          status: :pending,
+          schedule_type: User::PENSION_WISE_SCHEDULE_TYPE
+        )
       end
     end
   end
