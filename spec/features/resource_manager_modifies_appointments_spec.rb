@@ -288,9 +288,7 @@ RSpec.feature 'Resource manager modifies appointments' do
   end
 
   def and_click_a_link_while_dismissing_the_warning
-    dismiss_confirm do
-      @page.find('.navbar-brand').click
-    end
+    @page.find('.navbar-brand').click
   end
 
   def then_they_do_not_navigate_away

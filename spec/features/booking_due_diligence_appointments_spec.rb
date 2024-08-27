@@ -78,7 +78,7 @@ RSpec.feature 'Booking due diligence appointments', js: true do
   end
 
   def and_the_appointment_can_be_rebooked
-    @appointment.cancelled_by_pension_wise!
+    @appointment.update!(status: :cancelled_by_pension_wise, secondary_status: '31')
   end
 
   def when_they_attempt_to_rebook
