@@ -123,7 +123,7 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
 
   def and_there_are_cancelled_appointments
     create(:appointment, status: :cancelled_by_customer_sms, start_at: range_start + 1.day)
-    create(:appointment, status: :cancelled_by_pension_wise, start_at: range_start + 2.days)
+    create(:appointment, status: :cancelled_by_pension_wise, secondary_status: '31', start_at: range_start + 2.days)
     create(:appointment, :due_diligence, start_at: range_start.at_midday + 5.days)
   end
 
@@ -133,7 +133,7 @@ RSpec.feature 'Resource manager downloads utilisation reports' do
 
   def and_there_are_cancelled_appointments_outside_the_date_range
     create(:appointment, status: :cancelled_by_customer_sms, start_at: range_start + 10.days)
-    create(:appointment, status: :cancelled_by_pension_wise, start_at: range_start + 11.days)
+    create(:appointment, status: :cancelled_by_pension_wise, secondary_status: '31', start_at: range_start + 11.days)
   end
 
   def and_there_are_bookable_slots

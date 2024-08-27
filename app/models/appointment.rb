@@ -83,7 +83,9 @@ class Appointment < ApplicationRecord
       '21' => 'Duplicate appointment booked by customer',
       '22' => 'Customer driving whilst having appointment',
       '23' => 'Third-party consent not received',
-      '28' => 'Customer wanted PSG appointment',
+      '28' => 'Customer wanted PSG appointment'
+    },
+    'cancelled_by_pension_wise' => {
       '29' => 'Duplicate appointment',
       '30' => 'Guider absence',
       '31' => 'Telephony issue'

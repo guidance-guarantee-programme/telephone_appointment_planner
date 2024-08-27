@@ -549,7 +549,8 @@ RSpec.describe BookableSlot, type: :model do
             guider: User.guiders.last,
             start_at: make_time(10, 30),
             end_at: make_time(11, 30),
-            status: :cancelled_by_pension_wise
+            status: :cancelled_by_pension_wise,
+            secondary_status: '31'
           )
 
           expect(result).to eq(

@@ -731,7 +731,7 @@ RSpec.feature 'Agent manages appointments' do
   def when_they_cancel_the_appointment
     @page = Pages::EditAppointment.new
     @page.load(id: @appointment.id)
-    @page.status.select('Cancelled By Pension Wise')
+    @page.status.select('Cancelled By Customer Sms')
     @page.submit.click
   end
 
