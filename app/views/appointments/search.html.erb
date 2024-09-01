@@ -6,7 +6,7 @@
 <%= form_for @search, method: 'GET', url: { action: :search }, html: { class: 'appointment-search form-inline' } do |f| %>
   <div class="form-group">
     <%= f.label :q, 'Search term' %>
-    <%= f.text_field :q, use_label: false, class: 't-q appointment-search__term form-control', placeholder: 'Reference, name or guider' %>
+    <%= f.text_field :q, use_label: false, class: 't-q appointment-search__term form-control', placeholder: 'Reference or name' %>
   </div>
   <div class="form-group">
     <%= f.label :date_range, 'Date range' %>
