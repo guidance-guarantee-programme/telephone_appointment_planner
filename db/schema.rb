@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_05_30_142914) do
+ActiveRecord::Schema.define(version: 2024_09_01_141920) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -123,7 +123,7 @@ ActiveRecord::Schema.define(version: 2024_05_30_142914) do
     t.string "country_code", default: "GB", null: false
     t.boolean "welsh", default: false, null: false
     t.string "cancelled_via", default: "", null: false
-    t.index ["guider_id", "start_at"], name: "unique_slot_guider_in_appointment", unique: true, where: "((status <> ALL (ARRAY[5, 6, 7, 8])) AND (start_at > '2022-07-02 00:00:00'::timestamp without time zone))"
+    t.index ["guider_id", "start_at"], name: "unique_slot_guider_in_appointment", unique: true, where: "((status <> ALL (ARRAY[5, 6, 7, 8, 9])) AND (start_at > '2021-04-21 00:00:00'::timestamp without time zone))"
     t.index ["guider_id"], name: "index_appointments_on_guider_id"
     t.index ["schedule_type"], name: "index_appointments_on_schedule_type"
     t.index ["start_at", "end_at", "guider_id"], name: "index_appointments_on_start_at_and_end_at_and_guider_id"
