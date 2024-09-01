@@ -46,7 +46,8 @@ module Api
           :smarter_signposted,
           :lloyds_signposted,
           :referrer,
-          :nudged
+          :nudged,
+          :rebooked_from_id
         ).merge(
           agent: current_user,
           schedule_type:

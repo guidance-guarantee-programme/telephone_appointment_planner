@@ -97,7 +97,8 @@ class BookableSlot < ApplicationRecord
               AND NOT appointments.status IN (
                 #{Appointment.statuses['cancelled_by_customer']},
                 #{Appointment.statuses['cancelled_by_pension_wise']},
-                #{Appointment.statuses['cancelled_by_customer_sms']}
+                #{Appointment.statuses['cancelled_by_customer_sms']},
+                #{Appointment.statuses['cancelled_by_customer_online']}
               )
               AND (
                 appointments.start_at, appointments.end_at

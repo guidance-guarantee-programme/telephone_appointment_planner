@@ -25,11 +25,17 @@ You should have received further information and a link to access your video app
 
 Email us if you need this information resent or to change or cancel your booking. You may be asked for your booking reference number.
 <% else %>
-  A trained guidance specialist will call you on the number above. They'll repeat the memorable word so you know you're speaking to <%= @appointment.provider %>.
+A trained guidance specialist will call you on the number above. They'll repeat the memorable word so you know you're speaking to <%= @appointment.provider %>.
 
-  Our team are here to help you, please treat them with respect. If you are verbally abusive toward them, they have the right to end the call and you may have to rebook.
+Our team are here to help you, please treat them with respect. If you are verbally abusive toward them, they have the right to end the call and you may have to rebook.
+
+Change or cancel your appointment
 
 If you miss the call, you'll need to book another appointment.
 
-Call <%= @appointment.telephone %> to change or cancel your booking.
+Call <%= @appointment.telephone %> to change your booking.
+
+<% if @appointment.online_cancellation? %>
+If you wish to cancel your Pension Wise appointment you can do this online: <%= @appointment.online_cancellation_url %>
+<% end %>
 <% end %>
