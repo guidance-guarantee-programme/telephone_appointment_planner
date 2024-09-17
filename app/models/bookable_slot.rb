@@ -1,5 +1,7 @@
 # rubocop:disable Metrics/ClassLength
 class BookableSlot < ApplicationRecord
+  acts_as_copy_target
+
   belongs_to :guider, class_name: 'User'
 
   scope :for_guider, ->(guider) { where(guider:) }
