@@ -31,7 +31,8 @@ class BookableSlotsController < ApplicationController
       Time.zone.parse(params[:start]),
       Time.zone.parse(params[:end]),
       schedule_type:,
-      external: true
+      external: true,
+      rebooking: rebooking?
     )
   end
 
@@ -56,6 +57,10 @@ class BookableSlotsController < ApplicationController
 
   def rescheduling?
     params[:rescheduling] == 'true'
+  end
+
+  def rebooking?
+    params[:rebooking] == 'true'
   end
 
   def filtered_user
