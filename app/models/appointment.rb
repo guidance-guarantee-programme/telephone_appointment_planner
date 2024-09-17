@@ -292,9 +292,9 @@ class Appointment < ApplicationRecord
     status.start_with?('cancelled')
   end
 
-  def allocate(via_slot: true, agent: nil, scoped: false)
+  def allocate(via_slot: true, agent: nil, scoped: false, rebooking: false)
     if via_slot
-      allocate_slot(agent, scoped)
+      allocate_slot(agent, scoped, rebooking)
     else
       return unless start_at?
 
@@ -521,10 +521,12 @@ class Appointment < ApplicationRecord
     self.unique_reference_number = '' if status_changed?(from: 'complete') && due_diligence?
   end
 
-  def allocate_slot(agent, scoped)
+  def allocate_slot(agent, scoped, rebooking) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     args = agent&.tpas_agent? && pension_wise? && scoped ? { external: true } : {}
+    args = { external: scoped } if agent&.non_tpas_resource_manager? && pension_wise? && rebooking
 
     slot = BookableSlot.find_available_slot(start_at, agent, schedule_type, scoped:, **args)
+
     self.guider = nil
     return unless slot
 

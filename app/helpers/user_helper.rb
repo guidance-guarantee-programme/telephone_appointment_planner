@@ -11,6 +11,14 @@ module UserHelper
     content_tag(:small, ' (Casebook)')
   end
 
+  def can_switch_availability?(current_user, appointment, rebooking, rescheduling)
+    return false unless appointment.pension_wise?
+    return true if current_user.tpas_agent? && !rescheduling
+    return true if current_user.non_tpas_resource_manager? && rebooking
+
+    false
+  end
+
   def can_process?(current_user, appointment)
     !current_user.tpas? && !appointment.processed_at?
   end
