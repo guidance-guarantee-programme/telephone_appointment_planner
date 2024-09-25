@@ -10,18 +10,32 @@
 <%= form_for [@appointment], url: appointment_update_reschedule_path(@appointment), layout: :basic do |f| %>
   <% if current_user.tp? %>
     <%= f.hidden_field :rescheduling_reason, value: 'client_rescheduled' %>
+    <%= f.hidden_field :rescheduling_route, value: 'phone' %>
   <% else %>
+  <div data-module="radio-toggle">
     <div class="row form-group">
       <div class="col-md-12">
         <label><%= required_label('Reason for rescheduling') %></label>
         <div class="radio">
-          <%= f.radio_button :rescheduling_reason, 'client_rescheduled', label: 'Client rescheduled', class: 't-client-rescheduled' %>
+          <%= f.radio_button :rescheduling_reason, 'client_rescheduled', label: 'Client rescheduled', class: 't-client-rescheduled', data: { target: 'rescheduling_route' } %>
         </div>
         <div class="radio">
           <%= f.radio_button :rescheduling_reason, 'office_rescheduled', label: 'Pension Wise rescheduled', class: 't-pension-wise-rescheduled' %>
         </div>
       </div>
     </div>
+    <div class="row form-group" id="rescheduling_route">
+      <div class="col-md-12">
+        <label><%= required_label('Customer rescheduled via') %></label>
+        <div class="radio">
+          <%= f.radio_button :rescheduling_route, 'phone', label: 'Phone', class: 't-via-phone' %>
+        </div>
+        <div class="radio">
+          <%= f.radio_button :rescheduling_route, 'email_or_crm', label: 'Email or CRM', class: 't-via-email-or-crm' %>
+        </div>
+      </div>
+    </div>
+  </div>
   <% end %>
   <div class="row form-group">
     <%= render 'schedule_form', form: f, rescheduling: true, schedule_type: @appointment.schedule_type %>

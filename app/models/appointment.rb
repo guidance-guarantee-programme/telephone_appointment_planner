@@ -9,6 +9,7 @@ class Appointment < ApplicationRecord
   DEFAULT_COUNTRY_CODE = 'GB'.freeze
 
   RESCHEDULING_REASONS = %w[client_rescheduled office_rescheduled].freeze
+  RESCHEDULING_ROUTES  = %w[phone email_or_crm].freeze
 
   CANCELLED_STATUSES = %i[
     cancelled_by_customer
@@ -46,6 +47,7 @@ class Appointment < ApplicationRecord
     country_code
     welsh
     rescheduling_reason
+    rescheduling_route
     cancelled_via
   ].freeze
 
@@ -737,6 +739,12 @@ class Appointment < ApplicationRecord
     return unless start_at_changed?
 
     errors.add(:rescheduling_reason, 'must be specified') unless RESCHEDULING_REASONS.include?(rescheduling_reason)
+    errors.add(:rescheduling_route, 'must be specified') if client_rescheduled? &&
+                                                            !RESCHEDULING_ROUTES.include?(rescheduling_route)
+  end
+
+  def client_rescheduled?
+    rescheduling_reason == 'client_rescheduled'
   end
 
   def validate_welsh_language
