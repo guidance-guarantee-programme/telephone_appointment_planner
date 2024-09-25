@@ -7,6 +7,8 @@ module Pages
     element :slot_unavailable_message, '.t-slot-unavailable-message'
     element :client_rescheduled, '.t-client-rescheduled'
     element :pension_wise_rescheduled, '.t-pension-wise-rescheduled'
+    element :via_phone, '.t-via-phone'
+    element :via_email_or_crm, '.t-via-email-or-crm'
 
     element :availability_calendar_off, '.t-availability-calendar-off'
     element :availability_calendar_on, '.t-availability-calendar-on'

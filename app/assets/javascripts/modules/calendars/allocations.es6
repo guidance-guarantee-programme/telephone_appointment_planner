@@ -178,10 +178,18 @@
         alert('You must specify a reason for rescheduling');
       }
       else {
-        e.data.event.reschedulingReason = reason;
+        let route = $('input[name="rescheduling_route"]:checked').val();
 
-        this.handleEventChange(e.data.event, e.data.revertFunc);
-        this.$modal.modal('hide');
+        if(route === undefined && reason == 'client_rescheduled') {
+          alert('You must specify a rescheduling route');
+        }
+        else {
+          e.data.event.reschedulingReason = reason;
+          e.data.event.reschedulingRoute = route;
+
+          this.handleEventChange(e.data.event, e.data.revertFunc);
+          this.$modal.modal('hide');
+        }
       }
 
     }
@@ -321,7 +329,8 @@
             guider_id: eventObj.resourceId,
             start_at: eventObj.start,
             end_at: eventObj.end,
-            rescheduling_reason: eventObj.reschedulingReason
+            rescheduling_reason: eventObj.reschedulingReason,
+            rescheduling_route: eventObj.reschedulingRoute
           });
 
           outputEventIds.push(eventObj.id);
