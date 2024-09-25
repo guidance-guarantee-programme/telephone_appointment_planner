@@ -6,7 +6,8 @@ class ScheduledReportingSummary
         two_week_availability: two_week_available?(organisation.id),
         four_week_availability: four_week_available?(organisation.id),
         first_available_slot_on: first_available_slot_on(organisation.id),
-        last_available_slot_on: last_available_slot_on(organisation.id)
+        last_available_slot_on: last_available_slot_on(organisation.id),
+        last_slot_on: last_slot_on(organisation.id)
       )
     end
   end
@@ -33,6 +34,19 @@ class ScheduledReportingSummary
 
   def last_available_slot_on(organisation_id)
     windowed_bookable_slots(organisation_id).last
+  end
+
+  def last_slot_on(organisation_id)
+    slot = BookableSlot
+           .includes(:guider)
+           .where(users: { organisation_content_id: organisation_id })
+           .order(start_at: :desc)
+           .limit(1)
+           .first
+
+    return nil unless slot
+
+    slot.start_at.to_date
   end
 
   private

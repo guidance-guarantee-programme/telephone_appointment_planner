@@ -24,6 +24,14 @@ RSpec.feature 'Scheduled reporting summary' do
     create(:bookable_slot, :lancashire_west, start_at: Time.zone.parse('2018-04-29 11:00'))
     create(:bookable_slot, :lancashire_west, start_at: Time.zone.parse('2018-04-30 11:00'))
     create(:bookable_slot, :derbyshire_districts, start_at: Time.zone.parse('2018-05-12 11:00'))
+
+    last_slot = create(:bookable_slot, :lancashire_west, start_at: Time.zone.parse('2018-05-01 13:00'))
+    create(
+      :appointment,
+      organisation: :lancashire_west,
+      guider: last_slot.guider,
+      start_at: Time.zone.parse('2018-05-01 13:00')
+    )
   end
 
   def then_the_availability_is_summarised_correctly
@@ -38,7 +46,8 @@ RSpec.feature 'Scheduled reporting summary' do
       two_week_availability: true,
       four_week_availability: true,
       first_available_slot_on: '2018-04-29'.to_date,
-      last_available_slot_on: '2018-04-30'.to_date
+      last_available_slot_on: '2018-04-30'.to_date,
+      last_slot_on: '2018-05-01'.to_date
     )
 
     expect(ReportingSummary.find_by(organisation: 'North Tyneside')).to have_attributes(
