@@ -18,7 +18,7 @@ class BatchAppointmentUpdate
   end
 
   def permitted_attributes(change)
-    change.slice('guider_id', 'start_at', 'end_at', 'rescheduling_reason')
+    change.slice('guider_id', 'start_at', 'end_at', 'rescheduling_reason', 'rescheduling_route')
   end
 
   attr_reader :changes

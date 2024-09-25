@@ -16,6 +16,8 @@ module Pages
     section :rescheduling_reason_modal, '.t-rescheduling-reason-modal' do
       element :pension_wise, '.t-pension-wise-rescheduled'
       element :client, '.t-client-rescheduled'
+      element :via_phone, '.t-via-phone'
+      element :via_email_or_crm, '.t-via-email-or-crm'
       element :save, '.t-save'
     end
 
