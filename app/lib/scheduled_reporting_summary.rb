@@ -5,7 +5,8 @@ class ScheduledReportingSummary
         organisation: organisation.name,
         two_week_availability: two_week_available?(organisation.id),
         four_week_availability: four_week_available?(organisation.id),
-        first_available_slot_on: first_available_slot_on(organisation.id)
+        first_available_slot_on: first_available_slot_on(organisation.id),
+        last_available_slot_on: last_available_slot_on(organisation.id)
       )
     end
   end
@@ -28,6 +29,10 @@ class ScheduledReportingSummary
 
   def first_available_slot_on(organisation_id)
     windowed_bookable_slots(organisation_id).first
+  end
+
+  def last_available_slot_on(organisation_id)
+    windowed_bookable_slots(organisation_id).last
   end
 
   private
