@@ -60,17 +60,33 @@
       <div class="modal-header">
         <h4 class="modal-title js-modal-title" id="rescheduling-reasons-modal-label">Reason for rescheduling</h4>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" data-module="radio-toggle">
         <div class="radio">
           <div class="form-group">
             <div class="radio">
               <label>
-                <input class="t-client-rescheduled" type="radio" value="client_rescheduled" name="rescheduling_reason" id="client_rescheduled"> Client rescheduled
+                <input class="t-client-rescheduled" type="radio" value="client_rescheduled" name="rescheduling_reason" id="client_rescheduled" data-target="client-rescheduled-route"> Client rescheduled
               </label>
             </div>
             <div class="radio">
               <label>
                 <input class="t-pension-wise-rescheduled" type="radio" value="office_rescheduled" name="rescheduling_reason" id="office_rescheduled"> Office rescheduled
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="radio" id="client-rescheduled-route">
+          <div class="form-group">
+            <h4>Customer rescheduled via</h4>
+            <div class="radio">
+              <label>
+                <input class="t-via-phone" type="radio" value="phone" name="rescheduling_route" id="rescheduling_route_phone"> Phone
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input class="t-via-email-or-crm" type="radio" value="email_or_crm" name="rescheduling_route" id="rescheduling_route_email_or_crm"> Email or CRM
               </label>
             </div>
           </div>

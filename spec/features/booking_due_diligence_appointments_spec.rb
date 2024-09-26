@@ -117,6 +117,8 @@ RSpec.feature 'Booking due diligence appointments', js: true do
 
   def when_they_reschedule_the_appointment
     @page.client_rescheduled.set(true)
+    @page.wait_until_via_phone_visible
+    @page.via_phone.set(true)
     @page.choose_slot('14:30')
     @page.reschedule.click
   end
