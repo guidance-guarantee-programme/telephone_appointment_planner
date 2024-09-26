@@ -72,7 +72,8 @@ class Appointment < ApplicationRecord
       '11' => 'Annuity in payment only',
       '12' => 'State pension only',
       '13' => 'Overseas pension only',
-      '14' => 'S32 – No GMP Excess'
+      '14' => 'S32 – No GMP Excess',
+      '41' => 'CDC scheme'
     },
     'cancelled_by_customer' => {
       '15' => 'Cancelled prior to appointment',
