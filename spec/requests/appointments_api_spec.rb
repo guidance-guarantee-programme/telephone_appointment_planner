@@ -56,6 +56,7 @@ RSpec.describe 'POST /api/v1/appointments' do
         and_the_location_header_describes_the_booking_reference
         and_the_appointment_is_created
         and_the_customer_receives_a_confirmation_email
+        and_the_customer_receives_a_confirmation_sms
         and_the_resource_manager_receives_an_accessibility_notification
         and_the_resource_manager_receives_a_new_appointment_notification
         and_the_system_attempts_to_push_to_casebook
@@ -238,7 +239,7 @@ RSpec.describe 'POST /api/v1/appointments' do
       'first_name'       => 'Rick',
       'last_name'        => 'Sanchez',
       'email'            => 'rick@example.com',
-      'phone'            => '02082524729',
+      'phone'            => '07010123456',
       'memorable_word'   => 'snootboop',
       'date_of_birth'    => '1950-02-02',
       'dc_pot_confirmed' => true,
@@ -321,7 +322,7 @@ RSpec.describe 'POST /api/v1/appointments' do
         last_name: 'Sanchez',
         email: 'rick@example.com',
         country_code: 'GB',
-        phone: '02082524729',
+        phone: '07010123456',
         memorable_word: 'snootboop',
         dc_pot_confirmed: true,
         where_you_heard: 1,
@@ -340,6 +341,10 @@ RSpec.describe 'POST /api/v1/appointments' do
 
   def and_the_customer_receives_a_confirmation_email
     assert_enqueued_jobs(1, only: CustomerUpdateJob)
+  end
+
+  def and_the_customer_receives_a_confirmation_sms
+    assert_enqueued_jobs(1, only: SmsAppointmentConfirmationJob)
   end
 
   def and_the_resource_manager_receives_an_accessibility_notification
