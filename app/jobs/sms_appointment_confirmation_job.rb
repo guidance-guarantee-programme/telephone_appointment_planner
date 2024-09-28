@@ -1,4 +1,4 @@
-class NudgeSmsAppointmentConfirmationJob < NotifyJobBase
+class SmsAppointmentConfirmationJob < NotifyJobBase
   TEMPLATE_ID = '80c63000-d043-425e-b9cb-6a824bb66f56'.freeze
 
   def perform(appointment)
@@ -25,6 +25,6 @@ class NudgeSmsAppointmentConfirmationJob < NotifyJobBase
   end
 
   def create_activity(appointment)
-    NudgeSmsConfirmationActivity.create!(appointment:, owner: appointment.guider)
+    SmsConfirmationActivity.create!(appointment:, owner: appointment.guider)
   end
 end
