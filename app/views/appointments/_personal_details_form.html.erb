@@ -15,7 +15,7 @@
       help: '<p>For non-UK numbers include the country dialling code.</p>'.html_safe
     %>
     <%= f.telephone_field :mobile, autocomplete: 'off', class: 't-mobile',
-      help: 'We will use this to send an SMS appointment reminder 7 days and additionally 48 hours before the appointment. Customers can cancel appointments via SMS response.'
+      help: 'We will use this to send an SMS appointment confirmation and reminder 7 days and additionally 48 hours before the appointment. Customers can cancel appointments via SMS response.'
     %>
     <%= f.text_field :memorable_word, autocomplete: 'off', class: 't-memorable-word', placeholder: 'We use this each time the customer is called',
       label: required_label(:memorable_word),
