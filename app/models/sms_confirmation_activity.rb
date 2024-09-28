@@ -1,0 +1,2 @@
+class SmsConfirmationActivity < Activity
+end
