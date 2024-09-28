@@ -149,7 +149,7 @@ RSpec.describe 'POST /api/v1/nudge_appointments' do
   end
 
   def and_the_customer_receives_an_sms_confirmation
-    assert_enqueued_jobs(1, only: NudgeSmsAppointmentConfirmationJob)
+    assert_enqueued_jobs(1, only: SmsAppointmentConfirmationJob)
   end
 
   def and_the_system_enqueues_a_casebook_push_if_needed

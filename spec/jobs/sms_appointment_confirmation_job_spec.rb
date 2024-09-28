@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe NudgeSmsAppointmentConfirmationJob, '#perform' do
+RSpec.describe SmsAppointmentConfirmationJob, '#perform' do
   let(:client) { double(Notifications::Client, send_sms: true) }
   let(:appointment) { create(:appointment, created_at: 1.day.ago) }
 
@@ -28,7 +28,7 @@ RSpec.describe NudgeSmsAppointmentConfirmationJob, '#perform' do
 
       described_class.new.perform(appointment)
 
-      expect(appointment.activities.find_by(type: 'NudgeSmsConfirmationActivity')).to be
+      expect(appointment.activities.find_by(type: 'SmsConfirmationActivity')).to be
     end
   end
 end
