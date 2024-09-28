@@ -1,5 +1,7 @@
-class NudgeSmsAppointmentConfirmationJob < NotifyJobBase
-  TEMPLATE_ID = '80c63000-d043-425e-b9cb-6a824bb66f56'.freeze
+class SmsAppointmentConfirmationJob < NotifyJobBase
+  NUDGED_TEMPLATE_ID = '80c63000-d043-425e-b9cb-6a824bb66f56'.freeze
+  DUE_DILIGENCE_TEMPLATE_ID = '58ef6845-25eb-4197-9cff-26457515d831'.freeze
+  PENSION_WISE_TEMPLATE_ID = 'd9136496-a2f1-4262-86a6-d651c07dca87'.freeze
 
   def perform(appointment)
     return unless api_key(appointment.schedule_type)
@@ -15,7 +17,7 @@ class NudgeSmsAppointmentConfirmationJob < NotifyJobBase
 
     client.send_sms(
       phone_number: appointment.mobile,
-      template_id: TEMPLATE_ID,
+      template_id: template_for(appointment),
       reference: appointment.to_param,
       personalisation: {
         date: "#{appointment.start_at.to_s(:govuk_date_short)} (#{appointment.timezone})",
@@ -25,6 +27,16 @@ class NudgeSmsAppointmentConfirmationJob < NotifyJobBase
   end
 
   def create_activity(appointment)
-    NudgeSmsConfirmationActivity.create!(appointment:, owner: appointment.guider)
+    SmsConfirmationActivity.create!(appointment:, owner: appointment.guider)
+  end
+
+  def template_for(appointment)
+    if appointment.nudged?
+      NUDGED_TEMPLATE_ID
+    elsif appointment.due_diligence?
+      DUE_DILIGENCE_TEMPLATE_ID
+    else
+      PENSION_WISE_TEMPLATE_ID
+    end
   end
 end
