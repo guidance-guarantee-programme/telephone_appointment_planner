@@ -1,0 +1,34 @@
+<% content_for(:page_title, t('service.title', page_title: 'Generate a holiday report')) %>
+<%= breadcrumb( { title: 'Generate a holiday report' } ) %>
+
+<h1>Generate a holiday report</h1>
+
+<%= form_for @report, method: 'GET', target: '_blank', 'data-disable-with': nil, layout: :basic do |f| %>
+  <div class="row">
+    <div class="col-md-4">
+      <%=
+        f.text_field(
+          :date_range,
+          class: 't-date-range',
+          label: 'Is in date range',
+          data: {
+            module: 'date-range-picker',
+            config: {
+              autoUpdateInput: false,
+              autoApply: true,
+              locale: {
+                cancelLabel: 'Clear',
+                format: 'DD/MM/YYYY'
+              }
+            }
+          }
+        )
+      %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <input type="submit" name="commit" value="Download" class="t-download btn btn-primary">
+    </div>
+  </div>
+<% end %>

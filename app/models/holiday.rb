@@ -1,4 +1,6 @@
 class Holiday < ApplicationRecord
+  acts_as_copy_target
+
   belongs_to :user, optional: true
 
   validates :user, presence: true, unless: :bank_holiday?

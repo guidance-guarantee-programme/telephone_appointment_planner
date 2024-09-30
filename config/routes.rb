@@ -93,6 +93,9 @@ Rails.application.routes.draw do
   resources :bookable_slot_reports, only: :new do
     get 'create', on: :collection, action: :create
   end
+  resources :holiday_reports, only: :new do
+    get 'create', on: :collection, action: :create
+  end
 
   mount Sidekiq::Web, at: '/sidekiq', constraints: AuthenticatedUser.new
 end
