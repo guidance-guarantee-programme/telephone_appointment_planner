@@ -30,7 +30,8 @@ class Provider
     new('Maidstone', 'de22845b-57f3-456b-a292-e36576ebe7e4'),
     new('Rushmoor', 'c552ee9e-d194-4eb6-8257-5c24c47d0a08'),
     new('Sutton', '234fd904-6288-49a9-8d59-f46439ab9060'),
-    new('Wiltshire', '39885a5e-ecd4-486f-b6d1-12e2f2053806')
+    new('Wiltshire', '39885a5e-ecd4-486f-b6d1-12e2f2053806'),
+    new('Caerphilly', '4468f2d4-1e9e-42d8-b049-79cdb3aaef1e')
   ].freeze
 
   attr_reader :name, :id
@@ -48,15 +49,16 @@ class Provider
   end
 
   def self.find(id)
-    ALL_ORGANISATIONS.find { |organisation| organisation.id == id }
+    all.find { |organisation| organisation.id == id }
   end
 
   def self.bank_holiday_observing_organisation_ids
-    ALL_ORGANISATIONS.map(&:id) - Array(CAS.id) - Array(TPAS.id)
+    all.map(&:id) - Array(CAS.id) - Array(TPAS.id)
   end
 
-  def self.all(current_user = nil)
+  def self.all(current_user = nil) # rubocop:disable Metrics/CyclomaticComplexity
     organisations = ALL_ORGANISATIONS.sort_by(&:name)
+    organisations.reject! { |org| org.name == 'Caerphilly' } if Rails.env.production?
 
     return organisations unless current_user
     return organisations if current_user.administrator?
