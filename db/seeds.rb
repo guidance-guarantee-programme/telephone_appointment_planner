@@ -42,7 +42,7 @@ if Rails.env.development?
   GenerateBankHolidaysJob.new.perform_now
 
   puts 'Generating bookable slots...'
-  BookableSlot.generate_for_six_weeks
+  BookableSlot.generate_for_booking_window
 
   print "Adding #{APPOINTMENT_COUNT} appointments"
   slots = BookableSlot

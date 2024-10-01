@@ -499,7 +499,7 @@ RSpec.feature 'Agent manages appointments' do
       slots:
     )
     @schedule.save!
-    BookableSlot.generate_for_six_weeks
+    BookableSlot.generate_for_booking_window
   end
 
   def fill_in_appointment_details(options = {}) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity

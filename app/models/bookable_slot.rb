@@ -6,7 +6,7 @@ class BookableSlot < ApplicationRecord
 
   scope :for_guider, ->(guider) { where(guider:) }
 
-  def self.generate_for_six_weeks
+  def self.generate_for_booking_window
     User.guiders.each do |guider|
       generate_for_guider(guider)
     end
