@@ -498,6 +498,7 @@ class Appointment < ApplicationRecord
   def self.for_sms_cancellation(number, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE)
     pending
       .where(schedule_type:)
+      .where('? < start_at', Time.zone.now)
       .order(:created_at)
       .find_by("REPLACE(mobile, ' ', '') = :number OR REPLACE(phone, ' ', '') = :number", number:)
   end
