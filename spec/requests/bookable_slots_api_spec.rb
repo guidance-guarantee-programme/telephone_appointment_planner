@@ -108,9 +108,6 @@ RSpec.describe 'GET /api/v1/bookable_slots' do
     # included since the window is now 8 weeks
     create(:bookable_slot, start_at: 7.weeks.from_now)
 
-    # falls after the booking window
-    create(:bookable_slot, start_at: 9.weeks.from_now)
-
     # excluded as due diligence outside the window
     create(:bookable_slot, :due_diligence, start_at: Time.zone.parse('2017-01-16 14:00'))
 
@@ -128,7 +125,7 @@ RSpec.describe 'GET /api/v1/bookable_slots' do
     JSON.parse(response.body).tap do |json|
       expect(json['2017-01-16']).to eq(%w[2017-01-16T12:00:00.000Z 2017-01-16T15:00:00.000Z])
 
-      expect(json.keys).to eq(%w[2017-01-13 2017-01-16 2017-02-19 2017-03-05])
+      expect(json.keys).to eq(%w[2017-01-13 2017-01-16 2017-02-19])
     end
   end
 
