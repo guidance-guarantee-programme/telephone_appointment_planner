@@ -234,6 +234,20 @@ RSpec.describe Appointment, type: :model do
         expect(described_class.for_sms_cancellation('07715930455')).to eq(@first)
       end
     end
+
+    context 'when the appointment is taking place already' do
+      it 'is not included in the results' do
+        @appointment = create(:appointment, mobile: '07715930455', start_at: Time.zone.parse('2024-10-01 13:00'))
+
+        travel_to Time.zone.parse('2024-10-01 11:00') do
+          expect(described_class.for_sms_cancellation('07715930455')).to eq(@appointment)
+        end
+
+        travel_to Time.zone.parse('2024-10-01 13:01') do
+          expect(described_class.for_sms_cancellation('07715930455')).to be_nil
+        end
+      end
+    end
   end
 
   context 'when the status changes before saving' do

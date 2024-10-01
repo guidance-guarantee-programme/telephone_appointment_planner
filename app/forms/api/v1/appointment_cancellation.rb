@@ -18,7 +18,7 @@ module Api
       private
 
       def appointment
-        @appointment ||= ::Appointment.find_by(
+        @appointment ||= ::Appointment.where('? < start_at', Time.zone.now).find_by(
           id: appointment_id,
           date_of_birth:,
           status: :pending,
