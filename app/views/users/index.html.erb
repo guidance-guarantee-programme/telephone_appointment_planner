@@ -1,7 +1,7 @@
 <% content_for(:page_title, t('service.title', page_title: 'Manage guiders')) %>
 <%= breadcrumb( { title: 'Manage guiders' } ) %>
 
-<h1>Manage guiders <small>Current booking window until <%= BusinessDays.from_now(55).strftime('%d %B %Y') %></small></h1>
+<h1>Manage guiders <small>Current booking window until <%= BusinessDays.from_now(40).strftime('%d %B %Y') %></small></h1>
 
 <div data-module="guiders-multi-action">
   <div id="guiders" data-module="sortable-list" data-default-order='{"value": "name", "order": "asc"}' data-config='<%= sortable_list_config(@groups) %>'>

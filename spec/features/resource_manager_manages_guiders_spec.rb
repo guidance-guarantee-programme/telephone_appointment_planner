@@ -138,7 +138,7 @@ RSpec.feature 'Resource manager manages guiders' do
       ]
     )
 
-    BookableSlot.generate_for_six_weeks
+    BookableSlot.generate_for_booking_window
   end
 
   def when_they_deactivate_the_guider
@@ -168,7 +168,7 @@ RSpec.feature 'Resource manager manages guiders' do
       ]
     )
 
-    BookableSlot.generate_for_six_weeks
+    BookableSlot.generate_for_booking_window
   end
 
   def when_they_activate_the_guider
