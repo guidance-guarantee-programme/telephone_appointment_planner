@@ -1,5 +1,5 @@
 class ScheduledReportingSummary
-  def call
+  def call # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     Provider.all.each do |organisation|
       ReportingSummary.create!(
         organisation: organisation.name,
@@ -7,9 +7,31 @@ class ScheduledReportingSummary
         four_week_availability: four_week_available?(organisation.id),
         first_available_slot_on: first_available_slot_on(organisation.id),
         last_available_slot_on: last_available_slot_on(organisation.id),
-        last_slot_on: last_slot_on(organisation.id)
+        last_slot_on: last_slot_on(organisation.id),
+        total_slots_available: total_slots_available(organisation.id),
+        total_slots_created: total_slots_created(organisation.id)
       )
     end
+  end
+
+  def total_slots_available(organisation_id)
+    start_date, end_date = *BookableSlot.date_range(User::PENSION_WISE_SCHEDULE_TYPE, nil)
+
+    fake_user = OpenStruct.new(organisation_content_id: organisation_id)
+
+    BookableSlot
+      .for_organisation(fake_user)
+      .within_date_range(start_date, end_date)
+      .bookable(start_date, end_date)
+      .size
+  end
+
+  def total_slots_created(organisation_id)
+    start_date, end_date = *BookableSlot.date_range(User::PENSION_WISE_SCHEDULE_TYPE, nil)
+
+    fake_user = OpenStruct.new(organisation_content_id: organisation_id)
+
+    BookableSlot.for_organisation(fake_user).within_date_range(start_date, end_date).size
   end
 
   def two_week_available?(organisation_id)
