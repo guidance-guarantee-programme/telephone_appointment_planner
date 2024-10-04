@@ -39,7 +39,9 @@ RSpec.feature 'Scheduled reporting summary' do
       two_week_availability: true,
       four_week_availability: true,
       first_available_slot_on: '2018-04-28'.to_date,
-      last_available_slot_on: '2018-04-28'.to_date
+      last_available_slot_on: '2018-04-28'.to_date,
+      total_slots_available: 1,
+      total_slots_created: 1
     )
 
     expect(ReportingSummary.find_by(organisation: 'Lancashire West')).to have_attributes(
@@ -47,7 +49,9 @@ RSpec.feature 'Scheduled reporting summary' do
       four_week_availability: true,
       first_available_slot_on: '2018-04-29'.to_date,
       last_available_slot_on: '2018-04-30'.to_date,
-      last_slot_on: '2018-05-01'.to_date
+      last_slot_on: '2018-05-01'.to_date,
+      total_slots_available: 2,
+      total_slots_created: 3
     )
 
     expect(ReportingSummary.find_by(organisation: 'North Tyneside')).to have_attributes(
