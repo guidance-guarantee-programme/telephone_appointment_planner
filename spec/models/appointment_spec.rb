@@ -2,6 +2,19 @@ require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
 RSpec.describe Appointment, type: :model do
+  describe 'booking window alteration bug fix' do
+    context 'when an appointment was booked before the booking window reduction' do
+      it 'can be updated correctly' do
+        @appointment = create(:appointment)
+
+        travel_to BusinessDays.before_now(50) do
+          @appointment.status = :complete
+          @appointment.save!
+        end
+      end
+    end
+  end
+
   describe '#summarised?' do
     context 'when it has an summary activity' do
       it 'is true' do
