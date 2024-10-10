@@ -69,14 +69,13 @@
       <div class="col-md-8">
         <% if @appointment.potential_duplicates? %>
           <div class="alert alert-warning t-duplicates" role="alert">
-            <h4>This customer may have pending Pension Wise phone appointments:</h4>
+            <h4>This customer may have pending phone appointments:</h4>
             <ul>
             <% @appointment.potential_duplicates(only_pending: false).each do |duplicate| %>
               <% @duplicate = DuplicatePresenter.new(duplicate) %>
               <li>
-                <p>Reference: <%= @duplicate.id %></p>
+                <p>Reference: <%= @duplicate.id %> <small>(<%= @duplicate.schedule_type %>)</small></p>
                 <p>Appointment date/time: <%= @duplicate.start %></p>
-                <p>Type: <%= @duplicate.schedule_type %></p>
               </li>
             <% end %>
             </ul>
