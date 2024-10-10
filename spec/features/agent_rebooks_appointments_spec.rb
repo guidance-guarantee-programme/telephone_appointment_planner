@@ -117,6 +117,8 @@ RSpec.feature 'Agent rebooks appointments' do
 
     expect(@rebooked.guider.organisation).to eq('TPAS')
     expect(@rebooked.rebooked_from_id).to eq(@appointment.id)
+
+    expect(@page).to have_text(/The appointment \#\d+ has been booked for/)
   end
 
   def they_default_to_external_availability

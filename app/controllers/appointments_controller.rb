@@ -102,7 +102,14 @@ class AppointmentsController < ApplicationController
     if creating? && @appointment.save
       send_notifications(@appointment)
 
-      redirect_to(search_appointments_path, success: 'Appointment has been created')
+      redirect_to(
+        search_appointments_path,
+        success: I18n.t(
+          'appointments.success',
+          reference: @appointment.id,
+          date: @appointment.start_at.to_s(:govuk_date_short)
+        )
+      )
     else
       render :new
     end
