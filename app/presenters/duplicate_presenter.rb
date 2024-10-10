@@ -29,7 +29,7 @@ class DuplicatePresenter < SimpleDelegator
 
   def schedule_type
     if pension_wise?
-      'Pension Wise'
+      'PW'
     else
       'PSG'
     end
