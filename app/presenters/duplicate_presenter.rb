@@ -27,6 +27,14 @@ class DuplicatePresenter < SimpleDelegator
     provider&.email
   end
 
+  def schedule_type
+    if pension_wise?
+      'PW'
+    else
+      'PSG'
+    end
+  end
+
   private
 
   def provider

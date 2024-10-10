@@ -236,10 +236,11 @@ RSpec.feature 'Agent manages appointments' do
   scenario 'Agent creates appointments' do
     given_the_user_is_an_agent do
       and_there_is_a_guider_with_available_slots
+      and_there_is_duplicate_appointment
       when_they_want_to_book_an_appointment
       then_they_do_not_see_the_smarter_signposting_option
       and_they_fill_in_their_appointment_details
-      then_they_see_a_preview_of_the_appointment
+      then_they_see_a_preview_of_the_appointment(duplicates: true)
       when_they_accept_the_appointment_preview
       then_that_appointment_is_created
       and_the_customer_gets_an_email_confirmation
@@ -502,6 +503,10 @@ RSpec.feature 'Agent manages appointments' do
     BookableSlot.generate_for_booking_window
   end
 
+  def and_there_is_duplicate_appointment
+    create(:appointment, first_name: 'Some', last_name: 'Person', date_of_birth: '1950-10-23')
+  end
+
   def fill_in_appointment_details(options = {}) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     @page.date_of_birth_day.set '23'
     @page.date_of_birth_month.set '10'
@@ -541,6 +546,8 @@ RSpec.feature 'Agent manages appointments' do
     @page = Pages::PreviewAppointment.new
     expect(@page).to be_displayed
 
+    expect(@page).to have_duplicates if options[:duplicates]
+
     expect(@page.preview).to have_content "#{day.to_date.to_s(:govuk_date)} 9:30am"
     expect(@page.preview).to have_content '(will last around 60 minutes)'
 
@@ -570,8 +577,7 @@ RSpec.feature 'Agent manages appointments' do
 
   def then_that_appointment_is_created(options = {})
     @guider.reload
-    expect(Appointment.count).to eq 1
-    appointment = Appointment.first
+    appointment = Appointment.last
 
     expect(appointment.agent).to eq current_user
     expect(appointment.guider).to eq @guider
