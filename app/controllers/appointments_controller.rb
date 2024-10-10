@@ -78,7 +78,8 @@ class AppointmentsController < ApplicationController
     @appointment.allocate(
       via_slot: calendar_scheduling?,
       agent: current_user,
-      scoped: !@appointment.internal_availability?
+      scoped: !@appointment.internal_availability?,
+      rebooking: rebooking?
     )
 
     if @appointment.valid?
@@ -88,19 +89,27 @@ class AppointmentsController < ApplicationController
     end
   end
 
-  def create # rubocop:disable Metrics/MethodLength
+  def create # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     @appointment = Appointment.new(create_params.merge(agent: current_user))
     @appointment.allocate(
       via_slot: calendar_scheduling?,
       agent: current_user,
-      scoped: !@appointment.internal_availability?
+      scoped: !@appointment.internal_availability?,
+      rebooking: rebooking?
     )
     @appointment.copy_attachments!
 
     if creating? && @appointment.save
       send_notifications(@appointment)
 
-      redirect_to(search_appointments_path, success: 'Appointment has been created')
+      redirect_to(
+        search_appointments_path,
+        success: I18n.t(
+          'appointments.success',
+          reference: @appointment.id,
+          date: @appointment.start_at.to_s(:govuk_date_short)
+        )
+      )
     else
       render :new
     end
@@ -266,5 +275,10 @@ class AppointmentsController < ApplicationController
   def creating?
     params[:edit_appointment].nil?
   end
+
+  def rebooking?
+    params[:copy_from].present? || @appointment&.rebooked_from_id.present?
+  end
+  helper_method :rebooking?
 end
 # rubocop:enable Metrics/ClassLength
