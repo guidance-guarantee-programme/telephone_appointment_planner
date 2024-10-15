@@ -71,7 +71,7 @@
           <div class="alert alert-warning t-duplicates" role="alert">
             <h4>This customer may have pending phone appointments:</h4>
             <ul>
-            <% @appointment.potential_duplicates(only_pending: false).each do |duplicate| %>
+            <% @appointment.potential_duplicates.each do |duplicate| %>
               <% @duplicate = DuplicatePresenter.new(duplicate) %>
               <li>
                 <p>Reference: <%= @duplicate.id %> <small>(<%= @duplicate.schedule_type %>)</small></p>
