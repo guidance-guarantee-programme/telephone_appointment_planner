@@ -123,6 +123,7 @@ ActiveRecord::Schema.define(version: 2024_10_04_103932) do
     t.integer "casebook_appointment_id"
     t.string "rescheduling_reason", default: "", null: false
     t.string "cancelled_via", default: "", null: false
+    t.string "rescheduling_route", default: "", null: false
     t.index ["guider_id", "start_at"], name: "unique_slot_guider_in_appointment", unique: true, where: "((status <> ALL (ARRAY[5, 6, 7, 8, 9])) AND (start_at > '2024-01-01 00:00:00'::timestamp without time zone))"
     t.index ["guider_id"], name: "index_appointments_on_guider_id"
     t.index ["schedule_type"], name: "index_appointments_on_schedule_type"
