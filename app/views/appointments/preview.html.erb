@@ -67,6 +67,21 @@
   <div class="t-preview appointment-preview">
     <div class="row">
       <div class="col-md-8">
+        <% if @appointment.potential_duplicates? %>
+          <div class="alert alert-warning t-duplicates" role="alert">
+            <h4>This customer may have pending phone appointments:</h4>
+            <ul>
+            <% @appointment.potential_duplicates.each do |duplicate| %>
+              <% @duplicate = DuplicatePresenter.new(duplicate) %>
+              <li>
+                <p>Reference: <%= @duplicate.id %> <small>(<%= @duplicate.schedule_type %>)</small></p>
+                <p>Appointment date/time: <%= @duplicate.start %></p>
+              </li>
+            <% end %>
+            </ul>
+          </div>
+        <% end %>
+
         <p class="alert alert-warning">
           This appointment has not yet been created.<br>Please check the details below and then click <b>Confirm appointment</b>.
         </p>
