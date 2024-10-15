@@ -88,7 +88,7 @@ class AppointmentsController < ApplicationController
     end
   end
 
-  def create # rubocop:disable Metrics/MethodLength
+  def create # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     @appointment = Appointment.new(create_params.merge(agent: current_user))
     @appointment.allocate(
       via_slot: calendar_scheduling?,
@@ -100,7 +100,14 @@ class AppointmentsController < ApplicationController
     if creating? && @appointment.save
       send_notifications(@appointment)
 
-      redirect_to(search_appointments_path, success: 'Appointment has been created')
+      redirect_to(
+        search_appointments_path,
+        success: I18n.t(
+          'appointments.success',
+          reference: @appointment.id,
+          date: @appointment.start_at.to_s(:govuk_date_short)
+        )
+      )
     else
       render :new
     end
