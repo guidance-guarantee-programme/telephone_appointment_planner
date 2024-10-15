@@ -5,7 +5,7 @@
 
 <%= render 'shared/nojs' %>
 
-<% if current_user.tpas_agent? && !rescheduling && @appointment.pension_wise? %>
+<% if can_switch_availability?(current_user, @appointment, rebooking?, rescheduling) %>
   <%= form.check_box :internal_availability, label: 'Internal availability', class: 't-internal-availability js-internal-availability', data: { module: 'internal-availability' } %>
 <% end %>
 
@@ -17,10 +17,10 @@
   id="AppointmentAvailabilityCalendar"
   class="appointment-availability-calendar"
   data-module="appointment-availability-calendar"
-  data-available-slots-path="<%= available_bookable_slots_path(schedule_type: schedule_type, rescheduling: rescheduling, id: @appointment.id) %>"
+  data-available-slots-path="<%= available_slots_path(current_user, schedule_type, rescheduling, @appointment.id, rebooking?) %>"
   data-lloyds-slots-path="<%= lloyds_bookable_slots_path(rescheduling: rescheduling, id: @appointment.id) %>"
   data-internal-slots-path="<%= internal_bookable_slots_path(schedule_type: schedule_type, rescheduling: rescheduling, id: @appointment.id) %>"
-  data-external-slots-path="<%= external_bookable_slots_path(schedule_type: schedule_type, rescheduling: rescheduling, id: @appointment.id) %>"
+  data-external-slots-path="<%= external_bookable_slots_path(schedule_type: schedule_type, rescheduling: rescheduling, id: @appointment.id, rebooking: rebooking?) %>"
   data-default-date="<%= BookableSlot.next_valid_start_date(current_user) %>"
 ></div>
 <%= form.hidden_field :start_at, class: 't-start-at js-selected-start' %>
