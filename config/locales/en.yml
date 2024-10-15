@@ -30,6 +30,7 @@ en:
       date_range_picker: "%e/%m/%Y %H:%M"
   appointments:
     rebooking: "You can't rebook this appointment while it's pending. Please go back and change the status."
+    success: "The appointment #%{reference} has been booked for %{date}"
   users:
     deactivate_confirm: |
       Deactivate this guider?
