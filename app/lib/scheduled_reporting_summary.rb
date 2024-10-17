@@ -20,6 +20,7 @@ class ScheduledReportingSummary
     fake_user = OpenStruct.new(organisation_content_id: organisation_id)
 
     BookableSlot
+      .for_schedule_type
       .for_organisation(fake_user)
       .within_date_range(start_date, end_date)
       .bookable(start_date, end_date)
@@ -31,7 +32,11 @@ class ScheduledReportingSummary
 
     fake_user = OpenStruct.new(organisation_content_id: organisation_id)
 
-    BookableSlot.for_organisation(fake_user).within_date_range(start_date, end_date).size
+    BookableSlot
+      .for_schedule_type
+      .for_organisation(fake_user)
+      .within_date_range(start_date, end_date)
+      .size
   end
 
   def two_week_available?(organisation_id)
@@ -62,6 +67,7 @@ class ScheduledReportingSummary
     slot = BookableSlot
            .includes(:guider)
            .where(users: { organisation_content_id: organisation_id })
+           .for_schedule_type
            .order(start_at: :desc)
            .limit(1)
            .first
