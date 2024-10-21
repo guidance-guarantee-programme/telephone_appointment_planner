@@ -129,7 +129,7 @@ RSpec.feature 'Guider edits an appointment' do
 
     expect(@page.guider.text).to start_with(@appointment.guider.name)
     expect(@page.date_time.text).to eq("#{start_date}, #{start_at_time} - #{end_at_time}")
-    expect(@page.created_date.text).to eq(@appointment.created_at.in_time_zone('London').to_s(:govuk_date_short))
+    expect(@page.created_date.text).to eq(@appointment.created_at.to_s(:govuk_date_short))
     expect(@page.first_name.value).to eq(@appointment.first_name)
     expect(@page.last_name.value).to eq(@appointment.last_name)
     expect(@page.email.value).to eq(@appointment.email)
