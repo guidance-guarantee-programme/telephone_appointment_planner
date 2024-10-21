@@ -5,6 +5,12 @@ class AppointmentMailer < ApplicationMailer
 
   default subject: -> { @appointment.subject }, from: -> { @appointment.from }
 
+  def guider_summary_document_missing(appointment)
+    mailgun_headers('guider_summary_document_missing', appointment.id)
+    @appointment = decorate(appointment)
+    mail to: appointment.guider.email, subject: @appointment.subject('No Summary Document Generated')
+  end
+
   def resource_manager_email_dropped(appointment, recipient)
     mailgun_headers('resource_manager_email_dropped', appointment.id)
     @appointment = decorate(appointment)
