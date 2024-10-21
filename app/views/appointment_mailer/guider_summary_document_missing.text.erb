@@ -1,0 +1,7 @@
+A summary document has not been generated for this appointment via Telephone Appointment Planner (TAP)
+
+Reference number: <%= @appointment.id %>
+Date: <%= @appointment.start_at.to_date.to_s(:govuk_date) %>
+Time: <%= "#{@appointment.start_at.to_time.to_s(:govuk_time)} (#{@appointment.timezone})" %>
+
+<%= edit_appointment_url(@appointment) %>

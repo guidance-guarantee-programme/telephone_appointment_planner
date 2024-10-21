@@ -1,5 +1,11 @@
 # Preview all emails at http://localhost:3000/rails/mailers/appointment_mailer
 class AppointmentMailerPreview < ActionMailer::Preview
+  def guider_summary_document_missing
+    appointment = random_appointment
+
+    AppointmentMailer.guider_summary_document_missing(appointment)
+  end
+
   def resource_manager_email_dropped
     appointment = random_appointment
 
@@ -90,7 +96,7 @@ class AppointmentMailerPreview < ActionMailer::Preview
   private
 
   def random_appointment
-    Appointment.all.sample(1).first || FactoryBot.create(:appointment)
+    Appointment.limit(200).sample(1).first || FactoryBot.create(:appointment)
   end
 
   def random_due_diligence_appointment

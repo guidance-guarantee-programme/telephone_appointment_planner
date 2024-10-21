@@ -88,6 +88,30 @@ RSpec.describe AppointmentMailer, type: :mailer do
     end
   end
 
+  describe 'Guider summary document missing' do
+    let(:mailgun_headers) { JSON.parse(subject['X-Mailgun-Variables'].value) }
+    let(:appointment) { build_stubbed(:appointment) }
+    let(:body) { subject.body.encoded }
+
+    subject { described_class.guider_summary_document_missing(appointment) }
+
+    it 'renders the headers' do
+      expect(subject.to).to eq(['some-name@example.org'])
+      expect(subject.subject).to eq('Pension Wise No Summary Document Generated')
+    end
+
+    it 'renders the mailgun specific headers' do
+      expect(mailgun_headers).to include(
+        'message_type'   => 'guider_summary_document_missing',
+        'appointment_id' => appointment.id
+      )
+    end
+
+    it 'includes the body specifics' do
+      expect(body).to match(/A summary document has not been generated/)
+    end
+  end
+
   describe 'Resource Manager Email Failure' do
     let(:mailgun_headers) { JSON.parse(subject['X-Mailgun-Variables'].value) }
     let(:appointment) { build_stubbed(:appointment) }
