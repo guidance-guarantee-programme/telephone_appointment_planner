@@ -5,6 +5,12 @@ module UserHelper
     content_tag(:small, ' (PSG)')
   end
 
+  def casebook_banner(guider)
+    return unless guider.casebook_pushable?
+
+    content_tag(:small, ' (Casebook)')
+  end
+
   def can_process?(current_user, appointment)
     !current_user.tpas? && !appointment.processed_at?
   end
