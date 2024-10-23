@@ -10,7 +10,8 @@ RSpec.describe Api::V1::AppointmentCancellation, '#cancel' do # rubocop:disable 
           described_class.new(
             appointment_id: @appointment.id,
             date_of_birth: @appointment.date_of_birth,
-            secondary_status: '32'
+            secondary_status: '32',
+            other_reason: ''
           ).cancel
         ).to be_truthy
       end
@@ -20,7 +21,8 @@ RSpec.describe Api::V1::AppointmentCancellation, '#cancel' do # rubocop:disable 
           described_class.new(
             appointment_id: @appointment.id,
             date_of_birth: @appointment.date_of_birth,
-            secondary_status: '32'
+            secondary_status: '32',
+            other_reason: ''
           ).cancel
         ).to be_falsey
       end
@@ -35,7 +37,8 @@ RSpec.describe Api::V1::AppointmentCancellation, '#cancel' do # rubocop:disable 
         described_class.new(
           appointment_id: @appointment.id,
           date_of_birth: @appointment.date_of_birth,
-          secondary_status: '32'
+          secondary_status: '32',
+          other_reason: ''
         ).cancel
       ).to be_falsey
     end
@@ -49,7 +52,8 @@ RSpec.describe Api::V1::AppointmentCancellation, '#cancel' do # rubocop:disable 
         described_class.new(
           appointment_id: @appointment.id,
           date_of_birth: @appointment.date_of_birth,
-          secondary_status: '32'
+          secondary_status: '32',
+          other_reason: ''
         ).cancel
       ).to be_truthy
     end
@@ -63,7 +67,8 @@ RSpec.describe Api::V1::AppointmentCancellation, '#cancel' do # rubocop:disable 
         described_class.new(
           appointment_id: @appointment.id,
           date_of_birth: @appointment.date_of_birth,
-          secondary_status: '32'
+          secondary_status: '32',
+          other_reason: ''
         ).cancel
       ).to be_falsey
     end
