@@ -31,13 +31,13 @@ RSpec.describe 'POST /api/v1/appointments/{id}/cancel' do # rubocop:disable Metr
   end
 
   def when_the_client_posts_a_valid_request_for_a_missing_appointment
-    @payload = { 'date_of_birth' => '1970-01-01', 'secondary_status' => '32' }
+    @payload = { 'date_of_birth' => '1970-01-01', 'secondary_status' => '32', 'other_reason' => '' }
 
     post api_v1_appointment_cancel_path(appointment_id: '999', params: @payload, as: :json)
   end
 
   def when_the_client_posts_a_valid_cancellation_request
-    @payload = { 'date_of_birth' => '1970-01-01', 'secondary_status' => '32' }
+    @payload = { 'date_of_birth' => '1970-01-01', 'secondary_status' => '32', 'other_reason' => '' }
 
     post api_v1_appointment_cancel_path(@appointment, params: @payload, as: :json)
   end

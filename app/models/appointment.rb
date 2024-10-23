@@ -414,10 +414,12 @@ class Appointment < ApplicationRecord
     end
   end
 
-  def self_serve_cancel!(secondary_status)
+  def self_serve_cancel!(secondary_status, other_reason)
+    other_reason = '' unless secondary_status == '40' # Other
+
     without_auditing do
       transaction do
-        update!(status: :cancelled_by_customer_online, secondary_status:)
+        update!(status: :cancelled_by_customer_online, secondary_status:, other_reason:)
         CustomerOnlineCancellationActivity.from(self)
       end
 
