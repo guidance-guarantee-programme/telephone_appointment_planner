@@ -106,6 +106,19 @@ RSpec.describe Notifier, '#call' do
       appointment.update(bsl_video: true, status: :complete)
 
       expect(BslCustomerExitPollJob).to receive(:set).with(wait: 24.hours).and_return(scheduler)
+      expect(SummaryDocumentCheckJob).to receive(:set).with(wait: 24.hours).and_return(double(perform_later: true))
+      expect(scheduler).to receive(:perform_later).with(appointment)
+
+      subject.call
+    end
+  end
+
+  context 'when any appointment is completed' do
+    it 'enqueues the summary document check to run in 24 hours' do
+      scheduler = double(perform_later: true)
+      appointment.update(status: :complete)
+
+      expect(SummaryDocumentCheckJob).to receive(:set).with(wait: 24.hours).and_return(scheduler)
       expect(scheduler).to receive(:perform_later).with(appointment)
 
       subject.call
@@ -114,9 +127,12 @@ RSpec.describe Notifier, '#call' do
 
   context 'when a DD appointment is completed' do
     it 'executes the DD reference number generation job synchronously' do
+      scheduler = double(perform_later: true)
       appointment.update(schedule_type: 'due_diligence', status: :complete)
 
       expect(DueDiligenceReferenceNumberJob).to receive(:perform_now).with(appointment)
+      expect(SummaryDocumentCheckJob).to receive(:set).with(wait: 24.hours).and_return(scheduler)
+      expect(scheduler).to receive(:perform_later).with(appointment)
 
       subject.call
     end

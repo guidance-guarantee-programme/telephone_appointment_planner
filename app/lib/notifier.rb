@@ -51,6 +51,8 @@ class Notifier
   end
 
   def notify_guiders
+    SummaryDocumentCheckJob.set(wait: 24.hours).perform_later(appointment) if appointment_complete?
+
     guiders_to_notify.each do |guider_id|
       PusherAppointmentChangedJob.perform_later(guider_id, appointment)
     end
