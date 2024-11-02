@@ -218,12 +218,12 @@ class Appointment < ApplicationRecord
     schedule_type == User::PENSION_WISE_SCHEDULE_TYPE
   end
 
-  def process_casebook!(casebook_identifier)
+  def process_casebook!(casebook_response)
     without_auditing do
       transaction do
-        update!(processed_at: Time.zone.now, casebook_appointment_id: casebook_identifier)
+        update!(processed_at: Time.zone.now, casebook_appointment_id: casebook_response.appointment_id)
 
-        CasebookProcessedActivity.create!(appointment: self)
+        CasebookProcessedActivity.create!(appointment: self, message: casebook_response.case_reference_number)
       end
     end
   end

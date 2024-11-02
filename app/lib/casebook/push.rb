@@ -6,9 +6,9 @@ module Casebook
     end
 
     def call
-      casebook_identifier = api.create(appointment)
+      casebook_response = api.create(appointment)
 
-      appointment.process_casebook!(casebook_identifier)
+      appointment.process_casebook!(casebook_response)
     end
 
     private

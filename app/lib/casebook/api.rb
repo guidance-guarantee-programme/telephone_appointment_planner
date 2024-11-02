@@ -10,7 +10,7 @@ module Casebook
       payload = Presenters::Create.new(appointment).to_h
 
       response = token.post('/api/v1/appointments', params: payload)
-      response.parsed['data']['id']
+      Response.new(response.parsed)
     rescue OAuth2::Error => e
       raise ApiError.new(e.response.status, e)
     end
@@ -27,7 +27,7 @@ module Casebook
       payload = Presenters::Reschedule.new(appointment).to_h
 
       response = token.post("/api/v1/appointments/#{appointment.casebook_appointment_id}/reschedule", params: payload)
-      response.parsed['data']['id']
+      Response.new(response.parsed)
     rescue OAuth2::Error => e
       raise ApiError.new(e.response.status, e)
     end

@@ -167,8 +167,9 @@ RSpec.describe Appointment, type: :model do
   describe '#process_casebook!' do
     it 'processes the appointment and logs an activity' do
       appointment = create(:appointment)
+      casebook_response = instance_double(Casebook::Response, appointment_id: 123, case_reference_number: 'CA-123')
 
-      appointment.process_casebook!('123')
+      appointment.process_casebook!(casebook_response)
 
       expect(appointment).to be_processed_at
       expect(appointment.casebook_appointment_id).to eq(123)
