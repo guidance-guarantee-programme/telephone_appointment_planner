@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Casebook::Api do # rubocop:disable Metrics/BlockLength
+RSpec.describe Casebook::Api do
   let(:client) { double }
   let(:token) { double }
 
@@ -33,9 +33,19 @@ RSpec.describe Casebook::Api do # rubocop:disable Metrics/BlockLength
             }
           }
         }
-      ).and_return(double(parsed: { 'data' => { 'id' => '123456' } }))
+      ).and_return(
+        double(parsed: {
+                 'data' => {
+                   'id' => '123456',
+                   'attributes' => { 'case-reference-number' => 'CA-1010101' }
+                 }
+               })
+      )
 
-      expect(subject.create(appointment)).to eq('123456')
+      response = subject.create(appointment)
+
+      expect(response.appointment_id).to eq('123456')
+      expect(response.case_reference_number).to eq('CA-1010101')
     end
   end
 
@@ -82,9 +92,19 @@ RSpec.describe Casebook::Api do # rubocop:disable Metrics/BlockLength
             }
           }
         }
-      ).and_return(double(parsed: { 'data' => { 'id' => '123456' } }))
+      ).and_return(
+        double(parsed: {
+                 'data' => {
+                   'id' => '123456',
+                   'attributes' => { 'case-reference-number' => 'CA-1010101' }
+                 }
+               })
+      )
 
-      expect(subject.reschedule(appointment)).to eq('123456')
+      response = subject.reschedule(appointment)
+
+      expect(response.appointment_id).to eq('123456')
+      expect(response.case_reference_number).to eq('CA-1010101')
     end
   end
 end
