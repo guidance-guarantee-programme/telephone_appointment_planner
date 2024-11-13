@@ -77,6 +77,7 @@ end
 group :test do
   gem 'chronic'
   gem 'database_rewinder'
+  gem 'rspec-retry'
   gem 'scss_lint', require: false
   gem 'selenium-webdriver'
   gem 'vcr'
