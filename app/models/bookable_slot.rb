@@ -83,7 +83,15 @@ class BookableSlot < ApplicationRecord
     if day
       [Time.zone.parse(day).beginning_of_day, Time.zone.parse(day).end_of_day]
     else
-      [next_valid_start_date(nil, schedule_type), BusinessDays.from_now(40).end_of_day]
+      [next_valid_start_date(nil, schedule_type), end_of_window_for(schedule_type)]
+    end
+  end
+
+  def self.end_of_window_for(schedule_type)
+    if schedule_type == User::PENSION_WISE_SCHEDULE_TYPE
+      BusinessDays.from_now(40).end_of_day
+    else
+      BusinessDays.from_now(60).end_of_day
     end
   end
 
@@ -199,7 +207,7 @@ class BookableSlot < ApplicationRecord
 
     return unless guider.active?
 
-    generation_range.each do |day|
+    generation_range(guider.schedule_type).each do |day|
       active_schedule = guider.schedules.active(day)
       next unless active_schedule
 
@@ -218,8 +226,8 @@ class BookableSlot < ApplicationRecord
     find_or_create_by(guider:, start_at:, end_at:, schedule_type: guider.schedule_type)
   end
 
-  def self.generation_range
-    Time.zone.now.to_date..BusinessDays.from_now(40).to_date
+  def self.generation_range(schedule_type)
+    Time.zone.now.to_date..end_of_window_for(schedule_type).to_date
   end
 end
 # rubocop:enable Metrics/ClassLength

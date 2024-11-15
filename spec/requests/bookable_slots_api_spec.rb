@@ -55,7 +55,7 @@ RSpec.describe 'GET /api/v1/bookable_slots' do
     expect(response).to be_ok
 
     JSON.parse(response.body).tap do |json|
-      expect(json.keys).to eq(%w[2017-01-21])
+      expect(json.keys).to eq(%w[2017-01-21 2017-03-12])
     end
   end
 
@@ -113,6 +113,9 @@ RSpec.describe 'GET /api/v1/bookable_slots' do
 
     # excluded but inside the due diligence window
     create(:bookable_slot, :due_diligence, start_at: Time.zone.parse('2017-01-21 14:00'))
+
+    # extended due diligence slot
+    create(:bookable_slot, :due_diligence, start_at: Time.zone.parse('2017-03-12 14:00'))
   end
 
   def when_the_client_requests_bookable_slots
