@@ -169,8 +169,8 @@ class Appointment < ApplicationRecord
   validate :address_or_email_valid, if: :regular_agent?, on: :create
   validate :validate_guider_organisation, on: :update
   validate :validate_guider_available, on: :update
-  validate :validate_phone_digits, if: :tp_agent?
-  validate :validate_mobile_digits, if: :tp_agent?
+  validate :validate_phone_digits, unless: :pension_wise_api?
+  validate :validate_mobile_digits, unless: :pension_wise_api?
   validate :validate_secondary_status
   validate :validate_lloyds_signposted_guider_allocated, if: :lloyds_signposted?, on: :create
   validate :validate_pending_overlaps, if: :due_diligence?, on: :create
