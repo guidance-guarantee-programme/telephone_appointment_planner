@@ -34,20 +34,17 @@ class Notifier
     end
   end
 
-  def notify_resource_managers # rubocop:disable Metrics/MethodLength
+  def notify_resource_managers
     if appointment_cancelled?
       AppointmentCancelledNotificationsJob.perform_later(appointment)
     elsif appointment_reallocated?
       AppointmentRescheduledNotificationsJob.perform_later(appointment)
-    elsif requires_adjustment_notification?
-      AdjustmentNotificationsJob.perform_later(appointment)
-    elsif requires_agent_changed_notification?
-      AgentChangedNotificationsJob.perform_later(appointment)
     end
 
-    return unless requires_potential_duplicates_notification?
+    AdjustmentNotificationsJob.perform_later(appointment) if requires_adjustment_notification?
+    AgentChangedNotificationsJob.perform_later(appointment) if requires_agent_changed_notification?
 
-    AppointmentMailer.potential_duplicates(appointment).deliver_later
+    AppointmentMailer.potential_duplicates(appointment).deliver_later if requires_potential_duplicates_notification?
   end
 
   def notify_guiders
@@ -81,7 +78,7 @@ class Notifier
   end
 
   def requires_adjustment_notification?
-    return unless modifying_agent&.tp_agent?
+    return unless modifying_agent&.tpas_agent?
 
     appointment.previous_changes.slice(
       'accessibility_requirements', 'third_party_booking', 'dc_pot_confirmed'
@@ -102,7 +99,7 @@ class Notifier
   end
 
   def requires_agent_changed_notification?
-    modifying_agent&.tp_agent? && change_notifies_resource_managers?
+    modifying_agent&.tpas_agent? && change_notifies_resource_managers?
   end
 
   def change_notifies_resource_managers?

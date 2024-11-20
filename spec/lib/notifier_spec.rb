@@ -41,8 +41,8 @@ RSpec.describe Notifier, '#call' do
   end
 
   context 'when an appointment is otherwise altered' do
-    context 'when effected by a TP agent' do
-      let(:modifying_agent) { create(:agent, :tp) }
+    context 'when effected by a TPAS `agent`' do
+      let(:modifying_agent) { create(:resource_manager, :tpas) }
 
       context 'when the changed attribute should notify' do
         it 'updates the resource managers' do
@@ -77,8 +77,8 @@ RSpec.describe Notifier, '#call' do
   end
 
   context 'when an appointment is updated to include an ’adjustment’' do
-    context 'when the person effecting the change is a TP agent' do
-      let(:modifying_agent) { create(:agent, :tp) }
+    context 'when the person effecting the change is a TPAS `agent`' do
+      let(:modifying_agent) { create(:resource_manager, :tpas) }
 
       it 'enqueues the adjustment notifications job' do
         appointment.update_attribute(:accessibility_requirements, true)
