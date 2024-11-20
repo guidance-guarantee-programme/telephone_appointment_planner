@@ -81,7 +81,7 @@ class Notifier
   end
 
   def requires_adjustment_notification?
-    return unless modifying_agent&.tp_agent?
+    return unless modifying_agent&.tpas_agent?
 
     appointment.previous_changes.slice(
       'accessibility_requirements', 'third_party_booking', 'dc_pot_confirmed'
