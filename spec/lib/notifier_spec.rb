@@ -41,8 +41,8 @@ RSpec.describe Notifier, '#call' do
   end
 
   context 'when an appointment is otherwise altered' do
-    context 'when effected by a TP agent' do
-      let(:modifying_agent) { create(:agent, :tp) }
+    context 'when effected by a TPAS `agent`' do
+      let(:modifying_agent) { create(:resource_manager, :tpas) }
 
       context 'when the changed attribute should notify' do
         it 'updates the resource managers' do
