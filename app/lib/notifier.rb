@@ -99,7 +99,7 @@ class Notifier
   end
 
   def requires_agent_changed_notification?
-    modifying_agent&.tpas_agent? && change_notifies_resource_managers?
+    appointment.guider.tpas? && modifying_agent&.tpas_agent? && change_notifies_resource_managers?
   end
 
   def change_notifies_resource_managers?
