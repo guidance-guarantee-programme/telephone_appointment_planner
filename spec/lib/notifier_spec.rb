@@ -63,6 +63,17 @@ RSpec.describe Notifier, '#call' do
           subject.call
         end
       end
+
+      context 'when the appointment belongs to tpas/ops' do
+        it 'does not update resource managers' do
+          appointment.guider = build_stubbed(:guider, :tpas)
+          appointment.update_attribute(:last_name, 'Smithson')
+
+          expect(AgentChangedNotificationsJob).to_not receive(:perform_later).with(appointment)
+
+          subject.call
+        end
+      end
     end
 
     context 'when effected by another type of user' do
