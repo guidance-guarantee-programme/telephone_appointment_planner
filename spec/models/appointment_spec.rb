@@ -2,6 +2,30 @@ require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
 RSpec.describe Appointment, type: :model do
+  describe 'Booking an appointment within the schedule type window' do
+    context 'when the appointment is PSG/DD' do
+      it 'validates the end of the window correctly' do
+        @appointment = build(:appointment, :due_diligence)
+        expect(@appointment).to be_valid
+
+        @appointment.start_at = BusinessDays.from_now(61).beginning_of_day
+        expect(@appointment).to be_invalid
+        expect(@appointment.errors[:start_at]).to be_present
+      end
+    end
+
+    context 'when the appointment is PW' do
+      it 'validates the end of the window correctly' do
+        @appointment = build(:appointment)
+        expect(@appointment).to be_valid
+
+        @appointment.start_at = BusinessDays.from_now(41).beginning_of_day
+        expect(@appointment).to be_invalid
+        expect(@appointment.errors[:start_at]).to be_present
+      end
+    end
+  end
+
   describe 'booking window alteration bug fix' do
     context 'when an appointment was booked before the booking window reduction' do
       it 'can be updated correctly' do
