@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_10_23_134101) do
+ActiveRecord::Schema.define(version: 2024_11_25_195323) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -198,6 +198,13 @@ ActiveRecord::Schema.define(version: 2024_10_23_134101) do
     t.boolean "all_day", default: false, null: false
     t.index ["start_at", "end_at"], name: "index_holidays_on_start_at_and_end_at"
     t.index ["user_id"], name: "index_holidays_on_user_id"
+  end
+
+  create_table "releases", force: :cascade do |t|
+    t.text "summary"
+    t.date "released_on"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "reporting_summaries", force: :cascade do |t|

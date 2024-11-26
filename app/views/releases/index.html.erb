@@ -1,0 +1,30 @@
+<% content_for(:page_title, t('service.title', page_title: 'Changes')) %>
+<%= breadcrumb( { title: 'Changes' } ) %>
+
+<h1>Changes</h1>
+
+<nav aria-label="Pagination">
+  <%= paginate @releases %>
+</nav>
+
+<table class="table table-striped table-bordered table-hover">
+  <caption><span class="sr-only">List of changes</span></caption>
+  <thead>
+    <tr>
+      <th>Change</th>
+      <th>Released</th>
+    </tr>
+  </thead>
+  <tbody class="list">
+    <% @releases.each do |release| %>
+      <tr>
+        <td><%= release.summary %></td>
+        <td><%= release.released_on.to_s(:govuk_date) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<nav aria-label="Pagination">
+  <%= paginate @releases %>
+</nav>

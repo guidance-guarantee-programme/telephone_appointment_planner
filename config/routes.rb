@@ -97,6 +97,8 @@ Rails.application.routes.draw do
     get 'create', on: :collection, action: :create
   end
 
+  resources :releases, only: :index
+
   mount Sidekiq::Web, at: '/sidekiq', constraints: AuthenticatedUser.new
 end
 # rubocop:enable Metrics/BlockLength
