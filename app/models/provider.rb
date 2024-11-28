@@ -17,8 +17,6 @@ class Provider
     new('Waltham Forest', 'a77a031a-8037-4510-b1f7-63d4aab7b103'),
     new('Derbyshire Districts', 'bce1c7e0-ad53-4e30-8e3c-0ca1f0fe6abc'),
     new('Manchester', '5959391a-082e-46d8-929d-93cf895b4d44'),
-    new('Kirklees', '783722f2-e28c-4215-bb91-a4ffa6a5fee9'),
-    new('Wigan', '3713e3be-1b0d-4971-a064-25fa9a6af8bd'),
     CARDIFF_AND_VALE = new('Cardiff and Vale', '525da418-ff2c-4522-90a9-bc70ba4ca78b'),
     new('Plymouth', 'c312229b-c96d-49d0-8362-4a3f746b3ac4'),
     new('Shropshire', '138175c6-02be-4f44-b08e-929c80e6598c'),
