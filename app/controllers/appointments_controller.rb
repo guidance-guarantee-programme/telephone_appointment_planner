@@ -78,7 +78,8 @@ class AppointmentsController < ApplicationController
     @appointment.allocate(
       via_slot: calendar_scheduling?,
       agent: current_user,
-      scoped: !@appointment.internal_availability?
+      scoped: !@appointment.internal_availability?,
+      rebooking: rebooking?
     )
 
     if @appointment.valid?
@@ -93,7 +94,8 @@ class AppointmentsController < ApplicationController
     @appointment.allocate(
       via_slot: calendar_scheduling?,
       agent: current_user,
-      scoped: !@appointment.internal_availability?
+      scoped: !@appointment.internal_availability?,
+      rebooking: rebooking?
     )
     @appointment.copy_attachments!
 
@@ -273,5 +275,10 @@ class AppointmentsController < ApplicationController
   def creating?
     params[:edit_appointment].nil?
   end
+
+  def rebooking?
+    params[:copy_from].present? || @appointment&.rebooked_from_id.present?
+  end
+  helper_method :rebooking?
 end
 # rubocop:enable Metrics/ClassLength

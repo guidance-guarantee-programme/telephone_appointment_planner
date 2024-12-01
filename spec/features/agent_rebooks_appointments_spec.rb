@@ -8,8 +8,12 @@ RSpec.feature 'Agent rebooks appointments' do
         and_there_is_cross_organisational_availability
         and_an_existing_appointment_for_cas
         when_they_attempt_to_rebook_an_appointment
+        they_default_to_cas_external_availability
+        when_they_select_internal_availability
         then_they_see_only_their_availability
-        and_they_do_not_see_the_internal_availability_toggle
+        when_they_switch_back_to_external_availability
+        and_rebook_using_external_availability
+        then_the_booking_is_placed_externally
       end
     end
   end
@@ -52,7 +56,6 @@ RSpec.feature 'Agent rebooks appointments' do
   def then_they_see_only_their_availability
     @page = Pages::NewAppointment.new
     expect(@page).to be_displayed
-    @page.next_period.click
 
     @page.wait_until_slots_visible
     expect(@page).to have_slots(count: 1)
@@ -68,6 +71,7 @@ RSpec.feature 'Agent rebooks appointments' do
   def and_there_is_cross_organisational_availability
     create(:bookable_slot, start_at: Time.zone.parse('2022-06-24 09:00'))
     create(:bookable_slot, :cas, start_at: Time.zone.parse('2022-06-24 11:00'))
+    create(:bookable_slot, :cas, start_at: Time.zone.parse('2022-06-20 11:00'))
   end
 
   def and_an_existing_appointment_for_tpas
@@ -80,6 +84,41 @@ RSpec.feature 'Agent rebooks appointments' do
 
     @page.wait_until_slots_visible
     expect(@page).to have_slots(count: 2)
+  end
+
+  def they_default_to_cas_external_availability
+    @page = Pages::NewAppointment.new
+    expect(@page).to be_displayed
+
+    expect(@page).to have_no_slots
+
+    @page.next_period.click
+    @page.wait_until_slots_visible
+    expect(@page).to have_slots(count: 1)
+    expect(@page.slots.first).to have_text('09:00 1 guider')
+  end
+
+  def when_they_switch_back_to_external_availability
+    @page.internal_availability.uncheck
+    @page.wait_until_slots_visible
+  end
+
+  def and_rebook_using_external_availability
+    @page.choose_slot('09:00')
+    @page.preview_appointment.click
+
+    @page = Pages::PreviewAppointment.new
+    expect(@page).to be_displayed
+    @page.confirm_appointment.click
+  end
+
+  def then_the_booking_is_placed_externally
+    @rebooked = Appointment.last
+
+    expect(@rebooked.guider.organisation).to eq('TPAS')
+    expect(@rebooked.rebooked_from_id).to eq(@appointment.id)
+
+    expect(@page).to have_text(/The appointment \#\d+ has been booked for/)
   end
 
   def they_default_to_external_availability

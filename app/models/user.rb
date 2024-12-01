@@ -101,6 +101,10 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
     tpas? && resource_manager?
   end
 
+  def non_tpas_resource_manager?
+    !tpas? && resource_manager?
+  end
+
   def lloyds_signposter?
     return true if tp_agent? || administrator?
 
