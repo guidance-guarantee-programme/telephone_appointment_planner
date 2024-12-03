@@ -61,7 +61,7 @@ class BookableSlot < ApplicationRecord
 
   def self.bookable(from = nil, to = nil)
     without_appointments(from, to)
-      .without_holidays
+      .without_holidays(from, to)
   end
 
   def self.grouped(organisation_id = nil, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE, day = nil) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
@@ -122,11 +122,12 @@ class BookableSlot < ApplicationRecord
       .where('appointments.start_at IS NULL')
   end
 
-  def self.without_holidays # rubocop:disable Metrics/MethodLength
+  def self.without_holidays(from = nil, to = nil) # rubocop:disable Metrics/MethodLength
     joins(<<-SQL
           LEFT JOIN holidays ON
             -- The holiday is specifically for the user, or it is for everyone
             (holidays.user_id = #{quoted_table_name}.guider_id OR holidays.user_id IS NULL)
+            #{reduce_by_range(:holidays, from, to)}
             AND (
               holidays.start_at, holidays.end_at
             ) OVERLAPS (
@@ -176,7 +177,7 @@ class BookableSlot < ApplicationRecord
     limit_by_organisation = !user.resource_manager? && !user.tpas_agent?
 
     select("DISTINCT #{quoted_table_name}.start_at, #{quoted_table_name}.end_at, count(1) AS guiders")
-      .bookable
+      .bookable(from, to)
       .starting_after_next_valid_start_date(agent, schedule_type:, rebooking:)
       .for_schedule_type(schedule_type:)
       .for_organisation(user, lloyds:, scoped:, internal:, external:)
