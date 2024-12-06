@@ -46,6 +46,7 @@ RSpec.describe Notifier, '#call' do
 
       context 'when the changed attribute should notify' do
         it 'updates the resource managers' do
+          appointment.update_attribute(:guider_id, create(:guider, :cas).id)
           appointment.update_attribute(:first_name, 'Daisy')
 
           expect(AgentChangedNotificationsJob).to receive(:perform_later).with(appointment)
@@ -66,7 +67,7 @@ RSpec.describe Notifier, '#call' do
 
       context 'when the appointment belongs to tpas/ops' do
         it 'does not update resource managers' do
-          appointment.guider = build_stubbed(:guider, :tpas)
+          appointment.update_attribute(:guider_id, create(:guider, :tpas).id)
           appointment.update_attribute(:last_name, 'Smithson')
 
           expect(AgentChangedNotificationsJob).to_not receive(:perform_later).with(appointment)
