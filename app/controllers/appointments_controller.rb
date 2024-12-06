@@ -126,6 +126,7 @@ class AppointmentsController < ApplicationController
   private
 
   def send_notifications(appointment)
+    SmsAppointmentConfirmationJob.perform_later(appointment) if appointment.mobile?
     AdjustmentNotificationsJob.perform_later(appointment) if appointment.adjustments?
     AppointmentMailer.potential_duplicates(appointment).deliver_later if appointment.potential_duplicates?
     PushCasebookAppointmentJob.perform_later(appointment)
