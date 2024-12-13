@@ -71,13 +71,17 @@ class BookableSlot < ApplicationRecord
     scope = bookable(from, to).within_date_range(from, to, organisation_limit: limit_by_organisation)
     scope = scope.joins(:guider).where(users: { organisation_content_id: organisation_id }) if organisation_id
     scope = for_schedule_type(schedule_type:, scope:)
+    scope = scope.select("#{quoted_table_name}.start_at::date as start_date")
+    scope = scope.select("json_agg(distinct(#{quoted_table_name}.start_at))") if day
+    sql_query = scope.group('start_date').to_sql
 
-    scope
-      .select("#{quoted_table_name}.start_at::date as start_date")
-      .select("#{quoted_table_name}.start_at")
-      .order('start_date asc, start_at asc')
-      .group_by(&:start_date)
-      .transform_values { |value| value.map(&:start_at).uniq }
+    results = ActiveRecord::Base.connection.select_all(sql_query)
+    results.rows.each_with_object({}) do |row, hash|
+      key   = row[0]
+      value = day ? JSON.parse(row[1]).sort : []
+
+      hash[key] = value
+    end
   end
 
   def self.date_range(schedule_type, day)
