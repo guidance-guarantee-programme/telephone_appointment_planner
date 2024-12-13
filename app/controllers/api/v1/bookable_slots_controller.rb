@@ -8,7 +8,11 @@ module Api
       end
 
       def index
-        render json: BookableSlot.grouped(filtered_provider_ids, schedule_type, day)
+        @slots = BookableSlot.grouped(filtered_provider_ids, schedule_type, day)
+
+        Rails.logger.info("Empty times returned for #{day}") if day.present? && @slots.empty?
+
+        render json: @slots
       end
 
       private

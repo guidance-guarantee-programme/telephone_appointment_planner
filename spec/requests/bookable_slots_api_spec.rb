@@ -26,6 +26,11 @@ RSpec.describe 'GET /api/v1/bookable_slots' do
     end
   end
 
+  scenario 'retrieving no slots for a given day' do
+    when_the_client_requests_bookable_slots_for_a_given_day
+    then_the_response_is_empty
+  end
+
   scenario 'retrieving DD slots for the booking window' do
     travel_to '2017-01-09 12:00' do
       given_bookable_slots_for_the_booking_window_exist
@@ -41,6 +46,10 @@ RSpec.describe 'GET /api/v1/bookable_slots' do
 
   def when_the_client_requests_slots_for_an_invalid_schedule_type
     get api_v1_bookable_slots_path(schedule_type: 'whoopsie'), as: :json
+  end
+
+  def then_the_response_is_empty
+    expect(response.body).to eq('{}')
   end
 
   def then_the_response_is_unprocessable
