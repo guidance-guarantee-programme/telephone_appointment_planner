@@ -22,8 +22,13 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
-  <<: *default
-  database: telephone_appointment_planner_development
+  primary:
+    <<: *default
+    database: telephone_appointment_planner_development
+  secondary:
+    <<: *default
+    database: telephone_appointment_planner_development # just use the primary as a stand in here
+    replica: true
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -56,8 +61,22 @@ development:
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
-  <<: *default
-  database: telephone_appointment_planner_test<%= ENV['TEST_ENV_NUMBER'] %>
+  primary:
+    <<: *default
+    database: telephone_appointment_planner_test
+  secondary:
+    <<: *default
+    database: telephone_appointment_planner_test
+    replica: true
+
+staging:
+  primary:
+    <<: *default
+    url: <%= ENV['DATABASE_URL'] %>
+  secondary:
+    <<: *default
+    url: <%= ENV['DATABASE_URL'] %> # use this as a stand-in for now
+    replica: true
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -79,5 +98,10 @@ test:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
 production:
-  <<: *default
-  url: <%= ENV['DATABASE_URL'] %>
+  primary:
+    <<: *default
+    url: <%= ENV['DATABASE_URL'] %>
+  secondary:
+    <<: *default
+    url: <%= Rails.env.production? ? ENV['SECONDARY_DATABASE_URL'] : ENV['DATABASE_URL'] %>
+    replica: true

@@ -1,4 +1,6 @@
 class BookableSlotsController < ApplicationController
+  around_action :read_from_replica
+
   def index
     @bookable_slots = bookable_slots
 
@@ -50,6 +52,10 @@ class BookableSlotsController < ApplicationController
   end
 
   private
+
+  def read_from_replica(&block)
+    ActiveRecord::Base.connected_to(role: :bookable_slots, &block)
+  end
 
   def schedule_type
     params[:schedule_type]
