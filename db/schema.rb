@@ -10,10 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_12_15_171846) do
+ActiveRecord::Schema.define(version: 2024_12_15_181148) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "pg_stat_statements"
+  enable_extension "btree_gist"
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
 
@@ -125,14 +125,14 @@ ActiveRecord::Schema.define(version: 2024_12_15_171846) do
     t.string "cancelled_via", default: "", null: false
     t.string "rescheduling_route", default: "", null: false
     t.string "other_reason", default: "", null: false
+    t.index "tsrange(start_at, end_at)", name: "index_appointments_tsrange_start_at_end_at", using: :gist
+    t.index ["guider_id", "start_at"], name: "index_appointments_guider_start_schedule_status", where: "(((schedule_type)::text = 'pension_wise'::text) AND (status <> ALL ('{6,7,8,9}'::integer[])))"
     t.index ["guider_id", "start_at"], name: "unique_slot_guider_in_appointment", unique: true, where: "((status <> ALL (ARRAY[5, 6, 7, 8, 9])) AND (start_at > '2024-01-01 00:00:00'::timestamp without time zone))"
     t.index ["guider_id"], name: "index_appointments_guider_schedule_status", where: "(((schedule_type)::text = 'pension_wise'::text) AND (status <> ALL ('{6,7,8,9}'::integer[])))"
     t.index ["guider_id"], name: "index_appointments_on_guider_id"
     t.index ["schedule_type"], name: "index_appointments_on_schedule_type"
     t.index ["start_at", "end_at", "guider_id"], name: "index_appointments_on_start_at_and_end_at_and_guider_id"
-    t.index ["start_at", "end_at"], name: "index_appointments_on_start_at_and_end_at"
     t.index ["start_at"], name: "index_appointments_on_start_at"
-    t.index ["status"], name: "index_appointments_on_status"
   end
 
   create_table "audits", id: :serial, force: :cascade do |t|
@@ -164,6 +164,7 @@ ActiveRecord::Schema.define(version: 2024_12_15_171846) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "schedule_type", default: "pension_wise", null: false
+    t.index "tsrange(start_at, end_at)", name: "index_bookable_slots_tsrange_start_at_end_at", using: :gist
     t.index ["guider_id"], name: "index_bookable_slots_on_guider_id"
     t.index ["schedule_type"], name: "index_bookable_slots_on_schedule_type"
     t.index ["start_at", "end_at"], name: "index_bookable_slots_on_start_at_and_end_at"
@@ -199,6 +200,8 @@ ActiveRecord::Schema.define(version: 2024_12_15_171846) do
     t.datetime "updated_at", null: false
     t.boolean "bank_holiday", null: false
     t.boolean "all_day", default: false, null: false
+    t.index "tsrange(start_at, end_at)", name: "index_holidays_tsrange_start_at_end_at", using: :gist
+    t.index "user_id, tsrange(start_at, end_at)", name: "index_holidays_userid_tsrange", using: :gist
     t.index ["start_at", "end_at"], name: "index_holidays_on_start_at_and_end_at"
     t.index ["user_id"], name: "index_holidays_on_user_id"
   end
