@@ -15,7 +15,7 @@ class BookableSlot < ApplicationRecord
   def self.within_date_range(from, to, organisation_limit: false)
     return limit_by_organisation(from, to) if organisation_limit
 
-    where("#{quoted_table_name}.start_at > ? AND #{quoted_table_name}.end_at < ?", from, to)
+    where("#{quoted_table_name}.start_at > ? AND #{quoted_table_name}.start_at < ?", from, to)
   end
 
   def self.limit_by_organisation(from, to) # rubocop:disable Metrics/MethodLength
@@ -26,10 +26,10 @@ class BookableSlot < ApplicationRecord
       .where(
         '
          (users.organisation_content_id = :tpas_id
-           AND bookable_slots.start_at > :tpas_start_at AND bookable_slots.end_at < :end_at)
+           AND bookable_slots.start_at > :tpas_start_at AND bookable_slots.start_at < :end_at)
          OR
          (users.organisation_content_id != :tpas_id
-           AND bookable_slots.start_at > :start_at AND bookable_slots.end_at < :end_at)
+           AND bookable_slots.start_at > :start_at AND bookable_slots.start_at < :end_at)
         ',
         tpas_id: Provider::TPAS.id,
         tpas_start_at:,
@@ -144,7 +144,7 @@ class BookableSlot < ApplicationRecord
   def self.reduce_by_range(table, from, to)
     return '' unless from && to
 
-    sanitize_sql(["AND (#{table}.start_at > ? AND #{table}.end_at < ?)", from, to])
+    sanitize_sql(["AND (#{table}.start_at > ? AND #{table}.start_at < ?)", from, to])
   end
 
   def self.starting_after_next_valid_start_date(user, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE, rebooking: false) # rubocop:disable Metrics/MethodLength
