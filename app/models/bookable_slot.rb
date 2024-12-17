@@ -60,8 +60,7 @@ class BookableSlot < ApplicationRecord
   end
 
   def self.bookable(from = nil, to = nil)
-    without_appointments(from, to)
-      .without_holidays
+    without_appointments(from, to).without_holidays
   end
 
   def self.grouped(organisation_id = nil, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE, day = nil) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
@@ -73,6 +72,7 @@ class BookableSlot < ApplicationRecord
     scope = for_schedule_type(schedule_type:, scope:)
     scope = scope.select("#{quoted_table_name}.start_at::date as start_date")
     scope = scope.select("json_agg(distinct(#{quoted_table_name}.start_at))") if day
+    scope = scope.where("#{quoted_table_name}.start_at > ? AND #{quoted_table_name}.start_at < ?", from, to)
     sql_query = scope.group('start_date').to_sql
 
     results = ActiveRecord::Base.connection.select_all(sql_query)
@@ -104,7 +104,7 @@ class BookableSlot < ApplicationRecord
     scope.where(schedule_type:)
   end
 
-  def self.without_appointments(from = nil, to = nil) # rubocop:disable Metrics/MethodLength
+  def self.without_appointments(from = nil, to = nil)
     joins(<<-SQL
             LEFT JOIN appointments ON
               appointments.guider_id = #{quoted_table_name}.guider_id
@@ -115,11 +115,7 @@ class BookableSlot < ApplicationRecord
                 #{Appointment.statuses['cancelled_by_customer_sms']},
                 #{Appointment.statuses['cancelled_by_customer_online']}
               )
-              AND (
-                appointments.start_at, appointments.end_at
-              ) OVERLAPS (
-                #{quoted_table_name}.start_at, #{quoted_table_name}.end_at
-              )
+              AND (TSRANGE(appointments.start_at, appointments.end_at) && TSRANGE(bookable_slots.start_at, bookable_slots.end_at))
               AND appointments.schedule_type = #{quoted_table_name}.schedule_type
             SQL
          )
@@ -128,17 +124,17 @@ class BookableSlot < ApplicationRecord
 
   def self.without_holidays # rubocop:disable Metrics/MethodLength
     joins(<<-SQL
-          LEFT JOIN holidays ON
-            -- The holiday is specifically for the user, or it is for everyone
-            (holidays.user_id = #{quoted_table_name}.guider_id OR holidays.user_id IS NULL)
-            AND (
-              holidays.start_at, holidays.end_at
-            ) OVERLAPS (
-              #{quoted_table_name}.start_at, #{quoted_table_name}.end_at
-            )
+          LEFT JOIN holidays h1 ON h1.user_id = #{quoted_table_name}.guider_id
+          AND (TSRANGE(h1.start_at, h1.end_at) && TSRANGE(bookable_slots.start_at, bookable_slots.end_at))
             SQL
          )
-      .where('holidays.start_at IS NULL')
+      .joins(<<-SQL
+          LEFT JOIN holidays h2 ON h2.user_id IS NULL
+          AND (TSRANGE(h2.start_at, h2.end_at) && TSRANGE(bookable_slots.start_at, bookable_slots.end_at))
+            SQL
+            )
+      .where('h1.start_at IS NULL')
+      .where('h2.start_at IS NULL')
   end
 
   def self.reduce_by_range(table, from, to)
