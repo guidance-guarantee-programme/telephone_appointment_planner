@@ -18,7 +18,6 @@ module Pages
     element :reschedule, '.t-reschedule'
     elements :slots, '.fc-time-grid-event'
     elements :calendar_events, '.fc-event'
-    element :next_period, '.fc-next-button'
 
     def ad_hoc_start_at(value)
       execute_script("$('.t-ad-hoc-start-at').val('#{value}')")
