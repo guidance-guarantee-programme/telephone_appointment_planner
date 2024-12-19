@@ -8,14 +8,14 @@
         showAll = !!$('.js-internal-availability').prop('checked');
 
       this.config = {
-        defaultView: 'agendaThreeDay',
+        defaultView: 'agendaWeek',
         columnFormat: 'ddd D/M',
         slotDuration: '00:30:00',
         eventBorderColor: '#000',
         events: this.getEventsUrl(lloydsSignposted, el),
         defaultDate: moment(el.data('default-date')),
         header: {
-          'right': 'agendaDay agendaThreeDay today jumpToDate prev,next'
+          'right': 'agendaDay agendaThreeDay agendaWeek today jumpToDate prev,next'
         },
         views: {
           agendaThreeDay: {

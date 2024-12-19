@@ -171,8 +171,7 @@ RSpec.feature 'Agent manages appointments' do
     expect(@page).to have_no_small_pots
   end
 
-  def then_they_see_only_general_availability(navigate_next: true)
-    @page.next_period.click if navigate_next
+  def then_they_see_only_general_availability
     @page.wait_until_calendar_events_visible
 
     expect(@page).to have_calendar_events(count: 1)

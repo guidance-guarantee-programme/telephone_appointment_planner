@@ -90,6 +90,8 @@ RSpec.feature 'Agent rebooks appointments' do
     @page = Pages::NewAppointment.new
     expect(@page).to be_displayed
 
+    @page.week_view.click
+    @page.wait_until_slots_invisible
     expect(@page).to have_no_slots
 
     @page.next_period.click
@@ -125,7 +127,6 @@ RSpec.feature 'Agent rebooks appointments' do
     @page = Pages::NewAppointment.new
     expect(@page).to be_displayed
 
-    @page.next_period.click
     @page.wait_until_slots_visible
     expect(@page).to have_slots(count: 1)
     expect(@page.slots.first).to have_text('11:00 1 guider')

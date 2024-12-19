@@ -2,7 +2,6 @@ module Pages
   class NewAppointment < Base
     set_url '/appointments/new{?query*}'
 
-    element :next_period, '.fc-next-button'
     elements :slots, '.fc-time-grid-event'
 
     element :first_name,                            '.t-first-name'
@@ -59,6 +58,9 @@ module Pages
     elements :fields_with_errors, '.field_with_errors'
 
     element :due_diligence_banner, '.t-due-diligence-banner'
+
+    element :week_view, '.fc-agendaThreeDay-button'
+    element :next_period, '.fc-next-button'
 
     def ad_hoc_start_at(value)
       execute_script("$('.t-ad-hoc-start-at').val('#{value}')")
