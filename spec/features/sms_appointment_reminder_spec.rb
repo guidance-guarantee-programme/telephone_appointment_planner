@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.feature 'SMS appointment reminders' do
+RSpec.feature 'SMS appointment reminders' do # rubocop:disable Metrics/BlockLength
   scenario 'Executing the SMS appointment reminders job' do
     travel_to '2017-11-28 08:00 UTC' do
       given_appointments_due_sms_reminders_exist
@@ -19,6 +19,8 @@ RSpec.feature 'SMS appointment reminders' do
     @no_uk_mobile = create(:appointment, mobile: '0121 123 4567', start_at: 2.days.from_now, agent: @agent)
     # in the window with a mobile number
     @mobile = create(:appointment, start_at: 2.days.from_now, agent: @agent)
+    @other_mobile = create(:appointment, mobile: '', phone: '+447715930459', start_at: 2.days.from_now, agent: @agent)
+    @another_mobile = create(:appointment, mobile: '00447715930459', start_at: 2.days.from_now, agent: @agent)
   end
 
   def when_the_task_is_executed
@@ -28,7 +30,10 @@ RSpec.feature 'SMS appointment reminders' do
   end
 
   def then_the_required_jobs_are_scheduled
-    expect(@job_class).to have_received(:perform_later).at_most(:once)
-    expect(@job_class).to have_received(:perform_later).with(@mobile)
+    expect(@job_class).to have_received(:perform_later).exactly(3).times
+
+    [@mobile, @other_mobile, @another_mobile].each do |appointment|
+      expect(@job_class).to have_received(:perform_later).with(appointment)
+    end
   end
 end

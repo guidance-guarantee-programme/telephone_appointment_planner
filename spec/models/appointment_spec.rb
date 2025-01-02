@@ -147,13 +147,19 @@ RSpec.describe Appointment, type: :model do
   end
 
   describe '#mobile?' do
-    context 'when the appointment has mobileish number' do
-      it 'is true' do
-        appointment = build_stubbed(:appointment, phone: '07715930485', mobile: '')
-        expect(appointment).to be_mobile
+    %w[
+      07715930459
+      +447715930459
+      00447715930459
+    ].each do |valid_number|
+      context "when the mobile or phone #{valid_number} is mobileish" do
+        it 'is true' do
+          appointment = build_stubbed(:appointment, phone: valid_number, mobile: '')
+          expect(appointment).to be_mobile
 
-        appointment = build_stubbed(:appointment, phone: '', mobile: '0771675849')
-        expect(appointment).to be_mobile
+          appointment = build_stubbed(:appointment, phone: '', mobile: valid_number)
+          expect(appointment).to be_mobile
+        end
       end
     end
 
