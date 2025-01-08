@@ -19,4 +19,12 @@ RSpec.describe Casebook::Presenters::Reschedule, '#to_h' do
       reschedule_status: 'office_rescheduled'
     )
   end
+
+  context 'when the guider was reallocated' do
+    let(:appointment) { build_stubbed(:appointment, :casebook_guider) }
+
+    it 'infers the correct `reschedule_status`' do
+      expect(subject[:reschedule_status]).to eq('office_rescheduled')
+    end
+  end
 end
