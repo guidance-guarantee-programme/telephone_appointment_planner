@@ -16,9 +16,14 @@
 
 <ul style="color: #0B0C0C;font-family: Calibri, Arial, sans-serif;margin-top: 15px;margin-bottom: 15px;font-size: 16px;line-height: 1.315789474;">
   <% if @appointment.due_diligence? %>
-    <li><%= p do %>details of your current pension and provider<% end %></li>
-    <li><%= p do %>details of the pension scheme you are looking to transfer to<% end %></li>
-    <li><%= p do %>details of where the receiving pension scheme proposes to invest your money<% end %></li>
+    <li><%= p do %>details of your current pension scheme and pension scheme you are looking to transfer to, including:<% end %>
+      <ul style="color: #0B0C0C;font-family: Calibri, Arial, sans-serif;margin-top: 15px;margin-bottom: 15px;font-size: 16px;line-height: 1.315789474;">
+        <li><%= p do %>pension type, e.g. defined contribution or defined benefit<% end %></li>
+        <li><%= p do %>pension product name, e.g. SIPP, personal pension, workplace pension, flexible pension plan etc<% end %></li>
+        <li><%= p do %>current and proposed investment strategies including investment funds and asset types<% end %></li>
+        <li><%= p do %>fees and charges for both schemes<% end %></li>
+      </ul>
+    </li>
     <li><%= p do %>any information you have from the current provider for the Red or Amber flags raised by them<% end %></li>
     <li><%= p do %>details of your other pension arrangements you may have<% end %></li>
   <% else %>

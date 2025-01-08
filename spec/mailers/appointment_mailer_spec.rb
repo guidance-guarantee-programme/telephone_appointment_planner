@@ -49,7 +49,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
     end
 
     it 'contains the due diligence specifics' do
-      expect(subject.body.encoded).to include('where the receiving pension scheme proposes to invest')
+      expect(subject.body.encoded).to include('details of your current pension scheme')
     end
 
     it 'has the correct help number' do
