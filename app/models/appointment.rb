@@ -6,6 +6,9 @@ class Appointment < ApplicationRecord
 
   attr_accessor :current_user, :internal_availability, :ad_hoc_start_at
 
+  MOBILE_REGEX = /^(07|\+447|00447)/
+  MOBILE_REGEX_POSIX = '^(07|\+447|00447)'.freeze
+
   DEFAULT_COUNTRY_CODE = 'GB'.freeze
 
   RESCHEDULING_REASONS = %w[client_rescheduled office_rescheduled].freeze
@@ -132,7 +135,7 @@ class Appointment < ApplicationRecord
 
   scope :cancelled, -> { where(status: CANCELLED_STATUSES) }
   scope :not_cancelled, -> { where.not(status: CANCELLED_STATUSES) }
-  scope :with_mobile_number, -> { where("mobile like '07%' or phone like '07%'") }
+  scope :with_mobile_number, -> { where("mobile ~ '#{MOBILE_REGEX_POSIX}' or phone ~ '#{MOBILE_REGEX_POSIX}'") }
   scope :not_booked_today, -> { where.not(created_at: Time.current.beginning_of_day..Time.current.end_of_day) }
   scope :for_pension_wise, -> { where(schedule_type: User::PENSION_WISE_SCHEDULE_TYPE) }
   scope :for_due_diligence, -> { where(schedule_type: User::DUE_DILIGENCE_SCHEDULE_TYPE) }
@@ -395,7 +398,7 @@ class Appointment < ApplicationRecord
   end
 
   def mobile?
-    phone.start_with?('07') || mobile.start_with?('07')
+    MOBILE_REGEX === phone || MOBILE_REGEX === mobile
   end
 
   def owned_by_my_organisation?(myself)
