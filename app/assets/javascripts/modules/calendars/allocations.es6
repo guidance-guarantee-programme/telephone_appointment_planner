@@ -44,6 +44,11 @@
     }
 
     handlePushEvent() {
+      if (this.$actionPanel.is(':visible')) {
+        alert('The calendar events have changed and the calendar will be refreshed.');
+        this.$actionPanel.find('.js-action-panel-undo-all').click();
+      }
+
       this.$el.fullCalendar('removeEvents');
       this.$el.fullCalendar('refetchEvents');
     }
