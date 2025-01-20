@@ -473,6 +473,18 @@ RSpec.describe Appointment, type: :model do
       build_stubbed(:appointment)
     end
 
+    describe '#attended_digital' do
+      it 'permits any of the valid values' do
+        subject.attended_digital = 'meh'
+        expect(subject).to be_invalid
+
+        Appointment::ATTENDED_DIGITAL_OPTIONS.each do |option|
+          subject.attended_digital = option
+          expect(subject).to be_valid
+        end
+      end
+    end
+
     describe '#notes' do
       it 'has a maxlength of 1000 characters' do
         subject.notes = 'a' * 1001
