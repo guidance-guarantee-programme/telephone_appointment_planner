@@ -250,7 +250,7 @@ RSpec.describe 'POST /api/v1/appointments' do
       'notes' => 'I am hard of hearing',
       'lloyds_signposted' => true,
       'rebooked_from_id'  => '1234567',
-      'attended_digital'  => true
+      'attended_digital'  => 'yes'
     }
 
     post api_v1_appointments_path, params: @payload, as: :json
@@ -337,7 +337,7 @@ RSpec.describe 'POST /api/v1/appointments' do
         pension_provider: 'n/a',
         lloyds_signposted: true,
         rebooked_from_id: 1_234_567,
-        attended_digital: true
+        attended_digital: 'yes'
       )
 
       # defaults to pension wise when the schedule type is unspecified

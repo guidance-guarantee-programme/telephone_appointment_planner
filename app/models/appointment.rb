@@ -15,7 +15,9 @@ class Appointment < ApplicationRecord
     CLIENT_RESCHEDULED = 'client_rescheduled'.freeze,
     OFFICE_RESCHEDULED = 'office_rescheduled'.freeze
   ].freeze
-  RESCHEDULING_ROUTES  = %w[phone email_or_crm].freeze
+  RESCHEDULING_ROUTES = %w[phone email_or_crm].freeze
+
+  ATTENDED_DIGITAL_OPTIONS = %w[yes no not-sure].freeze
 
   CANCELLED_STATUSES = %i[
     cancelled_by_customer
@@ -55,6 +57,7 @@ class Appointment < ApplicationRecord
     rescheduling_reason
     rescheduling_route
     cancelled_via
+    attended_digital
   ].freeze
 
   enum status: { pending: 0, complete: 1, no_show: 2, incomplete: 3, ineligible_age: 4,
@@ -167,6 +170,7 @@ class Appointment < ApplicationRecord
   validates :referrer, presence: true, if: :due_diligence?, on: :create
   validates :email, email: true, unless: :sms_confirmation?
   validates :cancelled_via, inclusion: %w[phone email], on: :update, if: :cancelled_prior_to_appointment?
+  validates :attended_digital, inclusion: ATTENDED_DIGITAL_OPTIONS, allow_blank: true, if: :pension_wise?
 
   validate :not_within_grace_period, unless: :agent_is_resource_manager?
   validate :valid_within_booking_window
