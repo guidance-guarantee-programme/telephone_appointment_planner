@@ -48,7 +48,8 @@ module Api
           :lloyds_signposted,
           :referrer,
           :nudged,
-          :rebooked_from_id
+          :rebooked_from_id,
+          :attended_digital
         ).merge(
           agent: current_user,
           schedule_type:

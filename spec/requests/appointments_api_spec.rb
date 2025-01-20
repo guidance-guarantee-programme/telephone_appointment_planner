@@ -183,7 +183,8 @@ RSpec.describe 'POST /api/v1/appointments' do
   def and_the_due_diligence_appointment_is_created
     expect(Appointment.last).to have_attributes(
       schedule_type: 'due_diligence',
-      country_code: 'FR'
+      country_code: 'FR',
+      attended_digital: nil
     )
   end
 
@@ -248,7 +249,8 @@ RSpec.describe 'POST /api/v1/appointments' do
       'accessibility_requirements' => true,
       'notes' => 'I am hard of hearing',
       'lloyds_signposted' => true,
-      'rebooked_from_id'  => '1234567'
+      'rebooked_from_id'  => '1234567',
+      'attended_digital'  => true
     }
 
     post api_v1_appointments_path, params: @payload, as: :json
@@ -298,7 +300,10 @@ RSpec.describe 'POST /api/v1/appointments' do
   end
 
   def and_the_appointment_is_created_as_a_nudged_appointment
-    expect(Appointment.last).to be_nudged
+    expect(Appointment.last).to have_attributes(
+      nudged: true,
+      attended_digital: nil
+    )
   end
 
   def and_the_appointment_is_created_as_a_smarter_signposted_appointment
@@ -331,7 +336,8 @@ RSpec.describe 'POST /api/v1/appointments' do
         notes: 'I am hard of hearing',
         pension_provider: 'n/a',
         lloyds_signposted: true,
-        rebooked_from_id: 1_234_567
+        rebooked_from_id: 1_234_567,
+        attended_digital: true
       )
 
       # defaults to pension wise when the schedule type is unspecified
