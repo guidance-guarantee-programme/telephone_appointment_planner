@@ -26,6 +26,7 @@ class ActivitiesController < ApplicationController
     @activities = Activity
                   .high_priority_for(current_user)
                   .unresolved
+                  .where('created_at > ?', 1.month.ago)
                   .order('id DESC')
                   .limit(5)
 
