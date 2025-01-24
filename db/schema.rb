@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_12_15_181148) do
+ActiveRecord::Schema.define(version: 2025_01_24_115245) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
@@ -125,6 +125,7 @@ ActiveRecord::Schema.define(version: 2024_12_15_181148) do
     t.string "cancelled_via", default: "", null: false
     t.string "rescheduling_route", default: "", null: false
     t.string "other_reason", default: "", null: false
+    t.index "guider_id, tsrange(start_at, end_at)", name: "index_appointments_guider_id_tsrange_start_at_end_at", using: :gist
     t.index "tsrange(start_at, end_at)", name: "index_appointments_tsrange_start_at_end_at", using: :gist
     t.index ["guider_id", "start_at"], name: "index_appointments_guider_start_schedule_status", where: "(((schedule_type)::text = 'pension_wise'::text) AND (status <> ALL ('{6,7,8,9}'::integer[])))"
     t.index ["guider_id", "start_at"], name: "unique_slot_guider_in_appointment", unique: true, where: "((status <> ALL (ARRAY[5, 6, 7, 8, 9])) AND (start_at > '2024-01-01 00:00:00'::timestamp without time zone))"
