@@ -15,6 +15,7 @@ module Pages
     element :date_of_birth_year,                    '.t-date-of-birth-year'
     element :memorable_word,                        '.t-memorable-word'
     element :accessibility_requirements,            '.t-accessibility-requirements'
+    element :adjustments,                           '.t-adjustments'
 
     element :welsh,                                 '.t-welsh'
     element :third_party_booked,                    '.t-third-party-booked'
@@ -47,6 +48,9 @@ module Pages
     element :internal_availability, '.t-internal-availability'
     element :small_pots, '.t-small-pots'
     element :stronger_nudged, '.t-nudge-flag'
+    element :attended_digital_yes, '.t-attended-digital-yes'
+    element :attended_digital_no, '.t-attended-digital-no'
+    element :attended_digital_not_sure, '.t-attended-digital-not-sure'
 
     element :availability_calendar_off, '.t-availability-calendar-off'
     element :availability_calendar_on, '.t-availability-calendar-on'

@@ -225,10 +225,14 @@ RSpec.feature 'Agent manages appointments' do
     given_the_user_is_an_agent(organisation: :tpas) do
       and_there_is_a_guider_with_available_slots
       when_they_want_to_book_an_appointment
-      and_they_fill_in_their_appointment_details(smarter_signposted: true, bsl_video: true)
-      then_they_see_a_preview_of_the_appointment(smarter_signposted: true)
+      and_they_fill_in_their_appointment_details(
+        smarter_signposted: true,
+        bsl_video: true,
+        attended_digital: true
+      )
+      then_they_see_a_preview_of_the_appointment(smarter_signposted: true, attended_digital: true)
       when_they_accept_the_appointment_preview
-      then_that_appointment_is_created(smarter_signposted: true)
+      then_that_appointment_is_created(smarter_signposted: true, attended_digital: true)
     end
   end
 
@@ -517,6 +521,7 @@ RSpec.feature 'Agent manages appointments' do
     @page.mobile.set '07715 930 459'
     @page.memorable_word.set 'lozenge'
     @page.accessibility_requirements.set true
+    @page.adjustments.set 'The given adjustments'
     @page.notes.set 'something'
     @page.gdpr_consent_yes.set true
     @page.internal_availability.set true if @page.has_internal_availability?
@@ -531,6 +536,7 @@ RSpec.feature 'Agent manages appointments' do
     @page.smarter_signposted.set(options[:smarter_signposted]) if options[:smarter_signposted]
     @page.small_pots.set(options[:small_pots]) if options[:small_pots]
     @page.stronger_nudged.set(options[:stronger_nudge]) if options[:stronger_nudge]
+    @page.attended_digital_yes.set(true) if options[:attended_digital]
 
     expect(@page).to have_no_bsl_video if options[:bsl_video]
 
@@ -558,11 +564,15 @@ RSpec.feature 'Agent manages appointments' do
     expect(@page.preview).to have_content 'lozenge'
     expect(@page.preview).to have_content 'something'
     expect(@page.preview).to have_content 'Customer research consent Yes'
+    expect(@page.preview).to have_content 'I require help or an adjustment to help me access my appointment Yes'
+    expect(@page.preview).to have_content 'The given adjustments'
+    expect(@page.preview).to have_content 'Customer research consent Yes'
     expect(@page.preview).to have_content 'Standard'
     expect(@page.preview).to have_content 'Smarter signposted referral? Yes' if options[:smarter_signposted]
     expect(@page.preview).to have_content 'Small pots appointment? Yes' if options[:small_pots]
     expect(@page.preview).to have_content 'Stronger Nudge appointment? Yes' if options[:stronger_nudge]
     expect(@page.preview).to have_content 'Welsh language appointment? Yes' if options[:welsh]
+    expect(@page.preview).to have_content 'online Pension Wise appointment? Yes' if options[:attended_digital]
   end
 
   def and_they_fill_in_their_appointment_details_without_an_email
@@ -588,6 +598,7 @@ RSpec.feature 'Agent manages appointments' do
     expect(appointment.mobile).to eq '07715 930 459'
     expect(appointment.memorable_word).to eq 'lozenge'
     expect(appointment.notes).to eq 'something'
+    expect(appointment.adjustments).to eq 'The given adjustments'
     expect(appointment.gdpr_consent).to eq 'yes'
     expect(appointment.start_at).to eq day.change(hour: 9, min: 30).to_s
     expect(appointment.status).to eq 'pending'
@@ -600,6 +611,7 @@ RSpec.feature 'Agent manages appointments' do
     expect(appointment).to be_small_pots if options[:small_pots]
     expect(appointment).to be_nudged if options[:stronger_nudge]
     expect(appointment).to be_welsh if options[:welsh]
+    expect(appointment).to be_attended_digital if options[:attended_digital]
   end
 
   def and_the_customer_gets_an_email_confirmation

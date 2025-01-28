@@ -69,6 +69,14 @@ RSpec.describe Appointment, type: :model do
             end
           end
 
+          context 'when the appointment has notes' do
+            it 'is false' do
+              appointment = build(:appointment, notes: 'Well hello there.')
+
+              expect(appointment).not_to be_adjustments
+            end
+          end
+
           context 'when there are other adjustments as well as DC unsure' do
             it 'is true' do
               appointment = build(:appointment, dc_pot_confirmed: false, accessibility_requirements: true)
@@ -82,6 +90,18 @@ RSpec.describe Appointment, type: :model do
           context 'when there is only the DC unsure adjustment' do
             it 'is true' do
               appointment = build(:appointment, organisation: :cas, dc_pot_confirmed: false)
+
+              expect(appointment).to be_adjustments
+            end
+          end
+
+          context 'when notes are given' do
+            it 'is true' do
+              appointment = build(
+                :appointment,
+                organisation: :cas,
+                notes: 'They will care about these.'
+              )
 
               expect(appointment).to be_adjustments
             end
@@ -473,6 +493,18 @@ RSpec.describe Appointment, type: :model do
       build_stubbed(:appointment)
     end
 
+    describe '#attended_digital' do
+      it 'permits any of the valid values' do
+        subject.attended_digital = 'meh'
+        expect(subject).to be_invalid
+
+        Appointment::ATTENDED_DIGITAL_OPTIONS.each do |option|
+          subject.attended_digital = option
+          expect(subject).to be_valid
+        end
+      end
+    end
+
     describe '#notes' do
       it 'has a maxlength of 1000 characters' do
         subject.notes = 'a' * 1001
@@ -693,17 +725,17 @@ RSpec.describe Appointment, type: :model do
       end
 
       context 'when accessibility adjustments' do
-        it 'requires additional notes to be specified' do
+        it 'requires adjustments to be specified' do
           subject.accessibility_requirements = true
-          subject.notes = ''
+          subject.adjustments = ''
           expect(subject).to be_invalid
 
-          subject.notes = 'They require some assistance'
+          subject.adjustments = 'They require some assistance'
           expect(subject).to be_valid
 
           # no notes required before cutoff date of 2019-09-25
           subject.created_at = '2019-01-01'.to_date
-          subject.notes = ''
+          subject.adjustments = ''
           expect(subject).to be_valid
         end
       end

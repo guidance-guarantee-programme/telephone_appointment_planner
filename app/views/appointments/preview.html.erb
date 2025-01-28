@@ -49,6 +49,8 @@
   <%= f.hidden_field :referrer %>
   <%= f.hidden_field :small_pots %>
   <%= f.hidden_field :nudged %>
+  <%= f.hidden_field :attended_digital %>
+  <%= f.hidden_field :adjustments %>
 
   <%= f.hidden_field :data_subject_name %>
   <%= f.hidden_field :data_subject_date_of_birth %>
@@ -142,8 +144,14 @@
             </tr>
             <tr>
               <td class="active"><b>I require help or an adjustment to help me access my appointment</b></td>
-              <td><%= @appointment.accessibility_requirements %></td>
+              <td><%= boolean_yes_no(@appointment.accessibility_requirements) %></td>
             </tr>
+            <% if @appointment.accessibility_requirements? %>
+            <tr>
+              <td class="active"><b>Adjustments</b></td>
+              <td><%= simple_format(@appointment.adjustments) %></td>
+            </tr>
+            <% end %>
             <% if @appointment.third_party_booking? %>
             <tr>
               <td class="active"><b>Data subject name</b></td>
@@ -184,6 +192,10 @@
               <tr>
                 <td class="active"><b>Customer research consent</b></td>
                 <td><%= @appointment.customer_research_consent %></td>
+              </tr>
+              <tr>
+                <td class="active"><b>Completed an online Pension Wise appointment?</b></td>
+                <td><%= @appointment.attended_digital.to_s.humanize %></td>
               </tr>
               <tr>
                 <td class="active"><b>Type of appointment</b></td>

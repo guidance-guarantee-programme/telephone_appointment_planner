@@ -14,6 +14,10 @@ The customer has indicated that they are unsure if they have a DC pension
 The appointment has been identified as a potential duplicate booking
 <% end %>
 
+<% if @appointment.notes? %>
+The customer has provided additional information or notes regarding their appointment
+<% end %>
+
 Reference number:
 <%= @appointment.id %>
 

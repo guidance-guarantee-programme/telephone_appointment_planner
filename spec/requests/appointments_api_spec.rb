@@ -108,7 +108,8 @@ RSpec.describe 'POST /api/v1/appointments' do
       'dc_pot_confirmed'           => false,
       'where_you_heard'            => '2',
       'gdpr_consent'               => 'no',
-      'accessibility_requirements' => '0',
+      'accessibility_requirements' => false,
+      'adjustments'                => '',
       'notes'                      => '',
       'smarter_signposted'         => false,
       'lloyds_signposted'          => false,
@@ -139,7 +140,8 @@ RSpec.describe 'POST /api/v1/appointments' do
       'dc_pot_confirmed'           => false,
       'where_you_heard'            => '2',
       'gdpr_consent'               => 'no',
-      'accessibility_requirements' => '0',
+      'accessibility_requirements' => false,
+      'adjustments'                => '',
       'notes'                      => '',
       'smarter_signposted'         => false,
       'lloyds_signposted'          => false,
@@ -170,7 +172,8 @@ RSpec.describe 'POST /api/v1/appointments' do
       'schedule_type'     => 'due_diligence',
       'referrer'          => 'Big Pension Co.',
       'country_code'      => 'FR',
-      'accessibility_requirements' => false
+      'accessibility_requirements' => false,
+      'adjustments' => ''
     }
 
     post api_v1_appointments_path, params: @payload, as: :json
@@ -183,7 +186,8 @@ RSpec.describe 'POST /api/v1/appointments' do
   def and_the_due_diligence_appointment_is_created
     expect(Appointment.last).to have_attributes(
       schedule_type: 'due_diligence',
-      country_code: 'FR'
+      country_code: 'FR',
+      attended_digital: nil
     )
   end
 
@@ -209,7 +213,8 @@ RSpec.describe 'POST /api/v1/appointments' do
       'dc_pot_confirmed' => true,
       'where_you_heard'  => '1',
       'gdpr_consent'     => 'yes',
-      'accessibility_requirements' => 'false'
+      'adjustments'      => '',
+      'accessibility_requirements' => false
     }
 
     post api_v1_appointments_path, params: @payload, as: :json
@@ -246,9 +251,11 @@ RSpec.describe 'POST /api/v1/appointments' do
       'where_you_heard'  => '1',
       'gdpr_consent'     => 'yes',
       'accessibility_requirements' => true,
-      'notes' => 'I am hard of hearing',
+      'adjustments'      => 'I am hard of hearing',
+      'notes'            => '',
       'lloyds_signposted' => true,
-      'rebooked_from_id'  => '1234567'
+      'rebooked_from_id'  => '1234567',
+      'attended_digital'  => 'yes'
     }
 
     post api_v1_appointments_path, params: @payload, as: :json
@@ -267,7 +274,7 @@ RSpec.describe 'POST /api/v1/appointments' do
       'where_you_heard'  => '1',
       'gdpr_consent'     => 'yes',
       'accessibility_requirements' => true,
-      'notes' => 'I am hard of hearing',
+      'adjustments' => 'I am hard of hearing',
       'smarter_signposted' => true,
       'lloyds_signposted' => false
     }
@@ -288,7 +295,7 @@ RSpec.describe 'POST /api/v1/appointments' do
       'where_you_heard'  => '1',
       'gdpr_consent'     => 'yes',
       'accessibility_requirements' => true,
-      'notes' => 'I am hard of hearing',
+      'adjustments' => 'I am hard of hearing',
       'smarter_signposted' => false,
       'lloyds_signposted' => false,
       'nudged' => true
@@ -298,7 +305,10 @@ RSpec.describe 'POST /api/v1/appointments' do
   end
 
   def and_the_appointment_is_created_as_a_nudged_appointment
-    expect(Appointment.last).to be_nudged
+    expect(Appointment.last).to have_attributes(
+      nudged: true,
+      attended_digital: nil
+    )
   end
 
   def and_the_appointment_is_created_as_a_smarter_signposted_appointment
@@ -328,10 +338,11 @@ RSpec.describe 'POST /api/v1/appointments' do
         where_you_heard: 1,
         gdpr_consent: 'yes',
         accessibility_requirements: true,
-        notes: 'I am hard of hearing',
+        adjustments: 'I am hard of hearing',
         pension_provider: 'n/a',
         lloyds_signposted: true,
-        rebooked_from_id: 1_234_567
+        rebooked_from_id: 1_234_567,
+        attended_digital: 'yes'
       )
 
       # defaults to pension wise when the schedule type is unspecified

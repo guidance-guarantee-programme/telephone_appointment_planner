@@ -239,6 +239,8 @@ class AppointmentsController < ApplicationController
       internal_availability
       welsh
       cancelled_via
+      attended_digital
+      adjustments
     ]
   end
   # rubocop:enable Metrics/MethodLength

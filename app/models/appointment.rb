@@ -15,7 +15,9 @@ class Appointment < ApplicationRecord
     CLIENT_RESCHEDULED = 'client_rescheduled'.freeze,
     OFFICE_RESCHEDULED = 'office_rescheduled'.freeze
   ].freeze
-  RESCHEDULING_ROUTES  = %w[phone email_or_crm].freeze
+  RESCHEDULING_ROUTES = %w[phone email_or_crm].freeze
+
+  ATTENDED_DIGITAL_OPTIONS = %w[yes no not-sure].freeze
 
   CANCELLED_STATUSES = %i[
     cancelled_by_customer
@@ -55,6 +57,8 @@ class Appointment < ApplicationRecord
     rescheduling_reason
     rescheduling_route
     cancelled_via
+    attended_digital
+    adjustments
   ].freeze
 
   enum status: { pending: 0, complete: 1, no_show: 2, incomplete: 3, ineligible_age: 4,
@@ -157,7 +161,8 @@ class Appointment < ApplicationRecord
   validates :small_pots, inclusion: [true, false]
   validates :data_subject_name, presence: true, if: :third_party_booking?
   validates :data_subject_date_of_birth, presence: true, if: :require_data_subject_date_of_birth?
-  validates :notes, presence: true, if: :validate_adjustment_needs?
+  validates :adjustments, presence: true, if: :validate_adjustment_needs?
+  validates :adjustments, length: { maximum: 1000 }, allow_blank: true
   validates :notes, length: { maximum: 1000 }, allow_blank: true
   validates :type_of_appointment, inclusion: %w[standard 50-54]
   validates :where_you_heard, inclusion: WhereYouHeard.options_for_inclusion, on: :create, unless: :rebooked_from_id?
@@ -167,6 +172,7 @@ class Appointment < ApplicationRecord
   validates :referrer, presence: true, if: :due_diligence?, on: :create
   validates :email, email: true, unless: :sms_confirmation?
   validates :cancelled_via, inclusion: %w[phone email], on: :update, if: :cancelled_prior_to_appointment?
+  validates :attended_digital, inclusion: ATTENDED_DIGITAL_OPTIONS, allow_blank: true, if: :pension_wise?
 
   validate :not_within_grace_period, unless: :agent_is_resource_manager?
   validate :valid_within_booking_window
@@ -258,6 +264,7 @@ class Appointment < ApplicationRecord
   def adjustments?
     return true if accessibility_requirements? || third_party_booking?
     return false if tpas_guider?
+    return true if notes?
 
     !dc_pot_confirmed? && pension_wise?
   end

@@ -40,7 +40,11 @@ module AppointmentHelper
   end
 
   def boolean_yes_no(value)
-    value ? 'Yes' : 'No'
+    case value
+    when true then 'Yes'
+    when false then 'No'
+    else 'Not sure'
+    end
   end
 
   def display_nudge_eligibility?(appointment)
