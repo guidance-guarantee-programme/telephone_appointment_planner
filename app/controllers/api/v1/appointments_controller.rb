@@ -49,7 +49,8 @@ module Api
           :referrer,
           :nudged,
           :rebooked_from_id,
-          :attended_digital
+          :attended_digital,
+          :adjustments
         ).merge(
           agent: current_user,
           schedule_type:

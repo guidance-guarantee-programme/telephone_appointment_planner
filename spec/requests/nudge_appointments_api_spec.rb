@@ -53,8 +53,8 @@ RSpec.describe 'POST /api/v1/nudge_appointments' do
       'phone'                      => '02082524729',
       'memorable_word'             => 'snootboop',
       'date_of_birth'              => '1950-02-02',
-      'accessibility_requirements' => '1',
-      'notes'                      => 'These are my accessibility needs.',
+      'accessibility_requirements' => true,
+      'adjustments'                => 'These are my accessibility needs.',
       'nudge_eligibility_reason'   => '',
       'gdpr_consent'               => 'yes'
     }
@@ -73,7 +73,7 @@ RSpec.describe 'POST /api/v1/nudge_appointments' do
       'phone'                      => '02082524729',
       'memorable_word'             => 'snootboop',
       'date_of_birth'              => '1975-02-02',
-      'accessibility_requirements' => '0',
+      'accessibility_requirements' => false,
       'notes'                      => '',
       'nudge_eligibility_reason'   => 'protected_pension_age',
       'gdpr_consent'               => 'yes'
@@ -128,7 +128,8 @@ RSpec.describe 'POST /api/v1/nudge_appointments' do
         dc_pot_confirmed: true,
         where_you_heard: 2,
         gdpr_consent: 'yes',
-        accessibility_requirements: true
+        accessibility_requirements: true,
+        adjustments: 'These are my accessibility needs.'
       )
 
       expect(appointment).to be_pension_wise

@@ -58,6 +58,7 @@ class Appointment < ApplicationRecord
     rescheduling_route
     cancelled_via
     attended_digital
+    adjustments
   ].freeze
 
   enum status: { pending: 0, complete: 1, no_show: 2, incomplete: 3, ineligible_age: 4,
@@ -160,7 +161,8 @@ class Appointment < ApplicationRecord
   validates :small_pots, inclusion: [true, false]
   validates :data_subject_name, presence: true, if: :third_party_booking?
   validates :data_subject_date_of_birth, presence: true, if: :require_data_subject_date_of_birth?
-  validates :notes, presence: true, if: :validate_adjustment_needs?
+  validates :adjustments, presence: true, if: :validate_adjustment_needs?
+  validates :adjustments, length: { maximum: 1000 }, allow_blank: true
   validates :notes, length: { maximum: 1000 }, allow_blank: true
   validates :type_of_appointment, inclusion: %w[standard 50-54]
   validates :where_you_heard, inclusion: WhereYouHeard.options_for_inclusion, on: :create, unless: :rebooked_from_id?

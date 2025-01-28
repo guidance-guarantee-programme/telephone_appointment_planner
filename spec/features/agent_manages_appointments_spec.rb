@@ -521,6 +521,7 @@ RSpec.feature 'Agent manages appointments' do
     @page.mobile.set '07715 930 459'
     @page.memorable_word.set 'lozenge'
     @page.accessibility_requirements.set true
+    @page.adjustments.set 'The given adjustments'
     @page.notes.set 'something'
     @page.gdpr_consent_yes.set true
     @page.internal_availability.set true if @page.has_internal_availability?
@@ -563,6 +564,9 @@ RSpec.feature 'Agent manages appointments' do
     expect(@page.preview).to have_content 'lozenge'
     expect(@page.preview).to have_content 'something'
     expect(@page.preview).to have_content 'Customer research consent Yes'
+    expect(@page.preview).to have_content 'I require help or an adjustment to help me access my appointment Yes'
+    expect(@page.preview).to have_content 'The given adjustments'
+    expect(@page.preview).to have_content 'Customer research consent Yes'
     expect(@page.preview).to have_content 'Standard'
     expect(@page.preview).to have_content 'Smarter signposted referral? Yes' if options[:smarter_signposted]
     expect(@page.preview).to have_content 'Small pots appointment? Yes' if options[:small_pots]
@@ -594,6 +598,7 @@ RSpec.feature 'Agent manages appointments' do
     expect(appointment.mobile).to eq '07715 930 459'
     expect(appointment.memorable_word).to eq 'lozenge'
     expect(appointment.notes).to eq 'something'
+    expect(appointment.adjustments).to eq 'The given adjustments'
     expect(appointment.gdpr_consent).to eq 'yes'
     expect(appointment.start_at).to eq day.change(hour: 9, min: 30).to_s
     expect(appointment.status).to eq 'pending'
