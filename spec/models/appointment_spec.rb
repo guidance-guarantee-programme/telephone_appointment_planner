@@ -705,17 +705,17 @@ RSpec.describe Appointment, type: :model do
       end
 
       context 'when accessibility adjustments' do
-        it 'requires additional notes to be specified' do
+        it 'requires adjustments to be specified' do
           subject.accessibility_requirements = true
-          subject.notes = ''
+          subject.adjustments = ''
           expect(subject).to be_invalid
 
-          subject.notes = 'They require some assistance'
+          subject.adjustments = 'They require some assistance'
           expect(subject).to be_valid
 
           # no notes required before cutoff date of 2019-09-25
           subject.created_at = '2019-01-01'.to_date
-          subject.notes = ''
+          subject.adjustments = ''
           expect(subject).to be_valid
         end
       end

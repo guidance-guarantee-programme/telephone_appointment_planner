@@ -16,6 +16,7 @@ module Pages
     element :eligibility_reason,                    '.t-eligibility-reason'
     element :memorable_word,                        '.t-memorable-word'
     element :accessibility_requirements,            '.t-accessibility-requirements'
+    element :adjustments,                           '.t-adjustments'
 
     element :welsh,                                 '.t-welsh'
     element :third_party_booked,                    '.t-third-party-booked'
