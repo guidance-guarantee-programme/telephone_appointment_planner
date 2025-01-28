@@ -69,6 +69,14 @@ RSpec.describe Appointment, type: :model do
             end
           end
 
+          context 'when the appointment has notes' do
+            it 'is false' do
+              appointment = build(:appointment, notes: 'Well hello there.')
+
+              expect(appointment).not_to be_adjustments
+            end
+          end
+
           context 'when there are other adjustments as well as DC unsure' do
             it 'is true' do
               appointment = build(:appointment, dc_pot_confirmed: false, accessibility_requirements: true)
@@ -82,6 +90,18 @@ RSpec.describe Appointment, type: :model do
           context 'when there is only the DC unsure adjustment' do
             it 'is true' do
               appointment = build(:appointment, organisation: :cas, dc_pot_confirmed: false)
+
+              expect(appointment).to be_adjustments
+            end
+          end
+
+          context 'when notes are given' do
+            it 'is true' do
+              appointment = build(
+                :appointment,
+                organisation: :cas,
+                notes: 'They will care about these.'
+              )
 
               expect(appointment).to be_adjustments
             end
