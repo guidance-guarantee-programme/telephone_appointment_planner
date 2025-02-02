@@ -3,6 +3,8 @@ class SmsCancellationSuccessJob < NotifyJobBase
   BSL_TEMPLATE_ID      = '43fb57ed-1abe-4115-81ca-10f5042e23ca'.freeze
   DUE_DILIGENCE_TEMPLATE_ID = 'cc05fe66-aeda-4153-9973-62a290f59e4b'.freeze
 
+  include SmsFailureRecordable
+
   def perform(appointment)
     return unless api_key(appointment.schedule_type)
 

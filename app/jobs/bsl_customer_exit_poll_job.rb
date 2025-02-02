@@ -3,6 +3,8 @@ class BslCustomerExitPollJob < NotifyJobBase
 
   queue_as :default
 
+  include SmsFailureRecordable
+
   def perform(appointment)
     send_sms(appointment) if appointment.mobile?
 
