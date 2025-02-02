@@ -3,6 +3,8 @@ class SmsAppointmentReminderJob < NotifyJobBase
   BSL_TEMPLATE_ID      = '6bedd37b-c75c-44f5-bed3-3ec5eb5bb564'.freeze
   DUE_DILIGENCE_TEMPLATE_ID = 'c3157b23-c727-495e-b366-268536f848cc'.freeze
 
+  include SmsFailureRecordable
+
   def perform(appointment)
     return unless api_key(appointment.schedule_type)
 
@@ -11,7 +13,7 @@ class SmsAppointmentReminderJob < NotifyJobBase
 
   private
 
-  def send_sms_reminder(appointment) # rubocop:disable Metrics/MethodLength
+  def send_sms_reminder(appointment)
     client = Notifications::Client.new(api_key(appointment.schedule_type))
 
     client.send_sms(
@@ -22,10 +24,6 @@ class SmsAppointmentReminderJob < NotifyJobBase
         date: "#{appointment.start_at.to_s(:govuk_date_short)} (#{appointment.timezone})"
       }
     )
-  rescue Notifications::Client::BadRequestError
-    SmsFailureActivity.from(appointment)
-
-    false
   end
 
   def template_for(appointment)

@@ -43,7 +43,7 @@ RSpec.describe SmsAppointmentReminderJob, '#perform' do
         allow(client).to receive(:send_sms)
           .and_raise(Notifications::Client::BadRequestError.new(double(code: 400, body: 'meh')))
 
-        described_class.new.perform(appointment)
+        described_class.perform_now(appointment)
 
         expect(appointment.activities.find_by(type: 'SmsFailureActivity')).to be
         expect(appointment.activities.find_by(type: 'SmsReminderActivity')).to be_nil
