@@ -15,6 +15,7 @@ RSpec.describe 'POST /sms_cancellations', type: :request do
     when_the_client_requests_cancellation_by_sms
     then_the_service_responds_no_content
     and_the_appointment_is_cancelled
+    and_a_sms_message_activity_is_created
     and_a_cancellation_activity_is_created
     and_the_customer_is_sent_a_confirmation_sms
     and_the_guider_is_notified
@@ -46,8 +47,12 @@ RSpec.describe 'POST /sms_cancellations', type: :request do
     expect(@appointment).to be_cancelled_by_customer_sms
   end
 
+  def and_a_sms_message_activity_is_created
+    expect(@appointment.activities.first).to be_an(SmsMessageActivity)
+  end
+
   def and_a_cancellation_activity_is_created
-    expect(@appointment.activities.first).to be_an(SmsCancellationActivity)
+    expect(@appointment.activities.second).to be_an(SmsCancellationActivity)
   end
 
   def and_the_customer_is_sent_a_confirmation_sms
