@@ -23,7 +23,7 @@ class SmsAppointmentReminderJob < NotifyJobBase
       }
     )
   rescue Notifications::Client::BadRequestError
-    SmsReminderFailureActivity.from(appointment)
+    SmsFailureActivity.from(appointment)
 
     false
   end

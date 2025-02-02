@@ -45,7 +45,7 @@ RSpec.describe SmsAppointmentReminderJob, '#perform' do
 
         described_class.new.perform(appointment)
 
-        expect(appointment.activities.find_by(type: 'SmsReminderFailureActivity')).to be
+        expect(appointment.activities.find_by(type: 'SmsFailureActivity')).to be
         expect(appointment.activities.find_by(type: 'SmsReminderActivity')).to be_nil
       end
     end

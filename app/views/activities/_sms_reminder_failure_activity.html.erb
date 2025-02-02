@@ -1,5 +1,0 @@
-<% content_for(:activity_message, flush: true) do %>
-  <span class="glyphicon glyphicon-phone" aria-hidden="true"></span>
-  <strong>The system</strong> <%= sms_reminder_failure_activity.message %>
-<% end %>
-<%= render 'activities/activity', activity: sms_reminder_failure_activity, details: details, hide: hide %>
