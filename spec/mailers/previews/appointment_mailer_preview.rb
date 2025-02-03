@@ -1,5 +1,14 @@
 # Preview all emails at http://localhost:3000/rails/mailers/appointment_mailer
 class AppointmentMailerPreview < ActionMailer::Preview
+  def resource_manager_sms_failure
+    appointment = random_appointment
+
+    AppointmentMailer.resource_manager_sms_failure(
+      appointment,
+      appointment.resource_managers.first.email
+    )
+  end
+
   def guider_summary_document_missing
     appointment = random_appointment
 
