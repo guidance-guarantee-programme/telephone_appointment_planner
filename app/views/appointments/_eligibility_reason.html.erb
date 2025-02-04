@@ -1,0 +1,11 @@
+<% unless @appointment.due_diligence? %>
+  <div class="row form-group <%= 'if-js-hide' unless @appointment.errors.include?(:nudge_eligibility_reason) %> js-eligibility-reason" data-module="eligibility-reason">
+    <div class="col-md-8">
+    <%= form.select :nudge_eligibility_reason,
+      options_for_select(Appointment::ELIGIBILITY_OPTIONS.invert.to_a, @appointment.nudge_eligibility_reason),
+      { include_blank: true, label: required_label('Eligiblity reason'), help: 'As the customer is under 50, please select which circumstances apply' },
+      class: 't-eligibility-reason form-control'
+    %>
+    </div>
+  </div>
+<% end %>

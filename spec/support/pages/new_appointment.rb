@@ -13,6 +13,7 @@ module Pages
     element :date_of_birth_day,                     '.t-date-of-birth-day'
     element :date_of_birth_month,                   '.t-date-of-birth-month'
     element :date_of_birth_year,                    '.t-date-of-birth-year'
+    element :eligibility_reason,                    '.t-eligibility-reason'
     element :memorable_word,                        '.t-memorable-word'
     element :accessibility_requirements,            '.t-accessibility-requirements'
 

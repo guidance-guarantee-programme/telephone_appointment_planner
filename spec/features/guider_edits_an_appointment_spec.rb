@@ -35,7 +35,7 @@ RSpec.feature 'Guider edits an appointment' do
     end
   end
 
-  scenario 'Successfully editing an appointment' do
+  scenario 'Successfully editing an appointment', js: true do
     given_the_user_is_a_guider(organisation: :cas) do
       and_they_have_an_appointment
       when_they_attempt_to_edit_the_appointment
@@ -145,12 +145,22 @@ RSpec.feature 'Guider edits an appointment' do
   end
 
   def when_they_modify_the_appointment
+    @page.date_of_birth_day.set '2'
+    @page.date_of_birth_month.set '2'
+    @page.date_of_birth_year.set '1980'
+
+    @page.wait_until_eligibility_reason_visible
+    @page.eligibility_reason.select 'Ill health'
+
     @page.first_name.set 'Rick'
     @page.submit.click
   end
 
   def then_the_appointment_is_changed
-    expect(@appointment.reload.first_name).to eq('Rick')
+    expect(@appointment.reload).to have_attributes(
+      first_name: 'Rick',
+      nudge_eligibility_reason: 'ill_health'
+    )
   end
 
   def and_the_customer_is_notified

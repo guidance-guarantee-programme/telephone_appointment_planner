@@ -13,8 +13,8 @@
     <span class="label label-default t-nudged">Nudged</span></span>
   <% end %>
 
-  <% if display_nudge_eligibility?(@appointment) %>
-    <span class="label label-default t-nudged-eligibility"><%= nudge_banner_text(@appointment) %></span>
+  <% if display_eligibility?(@appointment) %>
+    <span class="label label-default t-nudged-eligibility"><%= eligibility_banner_text(@appointment) %></span>
   <% end %>
 
   <% if @appointment.due_diligence? %>
