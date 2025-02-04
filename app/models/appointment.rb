@@ -19,6 +19,12 @@ class Appointment < ApplicationRecord
 
   ATTENDED_DIGITAL_OPTIONS = %w[yes no not-sure].freeze
 
+  ELIGIBILITY_OPTIONS = {
+    'protected_pension_age' => 'Protected pension age',
+    'ill_health' => 'Ill health',
+    'inherited_pension_pot' => 'Inherited pension pot'
+  }.freeze
+
   CANCELLED_STATUSES = %i[
     cancelled_by_customer
     cancelled_by_pension_wise
@@ -173,6 +179,7 @@ class Appointment < ApplicationRecord
   validates :email, email: true, unless: :sms_confirmation?
   validates :cancelled_via, inclusion: %w[phone email], on: :update, if: :cancelled_prior_to_appointment?
   validates :attended_digital, inclusion: ATTENDED_DIGITAL_OPTIONS, allow_blank: true, if: :pension_wise?
+  validates :nudge_eligibility_reason, inclusion: ELIGIBILITY_OPTIONS.keys, if: :require_eligibility_reason?
 
   validate :not_within_grace_period, unless: :agent_is_resource_manager?
   validate :valid_within_booking_window
@@ -581,6 +588,13 @@ class Appointment < ApplicationRecord
 
   def require_data_subject_date_of_birth?
     third_party_booking? && data_subject_age.blank?
+  end
+
+  def require_eligibility_reason?
+    return unless pension_wise?
+    return if age_at_appointment.zero?
+
+    age_at_appointment < 50
   end
 
   def date_of_birth_valid

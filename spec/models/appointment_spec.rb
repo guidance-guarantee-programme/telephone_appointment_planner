@@ -918,6 +918,31 @@ RSpec.describe Appointment, type: :model do
         expect(subject).to_not be_valid
       end
     end
+
+    context 'when the customer is under 50' do
+      it 'requires the eligibility reason' do
+        subject.date_of_birth = '1980-01-01'
+        expect(subject).to be_invalid
+
+        subject.nudge_eligibility_reason = 'ill_health'
+        expect(subject).to be_valid
+      end
+
+      context 'when the appointment is not Pension Wise' do
+        it 'does not require the eligibility reason' do
+          subject.schedule_type = 'due_diligence'
+          subject.date_of_birth = '1980-01-01'
+          expect(subject).to be_valid
+        end
+      end
+    end
+
+    context 'when the customer is over 50 and Pension Wise' do
+      it 'does not require the eligibility reason' do
+        subject.date_of_birth = '1960-01-01'
+        expect(subject).to be_valid
+      end
+    end
   end
 
   describe '#allocate' do

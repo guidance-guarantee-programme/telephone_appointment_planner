@@ -47,11 +47,11 @@ module AppointmentHelper
     end
   end
 
-  def display_nudge_eligibility?(appointment)
-    appointment.nudged? && appointment.age_at_appointment < 50
+  def display_eligibility?(appointment)
+    appointment.age_at_appointment < 50 && appointment.nudge_eligibility_reason?
   end
 
-  def nudge_banner_text(appointment)
+  def eligibility_banner_text(appointment)
     "Customer aged under 50 and eligible due to #{appointment.nudge_eligibility_reason.humanize}"
   end
 
