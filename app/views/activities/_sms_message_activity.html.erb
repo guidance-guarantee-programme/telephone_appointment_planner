@@ -1,0 +1,5 @@
+<% content_for(:activity_message, flush: true) do %>
+  <span class="glyphicon glyphicon-phone" aria-hidden="true"></span>
+  <strong>The customer</strong> replied via SMS <em><%= sms_message_activity.message %></em>
+<% end %>
+<%= render 'activities/activity', activity: sms_message_activity, details: details, hide: hide %>

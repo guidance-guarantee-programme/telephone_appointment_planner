@@ -1,0 +1,2 @@
+class SmsMessageActivity < Activity
+end

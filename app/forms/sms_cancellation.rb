@@ -14,9 +14,19 @@ class SmsCancellation
     else
       SmsCancellationFailureJob.perform_later(source_number, schedule_type)
     end
+
+    log_message if appointment
   end
 
   private
+
+  def log_message
+    SmsMessageActivity.create!(
+      message:,
+      owner: appointment.guider,
+      appointment:
+    )
+  end
 
   def send_notifications
     PusherAppointmentChangedJob.perform_later(
