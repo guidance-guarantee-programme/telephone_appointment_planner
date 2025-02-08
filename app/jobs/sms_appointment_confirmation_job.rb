@@ -3,6 +3,8 @@ class SmsAppointmentConfirmationJob < NotifyJobBase
   DUE_DILIGENCE_TEMPLATE_ID = '58ef6845-25eb-4197-9cff-26457515d831'.freeze
   PENSION_WISE_TEMPLATE_ID = 'd9136496-a2f1-4262-86a6-d651c07dca87'.freeze
 
+  include SmsFailureRecordable
+
   def perform(appointment)
     return unless api_key(appointment.schedule_type)
 

@@ -1,0 +1,15 @@
+<h1 style="color: #0F19A0 !important;font-family: Calibri, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 20px;line-height: 1.111111111;padding: 15px 0;">
+  An SMS to <%= @appointment.canonical_sms_number %> failed to deliver.
+</h1>
+
+<%= p do %>
+  Reference number:
+  <br>
+  <strong class="emphasize">
+    <%= @appointment.id %>
+  </strong>
+<% end %>
+
+<%= p do %>
+  <%= link_to 'View the appointment', edit_appointment_url(@appointment) %>
+<% end %>

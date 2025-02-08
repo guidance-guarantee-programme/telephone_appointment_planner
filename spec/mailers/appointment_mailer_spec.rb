@@ -112,6 +112,31 @@ RSpec.describe AppointmentMailer, type: :mailer do
     end
   end
 
+  describe 'Resource Manager SMS Failure' do
+    let(:mailgun_headers) { JSON.parse(subject['X-Mailgun-Variables'].value) }
+    let(:appointment) { build_stubbed(:appointment) }
+    let(:body) { subject.body.encoded }
+
+    subject { described_class.resource_manager_sms_failure(appointment, 'dave@example.com') }
+
+    it 'renders the headers' do
+      expect(subject.to).to eq(['dave@example.com'])
+      expect(subject.subject).to eq('Pension Wise SMS Failure')
+    end
+
+    it 'renders the mailgun specific headers' do
+      expect(mailgun_headers).to include(
+        'message_type'   => 'resource_manager_sms_failure',
+        'appointment_id' => appointment.id
+      )
+    end
+
+    it 'includes the body specifics' do
+      expect(body).to include(appointment.canonical_sms_number)
+      expect(body).to match(%q(http://localhost:3001/appointments/\d+/edit))
+    end
+  end
+
   describe 'Resource Manager Email Failure' do
     let(:mailgun_headers) { JSON.parse(subject['X-Mailgun-Variables'].value) }
     let(:appointment) { build_stubbed(:appointment) }

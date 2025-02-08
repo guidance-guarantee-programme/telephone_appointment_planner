@@ -11,6 +11,12 @@ class AppointmentMailer < ApplicationMailer
     mail to: appointment.guider.email, subject: @appointment.subject('No Summary Document Generated')
   end
 
+  def resource_manager_sms_failure(appointment, recipient)
+    mailgun_headers('resource_manager_sms_failure', appointment.id)
+    @appointment = decorate(appointment)
+    mail to: recipient, subject: @appointment.subject('SMS Failure')
+  end
+
   def resource_manager_email_dropped(appointment, recipient)
     mailgun_headers('resource_manager_email_dropped', appointment.id)
     @appointment = decorate(appointment)
