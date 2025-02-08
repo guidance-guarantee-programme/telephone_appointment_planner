@@ -21,7 +21,10 @@
       label: required_label(:memorable_word),
       help: 'Avoid using the same word from a different account or service'
     %>
-    <%= render 'shared/date_of_birth_form_field', form: f if defined?(edit) && edit %>
+    <% if defined?(edit) && edit %>
+      <%= render 'shared/date_of_birth_form_field', form: f %>
+      <%= render 'eligibility_reason', form: f %>
+    <% end %>
 
     <% unless @appointment.due_diligence? %>
     <h2 class="h3">Eligibility</h2>

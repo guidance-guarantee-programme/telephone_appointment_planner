@@ -198,6 +198,7 @@ class AppointmentsController < ApplicationController
       phone
       mobile
       date_of_birth
+      nudge_eligibility_reason
       memorable_word
       accessibility_requirements
       notes

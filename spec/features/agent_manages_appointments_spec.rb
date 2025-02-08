@@ -215,9 +215,12 @@ RSpec.feature 'Agent manages appointments' do
     given_the_user_is_an_agent do
       when_they_want_to_book_an_appointment
       and_they_enter_a_standard_date_of_birth
+      then_they_do_not_see_the_eligibility_reason
       then_the_standard_appointment_type_is_selected
       when_they_enter_a_50_to_54_date_of_birth
       then_the_50_to_54_appointment_type_is_selected
+      when_they_enter_a_less_than_50_date_of_birth
+      then_they_see_the_eligibility_reason
     end
   end
 
@@ -385,6 +388,21 @@ RSpec.feature 'Agent manages appointments' do
       and_they_select_a_secondary_status
       then_the_secondary_status_is_marked
     end
+  end
+
+  def when_they_enter_a_less_than_50_date_of_birth
+    @page.date_of_birth_day.set '01'
+    @page.date_of_birth_month.set '01'
+    @page.date_of_birth_year.set '1980'
+  end
+
+  def then_they_see_the_eligibility_reason
+    @page.wait_until_eligibility_reason_visible
+    expect(@page).to have_eligibility_reason
+  end
+
+  def then_they_do_not_see_the_eligibility_reason
+    expect(@page).to have_no_eligibility_reason
   end
 
   def when_they_submit_with_errors
