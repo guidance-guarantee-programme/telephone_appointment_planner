@@ -43,10 +43,12 @@
       channel.bind(`${view.start.format('YYYY-MM-DD')}-${this.config.userOrganisationId}`, this.handlePushEvent.bind(this));
     }
 
-    handlePushEvent() {
-      if (this.$actionPanel.is(':visible')) {
-        alert('The calendar events have changed and the calendar will be refreshed.');
-        this.$actionPanel.find('.js-action-panel-undo-all').click();
+    handlePushEvent(data) {
+      if (this.config.userUid != data.ownerId) {
+        if (this.$actionPanel.is(':visible')) {
+          alert('The calendar events have changed and the calendar will be refreshed.');
+          this.$actionPanel.find('.js-action-panel-undo-all').click();
+        }
       }
 
       this.$el.fullCalendar('removeEvents');

@@ -7,7 +7,7 @@ class AppointmentsController < ApplicationController
   end
 
   def batch_update
-    BatchAppointmentUpdate.new(params[:changes]).call
+    BatchAppointmentUpdate.new(params[:changes], current_user).call
     head :ok
   end
 

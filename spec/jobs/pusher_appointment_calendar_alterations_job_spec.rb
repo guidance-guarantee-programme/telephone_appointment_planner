@@ -2,10 +2,11 @@ require 'rails_helper'
 
 RSpec.describe PusherAppointmentCalendarAlterationsJob, '#perform' do # rubocop:disable Metrics/BlockLength
   let(:appointment) { create(:appointment, start_at: Time.zone.parse('2024-05-15 13:00')) }
+  let(:modifying_agent) { create(:resource_manager) }
 
   before { allow(Pusher).to receive(:trigger) }
 
-  subject { described_class.new.perform(appointment) }
+  subject { described_class.new.perform(appointment, modifying_agent) }
 
   context 'when something other than `start_at` changed' do
     it 'triggers once for the current `start_at`' do
@@ -14,7 +15,8 @@ RSpec.describe PusherAppointmentCalendarAlterationsJob, '#perform' do # rubocop:
       expect(Pusher).to have_received(:trigger).with(
         'telephone_appointment_planner',
         '2024-05-15-14a48488-a42f-422d-969d-526e30922fe4',
-        refresh: true
+        refresh: true,
+        ownerId: modifying_agent.uid
       )
     end
   end
@@ -33,13 +35,15 @@ RSpec.describe PusherAppointmentCalendarAlterationsJob, '#perform' do # rubocop:
       expect(Pusher).to have_received(:trigger).with(
         'telephone_appointment_planner',
         '2024-05-15-14a48488-a42f-422d-969d-526e30922fe4',
-        refresh: true
+        refresh: true,
+        ownerId: modifying_agent.uid
       )
 
       expect(Pusher).to have_received(:trigger).with(
         'telephone_appointment_planner',
         '2024-05-16-14a48488-a42f-422d-969d-526e30922fe4',
-        refresh: true
+        refresh: true,
+        ownerId: modifying_agent.uid
       )
     end
   end

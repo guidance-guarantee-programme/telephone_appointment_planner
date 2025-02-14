@@ -28,7 +28,7 @@ class Notifier # rubocop:disable Metrics/ClassLength
   def notify_calendar_alterations
     return unless status_changed? || appointment_reallocated?
 
-    PusherAppointmentCalendarAlterationsJob.perform_later(appointment)
+    PusherAppointmentCalendarAlterationsJob.perform_later(appointment, modifying_agent)
   end
 
   def notify_resource_managers # rubocop:disable Metrics/AbcSize
