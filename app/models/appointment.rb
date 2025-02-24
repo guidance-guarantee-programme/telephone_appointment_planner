@@ -35,7 +35,7 @@ class Appointment < ApplicationRecord
   APPOINTMENT_LENGTH_MINUTES = 70.minutes.freeze
 
   FAKE_DATE_OF_BIRTH = Date.parse('1900-01-01').freeze
-  ACCESSIBILITY_NOTES_CUTOFF = Date.parse('2019-09-25').freeze
+  ACCESSIBILITY_NOTES_CUTOFF = Date.parse('2025-02-24').freeze
 
   NON_NOTIFY_COLUMNS = %w[
     agent_id
