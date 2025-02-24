@@ -29,6 +29,10 @@
     <span class="label label-primary t-third-party-booked">Third Party Appointment</span>
   <% end %>
 
+  <% if @appointment.accessibility_requirements? %>
+    <span class="label label-primary t-adjustments-label">Adjustments</span>
+  <% end %>
+
   <% if display_dc_pot_unsure_banner?(@appointment) %>
     <span class="label label-warning t-dc-pot-unsure">DC Pension Unsure</span>
   <% end %>
