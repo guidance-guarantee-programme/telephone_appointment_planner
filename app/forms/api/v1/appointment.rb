@@ -6,7 +6,7 @@ module Api
       attr_accessor :start_at, :first_name, :last_name, :email, :phone, :memorable_word, :date_of_birth,
                     :dc_pot_confirmed, :where_you_heard, :gdpr_consent, :accessibility_requirements,
                     :notes, :agent, :smarter_signposted, :lloyds_signposted, :schedule_type, :referrer,
-                    :rebooked_from_id, :attended_digital
+                    :rebooked_from_id, :attended_digital, :adjustments
 
       attr_reader :model
 
@@ -58,7 +58,8 @@ module Api
           referrer: referrer.to_s,
           nudged:,
           rebooked_from_id:,
-          attended_digital:
+          attended_digital:,
+          adjustments: adjustments.to_s
         }
       end
     end

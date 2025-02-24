@@ -5,7 +5,7 @@ module Api
 
       attr_accessor :start_at, :first_name, :last_name, :email, :phone, :mobile, :memorable_word, :date_of_birth,
                     :accessibility_requirements, :notes, :agent, :nudge_confirmation, :nudge_eligibility_reason,
-                    :gdpr_consent
+                    :gdpr_consent, :adjustments
 
       attr_reader :model
 
@@ -24,7 +24,7 @@ module Api
 
       private
 
-      def to_params # rubocop:disable Metrics/MethodLength
+      def to_params # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
         {
           start_at:,
           first_name:,
@@ -38,6 +38,7 @@ module Api
           where_you_heard: '2', # A Pension Provider
           accessibility_requirements:,
           notes:,
+          adjustments: adjustments.to_s,
           agent:,
           smarter_signposted: false,
           lloyds_signposted: false,

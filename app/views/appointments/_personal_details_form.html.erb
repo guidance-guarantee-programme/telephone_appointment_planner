@@ -94,7 +94,12 @@
 
     <h2 class="h3">Additional information and marketing</h2>
 
-    <%= f.check_box :accessibility_requirements, class: 't-accessibility-requirements', label: 'Do you require an adjustment to access our service?' %>
+    <%= f.check_box :accessibility_requirements, class: 't-accessibility-requirements', label: "Do you have any access requirements you'd like us to be aware of?", data: { target: 'adjustments' } %>
+    <div class="col-md-offset-1" id="adjustments">
+      <%= f.text_area :adjustments, label: required_label('Adjustments'), autocomplete: 'off', maxlength: 1000, class: 't-adjustments js-adjustments js-character-limit-input', rows: 6,
+                      placeholder: 'Any adjustments that may help you. We might contact you before your appointment for more information', data: { module: 'character-limit', maxlength: 1000 }
+      %>
+    </div>
 
     <% if welsh_visible?(current_user) %>
       <%= f.check_box :welsh, class: 't-welsh', label: 'Welsh language appointment?', disabled: !@appointment.owned_by_my_organisation?(current_user) %>
@@ -130,7 +135,9 @@
       <%= f.check_box :smarter_signposted, class: 't-smarter-signposted', label: 'Smarter signposting referral?' %>
     <% end %>
 
-    <%= f.text_area :notes, autocomplete: 'off', maxlength: 1000, class: 't-notes js-notes js-character-limit-input', rows: 6, placeholder: 'Is the customer hard of hearing? Is English their first language? etc.', data: { module: 'character-limit', maxlength: 1000 } %>
+    <%= f.text_area :notes, label: 'Additional information', autocomplete: 'off', maxlength: 1000, class: 't-notes js-notes js-character-limit-input', rows: 6,
+                    placeholder: 'Please add any additional information here that may be helpful for the appointment', data: { module: 'character-limit', maxlength: 1000 }
+    %>
 
     <% if @appointment.due_diligence? %>
       <%= f.hidden_field :where_you_heard, value: '2', class: 't-hidden-where-you-heard' %>
