@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_02_02_131803) do
+ActiveRecord::Schema.define(version: 2025_02_27_135211) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
@@ -227,6 +227,7 @@ ActiveRecord::Schema.define(version: 2025_02_02_131803) do
     t.date "last_slot_on"
     t.integer "total_slots_available"
     t.integer "total_slots_created"
+    t.string "schedule_type", default: "pension_wise", null: false
   end
 
   create_table "schedules", id: :serial, force: :cascade do |t|

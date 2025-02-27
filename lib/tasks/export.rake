@@ -5,7 +5,8 @@ QUERIES = {
   'MAPS_PWBLZ_TAPBKSLT_'   => 'id, guider_id, start_at, end_at, created_at, updated_at',
   'MAPS_PWBLZ_TAPHLD_'     => 'id, user_id, start_at, end_at, created_at, updated_at',
   'MAPS_PWBLZ_TAPREPSUM_'  => 'id, organisation, two_week_availability, four_week_availability,
-                               first_available_slot_on, created_at, updated_at',
+                               first_available_slot_on, created_at, updated_at, schedule_type, last_available_slot_on,
+                               total_slots_available, total_slots_created',
   'MAPS_PWBLZ_TAPUSR_'     => 'id, organisation_slug, organisation_content_id, created_at, updated_at'
 }.freeze
 
