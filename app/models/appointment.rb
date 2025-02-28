@@ -593,6 +593,7 @@ class Appointment < ApplicationRecord
   def require_eligibility_reason?
     return unless pension_wise?
     return if age_at_appointment.zero?
+    return if created_at && created_at < Time.zone.parse('2025-02-10 00:00')
 
     age_at_appointment < 50
   end

@@ -921,12 +921,25 @@ RSpec.describe Appointment, type: :model do
     end
 
     context 'when the customer is under 50' do
-      it 'requires the eligibility reason' do
-        subject.date_of_birth = '1980-01-01'
-        expect(subject).to be_invalid
+      context 'when the appointment was created before the cut-off' do
+        it 'does not require the eligibility reason' do
+          subject.date_of_birth = '1980-01-01'
+          subject.nudge_eligibility_reason = ''
+          subject.created_at = '2024-01-01 00:00'
 
-        subject.nudge_eligibility_reason = 'ill_health'
-        expect(subject).to be_valid
+          expect(subject).to be_valid
+        end
+      end
+
+      context 'when the appointment was created after the cut-off' do
+        it 'requires the eligibility reason' do
+          subject.created_at = '2025-02-28 00:00'
+          subject.date_of_birth = '1980-01-01'
+          expect(subject).to be_invalid
+
+          subject.nudge_eligibility_reason = 'ill_health'
+          expect(subject).to be_valid
+        end
       end
 
       context 'when the appointment is not Pension Wise' do
