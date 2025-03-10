@@ -725,6 +725,16 @@ RSpec.describe Appointment, type: :model do
       end
 
       context 'when accessibility adjustments' do
+        context 'bugfix for cut-offs on 24/02' do
+          it 'permits appointments on 24/02 without adjustments when requirements checked' do
+            subject.created_at = Time.zone.parse('2025-02-24 13:00')
+            subject.accessibility_requirements = true
+            subject.adjustments = ''
+
+            expect(subject).to be_valid
+          end
+        end
+
         it 'requires adjustments to be specified' do
           subject.created_at = '2025-02-25'.to_date
           subject.accessibility_requirements = true
