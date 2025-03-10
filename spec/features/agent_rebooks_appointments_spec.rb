@@ -115,8 +115,11 @@ RSpec.feature 'Agent rebooks appointments' do
   end
 
   def then_the_booking_is_placed_externally
-    @rebooked = Appointment.last
+    @page = Pages::EditAppointment.new
+    expect(@page).to be_displayed
+    expect(@page).to have_flash_of_success
 
+    @rebooked = Appointment.last
     expect(@rebooked.guider.organisation).to eq('TPAS')
     expect(@rebooked.rebooked_from_id).to eq(@appointment.id)
 
