@@ -124,7 +124,10 @@ RSpec.feature 'Booking due diligence appointments', js: true do
   end
 
   def then_the_original_appointment_is_rescheduled
-    expect(@appointment.reload.start_at).to eq(Time.zone.parse('2021-04-08 14:30'))
+    @page = Pages::EditAppointment.new
+    expect(@page).to be_displayed
+    expect(@page).to have_flash_of_success
+    expect(@page.date_time).to have_text('8 Apr 2021, 2:30pm - 3:30pm')
   end
 
   def then_the_due_diligence_appointment_is_booked
