@@ -157,10 +157,12 @@ RSpec.feature 'Guider edits an appointment' do
   end
 
   def then_the_appointment_is_changed
-    expect(@appointment.reload).to have_attributes(
-      first_name: 'Rick',
-      nudge_eligibility_reason: 'ill_health'
-    )
+    @page = Pages::EditAppointment.new
+    expect(@page).to be_displayed
+    expect(@page).to have_flash_of_success
+
+    expect(@page.first_name.value).to eq('Rick')
+    expect(@page).to have_text 'eligible due to Ill health'
   end
 
   def and_the_customer_is_notified

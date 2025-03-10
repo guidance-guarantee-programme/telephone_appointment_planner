@@ -3,6 +3,7 @@ module Pages
     set_url '/users/sort'
 
     element :save, '.t-save'
+    element :flash_of_success, '.alert-success'
 
     elements :guiders, '.t-guider'
 

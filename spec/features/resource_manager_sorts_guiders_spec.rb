@@ -30,7 +30,10 @@ RSpec.feature 'Resource manager sorts guiders' do
   end
 
   def then_the_guiders_are_in_the_new_order
-    expect(@page.guiders.map(&:text)).to eq @guiders.reverse.map(&:name)
+    @page = Pages::SortGuiders.new
+    expect(@page).to be_displayed
+    expect(@page).to have_flash_of_success
+    expect(@page.guiders.map(&:text)).to eq %w[C B A]
   end
 end
 # rubocop:enable Metrics/BlockLength

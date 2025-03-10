@@ -7,6 +7,7 @@ module Pages
     element :dc_pot_unsure_banner,                  '.t-dc-pot-unsure'
     element :appointment_was_imported_message,      '.t-appointment-was-imported-message'
     element :third_party_booked_banner,             '.t-third-party-booked'
+    element :due_diligence_banner,                  '.t-due-diligence-banner'
     element :guider,                                '.t-guider'
     element :date_time,                             '.t-appointment-date-time'
     element :date_of_birth_day,                     '.t-date-of-birth-day'
@@ -26,6 +27,7 @@ module Pages
     element :gdpr_consent_no_response,              '.t-gdpr-consent-no-response'
     element :cancelled_via_phone,                   '.t-cancelled-via-phone'
     element :cancelled_via_email,                   '.t-cancelled-via-email'
+    element :country_code,                          '.t-country-of-residence'
 
     element :status, '.t-status'
     element :secondary_status, '.t-secondary-status'

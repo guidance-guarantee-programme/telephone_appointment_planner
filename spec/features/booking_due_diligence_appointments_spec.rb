@@ -101,9 +101,9 @@ RSpec.feature 'Booking due diligence appointments', js: true do
   end
 
   def then_the_new_appointment_is_created
-    @rebooked_appointment = Appointment.last
-
-    expect(@rebooked_appointment.rebooked_from).to eq(@appointment)
+    @page = Pages::Search.new
+    expect(@page).to be_displayed
+    expect(@page).to have_flash_of_success
   end
 
   def and_an_due_diligence_appointment_exists
@@ -124,13 +124,19 @@ RSpec.feature 'Booking due diligence appointments', js: true do
   end
 
   def then_the_original_appointment_is_rescheduled
-    expect(@appointment.reload.start_at).to eq(Time.zone.parse('2021-04-08 14:30'))
+    @page = Pages::EditAppointment.new
+    expect(@page).to be_displayed
+    expect(@page).to have_flash_of_success
+    expect(@page.date_time).to have_text('8 Apr 2021, 2:30pm - 3:30pm')
   end
 
   def then_the_due_diligence_appointment_is_booked
-    @appointment = Appointment.last
-    expect(@appointment).to be_due_diligence
-    expect(@appointment.country_code).to eq('FR')
+    @page = Pages::EditAppointment.new
+    expect(@page).to be_displayed
+    expect(@page).to have_flash_of_success
+
+    expect(@page).to have_due_diligence_banner
+    expect(@page.country_code.value).to have_text('FR')
   end
 
   def and_they_accept_the_appointment_preview

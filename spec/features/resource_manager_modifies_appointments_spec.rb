@@ -256,6 +256,7 @@ RSpec.feature 'Resource manager modifies appointments' do
   def when_they_reschedule_an_appointment
     @page.reschedule(@page.appointments.first, hours: 13, minutes: 30)
 
+    wait_for_ajax_to_complete
     @page.wait_until_rescheduling_reason_modal_visible
     @page.rescheduling_reason_modal.pension_wise.set(true)
     expect(@page.rescheduling_reason_modal).to have_no_via_phone
