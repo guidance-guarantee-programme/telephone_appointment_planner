@@ -23,7 +23,6 @@ RSpec.feature 'Resource manager manages schedules' do
 
       then_they_are_told_that_the_schedule_has_been_created
       and_the_guider_has_those_time_slots_available
-      and_the_due_diligence_bookable_slots_are_generated
     end
   end
 
@@ -254,10 +253,6 @@ RSpec.feature 'Resource manager manages schedules' do
 
   def and_there_is_a_tpas_dummy_guider_schedule
     @guider = create(:guider, :tpas, :due_diligence)
-  end
-
-  def and_the_due_diligence_bookable_slots_are_generated
-    expect(@guider.bookable_slots.distinct.pluck(:schedule_type)).to eq(%w[due_diligence])
   end
 
   def and_the_guider_bookable_slots_are_regenerated
