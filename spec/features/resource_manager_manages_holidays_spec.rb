@@ -397,7 +397,10 @@ RSpec.feature 'Resource manager manages holidays' do
   end
 
   def then_it_is_deleted
-    expect(Holiday.where.not(user: @guiders.last)).to be_empty
+    @page = Pages::Holidays.new
+    expect(@page).to be_displayed
+    expect(@page).to have_flash_of_success
+    expect(@page).to have_no_events
   end
 
   def expect_holidays_to_match(expected_holidays)
