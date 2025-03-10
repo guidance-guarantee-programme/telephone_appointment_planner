@@ -22,7 +22,8 @@ class Appointment < ApplicationRecord
   ELIGIBILITY_OPTIONS = {
     'protected_pension_age' => 'Protected pension age',
     'ill_health' => 'Ill health',
-    'inherited_pension_pot' => 'Inherited pension pot'
+    'inherited_pension_pot' => 'Inherited pension pot',
+    'not_applicable_third_party' => 'Not applicable - Third party appointment'
   }.freeze
 
   CANCELLED_STATUSES = %i[
