@@ -800,6 +800,7 @@ RSpec.feature 'Agent manages appointments' do
     @page.wait_until_secondary_status_options_visible
     @page.secondary_status.select('UK number invalid')
     @page.submit.click
+    expect(@page).to have_flash_of_success
   end
 
   def then_the_customer_gets_a_missed_appointment_email
