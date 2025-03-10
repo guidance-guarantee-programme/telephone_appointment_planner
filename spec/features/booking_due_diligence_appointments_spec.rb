@@ -131,9 +131,12 @@ RSpec.feature 'Booking due diligence appointments', js: true do
   end
 
   def then_the_due_diligence_appointment_is_booked
-    @appointment = Appointment.last
-    expect(@appointment).to be_due_diligence
-    expect(@appointment.country_code).to eq('FR')
+    @page = Pages::EditAppointment.new
+    expect(@page).to be_displayed
+    expect(@page).to have_flash_of_success
+
+    expect(@page).to have_due_diligence_banner
+    expect(@page.country_code.value).to have_text('FR')
   end
 
   def and_they_accept_the_appointment_preview
