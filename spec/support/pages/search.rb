@@ -2,6 +2,7 @@ module Pages
   class Search < Base
     set_url '/appointments/search'
 
+    element :flash_of_success, '.alert-success'
     element :q,          '.t-q'
     element :date_range, '.t-date-range'
     element :processed_no, '.t-processed-no'

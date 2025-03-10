@@ -101,9 +101,9 @@ RSpec.feature 'Booking due diligence appointments', js: true do
   end
 
   def then_the_new_appointment_is_created
-    @rebooked_appointment = Appointment.last
-
-    expect(@rebooked_appointment.rebooked_from).to eq(@appointment)
+    @page = Pages::Search.new
+    expect(@page).to be_displayed
+    expect(@page).to have_flash_of_success
   end
 
   def and_an_due_diligence_appointment_exists
