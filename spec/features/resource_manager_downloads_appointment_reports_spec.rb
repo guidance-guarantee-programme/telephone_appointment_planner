@@ -179,6 +179,8 @@ RSpec.feature 'Resource manager downloads appointment reports' do
       power_of_attorney_attached
       printed_consent_form_required
       email_consent_form_required
+      access_requirements
+      access_requirement
     ]
 
     expect(@page.csv.second).to match_array [
@@ -201,7 +203,7 @@ RSpec.feature 'Resource manager downloads appointment reports' do
       appointment.phone,
       appointment.mobile,
       appointment.email,
-      'No', 'No', 'No', 'No', 'No', 'No', 'No' # third party booking flags
+      'No', 'No', 'No', 'No', 'No', 'No', 'No', 'No', ''
     ]
   end
 end

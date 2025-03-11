@@ -83,6 +83,8 @@ class AppointmentReport
              )
       .select("case when printed_consent_form_required is true then 'Yes' else 'No' end as printed_consent_form_required")
       .select("case when email_consent_form_required is true then 'Yes' else 'No' end as email_consent_form_required")
+      .select("case when accessibility_requirements is true then 'Yes' else 'No' end as access_requirements")
+      .select('appointments.adjustments as access_requirement')
       .where("#{column} >= ? AND #{column} <= ?", range.begin, range.end.end_of_day)
       .where(organisation_clause)
       .where(schedule_type:)
