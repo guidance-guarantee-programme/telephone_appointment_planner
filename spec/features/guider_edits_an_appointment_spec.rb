@@ -162,7 +162,7 @@ RSpec.feature 'Guider edits an appointment' do
     expect(@page).to have_flash_of_success
 
     expect(@page.first_name.value).to eq('Rick')
-    expect(@page).to have_text 'eligible due to Ill health'
+    expect(@page).to have_text 'eligible as third party'
   end
 
   def and_the_customer_is_notified

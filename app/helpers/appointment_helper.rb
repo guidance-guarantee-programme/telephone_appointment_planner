@@ -52,7 +52,11 @@ module AppointmentHelper
   end
 
   def eligibility_banner_text(appointment)
-    "Customer aged under 50 and eligible due to #{appointment.nudge_eligibility_reason.humanize}"
+    if appointment.third_party_booking?
+      'Customer aged under 50 and eligible as third party'
+    else
+      "Customer aged under 50 and eligible due to #{appointment.nudge_eligibility_reason.humanize}"
+    end
   end
 
   def display_dc_pot_unsure_banner?(appointment)
