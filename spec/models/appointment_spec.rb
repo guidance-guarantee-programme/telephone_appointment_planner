@@ -2,6 +2,21 @@ require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
 RSpec.describe Appointment, type: :model do
+  describe '.needing_status_reminder' do
+    it 'returns appointments that are pending still at one day after the appointment' do
+      @included = create(:appointment, start_at: 2.days.ago)
+      @excluded = create(:appointment, start_at: 15.days.ago)
+      @other_exclusion   = create(:appointment, start_at: 2.hours.ago)
+      @another_exclusion = create(:appointment, start_at: 2.days.ago, status_reminder_sent: true)
+      @also_excluded     = create(:appointment, :due_diligence, start_at: 2.days.ago)
+
+      results = described_class.needing_status_reminder
+
+      expect(results.size).to eq(1)
+      expect(results).to include(@included)
+    end
+  end
+
   describe 'Booking an appointment within the schedule type window' do
     context 'when the appointment is PSG/DD' do
       it 'validates the end of the window correctly' do

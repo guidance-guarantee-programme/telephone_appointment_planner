@@ -5,6 +5,12 @@ class AppointmentMailer < ApplicationMailer
 
   default subject: -> { @appointment.subject }, from: -> { @appointment.from }
 
+  def guider_status_reminder(appointment)
+    mailgun_headers('guider_status_reminder', appointment.id)
+    @appointment = decorate(appointment)
+    mail to: appointment.guider.email, subject: @appointment.subject('Appointment status not updated')
+  end
+
   def guider_summary_document_missing(appointment)
     mailgun_headers('guider_summary_document_missing', appointment.id)
     @appointment = decorate(appointment)

@@ -496,6 +496,13 @@ class Appointment < ApplicationRecord
     end
   end
 
+  def self.needing_status_reminder
+    pending
+      .for_pension_wise
+      .where("start_at < NOW() - INTERVAL '1 days' and start_at > NOW() - INTERVAL '14 days'")
+      .where(status_reminder_sent: nil)
+  end
+
   def self.needing_sms_reminder
     pending
       .not_booked_today

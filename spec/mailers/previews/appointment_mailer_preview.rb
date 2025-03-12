@@ -9,6 +9,12 @@ class AppointmentMailerPreview < ActionMailer::Preview
     )
   end
 
+  def guider_status_reminder
+    appointment = random_appointment
+
+    AppointmentMailer.guider_status_reminder(appointment)
+  end
+
   def guider_summary_document_missing
     appointment = random_appointment
 
