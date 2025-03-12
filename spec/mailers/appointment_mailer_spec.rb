@@ -112,6 +112,30 @@ RSpec.describe AppointmentMailer, type: :mailer do
     end
   end
 
+  describe 'Guider status reminder' do
+    let(:mailgun_headers) { JSON.parse(subject['X-Mailgun-Variables'].value) }
+    let(:appointment) { build_stubbed(:appointment) }
+    let(:body) { subject.body.encoded }
+
+    subject { described_class.guider_status_reminder(appointment) }
+
+    it 'renders the headers' do
+      expect(subject.to).to eq(['some-name@example.org'])
+      expect(subject.subject).to eq('Pension Wise Appointment status not updated')
+    end
+
+    it 'renders the mailgun specific headers' do
+      expect(mailgun_headers).to include(
+        'message_type'   => 'guider_status_reminder',
+        'appointment_id' => appointment.id
+      )
+    end
+
+    it 'includes the body specifics' do
+      expect(body).to match(/The status for this appointment has not been updated/)
+    end
+  end
+
   describe 'Resource Manager SMS Failure' do
     let(:mailgun_headers) { JSON.parse(subject['X-Mailgun-Variables'].value) }
     let(:appointment) { build_stubbed(:appointment) }

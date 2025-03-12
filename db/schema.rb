@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_02_27_135211) do
+ActiveRecord::Schema.define(version: 2025_03_12_153811) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
@@ -127,6 +127,7 @@ ActiveRecord::Schema.define(version: 2025_02_27_135211) do
     t.string "other_reason", default: "", null: false
     t.string "attended_digital"
     t.string "adjustments", default: "", null: false
+    t.boolean "status_reminder_sent"
     t.index "guider_id, tsrange(start_at, end_at)", name: "index_appointments_guider_id_tsrange_start_at_end_at", using: :gist
     t.index "tsrange(start_at, end_at)", name: "index_appointments_tsrange_start_at_end_at", using: :gist
     t.index ["guider_id", "start_at"], name: "index_appointments_guider_start_schedule_status", where: "(((schedule_type)::text = 'pension_wise'::text) AND (status <> ALL ('{6,7,8,9}'::integer[])))"

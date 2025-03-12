@@ -1,0 +1,6 @@
+The status for this appointment has not been updated
+
+Reference number: <%= @appointment.id %>
+Date: <%= @appointment.start_at.to_date.to_s(:govuk_date) %>
+
+<%= edit_appointment_url(@appointment) %>
