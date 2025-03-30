@@ -8,7 +8,7 @@ class AppointmentSearchResultPresenter < SimpleDelegator
   end
 
   def created_at
-    super.strftime(DATE_FORMAT)
+    super.in_time_zone('London').strftime(DATE_FORMAT)
   end
 
   def date
