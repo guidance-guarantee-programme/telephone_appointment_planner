@@ -6,6 +6,7 @@ class Appointment < ApplicationRecord
 
   attr_accessor :current_user, :internal_availability, :ad_hoc_start_at
 
+  MOBILE_PREFIXES = %w[+44 0044 44 0].freeze
   MOBILE_REGEX = /^(07|\+447|00447)/
   MOBILE_REGEX_POSIX = '^(07|\+447|00447)'.freeze
 
@@ -529,11 +530,15 @@ class Appointment < ApplicationRecord
   end
 
   def self.for_sms_cancellation(number, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE)
+    numbers = Array(normalise_number(number.dup))
+    numbers = numbers.map { |num| Arel::Nodes.build_quoted(num).to_sql }.join(',')
+
     pending
       .where(schedule_type:)
       .where('? < start_at', Time.zone.now)
+      .where("REPLACE(mobile, ' ', '') IN (#{numbers}) OR REPLACE(phone, ' ', '') IN (#{numbers})")
       .order(:created_at)
-      .find_by("REPLACE(mobile, ' ', '') = :number OR REPLACE(phone, ' ', '') = :number", number:)
+      .first
   end
 
   def push_to_casebook?
@@ -796,6 +801,14 @@ class Appointment < ApplicationRecord
 
   class << self
     private
+
+    def normalise_number(number)
+      number.remove!(/\s+/)
+      return number unless (found = MOBILE_PREFIXES.find { |p| number.starts_with?(p) })
+
+      number.sub!(found, '')
+      MOBILE_PREFIXES.map { |p| "#{p}#{number}" }
+    end
 
     def day_range(days_from)
       days_from.days.from_now.beginning_of_day.in_time_zone..days_from.days.from_now.end_of_day.in_time_zone

@@ -1,5 +1,7 @@
 require 'rails_helper'
 
+NORMALISED_NUMBERS = %w[+447715930455 447715930455 07715930455 00447715930455].freeze
+
 # rubocop:disable Metrics/BlockLength
 RSpec.describe Appointment, type: :model do
   describe '.needing_status_reminder' do
@@ -305,6 +307,16 @@ RSpec.describe Appointment, type: :model do
   end
 
   describe '.for_sms_cancellation' do
+    context 'normalises client numbers into the various forms' do
+      NORMALISED_NUMBERS.each do |normalised_number|
+        it "returns the right appointment when number is in the form '#{normalised_number}'" do
+          @appointment = create(:appointment, mobile: NORMALISED_NUMBERS.sample)
+
+          expect(described_class.for_sms_cancellation(normalised_number)).to eq(@appointment)
+        end
+      end
+    end
+
     context 'when two appointment exist with the same number' do
       it 'returns the appointment created first' do
         @first = create(:appointment, mobile: '07715930455', created_at: '2018-04-28 13:00')
