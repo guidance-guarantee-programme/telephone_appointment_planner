@@ -84,7 +84,7 @@ class HolidaysController < ApplicationController
 
   def batch_create_params # rubocop:disable Metrics/MethodLength
     params
-      .require(:holiday)
+      .require(:batch_upsert_holidays)
       .permit(
         :title,
         :all_day,
@@ -99,7 +99,7 @@ class HolidaysController < ApplicationController
   end
 
   def user_ids
-    params[:holiday][:users].select(&:present?)
+    params[:batch_upsert_holidays][:users].select(&:present?)
   end
 
   def starts

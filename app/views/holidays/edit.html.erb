@@ -7,6 +7,6 @@
 
 <h1>Edit holiday</h1>
 
-<%= form_for @holiday, url: batch_upsert_holidays_path(id: params[:id]), layout: :basic do |f| %>
+<%= form_for @holiday, url: batch_upsert_holidays_path(id: params[:id]), method: :patch, layout: :basic do |f| %>
   <%= render 'form', form: f, holiday: @holiday, guider_options: guider_options(current_user), recurrence: false %>
 <% end %>

@@ -167,6 +167,7 @@ RSpec.feature 'Resource manager manages holidays' do
 
     @page.recur.set(true)
     @page.wait_until_recur_end_at_visible
+
     @page.set_recur_end_at(2.days.from_now.to_date)
 
     @page.save.click
