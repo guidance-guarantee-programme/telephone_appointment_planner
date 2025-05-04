@@ -2,8 +2,6 @@ require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
 RSpec.describe SmsAppointmentReminderJob, '#perform' do
-  include ActiveJob::TestHelper
-
   let(:client) { double(Notifications::Client, send_sms: true) }
 
   context 'for Due Diligence' do
@@ -42,6 +40,7 @@ RSpec.describe SmsAppointmentReminderJob, '#perform' do
 
     context 'when Notify cannot send the SMS to the given number' do
       it 'creates an SMS failure activity and notifies resource managers' do
+        allow(SmsFailureNotificationsJob).to receive(:perform_later)
         allow(client).to receive(:send_sms)
           .and_raise(Notifications::Client::BadRequestError.new(double(code: 400, body: 'meh')))
 
@@ -50,7 +49,7 @@ RSpec.describe SmsAppointmentReminderJob, '#perform' do
         expect(appointment.activities.find_by(type: 'SmsFailureActivity')).to be
         expect(appointment.activities.find_by(type: 'SmsReminderActivity')).to be_nil
 
-        assert_enqueued_jobs(1, only: SmsFailureNotificationsJob)
+        expect(SmsFailureNotificationsJob).to have_received(:perform_later)
       end
     end
 

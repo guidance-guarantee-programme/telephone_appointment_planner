@@ -2,8 +2,6 @@ require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
 RSpec.describe SmsCancellation do
-  include ActiveJob::TestHelper
-
   subject { described_class.new(source_number: '07715 930 455', message: 'Cancel.', schedule_type: 'pension_wise') }
 
   describe 'validation' do

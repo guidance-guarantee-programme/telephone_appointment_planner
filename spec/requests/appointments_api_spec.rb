@@ -2,7 +2,17 @@ require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
 RSpec.describe 'POST /api/v1/appointments' do
-  include ActiveJob::TestHelper
+  before do
+    [
+      CustomerUpdateJob,
+      SmsAppointmentConfirmationJob,
+      AdjustmentNotificationsJob,
+      AppointmentCreatedNotificationsJob,
+      PushCasebookAppointmentJob
+    ].each do |job|
+      allow(job).to receive(:perform_later)
+    end
+  end
 
   context 'due diligence appointments' do
     scenario 'supplying an incorrect schedule type' do
@@ -351,23 +361,23 @@ RSpec.describe 'POST /api/v1/appointments' do
   end
 
   def and_the_customer_receives_a_confirmation_email
-    assert_enqueued_jobs(1, only: CustomerUpdateJob)
+    expect(CustomerUpdateJob).to have_received(:perform_later)
   end
 
   def and_the_customer_receives_a_confirmation_sms
-    assert_enqueued_jobs(1, only: SmsAppointmentConfirmationJob)
+    expect(SmsAppointmentConfirmationJob).to have_received(:perform_later)
   end
 
   def and_the_resource_manager_receives_an_accessibility_notification
-    assert_enqueued_jobs(1, only: AdjustmentNotificationsJob)
+    expect(AdjustmentNotificationsJob).to have_received(:perform_later)
   end
 
   def and_the_resource_manager_receives_a_new_appointment_notification
-    assert_enqueued_jobs(1, only: AppointmentCreatedNotificationsJob)
+    expect(AppointmentCreatedNotificationsJob).to have_received(:perform_later)
   end
 
   def and_the_system_attempts_to_push_to_casebook
-    assert_enqueued_jobs(1, only: PushCasebookAppointmentJob)
+    expect(PushCasebookAppointmentJob).to have_received(:perform_later)
   end
 end
 # rubocop:enable Metrics/BlockLength

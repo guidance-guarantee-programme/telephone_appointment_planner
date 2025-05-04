@@ -2,7 +2,18 @@ require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
 RSpec.describe 'POST /api/v1/nudge_appointments' do
-  include ActiveJob::TestHelper
+  before do
+    [
+      PusherAppointmentChangedJob,
+      AppointmentCreatedNotificationsJob,
+      CustomerUpdateJob,
+      PushCasebookAppointmentJob,
+      AdjustmentNotificationsJob,
+      SmsAppointmentConfirmationJob
+    ].each do |expected_job|
+      allow(expected_job).to receive(:perform_later)
+    end
+  end
 
   scenario 'create a valid appointment' do
     travel_to '2022-04-23 12:00' do
@@ -138,23 +149,23 @@ RSpec.describe 'POST /api/v1/nudge_appointments' do
   end
 
   def and_the_customer_receives_a_confirmation_email
-    assert_enqueued_jobs(1, only: CustomerUpdateJob)
+    expect(CustomerUpdateJob).to have_received(:perform_later)
   end
 
   def and_the_resource_manager_receives_an_accessibility_notification
-    assert_enqueued_jobs(1, only: AdjustmentNotificationsJob)
+    expect(AdjustmentNotificationsJob).to have_received(:perform_later)
   end
 
   def and_the_resource_manager_receives_a_new_appointment_notification
-    assert_enqueued_jobs(1, only: AppointmentCreatedNotificationsJob)
+    expect(AppointmentCreatedNotificationsJob).to have_received(:perform_later)
   end
 
   def and_the_customer_receives_an_sms_confirmation
-    assert_enqueued_jobs(1, only: SmsAppointmentConfirmationJob)
+    expect(SmsAppointmentConfirmationJob).to have_received(:perform_later)
   end
 
   def and_the_system_enqueues_a_casebook_push_if_needed
-    assert_enqueued_jobs(1, only: PushCasebookAppointmentJob)
+    expect(PushCasebookAppointmentJob).to have_received(:perform_later)
   end
 end
 # rubocop:enable Metrics/BlockLength

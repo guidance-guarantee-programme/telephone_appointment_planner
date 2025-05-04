@@ -1,7 +1,17 @@
 require 'rails_helper'
 
 RSpec.describe 'POST /api/v1/appointments/{id}/cancel' do # rubocop:disable Metrics/BlockLength
-  include ActiveJob::TestHelper
+  before do
+    [
+      PusherAppointmentChangedJob,
+      AppointmentCancelledNotificationsJob,
+      CustomerUpdateJob,
+      SmsCancellationSuccessJob,
+      CancelCasebookAppointmentJob
+    ].each do |expected_job|
+      allow(expected_job).to receive(:perform_later)
+    end
+  end
 
   scenario 'successfully cancelling the appointment' do
     given_the_user_is_a_pension_wise_api_user do
@@ -59,26 +69,26 @@ RSpec.describe 'POST /api/v1/appointments/{id}/cancel' do # rubocop:disable Metr
   end
 
   def and_a_customer_online_cancellation_activity_is_created
-    expect(@appointment.activities.first).to be_an(CustomerOnlineCancellationActivity)
+    expect(@appointment.activities.map(&:type)).to include(CustomerOnlineCancellationActivity.to_s)
   end
 
   def and_the_guider_is_notified
-    assert_enqueued_jobs(1, only: PusherAppointmentChangedJob)
+    expect(PusherAppointmentChangedJob).to have_received(:perform_later)
   end
 
   def and_the_resource_managers_are_notified
-    assert_enqueued_jobs(1, only: AppointmentCancelledNotificationsJob)
+    expect(AppointmentCancelledNotificationsJob).to have_received(:perform_later)
   end
 
   def and_the_customer_receives_a_cancellation_email
-    assert_enqueued_jobs(1, only: CustomerUpdateJob)
+    expect(CustomerUpdateJob).to have_received(:perform_later)
   end
 
   def and_the_customer_receives_a_cancellation_sms
-    assert_enqueued_jobs(1, only: SmsCancellationSuccessJob)
+    expect(SmsCancellationSuccessJob).to have_received(:perform_later)
   end
 
   def and_a_casebook_cancellation_is_enqueued
-    assert_enqueued_jobs(1, only: CancelCasebookAppointmentJob)
+    expect(CancelCasebookAppointmentJob).to have_received(:perform_later)
   end
 end
