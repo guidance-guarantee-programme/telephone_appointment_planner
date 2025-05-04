@@ -20,7 +20,7 @@ RSpec.describe 'Sidekiq control panel' do
   end
 
   def they_are_required_to_authenticate
-    expect(response).to be_not_found
+    expect(response).to be_server_error
   end
 
   def then_they_are_authenticated
