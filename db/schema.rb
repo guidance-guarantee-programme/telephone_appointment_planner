@@ -10,12 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_03_12_153811) do
-
+ActiveRecord::Schema[8.0].define(version: 2025_05_04_102028) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
+  enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
-  enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -33,7 +32,7 @@ ActiveRecord::Schema.define(version: 2025_03_12_153811) do
     t.string "content_type"
     t.text "metadata"
     t.bigint "byte_size", null: false
-    t.string "checksum", null: false
+    t.string "checksum"
     t.datetime "created_at", null: false
     t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
@@ -177,8 +176,8 @@ ActiveRecord::Schema.define(version: 2025_03_12_153811) do
   create_table "email_lookups", force: :cascade do |t|
     t.string "organisation_id", null: false
     t.string "email", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "group_assignments", id: false, force: :cascade do |t|
@@ -213,8 +212,8 @@ ActiveRecord::Schema.define(version: 2025_03_12_153811) do
   create_table "releases", force: :cascade do |t|
     t.text "summary"
     t.date "released_on"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "reporting_summaries", force: :cascade do |t|
