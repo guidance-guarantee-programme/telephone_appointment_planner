@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Sidekiq control panel' do
   scenario 'requires authentication' do
     with_real_sso do
+      when_they_visit_the_sidekiq_panel
       they_are_required_to_authenticate
     end
   end
@@ -19,7 +20,7 @@ RSpec.describe 'Sidekiq control panel' do
   end
 
   def they_are_required_to_authenticate
-    expect { get '/sidekiq' }.to raise_error(ActionController::RoutingError)
+    expect(response).to be_not_found
   end
 
   def then_they_are_authenticated
