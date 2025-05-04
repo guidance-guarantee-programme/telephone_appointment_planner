@@ -340,8 +340,7 @@ GEM
     msgpack (1.7.2)
     multi_json (1.15.0)
     multi_xml (0.6.0)
-    multipart-post (2.3.0)
-      ruby2_keywords (~> 0.0.1)
+    multipart-post (2.4.1)
     mustermann (2.0.2)
       ruby2_keywords (~> 0.0.1)
     mutex_m (0.3.0)
@@ -645,6 +644,7 @@ DEPENDENCIES
   launchy
   listen
   lograge
+  multipart-post
   net-http
   net-sftp
   notifications-ruby-client

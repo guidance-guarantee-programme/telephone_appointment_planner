@@ -40,6 +40,7 @@ gem 'foreman'
 gem 'gds-sso'
 gem 'govuk_admin_template'
 gem 'kaminari'
+gem 'multipart-post'
 gem 'net-http', require: false
 gem 'net-sftp'
 gem 'notifications-ruby-client'
