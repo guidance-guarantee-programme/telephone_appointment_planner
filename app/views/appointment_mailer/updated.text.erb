@@ -1,8 +1,10 @@
-We've updated your appointment
+Your <%= @appointment.type %> appointment has been updated
+
+Reference number: <%= @appointment.id %>
 
 Dear <%= @appointment.first_name %>,
 
-Your appointment details have been updated.
+Your new <%= @appointment.type %> appointment is on <%= @appointment.start_at.to_date.to_fs(:govuk_date) %> at <%= "#{@appointment.start_at.to_time.to_fs(:govuk_time)} (#{@appointment.timezone})" %>.
 
 <%= render 'shared/email/appointment_details' %>
 

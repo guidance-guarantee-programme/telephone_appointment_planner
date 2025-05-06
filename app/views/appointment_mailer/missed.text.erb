@@ -1,22 +1,21 @@
-Missed appointment
+Would you still like a <%= @appointment.type %> appointment?
+
+Reference number: <%= @appointment.id %>
 
 Dear <%= @appointment.first_name %>,
 
-Our records show that your <%= @appointment.type %> appointment was missed.
-Your appointment was scheduled for:
+We were unable to contact you for your <%= @appointment.type %> appointment on <%= @appointment.start_at.to_date.to_fs(:govuk_date) %> at <%= "#{@appointment.start_at.to_time.to_fs(:govuk_time)} (#{@appointment.timezone})" %>.
 
-Date:
-<%= @appointment.start_at.to_date.to_formatted_s(:govuk_date) %>
+<% if @appointment.pension_wise? %>
+You can https://www.moneyhelper.org.uk/en/pensions-and-retirement/pension-wise/book-a-free-pension-wise-appointment/book-a-phone-appointment book a new appointment online or call 0800 138 3944 (+44 20 3733 3495 if you’re outside the UK).
 
-Time:
-<%= "#{@appointment.start_at.to_time.to_formatted_s(:govuk_time)} (#{@appointment.timezone})" %>
+We’re open between 9am and 5pm, Monday to Friday. Closed on bank holidays.
 
-Your phone number:
-<%= @appointment.phone %>
+You can also have an https://prd-pwtriage.moneyhelper.org.uk/en/pension-wise-triage/start online Pension Wise appointment at any time.
+<% else %>
+To book a new appointment, call 0800 015 4906.
 
-Reference number:
-<%= @appointment.id %>
-
-To book another appointment, please call <%= @appointment.telephone %>. Please don't reply to this email.
+We’re open between 9am and 5pm, Monday to Friday. Closed on bank holidays.
+<% end %>
 
 <%= render 'shared/email/money_helper' %>
