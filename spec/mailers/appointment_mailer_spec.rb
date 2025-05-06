@@ -345,8 +345,6 @@ RSpec.describe AppointmentMailer, type: :mailer do
 
       context 'when the appointment is BSL video based' do
         it 'includes the video appointment specifics' do
-          skip 'Will come back to BSL'
-
           appointment.bsl_video = true
 
           expect(body).to include('British Sign Language')
@@ -479,14 +477,10 @@ RSpec.describe AppointmentMailer, type: :mailer do
         end
 
         it 'includes the video appointment specifics' do
-          skip 'Come back to BSL'
-
           expect(body).to include('British Sign Language')
         end
 
         it 'does not include the customer phone number' do
-          skip 'Come back to BSL'
-
           expect(body).not_to include(appointment.phone)
         end
       end
