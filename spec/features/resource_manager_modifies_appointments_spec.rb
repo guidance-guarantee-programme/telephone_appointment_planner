@@ -288,7 +288,7 @@ RSpec.feature 'Resource manager modifies appointments' do
     expect(deliveries.count).to eq 1
     expect(deliveries.first.to).to eq [@appointment.email]
     expect(deliveries.first.subject).to eq 'Pension Wise Appointment'
-    expect(deliveries.first.body.encoded).to include 'We=E2=80=99ve updated your appointment'
+    expect(deliveries.first.body.encoded).to include 'has been updated'
   end
 
   def and_click_a_link_while_dismissing_the_warning

@@ -1,52 +1,74 @@
 <h1 style="color: #0F19A0 !important;font-family: Calibri, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 20px;line-height: 1.111111111;padding: 15px 0;">
-  <% if @appointment.hrh_bank_holiday? %>
-    On 19 September, the Money and Pensions Service will be observing the last day of national mourning and the bank holiday to mark the State Funeral of Her Majesty Queen Elizabeth II. Our customer-facing services will be closed.
-  <% else %>
-  We’ve cancelled your appointment
-  <% end %>
+  Your <%= @appointment.type %> appointment has been cancelled
 </h1>
+
+<%= p do %>
+  <strong>Reference number:</strong> <%= @appointment.id %>
+<% end %>
 
 <%= p do %>
   Dear <%= @appointment.first_name %>,
 <% end %>
 
-<%= p do %>
+<% if @appointment.pension_wise? %>
   <% if @appointment.cancelled_by_pension_wise? %>
-    We have cancelled the following phone appointment due to unforeseen circumstances. We apologise for any inconvenience this may cause.
+    <%= p do %>
+      Unfortunately, we need to cancel your <%= @appointment.type %> appointment on <%= @appointment.start_at.to_date.to_fs(:govuk_date) %> at <%= "#{@appointment.start_at.to_time.to_fs(:govuk_time)} (#{@appointment.timezone})" %>. We will contact you to arrange a new date and time within one working day.
+    <% end %>
+
+    <%= p do %>
+      Alternatively, you can <a href="https://www.moneyhelper.org.uk/en/pensions-and-retirement/pension-wise/book-a-free-pension-wise-appointment/book-a-phone-appointment">book a new appointment online</a> or call 0800 138 3944 (+44 20 3733 3495 if you’re outside the UK).
+    <% end %>
+
+    <%= p do %>
+      We’re open between 9am and 5pm, Monday to Friday. Closed on bank holidays.
+    <% end %>
+
+    <%= p do %>
+      You can also have an <a href="https://prd-pwtriage.moneyhelper.org.uk/en/pension-wise-triage/start">online Pension Wise appointment</a> at any time.
+    <% end %>
   <% else %>
-    We have cancelled the following phone appointment as requested:
+    <%= p do %>
+      Your <%= @appointment.type %> appointment on <%= @appointment.start_at.to_date.to_fs(:govuk_date) %> at <%= "#{@appointment.start_at.to_time.to_fs(:govuk_time)} (#{@appointment.timezone})" %> has been cancelled.
+    <% end %>
+
+    <%= p do %>
+      You can <a href="https://www.moneyhelper.org.uk/en/pensions-and-retirement/pension-wise/book-a-free-pension-wise-appointment/book-a-phone-appointment">book a new appointment online</a> or call 0800 138 3944 (+44 20 3733 3495 if you’re outside the UK).
+    <% end %>
+
+    <%= p do %>
+      We’re open between 9am and 5pm, Monday to Friday. Closed on bank holidays.
+    <% end %>
+
+    <%= p do %>
+      You can also have an <a href="https://prd-pwtriage.moneyhelper.org.uk/en/pension-wise-triage/start">online Pension Wise appointment</a> at any time.
+    <% end %>
   <% end %>
-<% end %>
-
-<%= p do %>
-  Date:
-  <br>
-  <strong class="emphasize">
-    <%= @appointment.start_at.to_date.to_formatted_s(:govuk_date) %>
-  </strong>
-<% end %>
-
-<%= p do %>
-  Time:
-  <br>
-  <strong class="emphasize">
-    <%= "#{@appointment.start_at.to_time.to_formatted_s(:govuk_time)} (#{@appointment.timezone})" %>
-  </strong>
-<% end %>
-
-<%= p do %>
-  Reference number:
-  <br>
-  <strong class="emphasize">
-    <%= @appointment.id %>
-  </strong>
-<% end %>
-
-<%= p do %>
+<% else %>
   <% if @appointment.cancelled_by_pension_wise? %>
-    If we have not contacted you already, we will offer you a new date for your appointment within 1 working day.
+    <%= p do %>
+      Unfortunately, we need to cancel your <%= @appointment.type %> appointment on <%= @appointment.start_at.to_date.to_fs(:govuk_date) %> at <%= "#{@appointment.start_at.to_time.to_fs(:govuk_time)} (#{@appointment.timezone})" %>. We will contact you to arrange a new date and time within one working day.
+    <% end %>
+
+    <%= p do %>
+      Alternatively, you can call 0800 015 4906 to book a new appointment.
+    <% end %>
+
+    <%= p do %>
+      We’re open between 9am and 5pm, Monday to Friday. Closed on bank holidays.
+    <% end %>
   <% else %>
-    If you didn’t ask us to cancel your appointment or to book a new one, call <strong><%= @appointment.telephone %></strong>. Please don’t reply to this email.
+    <%= p do %>
+      Your <%= @appointment.type %> appointment on <%= @appointment.start_at.to_date.to_fs(:govuk_date) %> at <%= "#{@appointment.start_at.to_time.to_fs(:govuk_time)} (#{@appointment.timezone})" %> has been cancelled.
+    <% end %>
+
+    <%= p do %>
+      To book a new appointment, call 0800 015 4906.
+    <% end %>
+
+    <%= p do %>
+      We’re open between 9am and 5pm, Monday to Friday. Closed on bank holidays.
+    <% end %>
   <% end %>
 <% end %>
 

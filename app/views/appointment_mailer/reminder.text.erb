@@ -1,8 +1,10 @@
-Appointment reminder
+<%= @appointment.type %> Appointment reminder
+
+Reference number: <%= @appointment.id %>
 
 Dear <%= @appointment.first_name %>,
 
-This is a reminder that you have a <%= @appointment.type %> appointment booked for:
+This is a reminder that your <%= @appointment.type %> appointment is booked for <%= @appointment.start_at.to_date.to_fs(:govuk_date) %> at <%= "#{@appointment.start_at.to_time.to_fs(:govuk_time)} (#{@appointment.timezone})" %>.
 
 <%= render 'shared/email/appointment_details' %>
 
