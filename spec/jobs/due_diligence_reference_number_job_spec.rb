@@ -18,8 +18,11 @@ RSpec.describe DueDiligenceReferenceNumberJob, '#perform' do
   end
 
   context 'when the generated number is not unique' do
+    include ActiveJob::TestHelper
+
     it 'raises an error thus retrying the job' do
       allow_any_instance_of(DueDiligenceReferenceNumber).to receive(:call).and_return('12345614092021')
+      allow_any_instance_of(DueDiligenceReferenceNumber).to receive(:call).and_return('12345615092021')
 
       @appointment = create(
         :appointment,
@@ -37,7 +40,11 @@ RSpec.describe DueDiligenceReferenceNumberJob, '#perform' do
       )
 
       # ensures clashes will retry a suitable number of times to generate a unique reference
-      expect { described_class.perform_now(@duplicate) }.to raise_error(ActiveRecord::RecordInvalid)
+      perform_enqueued_jobs do
+        described_class.perform_now(@duplicate)
+      end
+
+      expect(@duplicate.reload.unique_reference_number).to eq('12345615092021')
     end
   end
 end
