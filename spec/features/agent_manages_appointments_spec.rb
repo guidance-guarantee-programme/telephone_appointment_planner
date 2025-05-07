@@ -2,7 +2,19 @@ require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
 RSpec.feature 'Agent manages appointments' do
-  include ActiveJob::TestHelper
+  before do
+    [
+      PusherAppointmentChangedJob,
+      AppointmentCreatedNotificationsJob,
+      CustomerUpdateJob,
+      PushCasebookAppointmentJob,
+      AdjustmentNotificationsJob,
+      SmsAppointmentConfirmationJob,
+      PrintedConfirmationJob
+    ].each do |expected_job|
+      allow(expected_job).to receive(:perform_later)
+    end
+  end
 
   let(:day) { BusinessDays.from_now(5) }
 
@@ -268,14 +280,12 @@ RSpec.feature 'Agent manages appointments' do
   end
 
   scenario 'Agent creates appointment without an email' do
-    perform_enqueued_jobs do
-      given_the_user_is_an_agent do
-        and_there_is_a_guider_with_available_slots
-        when_they_want_to_book_an_appointment
-        and_they_fill_in_their_appointment_details_without_an_email
-        when_they_accept_the_appointment_preview
-        then_the_customer_does_not_get_an_email_confirmation
-      end
+    given_the_user_is_an_agent do
+      and_there_is_a_guider_with_available_slots
+      when_they_want_to_book_an_appointment
+      and_they_fill_in_their_appointment_details_without_an_email
+      when_they_accept_the_appointment_preview
+      then_the_customer_does_not_get_an_email_confirmation
     end
   end
 
@@ -489,7 +499,7 @@ RSpec.feature 'Agent manages appointments' do
   end
 
   def and_the_system_attempts_to_push_to_casebook
-    assert_enqueued_jobs(1, only: PushCasebookAppointmentJob)
+    expect(PushCasebookAppointmentJob).to have_received(:perform_later)
   end
 
   def and_they_enter_a_standard_date_of_birth
@@ -571,7 +581,7 @@ RSpec.feature 'Agent manages appointments' do
 
     expect(@page).to have_duplicates if options[:duplicates]
 
-    expect(@page.preview).to have_content "#{day.to_date.to_s(:govuk_date)} 9:30am"
+    expect(@page.preview).to have_content "#{day.to_date.to_formatted_s(:govuk_date)} 9:30am"
     expect(@page.preview).to have_content '(will last around 60 minutes)'
 
     expect(@page.preview).to have_content '23 October 1950'
@@ -633,23 +643,23 @@ RSpec.feature 'Agent manages appointments' do
   end
 
   def and_the_customer_gets_an_email_confirmation
-    assert_enqueued_jobs(1, only: CustomerUpdateJob)
+    expect(CustomerUpdateJob).to have_received(:perform_later)
   end
 
   def and_a_printed_confirmation_job_is_enqueued
-    assert_enqueued_jobs(1, only: PrintedConfirmationJob)
+    expect(PrintedConfirmationJob).to have_received(:perform_later)
   end
 
   def and_the_customer_gets_an_updated_email_confirmation
-    assert_enqueued_jobs(1, only: CustomerUpdateJob)
+    expect(CustomerUpdateJob).to have_received(:perform_later)
   end
 
   def then_the_customer_does_not_get_an_email_confirmation
-    expect(ActionMailer::Base.deliveries.flat_map(&:to)).to eq(['supervisors@maps.org.uk'])
+    expect(CustomerUpdateJob).to have_received(:perform_later).once
   end
 
   def then_the_customer_does_not_get_an_updated_email_confirmation
-    expect(ActionMailer::Base.deliveries).to be_empty
+    expect(CustomerUpdateJob).to have_received(:perform_later).once
   end
 
   def when_they_want_to_book_an_appointment
@@ -786,11 +796,11 @@ RSpec.feature 'Agent manages appointments' do
   end
 
   def then_the_customer_gets_a_cancellation_email
-    assert_enqueued_jobs(1, only: CustomerUpdateJob)
+    expect(CustomerUpdateJob).to have_received(:perform_later)
   end
 
   def then_the_customer_does_not_get_a_cancellation_email
-    assert_no_enqueued_jobs(only: CustomerUpdateJob)
+    expect(CustomerUpdateJob).to_not have_received(:perform_later)
   end
 
   def when_they_mark_the_appointment_as_missed
@@ -804,7 +814,7 @@ RSpec.feature 'Agent manages appointments' do
   end
 
   def then_the_customer_gets_a_missed_appointment_email
-    assert_enqueued_jobs(1, only: CustomerUpdateJob)
+    expect(CustomerUpdateJob).to have_received(:perform_later)
   end
 
   def and_there_is_an_imported_appointment

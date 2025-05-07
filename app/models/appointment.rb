@@ -69,9 +69,9 @@ class Appointment < ApplicationRecord
     adjustments
   ].freeze
 
-  enum status: { pending: 0, complete: 1, no_show: 2, incomplete: 3, ineligible_age: 4,
-                 ineligible_pension_type: 5, cancelled_by_customer: 6, cancelled_by_pension_wise: 7,
-                 cancelled_by_customer_sms: 8, cancelled_by_customer_online: 9 }
+  enum :status, { pending: 0, complete: 1, no_show: 2, incomplete: 3, ineligible_age: 4,
+                  ineligible_pension_type: 5, cancelled_by_customer: 6, cancelled_by_pension_wise: 7,
+                  cancelled_by_customer_sms: 8, cancelled_by_customer_online: 9 }
 
   AGENT_PERMITTED_SECONDARY = '15'.freeze
   SECONDARY_STATUSES = {

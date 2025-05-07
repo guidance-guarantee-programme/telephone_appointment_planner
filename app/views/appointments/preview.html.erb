@@ -97,7 +97,7 @@
             </tr>
             <tr>
               <td class="active"><b>Appointment date</b></td>
-              <td><%= "#{@appointment.start_at.to_date.to_s(:govuk_date)} #{@appointment.start_at.to_time.to_s(:govuk_time)}" %><br>(will last around 60 minutes)</td>
+              <td><%= "#{@appointment.start_at.to_date.to_formatted_s(:govuk_date)} #{@appointment.start_at.to_time.to_formatted_s(:govuk_time)}" %><br>(will last around 60 minutes)</td>
             </tr>
           </tbody>
         </table>
@@ -106,7 +106,7 @@
           <tbody>
             <tr>
               <td class="active" width="35%"><b>Date of birth</b></td>
-              <td><%= @appointment.date_of_birth.to_date.to_s(:govuk_date) %></td>
+              <td><%= @appointment.date_of_birth.to_date.to_formatted_s(:govuk_date) %></td>
             </tr>
             <tr>
               <td class="active"><b>Email</b></td>
@@ -160,7 +160,7 @@
             </tr>
             <tr>
               <td class="active"><b>Data subject date of birth</b></td>
-              <td><%= @appointment.data_subject_date_of_birth.to_date.to_s(:govuk_date) %></td>
+              <td><%= @appointment.data_subject_date_of_birth.to_date.to_formatted_s(:govuk_date) %></td>
             </tr>
             <tr>
               <td class="active"><b>Email consent form required</b></td>

@@ -2,8 +2,6 @@ require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
 RSpec.feature 'Resource manager manages schedules' do
-  include ActiveJob::TestHelper
-
   before do
     allow(GenerateBookableSlotsForUserJob).to receive(:perform_later)
   end
@@ -16,11 +14,7 @@ RSpec.feature 'Resource manager manages schedules' do
       and_they_add_a_new_schedule
       and_they_set_the_initial_start_at_date
       and_they_add_some_time_slots
-
-      perform_enqueued_jobs do
-        when_they_save_the_users_time_slots
-      end
-
+      when_they_save_the_users_time_slots
       then_they_are_told_that_the_schedule_has_been_created
       and_the_guider_has_those_time_slots_available
     end

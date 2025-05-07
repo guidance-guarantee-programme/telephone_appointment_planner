@@ -26,14 +26,6 @@ class BatchUpsertHolidays
     calculate_range(options)
   end
 
-  def to_model
-    if Array(@previous_holidays).any?
-      @model ||= Holiday.find(@previous_holidays.first)
-    else
-      Holiday.new
-    end
-  end
-
   def call
     return false unless valid?
 

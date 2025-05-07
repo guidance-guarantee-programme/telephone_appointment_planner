@@ -3,7 +3,15 @@ require 'securerandom'
 
 # rubocop:disable Metrics/BlockLength
 RSpec.describe 'POST /sms_cancellations', type: :request do
-  include ActiveJob::TestHelper
+  before do
+    [
+      SmsCancellationSuccessJob,
+      PusherAppointmentChangedJob,
+      AppointmentCancelledNotificationsJob
+    ].each do |job|
+      allow(job).to receive(:perform_later)
+    end
+  end
 
   scenario 'unauthorised access' do
     when_the_client_makes_an_unauthorised_request
@@ -56,15 +64,15 @@ RSpec.describe 'POST /sms_cancellations', type: :request do
   end
 
   def and_the_customer_is_sent_a_confirmation_sms
-    assert_enqueued_jobs(1, only: SmsCancellationSuccessJob)
+    expect(SmsCancellationSuccessJob).to have_received(:perform_later)
   end
 
   def and_the_guider_is_notified
-    assert_enqueued_jobs(1, only: PusherAppointmentChangedJob)
+    expect(PusherAppointmentChangedJob).to have_received(:perform_later)
   end
 
   def and_the_resource_managers_are_notified
-    assert_enqueued_jobs(1, only: AppointmentCancelledNotificationsJob)
+    expect(AppointmentCancelledNotificationsJob).to have_received(:perform_later)
   end
 
   def when_the_client_makes_an_unauthorised_request

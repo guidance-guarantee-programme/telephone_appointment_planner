@@ -28,7 +28,9 @@ gem 'bootsnap'
 gem 'bootstrap-kaminari-views'
 gem 'bugsnag'
 gem 'capitalize-names', require: 'capitalize_names'
+gem 'concurrent-ruby', '1.3.4'
 gem 'country_select'
+gem 'csv'
 gem 'faraday'
 gem 'faraday-conductivity'
 gem 'faraday-http'
@@ -38,10 +40,13 @@ gem 'foreman'
 gem 'gds-sso'
 gem 'govuk_admin_template'
 gem 'kaminari'
+gem 'multipart-post'
 gem 'net-http', require: false
 gem 'net-sftp'
 gem 'notifications-ruby-client'
+gem 'observer'
 gem 'oj'
+gem 'ostruct'
 gem 'pg'
 gem 'plek'
 gem 'postgres-copy'
@@ -49,7 +54,7 @@ gem 'princely'
 gem 'puma'
 gem 'pusher'
 gem 'rack-cors'
-gem 'rails', '~> 6.1.0'
+gem 'rails', '~> 8.0'
 gem 'sassc-rails'
 gem 'select2-rails'
 gem 'sidekiq'
@@ -86,7 +91,7 @@ group :test do
 end
 
 group :development do
-  gem 'listen', '~> 3.0.5'
+  gem 'listen'
 end
 
 group :staging, :production do

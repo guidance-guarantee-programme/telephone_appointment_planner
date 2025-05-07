@@ -23,7 +23,7 @@ class BslCustomerExitPollJob < NotifyJobBase
       template_id: BSL_EXIT_POLL_SMS_TEMPLATE_ID,
       reference: appointment.to_param,
       personalisation: {
-        date: "#{appointment.start_at.to_s(:govuk_date_short)} (#{appointment.timezone})"
+        date: "#{appointment.start_at.to_formatted_s(:govuk_date_short)} (#{appointment.timezone})"
       }
     )
   end

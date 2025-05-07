@@ -1,6 +1,6 @@
 class DuplicatePresenter < SimpleDelegator
   def timestamp
-    "#{created_at.to_date.to_s(:govuk_date_short)}, #{created_at.in_time_zone('London').to_s(:govuk_time)}"
+    "#{created_at.to_date.to_formatted_s(:govuk_date_short)}, #{created_at.in_time_zone('London').to_formatted_s(:govuk_time)}" # rubocop:disable Layout/LineLength
   end
 
   def organisation_name
@@ -8,7 +8,7 @@ class DuplicatePresenter < SimpleDelegator
   end
 
   def start
-    "#{start_at.to_date.to_s(:govuk_date_short)}, #{start_at.to_s(:govuk_time)}"
+    "#{start_at.to_date.to_formatted_s(:govuk_date_short)}, #{start_at.to_formatted_s(:govuk_time)}"
   end
 
   def agent_name

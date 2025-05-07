@@ -271,8 +271,6 @@ RSpec.describe Appointment, type: :model do
   end
 
   describe '#cancel!' do
-    include ActiveJob::TestHelper
-
     let(:appointment) { create(:appointment) }
 
     it 'does not audit any changes' do
@@ -291,18 +289,18 @@ RSpec.describe Appointment, type: :model do
         allow(Casebook::Cancel).to receive(:new).and_return(cancellation_double)
         allow(cancellation_double).to receive(:call)
 
-        perform_enqueued_jobs do
-          appointment.cancel!
-        end
+        appointment.cancel!
 
         expect(cancellation_double).to have_received(:call)
       end
     end
 
     it 'enqueues a casebook cancellation' do
-      assert_enqueued_jobs(1, only: CancelCasebookAppointmentJob) do
-        appointment.cancel!
-      end
+      allow(CancelCasebookAppointmentJob).to receive(:perform_later).with(appointment)
+
+      appointment.cancel!
+
+      expect(CancelCasebookAppointmentJob).to have_received(:perform_later).with(appointment)
     end
   end
 

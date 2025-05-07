@@ -27,11 +27,11 @@ class PrintedConfirmationPresenter
   end
 
   def date
-    appointment.start_at.to_date.to_s(:govuk_date)
+    appointment.start_at.to_date.to_formatted_s(:govuk_date)
   end
 
   def time
-    "#{appointment.start_at.to_time.to_s(:govuk_time)} #{appointment.timezone}"
+    "#{appointment.start_at.to_time.to_formatted_s(:govuk_time)} #{appointment.timezone}"
   end
 
   attr_reader :appointment
