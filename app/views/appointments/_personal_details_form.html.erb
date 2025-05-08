@@ -96,7 +96,7 @@
 
     <%= f.check_box :accessibility_requirements, class: 't-accessibility-requirements', label: "Do you have any access requirements you'd like us to be aware of?", data: { target: 'adjustments' } %>
     <div class="col-md-offset-1" id="adjustments">
-      <%= f.text_area :adjustments, label: required_label('Adjustments'), autocomplete: 'off', maxlength: 1000, class: 't-adjustments js-adjustments js-character-limit-input', rows: 6,
+      <%= f.text_area :adjustments, label: required_label('Adjustments'), autocomplete: 'off', maxlength: 1000, class: 't-adjustments js-adjustments js-character-limit-input form-control', rows: 6,
                       placeholder: 'Any adjustments that may help you. We might contact you before your appointment for more information', data: { module: 'character-limit', maxlength: 1000 }
       %>
     </div>
