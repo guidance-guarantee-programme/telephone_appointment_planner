@@ -49,7 +49,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
     end
 
     it 'contains the due diligence specifics' do
-      expect(subject.body.encoded).to include('details of your current pension scheme')
+      expect(subject.body.encoded).to include('type and name of the pension scheme you want to transfer')
     end
 
     it 'has the correct help number' do
@@ -360,7 +360,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
       end
 
       it 'includes the duration' do
-        expect(body).to include('Around 60 minutes')
+        expect(body).to include('around 60 minutes')
       end
 
       it 'includes the contact number' do
@@ -376,11 +376,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
       end
 
       it 'includes the phone specifics' do
-        expect(body).to include('call you on the number')
-      end
-
-      it 'includes the Pension Wise specific preparation instructions' do
-        expect(body).to include('when you want to stop working')
+        expect(body).to include('will call you on')
       end
 
       it 'includes the correct PW heading logo' do
@@ -428,7 +424,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
       end
 
       it 'includes the duration' do
-        expect(body).to include('Around 60 minutes')
+        expect(body).to include('around 60 minutes')
       end
 
       it 'includes the contact number' do
@@ -473,7 +469,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
     end
 
     describe 'rendering the body' do
-      let(:body) { subject.body.encoded }
+      let(:body) { subject.html_part.body.decoded.to_s }
 
       context 'when the appointment is BSL video based' do
         before do
@@ -490,7 +486,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
       end
 
       it 'includes the phone specifics' do
-        expect(body).to include('call you on the number')
+        expect(body).to include('One of our pension specialists will call')
       end
 
       it 'includes the date' do
@@ -502,7 +498,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
       end
 
       it 'includes the duration' do
-        expect(body).to include('Around 60 minutes')
+        expect(body).to include('around 60 minutes')
       end
 
       it 'includes the contact number' do
@@ -561,26 +557,15 @@ RSpec.describe AppointmentMailer, type: :mailer do
         it 'includes the correct messaging' do
           appointment.status = :cancelled_by_pension_wise
 
-          expect(body).to include('unforeseen')
-          expect(body).to include('offer you a new date')
-          expect(body).not_to include('Her Majesty')
-        end
-
-        context 'when the appointment occurs 19/09/22' do
-          it 'includes the special message' do
-            appointment.status = :cancelled_by_pension_wise
-            appointment.start_at = Time.zone.parse('2022-09-19 13:00')
-
-            expect(body).to include('Her Majesty')
-          end
+          expect(body).to include('we need to cancel your')
+          expect(body).to include('arrange a new date')
         end
       end
 
       context 'when cancelled otherwise' do
         it 'includes information' do
-          expect(body).to include('We=E2=80=99ve cancelled your appointment')
+          expect(body).to include('Your Pension Wise appointment has been cancelled')
           expect(body).to include(appointment.id.to_s)
-          expect(body).to include('as requested')
         end
       end
     end
@@ -610,10 +595,10 @@ RSpec.describe AppointmentMailer, type: :mailer do
     end
 
     describe 'rendering the body' do
-      let(:body) { subject.body.encoded }
+      let(:body) { subject.html_part.body.decoded.to_s }
 
       it 'includes information' do
-        expect(body).to include('Our records show that your Pension Wise appointment was missed')
+        expect(body).to include('unable to contact you')
       end
 
       it 'includes the date' do
@@ -622,10 +607,6 @@ RSpec.describe AppointmentMailer, type: :mailer do
 
       it 'includes the time' do
         expect(body).to include('12:00am')
-      end
-
-      it 'includes the contact number' do
-        expect(body).to include(appointment.phone)
       end
 
       it 'includes the reference number' do
