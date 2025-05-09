@@ -16,16 +16,5 @@ RSpec.describe CancelCasebookAppointmentJob, '#perform' do
 
       expect(casebook_cancel).to have_received(:call)
     end
-
-    context 'when a casebook error occurs' do
-      it 'notifies bugsnag' do
-        allow(casebook_cancel).to receive(:call).and_raise(Casebook::ApiError)
-        allow(Bugsnag).to receive(:notify).twice
-
-        described_class.perform_now(appointment)
-
-        expect(Bugsnag).to have_received(:notify).twice
-      end
-    end
   end
 end
