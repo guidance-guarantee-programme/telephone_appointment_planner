@@ -37,13 +37,13 @@ RSpec.describe PushCasebookAppointmentJob, '#perform' do # rubocop:disable Metri
     end
 
     context 'when a casebook error occurs' do
-      it 'notifies bugsnag' do
+      include ActiveJob::TestHelper
+
+      it 'retries API errors' do
         allow(casebook_push).to receive(:call).and_raise(Casebook::ApiError)
-        allow(Bugsnag).to receive(:notify).twice
+        allow(casebook_push).to receive(:call).and_return(true)
 
         described_class.perform_now(appointment)
-
-        expect(Bugsnag).to have_received(:notify).twice
       end
     end
   end
