@@ -1,43 +1,35 @@
-Date:
-<%= @appointment.start_at.to_date.to_formatted_s(:govuk_date) %>
-
-Time:
-<%= "#{@appointment.start_at.to_time.to_formatted_s(:govuk_time)} (#{@appointment.timezone})" %>
-
-Appointment lasts:
-Around 60 minutes
-
-<% unless @appointment.bsl_video? %>
-Your phone number:
-<%= @appointment.phone %>
-<% end %>
-
-Memorable word:
-<%= @appointment.memorable_word(obscure: true) %>
-
-Reference number:
-<%= @appointment.id %>
-
 <% if @appointment.bsl_video? %>
 This is a video appointment with a British Sign Language interpreter.
 
-You should have received further information and a link to access your video appointment that only you and the guidance specialist can join. They’ll repeat the memorable word so you know you're speaking to Pension Wise.
-
-Email us if you need this information resent or to change or cancel your booking. You may be asked for your booking reference number.
+You will be sent further information and a link to access your video appointment that only you and the guidance specialist can join. They’ll repeat the memorable word so you know you’re speaking to <%= @appointment.provider %>.
 <% else %>
-A trained guidance specialist will call you on the number above. They'll repeat the memorable word so you know you're speaking to <%= @appointment.provider %>.
+One of our pension specialists will call you on <%= @appointment.phone %> and quote the memorable word you’ve given us (<%= @appointment.memorable_word(obscure: true) %>) – so you know it’s us calling.
 
-If you’ve asked for an access adjustment, we might contact you beforehand to ask for more details.
-
-Our team are here to help you, please treat them with respect. If you are verbally abusive toward them, they have the right to end the call and you may have to rebook.
-
-Change or cancel your appointment
-
-If you miss the call, you'll need to book another appointment.
-
-Call <%= @appointment.telephone %> to change your booking.
-
-<% if @appointment.online_cancellation? %>
-If you wish to cancel your Pension Wise appointment you can do this online: <%= @appointment.online_cancellation_url %>
+Your appointment will usually last around 60 minutes. <% if @appointment.pension_wise? %>If you’ve asked for an access adjustment, we might contact you beforehand to ask for more details.<% end %>
 <% end %>
+
+You’ll need to rebook if:
+  * you’re not available at your appointment time or
+  * you’re driving – even if you use a hands-free device.
+
+<% if @appointment.pension_wise? %>
+How to cancel your appointment
+
+You can <%= @appointment.online_cancellation_url %> cancel your Pension Wise appointment online.
+
+If you received a confirmation text message, you can also reply by text to cancel.
+
+How to change your appointment
+
+To change your Pension Wise appointment or any information you’ve given us, call <%= @appointment.telephone %> (+44 20 3733 3495 if you’re outside the UK).
+
+We’re open between 9am and 5pm, Monday to Friday. Closed on bank holidays.
+
+You can also cancel your appointment and <%= @appointment.rebooking_url %> rebook another.
+<% else %>
+How to cancel or change your appointment
+
+To change or cancel your Pension Safeguarding Guidance appointment, call 0800 015 4906.
+
+We’re open between 9am and 5pm, Monday to Friday. Closed on bank holidays.
 <% end %>
