@@ -3,6 +3,10 @@ require 'rails_helper'
 RSpec.describe SummaryDocumentLink do
   subject { described_class.query(build(:appointment, :with_address)) }
 
+  it 'includes the Welsh language flag' do
+    expect(subject).to include('%5Bwelsh%5D=false')
+  end
+
   it 'includes the telephone appointment flag' do
     expect(subject).to include('%5Btelephone_appointment%5D=true')
   end

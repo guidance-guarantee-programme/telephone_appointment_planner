@@ -26,7 +26,8 @@ class SummaryDocumentLink
         country: 'United Kingdom',
         telephone_appointment: true,
         schedule_type: appointment.schedule_type,
-        unique_reference_number: appointment.unique_reference_number
+        unique_reference_number: appointment.unique_reference_number,
+        welsh: appointment.welsh?
       }.to_query(:appointment_summary)
     end
   end
