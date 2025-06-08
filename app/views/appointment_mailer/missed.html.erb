@@ -1,49 +1,39 @@
 <h1 style="color: #0F19A0 !important;font-family: Calibri, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 20px;line-height: 1.111111111;padding: 15px 0;">
-  Missed appointment
+  Would you still like a <%= @appointment.type %> appointment?
 </h1>
+
+<%= p do %>
+  <strong>Reference number:</strong> <%= @appointment.id %>
+<% end %>
 
 <%= p do %>
   Dear <%= @appointment.first_name %>,
 <% end %>
 
 <%= p do %>
-  Our records show that you missed your <%= @appointment.type %> appointment which was scheduled for:
+  We were unable to contact you for your <%= @appointment.type %> appointment on <%= @appointment.start_at.to_date.to_fs(:govuk_date) %> at <%= "#{@appointment.start_at.to_time.to_fs(:govuk_time)} (#{@appointment.timezone})" %>.
 <% end %>
 
-<%= p do %>
-  Date:
-  <br>
-  <strong class="emphasize">
-    <%= @appointment.start_at.to_date.to_formatted_s(:govuk_date) %>
-  </strong>
-<% end %>
+<% if @appointment.pension_wise? %>
+  <%= p do %>
+    You can <a href="https://www.moneyhelper.org.uk/en/pensions-and-retirement/pension-wise/book-a-free-pension-wise-appointment/book-a-phone-appointment">book a new appointment online</a> or call 0800 138 3944 (+44 20 3733 3495 if you’re outside the UK).
+  <% end %>
 
-<%= p do %>
-  Time:
-  <br>
-  <strong class="emphasize">
-    <%= "#{@appointment.start_at.to_time.to_formatted_s(:govuk_time)} (#{@appointment.timezone})" %>
-  </strong>
-<% end %>
+  <%= p do %>
+    We’re open between 9am and 5pm, Monday to Friday. Closed on bank holidays.
+  <% end %>
 
-<%= p do %>
-  Your phone number:
-  <br>
-  <strong class="emphasize">
-    <%= @appointment.phone %>
-  </strong>
-<% end %>
+  <%= p do %>
+    You can also have an <a href="https://prd-pwtriage.moneyhelper.org.uk/en/pension-wise-triage/start">online Pension Wise appointment</a> at any time.
+  <% end %>
+<% else %>
+  <%= p do %>
+    To book a new appointment, call 0800 015 4906.
+  <% end %>
 
-<%= p do %>
-  Reference number:
-  <br>
-  <strong class="emphasize">
-    <%= @appointment.id %>
-  </strong>
-<% end %>
-
-<%= p do %>
-  To book another appointment, please call <strong><%= @appointment.telephone %></strong>. Please don’t reply to this email.
+  <%= p do %>
+    We’re open between 9am and 5pm, Monday to Friday. Closed on bank holidays.
+  <% end %>
 <% end %>
 
 <%= render 'shared/email/money_helper' %>

@@ -1,13 +1,17 @@
 <h1 style="color: #0F19A0 !important;font-family: Calibri, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 20px;line-height: 1.111111111;padding: 15px 0;">
-  Appointment reminder
+  <%= @appointment.type %> Appointment reminder
 </h1>
+
+<%= p do %>
+  <strong>Reference number:</strong> <%= @appointment.id %>
+<% end %>
 
 <%= p do %>
   Dear <%= @appointment.first_name %>,
 <% end %>
 
 <%= p do %>
-  This is a reminder that you have a <%= @appointment.type %> appointment booked for:
+  This is a reminder that your <%= @appointment.type %> appointment is booked for <%= @appointment.start_at.to_date.to_fs(:govuk_date) %> at <%= "#{@appointment.start_at.to_time.to_fs(:govuk_time)} (#{@appointment.timezone})" %>.
 <% end %>
 
 <%= render 'shared/email/appointment_details' %>

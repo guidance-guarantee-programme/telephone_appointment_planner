@@ -1,8 +1,10 @@
-We've booked your appointment
+Your <%= @appointment.type %> appointment is confirmed
+
+Reference number: <%= @appointment.id %>
 
 Dear <%= @appointment.first_name %>,
 
-Thank you for booking a <%= @appointment.type %> appointment.
+Your <%= @appointment.type %> appointment is booked for <%= @appointment.start_at.to_date.to_fs(:govuk_date) %> at <%= "#{@appointment.start_at.to_time.to_fs(:govuk_time)} (#{@appointment.timezone})" %>.
 
 <%= render 'shared/email/appointment_details' %>
 <%= render 'shared/email/preparing_for_appointment' %>
