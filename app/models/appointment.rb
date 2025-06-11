@@ -572,8 +572,8 @@ class Appointment < ApplicationRecord
   end
 
   def format_name
-    self.first_name = first_name.titleize if first_name != 'redacted'
-    self.last_name  = CapitalizeNames.capitalize(last_name) if last_name
+    self.first_name = first_name.titleize.strip if first_name != 'redacted'
+    self.last_name  = CapitalizeNames.capitalize(last_name).strip if last_name
   end
 
   def after_audit

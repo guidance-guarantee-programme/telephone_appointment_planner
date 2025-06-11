@@ -512,8 +512,8 @@ RSpec.describe Appointment, type: :model do
   end
 
   describe 'formatting' do
-    it 'title-cases first and last name' do
-      appointment = build(:appointment, first_name: 'bob', last_name: 'mcDonald')
+    it 'title-cases and strips leading/trailing whitespace from first and last name' do
+      appointment = build(:appointment, first_name: ' bob ', last_name: 'mcDonald ')
       appointment.validate
 
       expect(appointment).to have_attributes(
