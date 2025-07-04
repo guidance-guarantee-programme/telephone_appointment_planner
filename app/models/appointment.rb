@@ -12,11 +12,24 @@ class Appointment < ApplicationRecord
 
   DEFAULT_COUNTRY_CODE = 'GB'.freeze
 
+  ONLINE_RESCHEDULING_REASONS = {
+    '1' => 'Inconvenient time',
+    '2' => 'Wait time until appointment',
+    '3' => 'Changed mind',
+    '4' => 'Not prepared enough',
+    '5' => 'Illness',
+    '6' => 'Travelling'
+  }.freeze
+
   RESCHEDULING_REASONS = [
     CLIENT_RESCHEDULED = 'client_rescheduled'.freeze,
     OFFICE_RESCHEDULED = 'office_rescheduled'.freeze
   ].freeze
-  RESCHEDULING_ROUTES = %w[phone email_or_crm].freeze
+  RESCHEDULING_ROUTES = [
+    RESCHEDULED_PHONE = 'phone'.freeze,
+    RESCHEDULED_EMAIL_OR_CRM = 'email_or_crm'.freeze,
+    RESCHEDULED_ONLINE = 'online'.freeze
+  ].freeze
 
   ATTENDED_DIGITAL_OPTIONS = %w[yes no not-sure].freeze
 
@@ -136,6 +149,7 @@ class Appointment < ApplicationRecord
   belongs_to :agent, class_name: 'User'
 
   belongs_to :guider, class_name: 'User'
+  belongs_to :previous_guider, class_name: 'User', optional: true
 
   belongs_to :rebooked_from, class_name: 'Appointment', optional: true
 
@@ -214,6 +228,12 @@ class Appointment < ApplicationRecord
 
   def resend_print_confirmation
     PrintedConfirmationJob.perform_later(self)
+  end
+
+  def guider_organisation_differs?
+    return unless guider && previous_guider
+
+    guider.organisation_content_id != previous_guider.organisation_content_id
   end
 
   def internal_availability?
@@ -542,8 +562,38 @@ class Appointment < ApplicationRecord
       .first
   end
 
+  def self.for_online_rescheduling(id, date_of_birth)
+    pending
+      .where(schedule_type: User::PENSION_WISE_SCHEDULE_TYPE)
+      .where('? < start_at', Time.zone.now)
+      .where(date_of_birth:)
+      .find_by(id:)
+  end
+
   def push_to_casebook?
     pending? && casebook_pushable_guider? && !casebook_appointment_id? && !processed_at?
+  end
+
+  def online_reschedule(start_at:, reason:) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+    self.start_at = start_at
+    self.online_rescheduling_reason = reason
+    self.rescheduled_at = Time.zone.now
+    self.previous_guider = guider.dup
+    self.rescheduling_reason = CLIENT_RESCHEDULED
+    self.rescheduling_route = RESCHEDULED_ONLINE
+
+    return unless (slot = BookableSlot.find_available_slot(start_at, nil))
+
+    self.guider = slot.guider
+    self.end_at = slot.end_at
+
+    result = nil
+    transaction do
+      result = save
+      CustomerOnlineReschedulingActivity.from(self) if result
+    end
+
+    result
   end
 
   private
@@ -641,6 +691,7 @@ class Appointment < ApplicationRecord
 
   def validate_guider_organisation
     return unless guider_id_changed? && guider
+    return if online_rescheduling_reason?
     return if User.guider_organisation_match?(guider, guider_id_was)
 
     errors.add(:guider, 'The guider is from another provider')
@@ -791,7 +842,7 @@ class Appointment < ApplicationRecord
   end
 
   def client_rescheduled?
-    rescheduling_reason == 'client_rescheduled'
+    rescheduling_reason == CLIENT_RESCHEDULED
   end
 
   def validate_welsh_language

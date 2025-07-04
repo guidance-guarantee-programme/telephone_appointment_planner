@@ -1,0 +1,6 @@
+<% content_for(:activity_message, flush: true) do %>
+  <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+  <strong>The customer</strong>
+  rescheduled their appointment online
+<% end %>
+<%= render 'activities/activity', activity: customer_online_rescheduling_activity, details: details, hide: hide %>
