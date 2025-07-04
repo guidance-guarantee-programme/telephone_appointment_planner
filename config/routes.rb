@@ -11,7 +11,9 @@ Rails.application.routes.draw do
       resources :searches, only: :index
       resources :bookable_slots, only: :index
 
-      resources :appointments, only: :create do
+      resources :appointments, only: %i[create show] do
+        resource :reschedule, only: :create
+
         resource :cancel, only: :create
 
         resources :dropped_summary_documents, only: :create

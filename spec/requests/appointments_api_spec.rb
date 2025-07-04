@@ -14,6 +14,24 @@ RSpec.describe 'POST /api/v1/appointments' do
     end
   end
 
+  context 'retrieving an appointment for online rescheduling' do
+    scenario 'when the appointment is unmatched' do
+      given_the_user_is_a_pension_wise_api_user do
+        when_the_client_requests_an_unmatched_appointment
+        then_the_api_response_not_found
+      end
+    end
+
+    scenario 'when the appointment is matched' do
+      given_the_user_is_a_pension_wise_api_user do
+        and_a_reschedulable_appointment_exists
+        when_the_client_requests_the_matched_appointment
+        then_the_api_responds_ok
+        and_the_response_contains_the_appointment_details
+      end
+    end
+  end
+
   context 'due diligence appointments' do
     scenario 'supplying an incorrect schedule type' do
       given_the_user_is_a_pension_wise_api_user do
@@ -84,6 +102,34 @@ RSpec.describe 'POST /api/v1/appointments' do
         and_the_appointment_is_correctly_allocated_to_cita
       end
     end
+  end
+
+  def and_a_reschedulable_appointment_exists
+    @appointment = create(:appointment)
+  end
+
+  def when_the_client_requests_the_matched_appointment
+    get api_v1_appointment_path(@appointment), params: {
+      id: @appointment.id, date_of_birth: @appointment.date_of_birth
+    }, as: :json
+  end
+
+  def then_the_api_responds_ok
+    expect(response).to be_ok
+  end
+
+  def and_the_response_contains_the_appointment_details
+    JSON.parse(response.body).tap do |json|
+      expect(json['start']).to be_present
+    end
+  end
+
+  def when_the_client_requests_an_unmatched_appointment
+    get '/api/v1/appointments/123.json', params: { id: 123, date_of_birth: '1980-01-01' }
+  end
+
+  def then_the_api_response_not_found
+    expect(response).to be_not_found
   end
 
   def and_an_unbookable_tpas_slot_exists

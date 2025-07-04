@@ -18,6 +18,14 @@ module Api
         end
       end
 
+      def show
+        @appointment = ::Appointment.for_online_rescheduling(*show_params.values)
+
+        return head :not_found unless @appointment
+
+        render json: @appointment
+      end
+
       private
 
       def send_notifications(appointment)
@@ -27,6 +35,10 @@ module Api
         CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::CONFIRMED_MESSAGE)
         AppointmentCreatedNotificationsJob.perform_later(appointment)
         PushCasebookAppointmentJob.perform_later(appointment)
+      end
+
+      def show_params
+        params.permit(:id, :date_of_birth)
       end
 
       def appointment_params # rubocop:disable Metrics/MethodLength

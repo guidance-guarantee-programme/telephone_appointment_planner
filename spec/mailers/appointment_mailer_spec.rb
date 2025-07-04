@@ -228,6 +228,32 @@ RSpec.describe AppointmentMailer, type: :mailer do
     end
   end
 
+  describe 'Resource Manager Appointment Rescheduled Away' do
+    subject(:mail) { described_class.resource_manager_appointment_rescheduled_away(appointment, resource_manager) }
+
+    let(:mailgun_headers) { JSON.parse(mail['X-Mailgun-Variables'].value) }
+    let(:resource_manager) { 'supervisors@maps.org.uk' }
+
+    before { appointment.previous_guider = create(:guider, :waltham_forest) }
+
+    it 'renders the headers' do
+      expect(mail.subject).to eq('Pension Wise Appointment Rescheduled Away')
+      expect(mail.to).to eq(['supervisors@maps.org.uk'])
+      expect(mail.from).to eq(['booking.pensionwise@moneyhelper.org.uk'])
+    end
+
+    it 'renders the mailgun specific headers' do
+      expect(mailgun_headers).to include(
+        'message_type'   => 'resource_manager_appointment_rescheduled_away',
+        'appointment_id' => appointment.id
+      )
+    end
+
+    it 'renders the body specifics' do
+      expect(subject.body.encoded).to include(appointment.previous_guider.name)
+    end
+  end
+
   describe 'Resource Manager Appointment Cancelled' do
     subject(:mail) { described_class.resource_manager_appointment_cancelled(appointment, resource_manager) }
 

@@ -46,6 +46,16 @@ class AuditPresenter < SimpleDelegator
     Appointment.secondary_status(value)
   end
 
+  def format_previous_guider_id(value)
+    previous_guider = User.find(value)
+
+    "#{previous_guider.name} (#{previous_guider.organisation})"
+  end
+
+  def format_online_rescheduling_reason(value)
+    Appointment::ONLINE_RESCHEDULING_REASONS[value]
+  end
+
   def self.wrap(objects)
     objects.map { |o| new(o) }
   end
