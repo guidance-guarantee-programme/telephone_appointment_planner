@@ -29,6 +29,7 @@ Rails.application.routes.draw do
     resources :drops, only: :create
   end
 
+  resources :online_reschedulings, only: :index
   resources :sms_cancellations, only: :create
   resources :guiders, only: :index
   resources :users do

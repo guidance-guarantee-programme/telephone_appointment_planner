@@ -16,18 +16,20 @@ RSpec.describe 'POST /api/v1/appointments/{id}/reschedule' do # rubocop:disable 
 
   scenario 'Successfully rescheduling the appointment' do
     given_the_user_is_a_pension_wise_api_user do
-      and_a_pending_appointment_exists
-      when_the_client_posts_a_valid_reschedule_request
-      then_the_service_responds_with_a_200
-      and_the_appointment_is_rescheduled
-      and_the_rescheduling_reason_is_recorded
-      and_a_customer_online_rescheduling_activity_is_created
-      and_the_guider_is_notified
-      and_the_previous_resource_managers_are_notified
-      and_the_new_resource_managers_are_notified
-      and_the_customer_receives_an_updated_email
-      and_the_customer_receives_an_updated_sms
-      and_a_casebook_rescheduling_is_enqueued
+      travel_to '2025-07-08 13:00' do
+        and_a_pending_appointment_exists
+        when_the_client_posts_a_valid_reschedule_request
+        then_the_service_responds_with_a_200
+        and_the_appointment_is_rescheduled
+        and_the_rescheduling_reason_is_recorded
+        and_a_customer_online_rescheduling_activity_is_created
+        and_the_guider_is_notified
+        and_the_previous_resource_managers_are_notified
+        and_the_new_resource_managers_are_notified
+        and_the_customer_receives_an_updated_email
+        and_the_customer_receives_an_updated_sms
+        and_a_casebook_rescheduling_is_enqueued
+      end
     end
   end
 
