@@ -588,7 +588,7 @@ class Appointment < ApplicationRecord
   end
 
   def valid_within_booking_window
-    return unless start_at && start_at_changed?
+    return unless start_at && start_at_changed? && ad_hoc_start_at.blank?
 
     too_late = start_at > BookableSlot.end_of_window_for(schedule_type)
     errors.add(:start_at, 'must not exceed the booking window') if too_late
