@@ -16,6 +16,7 @@
       <div class="form-group">
         <%= form.text_field(
             :ad_hoc_start_at,
+            autocomplete: false,
             class: 't-ad-hoc-start-at', 
             data: { module: 'date-time-picker' }
           )
