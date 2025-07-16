@@ -1,0 +1,19 @@
+<h1 style="color: #0F19A0 !important;font-family: Calibri, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 20px;line-height: 1.111111111;padding: 15px 0;">
+  An appointment was rescheduled to a different organisation
+</h1>
+
+<%= p do %>
+  Reference number:
+  <br>
+  <strong class="emphasize">
+    <%= @appointment.id %>
+  </strong>
+<% end %>
+
+<%= p do %>
+  Previous guider:
+  <br>
+  <strong class="emphasize">
+    <%= @appointment.previous_guider.name %>
+  </strong>
+<% end %>
