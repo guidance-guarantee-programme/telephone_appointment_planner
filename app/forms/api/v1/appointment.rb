@@ -52,7 +52,7 @@ module Api
           notes:,
           pension_provider: 'n/a',
           agent:,
-          smarter_signposted:,
+          smarter_signposted: false,
           lloyds_signposted: lloyds_signposted || false,
           schedule_type:,
           referrer: referrer.to_s,

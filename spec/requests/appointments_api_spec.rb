@@ -34,17 +34,6 @@ RSpec.describe 'POST /api/v1/appointments' do
     end
   end
 
-  scenario 'creating a smarter-signposted appointment' do
-    travel_to '2017-01-10 12:00' do
-      given_the_user_is_a_pension_wise_api_user do
-        and_a_bookable_slot_exists_for_the_given_appointment_date
-        when_the_client_posts_a_smarter_signposted_appointment_request
-        then_the_service_responds_with_a_201
-        and_the_appointment_is_created_as_a_smarter_signposted_appointment
-      end
-    end
-  end
-
   scenario 'creating a nudged appointment' do
     travel_to '2017-01-10 12:00' do
       given_the_user_is_a_pension_wise_api_user do
@@ -121,7 +110,6 @@ RSpec.describe 'POST /api/v1/appointments' do
       'accessibility_requirements' => false,
       'adjustments'                => '',
       'notes'                      => '',
-      'smarter_signposted'         => false,
       'lloyds_signposted'          => false,
       'referrer'                   => 'MMM',
       'rebooked_from_id'           => '1234567'
@@ -153,7 +141,6 @@ RSpec.describe 'POST /api/v1/appointments' do
       'accessibility_requirements' => false,
       'adjustments'                => '',
       'notes'                      => '',
-      'smarter_signposted'         => false,
       'lloyds_signposted'          => false,
       'schedule_type'              => 'due_diligence',
       'referrer'                   => 'MMM'
@@ -271,27 +258,6 @@ RSpec.describe 'POST /api/v1/appointments' do
     post api_v1_appointments_path, params: @payload, as: :json
   end
 
-  def when_the_client_posts_a_smarter_signposted_appointment_request
-    @payload = {
-      'start_at'         => '2017-01-13T12:10:00.000Z',
-      'first_name'       => 'Rick',
-      'last_name'        => 'Sanchez',
-      'email'            => 'rick@example.com',
-      'phone'            => '02082524729',
-      'memorable_word'   => 'snootboop',
-      'date_of_birth'    => '1950-02-02',
-      'dc_pot_confirmed' => true,
-      'where_you_heard'  => '1',
-      'gdpr_consent'     => 'yes',
-      'accessibility_requirements' => true,
-      'adjustments' => 'I am hard of hearing',
-      'smarter_signposted' => true,
-      'lloyds_signposted' => false
-    }
-
-    post api_v1_appointments_path, params: @payload, as: :json
-  end
-
   def when_the_client_posts_a_nudged_appointment_request
     @payload = {
       'start_at'         => '2017-01-13T12:10:00.000Z',
@@ -306,7 +272,6 @@ RSpec.describe 'POST /api/v1/appointments' do
       'gdpr_consent'     => 'yes',
       'accessibility_requirements' => true,
       'adjustments' => 'I am hard of hearing',
-      'smarter_signposted' => false,
       'lloyds_signposted' => false,
       'nudged' => true
     }
@@ -319,10 +284,6 @@ RSpec.describe 'POST /api/v1/appointments' do
       nudged: true,
       attended_digital: nil
     )
-  end
-
-  def and_the_appointment_is_created_as_a_smarter_signposted_appointment
-    expect(Appointment.last).to be_smarter_signposted
   end
 
   def and_the_location_header_describes_the_booking_reference

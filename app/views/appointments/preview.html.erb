@@ -43,7 +43,6 @@
   <%= f.hidden_field :town %>
   <%= f.hidden_field :county %>
   <%= f.hidden_field :postcode %>
-  <%= f.hidden_field :smarter_signposted %>
   <%= f.hidden_field :lloyds_signposted %>
   <%= f.hidden_field :bsl_video %>
   <%= f.hidden_field :schedule_type %>
@@ -205,12 +204,6 @@
               <tr>
                 <td class="active"><b>Stronger Nudge appointment?</b></td>
                 <td><%= @appointment.nudged? ? 'Yes' : 'No' %></td>
-              </tr>
-              <% end %>
-              <% if current_user.tpas? || current_user.administrator? %>
-              <tr>
-                <td class="active"><b>Smarter signposted referral?</b></td>
-                <td><%= @appointment.smarter_signposted? ? 'Yes' : 'No' %></td>
               </tr>
               <% end %>
               <% if current_user.lloyds_signposter? %>

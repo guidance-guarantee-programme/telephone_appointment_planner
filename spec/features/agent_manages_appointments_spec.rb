@@ -213,21 +213,6 @@ RSpec.feature 'Agent manages appointments' do
     end
   end
 
-  scenario 'TPAS individual creates a smarter signposted appointment' do
-    given_the_user_is_an_agent(organisation: :tpas) do
-      and_there_is_a_guider_with_available_slots
-      when_they_want_to_book_an_appointment
-      and_they_fill_in_their_appointment_details(
-        smarter_signposted: true,
-        bsl_video: true,
-        attended_digital: true
-      )
-      then_they_see_a_preview_of_the_appointment(smarter_signposted: true, attended_digital: true)
-      when_they_accept_the_appointment_preview
-      then_that_appointment_is_created(smarter_signposted: true, attended_digital: true)
-    end
-  end
-
   scenario 'Agent creates appointments' do
     given_the_user_is_an_agent do
       and_there_is_a_guider_with_available_slots
@@ -538,7 +523,6 @@ RSpec.feature 'Agent manages appointments' do
     @page.address_line_one.set(options[:address_line_one]) if options[:address_line_one]
     @page.town.set(options[:town]) if options[:town]
     @page.postcode.set(options[:postcode]) if options[:postcode]
-    @page.smarter_signposted.set(options[:smarter_signposted]) if options[:smarter_signposted]
     @page.stronger_nudged.set(options[:stronger_nudge]) if options[:stronger_nudge]
     @page.attended_digital_yes.set(true) if options[:attended_digital]
 
@@ -572,7 +556,6 @@ RSpec.feature 'Agent manages appointments' do
     expect(@page.preview).to have_content 'The given adjustments'
     expect(@page.preview).to have_content 'Customer research consent Yes'
     expect(@page.preview).to have_content 'Standard'
-    expect(@page.preview).to have_content 'Smarter signposted referral? Yes' if options[:smarter_signposted]
     expect(@page.preview).to have_content 'Stronger Nudge appointment? Yes' if options[:stronger_nudge]
     expect(@page.preview).to have_content 'Welsh language appointment? Yes' if options[:welsh]
     expect(@page.preview).to have_content 'online Pension Wise appointment? Yes' if options[:attended_digital]
@@ -609,7 +592,6 @@ RSpec.feature 'Agent manages appointments' do
     expect(appointment.type_of_appointment).to eq('standard')
     expect(appointment.where_you_heard).to eq(17)
     expect(appointment).to be_accessibility_requirements
-    expect(appointment).to be_smarter_signposted if options[:smarter_signposted]
     expect(appointment).to_not be_bsl_video
     expect(appointment).to be_nudged if options[:stronger_nudge]
     expect(appointment).to be_welsh if options[:welsh]
