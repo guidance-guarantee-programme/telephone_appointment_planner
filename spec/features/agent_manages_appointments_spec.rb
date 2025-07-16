@@ -102,17 +102,6 @@ RSpec.feature 'Agent manages appointments' do
     end
   end
 
-  scenario 'TPAS user booking a Pension Wise small pots appointment' do
-    given_the_user_is_a_resource_manager(organisation: :tpas) do
-      and_there_is_a_guider_with_available_slots
-      when_they_attempt_to_book_an_appointment
-      and_they_complete_the_small_pots_booking
-      then_they_see_a_preview_of_the_appointment(small_pots: true)
-      when_they_accept_the_appointment_preview
-      then_the_appointment_is_small_pots
-    end
-  end
-
   def when_they_try_to_book_an_appointment
     @page = Pages::NewAppointment.new.tap(&:load)
     expect(@page).to be_displayed
@@ -167,20 +156,8 @@ RSpec.feature 'Agent manages appointments' do
     expect(@page.due_diligence_grace_period).to have_text('23 December 2021')
   end
 
-  def and_they_complete_the_small_pots_booking
-    fill_in_appointment_details(small_pots: true)
-  end
-
-  def then_the_appointment_is_small_pots
-    then_that_appointment_is_created(small_pots: true)
-  end
-
   def and_slots_exist_for_due_diligence_availability
     create(:bookable_slot, :due_diligence, start_at: Time.zone.parse('2021-04-08 14:30'))
-  end
-
-  def and_they_do_not_see_small_pots
-    expect(@page).to have_no_small_pots
   end
 
   def then_they_see_only_general_availability
@@ -562,7 +539,6 @@ RSpec.feature 'Agent manages appointments' do
     @page.town.set(options[:town]) if options[:town]
     @page.postcode.set(options[:postcode]) if options[:postcode]
     @page.smarter_signposted.set(options[:smarter_signposted]) if options[:smarter_signposted]
-    @page.small_pots.set(options[:small_pots]) if options[:small_pots]
     @page.stronger_nudged.set(options[:stronger_nudge]) if options[:stronger_nudge]
     @page.attended_digital_yes.set(true) if options[:attended_digital]
 
@@ -597,7 +573,6 @@ RSpec.feature 'Agent manages appointments' do
     expect(@page.preview).to have_content 'Customer research consent Yes'
     expect(@page.preview).to have_content 'Standard'
     expect(@page.preview).to have_content 'Smarter signposted referral? Yes' if options[:smarter_signposted]
-    expect(@page.preview).to have_content 'Small pots appointment? Yes' if options[:small_pots]
     expect(@page.preview).to have_content 'Stronger Nudge appointment? Yes' if options[:stronger_nudge]
     expect(@page.preview).to have_content 'Welsh language appointment? Yes' if options[:welsh]
     expect(@page.preview).to have_content 'online Pension Wise appointment? Yes' if options[:attended_digital]
@@ -636,7 +611,6 @@ RSpec.feature 'Agent manages appointments' do
     expect(appointment).to be_accessibility_requirements
     expect(appointment).to be_smarter_signposted if options[:smarter_signposted]
     expect(appointment).to_not be_bsl_video
-    expect(appointment).to be_small_pots if options[:small_pots]
     expect(appointment).to be_nudged if options[:stronger_nudge]
     expect(appointment).to be_welsh if options[:welsh]
     expect(appointment).to be_attended_digital if options[:attended_digital]

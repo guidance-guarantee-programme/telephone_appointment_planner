@@ -127,10 +127,6 @@
      <%= f.check_box :bsl_video, class: 't-bsl-video', label: 'BSL video appointment?', disabled: bsl_video_disabled?(current_user) %>
     <% end %>
 
-    <% if current_user.tpas? && @appointment.pension_wise? %>
-      <%= f.check_box :small_pots, class: 't-small-pots', label: 'Small pots appointment?' %>
-    <% end %>
-
     <% if (current_user.tpas? || current_user.administrator?) && !@appointment.due_diligence? %>
       <%= f.check_box :smarter_signposted, class: 't-smarter-signposted', label: 'Smarter signposting referral?' %>
     <% end %>

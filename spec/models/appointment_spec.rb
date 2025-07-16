@@ -576,17 +576,6 @@ RSpec.describe Appointment, type: :model do
       end
     end
 
-    context 'when the appointment is small pots' do
-      subject { build_stubbed(:appointment, organisation: :cas) }
-
-      it 'cannot belong to a non-TPAS guider' do
-        subject.small_pots = true
-        subject.guider     = build(:guider, :cas)
-
-        expect(subject).to be_invalid
-      end
-    end
-
     context 'when the appointment is nudged' do
       it 'cannot be LBGPTL' do
         subject.nudged = true
