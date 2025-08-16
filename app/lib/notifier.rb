@@ -22,9 +22,16 @@ class Notifier
     notify_guiders
     notify_resource_managers
     notify_casebook
+    notify_calendar_alterations
   end
 
   private
+
+  def notify_calendar_alterations
+    return unless status_changed? || appointment_reallocated?
+
+    PusherAppointmentCalendarAlterationsJob.perform_later(appointment)
+  end
 
   def notify_casebook
     if appointment_cancelled?
@@ -94,8 +101,7 @@ class Notifier
   end
 
   def appointment_complete?
-    appointment.previous_changes.slice('status').present? &&
-      appointment.complete?
+    status_changed? && appointment.complete?
   end
 
   def requires_agent_changed_notification?
@@ -113,13 +119,11 @@ class Notifier
   end
 
   def appointment_cancelled?
-    appointment.previous_changes.slice('status').present? &&
-      appointment.cancelled?
+    status_changed? && appointment.cancelled?
   end
 
   def appointment_missed?
-    appointment.previous_changes.slice('status').present? &&
-      appointment.no_show?
+    status_changed? && appointment.no_show?
   end
 
   def appointment_reallocated?
@@ -128,6 +132,10 @@ class Notifier
 
   def appointment_rescheduled?
     appointment.previous_changes.slice('start_at').present?
+  end
+
+  def status_changed?
+    appointment.previous_changes.slice('status').present?
   end
 
   attr_reader :appointment, :modifying_agent
