@@ -69,6 +69,10 @@ module AppointmentHelper
     content_tag(:span, '', class: 'glyphicon glyphicon-ok t-processed text-muted', title: 'Processed')
   end
 
+  def processed_label(appointment)
+    appointment.processed_at? ? 'Yes' : 'No'
+  end
+
   def display_with_newline(value)
     safe_join([value, tag.br]) if value.present?
   end
