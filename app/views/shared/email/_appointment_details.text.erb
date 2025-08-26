@@ -13,19 +13,17 @@ You’ll need to rebook if:
   * you’re driving – even if you use a hands-free device.
 
 <% if @appointment.pension_wise? %>
-How to cancel your appointment
+How to change or cancel your appointment
 
-You can <%= @appointment.online_cancellation_url %> cancel your Pension Wise appointment online.
+You can:
 
-If you received a confirmation text message, you can also reply by text to cancel.
+  * change the date and time of your appointment online: <%= @appointment.online_rescheduling_url %>
+  * cancel your Pension Wise appointment online: <%= @appointment.online_cancellation_url %>
+  * reply to this email.
 
-How to change your appointment
-
-To change your Pension Wise appointment or any information you’ve given us, call <%= @appointment.telephone %> (+44 20 3733 3495 if you’re outside the UK).
+To change any other information you’ve given us, call 0800 138 3944 (+44 20 3733 3495 if you’re outside the UK).
 
 We’re open between 9am and 5pm, Monday to Friday. Closed on bank holidays.
-
-You can also cancel your appointment and <%= @appointment.rebooking_url %> rebook another.
 <% else %>
 How to cancel or change your appointment
 

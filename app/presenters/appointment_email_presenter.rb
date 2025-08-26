@@ -3,6 +3,10 @@ class AppointmentEmailPresenter < SimpleDelegator
     ENV['ONLINE_CANCELLATION_URL']
   end
 
+  def online_rescheduling_url
+    ENV['ONLINE_RESCHEDULING_URL']
+  end
+
   def rebooking_url
     'https://www.moneyhelper.org.uk/en/pensions-and-retirement/pension-wise/book-a-free-pension-wise-appointment'
   end

@@ -27,31 +27,25 @@
 
 <% if @appointment.pension_wise? %>
   <h2 style="color: #0F19A0 !important;font-family: Calibri, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 18px;line-height: 1.111111111;padding: 15px 0;">
-    How to cancel your appointment
+    How to change or cancel your appointment
   </h2>
 
   <%= p do %>
-    You can <a href="<%= @appointment.online_cancellation_url %>">cancel your Pension Wise appointment online</a>.
+    You can:
   <% end %>
 
-  <%= p do %>
-    If you received a confirmation text message, you can also reply by text to cancel.
-  <% end %>
-
-  <h2 style="color: #0F19A0 !important;font-family: Calibri, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 18px;line-height: 1.111111111;padding: 15px 0;">
-    How to change your appointment
-  </h2>
+  <ul style="color: #0B0C0C;font-family: Calibri, Arial, sans-serif;margin-top: 15px;margin-bottom: 15px;font-size: 16px;line-height: 1.315789474;">
+    <li><a href="<%= @appointment.online_rescheduling_url %>">change the date and time of your appointment online</a></li>
+    <li><a href="<%= @appointment.online_cancellation_url %>">cancel your Pension Wise appointment online</a></li>
+    <li>reply to this email.</li>
+  </ul>
 
   <%= p do %>
-    To change your Pension Wise appointment or any information you’ve given us, call <%= @appointment.telephone %> (+44 20 3733 3495 if you’re outside the UK).
+    To change any other information you’ve given us, call 0800 138 3944 (+44 20 3733 3495 if you’re outside the UK).
   <% end %>
 
   <%= p do %>
     We’re open between 9am and 5pm, Monday to Friday. Closed on bank holidays.
-  <% end %>
-
-  <%= p do %>
-    You can also cancel your appointment and <a href="<%= @appointment.rebooking_url %>">rebook another</a>.
   <% end %>
 <% else %>
   <h2 style="color: #0F19A0 !important;font-family: Calibri, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 18px;line-height: 1.111111111;padding: 15px 0;">
