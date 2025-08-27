@@ -130,6 +130,7 @@ class AppointmentsController < ApplicationController
     AdjustmentNotificationsJob.perform_later(appointment) if appointment.adjustments?
     AppointmentMailer.potential_duplicates(appointment).deliver_later if appointment.potential_duplicates?
     PushCasebookAppointmentJob.perform_later(appointment)
+    PushGenesysAppointmentJob.perform_later(appointment)
     CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::CONFIRMED_MESSAGE)
     PrintedConfirmationJob.perform_later(appointment)
     AppointmentCreatedNotificationsJob.perform_later(appointment)
