@@ -291,6 +291,27 @@ RSpec.describe Appointment, type: :model do
     end
   end
 
+  describe '#push_to_genesys?' do
+    context 'when pushable' do
+      context 'when pending' do
+        it 'returns truthily' do
+          appointment = build_stubbed(:appointment, :genesys_guider)
+          expect(appointment).to be_push_to_genesys
+
+          appointment = build_stubbed(:appointment)
+          expect(appointment).to_not be_push_to_genesys
+        end
+      end
+
+      context 'when cancelled' do
+        it 'returns truthily' do
+          appointment = build_stubbed(:appointment, :genesys_guider, status: :cancelled_by_pension_wise)
+          expect(appointment).to be_push_to_genesys
+        end
+      end
+    end
+  end
+
   describe '#cancel!' do
     let(:appointment) { create(:appointment) }
 

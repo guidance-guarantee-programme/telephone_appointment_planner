@@ -113,6 +113,17 @@ FactoryBot.define do
       end
     end
 
+    trait :genesys_guider do
+      guider do
+        create(
+          :guider,
+          organisation,
+          genesys_agent_id: '1234',
+          genesys_management_unit_id: '4321'
+        )
+      end
+    end
+
     trait :casebook_guider do
       # a randomly selected, valid production casebook guider ID
       guider do
