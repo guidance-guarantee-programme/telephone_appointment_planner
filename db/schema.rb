@@ -132,8 +132,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_11_102011) do
     t.datetime "updated_at", precision: nil, null: false
     t.boolean "welsh", default: false, null: false
     t.integer "where_you_heard", default: 0, null: false
+    t.string "genesys_operation_id"
+    t.string "genesys_rescheduling_operation_id"
     t.index "guider_id, tsrange(start_at, end_at)", name: "index_appointments_guider_id_tsrange_start_at_end_at", using: :gist
     t.index "tsrange(start_at, end_at)", name: "index_appointments_tsrange_start_at_end_at", using: :gist
+    t.index ["genesys_operation_id"], name: "index_appointments_on_genesys_operation_id"
+    t.index ["genesys_rescheduling_operation_id"], name: "index_appointments_on_genesys_rescheduling_operation_id"
     t.index ["guider_id", "start_at"], name: "index_appointments_guider_start_schedule_status", where: "(((schedule_type)::text = 'pension_wise'::text) AND (status <> ALL ('{6,7,8,9}'::integer[])))"
     t.index ["guider_id", "start_at"], name: "unique_slot_guider_in_appointment", unique: true, where: "((status <> ALL (ARRAY[5, 6, 7, 8, 9])) AND (start_at > '2024-01-01 00:00:00'::timestamp without time zone))"
     t.index ["guider_id"], name: "index_appointments_guider_schedule_status", where: "(((schedule_type)::text = 'pension_wise'::text) AND (status <> ALL ('{6,7,8,9}'::integer[])))"

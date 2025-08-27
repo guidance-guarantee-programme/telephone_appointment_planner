@@ -179,6 +179,12 @@ RSpec.describe Notifier, '#call' do
         end
       end
     end
+
+    it 'enqueues a genesys rescheduling job' do
+      expect(RescheduleGenesysAppointmentJob).to receive(:perform_later).with(appointment)
+
+      subject.call
+    end
   end
 
   context 'when the appointment is without an associated email' do
@@ -240,6 +246,12 @@ RSpec.describe Notifier, '#call' do
 
     it 'alerts the resource managers' do
       expect(AppointmentCancelledNotificationsJob).to receive(:perform_later).with(appointment)
+
+      subject.call
+    end
+
+    it 'enqueues a genesys cancellation job' do
+      expect(CancelGenesysAppointmentJob).to receive(:perform_later).with(appointment)
 
       subject.call
     end

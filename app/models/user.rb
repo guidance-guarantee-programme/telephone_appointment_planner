@@ -46,6 +46,10 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
     end
   end
 
+  def genesys_pushable?
+    genesys_agent_id? && genesys_management_unit_id?
+  end
+
   def resource_managers
     colleagues
       .where('permissions @> ?', %(["#{RESOURCE_MANAGER_PERMISSION}"]))
