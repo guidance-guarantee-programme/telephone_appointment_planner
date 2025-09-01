@@ -12,7 +12,7 @@
   <% end %>
 
   <%= p do %>
-    Your appointment will usually last around 60 minutes. <% if @appointment.pension_wise? %>If you’ve asked for an access adjustment, we might contact you beforehand to ask for more details.<% end %>
+    Your appointment will usually last around 60 minutes. <% if @appointment.extended_duration? %>As you’re rescheduling an appointment that lasts over one hour, we need to confirm we have pension specialists available. We’ll be in touch if we need to adjust the start time.<% end %>
   <% end %>
 <% end %>
 

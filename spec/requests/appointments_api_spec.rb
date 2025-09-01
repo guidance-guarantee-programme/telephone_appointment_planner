@@ -121,6 +121,7 @@ RSpec.describe 'POST /api/v1/appointments' do
   def and_the_response_contains_the_appointment_details
     JSON.parse(response.body).tap do |json|
       expect(json['start']).to be_present
+      expect(json['extendedDuration']).to be_falsey
     end
   end
 

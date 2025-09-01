@@ -105,7 +105,7 @@ RSpec.describe Notifier, '#call' do
       let(:modifying_agent) { create(:resource_manager, :tpas) }
 
       it 'enqueues the adjustment notifications job' do
-        appointment.update_attribute(:accessibility_requirements, true)
+        appointment.update_attribute(:extended_duration, true)
 
         expect(AdjustmentNotificationsJob).to receive(:perform_later).with(appointment)
 

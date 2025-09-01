@@ -80,6 +80,7 @@ class Appointment < ApplicationRecord
     cancelled_via
     attended_digital
     adjustments
+    extended_duration
   ].freeze
 
   enum :status, { pending: 0, complete: 1, no_show: 2, incomplete: 3, ineligible_age: 4,
@@ -292,7 +293,7 @@ class Appointment < ApplicationRecord
   end
 
   def adjustments?
-    return true if accessibility_requirements? || third_party_booking?
+    return true if accessibility_requirements? || third_party_booking? || extended_duration?
     return false if tpas_guider?
     return true if notes?
 

@@ -50,6 +50,7 @@
   <%= f.hidden_field :nudged %>
   <%= f.hidden_field :attended_digital %>
   <%= f.hidden_field :adjustments %>
+  <%= f.hidden_field :extended_duration %>
 
   <%= f.hidden_field :data_subject_name %>
   <%= f.hidden_field :data_subject_date_of_birth %>
@@ -222,6 +223,12 @@
             <% if @appointment.welsh? %>
             <tr>
               <td class="active"><b>Welsh language appointment?</b></td>
+              <td>Yes</td>
+            </tr>
+            <% end %>
+            <% if @appointment.extended_duration? %>
+            <tr>
+              <td class="active"><b>Extended duration?</b></td>
               <td>Yes</td>
             </tr>
             <% end %>

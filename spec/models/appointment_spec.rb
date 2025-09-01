@@ -96,6 +96,16 @@ RSpec.describe Appointment, type: :model do
             end
           end
 
+          context 'when the appointment is extended duration' do
+            it 'is true' do
+              appointment = build(:appointment, extended_duration: false)
+              expect(appointment).not_to be_adjustments
+
+              appointment.extended_duration = true
+              expect(appointment).to be_adjustments
+            end
+          end
+
           context 'when the appointment has notes' do
             it 'is false' do
               appointment = build(:appointment, notes: 'Well hello there.')

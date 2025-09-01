@@ -5,7 +5,7 @@ You will be sent further information and a link to access your video appointment
 <% else %>
 One of our pension specialists will call you on <%= @appointment.phone %> and quote the memorable word you’ve given us (<%= @appointment.memorable_word(obscure: true) %>) – so you know it’s us calling.
 
-Your appointment will usually last around 60 minutes. <% if @appointment.pension_wise? %>If you’ve asked for an access adjustment, we might contact you beforehand to ask for more details.<% end %>
+Your appointment will usually last around 60 minutes. <% if @appointment.extended_duration? %>As you’re rescheduling an appointment that lasts over one hour, we need to confirm we have pension specialists available. We’ll be in touch if we need to adjust the start time.<% end %>
 <% end %>
 
 You’ll need to rebook if:

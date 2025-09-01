@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_29_121237) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_01_151536) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
   enable_extension "pg_catalog.plpgsql"
@@ -129,6 +129,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_29_121237) do
     t.boolean "status_reminder_sent"
     t.string "online_rescheduling_reason", default: "", null: false
     t.bigint "previous_guider_id"
+    t.boolean "extended_duration", default: false, null: false
     t.index "guider_id, tsrange(start_at, end_at)", name: "index_appointments_guider_id_tsrange_start_at_end_at", using: :gist
     t.index "tsrange(start_at, end_at)", name: "index_appointments_tsrange_start_at_end_at", using: :gist
     t.index ["guider_id", "start_at"], name: "index_appointments_guider_start_schedule_status", where: "(((schedule_type)::text = 'pension_wise'::text) AND (status <> ALL ('{6,7,8,9}'::integer[])))"
@@ -275,6 +276,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_29_121237) do
     t.integer "casebook_guider_id"
     t.integer "casebook_location_id"
     t.string "schedule_type", default: "pension_wise", null: false
+    t.string "genesys_agent_id"
+    t.string "genesys_management_unit_id"
     t.index ["organisation_content_id"], name: "index_users_on_organisation_content_id"
     t.index ["permissions"], name: "index_users_on_permissions", using: :gin
     t.index ["schedule_type"], name: "index_users_on_schedule_type"
