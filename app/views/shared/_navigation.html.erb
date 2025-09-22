@@ -9,8 +9,9 @@
 
     <% if current_user.resource_manager? %>
       <%= active_link_to 'Allocations', allocations_path, wrap_tag: :li %>
-      <%= active_link_to 'Online reschedulings', online_reschedulings_path, wrap_tag: :li %>
     <% end %>
+
+    <%= active_link_to 'Online reschedulings', online_reschedulings_path, wrap_tag: :li %>
 
     <% if current_user.guider? %>
       <%= active_link_to 'My appointments', my_appointments_path, wrap_tag: :li %>
