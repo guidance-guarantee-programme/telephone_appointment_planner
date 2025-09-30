@@ -46,6 +46,8 @@ module Pages
     element :data_subject_date_of_birth_year,       '.t-data-subject-date-of-birth-year'
 
     element :permissions_warning, '.t-permissions'
+    element :scheduled_today_banner, '.t-today'
+    element :scheduled_another_day_banner, '.t-not-today'
 
     section :activity_feed, '.t-activity-feed' do
       elements :activities, '.t-activity'
