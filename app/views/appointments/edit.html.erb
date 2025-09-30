@@ -42,7 +42,7 @@
   <% end %>
 </h4>
 
-<% if current_user.guider? %>
+<% if current_user.guider? || current_user.resource_manager? %>
   <% if @appointment.start_at.today? %>
     <div class="alert alert-success t-today" role="alert">
       <p>This appointment is <strong>scheduled for today</strong></p>
