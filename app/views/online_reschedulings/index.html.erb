@@ -1,0 +1,75 @@
+<% content_for(:page_title, t('service.title', page_title: 'Online rescheduled apppointment search')) %>
+<%= breadcrumb( { title: 'Online rescheduled appointment search' } ) %>
+
+<h1>Online rescheduled appointment search</h1>
+
+<%= form_for @search, method: 'GET', url: { action: :index }, html: { class: 'appointment-search form-inline' } do |f| %>
+  <div class="form-group">
+    <%= f.label :q, 'Search term' %>
+    <%= f.text_field :q, use_label: false, class: 't-q appointment-search__term form-control', placeholder: 'Reference or name' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :date_range, 'Date range' %>
+    <%=
+      f.text_field(
+        :date_range,
+        class: 't-date-range appointment-search__date-range form-control',
+        use_label: false,
+        placeholder: '3 months ago to 3 months from now',
+        readonly: true,
+        data: {
+          module: 'date-range-picker',
+          config: {
+            autoUpdateInput: false,
+            autoApply: false,
+            locale: {
+              cancelLabel: 'Clear',
+              format: 'DD/MM/YYYY'
+            }
+          }
+        }
+      )
+    %>
+  </div>
+  <% unless current_user.tpas? %>
+  <div class="form-group">
+    <label>Processed</label>
+    <label><%= f.radio_button :processed, 'no', class: 't-processed-no' %> No</label>
+    <label><%= f.radio_button :processed, 'yes', class: 't-processed-yes' %> Yes</label>
+  </div>
+  <% end %>
+  <div class="form-group">
+    <%= f.submit 'Search', class: 't-search btn btn-primary' %>
+  </div>
+<% end %>
+
+<table id="results" class="appointment-search-results table table-striped table-bordered table-hover">
+  <caption><span class="sr-only">Appointment search results</span></caption>
+  <thead class="appointment-search-results__head">
+    <tr>
+      <th>Reference</th>
+      <th>Customer</th>
+      <th>Guider</th>
+      <th>Appointment Date/Time</th>
+      <th>Rescheduled Date/Time</th>
+      <th>Processed</th>
+    </tr>
+  </thead>
+  <tbody class="list" data-module="search-highlight">
+    <% @results.each do |result| %>
+      <% result = AppointmentSearchResultPresenter.new(result) %>
+      <tr class="appointment-search-results__row t-result">
+        <td class="appointment-search-results__item"><b class="visible-xs-block">Reference</b><span class="id js-allow-highlighting t-id">#<%= result.id %></span></td>
+        <td class="appointment-search-results__item"><b class="visible-xs-block">Customer</b><span class="js-allow-highlighting t-name"><%= result.name %></span></td>
+        <td class="appointment-search-results__item"><b class="visible-xs-block">Guider</b><span class="js-allow-highlighting t-previous-guider-name"><%= result.previous_guider_name %></span> <small>(<%= result.previous_guider_organisation %>)</small></td>
+        <td class="appointment-search-results__item t-appointment-date-time"><b class="visible-xs-block">Appointment Date/Time</b><%= result.date %></td>
+        <td class="appointment-search-results__item t-rescheduled-date-time"><b class="visible-xs-block">Rescheduled Date/Time</b><%= result.rescheduled_at %></td>
+        <td class="appointment-search-results__item t-processed"><b class="visible-xs-block">Processed</b><%= processed_label(result) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<nav aria-label="Pagination">
+  <%= paginate @results %>
+</nav>

@@ -34,13 +34,14 @@ class Notifier
     end
   end
 
-  def notify_resource_managers
+  def notify_resource_managers # rubocop:disable Metrics/AbcSize
     if appointment_cancelled?
       AppointmentCancelledNotificationsJob.perform_later(appointment)
     elsif appointment_reallocated?
       AppointmentRescheduledNotificationsJob.perform_later(appointment)
     end
 
+    AppointmentRescheduledAwayNotificationsJob.perform_later(appointment) if requires_rescheduled_away_notification?
     AdjustmentNotificationsJob.perform_later(appointment) if requires_adjustment_notification?
     AgentChangedNotificationsJob.perform_later(appointment) if requires_agent_changed_notification?
 
@@ -81,7 +82,7 @@ class Notifier
     return unless modifying_agent&.tpas_agent?
 
     appointment.previous_changes.slice(
-      'accessibility_requirements', 'third_party_booking', 'dc_pot_confirmed'
+      'accessibility_requirements', 'third_party_booking', 'dc_pot_confirmed', 'extended_duration'
     ).present? && appointment.adjustments?
   end
 
@@ -128,6 +129,11 @@ class Notifier
 
   def appointment_rescheduled?
     appointment.previous_changes.slice('start_at').present?
+  end
+
+  def requires_rescheduled_away_notification?
+    appointment.previous_changes.slice('previous_guider_id').present? &&
+      appointment.guider_organisation_differs?
   end
 
   attr_reader :appointment, :modifying_agent

@@ -126,6 +126,7 @@
     <% if bsl_video_visible?(current_user) %>
      <%= f.check_box :bsl_video, class: 't-bsl-video', label: 'BSL video appointment?', disabled: bsl_video_disabled?(current_user) %>
     <% end %>
+    <%= f.check_box :extended_duration, class: 't-extended-duration', label: 'Extended duration?' %>
 
     <%= f.text_area :notes, label: 'Additional information', autocomplete: 'off', maxlength: 1000, class: 't-notes js-notes js-character-limit-input form-control', rows: 6,
                     placeholder: 'Please add any additional information here that may be helpful for the appointment', data: { module: 'character-limit', maxlength: 1000 }

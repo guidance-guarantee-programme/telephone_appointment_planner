@@ -1,4 +1,4 @@
-class AppointmentMailer < ApplicationMailer
+class AppointmentMailer < ApplicationMailer # rubocop:disable Metrics/ClassLength
   rescue_from Net::SMTPUnknownError do |exception|
     Rails.logger.error(exception)
   end
@@ -39,6 +39,12 @@ class AppointmentMailer < ApplicationMailer
     mailgun_headers('resource_manager_appointment_rescheduled', appointment.id)
     @appointment = decorate(appointment)
     mail to: recipient, subject: @appointment.subject('Appointment Rescheduled')
+  end
+
+  def resource_manager_appointment_rescheduled_away(appointment, recipient)
+    mailgun_headers('resource_manager_appointment_rescheduled_away', appointment.id)
+    @appointment = decorate(appointment)
+    mail to: recipient, subject: @appointment.subject('Appointment Rescheduled Away')
   end
 
   def resource_manager_appointment_cancelled(appointment, recipient)

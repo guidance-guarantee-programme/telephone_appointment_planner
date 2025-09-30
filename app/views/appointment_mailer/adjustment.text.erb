@@ -2,6 +2,10 @@
 The customer has indicated they require help or an accessibility adjustment to access their appointment
 <% end %>
 
+<% if @appointment.extended_duration? %>
+The customer has indicated they require an extended duration appointment
+<% end %>
+
 <% if @appointment.third_party_booking? %>
 The customer has indicated they are attending an appointment on behalf of an individual
 <% end %>

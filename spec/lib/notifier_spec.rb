@@ -18,6 +18,18 @@ RSpec.describe Notifier, '#call' do
     allow(mailer).to receive(:deliver_later)
   end
 
+  context 'when the appointment was rescheduled away from an organisation' do
+    it 'notifies the previous organisation’s booking managers' do
+      appointment.update_attribute(:previous_guider_id, create(:guider, :waltham_forest).id)
+
+      allow(AppointmentRescheduledAwayNotificationsJob).to receive(:perform_later).with(appointment)
+
+      subject.call
+
+      expect(AppointmentRescheduledAwayNotificationsJob).to have_received(:perform_later).with(appointment)
+    end
+  end
+
   context 'when the appointment has potential duplicates' do
     context 'when the appointment is pending' do
       it 'sends the correct email notification' do
@@ -93,7 +105,7 @@ RSpec.describe Notifier, '#call' do
       let(:modifying_agent) { create(:resource_manager, :tpas) }
 
       it 'enqueues the adjustment notifications job' do
-        appointment.update_attribute(:accessibility_requirements, true)
+        appointment.update_attribute(:extended_duration, true)
 
         expect(AdjustmentNotificationsJob).to receive(:perform_later).with(appointment)
 
