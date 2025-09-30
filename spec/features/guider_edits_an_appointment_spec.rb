@@ -2,6 +2,16 @@ require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
 RSpec.feature 'Guider edits an appointment' do
+  scenario 'Guider views appointments and schedule banners' do
+    given_the_user_is_a_guider do
+      and_an_appointment_exists_for_today
+      when_they_edit_the_appointment
+      then_they_see_the_scheduled_today_banner
+      when_they_edit_an_existing_appointment
+      then_they_see_the_scheduled_later_banner
+    end
+  end
+
   scenario 'Guider attempts to reschedule a PSG appointment' do
     given_the_user_is_a_guider(organisation: :tpas) do
       and_an_existing_psg_appointment_exists
@@ -45,6 +55,24 @@ RSpec.feature 'Guider edits an appointment' do
       and_the_customer_is_notified
       and_they_see_a_success_message
     end
+  end
+
+  def and_an_appointment_exists_for_today
+    @appointment = create(:appointment, start_at: Time.current.middle_of_day)
+  end
+
+  def when_they_edit_the_appointment
+    @page = Pages::EditAppointment.new
+    @page.load(id: @appointment.id)
+    expect(@page).to be_displayed
+  end
+
+  def then_they_see_the_scheduled_today_banner
+    expect(@page).to have_scheduled_today_banner
+  end
+
+  def then_they_see_the_scheduled_later_banner
+    expect(@page).to have_scheduled_another_day_banner
   end
 
   def when_the_guider_attempts_to_reschedule_an_appointment_directly

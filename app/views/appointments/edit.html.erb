@@ -42,6 +42,18 @@
   <% end %>
 </h4>
 
+<% if current_user.guider? %>
+  <% if @appointment.start_at.today? %>
+    <div class="alert alert-success t-today" role="alert">
+      <p>This appointment is <strong>scheduled for today</strong></p>
+    </div>
+  <% else %>
+    <div class="alert alert-danger t-not-today" role="alert">
+      <p>This appointment is <strong>not scheduled for today</strong></p>
+    </div>
+  <% end %>
+<% end %>
+
 <% if @appointment.potential_duplicates?(only_pending: false) %>
   <div class="alert alert-warning" role="alert">
     <p>The customer’s details <strong><%= link_to 'match other appointment records', appointment_duplicates_path(@appointment) %></strong></p>
