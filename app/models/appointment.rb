@@ -579,7 +579,7 @@ class Appointment < ApplicationRecord
     self.start_at = start_at
     self.online_rescheduling_reason = reason
     self.rescheduled_at = Time.zone.now
-    self.previous_guider = guider.dup
+    self.previous_guider_id = guider.id
     self.rescheduling_reason = CLIENT_RESCHEDULED
     self.rescheduling_route = RESCHEDULED_ONLINE
 
