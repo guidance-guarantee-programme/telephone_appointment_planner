@@ -7,6 +7,7 @@ class RescheduleCasebookAppointmentJob < CasebookJob
     elsif pushed_casebook_appointment_reallocated_to_non_casebook_guider?(appointment)
       Casebook::Cancel.new(appointment).call
     else
+      Casebook::Cancel.new(appointment).call
       Casebook::Reschedule.new(appointment).call
     end
   end
