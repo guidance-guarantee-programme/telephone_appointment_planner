@@ -576,15 +576,15 @@ class Appointment < ApplicationRecord
   end
 
   def online_reschedule(start_at:, reason:) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+    return unless (slot = BookableSlot.find_available_slot(start_at, nil))
+
     self.start_at = start_at
     self.online_rescheduling_reason = reason
     self.rescheduled_at = Time.zone.now
     self.previous_guider_id = guider.id
     self.rescheduling_reason = CLIENT_RESCHEDULED
     self.rescheduling_route = RESCHEDULED_ONLINE
-
-    return unless (slot = BookableSlot.find_available_slot(start_at, nil))
-
+    self.processed_at = nil if slot.guider.cas?
     self.guider = slot.guider
     self.end_at = slot.end_at
 
