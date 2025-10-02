@@ -30,7 +30,6 @@ RSpec.describe RescheduleCasebookAppointmentJob, '#perform' do
 
   context 'when the appointment is for a casebook-enlisted guider' do
     let(:reschedule) { instance_double(Casebook::Reschedule) }
-    let(:cancel) { instance_double(Casebook::Cancel) }
     let(:push) { instance_double(Casebook::Push) }
 
     before do
@@ -39,9 +38,6 @@ RSpec.describe RescheduleCasebookAppointmentJob, '#perform' do
 
       allow(Casebook::Push).to receive(:new).with(appointment).and_return(push)
       allow(push).to receive(:call)
-
-      allow(Casebook::Cancel).to receive(:new).with(appointment).and_return(cancel)
-      allow(cancel).to receive(:call)
     end
 
     context 'when the appointment was not yet pushed to casebook' do
@@ -57,10 +53,9 @@ RSpec.describe RescheduleCasebookAppointmentJob, '#perform' do
     context 'and the appointment was already pushed to casebook' do
       let(:appointment) { build_stubbed(:appointment, :casebook_guider, :casebook_pushed) }
 
-      it 'cancels and reschedules casebook appointment' do
+      it 'reschedules casebook appointment' do
         described_class.perform_now(appointment)
 
-        expect(cancel).to have_received(:call)
         expect(reschedule).to have_received(:call)
       end
     end
