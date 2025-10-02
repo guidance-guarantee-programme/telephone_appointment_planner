@@ -1185,6 +1185,30 @@ RSpec.describe Appointment, type: :model do
     end
   end
 
+  describe '#online_reschedule' do
+    context 'when the new guider is CAS' do
+      it 'marks the appointment as unprocessed' do
+        @bookable_slot = create(:bookable_slot, :cas)
+        @appointment = create(:appointment, :processed)
+
+        @appointment.online_reschedule(start_at: @bookable_slot.start_at, reason: '1')
+
+        expect(@appointment).to_not be_processed_at
+      end
+    end
+
+    context 'when the guider is another provider' do
+      it 'leaves the processed timestamp as-is' do
+        @bookable_slot = create(:bookable_slot)
+        @appointment = create(:appointment, :processed)
+
+        @appointment.online_reschedule(start_at: @bookable_slot.start_at, reason: '1')
+
+        expect(@appointment).to be_processed_at
+      end
+    end
+  end
+
   describe '#can_be_rescheduled_by?' do
     let(:result) do
       appointment.can_be_rescheduled_by?(user)
