@@ -14,7 +14,14 @@ class BatchAppointmentUpdate
   private
 
   def update_appointment(change)
-    Appointment.update(change['id'], permitted_attributes(change))
+    appointment = Appointment.update(change['id'], permitted_attributes(change))
+
+    if appointment.invalid?
+      Rails.logger.info('Allocations calendar batch failure')
+      Rails.logger.info(appointment.errors.full_messages)
+    end
+
+    appointment
   end
 
   def permitted_attributes(change)
