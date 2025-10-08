@@ -148,15 +148,13 @@ class Appointment < ApplicationRecord
   }.freeze
 
   belongs_to :agent, class_name: 'User'
-
   belongs_to :guider, class_name: 'User'
   belongs_to :previous_guider, class_name: 'User', optional: true
-
   belongs_to :rebooked_from, class_name: 'Appointment', optional: true
 
   has_many :activities, -> { order('created_at DESC') }, dependent: :destroy
-
   has_many :status_transitions, dependent: :destroy
+  has_many :online_reschedules, dependent: :destroy
 
   has_one_attached :power_of_attorney_evidence
   has_one_attached :data_subject_consent_evidence
@@ -578,6 +576,8 @@ class Appointment < ApplicationRecord
   def online_reschedule(start_at:, reason:) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     return unless (slot = BookableSlot.find_available_slot(start_at, nil))
 
+    rescheduling = online_reschedules.build(previous_guider_id: guider.id, previous_start_at: self.start_at)
+
     self.start_at = start_at
     self.online_rescheduling_reason = reason
     self.rescheduled_at = Time.zone.now
@@ -591,7 +591,11 @@ class Appointment < ApplicationRecord
     result = nil
     transaction do
       result = save
-      CustomerOnlineReschedulingActivity.from(self) if result
+
+      if result
+        rescheduling.save
+        CustomerOnlineReschedulingActivity.from(self)
+      end
     end
 
     result

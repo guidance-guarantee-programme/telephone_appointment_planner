@@ -42,9 +42,9 @@ class OnlineReschedulingsSearch
     return results if current_user.tpas? || processed.blank?
 
     if processed == 'yes'
-      results.where.not(processed_at: nil)
+      results.where.not(appointment: { processed_at: nil })
     else
-      results.where(processed_at: nil)
+      results.where(appointment: { processed_at: nil })
     end
   end
 
@@ -63,20 +63,24 @@ class OnlineReschedulingsSearch
   end
 
   def within_date_range(results)
-    results.where('start_at between ? and ?', start_at, end_at)
+    results.where('previous_start_at between ? and ?', start_at, end_at)
   end
 
   def search_without_query
-    Appointment
+    OnlineReschedule
       .includes(:previous_guider)
+      .includes(:appointment)
       .order(created_at: :desc)
   end
 
   def search_with_query
-    scope = Appointment.joins(:previous_guider).includes(:previous_guider).select('appointments.*')
+    scope = OnlineReschedule
+            .includes(:previous_guider)
+            .includes(:appointment)
+            .order(created_at: :desc)
 
     if REFERENCE_REGEX === q
-      scope.where(id: q)
+      scope.where(appointment: { id: q })
     else
       scope.where(ilike(%w[appointments.first_name appointments.last_name]))
     end
