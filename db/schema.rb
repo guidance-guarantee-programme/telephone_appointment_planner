@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_07_174321) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_09_111609) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
   enable_extension "pg_catalog.plpgsql"
@@ -219,6 +219,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_07_174321) do
     t.datetime "previous_start_at", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "processed_at"
     t.index ["appointment_id"], name: "index_online_reschedules_on_appointment_id"
     t.index ["previous_guider_id"], name: "index_online_reschedules_on_previous_guider_id"
   end
