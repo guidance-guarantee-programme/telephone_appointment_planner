@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.feature 'Resource manager searches online rescheduled appointments' do # rubocop:disable Metrics/BlockLength
   scenario 'Viewing appointments that were rescheduled away from my organisation' do
-    given_the_user_is_a_resource_manager(organisation: :tpas) do
+    given_the_user_is_a_resource_manager(organisation: :manchester) do
       travel_to '2025-01-30 13:00' do
         and_there_are_appointments_that_were_rescheduled_away
         when_they_view_the_rescheduled_appointments
@@ -18,7 +18,7 @@ RSpec.feature 'Resource manager searches online rescheduled appointments' do # r
       :appointment,
       start_at: Time.zone.parse('2025-02-02 13:00'),
       rescheduled_at: Time.zone.parse('2025-02-01 12:00'),
-      previous_guider: create(:guider, :tpas),
+      previous_guider: create(:guider, :manchester),
       guider: @guider
     )
 
@@ -32,7 +32,7 @@ RSpec.feature 'Resource manager searches online rescheduled appointments' do # r
       :appointment,
       start_at: Time.zone.parse('2025-02-02 14:00'),
       rescheduled_at: Time.zone.parse('2025-02-01 13:00'),
-      previous_guider: create(:guider, :tpas),
+      previous_guider: create(:guider, :manchester),
       guider: @guider
     )
 
