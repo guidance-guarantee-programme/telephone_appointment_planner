@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.feature 'Resource manager searches online rescheduled appointments' do # rubocop:disable Metrics/BlockLength
   scenario 'Viewing appointments that were rescheduled away from my organisation' do
-    given_the_user_is_a_resource_manager(organisation: :tpas) do
+    given_the_user_is_a_resource_manager(organisation: :manchester) do
       travel_to '2025-01-30 13:00' do
         and_there_are_appointments_that_were_rescheduled_away
         when_they_view_the_rescheduled_appointments
@@ -18,16 +18,28 @@ RSpec.feature 'Resource manager searches online rescheduled appointments' do # r
       :appointment,
       start_at: Time.zone.parse('2025-02-02 13:00'),
       rescheduled_at: Time.zone.parse('2025-02-01 12:00'),
-      previous_guider: create(:guider, :tpas),
+      previous_guider: create(:guider, :manchester),
       guider: @guider
+    )
+
+    @first.online_reschedules.create!(
+      previous_guider_id: @first.previous_guider_id,
+      previous_start_at: Time.zone.parse('2025-02-01 12:00'),
+      processed_at: Time.zone.parse('2025-02-01 10:00')
     )
 
     @second = create(
       :appointment,
       start_at: Time.zone.parse('2025-02-02 14:00'),
       rescheduled_at: Time.zone.parse('2025-02-01 13:00'),
-      previous_guider: create(:guider, :tpas),
+      previous_guider: create(:guider, :manchester),
       guider: @guider
+    )
+
+    @second.online_reschedules.create!(
+      previous_guider_id: @second.previous_guider_id,
+      previous_start_at: Time.zone.parse('2025-02-01 12:00'),
+      processed_at: nil
     )
   end
 
@@ -43,8 +55,9 @@ RSpec.feature 'Resource manager searches online rescheduled appointments' do # r
       expect(result.id).to have_text(@first.id)
       expect(result.customer_name).to have_text(@first.name)
       expect(result.previous_guider_name).to have_text(@first.previous_guider.name)
-      expect(result.appointment_date_time).to have_text('02 February 2025 13:00')
-      expect(result.rescheduled_date_time).to have_text('01 February 2025 12:00')
+      expect(result.appointment_date_time).to have_text('01 February 2025 12:00')
+      expect(result.rescheduled_date_time).to have_text('30 January 2025 13:00')
+      expect(result.processed).to have_text('Yes')
     end
   end
 end

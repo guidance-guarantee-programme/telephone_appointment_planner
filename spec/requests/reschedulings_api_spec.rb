@@ -53,6 +53,8 @@ RSpec.describe 'POST /api/v1/appointments/{id}/reschedule' do # rubocop:disable 
     @appointment     = create(:appointment, date_of_birth: '1970-01-01')
     @previous_guider = @appointment.guider
     @bookable_slot   = create(:bookable_slot, :cas, start_at: Time.zone.parse('2025-07-10 13:00'))
+
+    @previous_start_at = @appointment.start_at
   end
 
   def when_the_client_posts_a_valid_reschedule_request
@@ -70,12 +72,18 @@ RSpec.describe 'POST /api/v1/appointments/{id}/reschedule' do # rubocop:disable 
     expect(response).to be_ok
   end
 
+  #  rubocop:disable Metrics/MethodLength
   def and_the_appointment_is_rescheduled
     expect(@appointment.reload).to have_attributes(
       start_at: @bookable_slot.start_at,
       guider_id: @bookable_slot.guider_id,
       rescheduling_reason: Appointment::CLIENT_RESCHEDULED,
       rescheduling_route: Appointment::RESCHEDULED_ONLINE
+    )
+
+    expect(@appointment.online_reschedules.first).to have_attributes(
+      previous_guider_id: @previous_guider.id,
+      previous_start_at: @previous_start_at
     )
 
     expect(@appointment.previous_guider_id).to eq(@previous_guider.id)
