@@ -13,6 +13,7 @@ class AppointmentSerializer < ActiveModel::Serializer
   attribute :guider_id, key: :resourceId
   attribute :pension_wise?, key: :pensionWise
   attribute :extended_duration?, key: :extendedDuration
+  attribute :ms_teams_call?, key: :msTeamsCall
 
   def title
     "#{object.first_name} #{object.last_name}"

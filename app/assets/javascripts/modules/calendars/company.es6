@@ -165,6 +165,10 @@ class CompanyCalendar extends Calendar {
       element.addClass('fc-event--due-diligence');
     }
 
+    if(event.msTeamsCall === true) {
+      element.addClass('fc-event--ms-teams-call');
+    }
+
     const resource = this.$el.fullCalendar('getResourceById', event.resourceId),
           $qtipContent = $(`
 
