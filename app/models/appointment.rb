@@ -81,6 +81,7 @@ class Appointment < ApplicationRecord
     attended_digital
     adjustments
     extended_duration
+    ms_teams_call
   ].freeze
 
   enum :status, { pending: 0, complete: 1, no_show: 2, incomplete: 3, ineligible_age: 4,

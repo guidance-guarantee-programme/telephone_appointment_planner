@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_09_111609) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_13_114743) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
   enable_extension "pg_catalog.plpgsql"
@@ -130,6 +130,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_09_111609) do
     t.string "online_rescheduling_reason", default: "", null: false
     t.bigint "previous_guider_id"
     t.boolean "extended_duration", default: false, null: false
+    t.boolean "ms_teams_call", default: false
     t.index "guider_id, tsrange(start_at, end_at)", name: "index_appointments_guider_id_tsrange_start_at_end_at", using: :gist
     t.index "tsrange(start_at, end_at)", name: "index_appointments_tsrange_start_at_end_at", using: :gist
     t.index ["guider_id", "start_at"], name: "index_appointments_guider_start_schedule_status", where: "(((schedule_type)::text = 'pension_wise'::text) AND (status <> ALL ('{6,7,8,9}'::integer[])))"
