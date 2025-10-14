@@ -243,10 +243,11 @@ RSpec.describe Appointment, type: :model do
 
   describe '#process_casebook_cancellation!' do
     it 'creates the cancelled activity for auditing' do
-      appointment = create(:appointment)
+      appointment = create(:appointment, :casebook_pushed)
 
       appointment.process_casebook_cancellation!
 
+      expect(appointment).not_to be_casebook_appointment_id
       expect(appointment.activities.first).to be_an_instance_of(CasebookCancelledActivity)
     end
   end

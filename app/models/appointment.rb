@@ -270,7 +270,11 @@ class Appointment < ApplicationRecord
   end
 
   def process_casebook_cancellation!
-    CasebookCancelledActivity.create!(appointment: self)
+    transaction do
+      update!(casebook_appointment_id: nil)
+
+      CasebookCancelledActivity.create!(appointment: self)
+    end
   end
 
   def process!(by)
