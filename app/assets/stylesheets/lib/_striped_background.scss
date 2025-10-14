@@ -1,3 +1,13 @@
+@function hard-striped-background($background, $alternative) {
+  @return $background repeating-linear-gradient(
+    -45deg,
+    $background,
+    $background 10px,
+    $alternative 10px,
+    $alternative 20px
+  );
+}
+
 @function striped-background($background) {
   @return $background repeating-linear-gradient(
     -45deg,
@@ -10,4 +20,8 @@
 
 @mixin striped($bg-colour) {
   background: striped-background($bg-colour);
+}
+
+@mixin hard-striped($bg-colour, $alternative) {
+  background: hard-striped-background($bg-colour, $alternative);
 }

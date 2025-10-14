@@ -223,8 +223,7 @@ $guider-row-height: 120px;
   z-index: 3;
 
   &.fc-event--ms-teams-call {
-    @include striped(darken($calendar-appointment-background, 20%));
-    border: dashed $color-guardsman-red;
+    @include hard-striped($calendar-appointment-background, $color-black);
   }
 }
 
@@ -237,8 +236,7 @@ $guider-row-height: 120px;
   }
 
   &.fc-event--ms-teams-call {
-    @include striped(darken($calendar-appointment-due-diligence-background, 20%));
-    border: dashed $color-guardsman-red;
+    @include hard-striped($calendar-appointment-due-diligence-background, $color-black);
   }
 };
 
