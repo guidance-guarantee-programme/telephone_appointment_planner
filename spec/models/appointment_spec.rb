@@ -549,6 +549,38 @@ RSpec.describe Appointment, type: :model do
       build_stubbed(:appointment)
     end
 
+    describe '#ms_teams_call' do
+      subject { build(:appointment) }
+
+      context 'when Pension Wise and internal availability' do
+        it 'is permitted' do
+          subject.internal_availability = '1'
+          subject.ms_teams_call = true
+
+          expect(subject).to be_valid
+        end
+      end
+
+      context 'when Pension Wise and not internal availability' do
+        it 'is not permitted' do
+          subject.ms_teams_call = true
+          subject.internal_availability = '0'
+
+          expect(subject).to be_invalid
+        end
+      end
+
+      context 'when PSG' do
+        subject { build(:appointment, :due_diligence) }
+
+        it 'is permitted' do
+          subject.ms_teams_call = true
+
+          expect(subject).to be_valid
+        end
+      end
+    end
+
     describe '#attended_digital' do
       it 'permits any of the valid values' do
         subject.attended_digital = 'meh'

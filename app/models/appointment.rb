@@ -81,6 +81,7 @@ class Appointment < ApplicationRecord
     attended_digital
     adjustments
     extended_duration
+    ms_teams_call
   ].freeze
 
   enum :status, { pending: 0, complete: 1, no_show: 2, incomplete: 3, ineligible_age: 4,
@@ -216,6 +217,7 @@ class Appointment < ApplicationRecord
   validate :validate_gdpr_consent
   validate :validate_rescheduling_reason, on: :update
   validate :validate_welsh_language, on: :create
+  validate :validate_ms_teams_call, on: :create
 
   before_validation :format_name, on: :create
   before_create :track_initial_status
@@ -862,6 +864,13 @@ class Appointment < ApplicationRecord
     return unless welsh? && guider
 
     errors.add(:welsh, 'cannot be set for external availability') unless guider.tpas? || guider.cardiff_and_vale?
+  end
+
+  def validate_ms_teams_call
+    return unless ms_teams_call?
+    return if due_diligence?
+
+    errors.add(:ms_teams_call, 'cannot be set for external availability') unless internal_availability?
   end
 
   class << self

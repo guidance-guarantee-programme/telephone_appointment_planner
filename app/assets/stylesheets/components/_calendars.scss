@@ -15,6 +15,7 @@ $calendar-bookable-slot-background: $color-madang;
 $calendar-bookable-slot-due-diligence-background: $color-plum;
 $calendar-appointment-due-diligence-background: $color-blue-violet;
 $calendar-loading-view-background: transparentize($color-white, .2);
+$calendar-ms-teams-appointment-background: $color-deep-pink;
 
 $guider-row-height: 120px;
 
@@ -220,6 +221,10 @@ $guider-row-height: 120px;
 .fc-event {
   @include striped($calendar-appointment-background);
   z-index: 3;
+
+  &.fc-event--ms-teams-call {
+    @include hard-striped($calendar-appointment-background, $color-black);
+  }
 }
 
 .fc-event--due-diligence {
@@ -228,6 +233,10 @@ $guider-row-height: 120px;
 
   &.fc--past {
     @include striped(lighten($calendar-appointment-due-diligence-background, 20%));
+  }
+
+  &.fc-event--ms-teams-call {
+    @include hard-striped($calendar-appointment-due-diligence-background, $color-black);
   }
 };
 

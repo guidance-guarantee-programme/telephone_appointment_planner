@@ -5,6 +5,10 @@
 ) %>
 
 <h4>
+  <% if @appointment.ms_teams_call? %>
+    <span class="label label-default t-ms-teams-call">MS Teams</span></span>
+  <% end %>
+
   <% if @appointment.welsh? %>
     <span class="label label-default t-welsh-appointment">Welsh Language Appointment</span></span>
   <% end %>

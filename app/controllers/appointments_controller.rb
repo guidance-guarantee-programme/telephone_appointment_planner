@@ -243,6 +243,7 @@ class AppointmentsController < ApplicationController
       attended_digital
       adjustments
       extended_duration
+      ms_teams_call
     ]
   end
   # rubocop:enable Metrics/MethodLength

@@ -51,6 +51,7 @@
   <%= f.hidden_field :attended_digital %>
   <%= f.hidden_field :adjustments %>
   <%= f.hidden_field :extended_duration %>
+  <%= f.hidden_field :ms_teams_call %>
 
   <%= f.hidden_field :data_subject_name %>
   <%= f.hidden_field :data_subject_date_of_birth %>
@@ -229,6 +230,12 @@
             <% if @appointment.extended_duration? %>
             <tr>
               <td class="active"><b>Extended duration?</b></td>
+              <td>Yes</td>
+            </tr>
+            <% end %>
+            <% if @appointment.ms_teams_call? %>
+            <tr>
+              <td class="active"><b>Phone call via MS Teams?</b></td>
               <td>Yes</td>
             </tr>
             <% end %>
