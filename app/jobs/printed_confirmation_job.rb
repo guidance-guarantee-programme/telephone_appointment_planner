@@ -16,8 +16,10 @@ class PrintedConfirmationJob < NotifyJobBase
     )
 
     PrintedConfirmationActivity.from(appointment)
-  rescue Notifications::Client::BadRequestError
+  rescue Notifications::Client::BadRequestError => e
     PrintedConfirmationFailedActivity.from(appointment)
+
+    logger.info("Printed confirmation failed `#{e.message}`")
   end
 
   private
