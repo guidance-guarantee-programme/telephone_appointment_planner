@@ -475,7 +475,7 @@ RSpec.feature 'Agent manages appointments' do
   end
 
   def when_they_enter_a_50_to_54_date_of_birth
-    @page.date_of_birth_year.set '1970'
+    @page.date_of_birth_year.set '1971'
   end
 
   def then_the_50_to_54_appointment_type_is_selected
