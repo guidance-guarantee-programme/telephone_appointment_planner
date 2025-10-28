@@ -28,6 +28,7 @@ module Pages
     element :cancelled_via_phone,                   '.t-cancelled-via-phone'
     element :cancelled_via_email,                   '.t-cancelled-via-email'
     element :country_code,                          '.t-country-of-residence'
+    element :ms_teams_call,                         '.t-ms-teams-call'
 
     element :status, '.t-status'
     element :secondary_status, '.t-secondary-status'

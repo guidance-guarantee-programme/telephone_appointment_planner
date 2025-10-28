@@ -170,6 +170,7 @@ RSpec.feature 'Guider edits an appointment' do
 
     expect(@page).to have_dc_pot_unsure_banner
     expect(@page).to have_third_party_booked_banner
+    expect(@page).to have_no_ms_teams_call
   end
 
   def when_they_modify_the_appointment
