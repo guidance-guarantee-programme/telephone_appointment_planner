@@ -72,6 +72,13 @@ RSpec.feature 'Agent manages appointments' do
     end
   end
 
+  scenario 'TPAS agent sees the MS Teams Call checkbox' do
+    given_the_user_is_a_resource_manager(organisation: :tpas) do
+      when_they_attempt_to_book_an_appointment
+      then_they_see_the_ms_teams_call_checkbox
+    end
+  end
+
   scenario 'Attempting to update an appointment with invalid fields' do
     given_the_user_is_a_resource_manager(organisation: :tpas) do
       and_an_appointment_exists
@@ -127,6 +134,10 @@ RSpec.feature 'Agent manages appointments' do
 
   def then_they_see_the_stronger_nudge_checkbox
     expect(@page.stronger_nudged).to be_visible
+  end
+
+  def then_they_see_the_ms_teams_call_checkbox
+    expect(@page).to have_ms_teams_call
   end
 
   def when_they_attempt_to_book_a_welsh_appointment
