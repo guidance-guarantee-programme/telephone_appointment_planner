@@ -198,7 +198,7 @@ class Appointment < ApplicationRecord
   validates :attended_digital, inclusion: ATTENDED_DIGITAL_OPTIONS, allow_blank: true, if: :pension_wise?
   validates :nudge_eligibility_reason, inclusion: ELIGIBILITY_OPTIONS.keys, if: :require_eligibility_reason?
 
-  validate :not_within_grace_period, unless: :agent_is_resource_manager?
+  validate :not_within_grace_period
   validate :valid_within_booking_window
   validate :date_of_birth_valid
   validate :data_subject_date_of_birth_valid
@@ -647,6 +647,7 @@ class Appointment < ApplicationRecord
 
   def not_within_grace_period
     return unless new_record? && start_at?
+    return if agent_is_resource_manager? && owned_by_my_organisation?(agent)
 
     too_soon = start_at < BookableSlot.next_valid_start_date(nil, schedule_type)
     errors.add(:start_at, 'must be more than two business days from now') if too_soon
