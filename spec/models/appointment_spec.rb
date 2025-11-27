@@ -1065,6 +1065,23 @@ RSpec.describe Appointment, type: :model do
       end
     end
 
+    context 'when rebooking as Waltham Forest resource manager' do
+      context 'when internal or external slots could be allocated' do
+        it 'allocates the correct slot' do
+          @internal = create(:bookable_slot, :waltham_forest, start_at: Time.zone.parse('2025-12-03 13:00'))
+          @external = create(:bookable_slot, start_at: Time.zone.parse('2025-12-03 13:00'))
+
+          @resource_manager = create(:resource_manager, :waltham_forest)
+
+          subject.start_at = @external.start_at
+          subject.end_at   = @external.end_at
+          subject.allocate(agent: @resource_manager, scoped: true, rebooking: true)
+
+          expect(subject.guider).to be_nil
+        end
+      end
+    end
+
     context 'when booking as a TPAS agent' do
       it 'includes TP guiders' do
         tpas_resource_manager = create(:resource_manager, :tpas)

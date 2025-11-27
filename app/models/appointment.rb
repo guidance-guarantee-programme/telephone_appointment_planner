@@ -625,7 +625,7 @@ class Appointment < ApplicationRecord
 
   def allocate_slot(agent, scoped, rebooking) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     args = agent&.tpas_agent? && pension_wise? && scoped ? { external: true } : {}
-    args = { external: scoped } if agent&.non_tpas_resource_manager? && pension_wise? && rebooking
+    args = { external: scoped, rebooking: true } if agent&.non_tpas_resource_manager? && pension_wise? && rebooking
 
     slot = BookableSlot.find_available_slot(start_at, agent, schedule_type, scoped:, **args)
 

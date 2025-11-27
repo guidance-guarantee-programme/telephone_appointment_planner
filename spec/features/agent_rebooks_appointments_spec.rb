@@ -2,6 +2,18 @@ require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
 RSpec.feature 'Agent rebooks appointments' do
+  scenario 'Waltham Forest resource manager rebooks with only TPAS availability', js: true do
+    given_the_user_is_a_resource_manager(organisation: :waltham_forest) do
+      travel_to '2025-11-24 09:00' do
+        and_an_existing_appointment_for_waltham_forest
+        and_availability_for_tpas_in_and_out_of_grace_period
+        when_they_attempt_to_rebook_an_appointment
+        then_they_do_not_see_availability_in_the_grace_period
+        and_they_do_see_availability_past_the_grace_period
+      end
+    end
+  end
+
   scenario 'CAS agent rebooks an appointment seeing only their availability', js: true do
     given_the_user_is_a_resource_manager(organisation: :cas) do
       travel_to '2022-06-20 09:00' do
@@ -49,6 +61,29 @@ RSpec.feature 'Agent rebooks appointments' do
     end
   end
 
+  def and_an_existing_appointment_for_waltham_forest
+    @appointment = create(:appointment, organisation: :waltham_forest, status: :cancelled_by_customer_sms)
+  end
+
+  def and_availability_for_tpas_in_and_out_of_grace_period
+    @invisible = create(:bookable_slot, start_at: Time.zone.parse('2025-11-28 10:00'))
+    @visible = create(:bookable_slot, start_at: Time.zone.parse('2025-12-02 13:00'))
+  end
+
+  def then_they_do_not_see_availability_in_the_grace_period
+    @page = Pages::NewAppointment.new
+    expect(@page).to be_displayed
+    expect(@page).to have_no_slots
+  end
+
+  def and_they_do_see_availability_past_the_grace_period
+    @page.next_period.click
+    @page.wait_until_slots_visible
+
+    expect(@page).to have_slots(count: 1)
+    expect(@page.slots.first).to have_text('13:00 1 guider')
+  end
+
   def and_an_existing_appointment_for_cas
     @appointment = create(:appointment, organisation: :cas, status: :cancelled_by_customer_sms)
   end
@@ -58,20 +93,22 @@ RSpec.feature 'Agent rebooks appointments' do
     expect(@page).to be_displayed
 
     @page.wait_until_slots_visible
-    expect(@page).to have_slots(count: 1)
+    expect(@page).to have_slots(count: 2)
     expect(@page.slots.first).to have_text('11:00 1 guider')
   end
 
   def then_they_see_internal_availability
+    @page.next_period.click
     @page.wait_until_slots_visible
     expect(@page).to have_slots(count: 1)
     expect(@page.slots.first).to have_text('9:00 1 guider')
   end
 
   def and_there_is_cross_organisational_availability
-    create(:bookable_slot, start_at: Time.zone.parse('2022-06-24 09:00'))
+    create(:bookable_slot, start_at: Time.zone.parse('2022-06-28 09:00'))
     create(:bookable_slot, :cas, start_at: Time.zone.parse('2022-06-24 11:00'))
     create(:bookable_slot, :cas, start_at: Time.zone.parse('2022-06-20 11:00'))
+    create(:bookable_slot, :waltham_forest, start_at: Time.zone.parse('2022-06-20 12:00'))
   end
 
   def and_an_existing_appointment_for_tpas
@@ -90,18 +127,13 @@ RSpec.feature 'Agent rebooks appointments' do
     @page = Pages::NewAppointment.new
     expect(@page).to be_displayed
 
-    @page.week_view.click
     @page.wait_until_slots_invisible
     expect(@page).to have_no_slots
-
-    @page.next_period.click
-    @page.wait_until_slots_visible
-    expect(@page).to have_slots(count: 1)
-    expect(@page.slots.first).to have_text('09:00 1 guider')
   end
 
   def when_they_switch_back_to_external_availability
     @page.internal_availability.uncheck
+    @page.next_period.click
     @page.wait_until_slots_visible
   end
 
