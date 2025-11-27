@@ -38,9 +38,8 @@ class BookableSlot < ApplicationRecord
       )
   end
 
-  def self.next_valid_start_date(user = nil, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE, rebooking: false)
-    return Time.zone.now if user&.tpas_resource_manager?
-    return Time.zone.now if !rebooking && user&.non_tpas_resource_manager?
+  def self.next_valid_start_date(user = nil, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE)
+    return Time.zone.now if user&.resource_manager?
 
     if schedule_type == User::DUE_DILIGENCE_SCHEDULE_TYPE || user&.tpas_guider?
       BusinessDays.from_now(5).change(hour: 21, min: 0).in_time_zone('London')
@@ -143,8 +142,8 @@ class BookableSlot < ApplicationRecord
     sanitize_sql(["AND (#{table}.start_at > ? AND #{table}.start_at < ?)", from, to])
   end
 
-  def self.starting_after_next_valid_start_date(user, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE, rebooking: false) # rubocop:disable Metrics/MethodLength
-    starting_from = next_valid_start_date(user, schedule_type, rebooking:)
+  def self.starting_after_next_valid_start_date(user, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE) # rubocop:disable Metrics/MethodLength
+    starting_from = next_valid_start_date(user, schedule_type)
     normal_scope = where("#{quoted_table_name}.start_at > ?", starting_from)
 
     return normal_scope if schedule_type == User::DUE_DILIGENCE_SCHEDULE_TYPE
@@ -173,11 +172,12 @@ class BookableSlot < ApplicationRecord
     agent = users.one? ? user : users.first
     user  = users.last
 
-    limit_by_organisation = !user.resource_manager? && !user.tpas_agent?
+    limit_by_organisation = (!user.resource_manager? && !user.tpas_agent?) ||
+                            (rebooking && user.non_tpas_resource_manager?)
 
     select("DISTINCT #{quoted_table_name}.start_at, #{quoted_table_name}.end_at, count(1) AS guiders")
       .bookable
-      .starting_after_next_valid_start_date(agent, schedule_type:, rebooking:)
+      .starting_after_next_valid_start_date(agent, schedule_type:)
       .for_schedule_type(schedule_type:)
       .for_organisation(user, lloyds:, scoped:, internal:, external:)
       .group("#{quoted_table_name}.start_at, #{quoted_table_name}.end_at")
