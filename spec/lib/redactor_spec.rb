@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-# rubocop:disable Metrics/BlockLength
+# rubocop:disable Metrics/BlockLength, Rails/SkipsModelValidations
 RSpec.describe Redactor do
   describe '.redact_for_gdpr' do
     it 'redacts records yet to be redacted, greater than 2 years old' do
@@ -29,8 +29,8 @@ RSpec.describe Redactor do
   describe '#call' do
     it 'redacts all personally identifying information' do
       appointment = create(:appointment)
-      redactor    = described_class.new(appointment.id)
-
+      appointment.update_attribute(:status, :cancelled_by_pension_wise) # put in invalid state
+      redactor = described_class.new(appointment.id)
       redactor.call
 
       expect(appointment.reload).to have_attributes(
@@ -46,7 +46,8 @@ RSpec.describe Redactor do
         address_line_three: 'redacted',
         town: 'redacted',
         postcode: 'redacted',
-        notes: 'redacted'
+        notes: 'redacted',
+        adjustments: 'redacted'
       )
 
       expect(appointment.audits).to be_empty
@@ -55,4 +56,4 @@ RSpec.describe Redactor do
     end
   end
 end
-# rubocop:enable Metrics/BlockLength
+# rubocop:enable Metrics/BlockLength, Rails/SkipsModelValidations
