@@ -38,9 +38,8 @@ class BookableSlot < ApplicationRecord
       )
   end
 
-  def self.next_valid_start_date(user = nil, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE, rebooking: false)
-    return Time.zone.now if user&.tpas_resource_manager?
-    return Time.zone.now if !rebooking && user&.non_tpas_resource_manager?
+  def self.next_valid_start_date(user = nil, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE, external: false)
+    return Time.zone.now if user&.resource_manager? && !external
 
     if schedule_type == User::DUE_DILIGENCE_SCHEDULE_TYPE || user&.tpas_guider?
       BusinessDays.from_now(5).change(hour: 21, min: 0).in_time_zone('London')
@@ -49,11 +48,15 @@ class BookableSlot < ApplicationRecord
     end
   end
 
-  def self.find_available_slot(start_at, agent, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE, scoped: true, external: false) # rubocop:disable Layout/LineLength
+  def self.find_available_slot(start_at, agent, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE, scoped: true, external: false, rebooking: false) # rubocop:disable Layout/LineLength, Metrics/AbcSize, Metrics/ParameterLists
     scope = bookable
     scope = scope.limit_by_organisation(start_at.beginning_of_day, start_at.end_of_day) if agent&.pension_wise_api?
     scope = scope.where(start_at:)
     scope = scope.for_organisation(agent, scoped:, external:) if agent && !agent.pension_wise_api?
+    if rebooking
+      scope = scope.within_date_range(start_at.beginning_of_day, start_at.end_of_day,
+                                      organisation_limit: true)
+    end
     scope = for_schedule_type(schedule_type:, scope:)
 
     scope.limit(1).order('RANDOM()').first
@@ -143,8 +146,8 @@ class BookableSlot < ApplicationRecord
     sanitize_sql(["AND (#{table}.start_at > ? AND #{table}.start_at < ?)", from, to])
   end
 
-  def self.starting_after_next_valid_start_date(user, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE, rebooking: false) # rubocop:disable Metrics/MethodLength
-    starting_from = next_valid_start_date(user, schedule_type, rebooking:)
+  def self.starting_after_next_valid_start_date(user, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE, external: false) # rubocop:disable Metrics/MethodLength
+    starting_from = next_valid_start_date(user, schedule_type, external:)
     normal_scope = where("#{quoted_table_name}.start_at > ?", starting_from)
 
     return normal_scope if schedule_type == User::DUE_DILIGENCE_SCHEDULE_TYPE
@@ -173,11 +176,12 @@ class BookableSlot < ApplicationRecord
     agent = users.one? ? user : users.first
     user  = users.last
 
-    limit_by_organisation = !user.resource_manager? && !user.tpas_agent?
+    limit_by_organisation = (!user.resource_manager? && !user.tpas_agent?) ||
+                            (rebooking && user.non_tpas_resource_manager?)
 
     select("DISTINCT #{quoted_table_name}.start_at, #{quoted_table_name}.end_at, count(1) AS guiders")
       .bookable
-      .starting_after_next_valid_start_date(agent, schedule_type:, rebooking:)
+      .starting_after_next_valid_start_date(agent, schedule_type:, external:)
       .for_schedule_type(schedule_type:)
       .for_organisation(user, lloyds:, scoped:, internal:, external:)
       .group("#{quoted_table_name}.start_at, #{quoted_table_name}.end_at")

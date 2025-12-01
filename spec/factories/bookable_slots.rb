@@ -5,6 +5,10 @@ FactoryBot.define do
     end_at { start_at + 1.hour }
     guider { create(:guider) }
 
+    trait :waltham_forest do
+      guider { create(:guider, :waltham_forest) }
+    end
+
     trait :tp do
       guider { create(:guider, :tp) }
     end

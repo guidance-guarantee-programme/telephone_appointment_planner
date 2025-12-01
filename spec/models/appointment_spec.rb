@@ -966,11 +966,23 @@ RSpec.describe Appointment, type: :model do
       end
 
       context 'agent is a resource manager' do
-        it 'can be booked within two working days' do
-          subject.agent = build_stubbed(:resource_manager)
-          subject.start_at = BusinessDays.from_now(1)
-          subject.validate
-          expect(subject.errors[:start_at]).to be_empty
+        context 'when the appointment is owned by the agent org' do
+          it 'can be booked within two working days' do
+            subject.agent = build_stubbed(:resource_manager)
+            subject.start_at = BusinessDays.from_now(1)
+            subject.validate
+            expect(subject.errors[:start_at]).to be_empty
+          end
+        end
+
+        context 'when the appointment is not owned by the agent org' do
+          it 'cannot be booked within the grace period' do
+            subject.agent = build_stubbed(:resource_manager, :waltham_forest)
+            subject.start_at = BusinessDays.from_now(1)
+
+            expect(subject).to be_invalid
+            expect(subject.errors[:start_at]).to be_present
+          end
         end
       end
     end
@@ -1050,6 +1062,23 @@ RSpec.describe Appointment, type: :model do
         appointment = build(:appointment, start_at: nil, end_at: nil)
 
         expect { appointment.allocate(via_slot: false) }.not_to raise_error
+      end
+    end
+
+    context 'when rebooking as Waltham Forest resource manager' do
+      context 'when internal or external slots could be allocated' do
+        it 'allocates the correct slot' do
+          @internal = create(:bookable_slot, :waltham_forest, start_at: Time.zone.parse('2025-12-03 13:00'))
+          @external = create(:bookable_slot, start_at: Time.zone.parse('2025-12-03 13:00'))
+
+          @resource_manager = create(:resource_manager, :waltham_forest)
+
+          subject.start_at = @external.start_at
+          subject.end_at   = @external.end_at
+          subject.allocate(agent: @resource_manager, scoped: true, rebooking: true)
+
+          expect(subject.guider).to be_nil
+        end
       end
     end
 
