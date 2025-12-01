@@ -1,25 +1,29 @@
+# rubocop:disable Metrics/MethodLength
 class Redactor
-  def initialize(reference)
-    @reference = reference
+  def initialize(references)
+    @references = Array(references)
   end
 
   def call
-    return unless appointment = Appointment.find(reference) # rubocop:disable Lint/AssignmentInCondition
+    return unless appointments = Appointment.where(id: @references) # rubocop:disable Lint/AssignmentInCondition
 
     ActiveRecord::Base.transaction do
       Appointment.without_auditing do
-        redact_appointment(appointment)
-        redact_audits(appointment)
-        redact_activities(appointment)
-        redact_attachments(appointment)
+        redact_appointments(appointments)
+
+        appointments.each do |appointment|
+          redact_audits(appointment)
+          redact_activities(appointment)
+          redact_attachments(appointment)
+        end
       end
     end
   end
 
   def self.redact_for_gdpr
-    Appointment.for_redaction.pluck(:id).each do |reference|
-      new(reference).call
-    end
+    references = Appointment.for_redaction.pluck(:id)
+
+    new(references).call
   end
 
   private
@@ -30,8 +34,9 @@ class Redactor
     appointment.generated_consent_form.purge
   end
 
-  def redact_appointment(appointment) # rubocop:disable Metrics/MethodLength
-    appointment.update(
+  def redact_appointments(appointments) # rubocop:disable Metrics/MethodLength
+    # rubocop:disable Rails/SkipsModelValidations
+    appointments.update_all(
       first_name: 'redacted',
       last_name: 'redacted',
       email: 'redacted@example.com',
@@ -53,8 +58,11 @@ class Redactor
       consent_address_line_three: 'redacted',
       consent_town: 'redacted',
       consent_postcode: 'redacted',
-      email_consent: 'redacted@example.com'
+      email_consent: 'redacted@example.com',
+      updated_at: Time.zone.now,
+      adjustments: 'redacted'
     )
+    # rubocop:enable Rails/SkipsModelValidations
   end
 
   def redact_audits(appointment)
@@ -70,9 +78,11 @@ class Redactor
         SmsCancellationActivity
         DropActivity
         DroppedSummaryDocumentActivity
+        SmsMessageActivity
       ]
     ).destroy_all
   end
 
   attr_reader :reference
 end
+# rubocop:enable Metrics/MethodLength
