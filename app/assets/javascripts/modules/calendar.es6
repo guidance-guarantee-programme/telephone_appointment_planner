@@ -29,7 +29,7 @@ class Calendar extends TapBase {
       slotLabelFormat: 'H:mm',
       slotEventOverlap: false,
       timeFormat: 'H:mm',
-      hiddenDays: [ 0 ], // Sunday
+      hiddenDays: el.data('hide-saturday') === true ? [6, 0] : [0],
       select: (...args) => this.select(...args),
       viewRender: (...args) => this.viewRender(...args),
       eventRender: (...args) => this.eventRender(...args),
