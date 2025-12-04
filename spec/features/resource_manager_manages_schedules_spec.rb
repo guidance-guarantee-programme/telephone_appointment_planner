@@ -6,6 +6,14 @@ RSpec.feature 'Resource manager manages schedules' do
     allow(GenerateBookableSlotsForUserJob).to receive(:perform_later)
   end
 
+  scenario 'Non TPAS resource manager can see Saturday', js: true do
+    given_the_user_is_a_resource_manager(organisation: :waltham_forest) do
+      and_there_is_a_guider_for_waltham_forest
+      when_they_edit_their_schedule
+      then_they_see_the_weekend_columns
+    end
+  end
+
   scenario 'TPAS resource manager adds a due diligence schedule', js: true do
     allow(GenerateBookableSlotsForUserJob).to receive(:perform_later).and_call_original
 
@@ -14,6 +22,7 @@ RSpec.feature 'Resource manager manages schedules' do
       and_they_add_a_new_schedule
       and_they_set_the_initial_start_at_date
       and_they_add_some_time_slots
+      then_they_do_not_see_weekend_columns
       when_they_save_the_users_time_slots
       then_they_are_told_that_the_schedule_has_been_created
       and_the_guider_has_those_time_slots_available
@@ -85,6 +94,21 @@ RSpec.feature 'Resource manager manages schedules' do
     @guider = create(:guider, name: 'Davey Daverson')
   end
 
+  def and_there_is_a_guider_for_waltham_forest
+    @guider = create(:guider, :waltham_forest, name: 'Davey Daverson')
+  end
+
+  def when_they_edit_their_schedule
+    @schedule = @guider.schedules.create!(start_at: 7.weeks.from_now)
+
+    @page = Pages::EditSchedule.new
+    @page.load(user_id: @guider.id, id: @schedule.id)
+  end
+
+  def then_they_see_the_weekend_columns
+    expect(@page).to have_saturday
+  end
+
   def and_the_guider_has_a_schedule_that_can_be_modified
     @schedule = @guider.schedules.create!(
       start_at: 7.weeks.from_now
@@ -128,6 +152,10 @@ RSpec.feature 'Resource manager manages schedules' do
     click_on_day_and_time 'Monday', '09:00'
     click_on_day_and_time 'Tuesday', '10:30'
     expect(@page).to have_events(count: 2)
+  end
+
+  def then_they_do_not_see_weekend_columns
+    expect(@page).to have_no_saturday
   end
 
   def and_they_add_the_default_mid_shift_slots

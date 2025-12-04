@@ -6,5 +6,6 @@ module Pages
 
     element :save, '.t-save'
     element :start_at, '.t-start-at'
+    element :saturday, '.fc-sat'
   end
 end
