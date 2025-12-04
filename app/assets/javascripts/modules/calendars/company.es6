@@ -145,6 +145,7 @@ class CompanyCalendar extends Calendar {
     this.$filterPanel.toggleClass('hide');
     this.$filterButton.toggleClass('fc-state-active');
     $('.select2-search__field').focus();
+    $('#filter_guiders').select2('open');
   }
 
   filterClick() {
