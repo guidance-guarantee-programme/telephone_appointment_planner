@@ -65,6 +65,7 @@ class CompanyCalendar extends Calendar {
     this.filterButtonLabel = this.$filterButton.text();
     this.$filterPanel = $('.resource-calendar-filter');
     this.$bookingSlotToggle = $('.js-booking-slot-toggle');
+    this.$hideCancelledToggle = $('.js-hide-cancelled-toggle');
 
     this.bindEvents();
     this.setCalendarToCorrectHeight();
@@ -99,6 +100,7 @@ class CompanyCalendar extends Calendar {
     $(`#${this.$el.data('filter-select-id')}`).on('change', this.setFilterList.bind(this));
 
     this.$bookingSlotToggle.on('change', this.handleBookingSlotToggle.bind(this));
+    this.$hideCancelledToggle.on('change', this.handleHideCancelledToggle.bind(this));
 
     $(document).click(this.hideFilterPanel.bind(this));
   }
@@ -108,6 +110,10 @@ class CompanyCalendar extends Calendar {
       isChecked = !!checkbox.prop('checked');
 
     this.$el[isChecked ? 'addClass' : 'removeClass']('bookable-slots-over-holiday');
+  }
+
+  handleHideCancelledToggle() {
+    $('.fc-event--cancelled').toggle();
   }
 
   setFilterList(event) {
