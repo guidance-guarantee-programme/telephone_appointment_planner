@@ -40,6 +40,7 @@ module Pages
     element :where_you_heard, '.t-where-you-heard'
     element :hidden_where_you_heard, '.t-hidden-where-you-heard', visible: false
     element :referrer, '.t-referrer'
+    element :transferring_pension_to, '.t-transferring-pension-to'
     element :address_line_one, '.t-address-line-one'
     element :town, '.t-town'
     element :postcode, '.t-postcode'

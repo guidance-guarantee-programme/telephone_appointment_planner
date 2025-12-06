@@ -235,6 +235,7 @@ class AppointmentsController < ApplicationController
       lloyds_signposted
       schedule_type
       referrer
+      transferring_pension_to
       small_pots
       nudged
       internal_availability

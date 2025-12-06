@@ -217,6 +217,7 @@ RSpec.describe 'POST /api/v1/appointments' do
       'referrer'          => 'Big Pension Co.',
       'country_code'      => 'FR',
       'accessibility_requirements' => false,
+      'transferring_pension_to' => 'Other Pension Ltd',
       'adjustments' => ''
     }
 
@@ -231,7 +232,8 @@ RSpec.describe 'POST /api/v1/appointments' do
     expect(Appointment.last).to have_attributes(
       schedule_type: 'due_diligence',
       country_code: 'FR',
-      attended_digital: nil
+      attended_digital: nil,
+      transferring_pension_to: 'Other Pension Ltd'
     )
   end
 

@@ -148,6 +148,7 @@
 
     <% if @appointment.due_diligence? %>
       <%= f.text_field :referrer, autocomplete: 'off', class: 't-referrer', label: required_label('Pension Safeguarding Guidance referrer') %>
+      <%= f.text_field :transferring_pension_to, autocomplete: 'off', class: 't-transferring-pension-to', label: required_label('Transferring to which pension provider?') %>
     <% end %>
 
     <% if defined?(edit) && edit %>

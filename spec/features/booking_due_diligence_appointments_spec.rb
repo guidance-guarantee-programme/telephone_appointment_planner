@@ -181,6 +181,7 @@ RSpec.feature 'Booking due diligence appointments', js: true do
     @page.memorable_word.set 'lozenge'
     @page.accessibility_requirements.set false
     @page.referrer.set 'Big Pensions PLC'
+    @page.transferring_pension_to.set 'Some other Pension Ltd'
 
     @page.preview_appointment.click
   end
