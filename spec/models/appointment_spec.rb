@@ -629,6 +629,14 @@ RSpec.describe Appointment, type: :model do
         expect(subject).to be_valid
       end
 
+      it 'requires a transferring pension provider' do
+        subject.transferring_pension_to = ''
+        expect(subject).to be_invalid
+
+        subject.transferring_pension_to = 'Big Pension Co.'
+        expect(subject).to be_valid
+      end
+
       it 'cannot overlap existing DD or PW appointments' do
         travel_to '2021-11-22 13:00' do
           dd_guider = create(:guider, :due_diligence)

@@ -72,6 +72,7 @@ class Appointment < ApplicationRecord
     lloyds_signposted
     unique_reference_number
     referrer
+    transferring_pension_to
     small_pots
     country_code
     welsh
@@ -193,6 +194,7 @@ class Appointment < ApplicationRecord
   validates :guider, presence: true
   validates :unique_reference_number, uniqueness: true, if: :complete_due_diligence?
   validates :referrer, presence: true, if: :due_diligence?, on: :create
+  validates :transferring_pension_to, presence: true, if: :due_diligence?, on: :create
   validates :email, email: true, unless: :sms_confirmation?
   validates :cancelled_via, inclusion: %w[phone email], on: :update, if: :cancelled_prior_to_appointment?
   validates :attended_digital, inclusion: ATTENDED_DIGITAL_OPTIONS, allow_blank: true, if: :pension_wise?
