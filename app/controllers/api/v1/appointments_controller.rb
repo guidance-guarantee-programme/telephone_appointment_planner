@@ -59,6 +59,7 @@ module Api
           :smarter_signposted,
           :lloyds_signposted,
           :referrer,
+          :transferring_pension_to,
           :nudged,
           :rebooked_from_id,
           :attended_digital,
