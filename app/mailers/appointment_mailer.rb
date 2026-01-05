@@ -1,3 +1,5 @@
+# NOTE: When adding new mailings, add to `DropForm::IGNORED_MESSAGE_TYPES`
+# for excluding deliveries to internal system recipients
 class AppointmentMailer < ApplicationMailer # rubocop:disable Metrics/ClassLength
   rescue_from Net::SMTPUnknownError do |exception|
     Rails.logger.error(exception)

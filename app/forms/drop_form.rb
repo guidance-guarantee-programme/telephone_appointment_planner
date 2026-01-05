@@ -13,6 +13,11 @@ class DropForm
     resource_manager_appointment_changed
     resource_manager_appointment_cancelled
     resource_manager_appointment_rescheduled
+    resource_manager_appointment_rescheduled_away
+    guider_status_reminder
+    guider_summary_document_missing
+    resource_manager_sms_failure
+    potential_duplicates
   ].freeze
 
   attr_accessor :event, :description, :appointment_id, :environment, :message_type, :timestamp, :token, :signature
