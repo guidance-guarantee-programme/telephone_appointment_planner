@@ -122,12 +122,14 @@ class Appointment < ApplicationRecord
       '22' => 'Customer driving whilst having appointment',
       '23' => 'Third-party consent not received',
       '28' => 'Customer wanted PSG appointment',
-      '43' => 'No longer transferring'
+      '43' => 'No longer transferring',
+      '44' => 'Rebooked to MaPS'
     },
     'cancelled_by_pension_wise' => {
       '29' => 'Duplicate appointment',
       '30' => 'Guider absence',
-      '31' => 'Telephony issue'
+      '31' => 'Telephony issue',
+      '44' => 'Rebooked to MaPS'
     },
     'no_show' => {
       '24' => 'UK number valid – customer did not answer',
@@ -220,6 +222,7 @@ class Appointment < ApplicationRecord
   validate :validate_rescheduling_reason, on: :update
   validate :validate_welsh_language, on: :create
   validate :validate_ms_teams_call, on: :create
+  validate :validate_tpas_secondary_status
 
   before_validation :format_name, on: :create
   before_create :track_initial_status
@@ -796,19 +799,33 @@ class Appointment < ApplicationRecord
     end
   end
 
-  def validate_tpas_agent_statuses # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+  def validate_tpas_secondary_status
+    return unless (cancelled_by_pension_wise? || cancelled_by_customer?) && secondary_status == '44' # Rebooked by MaPS
+    return if current_user&.tpas_resource_manager? && pension_wise?
+
+    errors.add(
+      :secondary_status,
+      'Only Pension Ops resource managers can select this secondary status for Pension Wise'
+    )
+  end
+
+  def validate_tpas_agent_statuses # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength
     if current_user&.tpas_agent? && !guider.tpas? # rubocop:disable Style/GuardClause
-      unless ineligible_age? || ineligible_pension_type? || cancelled_by_customer?
-        errors.add(:status, "Must be one of 'Ineligible Age', 'Ineligible Pension Type', 'Cancelled by Customer'")
+      unless ineligible_age? || ineligible_pension_type? || cancelled_by_customer? || cancelled_by_pension_wise?
+        errors.add(
+          :status,
+          "Must be one of 'Ineligible Age', 'Ineligible Pension Type',
+          'Cancelled by Customer', 'Cancelled by Pension Wise'"
+        )
       end
 
-      return unless cancelled_by_customer? && secondary_status != AGENT_PERMITTED_SECONDARY
+      return unless (cancelled_by_customer? || cancelled_by_pension_wise?) &&
+                    ![AGENT_PERMITTED_SECONDARY, '44'].include?(secondary_status)
 
       errors.add(
         :secondary_status,
-        "For external appointments, agents should only select 'Cancelled prior to appointment'"
+        "For external appointments, agents should only select 'Cancelled prior to appointment' or 'Rebooked to MaPS'"
       )
-
     end
   end
 
