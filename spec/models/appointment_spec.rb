@@ -732,9 +732,43 @@ RSpec.describe Appointment, type: :model do
           end
         end
 
+        context 'when the user is TPAS' do
+          it 'permits `Rebooked to MaPS` secondary status for the correct roles' do
+            subject.current_user = build_stubbed(:resource_manager)
+            subject.status = :cancelled_by_customer
+            subject.secondary_status = '44' # Rebooked to MaPS
+            expect(subject).to be_valid
+
+            subject.status = :cancelled_by_pension_wise
+            expect(subject).to be_valid
+
+            subject.current_user = build_stubbed(:guider)
+            expect(subject).to be_invalid
+          end
+
+          context 'when the appointment is PSG' do
+            it 'never permits the `Rebooked to MaPS`' do
+              subject.current_user = build_stubbed(:resource_manager)
+              subject.schedule_type = 'due_diligence'
+              subject.status = :cancelled_by_customer
+              subject.secondary_status = '44' # Rebooked to MaPS
+              expect(subject).to be_invalid
+            end
+          end
+        end
+
+        context 'when the user is non TPAS' do
+          it 'does not permit the `Rebooked to MaPS` secondary status' do
+            subject.current_user = build_stubbed(:resource_manager, :cas)
+            subject.status = :cancelled_by_customer
+            subject.secondary_status = '44' # Rebooked to MaPS
+            expect(subject).to be_invalid
+          end
+        end
+
         context 'when the user is a TPAS agent' do
           context 'and the appointment is external' do
-            subject { build(:appointment, organisation: :cas) }
+            subject { create(:appointment, organisation: :cas) }
 
             it 'only permits particular statuses' do
               subject.current_user = build_stubbed(:resource_manager, :tpas)
@@ -750,7 +784,13 @@ RSpec.describe Appointment, type: :model do
 
               subject.status = :cancelled_by_customer
               subject.secondary_status = '15' # Cancelled prior
+              subject.cancelled_via = 'phone'
               expect(subject).to be_valid
+              subject.secondary_status = '44' # Rebooked to MaPS
+              expect(subject).to be_valid
+
+              subject.secondary_status = '30'
+              expect(subject).to be_invalid
             end
           end
         end
