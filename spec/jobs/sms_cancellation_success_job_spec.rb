@@ -23,7 +23,8 @@ RSpec.describe SmsCancellationSuccessJob, '#perform' do
         template_id: SmsCancellationSuccessJob::DUE_DILIGENCE_TEMPLATE_ID,
         reference: appointment.to_param,
         personalisation: {
-          date: '1:00pm, 1 Jan 2019 (GMT)'
+          date: '1:00pm, 1 Jan 2019 (GMT)',
+          reference: appointment.to_param
         }
       )
 
@@ -41,7 +42,8 @@ RSpec.describe SmsCancellationSuccessJob, '#perform' do
           template_id: SmsCancellationSuccessJob::STANDARD_TEMPLATE_ID,
           reference: appointment.to_param,
           personalisation: {
-            date: '1:00pm, 1 Jan 2019 (GMT)'
+            date: '1:00pm, 1 Jan 2019 (GMT)',
+            reference: appointment.to_param
           }
         )
 
@@ -58,7 +60,8 @@ RSpec.describe SmsCancellationSuccessJob, '#perform' do
           template_id: SmsCancellationSuccessJob::BSL_TEMPLATE_ID,
           reference: appointment.to_param,
           personalisation: {
-            date: '1:00pm, 1 Jan 2019 (GMT)'
+            date: '1:00pm, 1 Jan 2019 (GMT)',
+            reference: appointment.to_param
           }
         )
 
