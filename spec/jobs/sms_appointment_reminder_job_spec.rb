@@ -24,7 +24,8 @@ RSpec.describe SmsAppointmentReminderJob, '#perform' do
           template_id: SmsAppointmentReminderJob::DUE_DILIGENCE_TEMPLATE_ID,
           reference: appointment.to_param,
           personalisation: {
-            date: a_string_matching(/12:00pm, .*/)
+            date: a_string_matching(/12:00pm, .*/),
+            reference: appointment.to_param
           }
         )
 
@@ -61,7 +62,8 @@ RSpec.describe SmsAppointmentReminderJob, '#perform' do
             template_id: SmsAppointmentReminderJob::STANDARD_TEMPLATE_ID,
             reference: appointment.to_param,
             personalisation: {
-              date: a_string_matching(/12:00pm, .*/)
+              date: a_string_matching(/12:00pm, .*/),
+              reference: appointment.to_param
             }
           )
 
@@ -82,7 +84,8 @@ RSpec.describe SmsAppointmentReminderJob, '#perform' do
             template_id: SmsAppointmentReminderJob::BSL_TEMPLATE_ID,
             reference: appointment.to_param,
             personalisation: {
-              date: a_string_matching(/12:00pm, .*/)
+              date: a_string_matching(/12:00pm, .*/),
+              reference: appointment.to_param
             }
           )
 
