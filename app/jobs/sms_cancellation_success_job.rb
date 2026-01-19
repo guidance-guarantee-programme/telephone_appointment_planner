@@ -5,7 +5,7 @@ class SmsCancellationSuccessJob < NotifyJobBase
 
   include SmsFailureRecordable
 
-  def perform(appointment)
+  def perform(appointment) # rubocop:disable Metrics/MethodLength
     return unless api_key(appointment.schedule_type)
 
     client = Notifications::Client.new(api_key(appointment.schedule_type))
@@ -15,7 +15,8 @@ class SmsCancellationSuccessJob < NotifyJobBase
       template_id: template_for(appointment),
       reference: appointment.to_param,
       personalisation: {
-        date: "#{appointment.start_at.to_formatted_s(:govuk_date_short)} (#{appointment.timezone})"
+        date: "#{appointment.start_at.to_formatted_s(:govuk_date_short)} (#{appointment.timezone})",
+        reference: appointment.to_param
       }
     )
   end
