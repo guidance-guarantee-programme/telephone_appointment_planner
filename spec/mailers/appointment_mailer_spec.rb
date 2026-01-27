@@ -84,7 +84,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
     end
 
     it 'renders the exit poll vanity URL' do
-      expect(subject.body.encoded).to match('https://actiondeafness.org.uk/feedback-form')
+      expect(subject.body.encoded).to match('https://www.pensionwise.gov.uk/bsl-exit-poll')
     end
   end
 
