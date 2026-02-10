@@ -1,0 +1,5 @@
+<% content_for(:activity_message, flush: true) do %>
+  <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
+  <%= genesys_processed_activity.message %>
+<% end %>
+<%= render 'activities/activity', activity: genesys_processed_activity, details: details, hide: hide %>

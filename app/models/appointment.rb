@@ -83,6 +83,7 @@ class Appointment < ApplicationRecord
     adjustments
     extended_duration
     ms_teams_call
+    genesys_operation_id
   ].freeze
 
   enum :status, { pending: 0, complete: 1, no_show: 2, incomplete: 3, ineligible_age: 4,
@@ -228,6 +229,15 @@ class Appointment < ApplicationRecord
   before_create :track_initial_status
   before_update :track_status_transitions
 
+  def genesys_activity_code_id
+    return '0' if cancelled?
+
+    return '69c595d1-a305-4be7-a3f0-bf3a8324992f' if pension_wise?
+    return '71876e55-8410-4ac4-b675-ec6724cde3ec' if due_diligence?
+
+    raise 'Unmapped Genesys Activity Code ID'
+  end
+
   def resend_email_confirmation
     CustomerUpdateJob.perform_later(self, CustomerUpdateActivity::CONFIRMED_MESSAGE)
   end
@@ -264,6 +274,14 @@ class Appointment < ApplicationRecord
 
   def pension_wise?
     schedule_type == User::PENSION_WISE_SCHEDULE_TYPE
+  end
+
+  def process_genesys_creation!(genesys_operation_id)
+    update!(genesys_operation_id:)
+  end
+
+  def process_genesys_rescheduling!(genesys_operation_id)
+    update!(genesys_rescheduling_operation_id: genesys_operation_id)
   end
 
   def process_casebook!(casebook_response)
@@ -437,6 +455,10 @@ class Appointment < ApplicationRecord
 
   def casebook_pushable_guider?
     guider&.casebook_pushable?
+  end
+
+  def genesys_pushable_guider?
+    guider&.genesys_pushable?
   end
 
   def agent_is_pension_wise_api?
@@ -614,6 +636,14 @@ class Appointment < ApplicationRecord
     end
 
     result
+  end
+
+  def push_to_genesys?
+    (pending? || cancelled?) && genesys_pushable_guider?
+  end
+
+  def cancel_to_genesys?
+    genesys_operation_id? && cancelled?
   end
 
   private
