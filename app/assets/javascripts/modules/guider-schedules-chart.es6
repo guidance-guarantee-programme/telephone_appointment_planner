@@ -10,7 +10,7 @@
         windowLengthInMonths: 12,
         scheduleHeight: 30,
         scheduleMarginTop: 5,
-        bookablePeriodInWeeks: 8,
+        bookablePeriodInWeeks: 12,
         monthFormat: 'MMM',
         classes: {
           months: 'guider-schedules__months',
