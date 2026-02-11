@@ -27,20 +27,6 @@
   <% end %>
 </div>
 
-<% if @schedules.any? %>
-  <div class="guider-schedules" data-module="guider-schedules-chart" data-config='{"guiderScheduleDataSourceElementId": "guider-schedules"}' aria-hidden="true">
-    <div class="row">
-      <div class="col-xs-12">
-        <div class="guider-schedules__months"></div>
-        <div class="guider-schedules__schedules-outer">
-          <div class="guider-schedules__bookable-window"></div>
-          <div class="guider-schedules__schedules"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-<% end %>
-
 <table class="table table-striped table-bordered table-hover" id="guider-schedules">
   <caption><span class="sr-only">List of schedules for <%= @guider.name %></span></caption>
   <colgroup>
@@ -99,3 +85,17 @@
   <% end %>
   </tbody>
 </table>
+
+<% if @schedules.any? %>
+  <div class="guider-schedules" data-module="guider-schedules-chart" data-config='{"guiderScheduleDataSourceElementId": "guider-schedules"}' aria-hidden="true">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="guider-schedules__months"></div>
+        <div class="guider-schedules__schedules-outer">
+          <div class="guider-schedules__bookable-window"></div>
+          <div class="guider-schedules__schedules"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
