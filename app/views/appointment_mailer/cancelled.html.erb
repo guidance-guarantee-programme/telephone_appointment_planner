@@ -27,6 +27,10 @@
     <%= p do %>
       You can also have an <a href="https://prd-pwtriage.moneyhelper.org.uk/en/pension-wise-triage/start">online Pension Wise appointment</a> at any time.
     <% end %>
+
+    <%= p do %>
+      <strong>There’s currently a longer wait for phone appointments than normal.</strong>
+    <% end %>
   <% else %>
     <%= p do %>
       Your <%= @appointment.type %> appointment on <%= @appointment.start_at.to_date.to_fs(:govuk_date) %> at <%= "#{@appointment.start_at.to_time.to_fs(:govuk_time)} (#{@appointment.timezone})" %> has been cancelled.
@@ -43,6 +47,10 @@
     <%= p do %>
       You can also have an <a href="https://prd-pwtriage.moneyhelper.org.uk/en/pension-wise-triage/start">online Pension Wise appointment</a> at any time.
     <% end %>
+
+    <%= p do %>
+      <strong>There’s currently a longer wait for phone appointments than normal.</strong>
+    <% end %>
   <% end %>
 <% else %>
   <% if @appointment.cancelled_by_pension_wise? %>
@@ -57,6 +65,10 @@
     <%= p do %>
       We’re open between 9am and 5pm, Monday to Friday. Closed on bank holidays.
     <% end %>
+
+    <%= p do %>
+      <strong>There’s currently a longer wait for phone appointments than normal.</strong>
+    <% end %>
   <% else %>
     <%= p do %>
       Your <%= @appointment.type %> appointment on <%= @appointment.start_at.to_date.to_fs(:govuk_date) %> at <%= "#{@appointment.start_at.to_time.to_fs(:govuk_time)} (#{@appointment.timezone})" %> has been cancelled.
@@ -68,6 +80,10 @@
 
     <%= p do %>
       We’re open between 9am and 5pm, Monday to Friday. Closed on bank holidays.
+    <% end %>
+
+    <%= p do %>
+      <strong>There’s currently a longer wait for phone appointments than normal.</strong>
     <% end %>
   <% end %>
 <% end %>

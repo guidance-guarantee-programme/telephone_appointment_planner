@@ -13,6 +13,8 @@ Dear <%= @appointment.first_name %>,
   We’re open between 9am and 5pm, Monday to Friday. Closed on bank holidays.
 
   You can also have an https://prd-pwtriage.moneyhelper.org.uk/en/pension-wise-triage/start online Pension Wise appointment at any time.
+
+  There’s currently a longer wait for phone appointments than normal.
   <% else %>
   Your <%= @appointment.type %> appointment on <%= @appointment.start_at.to_date.to_fs(:govuk_date) %> at <%= "#{@appointment.start_at.to_time.to_fs(:govuk_time)} (#{@appointment.timezone})" %> has been cancelled.
 
@@ -21,6 +23,8 @@ Dear <%= @appointment.first_name %>,
   We’re open between 9am and 5pm, Monday to Friday. Closed on bank holidays.
 
   You can also have an https://prd-pwtriage.moneyhelper.org.uk/en/pension-wise-triage/start online Pension Wise appointment at any time.
+
+  There’s currently a longer wait for phone appointments than normal.
   <% end %>
 <% else %>
   <% if @appointment.cancelled_by_pension_wise? %>
@@ -29,12 +33,16 @@ Dear <%= @appointment.first_name %>,
     Alternatively, you can call 0800 015 4906 to book a new appointment.
 
     We’re open between 9am and 5pm, Monday to Friday. Closed on bank holidays.
+
+    There’s currently a longer wait for phone appointments than normal.
   <% else %>
     Your <%= @appointment.type %> appointment on <%= @appointment.start_at.to_date.to_fs(:govuk_date) %> at <%= "#{@appointment.start_at.to_time.to_fs(:govuk_time)} (#{@appointment.timezone})" %> has been cancelled.
 
     To book a new appointment, call 0800 015 4906.
 
     We’re open between 9am and 5pm, Monday to Friday. Closed on bank holidays.
+
+    There’s currently a longer wait for phone appointments than normal.
   <% end %>
 <% end %>
 
