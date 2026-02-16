@@ -25,7 +25,7 @@ RSpec.describe Appointment, type: :model do
         @appointment = build(:appointment, :due_diligence)
         expect(@appointment).to be_valid
 
-        @appointment.start_at = BusinessDays.from_now(61).beginning_of_day
+        @appointment.start_at = BusinessDays.from_now(81).beginning_of_day
         expect(@appointment).to be_invalid
         expect(@appointment.errors[:start_at]).to be_present
       end
@@ -36,14 +36,14 @@ RSpec.describe Appointment, type: :model do
         @appointment = build(:appointment)
         expect(@appointment).to be_valid
 
-        @appointment.start_at = BusinessDays.from_now(61).beginning_of_day
+        @appointment.start_at = BusinessDays.from_now(81).beginning_of_day
         expect(@appointment).to be_invalid
         expect(@appointment.errors[:start_at]).to be_present
       end
 
       context 'when the appointment is ad-hoc' do
         it 'permits bookings past the window' do
-          @appointment = build(:appointment, start_at: BusinessDays.from_now(61).beginning_of_day)
+          @appointment = build(:appointment, start_at: BusinessDays.from_now(81).beginning_of_day)
           expect(@appointment).to be_invalid
 
           @appointment.ad_hoc_start_at = @appointment.start_at
@@ -1035,8 +1035,8 @@ RSpec.describe Appointment, type: :model do
       end
     end
 
-    it 'cannot be booked further ahead than 60 working days' do
-      subject.start_at = BusinessDays.from_now(61)
+    it 'cannot be booked further ahead than 80 working days' do
+      subject.start_at = BusinessDays.from_now(81)
       subject.validate
       expect(subject.errors[:start_at]).to_not be_empty
     end
