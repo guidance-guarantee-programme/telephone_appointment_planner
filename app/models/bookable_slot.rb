@@ -96,7 +96,7 @@ class BookableSlot < ApplicationRecord
   end
 
   def self.end_of_window
-    BusinessDays.from_now(60).end_of_day
+    BusinessDays.from_now(80).end_of_day
   end
 
   def self.for_schedule_type(schedule_type: User::PENSION_WISE_SCHEDULE_TYPE, scope: self)
