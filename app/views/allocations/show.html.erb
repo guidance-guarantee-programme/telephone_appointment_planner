@@ -70,7 +70,7 @@
             </div>
             <div class="radio">
               <label>
-                <input class="t-pension-wise-rescheduled" type="radio" value="office_rescheduled" name="rescheduling_reason" id="office_rescheduled"> Office rescheduled
+                <input class="t-pension-wise-rescheduled" type="radio" value="office_rescheduled" name="rescheduling_reason" id="office_rescheduled" data-target="office-rescheduled-route"> Office rescheduled
               </label>
             </div>
           </div>
@@ -89,6 +89,19 @@
                 <input class="t-via-email-or-crm" type="radio" value="email_or_crm" name="rescheduling_route" id="rescheduling_route_email_or_crm"> Email or CRM
               </label>
             </div>
+          </div>
+        </div>
+
+        <div class="radio" id="office-rescheduled-route">
+          <div class="form-group">
+            <h4>Office rescheduled due to</h4>
+            <% Appointment::OFFICE_RESCHEDULED_OPTIONS.each do |key, label| %>
+              <div class="radio">
+                <label>
+                  <input class="t-via-<%= key.dasherize %>" type="radio" value="<%= key %>" name="rescheduling_route" id="rescheduling_route_<%= key %>"> <%= label %>
+                </label>
+              </div>
+            <% end %>
           </div>
         </div>
       </div>

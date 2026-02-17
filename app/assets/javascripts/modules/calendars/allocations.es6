@@ -183,6 +183,9 @@
         if(route === undefined && reason == 'client_rescheduled') {
           alert('You must specify a rescheduling route');
         }
+        else if (route == undefined && reason == 'office_rescheduled') {
+          alert('You must specify rescheduled due to');
+        }
         else {
           e.data.event.reschedulingReason = reason;
           e.data.event.reschedulingRoute = route;
