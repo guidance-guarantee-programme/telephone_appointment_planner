@@ -623,6 +623,10 @@ class Appointment < ApplicationRecord
     result
   end
 
+  def requires_office_rescheduling_route?
+    created_at > Time.zone.parse(ENV.fetch('RESCHEDULING_REASONS_CUT_OFF') { '2026-02-17 00:00' })
+  end
+
   private
 
   def track_initial_status
@@ -887,7 +891,7 @@ class Appointment < ApplicationRecord
   end
 
   def validate_office_rescheduling_route
-    return unless created_at > Time.zone.parse(ENV.fetch('RESCHEDULING_REASONS_CUT_OFF') { '2026-02-17 00:00' })
+    return unless requires_office_rescheduling_route?
 
     return if OFFICE_RESCHEDULED_OPTIONS.keys.include?(rescheduling_route)
 

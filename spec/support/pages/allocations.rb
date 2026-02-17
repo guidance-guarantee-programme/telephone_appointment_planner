@@ -19,6 +19,10 @@ module Pages
       element :via_phone, '.t-via-phone'
       element :via_email_or_crm, '.t-via-email-or-crm'
       element :save, '.t-save'
+
+      Appointment::OFFICE_RESCHEDULED_OPTIONS.each_key do |key|
+        element "via_#{key}".to_sym, ".t-via-#{key.dasherize}"
+      end
     end
 
     section :calendar, Sections::Calendar, '.t-calendar'
