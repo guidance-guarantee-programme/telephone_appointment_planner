@@ -806,6 +806,30 @@ RSpec.describe Appointment, type: :model do
       end
     end
 
+    context 'when specifying `office rescheduled`' do
+      context 'when before the cut-off' do
+        it 'permits empty `rescheduling_route`' do
+          subject.start_at = 3.days.ago
+          subject.created_at = 3.months.ago
+          subject.rescheduling_reason = 'office_rescheduled'
+
+          expect(subject).to be_valid
+        end
+      end
+
+      context 'when after the cut-off' do
+        it 'requires a `rescheduling_route`' do
+          subject.start_at = 3.days.ago
+          subject.created_at = Time.zone.now
+          subject.rescheduling_reason = 'office_rescheduled'
+          expect(subject).to be_invalid
+
+          subject.rescheduling_route = 'urgent_appointment'
+          expect(subject).to be_valid
+        end
+      end
+    end
+
     context 'when specifying adjustments requirements' do
       context 'when third party booked' do
         before do

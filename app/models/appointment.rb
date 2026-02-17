@@ -30,6 +30,13 @@ class Appointment < ApplicationRecord
     RESCHEDULED_EMAIL_OR_CRM = 'email_or_crm'.freeze,
     RESCHEDULED_ONLINE = 'online'.freeze
   ].freeze
+  OFFICE_RESCHEDULED_OPTIONS = {
+    'unplanned_absence' => 'Unplanned Absence',
+    'planned_absence' => 'Planned Absence',
+    'meeting_training' => 'Meeting / Training',
+    'urgent_appointment' => 'Urgent Appointment',
+    'accreditation' => 'Accreditation'
+  }.freeze
 
   ATTENDED_DIGITAL_OPTIONS = %w[yes no not-sure].freeze
 
@@ -872,8 +879,23 @@ class Appointment < ApplicationRecord
     return unless start_at_changed?
 
     errors.add(:rescheduling_reason, 'must be specified') unless RESCHEDULING_REASONS.include?(rescheduling_reason)
-    errors.add(:rescheduling_route, 'must be specified') if client_rescheduled? &&
-                                                            !RESCHEDULING_ROUTES.include?(rescheduling_route)
+
+    return errors.add(:rescheduling_route, 'must be specified') if client_rescheduled? &&
+                                                                   !RESCHEDULING_ROUTES.include?(rescheduling_route)
+
+    validate_office_rescheduling_route if office_rescheduled?
+  end
+
+  def validate_office_rescheduling_route
+    return unless created_at > Time.zone.parse(ENV.fetch('RESCHEDULING_REASONS_CUT_OFF') { '2026-02-17 00:00' })
+
+    return if OFFICE_RESCHEDULED_OPTIONS.keys.include?(rescheduling_route)
+
+    errors.add(:rescheduling_route, 'must be specified')
+  end
+
+  def office_rescheduled?
+    rescheduling_reason == OFFICE_RESCHEDULED
   end
 
   def client_rescheduled?
