@@ -130,6 +130,11 @@ $guider-row-height: 120px;
 
 .container--fullscreen {
   width: 250%;
+
+  .fc-right {
+    position: fixed;
+    right: 15px;
+  }
 }
 
 .calendar-row-highlighter {
