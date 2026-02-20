@@ -129,7 +129,12 @@ $guider-row-height: 120px;
 }
 
 .container--fullscreen {
-  width: 100%;
+  width: 250%;
+
+  .fc-right {
+    position: fixed;
+    right: 15px;
+  }
 }
 
 .calendar-row-highlighter {
