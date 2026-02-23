@@ -39,6 +39,7 @@ module Pages
     element :resend_email_confirmation, '.t-resend-email-confirmation'
     element :resend_print_confirmation, '.t-resend-print-confirmation'
     element :reschedule, '.t-reschedule'
+    element :reallocate, '.t-reallocate'
 
     element :third_party_booked,                    '.t-third-party-booked'
     element :data_subject_name,                     '.t-data-subject-name'

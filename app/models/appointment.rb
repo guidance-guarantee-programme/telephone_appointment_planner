@@ -166,6 +166,9 @@ class Appointment < ApplicationRecord
 
   delegate :resource_managers, to: :guider
 
+  scope :for_user_organisation, lambda { |user|
+    joins(:guider).where(users: { organisation_content_id: user.organisation_content_id })
+  }
   scope :cancelled, -> { where(status: CANCELLED_STATUSES) }
   scope :not_cancelled, -> { where.not(status: CANCELLED_STATUSES) }
   scope :with_mobile_number, -> { where("mobile ~ '#{MOBILE_REGEX_POSIX}' or phone ~ '#{MOBILE_REGEX_POSIX}'") }
@@ -388,6 +391,14 @@ class Appointment < ApplicationRecord
     return false if due_diligence?
 
     start_at >= BookableSlot.next_valid_start_date
+  end
+
+  def can_be_reallocated_by?(user)
+    return false unless pending?
+    return false unless pension_wise?
+    return false unless future?
+
+    user.tpas_resource_manager? && owned_by_my_organisation?(user)
   end
 
   def can_create_summary?

@@ -1,0 +1,29 @@
+<% content_for(:page_title, t('service.title', page_title: "Reallocate appointment for #{@appointment.name}")) %>
+<%= breadcrumb(
+  { title: 'Appointment search', path: search_appointments_path },
+  { title: "Reallocate appointment for #{@appointment.name}" })
+%>
+
+<h1>Reallocate an appointment for <%= @appointment.name %></h1>
+
+<%= form_for @appointment, url: appointment_reallocate_path(@appointment), method: :post, layout: :basic do |f| %>
+  <div class="row form-group">
+    <div class="col-md-6">
+      <%=
+        f.select(
+          :guider_id,
+          options_for_select(user_options(current_user, except: @appointment.guider_id)),
+          { include_blank: '' },
+          multiple: false,
+          class: 't-guider',
+          data: { module: 'advanced-select' },
+        )
+      %>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-md-12">
+      <%= f.submit "Reallocate", class: 't-reallocate' %>
+    </div>
+  </div>
+<% end %>
