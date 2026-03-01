@@ -53,6 +53,7 @@ Rails.application.routes.draw do
   resource :my_appointments, only: :show
   resource :company_calendar, only: :show
   resources :appointments, only: %i[new index show edit update create] do
+    resource :reallocate, only: %i[new create]
     resource :consent, only: :show
     resource :process, only: :create
     resource :email_confirmation, only: :create

@@ -1309,6 +1309,57 @@ RSpec.describe Appointment, type: :model do
     end
   end
 
+  describe '#can_be_reallocated_by?' do
+    let(:appointment) { build_stubbed(:appointment) }
+    let(:user) { build_stubbed(:resource_manager) }
+
+    subject { appointment.can_be_reallocated_by?(user) }
+
+    context 'when the appointment is pending' do
+      context 'when the appointment is past' do
+        it 'is false' do
+          appointment.start_at = 3.weeks.ago
+
+          expect(subject).to be(false)
+        end
+      end
+
+      context 'when the appointment is future' do
+        context 'when the user is a resource manager' do
+          context 'when the appointment is for another organisation' do
+            it 'is false' do
+              appointment.guider = build_stubbed(:guider, :cas)
+
+              expect(subject).to be(false)
+            end
+          end
+
+          context 'when the appointment is for my organisation' do
+            it 'is true' do
+              expect(subject).to be(true)
+            end
+          end
+        end
+
+        context 'when they are another type of user' do
+          it 'is false' do
+            user.permissions = %w[guider]
+
+            expect(subject).to be(false)
+          end
+        end
+      end
+    end
+
+    context 'when the appointment is not pending' do
+      it 'is false' do
+        appointment.status = :no_show
+
+        expect(subject).to be(false)
+      end
+    end
+  end
+
   describe '#can_be_rescheduled_by?' do
     let(:result) do
       appointment.can_be_rescheduled_by?(user)

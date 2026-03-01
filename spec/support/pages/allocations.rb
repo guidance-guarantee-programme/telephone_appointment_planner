@@ -2,6 +2,7 @@ module Pages
   class Allocations < Base
     set_url '/allocations'
 
+    element :flash_of_success, '.alert-success'
     element :date, '.fc-left h2'
     elements :guiders, '.fc-resource-cell'
     elements :appointments, '.fc-event'

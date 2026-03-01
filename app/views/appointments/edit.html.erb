@@ -85,6 +85,12 @@
         <span>Create Summary</span>
       <% end %>
     <% end %>
+    <% if @appointment.can_be_reallocated_by?(current_user) %>
+      <%= link_to new_appointment_reallocate_path(@appointment), title: 'Reallocate appointment', class: 'btn btn-info t-reallocate' do %>
+        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+        <span>Reallocate</span>
+      <% end %>
+    <% end %>
     <% if @appointment.can_be_rescheduled_by?(current_user) %>
       <%= link_to appointment_reschedule_path(@appointment), title: 'Reschedule appointment', class: 'btn btn-info t-reschedule' do %>
         <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>

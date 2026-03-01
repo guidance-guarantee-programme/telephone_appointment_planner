@@ -51,17 +51,13 @@ module UserHelper
     end
   end
 
-  def user_options(user, scoped: true)
+  def user_options(user, scoped: true, except: nil)
     scope = user.tp_agent? && scoped ? User : user.colleagues
 
     scope.guiders.active.reorder(:name).map do |guider|
-      [
-        guider.name,
-        guider.id,
-        { data: {
-          icon: 'glyphicon-user'
-        } }
-      ]
+      next if guider.id == except
+
+      [guider.name, guider.id, { data: { icon: 'glyphicon-user' } }]
     end
   end
 end
