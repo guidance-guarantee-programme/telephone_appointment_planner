@@ -1,4 +1,6 @@
 class RescheduleGenesysAppointmentJob < ApplicationJob
+  queue_as :single
+
   def perform(appointment)
     return if ignore?(appointment)
 
