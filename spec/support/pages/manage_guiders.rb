@@ -13,6 +13,11 @@ module Pages
       element :checkbox, '.t-checkbox'
     end
 
+    section :delete_prompt, '.alertify' do
+      element :group, '.ajs-input'
+      element :ok, '.t-ok'
+    end
+
     element :deactivate, '.t-deactivate'
     element :activate, '.t-activate'
 

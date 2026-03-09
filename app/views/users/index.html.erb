@@ -40,7 +40,16 @@
             <td><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span class="name"><%= guider.name %><%= psg_banner(guider) %></span></td>
             <td>
               <% guider.groups.each do |group| %>
-                <span class="label label-info <%= dom_id(group) %> t-group"><%= group.name %></span>
+                  <%= button_to(
+                    group_path(group, user_ids: group.user_ids),
+                    method: :delete,
+                    data: { module: 'group-deletion-confirmation', group: group.name },
+                    class: 'btn btn-info btn-xs t-group',
+                    form_class: 'form-group--delete-group'
+                  ) do %>
+                    <strong class="<%= dom_id(group) %>"><%= group.name %></strong>
+                    <span class="sr-only">Delete <%= group.name %></span>
+                  <% end %>
               <% end %>
             </td>
             <td class="guider__active">

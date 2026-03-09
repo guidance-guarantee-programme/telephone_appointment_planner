@@ -21,6 +21,7 @@ source 'https://rubygems.org'
 
 gem 'active_link_to'
 gem 'active_model_serializers'
+gem 'alertifyjs-rails'
 gem 'audited'
 gem 'azure-storage-blob', '~> 2.0.3'
 gem 'bh'
