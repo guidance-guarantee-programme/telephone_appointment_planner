@@ -1,4 +1,6 @@
 class CancelGenesysAppointmentJob < ApplicationJob
+  queue_as :single
+
   def perform(appointment)
     return unless appointment.cancel_to_genesys?
 

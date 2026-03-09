@@ -1,4 +1,6 @@
 class GenesysNotificationJob < ApplicationJob
+  queue_as :single
+
   def perform(event_data)
     event = JSON.parse(event_data)
 
