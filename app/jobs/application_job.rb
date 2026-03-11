@@ -6,7 +6,7 @@ class ApplicationJob < ActiveJob::Base
 
   def recipients_for(appointment)
     if appointment.tpas_guider?
-      Array(OPS_SUPERVISOR)
+      ENV.fetch('OPS_BOOKING_MANAGER_ALIASES') { OPS_SUPERVISOR }.split(',')
     elsif appointment.cas_guider?
       CAS_RECIPIENTS
     else
