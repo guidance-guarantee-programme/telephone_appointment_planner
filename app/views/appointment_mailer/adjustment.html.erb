@@ -15,10 +15,6 @@
   <li>Third party</li>
 <% end %>
 
-<% if !@appointment.dc_pot_confirmed? %>
-  <li>DC pot unconfirmed</li>
-<% end %>
-
 <% if @appointment.potential_duplicates? %>
   <li>Potential duplicates</li>
 <% end %>

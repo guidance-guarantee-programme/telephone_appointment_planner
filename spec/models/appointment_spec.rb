@@ -110,25 +110,9 @@ RSpec.describe Appointment, type: :model do
         end
       end
 
-      context 'when the only adjustment is DC unsure' do
-        it 'is true' do
-          appointment = build(:appointment, dc_pot_confirmed: false)
-
-          expect(appointment).to be_adjustments
-        end
-      end
-
       context 'when the appointment is extended duration' do
         it 'is true' do
           appointment = build(:appointment, extended_duration: true)
-
-          expect(appointment).to be_adjustments
-        end
-      end
-
-      context 'when there are other adjustments as well as DC unsure' do
-        it 'is true' do
-          appointment = build(:appointment, dc_pot_confirmed: false, accessibility_requirements: true)
 
           expect(appointment).to be_adjustments
         end

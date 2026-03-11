@@ -329,8 +329,6 @@ RSpec.describe AppointmentMailer, type: :mailer do
       expect(subject.body.encoded).to include('they require help')
       # include the third party booking disclaimer
       expect(subject.body.encoded).to include('appointment on behalf')
-      # include the DC unsure disclaimer
-      expect(subject.body.encoded).to include('unsure if they have a DC')
     end
 
     context 'when `Appointment#adjustments?` is false' do
