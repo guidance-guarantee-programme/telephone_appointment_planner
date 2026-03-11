@@ -1,38 +1,44 @@
+<h1 style="color: #0F19A0 !important;font-family: Calibri, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 20px;line-height: 1.111111111;padding: 15px 0;">
+  The appointment has the following adjustments:
+</h1>
+
+<ul>
 <% if @appointment.accessibility_requirements? %>
-  <h1 style="color: #0F19A0 !important;font-family: Calibri, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 20px;line-height: 1.111111111;padding: 15px 0;">
-    The customer has indicated they require help or an accessibility adjustment to access their appointment
-  </h1>
+  <li>Accessibility</li>
 <% end %>
 
 <% if @appointment.extended_duration? %>
-  <h1 style="color: #0F19A0 !important;font-family: Calibri, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 20px;line-height: 1.111111111;padding: 15px 0;">
-    The customer has indicated they require an extended duration appointment
-  </h1>
+  <li>Extended duration</li>
 <% end %>
 
 <% if @appointment.third_party_booking? %>
-  <h1 style="color: #0F19A0 !important;font-family: Calibri, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 20px;line-height: 1.111111111;padding: 15px 0;">
-    The customer has indicated they are attending an appointment on behalf of an individual
-  </h1>
+  <li>Third party</li>
 <% end %>
 
 <% if !@appointment.dc_pot_confirmed? %>
-  <h1 style="color: #0F19A0 !important;font-family: Calibri, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 20px;line-height: 1.111111111;padding: 15px 0;">
-    The customer has indicated that they are unsure if they have a DC pension
-  </h1>
+  <li>DC pot unconfirmed</li>
 <% end %>
 
 <% if @appointment.potential_duplicates? %>
-  <h1 style="color: #0F19A0 !important;font-family: Calibri, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 20px;line-height: 1.111111111;padding: 15px 0;">
-    The appointment has been identified as a potential duplicate booking
-  </h1>
+  <li>Potential duplicates</li>
 <% end %>
 
 <% if @appointment.notes? %>
-  <h1 style="color: #0F19A0 !important;font-family: Calibri, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 20px;line-height: 1.111111111;padding: 15px 0;">
-    The customer has provided additional information or notes regarding their appointment
-  </h1>
+  <li>Additional information or notes</li>
 <% end %>
+
+<% if @appointment.bsl_video? %>
+  <li>BSL video</li>
+<% end %>
+
+<% if @appointment.welsh? %>
+  <li>Welsh language</li>
+<% end %>
+
+<% if @appointment.ms_teams_call? %>
+  <li>MS Teams call</li>
+<% end %>
+</ul>
 
 <%= p do %>
   Reference number:

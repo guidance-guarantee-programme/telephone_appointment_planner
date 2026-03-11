@@ -304,13 +304,15 @@ class Appointment < ApplicationRecord
     self.rescheduled_at     = Time.zone.now
   end
 
+  # rubocop:disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
   def adjustments?
     return true if accessibility_requirements? || third_party_booking? || extended_duration?
-    return false if tpas_guider?
+    return true if bsl_video? || welsh? || ms_teams_call?
     return true if notes?
 
     !dc_pot_confirmed? && pension_wise?
   end
+  # rubocop:enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
 
   def address?
     [address_line_one, town, postcode].all?(&:present?)
