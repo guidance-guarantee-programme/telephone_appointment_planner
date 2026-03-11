@@ -34,6 +34,24 @@
   </h1>
 <% end %>
 
+<% if @appointment.bsl_video? %>
+  <h1 style="color: #0F19A0 !important;font-family: Calibri, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 20px;line-height: 1.111111111;padding: 15px 0;">
+    The appointment is BSL video
+  </h1>
+<% end %>
+
+<% if @appointment.welsh? %>
+  <h1 style="color: #0F19A0 !important;font-family: Calibri, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 20px;line-height: 1.111111111;padding: 15px 0;">
+    The appointment is Welsh language
+  </h1>
+<% end %>
+
+<% if @appointment.ms_teams_call? %>
+  <h1 style="color: #0F19A0 !important;font-family: Calibri, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 20px;line-height: 1.111111111;padding: 15px 0;">
+    The appointment will take place by MS Teams call
+  </h1>
+<% end %>
+
 <%= p do %>
   Reference number:
   <br>

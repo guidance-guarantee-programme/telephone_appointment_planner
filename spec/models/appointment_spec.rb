@@ -85,87 +85,70 @@ RSpec.describe Appointment, type: :model do
   end
 
   describe '#adjustments?' do
-    context 'when the customer is DC unsure' do
-      context 'when the appointment is Pension Wise' do
-        context 'when the guider is Pension Ops/TPAS' do
-          context 'when the only adjustment is DC unsure' do
-            it 'is false' do
-              appointment = build(:appointment, dc_pot_confirmed: false)
+    context 'when the appointment is Pension Wise' do
+      context 'for BSL' do
+        it 'is true' do
+          appointment = build(:appointment, bsl_video: true)
 
-              expect(appointment).not_to be_adjustments
-            end
-          end
-
-          context 'when the appointment is extended duration' do
-            it 'is true' do
-              appointment = build(:appointment, extended_duration: false)
-              expect(appointment).not_to be_adjustments
-
-              appointment.extended_duration = true
-              expect(appointment).to be_adjustments
-            end
-          end
-
-          context 'when the appointment has notes' do
-            it 'is false' do
-              appointment = build(:appointment, notes: 'Well hello there.')
-
-              expect(appointment).not_to be_adjustments
-            end
-          end
-
-          context 'when there are other adjustments as well as DC unsure' do
-            it 'is true' do
-              appointment = build(:appointment, dc_pot_confirmed: false, accessibility_requirements: true)
-
-              expect(appointment).to be_adjustments
-            end
-          end
-        end
-
-        context 'when the guider is any other org' do
-          context 'when there is only the DC unsure adjustment' do
-            it 'is true' do
-              appointment = build(:appointment, organisation: :cas, dc_pot_confirmed: false)
-
-              expect(appointment).to be_adjustments
-            end
-          end
-
-          context 'when notes are given' do
-            it 'is true' do
-              appointment = build(
-                :appointment,
-                organisation: :cas,
-                notes: 'They will care about these.'
-              )
-
-              expect(appointment).to be_adjustments
-            end
-          end
-
-          context 'when there are multiple adjustments' do
-            it 'is true' do
-              appointment = build(
-                :appointment,
-                organisation: :cas,
-                dc_pot_confirmed: false,
-                accessibility_requirements: true
-              )
-
-              expect(appointment).to be_adjustments
-            end
-          end
+          expect(appointment).to be_adjustments
         end
       end
 
-      context 'when the appointment is PSG' do
-        it 'is false' do
-          appointment = build(:appointment, :due_diligence, dc_pot_confirmed: false)
+      context 'for Welsh' do
+        it 'is true' do
+          appointment = build(:appointment, welsh: true)
 
-          expect(appointment).not_to be_adjustments
+          expect(appointment).to be_adjustments
         end
       end
+
+      context 'for MS Teams' do
+        it 'is true' do
+          appointment = build(:appointment, ms_teams_call: true)
+
+          expect(appointment).to be_adjustments
+        end
+      end
+
+      context 'when the only adjustment is DC unsure' do
+        it 'is true' do
+          appointment = build(:appointment, dc_pot_confirmed: false)
+
+          expect(appointment).to be_adjustments
+        end
+      end
+
+      context 'when the appointment is extended duration' do
+        it 'is true' do
+          appointment = build(:appointment, extended_duration: true)
+
+          expect(appointment).to be_adjustments
+        end
+      end
+
+      context 'when the appointment has notes' do
+        it 'is true' do
+          appointment = build(:appointment, notes: 'Well hello there.')
+
+          expect(appointment).to be_adjustments
+        end
+      end
+
+      context 'when there are other adjustments as well as DC unsure' do
+        it 'is true' do
+          appointment = build(:appointment, dc_pot_confirmed: false, accessibility_requirements: true)
+
+          expect(appointment).to be_adjustments
+        end
+      end
+    end
+  end
+
+  context 'when the appointment is PSG' do
+    it 'is false' do
+      appointment = build(:appointment, :due_diligence, dc_pot_confirmed: false, notes: '')
+
+      expect(appointment).not_to be_adjustments
     end
   end
 
