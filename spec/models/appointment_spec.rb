@@ -201,6 +201,24 @@ RSpec.describe Appointment, type: :model do
   end
 
   describe '#process_casebook_cancellation!' do
+    context 'Bug - when the appointment has a status only certain users can assign' do
+      it 'can still process the appointment for casebook cancellation' do
+        appointment = build(
+          :appointment,
+          :casebook_pushed,
+          status: :cancelled_by_pension_wise,
+          secondary_status: '44' # rebooked to MaPS
+        )
+        appointment.current_user = create(:resource_manager)
+        appointment.save!
+        appointment.current_user = nil # simulate the actual state during cancellation
+
+        appointment.process_casebook_cancellation!
+
+        expect(appointment).not_to be_casebook_appointment_id
+      end
+    end
+
     it 'creates the cancelled activity for auditing' do
       appointment = create(:appointment, :casebook_pushed)
 

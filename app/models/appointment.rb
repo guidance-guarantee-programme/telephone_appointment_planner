@@ -290,7 +290,7 @@ class Appointment < ApplicationRecord
 
   def process_casebook_cancellation!
     transaction do
-      update!(casebook_appointment_id: nil)
+      update_attribute(:casebook_appointment_id, nil)
 
       CasebookCancelledActivity.create!(appointment: self)
     end
