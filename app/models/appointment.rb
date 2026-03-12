@@ -85,6 +85,15 @@ class Appointment < ApplicationRecord
     ms_teams_call
   ].freeze
 
+  ADJUSTMENT_ATTRIBUTES = %w[
+    accessibility_requirements
+    third_party_booking
+    extended_duration
+    bsl_video
+    welsh
+    ms_teams_call
+  ].freeze
+
   enum :status, { pending: 0, complete: 1, no_show: 2, incomplete: 3, ineligible_age: 4,
                   ineligible_pension_type: 5, cancelled_by_customer: 6, cancelled_by_pension_wise: 7,
                   cancelled_by_customer_sms: 8, cancelled_by_customer_online: 9 }
@@ -304,14 +313,9 @@ class Appointment < ApplicationRecord
     self.rescheduled_at     = Time.zone.now
   end
 
-  # rubocop:disable Metrics/CyclomaticComplexity
   def adjustments?
-    return true if accessibility_requirements? || third_party_booking? || extended_duration?
-    return true if bsl_video? || welsh? || ms_teams_call?
-
-    !dc_pot_confirmed? && pension_wise?
+    attributes.slice(*ADJUSTMENT_ATTRIBUTES).values.any?
   end
-  # rubocop:enable Metrics/CyclomaticComplexity
 
   def address?
     [address_line_one, town, postcode].all?(&:present?)

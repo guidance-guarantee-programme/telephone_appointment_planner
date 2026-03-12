@@ -82,8 +82,7 @@ class Notifier
     return unless modifying_agent&.tpas_agent?
 
     appointment.previous_changes.slice(
-      'accessibility_requirements', 'third_party_booking', 'dc_pot_confirmed', 'extended_duration',
-      'bsl_video', 'welsh', 'ms_teams_call'
+      *Appointment::ADJUSTMENT_ATTRIBUTES
     ).present? && appointment.adjustments?
   end
 
