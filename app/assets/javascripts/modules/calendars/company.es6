@@ -60,6 +60,7 @@ class CompanyCalendar extends Calendar {
     super.start(el);
 
     this.isFullscreen = false;
+    this.hideCancelledAppointments = false;
     this.filterList = [];
     this.$filterButton = $('.fc-filter-button');
     this.filterButtonLabel = this.$filterButton.text();
@@ -113,6 +114,7 @@ class CompanyCalendar extends Calendar {
   }
 
   handleHideCancelledToggle() {
+    this.hideCancelledAppointments = this.hideCancelledAppointments ? false : true;
     $('.fc-event--cancelled').toggle();
   }
 
@@ -250,6 +252,13 @@ class CompanyCalendar extends Calendar {
 
   eventAfterAllRender() {
     super.eventAfterAllRender();
+
+    if (this.hideCancelledAppointments) {
+      $('.fc-event--cancelled').hide();
+    }
+    else {
+      $('.fc-event--cancelled').show();
+    }
 
     const events = this.$el.fullCalendar('clientEvents'),
       holidays = this.getEventsOfType(events, 'holiday'),
