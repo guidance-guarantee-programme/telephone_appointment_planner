@@ -259,6 +259,10 @@ $guider-row-height: 120px;
   margin: 1.5px;
   border-color: $calendar-appointment-cancelled-background;
 
+  &.fc-event--ms-teams-call {
+    @include hard-striped($calendar-appointment-cancelled-background, $color-black);
+  }
+
   &:hover td {
     @include striped($calendar-appointment-cancelled-background);
   }
@@ -266,6 +270,10 @@ $guider-row-height: 120px;
   &.fc--past {
     @include striped($calendar-past-appointment-cancelled-background);
     border-color: $calendar-past-appointment-cancelled-background;
+
+    &.fc-event--ms-teams-call {
+      @include hard-striped($calendar-appointment-cancelled-background, $color-black);
+  }
 
     &:hover td {
       @include striped($calendar-past-appointment-cancelled-background);
