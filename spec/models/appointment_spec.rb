@@ -1003,7 +1003,7 @@ RSpec.describe Appointment, type: :model do
         context 'when the appointment is not owned by the agent org' do
           it 'cannot be booked within the grace period' do
             subject.agent = build_stubbed(:resource_manager, :waltham_forest)
-            subject.start_at = BusinessDays.from_now(1)
+            subject.start_at = BusinessDays.from_now(1).beginning_of_day
 
             expect(subject).to be_invalid
             expect(subject.errors[:start_at]).to be_present
