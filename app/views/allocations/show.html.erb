@@ -58,7 +58,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title js-modal-title" id="rescheduling-reasons-modal-label">Reason for rescheduling</h4>
+        <h4 class="modal-title js-modal-title" id="rescheduling-reasons-modal-label">Reason</h4>
       </div>
       <div class="modal-body" data-module="radio-toggle">
         <div class="radio">
@@ -71,6 +71,12 @@
             <div class="radio">
               <label>
                 <input class="t-pension-wise-rescheduled" type="radio" value="office_rescheduled" name="rescheduling_reason" id="office_rescheduled" data-target="office-rescheduled-route"> Office rescheduled
+              </label>
+            </div>
+
+            <div class="radio">
+              <label>
+                <input class="t-pension-wise-reallocated" type="radio" value="office_reallocated" name="rescheduling_reason" id="office_reallocated" data-target="office-reallocated-route"> Office reallocated
               </label>
             </div>
           </div>
@@ -95,6 +101,19 @@
         <div class="radio" id="office-rescheduled-route">
           <div class="form-group">
             <h4>Office rescheduled due to</h4>
+            <% Appointment::OFFICE_RESCHEDULED_OPTIONS.each do |key, label| %>
+              <div class="radio">
+                <label>
+                  <input class="t-via-<%= key.dasherize %>" type="radio" value="<%= key %>" name="rescheduling_route" id="rescheduling_route_<%= key %>"> <%= label %>
+                </label>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="radio" id="office-reallocated-route">
+          <div class="form-group">
+            <h4>Office reallocated due to</h4>
             <% Appointment::OFFICE_RESCHEDULED_OPTIONS.each do |key, label| %>
               <div class="radio">
                 <label>

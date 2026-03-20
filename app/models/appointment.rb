@@ -24,7 +24,8 @@ class Appointment < ApplicationRecord
 
   RESCHEDULING_REASONS = [
     CLIENT_RESCHEDULED = 'client_rescheduled'.freeze,
-    OFFICE_RESCHEDULED = 'office_rescheduled'.freeze
+    OFFICE_RESCHEDULED = 'office_rescheduled'.freeze,
+    OFFICE_REALLOCATED = 'office_reallocated'.freeze
   ].freeze
   RESCHEDULING_ROUTES = [
     RESCHEDULED_PHONE = 'phone'.freeze,
@@ -881,7 +882,7 @@ class Appointment < ApplicationRecord
     return errors.add(:rescheduling_route, 'must be specified') if client_rescheduled? &&
                                                                    !RESCHEDULING_ROUTES.include?(rescheduling_route)
 
-    validate_office_rescheduling_route if office_rescheduled?
+    validate_office_rescheduling_route if office_rescheduled? || office_reallocated?
   end
 
   def validate_office_rescheduling_route
@@ -898,6 +899,10 @@ class Appointment < ApplicationRecord
 
   def client_rescheduled?
     rescheduling_reason == CLIENT_RESCHEDULED
+  end
+
+  def office_reallocated?
+    rescheduling_reason == OFFICE_REALLOCATED
   end
 
   def validate_welsh_language

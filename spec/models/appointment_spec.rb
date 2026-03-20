@@ -715,6 +715,10 @@ RSpec.describe Appointment, type: :model do
 
           subject.rescheduling_route = 'urgent_appointment'
           expect(subject).to be_valid
+
+          subject.rescheduling_reason = 'office_reallocated'
+          subject.rescheduling_route  = ''
+          expect(subject).to be_invalid
         end
       end
     end
