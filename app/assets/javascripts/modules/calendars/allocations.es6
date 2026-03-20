@@ -186,6 +186,9 @@
         else if (route == undefined && reason == 'office_rescheduled') {
           alert('You must specify rescheduled due to');
         }
+        else if (route == undefined && reason == 'office_reallocated') {
+          alert('You must specify reallocated due to');
+        }
         else {
           e.data.event.reschedulingReason = reason;
           e.data.event.reschedulingRoute = route;
