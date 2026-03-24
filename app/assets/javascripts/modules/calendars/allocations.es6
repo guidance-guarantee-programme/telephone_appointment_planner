@@ -8,6 +8,7 @@
         editable: true,
         eventDurationEditable: true,
         eventDragStop: (...args) => this.eventDragStop(...args),
+        eventAllow: (...args) => this.eventAllow(...args),
         header: {
           right: 'fullscreen sort filter agendaDay timelineDay today jumpToDate prev,next'
         },
@@ -240,6 +241,14 @@
         })
         .addClass('active')
         .html(event.start.format('HH:mm'));
+      }
+    }
+
+    eventAllow(_, draggedEvent) {
+      if (this.uniqueEventsChanged() == 0) {
+        return true;
+      } else {
+        return draggedEvent.id == this.eventChanges[0].eventObj.id;
       }
     }
 
