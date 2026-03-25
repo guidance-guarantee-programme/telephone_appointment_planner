@@ -95,3 +95,53 @@
   <%= f.hidden_field :slots, class: 'slots-data', value: @slots_as_json %>
   <%= f.submit 'Save', class: 'btn btn-primary js-save t-save' %>
 <% end %>
+
+<div class="modal fade t-shift-modal js-shift-modal" id="shift-modal" tabindex="-1" role="dialog" aria-labelledby="shift-modal-label">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title js-modal-title" id="shift-modal-label">Create slots from a shift</h4>
+      </div>
+      <div class="modal-body">
+        <p>Create slots on these days:</p>
+        <div class="checkbox">
+          <div class="form-group">
+            <div class="checkbox">
+              <label>
+                <input class="js-all-days" type="checkbox" value="1" name="all" id="all"> All
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input class="t-monday" type="checkbox" value="1" name="day" id="monday"> Monday
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input class="t-tuesday" type="checkbox" value="2" name="day" id="tuesday"> Tuesday
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input class="t-wednesday" type="checkbox" value="3" name="day" id="wednesday"> Wednesday
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input class="t-thursday" type="checkbox" value="4" name="day" id="thursday"> Thursday
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input class="t-friday" type="checkbox" value="5" name="day" id="friday"> Friday
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary js-save t-save">Create slots from shift</button>
+      </div>
+    </div>
+  </div>
+</div>

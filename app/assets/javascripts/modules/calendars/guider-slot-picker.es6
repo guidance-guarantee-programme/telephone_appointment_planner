@@ -155,23 +155,43 @@
     }
 
     handleEvent(event) {
-      if (!window.confirm('Are you sure you want to replace all slots with these common slots?')) {
+      this.$modal = $('.js-shift-modal');
+      this.$allDays = $('.js-all-days');
+      this.$modal.find('.js-save').on(
+        'click',
+        {event: event, target: event.target},
+        this.processEvent.bind(this)
+      );
+      this.$allDays.on('click', this.toggleAllDays.bind(this));
+
+      this.$modal.modal({keyboard: false});
+    }
+
+    toggleAllDays(jsEvent) {
+      $('input[type=checkbox][name=day]').not(jsEvent.target).prop('checked', jsEvent.target.checked);
+    }
+
+    processEvent(event) {
+      let chosenDays = this.$modal.find('input[type=checkbox][name=day]:checked').map((_, checkbox) => {
+        return parseInt($(checkbox).val());
+      }).get();
+
+      if (chosenDays.length == 0) {
+        this.$modal.modal('hide');
         return;
       }
 
       this.$el.fullCalendar('removeEvents');
 
-      const events = $(event.currentTarget).data('events'),
+      const events = $(event.data.target).data('events'),
         calendarView = this.$el.fullCalendar('getView'),
         calendarStartDate = calendarView.intervalStart,
         calendarEndDate = calendarView.intervalEnd,
         eventsToAdd = [];
 
       for (let currentDate = moment(calendarStartDate); currentDate < calendarEndDate; currentDate.add(1, 'days')) {
-        for (let eventIndex in events) {
-          let currentEvent = events[eventIndex];
-
-          if (currentEvent.days.includes(currentDate.day())) {
+        for (let currentEvent of events) {
+          if (chosenDays.includes(currentDate.day()) && currentEvent.days.includes(currentDate.day())) {
             eventsToAdd.push({
               start: `${currentDate.format('YYYY-MM-DD')}T${currentEvent.start}`,
               end: `${currentDate.format('YYYY-MM-DD')}T${currentEvent.end}`
@@ -185,6 +205,7 @@
       this.$el.fullCalendar('addEventSource', eventsToAdd);
 
       this.generateJSON();
+      this.$modal.modal('hide');
     }
   }
 

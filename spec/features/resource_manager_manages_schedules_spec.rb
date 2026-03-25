@@ -159,15 +159,20 @@ RSpec.feature 'Resource manager manages schedules' do
   end
 
   def and_they_add_the_default_mid_shift_slots
-    accept_confirm do
-      @page.mid.click
-    end
+    @page.mid.click
+    @page.wait_until_shift_modal_visible
+    @page.shift_modal.monday.set(true)
+    @page.shift_modal.wednesday.set(true)
+    @page.shift_modal.friday.set(true)
+    @page.shift_modal.save.click
+    @page.wait_until_shift_modal_invisible
   end
 
   def and_the_guider_has_the_mid_shift_time_slots_available
     schedule = @guider.schedules.first
 
-    expect(schedule.slots.count).to eq 25
+    expect(schedule.slots.count).to eq(15)
+    expect(schedule.slots.map(&:day_of_week).uniq).to eq([1, 3, 5])
   end
 
   def when_they_save_the_users_time_slots
