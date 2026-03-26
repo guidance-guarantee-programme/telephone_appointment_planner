@@ -7,6 +7,16 @@ RSpec.describe AuditActivity do
       allow(PusherActivityCreatedJob).to receive(:perform_later)
     end
 
+    context 'when the change is to the vulnerability profile' do
+      it 'uses the templated message' do
+        @appointment = create(:appointment).tap do |a|
+          a.create_vulnerability_profile!(disability: true)
+        end
+
+        expect(@appointment.activities.first.message).to eq('extra profile information')
+      end
+    end
+
     context 'with updated fields' do
       before do
         @appointment = create(:appointment).tap do |a|

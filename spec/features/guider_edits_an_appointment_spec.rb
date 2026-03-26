@@ -45,16 +45,32 @@ RSpec.feature 'Guider edits an appointment' do
     end
   end
 
-  scenario 'Successfully editing an appointment', js: true do
+  scenario 'Successfully editing an appointment after the start time', js: true do
+    given_the_user_is_a_guider(organisation: :cas) do
+      and_they_have_an_appointment
+      travel_to 3.months.from_now do
+        when_they_attempt_to_edit_the_appointment
+        then_they_see_the_existing_details
+        when_they_modify_the_appointment
+        then_the_appointment_is_changed
+        and_they_see_a_success_message
+      end
+    end
+  end
+
+  scenario 'Successfully editing an appointment before the start time', js: true do
     given_the_user_is_a_guider(organisation: :cas) do
       and_they_have_an_appointment
       when_they_attempt_to_edit_the_appointment
-      then_they_see_the_existing_details
-      when_they_modify_the_appointment
-      then_the_appointment_is_changed
-      and_the_customer_is_notified
-      and_they_see_a_success_message
+      then_the_vulnerability_questions_are_disabled
     end
+  end
+
+  def then_the_vulnerability_questions_are_disabled
+    expect(@page.disability_yes).to be_disabled
+    expect(@page.mental_health_condition_yes).to be_disabled
+    expect(@page.vulnerable_customer_yes).to be_disabled
+    expect(@page.falling_into_financial_difficulties).to be_disabled
   end
 
   def and_an_appointment_exists_for_today
@@ -180,6 +196,10 @@ RSpec.feature 'Guider edits an appointment' do
 
     @page.wait_until_eligibility_reason_visible
     @page.eligibility_reason.select 'Ill health'
+    @page.disability_yes.set(true)
+    @page.mental_health_condition_yes.set(true)
+    @page.vulnerable_customer_yes.set(true)
+    @page.approaching_later_life.check
 
     @page.first_name.set 'Rick'
     @page.submit.click
@@ -189,6 +209,10 @@ RSpec.feature 'Guider edits an appointment' do
     @page = Pages::EditAppointment.new
     expect(@page).to be_displayed
     expect(@page).to have_flash_of_success
+    expect(@page.disability_yes).to be_selected
+    expect(@page.mental_health_condition_yes).to be_selected
+    expect(@page.vulnerable_customer_yes).to be_selected
+    expect(@page.approaching_later_life).to be_checked
 
     expect(@page.first_name.value).to eq('Rick')
     expect(@page).to have_text 'eligible as third party'

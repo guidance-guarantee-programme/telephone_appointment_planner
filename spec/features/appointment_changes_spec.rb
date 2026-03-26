@@ -33,17 +33,17 @@ RSpec.feature 'Appointment audit trail' do
   end
 
   def then_change_can_be_seen_in_an_audit_activity
-    expect(@edit_page.activity_feed.audit_activity)
+    expect(@edit_page.activity_feed.audit_activities.last)
       .to have_text("#{GDS::SSO.test_user.name} changed the cancelled via, first name, secondary status, and status")
   end
 
   def and_when_they_click_the_audit_activity
-    @edit_page.activity_feed.more_activity_link.click
+    @edit_page.activity_feed.audit_activities.last.click
   end
 
   def then_they_are_on_the_changes_page
     @changes_page = Pages::AppointmentChanges.new
-    @changes_page.displayed?
+    expect(@changes_page).to be_displayed
   end
 
   def and_they_can_see_the_change_details

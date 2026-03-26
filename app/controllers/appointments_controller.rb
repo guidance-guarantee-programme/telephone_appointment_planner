@@ -19,6 +19,7 @@ class AppointmentsController < ApplicationController
 
   def edit
     @appointment = Appointment.for_organisation(current_user).find(params[:id])
+    @appointment.build_vulnerability_profile unless @appointment.vulnerability_profile
   end
 
   def reschedule
@@ -189,68 +190,83 @@ class AppointmentsController < ApplicationController
 
   # rubocop:disable Metrics/MethodLength
   def updateable_params
-    %i[
-      first_name
-      last_name
-      email
-      country_code
-      phone
-      mobile
-      date_of_birth
-      nudge_eligibility_reason
-      memorable_word
-      accessibility_requirements
-      notes
-      status
-      secondary_status
-      type_of_appointment
-      where_you_heard
-      address_line_one
-      address_line_two
-      address_line_three
-      town
-      county
-      postcode
-      gdpr_consent
-      smarter_signposted
-      bsl_video
-      third_party_booking
-      data_subject_name
-      data_subject_age
-      data_subject_date_of_birth
-      data_subject_consent_obtained
-      email_consent_form_required
-      printed_consent_form_required
-      power_of_attorney
-      consent_address_line_one
-      consent_address_line_two
-      consent_address_line_three
-      consent_town
-      consent_county
-      consent_postcode
-      power_of_attorney_evidence
-      data_subject_consent_evidence
-      email_consent
-      lloyds_signposted
-      schedule_type
-      referrer
-      transferring_pension_to
-      small_pots
-      nudged
-      internal_availability
-      welsh
-      cancelled_via
-      attended_digital
-      adjustments
-      extended_duration
-      ms_teams_call
+    [
+      :first_name,
+      :last_name,
+      :email,
+      :country_code,
+      :phone,
+      :mobile,
+      :date_of_birth,
+      :nudge_eligibility_reason,
+      :memorable_word,
+      :accessibility_requirements,
+      :notes,
+      :status,
+      :secondary_status,
+      :type_of_appointment,
+      :where_you_heard,
+      :address_line_one,
+      :address_line_two,
+      :address_line_three,
+      :town,
+      :county,
+      :postcode,
+      :gdpr_consent,
+      :smarter_signposted,
+      :bsl_video,
+      :third_party_booking,
+      :data_subject_name,
+      :data_subject_age,
+      :data_subject_date_of_birth,
+      :data_subject_consent_obtained,
+      :email_consent_form_required,
+      :printed_consent_form_required,
+      :power_of_attorney,
+      :consent_address_line_one,
+      :consent_address_line_two,
+      :consent_address_line_three,
+      :consent_town,
+      :consent_county,
+      :consent_postcode,
+      :power_of_attorney_evidence,
+      :data_subject_consent_evidence,
+      :email_consent,
+      :lloyds_signposted,
+      :schedule_type,
+      :referrer,
+      :transferring_pension_to,
+      :small_pots,
+      :nudged,
+      :internal_availability,
+      :welsh,
+      :cancelled_via,
+      :attended_digital,
+      :adjustments,
+      :extended_duration,
+      :ms_teams_call,
+      { vulnerability_profile_attributes: %i[
+        id
+        disability
+        mental_health_condition
+        vulnerable_customer
+        falling_into_financial_difficulties
+        separating_or_getting_divorced
+        being_diagnosed_with_a_health_condition
+        dealing_with_bereavement
+        starting_changing_or_losing_a_job
+        approaching_later_life
+        moving_or_losing_a_home
+        partially_or_fully_retiring
+        getting_married_or_becoming_civil_partners
+      ] }
     ]
   end
-  # rubocop:enable Metrics/MethodLength
 
   def update_params
     params.require(:appointment).permit(updateable_params).merge(current_user:)
   end
+  # rubocop:enable Metrics/MethodLength
 
   def munge_start_at
     if calendar_scheduling?
