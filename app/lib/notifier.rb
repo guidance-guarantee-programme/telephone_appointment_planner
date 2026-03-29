@@ -29,7 +29,9 @@ class Notifier
   def notify_casebook
     if appointment_cancelled?
       CancelCasebookAppointmentJob.perform_later(appointment)
+      CancelGenesysAppointmentJob.perform_later(appointment)
     elsif appointment_reallocated?
+      RescheduleGenesysAppointmentJob.perform_later(appointment)
       RescheduleCasebookAppointmentJob.perform_later(appointment)
     end
   end
