@@ -874,8 +874,8 @@ class Appointment < ApplicationRecord
     errors.add(:gdpr_consent, :inclusion) unless inclusion.include?(gdpr_consent)
   end
 
-  def validate_rescheduling_reason
-    return unless start_at_changed?
+  def validate_rescheduling_reason # rubocop:disable Metrics/CyclomaticComplexity
+    return unless start_at_changed? || guider_id_changed?
 
     errors.add(:rescheduling_reason, 'must be specified') unless RESCHEDULING_REASONS.include?(rescheduling_reason)
 
