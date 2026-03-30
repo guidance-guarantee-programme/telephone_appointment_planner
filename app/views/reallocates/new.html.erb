@@ -6,21 +6,38 @@
 
 <h1>Reallocate an appointment for <%= @appointment.name %></h1>
 
-<%= form_for @appointment, url: appointment_reallocate_path(@appointment), method: :post, layout: :basic do |f| %>
-  <div class="row form-group">
-    <div class="col-md-6">
-      <%=
-        f.select(
-          :guider_id,
-          options_for_select(user_options(current_user, except: @appointment.guider_id)),
-          { include_blank: '' },
-          multiple: false,
-          class: 't-guider',
-          data: { module: 'advanced-select' },
-        )
-      %>
+<%= form_for @appointment, url: appointment_reallocate_path(@appointment.model), method: :post, layout: :basic do |f| %>
+  <div class="form-group <%= 'has-error' if @appointment.errors.include?(:guider_id) %>">
+    <%=
+      f.select(
+        :guider_id,
+        options_for_select(@appointment.guider_options, except: @appointment.model.guider_id),
+        { include_blank: '' },
+        multiple: false,
+        class: "t-guider #{'has-error' if @appointment.errors.include?(:guider_id)}",
+        data: { module: 'guider-select' },
+      )
+    %>
+  </div>
+
+  <div class="radio">
+    <div class="form-group <%= 'has-error' if @appointment.errors.include?(:rescheduling_route) %>">
+      <p class="has-error"><strong>Office reallocated due to</strong></p>
+      <% Appointment::OFFICE_RESCHEDULED_OPTIONS.each do |key, label| %>
+        <div class="radio">
+          <label>
+            <input <%if key == @appointment.rescheduling_route %> checked <% end %>
+             class="t-via-<%= key.dasherize %>"
+             type="radio"
+             value="<%= key %>"
+             name="reallocate[rescheduling_route]"
+             id="rescheduling_route_<%= key %>"> <%= label %>
+            </label>
+        </div>
+      <% end %>
     </div>
   </div>
+
   <div class="row form-group">
     <div class="col-md-12">
       <%= f.submit "Reallocate", class: 't-reallocate' %>

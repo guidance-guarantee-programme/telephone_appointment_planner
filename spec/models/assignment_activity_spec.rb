@@ -39,6 +39,8 @@ RSpec.describe AssignmentActivity do
 
       before do
         appointment.guider = create(:guider)
+        appointment.rescheduling_reason = Appointment::OFFICE_REALLOCATED
+        appointment.rescheduling_route = Appointment::OFFICE_RESCHEDULED_OPTIONS.keys.first
         appointment.save!
 
         subject.update!(user_id: user.id)

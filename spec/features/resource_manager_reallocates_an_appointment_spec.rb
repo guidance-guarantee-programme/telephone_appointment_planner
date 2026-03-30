@@ -27,6 +27,7 @@ RSpec.feature 'Resource manager reallocates an appointment', js: true do
     @page = Pages::ReallocateAppointment.new
     expect(@page).to be_displayed
     @page.guider.select(@guider.name)
+    @page.unplanned_absence.set(true)
     @page.reallocate.click
 
     @page = Pages::Allocations.new
