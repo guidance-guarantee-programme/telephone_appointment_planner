@@ -29,7 +29,7 @@ RSpec.describe AuditActivity do
           user_id: audit.user_id,
           owner_id: @appointment.guider.id,
           appointment_id: @appointment.id,
-          message: 'first name, email, and phone'
+          message: 'email, first name, and phone'
         )
       end
 

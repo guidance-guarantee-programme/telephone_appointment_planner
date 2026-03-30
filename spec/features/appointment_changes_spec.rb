@@ -34,7 +34,7 @@ RSpec.feature 'Appointment audit trail' do
 
   def then_change_can_be_seen_in_an_audit_activity
     expect(@edit_page.activity_feed.audit_activity)
-      .to have_text("#{GDS::SSO.test_user.name} changed the first name")
+      .to have_text("#{GDS::SSO.test_user.name} changed the cancelled via, first name, secondary status, and status")
   end
 
   def and_when_they_click_the_audit_activity
