@@ -20,6 +20,18 @@
   <% end %>
 <% end %>
 
+<% content_for :content do %>
+  <% unless current_user.tpas? %>
+    <p class="alert alert-warning">
+      <strong>Reminder:</strong> Existing Pension Wise Sign On accounts will be
+      disabled on 31 March 2026 (5pm). Please complete all outstanding actions on
+      TAP, Planner and Summary Document Generator.
+    </p>
+  <% end %>
+
+  <%= yield %>
+<% end %>
+
 <% content_for :body_end do %>
   <div data-module="activity-resolve"></div>
   <script>
