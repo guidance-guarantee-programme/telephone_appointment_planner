@@ -47,16 +47,16 @@ RSpec.feature 'Appointment audit trail' do
   end
 
   def and_they_can_see_the_change_details
-    expect(@changes_page.changes_table.change_rows[0]).to have_text('First name')
-    expect(@changes_page.changes_table.change_rows[0]).to have_text(@old_name)
-    expect(@changes_page.changes_table.change_rows[0]).to have_text(@new_name)
+    rows = @changes_page.changes_table.change_rows.map(&:text).sort
 
-    expect(@changes_page.changes_table.change_rows[1]).to have_text('Status')
-    expect(@changes_page.changes_table.change_rows[1]).to have_text('Pending')
-    expect(@changes_page.changes_table.change_rows[1]).to have_text('Cancelled by customer')
-
-    expect(@changes_page.changes_table.change_rows[2]).to have_text('Secondary status')
-    expect(@changes_page.changes_table.change_rows[2]).to have_text('Cancelled prior to appointment')
+    expect(rows).to eq(
+      [
+        'Cancelled via - Phone',
+        'First name Jerry George',
+        'Secondary status - Cancelled prior to appointment',
+        'Status Pending Cancelled by customer'
+      ]
+    )
   end
 end
 # rubocop:enable Metrics/BlockLength
