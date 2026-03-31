@@ -40,32 +40,12 @@ RSpec.describe BookableSlot, type: :model do
   end
 
   describe '.find_available_slot' do
-    it 'returns a slot for the correct organisation' do
-      start_at = Time.zone.parse('2021-05-26 13:00')
-
-      %i[tp cas ni north_tyneside lancashire_west].each do |provider|
-        create(:bookable_slot, provider, start_at:)
-      end
-
-      @expected = create(:bookable_slot, :derbyshire_districts, start_at:)
-
-      @allocated = BookableSlot.find_available_slot(start_at, @expected.guider)
-
-      expect(@allocated).to eq(@expected)
-    end
-
     context 'when a customer books via the website' do
       it 'honours the TPAS/ops booking window' do
         travel_to '2023-10-02 13:00' do
-          agent = double(pension_wise_api?: true)
-
-          # falls outside the starting window
-          slot = create(:bookable_slot, start_at: Time.zone.parse('2023-10-04 13:00'))
-          expect(BookableSlot.find_available_slot(slot.start_at, agent)).to be_nil
-
           # falls inside the starting window
           slot = create(:bookable_slot, start_at: Time.zone.parse('2023-10-14 13:00'))
-          expect(BookableSlot.find_available_slot(slot.start_at, agent)).to eq(slot)
+          expect(BookableSlot.find_available_slot(slot.start_at)).to eq(slot)
         end
       end
     end
@@ -75,7 +55,7 @@ RSpec.describe BookableSlot, type: :model do
     context 'for the due diligence schedule type' do
       it 'is effectively 5 days' do
         travel_to '2021-10-25 10:00' do
-          actual = BookableSlot.next_valid_start_date(user, User::DUE_DILIGENCE_SCHEDULE_TYPE)
+          actual = BookableSlot.next_valid_start_date(user)
           expect(actual).to eq(Time.zone.parse('2021-11-01 21:00'))
         end
       end
@@ -113,13 +93,13 @@ RSpec.describe BookableSlot, type: :model do
         after { travel_back }
 
         {
-          'Monday'    => 'Tuesday',
-          'Tuesday'   => 'Wednesday',
-          'Wednesday' => 'Thursday',
-          'Thursday'  => 'Friday',
-          'Friday'    => 'Monday',
-          'Saturday'  => 'Monday',
-          'Sunday'    => 'Monday'
+          'Monday'    => 'Monday',
+          'Tuesday'   => 'Tuesday',
+          'Wednesday' => 'Wednesday',
+          'Thursday'  => 'Thursday',
+          'Friday'    => 'Friday',
+          'Saturday'  => 'Friday',
+          'Sunday'    => 'Friday'
         }.each do |day, expected_day|
           context "Day is #{day}" do
             it "next valid start date is #{expected_day}" do
@@ -140,7 +120,7 @@ RSpec.describe BookableSlot, type: :model do
           travel_to '2021-12-25 12:00' do
             # this ought to be excluded but is a bug in working_hours
             # but we can circumvent this by adding 'bank holiday' blocks
-            expect(subject.to_date).to eq('2021-12-27'.to_date)
+            expect(subject.to_date).to eq('2021-12-31'.to_date)
           end
         end
       end
@@ -149,14 +129,14 @@ RSpec.describe BookableSlot, type: :model do
         # DST
         travel_to '2020-01-01 13:00' do
           expect(BookableSlot.next_valid_start_date(user))
-            .to eq(Time.zone.parse('2020-01-02 21:00 UTC')
+            .to eq(Time.zone.parse('2020-01-08 21:00 UTC')
             .in_time_zone('London'))
         end
 
         # BST
         travel_to '2020-04-14 13:00' do
           expect(BookableSlot.next_valid_start_date(user))
-            .to eq(Time.zone.parse('2020-04-15 21:00 UTC')
+            .to eq(Time.zone.parse('2020-04-21 21:00 UTC')
             .in_time_zone('London'))
         end
       end
@@ -401,10 +381,7 @@ RSpec.describe BookableSlot, type: :model do
 
         travel_to '2022-09-06 07:00' do
           # when contextually rescheduling
-          expect(result([@tpas_resource_manager, @tpas_guider]).first).to include(guiders: 2)
-
-          expect(result(@tpas_guider).first).to include(guiders: 1)
-          expect(result(@cas_guider).first).to include(guiders: 1)
+          expect(result(@tpas_resource_manager).first).to include(guiders: 1)
         end
 
         travel_to '2022-09-08 07:00' do
@@ -413,27 +390,6 @@ RSpec.describe BookableSlot, type: :model do
 
           expect(result(@tpas_resource_manager).first).to include(guiders: 1)
         end
-      end
-    end
-
-    describe 'requesting with differing providers' do
-      it 'sees the correct slots based on organisational membership' do
-        [
-          @guider_tpas = create(:guider, :tpas),
-          @guiders_cas = create_list(:guider, 2, :cas)
-        ].flatten.each do |guider|
-          create(
-            :bookable_slot,
-            guider:,
-            start_at: make_time(10, 30),
-            end_at: make_time(11, 30)
-          )
-        end
-
-        # TPAS can see all slots
-        expect(result(@guider_tpas).first).to include(guiders: 3)
-        # CAS can see their own slots
-        expect(result(@guiders_cas.first).first).to include(guiders: 2)
       end
     end
 

@@ -6,7 +6,7 @@ FactoryBot.define do
     end
 
     agent { create(:resource_manager, organisation) }
-    start_at { BusinessDays.from_now(3).at_midday }
+    start_at { BusinessDays.from_now(10).at_midday }
     end_at { start_at + 1.hour }
     first_name { Faker::Name.first_name }
     last_name { Faker::Name.last_name }

@@ -4,7 +4,7 @@ class Appointment < ApplicationRecord
 
   acts_as_copy_target
 
-  attr_accessor :current_user, :internal_availability, :ad_hoc_start_at
+  attr_accessor :current_user, :ad_hoc_start_at
 
   MOBILE_PREFIXES = %w[+44 0044 44 0].freeze
   MOBILE_REGEX = /^(07|\+447|00447)/
@@ -224,7 +224,6 @@ class Appointment < ApplicationRecord
   validate :validate_phone_digits, unless: :pension_wise_api?
   validate :validate_mobile_digits, unless: :pension_wise_api?
   validate :validate_secondary_status
-  validate :validate_lloyds_signposted_guider_allocated, if: :lloyds_signposted?, on: :create
   validate :validate_pending_overlaps, if: :due_diligence?, on: :create
   validate :validate_signposting
   validate :validate_small_pots, if: :small_pots?
@@ -232,8 +231,6 @@ class Appointment < ApplicationRecord
   validate :validate_tpas_agent_statuses, if: :status_changed?, on: :update
   validate :validate_gdpr_consent
   validate :validate_rescheduling_reason, on: :update
-  validate :validate_welsh_language, on: :create
-  validate :validate_ms_teams_call, on: :create
   validate :validate_tpas_secondary_status
 
   before_validation :format_name, on: :create
@@ -252,10 +249,6 @@ class Appointment < ApplicationRecord
     return unless guider && previous_guider
 
     guider.organisation_content_id != previous_guider.organisation_content_id
-  end
-
-  def internal_availability?
-    internal_availability.present? && internal_availability == '1'
   end
 
   def print_confirmation?
@@ -336,9 +329,9 @@ class Appointment < ApplicationRecord
     status.start_with?('cancelled')
   end
 
-  def allocate(via_slot: true, agent: nil, scoped: false, rebooking: false)
+  def allocate(via_slot: true)
     if via_slot
-      allocate_slot(agent, scoped, rebooking)
+      allocate_slot
     else
       return unless start_at?
 
@@ -573,7 +566,7 @@ class Appointment < ApplicationRecord
   end
 
   def online_reschedule(start_at:, reason:) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
-    return unless (slot = BookableSlot.find_available_slot(start_at, nil))
+    return unless (slot = BookableSlot.find_available_slot(start_at))
 
     rescheduling = online_reschedules.build(
       previous_guider_id: guider.id,
@@ -587,7 +580,6 @@ class Appointment < ApplicationRecord
     self.previous_guider_id = guider.id
     self.rescheduling_reason = CLIENT_RESCHEDULED
     self.rescheduling_route = RESCHEDULED_ONLINE
-    self.processed_at = nil if slot.guider.cas?
     self.guider = slot.guider
     self.end_at = slot.end_at
 
@@ -616,11 +608,8 @@ class Appointment < ApplicationRecord
     self.unique_reference_number = '' if status_changed?(from: 'complete') && due_diligence?
   end
 
-  def allocate_slot(agent, scoped, rebooking) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
-    args = agent&.tpas_agent? && pension_wise? && scoped ? { external: true } : {}
-    args = { external: scoped, rebooking: true } if agent&.non_tpas_resource_manager? && pension_wise? && rebooking
-
-    slot = BookableSlot.find_available_slot(start_at, agent, schedule_type, scoped:, **args)
+  def allocate_slot
+    slot = BookableSlot.find_available_slot(start_at, schedule_type)
 
     self.guider = nil
     return unless slot
@@ -642,7 +631,7 @@ class Appointment < ApplicationRecord
     return unless new_record? && start_at?
     return if agent_is_resource_manager? && owned_by_my_organisation?(agent)
 
-    too_soon = start_at < BookableSlot.next_valid_start_date(nil, schedule_type)
+    too_soon = start_at < BookableSlot.next_valid_start_date(agent)
     errors.add(:start_at, 'must be more than two business days from now') if too_soon
   end
 
@@ -817,10 +806,6 @@ class Appointment < ApplicationRecord
     end
   end
 
-  def validate_lloyds_signposted_guider_allocated
-    errors.add(:guider, 'The guider is not from an LBGPTL schedule') unless cita?
-  end
-
   def validate_pending_overlaps # rubocop:disable Metrics/MethodLength
     return unless self
                   .class
@@ -866,19 +851,6 @@ class Appointment < ApplicationRecord
 
   def client_rescheduled?
     rescheduling_reason == CLIENT_RESCHEDULED
-  end
-
-  def validate_welsh_language
-    return unless welsh? && guider
-
-    errors.add(:welsh, 'cannot be set for external availability') unless guider.tpas? || guider.cardiff_and_vale?
-  end
-
-  def validate_ms_teams_call
-    return unless ms_teams_call?
-    return if due_diligence?
-
-    errors.add(:ms_teams_call, 'cannot be set for external availability') unless internal_availability?
   end
 
   class << self

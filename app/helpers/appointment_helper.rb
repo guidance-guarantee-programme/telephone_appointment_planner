@@ -14,7 +14,7 @@ module AppointmentHelper
   end
 
   def due_diligence_grace_period
-    grace = BookableSlot.next_valid_start_date(nil, User::DUE_DILIGENCE_SCHEDULE_TYPE)
+    grace = BookableSlot.next_valid_start_date
 
     grace = grace.next_day if grace.hour > 20
 

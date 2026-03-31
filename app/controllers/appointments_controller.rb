@@ -38,7 +38,7 @@ class AppointmentsController < ApplicationController
     @prior_guider = @appointment.guider
     @appointment.assign_attributes(update_reschedule_params)
     @appointment.mark_rescheduled!
-    @appointment.allocate(via_slot: calendar_scheduling?, agent: @prior_guider, scoped: false)
+    @appointment.allocate(via_slot: calendar_scheduling?)
 
     if @appointment.save
       Notifier.new(@appointment, current_user).call
@@ -73,14 +73,9 @@ class AppointmentsController < ApplicationController
     end
   end
 
-  def preview # rubocop:disable Metrics/MethodLength
+  def preview
     @appointment = Appointment.new(create_params.merge(agent: current_user))
-    @appointment.allocate(
-      via_slot: calendar_scheduling?,
-      agent: current_user,
-      scoped: !@appointment.internal_availability?,
-      rebooking: rebooking?
-    )
+    @appointment.allocate(via_slot: calendar_scheduling?)
 
     if @appointment.valid?
       render :preview
@@ -91,12 +86,7 @@ class AppointmentsController < ApplicationController
 
   def create # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     @appointment = Appointment.new(create_params.merge(agent: current_user))
-    @appointment.allocate(
-      via_slot: calendar_scheduling?,
-      agent: current_user,
-      scoped: !@appointment.internal_availability?,
-      rebooking: rebooking?
-    )
+    @appointment.allocate(via_slot: calendar_scheduling?)
     @appointment.copy_attachments!
 
     if creating? && @appointment.save
@@ -237,7 +227,6 @@ class AppointmentsController < ApplicationController
       transferring_pension_to
       small_pots
       nudged
-      internal_availability
       welsh
       cancelled_via
       attended_digital

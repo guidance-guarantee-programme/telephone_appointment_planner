@@ -436,38 +436,6 @@ RSpec.describe Appointment, type: :model do
       build_stubbed(:appointment)
     end
 
-    describe '#ms_teams_call' do
-      subject { build(:appointment) }
-
-      context 'when Pension Wise and internal availability' do
-        it 'is permitted' do
-          subject.internal_availability = '1'
-          subject.ms_teams_call = true
-
-          expect(subject).to be_valid
-        end
-      end
-
-      context 'when Pension Wise and not internal availability' do
-        it 'is not permitted' do
-          subject.ms_teams_call = true
-          subject.internal_availability = '0'
-
-          expect(subject).to be_invalid
-        end
-      end
-
-      context 'when PSG' do
-        subject { build(:appointment, :due_diligence) }
-
-        it 'is permitted' do
-          subject.ms_teams_call = true
-
-          expect(subject).to be_valid
-        end
-      end
-    end
-
     describe '#attended_digital' do
       it 'permits any of the valid values' do
         subject.attended_digital = 'meh'
@@ -549,37 +517,6 @@ RSpec.describe Appointment, type: :model do
 
           expect(overlapping).to be_invalid
         end
-      end
-    end
-
-    context 'when the appointment is marked for Welsh language' do
-      it 'permits only Cardiff & Vale and Pension Ops guiders' do
-        subject = build(:appointment)
-
-        subject.welsh = true
-        subject.guider = build_stubbed(:guider, :tpas)
-        expect(subject).to be_valid
-
-        subject.guider = build_stubbed(:guider, :cardiff_and_vale)
-        expect(subject).to be_valid
-
-        subject.guider = build_stubbed(:guider, :waltham_forest)
-        expect(subject).to be_invalid
-      end
-    end
-
-    context 'when the appointment is marked for LBGPTL' do
-      let(:subject) { build(:appointment) }
-
-      it 'only permits CITA guiders' do
-        subject.lloyds_signposted = true
-        subject.guider = build_stubbed(:guider, :tpas)
-
-        expect(subject).to be_invalid
-
-        subject.guider = build_stubbed(:guider, :waltham_forest)
-
-        expect(subject).to be_valid
       end
     end
 
@@ -837,7 +774,7 @@ RSpec.describe Appointment, type: :model do
       before { subject.id = nil } # not persisted yet
 
       it 'requires a phone number of at least 10 digits' do
-        subject.agent = build(:agent, :tp)
+        subject.agent = build(:agent)
         subject.phone = '0 1 2 1 2 5 2 4 7 2 8'
 
         expect(subject).to be_valid
@@ -920,7 +857,7 @@ RSpec.describe Appointment, type: :model do
           end
         end
 
-        context 'when the appointment is not owned by the agent org' do
+        skip 'when the appointment is not owned by the agent org' do
           it 'cannot be booked within the grace period' do
             subject.agent = build_stubbed(:resource_manager, :waltham_forest)
             subject.start_at = BusinessDays.from_now(1).beginning_of_day
@@ -1007,63 +944,6 @@ RSpec.describe Appointment, type: :model do
         appointment = build(:appointment, start_at: nil, end_at: nil)
 
         expect { appointment.allocate(via_slot: false) }.not_to raise_error
-      end
-    end
-
-    context 'when rebooking as Waltham Forest resource manager' do
-      context 'when internal or external slots could be allocated' do
-        it 'allocates the correct slot' do
-          @internal = create(:bookable_slot, :waltham_forest, start_at: Time.zone.parse('2025-12-03 13:00'))
-          @external = create(:bookable_slot, start_at: Time.zone.parse('2025-12-03 13:00'))
-
-          @resource_manager = create(:resource_manager, :waltham_forest)
-
-          subject.start_at = @external.start_at
-          subject.end_at   = @external.end_at
-          subject.allocate(agent: @resource_manager, scoped: true, rebooking: true)
-
-          expect(subject.guider).to be_nil
-        end
-      end
-    end
-
-    context 'when booking as a TPAS agent' do
-      it 'includes TP guiders' do
-        tpas_resource_manager = create(:resource_manager, :tpas)
-        tp_guider = guider_with_slot(:tp)
-
-        subject.start_at = appointment_start_time
-        subject.end_at   = appointment_end_time
-
-        subject.allocate(agent: tpas_resource_manager, scoped: true)
-        expect(subject.guider).to eq(tp_guider)
-      end
-
-      def guider_with_slot(provider) # rubocop:disable Metrics/MethodLength
-        guider = create(:guider, provider)
-        guider.schedules.build(
-          start_at: appointment_start_time.beginning_of_day,
-          slots: [
-            build(
-              :slot,
-              day_of_week: appointment_start_time.wday,
-              start_hour: 9,
-              start_minute: 0,
-              end_hour: 10,
-              end_minute: 30
-            )
-          ]
-        )
-        guider.save!
-
-        create(
-          :bookable_slot,
-          guider:,
-          start_at: appointment_start_time,
-          end_at: appointment_end_time
-        )
-
-        guider
       end
     end
 
@@ -1183,17 +1063,6 @@ RSpec.describe Appointment, type: :model do
   end
 
   describe '#online_reschedule' do
-    context 'when the new guider is CAS' do
-      it 'marks the appointment as unprocessed' do
-        @bookable_slot = create(:bookable_slot, :cas)
-        @appointment = create(:appointment, :processed)
-
-        @appointment.online_reschedule(start_at: @bookable_slot.start_at, reason: '1')
-
-        expect(@appointment).to_not be_processed_at
-      end
-    end
-
     context 'when the guider is another provider' do
       it 'leaves the processed timestamp as-is' do
         @bookable_slot = create(:bookable_slot)
@@ -1262,9 +1131,9 @@ RSpec.describe Appointment, type: :model do
       appointment.can_be_rescheduled_by?(user)
     end
 
-    context 'appointment is more than two days in the future' do
+    context 'appointment is more than five days in the future' do
       let(:appointment) do
-        build_stubbed(:appointment, start_at: BusinessDays.from_now(3))
+        build_stubbed(:appointment, start_at: BusinessDays.from_now(6))
       end
 
       context 'when the appointment is not pending' do

@@ -12,55 +12,21 @@ class BookableSlot < ApplicationRecord
     end
   end
 
-  def self.within_date_range(from, to, organisation_limit: false)
-    return limit_by_organisation(from, to) if organisation_limit
-
+  def self.within_date_range(from, to)
     where("#{quoted_table_name}.start_at > ? AND #{quoted_table_name}.start_at < ?", from, to)
   end
 
-  def self.limit_by_organisation(from, to) # rubocop:disable Metrics/MethodLength
-    tpas_start_at = BusinessDays.from_now(5).change(hour: 21, min: 0).in_time_zone('London')
-    tpas_start_at = from if from > tpas_start_at
+  def self.next_valid_start_date(user = nil)
+    return Time.zone.now if user&.resource_manager?
 
-    joins(:guider)
-      .where(
-        '
-         (users.organisation_content_id = :tpas_id
-           AND bookable_slots.start_at > :tpas_start_at AND bookable_slots.start_at < :end_at)
-         OR
-         (users.organisation_content_id != :tpas_id
-           AND bookable_slots.start_at > :start_at AND bookable_slots.start_at < :end_at)
-        ',
-        tpas_id: Provider::TPAS.id,
-        tpas_start_at:,
-        start_at: from,
-        end_at: to
-      )
+    BusinessDays.from_now(5).change(hour: 21, min: 0).in_time_zone('London')
   end
 
-  def self.next_valid_start_date(user = nil, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE, external: false)
-    return Time.zone.now if user&.resource_manager? && !external
-
-    if schedule_type == User::DUE_DILIGENCE_SCHEDULE_TYPE || user&.tpas_guider?
-      BusinessDays.from_now(5).change(hour: 21, min: 0).in_time_zone('London')
-    else
-      BusinessDays.from_now(1).change(hour: 21, min: 0).in_time_zone('London')
-    end
-  end
-
-  def self.find_available_slot(start_at, agent, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE, scoped: true, external: false, rebooking: false) # rubocop:disable Layout/LineLength, Metrics/AbcSize, Metrics/ParameterLists, Metrics/MethodLength
+  def self.find_available_slot(start_at, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE)
     scope = bookable
-    scope = scope.limit_by_organisation(start_at.beginning_of_day, start_at.end_of_day) if agent&.pension_wise_api?
     scope = scope.where(start_at:)
-    scope = scope.for_organisation(agent, scoped:, external:) if agent && !agent.pension_wise_api?
-    if rebooking
-      scope = scope.within_date_range(start_at.beginning_of_day, start_at.end_of_day,
-                                      organisation_limit: true)
-    end
+    scope = scope.joins(:guider).where(users: { organisation_content_id: Provider::TPAS.id })
     scope = for_schedule_type(schedule_type:, scope:)
-
-    logger.info("Allocating: '#{schedule_type}' for '#{start_at}' guider IDs #{scope.pluck(:guider_id).join(' ')}")
-
     scope.limit(1).order('RANDOM()').first
   end
 
@@ -69,10 +35,9 @@ class BookableSlot < ApplicationRecord
   end
 
   def self.grouped(organisation_id = nil, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE, day = nil) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-    from, to = date_range(schedule_type, day)
-    limit_by_organisation = schedule_type == User::PENSION_WISE_SCHEDULE_TYPE
+    from, to = date_range(day)
 
-    scope = bookable(from, to).within_date_range(from, to, organisation_limit: limit_by_organisation)
+    scope = bookable(from, to).within_date_range(from, to)
     scope = scope.joins(:guider).where(users: { organisation_content_id: organisation_id }) if organisation_id
     scope = for_schedule_type(schedule_type:, scope:)
     scope = scope.select("#{quoted_table_name}.start_at::date as start_date")
@@ -89,11 +54,11 @@ class BookableSlot < ApplicationRecord
     end
   end
 
-  def self.date_range(schedule_type, day)
+  def self.date_range(day)
     if day
       [Time.zone.parse(day).beginning_of_day, Time.zone.parse(day).end_of_day]
     else
-      [next_valid_start_date(nil, schedule_type), end_of_window]
+      [next_valid_start_date(nil), end_of_window]
     end
   end
 
@@ -144,64 +109,47 @@ class BookableSlot < ApplicationRecord
     sanitize_sql(["AND (#{table}.start_at > ? AND #{table}.start_at < ?)", from, to])
   end
 
-  def self.starting_after_next_valid_start_date(user, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE, external: false) # rubocop:disable Metrics/MethodLength
-    starting_from = next_valid_start_date(user, schedule_type, external:)
+  def self.starting_after_next_valid_start_date(user, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE) # rubocop:disable Metrics/MethodLength
+    starting_from = next_valid_start_date(user)
     normal_scope = where("#{quoted_table_name}.start_at > ?", starting_from)
 
     return normal_scope if schedule_type == User::DUE_DILIGENCE_SCHEDULE_TYPE
 
-    if user.tpas_agent?
-      from = BusinessDays.from_now(1).change(hour: 21, min: 0).in_time_zone('London')
+    from = BusinessDays.from_now(1).change(hour: 21, min: 0).in_time_zone('London')
 
-      joins(:guider)
-        .where(
-          '
+    joins(:guider)
+      .where(
+        '
            (users.organisation_content_id = :tpas_id AND bookable_slots.start_at > :tpas_start_at)
            OR
            (users.organisation_content_id != :tpas_id AND bookable_slots.start_at > :start_at)
-          ',
-          tpas_id: Provider::TPAS.id,
-          tpas_start_at: starting_from,
-          start_at: from
-        )
-    else
-      normal_scope
-    end
+        ',
+        tpas_id: Provider::TPAS.id,
+        tpas_start_at: starting_from,
+        start_at: from
+      )
   end
 
-  def self.with_guider_count(user, from, to, lloyds: false, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE, scoped: true, internal: false, external: false, rebooking: false) # rubocop:disable Metrics/AbcSize, Layout/LineLength, Metrics/ParameterLists, Metrics/MethodLength
-    users = Array(user)
-    agent = users.one? ? user : users.first
-    user  = users.last
-
-    limit_by_organisation = (!user.resource_manager? && !user.tpas_agent?) ||
-                            (rebooking && user.non_tpas_resource_manager?)
-
+  def self.with_guider_count(user, from, to, lloyds: false, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE)
     select("DISTINCT #{quoted_table_name}.start_at, #{quoted_table_name}.end_at, count(1) AS guiders")
       .bookable
-      .starting_after_next_valid_start_date(agent, schedule_type:, external:)
+      .starting_after_next_valid_start_date(user, schedule_type:)
       .for_schedule_type(schedule_type:)
-      .for_organisation(user, lloyds:, scoped:, internal:, external:)
+      .for_organisation(lloyds:)
       .group("#{quoted_table_name}.start_at, #{quoted_table_name}.end_at")
-      .within_date_range(from, to, organisation_limit: limit_by_organisation)
+      .within_date_range(from, to)
       .map do |us|
         { guiders: us.attributes['guiders'], start: us.start_at, end: us.end_at, selected: false }
       end
   end
 
-  def self.for_organisation(user, scoped: true, lloyds: false, internal: false, external: false) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+  def self.for_organisation(lloyds: false)
     scope = joins(:guider)
 
     if lloyds
       scope.where(users: { organisation_content_id: Provider.lloyds_providers.map(&:id) })
-    elsif internal
-      scope.where(users: { organisation_content_id: user.organisation_content_id })
-    elsif external
-      scope.where.not(users: { organisation_content_id: user.organisation_content_id })
     else
-      return where('1 = 1') if scoped && (user.tp_agent? || user.tpas_agent?)
-
-      scope.where(users: { organisation_content_id: user.organisation_content_id })
+      scope.where(users: { organisation_content_id: Provider::TPAS.id })
     end
   end
 
