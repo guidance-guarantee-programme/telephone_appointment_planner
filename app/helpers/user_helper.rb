@@ -5,12 +5,6 @@ module UserHelper
     content_tag(:small, ' (PSG)')
   end
 
-  def casebook_banner(guider)
-    return unless guider.casebook_pushable?
-
-    content_tag(:small, ' (Casebook)')
-  end
-
   def can_switch_availability?(current_user, appointment, rebooking, rescheduling)
     return false unless appointment.pension_wise?
     return true if current_user.tpas_agent? && !rescheduling

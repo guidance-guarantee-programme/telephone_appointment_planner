@@ -6,7 +6,6 @@ RSpec.describe 'POST /api/v1/appointments/{id}/reschedule' do # rubocop:disable 
       PusherAppointmentChangedJob,
       AppointmentRescheduledNotificationsJob,
       CustomerUpdateJob,
-      RescheduleCasebookAppointmentJob,
       AppointmentRescheduledAwayNotificationsJob,
       SmsAppointmentConfirmationJob
     ].each do |expected_job|
@@ -28,7 +27,6 @@ RSpec.describe 'POST /api/v1/appointments/{id}/reschedule' do # rubocop:disable 
         and_the_new_resource_managers_are_notified
         and_the_customer_receives_an_updated_email
         and_the_customer_receives_an_updated_sms
-        and_a_casebook_rescheduling_is_enqueued
       end
     end
   end
@@ -115,9 +113,5 @@ RSpec.describe 'POST /api/v1/appointments/{id}/reschedule' do # rubocop:disable 
 
   def and_the_customer_receives_an_updated_sms
     expect(SmsAppointmentConfirmationJob).to have_received(:perform_later)
-  end
-
-  def and_a_casebook_rescheduling_is_enqueued
-    expect(RescheduleCasebookAppointmentJob).to have_received(:perform_later)
   end
 end
