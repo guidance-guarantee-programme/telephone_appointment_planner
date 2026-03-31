@@ -6,8 +6,7 @@ RSpec.describe 'POST /api/v1/appointments/{id}/cancel' do # rubocop:disable Metr
       PusherAppointmentChangedJob,
       AppointmentCancelledNotificationsJob,
       CustomerUpdateJob,
-      SmsCancellationSuccessJob,
-      CancelCasebookAppointmentJob
+      SmsCancellationSuccessJob
     ].each do |expected_job|
       allow(expected_job).to receive(:perform_later)
     end
@@ -25,7 +24,6 @@ RSpec.describe 'POST /api/v1/appointments/{id}/cancel' do # rubocop:disable Metr
       and_the_resource_managers_are_notified
       and_the_customer_receives_a_cancellation_email
       and_the_customer_receives_a_cancellation_sms
-      and_a_casebook_cancellation_is_enqueued
     end
   end
 
@@ -86,9 +84,5 @@ RSpec.describe 'POST /api/v1/appointments/{id}/cancel' do # rubocop:disable Metr
 
   def and_the_customer_receives_a_cancellation_sms
     expect(SmsCancellationSuccessJob).to have_received(:perform_later)
-  end
-
-  def and_a_casebook_cancellation_is_enqueued
-    expect(CancelCasebookAppointmentJob).to have_received(:perform_later)
   end
 end

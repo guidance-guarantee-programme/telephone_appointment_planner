@@ -278,24 +278,6 @@ class Appointment < ApplicationRecord
     schedule_type == User::PENSION_WISE_SCHEDULE_TYPE
   end
 
-  def process_casebook!(casebook_response)
-    without_auditing do
-      transaction do
-        update!(processed_at: Time.zone.now, casebook_appointment_id: casebook_response.appointment_id)
-
-        CasebookProcessedActivity.create!(appointment: self, message: casebook_response.case_reference_number)
-      end
-    end
-  end
-
-  def process_casebook_cancellation!
-    transaction do
-      update_attribute(:casebook_appointment_id, nil)
-
-      CasebookCancelledActivity.create!(appointment: self)
-    end
-  end
-
   def process!(by)
     return if processed_at?
 
@@ -451,10 +433,6 @@ class Appointment < ApplicationRecord
     guider&.tp?
   end
 
-  def casebook_pushable_guider?
-    guider&.casebook_pushable?
-  end
-
   def agent_is_pension_wise_api?
     agent&.pension_wise_api?
   end
@@ -479,8 +457,6 @@ class Appointment < ApplicationRecord
         update!(status: :cancelled_by_customer_sms)
         SmsCancellationActivity.from(self)
       end
-
-      CancelCasebookAppointmentJob.perform_later(self)
     end
   end
 
@@ -594,10 +570,6 @@ class Appointment < ApplicationRecord
       .where('? < start_at', Time.zone.now)
       .where(date_of_birth:)
       .find_by(id:)
-  end
-
-  def push_to_casebook?
-    pending? && casebook_pushable_guider? && !casebook_appointment_id? && !processed_at?
   end
 
   def online_reschedule(start_at:, reason:) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize

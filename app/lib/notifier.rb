@@ -21,18 +21,9 @@ class Notifier
     notify_customer
     notify_guiders
     notify_resource_managers
-    notify_casebook
   end
 
   private
-
-  def notify_casebook
-    if appointment_cancelled?
-      CancelCasebookAppointmentJob.perform_later(appointment)
-    elsif appointment_reallocated?
-      RescheduleCasebookAppointmentJob.perform_later(appointment)
-    end
-  end
 
   def notify_resource_managers # rubocop:disable Metrics/AbcSize
     if appointment_cancelled?

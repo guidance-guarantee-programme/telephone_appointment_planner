@@ -7,7 +7,6 @@ RSpec.feature 'Agent manages appointments' do
       PusherAppointmentChangedJob,
       AppointmentCreatedNotificationsJob,
       CustomerUpdateJob,
-      PushCasebookAppointmentJob,
       AdjustmentNotificationsJob,
       SmsAppointmentConfirmationJob,
       PrintedConfirmationJob
@@ -236,7 +235,6 @@ RSpec.feature 'Agent manages appointments' do
       then_that_appointment_is_created
       and_the_customer_gets_an_email_confirmation
       and_a_printed_confirmation_job_is_enqueued
-      and_the_system_attempts_to_push_to_casebook
     end
   end
 
@@ -469,10 +467,6 @@ RSpec.feature 'Agent manages appointments' do
     expect(@page).to have_data_subject_date_of_birth_day
     expect(@page).to have_data_subject_date_of_birth_month
     expect(@page).to have_data_subject_date_of_birth_year
-  end
-
-  def and_the_system_attempts_to_push_to_casebook
-    expect(PushCasebookAppointmentJob).to have_received(:perform_later)
   end
 
   def and_they_enter_a_standard_date_of_birth

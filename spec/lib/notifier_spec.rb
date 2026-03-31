@@ -192,12 +192,6 @@ RSpec.describe Notifier, '#call' do
         end
       end
     end
-
-    it 'enqueues a casebook appointment changed job' do
-      expect(RescheduleCasebookAppointmentJob).to receive(:perform_later).with(appointment)
-
-      subject.call
-    end
   end
 
   context 'when the appointment is without an associated email' do
@@ -259,12 +253,6 @@ RSpec.describe Notifier, '#call' do
 
     it 'alerts the resource managers' do
       expect(AppointmentCancelledNotificationsJob).to receive(:perform_later).with(appointment)
-
-      subject.call
-    end
-
-    it 'enqueues a casebook cancellation job' do
-      expect(CancelCasebookAppointmentJob).to receive(:perform_later).with(appointment)
 
       subject.call
     end

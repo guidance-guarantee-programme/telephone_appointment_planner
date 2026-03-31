@@ -200,74 +200,6 @@ RSpec.describe Appointment, type: :model do
     end
   end
 
-  describe '#process_casebook_cancellation!' do
-    context 'Bug - when the appointment has a status only certain users can assign' do
-      it 'can still process the appointment for casebook cancellation' do
-        appointment = build(
-          :appointment,
-          :casebook_pushed,
-          status: :cancelled_by_pension_wise,
-          secondary_status: '44' # rebooked to MaPS
-        )
-        appointment.current_user = create(:resource_manager)
-        appointment.save!
-        appointment.current_user = nil # simulate the actual state during cancellation
-
-        appointment.process_casebook_cancellation!
-
-        expect(appointment).not_to be_casebook_appointment_id
-      end
-    end
-
-    it 'creates the cancelled activity for auditing' do
-      appointment = create(:appointment, :casebook_pushed)
-
-      appointment.process_casebook_cancellation!
-
-      expect(appointment).not_to be_casebook_appointment_id
-      expect(appointment.activities.first).to be_an_instance_of(CasebookCancelledActivity)
-    end
-  end
-
-  describe '#process_casebook!' do
-    it 'processes the appointment and logs an activity' do
-      appointment = create(:appointment)
-      casebook_response = instance_double(Casebook::Response, appointment_id: 123, case_reference_number: 'CA-123')
-
-      appointment.process_casebook!(casebook_response)
-
-      expect(appointment).to be_processed_at
-      expect(appointment.casebook_appointment_id).to eq(123)
-      expect(appointment.activities.first).to be_an_instance_of(CasebookProcessedActivity)
-    end
-  end
-
-  describe '#push_to_casebook?' do
-    context 'when it is pushable' do
-      it 'returns truthily' do
-        # regular pushable guider, pending, unprocessed and unpushed
-        appointment = build_stubbed(:appointment, :casebook_guider)
-        expect(appointment).to be_push_to_casebook
-
-        # regular pushable guider, unpushe, unprocessed but not pending
-        appointment = build_stubbed(:appointment, :casebook_guider, status: :complete)
-        expect(appointment).not_to be_push_to_casebook
-
-        # not a pushable guider, pending, unprocessed and unpushed
-        appointment = build_stubbed(:appointment)
-        expect(appointment).not_to be_push_to_casebook
-
-        # already pushed to casebook, pending and unprocessed
-        appointment = build_stubbed(:appointment, :casebook_guider, :casebook_pushed)
-        expect(appointment).not_to be_push_to_casebook
-
-        # marked as processed, unpushed, pending, pushable guider
-        appointment = build_stubbed(:appointment, :casebook_guider, :processed)
-        expect(appointment).not_to be_push_to_casebook
-      end
-    end
-  end
-
   describe '#cancel!' do
     let(:appointment) { create(:appointment) }
 
@@ -277,28 +209,6 @@ RSpec.describe Appointment, type: :model do
       appointment.cancel!
 
       expect(appointment.reload.audits).to be_empty
-    end
-
-    context 'when successfully cancelling a casebook appointment' do
-      let(:appointment) { create(:appointment, casebook_appointment_id: 999, status: :cancelled_by_customer_sms) }
-
-      it 'persists the cancellation status prior to enqueuing the `CancelCasebookAppointmentJob`' do
-        cancellation_double = double(Casebook::Cancel)
-        allow(Casebook::Cancel).to receive(:new).and_return(cancellation_double)
-        allow(cancellation_double).to receive(:call)
-
-        appointment.cancel!
-
-        expect(cancellation_double).to have_received(:call)
-      end
-    end
-
-    it 'enqueues a casebook cancellation' do
-      allow(CancelCasebookAppointmentJob).to receive(:perform_later).with(appointment)
-
-      appointment.cancel!
-
-      expect(CancelCasebookAppointmentJob).to have_received(:perform_later).with(appointment)
     end
   end
 
