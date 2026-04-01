@@ -45,7 +45,6 @@ module Pages
     element :town, '.t-town'
     element :postcode, '.t-postcode'
     element :smarter_signposted, '.t-smarter-signposted'
-    element :bsl_video, '.t-bsl-video'
     element :lloyds_signposted, '.t-lloyds-signposted'
     element :internal_availability, '.t-internal-availability'
     element :small_pots, '.t-small-pots'

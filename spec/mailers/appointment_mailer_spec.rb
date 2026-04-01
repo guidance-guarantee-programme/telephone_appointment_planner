@@ -69,25 +69,6 @@ RSpec.describe AppointmentMailer, type: :mailer do
     end
   end
 
-  describe 'BSL customer exit poll' do
-    let(:mailgun_headers) { JSON.parse(mail['X-Mailgun-Variables'].value) }
-    let(:appointment) { build_stubbed(:appointment, bsl_video: true) }
-
-    subject(:mail) { described_class.bsl_customer_exit_poll(appointment) }
-
-    it 'sends to the customer email' do
-      expect(mail.to).to eq(['someone@example.com'])
-    end
-
-    it 'renders the mailgun specific headers' do
-      expect(mailgun_headers).to include('message_type' => 'bsl_exit_poll', 'appointment_id' => appointment.id)
-    end
-
-    it 'renders the exit poll vanity URL' do
-      expect(subject.body.encoded).to match('https://www.pensionwise.gov.uk/bsl-exit-poll')
-    end
-  end
-
   describe 'Guider summary document missing' do
     let(:mailgun_headers) { JSON.parse(subject['X-Mailgun-Variables'].value) }
     let(:appointment) { build_stubbed(:appointment) }
@@ -367,14 +348,6 @@ RSpec.describe AppointmentMailer, type: :mailer do
     describe 'rendering the body' do
       let(:body) { subject.body.encoded }
 
-      context 'when the appointment is BSL video based' do
-        it 'includes the video appointment specifics' do
-          appointment.bsl_video = true
-
-          expect(body).to include('British Sign Language')
-        end
-      end
-
       it 'includes the date' do
         expect(body).to include('23 October 2016')
       end
@@ -494,20 +467,6 @@ RSpec.describe AppointmentMailer, type: :mailer do
 
     describe 'rendering the body' do
       let(:body) { subject.html_part.body.decoded.to_s }
-
-      context 'when the appointment is BSL video based' do
-        before do
-          appointment.bsl_video = true
-        end
-
-        it 'includes the video appointment specifics' do
-          expect(body).to include('British Sign Language')
-        end
-
-        it 'does not include the customer phone number' do
-          expect(body).not_to include(appointment.phone)
-        end
-      end
 
       it 'includes the phone specifics' do
         expect(body).to include('One of our pension specialists will call')

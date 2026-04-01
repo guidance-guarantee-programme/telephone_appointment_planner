@@ -1,19 +1,9 @@
-<% if @appointment.bsl_video? %>
-  <%= p do %>
-    This is a video appointment with a British Sign Language interpreter.
-  <% end %>
+<%= p do %>
+  One of our pension specialists will call you on <%= @appointment.phone %> and quote the memorable word you’ve given us (<%= @appointment.memorable_word(obscure: true) %>) – so you know it’s us calling.
+<% end %>
 
-  <%= p do %>
-    You will be sent further information and a link to access your video appointment that only you and the guidance specialist can join. They’ll repeat the memorable word so you know you’re speaking to <%= @appointment.provider %>.
-  <% end %>
-<% else %>
-  <%= p do %>
-    One of our pension specialists will call you on <%= @appointment.phone %> and quote the memorable word you’ve given us (<%= @appointment.memorable_word(obscure: true) %>) – so you know it’s us calling.
-  <% end %>
-
-  <%= p do %>
-    Your appointment will usually last around 60 minutes. <% if @appointment.extended_duration? %>As you’re rescheduling an appointment that lasts over one hour, we need to confirm we have pension specialists available. We’ll be in touch if we need to adjust the start time.<% end %>
-  <% end %>
+<%= p do %>
+  Your appointment will usually last around 60 minutes. <% if @appointment.extended_duration? %>As you’re rescheduling an appointment that lasts over one hour, we need to confirm we have pension specialists available. We’ll be in touch if we need to adjust the start time.<% end %>
 <% end %>
 
 <%= p do %>

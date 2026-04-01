@@ -1,6 +1,5 @@
 class SmsAppointmentReminderJob < NotifyJobBase
   STANDARD_TEMPLATE_ID = '14d350d2-f962-4daa-b3b8-e6c3696864c0'.freeze
-  BSL_TEMPLATE_ID      = '6bedd37b-c75c-44f5-bed3-3ec5eb5bb564'.freeze
   DUE_DILIGENCE_TEMPLATE_ID = 'c3157b23-c727-495e-b366-268536f848cc'.freeze
 
   include SmsFailureRecordable
@@ -28,9 +27,7 @@ class SmsAppointmentReminderJob < NotifyJobBase
   end
 
   def template_for(appointment)
-    if appointment.bsl_video?
-      BSL_TEMPLATE_ID
-    elsif appointment.due_diligence?
+    if appointment.due_diligence?
       DUE_DILIGENCE_TEMPLATE_ID
     else
       STANDARD_TEMPLATE_ID

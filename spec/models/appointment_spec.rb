@@ -86,14 +86,6 @@ RSpec.describe Appointment, type: :model do
 
   describe '#adjustments?' do
     context 'when the appointment is Pension Wise' do
-      context 'for BSL' do
-        it 'is true' do
-          appointment = build(:appointment, bsl_video: true)
-
-          expect(appointment).to be_adjustments
-        end
-      end
-
       context 'for Welsh' do
         it 'is true' do
           appointment = build(:appointment, welsh: true)

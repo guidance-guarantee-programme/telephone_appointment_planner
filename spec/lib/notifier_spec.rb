@@ -124,19 +124,6 @@ RSpec.describe Notifier, '#call' do
     end
   end
 
-  context 'when a BSL appointment is completed' do
-    it 'enqueues the BSL exit poll job to run in 24 hours' do
-      scheduler = double(perform_later: true)
-      appointment.update(bsl_video: true, status: :complete)
-
-      expect(BslCustomerExitPollJob).to receive(:set).with(wait: 24.hours).and_return(scheduler)
-      expect(SummaryDocumentCheckJob).to receive(:set).with(wait: 24.hours).and_return(double(perform_later: true))
-      expect(scheduler).to receive(:perform_later).with(appointment)
-
-      subject.call
-    end
-  end
-
   context 'when any appointment is completed' do
     it 'enqueues the summary document check to run in 24 hours' do
       scheduler = double(perform_later: true)

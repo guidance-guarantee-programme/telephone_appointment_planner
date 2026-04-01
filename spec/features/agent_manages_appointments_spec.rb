@@ -188,20 +188,6 @@ RSpec.feature 'Agent manages appointments' do
     end
   end
 
-  scenario 'Lancs West guider modifying BSL' do
-    given_the_user_is_an_agent(organisation: :lancashire_west) do
-      when_they_want_to_book_an_appointment
-      then_they_can_specify_bsl_video
-    end
-  end
-
-  scenario 'TP agent cannot modify BSL' do
-    given_the_user_is_an_agent(organisation: :tp) do
-      when_they_want_to_book_an_appointment
-      then_bsl_video_is_disabled
-    end
-  end
-
   scenario 'Third party consent', js: true do
     given_the_user_is_an_agent do
       when_they_want_to_book_an_appointment
@@ -444,14 +430,6 @@ RSpec.feature 'Agent manages appointments' do
     expect(@page).to have_flash_of_success
   end
 
-  def then_bsl_video_is_disabled
-    expect(@page.bsl_video).to be_disabled
-  end
-
-  def then_they_can_specify_bsl_video
-    @page.bsl_video.set(true)
-  end
-
   def then_they_do_not_see_the_smarter_signposting_option
     expect(@page).to have_no_smarter_signposted
   end
@@ -531,8 +509,6 @@ RSpec.feature 'Agent manages appointments' do
     @page.stronger_nudged.set(options[:stronger_nudge]) if options[:stronger_nudge]
     @page.attended_digital_yes.set(true) if options[:attended_digital]
 
-    expect(@page).to have_no_bsl_video if options[:bsl_video]
-
     @page.preview_appointment.click
   end
 
@@ -597,7 +573,6 @@ RSpec.feature 'Agent manages appointments' do
     expect(appointment.type_of_appointment).to eq('standard')
     expect(appointment.where_you_heard).to eq(17)
     expect(appointment).to be_accessibility_requirements
-    expect(appointment).to_not be_bsl_video
     expect(appointment).to be_nudged if options[:stronger_nudge]
     expect(appointment).to be_welsh if options[:welsh]
     expect(appointment).to be_attended_digital if options[:attended_digital]

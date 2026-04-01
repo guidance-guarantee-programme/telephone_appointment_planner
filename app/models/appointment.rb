@@ -65,7 +65,6 @@ class Appointment < ApplicationRecord
     type_of_appointment
     where_you_heard
     gdpr_consent
-    bsl_video
     third_party_booking
     data_subject_name
     data_subject_age
@@ -90,7 +89,6 @@ class Appointment < ApplicationRecord
     accessibility_requirements
     third_party_booking
     extended_duration
-    bsl_video
     welsh
     ms_teams_call
   ].freeze
