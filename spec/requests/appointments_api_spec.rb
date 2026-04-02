@@ -52,7 +52,7 @@ RSpec.describe 'POST /api/v1/appointments' do
   end
 
   scenario 'creating a nudged appointment' do
-    travel_to '2017-01-10 12:00' do
+    travel_to '2017-01-05 12:00' do
       given_the_user_is_a_pension_wise_api_user do
         and_a_bookable_slot_exists_for_the_given_appointment_date
         when_the_client_posts_a_nudged_appointment_request
@@ -63,7 +63,7 @@ RSpec.describe 'POST /api/v1/appointments' do
   end
 
   scenario 'create a valid appointment' do
-    travel_to '2017-01-10 12:00' do
+    travel_to '2017-01-05 12:00' do
       given_the_user_is_a_pension_wise_api_user do
         and_a_bookable_slot_exists_for_the_given_appointment_date
         and_a_resource_manager_exists
@@ -80,7 +80,7 @@ RSpec.describe 'POST /api/v1/appointments' do
   end
 
   scenario 'attempting to create an invalid appointment' do
-    travel_to '2017-01-10 12:00' do
+    travel_to '2017-01-05 12:00' do
       given_the_user_is_a_pension_wise_api_user do
         and_a_bookable_slot_exists_for_the_given_appointment_date
         when_the_client_posts_an_invalid_appointment_request
@@ -91,13 +91,13 @@ RSpec.describe 'POST /api/v1/appointments' do
   end
 
   scenario 'when a customer journey booking is placed' do
-    travel_to '2023-10-04 13:00' do
+    travel_to '2023-10-01 13:00' do
       given_the_user_is_a_pension_wise_api_user do
         and_an_unbookable_tpas_slot_exists
-        and_a_cita_bookable_slot_exists
+        and_a_bookable_slot_exists
         when_the_client_posts_the_appointment_request
         then_the_service_responds_with_a_201
-        and_the_appointment_is_correctly_allocated_to_cita
+        and_the_appointment_is_correctly_allocated
       end
     end
   end
@@ -136,8 +136,8 @@ RSpec.describe 'POST /api/v1/appointments' do
     create_list(:bookable_slot, 10, start_at: Time.zone.parse('2023-10-08 14:00'))
   end
 
-  def and_a_cita_bookable_slot_exists
-    @expected = create(:bookable_slot, :north_tyneside, start_at: Time.zone.parse('2023-10-08 14:00'))
+  def and_a_bookable_slot_exists
+    @expected = create(:bookable_slot, start_at: Time.zone.parse('2023-10-08 14:00'))
   end
 
   def when_the_client_posts_the_appointment_request
@@ -163,8 +163,8 @@ RSpec.describe 'POST /api/v1/appointments' do
     post api_v1_appointments_path, params: @payload, as: :json
   end
 
-  def and_the_appointment_is_correctly_allocated_to_cita
-    expect(Appointment.last.guider_id).to eq(@expected.guider_id)
+  def and_the_appointment_is_correctly_allocated
+    expect(Appointment.last.guider.organisation_content_id).to eq(@expected.guider.organisation_content_id)
   end
 
   def and_a_due_diligence_slot_exists
@@ -275,7 +275,7 @@ RSpec.describe 'POST /api/v1/appointments' do
   end
 
   def and_a_bookable_slot_exists_for_the_given_appointment_date
-    @bookable_slot = create(:bookable_slot, :north_tyneside, start_at: Time.zone.parse('2017-01-13 12:10'))
+    @bookable_slot = create(:bookable_slot, start_at: Time.zone.parse('2017-01-13 12:10'))
   end
 
   def and_a_resource_manager_exists

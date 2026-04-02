@@ -23,7 +23,6 @@ RSpec.describe 'POST /api/v1/appointments/{id}/reschedule' do # rubocop:disable 
         and_the_rescheduling_reason_is_recorded
         and_a_customer_online_rescheduling_activity_is_created
         and_the_guider_is_notified
-        and_the_previous_resource_managers_are_notified
         and_the_new_resource_managers_are_notified
         and_the_customer_receives_an_updated_email
         and_the_customer_receives_an_updated_sms
@@ -50,7 +49,7 @@ RSpec.describe 'POST /api/v1/appointments/{id}/reschedule' do # rubocop:disable 
   def and_a_pending_appointment_exists
     @appointment     = create(:appointment, date_of_birth: '1970-01-01')
     @previous_guider = @appointment.guider
-    @bookable_slot   = create(:bookable_slot, :cas, start_at: Time.zone.parse('2025-07-10 13:00'))
+    @bookable_slot   = create(:bookable_slot, start_at: Time.zone.parse('2025-07-10 13:00'))
 
     @previous_start_at = @appointment.start_at
   end
@@ -97,10 +96,6 @@ RSpec.describe 'POST /api/v1/appointments/{id}/reschedule' do # rubocop:disable 
 
   def and_the_guider_is_notified
     expect(PusherAppointmentChangedJob).to have_received(:perform_later).twice
-  end
-
-  def and_the_previous_resource_managers_are_notified
-    expect(AppointmentRescheduledAwayNotificationsJob).to have_received(:perform_later)
   end
 
   def and_the_new_resource_managers_are_notified

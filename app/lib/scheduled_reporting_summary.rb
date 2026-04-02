@@ -13,33 +13,29 @@ class ScheduledReportingSummary
         first_available_slot_on: first_available_slot_on(organisation.id),
         last_available_slot_on: last_available_slot_on(organisation.id),
         last_slot_on: last_slot_on(organisation.id),
-        total_slots_available: total_slots_available(organisation.id),
-        total_slots_created: total_slots_created(organisation.id)
+        total_slots_available:,
+        total_slots_created:
       )
     end
   end
 
-  def total_slots_available(organisation_id)
-    start_date, end_date = *BookableSlot.date_range(schedule_type, nil)
-
-    fake_user = OpenStruct.new(organisation_content_id: organisation_id)
+  def total_slots_available
+    start_date, end_date = *BookableSlot.date_range(nil)
 
     BookableSlot
       .for_schedule_type(schedule_type:)
-      .for_organisation(fake_user)
+      .for_organisation
       .within_date_range(start_date, end_date)
       .bookable(start_date, end_date)
       .size
   end
 
-  def total_slots_created(organisation_id)
-    start_date, end_date = *BookableSlot.date_range(schedule_type, nil)
-
-    fake_user = OpenStruct.new(organisation_content_id: organisation_id)
+  def total_slots_created
+    start_date, end_date = *BookableSlot.date_range(nil)
 
     BookableSlot
       .for_schedule_type(schedule_type:)
-      .for_organisation(fake_user)
+      .for_organisation
       .within_date_range(start_date, end_date)
       .size
   end
@@ -87,9 +83,7 @@ class ScheduledReportingSummary
   attr_reader :schedule_type
 
   def organisations
-    return Array(Provider::TPAS) if schedule_type == User::DUE_DILIGENCE_SCHEDULE_TYPE
-
-    Provider.all
+    Array(Provider::TPAS)
   end
 
   def two_week_period

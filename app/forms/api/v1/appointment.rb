@@ -19,7 +19,7 @@ module Api
       end
 
       def create
-        model.allocate(agent:)
+        model.allocate
         model.save
       end
 

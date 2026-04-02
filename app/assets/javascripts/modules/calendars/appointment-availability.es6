@@ -4,8 +4,7 @@
 
   class AppointmentAvailabilityCalendar extends Calendar {
     start(el) {
-      let lloydsSignposted = !!$('.js-lloyds-signposted').prop('checked'),
-        showAll = !!$('.js-internal-availability').prop('checked');
+      let lloydsSignposted = !!$('.js-lloyds-signposted').prop('checked')
 
       this.config = {
         defaultView: 'agendaWeek',
@@ -38,10 +37,6 @@
       this.init();
       this.displayErrorBorder();
       this.bindSubscriptions();
-
-      if($('.js-internal-availability').length) {
-        this.handleInternalAvailabilityFilter(this, showAll);
-      }
     }
 
     init() {
@@ -61,22 +56,6 @@
 
     bindSubscriptions() {
       $.subscribe('lloyds-availability-selected', this.handleAvailabilityFilter.bind(this));
-      $.subscribe('internal-availability-selected', this.handleInternalAvailabilityFilter.bind(this));
-    }
-
-    handleInternalAvailabilityFilter(e, selected) {
-      this.$el.fullCalendar('unselect');
-      this.$el.fullCalendar('removeEventSources');
-
-      if (selected) {
-        this.$el.fullCalendar('addEventSource', this.$el.data('internal-slots-path'));
-      }
-      else {
-        this.$el.fullCalendar('addEventSource', this.$el.data('external-slots-path'));
-      }
-
-      this.clearSelection();
-      this.$el.fullCalendar('refetchEvents');
     }
 
     clearSelection() {

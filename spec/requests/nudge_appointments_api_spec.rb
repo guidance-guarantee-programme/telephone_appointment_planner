@@ -15,7 +15,7 @@ RSpec.describe 'POST /api/v1/nudge_appointments' do
   end
 
   scenario 'create a valid appointment' do
-    travel_to '2022-04-23 12:00' do
+    travel_to '2022-04-20 12:00' do
       given_the_user_is_a_pension_wise_api_user do
         and_a_bookable_slot_exists_for_the_given_appointment_date
         and_a_resource_manager_exists
@@ -31,7 +31,7 @@ RSpec.describe 'POST /api/v1/nudge_appointments' do
   end
 
   scenario 'create an appointment with SMS confirmation' do
-    travel_to '2022-04-23 12:00' do
+    travel_to '2022-04-20 12:00' do
       given_the_user_is_a_pension_wise_api_user do
         and_a_bookable_slot_exists_for_the_given_appointment_date
         and_a_resource_manager_exists
