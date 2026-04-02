@@ -31,11 +31,11 @@ class AuditPresenter < SimpleDelegator
   end
 
   def format_guider_id(value)
-    User.find(value).name
+    user_name(value, 'Guider')
   end
 
   def format_agent_id(value)
-    User.find(value).name
+    user_name(value, 'Agent')
   end
 
   def format_status(value)
@@ -47,9 +47,11 @@ class AuditPresenter < SimpleDelegator
   end
 
   def format_previous_guider_id(value)
-    previous_guider = User.find(value)
-
-    "#{previous_guider.name} (#{previous_guider.organisation})"
+    if (previous_guider = User.find_by(id: value))
+      "#{previous_guider.name} (#{previous_guider.organisation})"
+    else
+      'Deleted Guider'
+    end
   end
 
   def format_online_rescheduling_reason(value)
@@ -58,5 +60,15 @@ class AuditPresenter < SimpleDelegator
 
   def self.wrap(objects)
     objects.map { |o| new(o) }
+  end
+
+  private
+
+  def user_name(id, user_type)
+    if (user = User.find_by(id:))
+      user.name
+    else
+      "Deleted #{user_type}"
+    end
   end
 end
