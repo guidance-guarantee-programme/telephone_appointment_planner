@@ -70,6 +70,7 @@ RSpec.feature 'Resource manager reschedules an appointment', js: true do
 
   def when_they_choose_the_external_slot
     @page = Pages::NewAppointment.new.tap(&:load)
+    @page.internal_availability.set(false)
     @page.wait_until_slots_visible
     @page.choose_slot('09:00')
   end

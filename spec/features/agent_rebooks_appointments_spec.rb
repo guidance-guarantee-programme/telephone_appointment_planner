@@ -77,6 +77,7 @@ RSpec.feature 'Agent rebooks appointments' do
   end
 
   def and_they_do_see_availability_past_the_grace_period
+    @page.internal_availability.uncheck
     @page.next_period.click
     @page.wait_until_slots_visible
 
@@ -127,6 +128,7 @@ RSpec.feature 'Agent rebooks appointments' do
     @page = Pages::NewAppointment.new
     expect(@page).to be_displayed
 
+    @page.internal_availability.uncheck
     @page.wait_until_slots_invisible
     expect(@page).to have_no_slots
   end
@@ -162,6 +164,7 @@ RSpec.feature 'Agent rebooks appointments' do
     @page = Pages::NewAppointment.new
     expect(@page).to be_displayed
 
+    @page.internal_availability.uncheck
     @page.wait_until_slots_visible
     expect(@page).to have_slots(count: 1)
     expect(@page.slots.first).to have_text('11:00 1 guider')
