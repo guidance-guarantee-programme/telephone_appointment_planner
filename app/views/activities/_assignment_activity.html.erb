@@ -3,11 +3,11 @@
   <% if assignment_activity.allocated? %>
     <strong>The system</strong>
     assigned this appointment to
-    <strong><%= assignment_activity.owner.name %></strong>
+    <strong><%= assignment_activity.owner_name %></strong>
   <% else %>
     <strong><%= assignment_activity.user_name %></strong>
     allocated this appointment to
-    <strong><%= assignment_activity.owner.name %></strong>
+    <strong><%= assignment_activity.owner_name %></strong>
   <% end %>
 <% end %>
 <%= render 'activities/activity', activity: assignment_activity, details: details, hide: hide %>

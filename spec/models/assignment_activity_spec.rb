@@ -11,6 +11,12 @@ RSpec.describe AssignmentActivity do
 
     subject { appointment.activities.first }
 
+    context 'when the activity has a missing owner' do
+      it 'displays a friendly label' do
+        expect(described_class.new.owner_name).to eq('Deleted Guider')
+      end
+    end
+
     context 'assignment' do
       it 'creates an assignment activity' do
         expect(subject).to be_a(described_class)
