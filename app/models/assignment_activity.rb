@@ -6,6 +6,10 @@ class AssignmentActivity < Activity
     message == ASSIGNED
   end
 
+  def owner_name
+    owner.try(:name) || 'Deleted Guider'
+  end
+
   def self.from(audit, appointment)
     if audit.action == 'create'
       create_assignment(audit, appointment)
