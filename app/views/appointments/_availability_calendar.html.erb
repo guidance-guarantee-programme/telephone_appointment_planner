@@ -6,7 +6,7 @@
 <%= render 'shared/nojs' %>
 
 <% if can_switch_availability?(current_user, @appointment, rebooking?, rescheduling) %>
-  <%= form.check_box :internal_availability, label: 'Internal availability', class: 't-internal-availability js-internal-availability', data: { module: 'internal-availability' } %>
+  <%= form.check_box :internal_availability, checked: true, label: 'Internal availability', class: 't-internal-availability js-internal-availability', data: { module: 'internal-availability' } %>
 <% end %>
 
 <% if current_user.lloyds_signposter? %>
