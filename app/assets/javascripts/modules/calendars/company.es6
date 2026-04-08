@@ -59,9 +59,9 @@ class CompanyCalendar extends Calendar {
 
     super.start(el);
 
+    this.config.filterList = this.config.filterList || [];
     this.isFullscreen = false;
     this.hideCancelledAppointments = false;
-    this.filterList = [];
     this.$filterButton = $('.fc-filter-button');
     this.filterButtonLabel = this.$filterButton.text();
     this.$filterPanel = $('.resource-calendar-filter');
@@ -94,7 +94,7 @@ class CompanyCalendar extends Calendar {
   }
 
   filterResources(resource) {
-    return $.inArray(resource.id, this.filterList) > -1;
+    return $.inArray(resource.id, this.config.filterList) > -1;
   }
 
   bindEvents() {
@@ -104,6 +104,10 @@ class CompanyCalendar extends Calendar {
     this.$hideCancelledToggle.on('change', this.handleHideCancelledToggle.bind(this));
 
     $(document).click(this.hideFilterPanel.bind(this));
+
+    if (this.config.filterList.length) {
+      this.refreshFilterButtonLabel();
+    }
   }
 
   handleBookingSlotToggle(event) {
@@ -119,7 +123,7 @@ class CompanyCalendar extends Calendar {
   }
 
   setFilterList(event) {
-    this.filterList = $.map($(event.currentTarget).val(), (id) => {
+    this.config.filterList = $.map($(event.currentTarget).val(), (id) => {
       return parseInt(id);
     });
 
@@ -130,8 +134,8 @@ class CompanyCalendar extends Calendar {
   refreshFilterButtonLabel() {
     let filterButtonLabel = this.filterButtonLabel;
 
-    if (this.filterList.length) {
-      filterButtonLabel += ` (${this.filterList.length})`;
+    if (this.config.filterList.length) {
+      filterButtonLabel += ` (${this.config.filterList.length})`;
     }
 
     this.$filterButton.text(filterButtonLabel);

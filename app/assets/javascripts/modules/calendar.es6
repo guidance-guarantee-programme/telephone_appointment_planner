@@ -128,7 +128,8 @@ class Calendar extends TapBase {
       this.config.cookieName,
       JSON.stringify({
         defaultView: view.name,
-        defaultDate: view.calendar.getDate()
+        defaultDate: view.calendar.getDate(),
+        filterList: this.config.filterList
       }),
       {
         days: 7
