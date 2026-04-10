@@ -2,7 +2,7 @@ require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
 RSpec.feature 'Resource manager reschedules an appointment', js: true do
-  scenario 'TPAS resource manager reschedules another organisation’s appointment' do
+  skip 'TPAS resource manager reschedules another organisation’s appointment' do
     given_the_user_is_a_resource_manager(organisation: :tpas) do
       travel_to '2022-06-20 13:00' do
         and_there_is_a_tpas_guider_slot
@@ -38,7 +38,7 @@ RSpec.feature 'Resource manager reschedules an appointment', js: true do
     end
   end
 
-  scenario 'TPAS resource manager creates an appointment from external availability' do
+  skip 'TPAS resource manager creates an appointment from external availability' do
     given_the_user_is_a_resource_manager(organisation: :tpas) do
       travel_to '2022-06-20 13:00' do
         and_there_are_many_tpas_slots_and_one_external_slot

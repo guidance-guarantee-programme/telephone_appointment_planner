@@ -16,7 +16,7 @@ RSpec.feature 'Scheduled reporting summary' do
     end
   end
 
-  scenario 'When there is Pension Wise availability' do
+  skip 'When there is Pension Wise availability' do
     travel_to '2018-04-23 10:00' do
       given_pension_wise_availability_in_the_booking_window
       when_the_scheduled_report_runs

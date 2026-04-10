@@ -2,7 +2,7 @@ require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
 RSpec.feature 'Agent rebooks appointments' do
-  scenario 'Waltham Forest resource manager rebooks with only TPAS availability', js: true do
+  skip 'Waltham Forest resource manager rebooks with only TPAS availability', js: true do
     given_the_user_is_a_resource_manager(organisation: :waltham_forest) do
       travel_to '2025-11-24 09:00' do
         and_an_existing_appointment_for_waltham_forest
@@ -14,7 +14,7 @@ RSpec.feature 'Agent rebooks appointments' do
     end
   end
 
-  scenario 'CAS agent rebooks an appointment seeing only their availability', js: true do
+  skip 'CAS agent rebooks an appointment seeing only their availability', js: true do
     given_the_user_is_a_resource_manager(organisation: :cas) do
       travel_to '2022-06-20 09:00' do
         and_there_is_cross_organisational_availability

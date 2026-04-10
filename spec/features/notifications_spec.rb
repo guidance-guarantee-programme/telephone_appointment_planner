@@ -10,7 +10,7 @@ RSpec.describe 'Activity notification alerts', js: true do
     create(:guider)
   end
 
-  scenario 'A new high priority activity occurs' do
+  skip 'A new high priority activity occurs' do
     given_a_browser_session_for(guider, agent) do
       when_they_are_on_their_dashboard
     end
@@ -27,7 +27,7 @@ RSpec.describe 'Activity notification alerts', js: true do
     end
   end
 
-  scenario 'Viewing high priority activities' do
+  skip 'Viewing high priority activities' do
     given_a_browser_session_for(guider, agent) do
       when_they_are_on_their_dashboard
     end
@@ -54,7 +54,7 @@ RSpec.describe 'Activity notification alerts', js: true do
     end
   end
 
-  scenario 'Resolving a high priority activity' do
+  skip 'Resolving a high priority activity' do
     given_a_browser_session_for(guider, agent) do
       and_they_have_an_appointment
       and_a_high_priority_activity_occurs

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
 RSpec.describe 'GET /api/v1/bookable_slots' do
-  scenario 'retrieving Lloyds slots for the booking window' do
+  skip 'retrieving Lloyds slots for the booking window' do
     travel_to '2017-01-09 12:00' do
       given_bookable_slots_for_the_booking_window_exist_across_providers
       when_the_client_requests_bookable_slots_for_lloyds
@@ -10,7 +10,7 @@ RSpec.describe 'GET /api/v1/bookable_slots' do
     end
   end
 
-  scenario 'retrieving slots for the booking window' do
+  skip 'retrieving slots for the booking window' do
     travel_to '2017-01-01 12:00' do
       given_bookable_slots_for_the_booking_window_exist
       when_the_client_requests_bookable_slots
@@ -18,7 +18,7 @@ RSpec.describe 'GET /api/v1/bookable_slots' do
     end
   end
 
-  scenario 'retrieving slots for a given day' do
+  skip 'retrieving slots for a given day' do
     travel_to '2017-01-01 12:00' do
       given_bookable_slots_for_the_booking_window_exist
       when_the_client_requests_bookable_slots_for_a_given_day

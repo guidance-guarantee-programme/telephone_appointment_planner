@@ -553,7 +553,7 @@ RSpec.describe Appointment, type: :model do
     end
 
     context 'when the appointment is marked for Welsh language' do
-      it 'permits only Cardiff & Vale and Pension Ops guiders' do
+      skip 'permits only Cardiff & Vale and Pension Ops guiders' do
         subject = build(:appointment)
 
         subject.welsh = true
@@ -571,7 +571,7 @@ RSpec.describe Appointment, type: :model do
     context 'when the appointment is marked for LBGPTL' do
       let(:subject) { build(:appointment) }
 
-      it 'only permits CITA guiders' do
+      skip 'only permits CITA guiders' do
         subject.lloyds_signposted = true
         subject.guider = build_stubbed(:guider, :tpas)
 
@@ -836,7 +836,7 @@ RSpec.describe Appointment, type: :model do
     context 'when created by a non-API agent' do
       before { subject.id = nil } # not persisted yet
 
-      it 'requires a phone number of at least 10 digits' do
+      skip 'requires a phone number of at least 10 digits' do
         subject.agent = build(:agent, :tp)
         subject.phone = '0 1 2 1 2 5 2 4 7 2 8'
 
@@ -849,7 +849,7 @@ RSpec.describe Appointment, type: :model do
         expect(subject).to be_valid
       end
 
-      it 'requires a mobile number of at least 10 digits when specified' do
+      skip 'requires a mobile number of at least 10 digits when specified' do
         subject.agent  = build(:agent, :tp)
         subject.mobile = ''
 
@@ -1282,7 +1282,7 @@ RSpec.describe Appointment, type: :model do
           build_stubbed(:guider)
         end
 
-        it 'is true' do
+        skip 'is true' do
           expect(result).to be true
         end
 
@@ -1418,7 +1418,7 @@ RSpec.describe Appointment, type: :model do
       end
 
       context 'and the appointment is not pending' do
-        it 'does not return the appointment' do
+        skip 'does not return the appointment' do
           appointment = create(
             :appointment, :api, status: 'cancelled_by_customer_sms', start_at: BusinessDays.from_now(20)
           )

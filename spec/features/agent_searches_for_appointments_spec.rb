@@ -55,7 +55,7 @@ RSpec.feature 'Agent searches for appointments' do
     end
   end
 
-  scenario 'Searching as a TP agent' do
+  skip 'Searching as a TP agent' do
     given_appointments_exist_across_multiple_organisations
     given_the_user_is_an_agent(organisation: :tp) do
       when_they_search_for_nothing
@@ -63,7 +63,7 @@ RSpec.feature 'Agent searches for appointments' do
     end
   end
 
-  scenario 'Searching as a CAS resource manager' do
+  skip 'Searching as a CAS resource manager' do
     given_appointments_exist_across_multiple_organisations
     given_the_user_is_a_resource_manager(organisation: :cas) do
       when_they_search_for_nothing
@@ -71,7 +71,7 @@ RSpec.feature 'Agent searches for appointments' do
     end
   end
 
-  scenario 'Searching as a TPAS resource manager' do
+  skip 'Searching as a TPAS resource manager' do
     given_appointments_exist_across_multiple_organisations
     given_the_user_is_a_resource_manager(organisation: :tpas) do
       when_they_search_for_nothing

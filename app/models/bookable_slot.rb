@@ -12,14 +12,14 @@ class BookableSlot < ApplicationRecord
     end
   end
 
-  def self.within_date_range(from, to, organisation_limit: false)
-    return limit_by_organisation(from, to) if organisation_limit
+  def self.within_date_range(from, to, organisation_limit: false, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE)
+    return limit_by_organisation(from, to, schedule_type:) if organisation_limit
 
     where("#{quoted_table_name}.start_at > ? AND #{quoted_table_name}.start_at < ?", from, to)
   end
 
-  def self.limit_by_organisation(from, to) # rubocop:disable Metrics/MethodLength
-    tpas_start_at = BusinessDays.from_now(5).change(hour: 21, min: 0).in_time_zone('London')
+  def self.limit_by_organisation(from, to, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE) # rubocop:disable Metrics/MethodLength
+    tpas_start_at = next_valid_start_date(nil, schedule_type)
     tpas_start_at = from if from > tpas_start_at
 
     joins(:guider)
@@ -44,7 +44,7 @@ class BookableSlot < ApplicationRecord
     if schedule_type == User::DUE_DILIGENCE_SCHEDULE_TYPE || user&.tpas_guider?
       BusinessDays.from_now(5).change(hour: 21, min: 0).in_time_zone('London')
     else
-      BusinessDays.from_now(1).change(hour: 21, min: 0).in_time_zone('London')
+      BusinessDays.from_now(35).change(hour: 21, min: 0).in_time_zone('London')
     end
   end
 
@@ -183,7 +183,7 @@ class BookableSlot < ApplicationRecord
       .for_schedule_type(schedule_type:)
       .for_organisation(user, lloyds:, scoped:, internal:, external:)
       .group("#{quoted_table_name}.start_at, #{quoted_table_name}.end_at")
-      .within_date_range(from, to, organisation_limit: limit_by_organisation)
+      .within_date_range(from, to, organisation_limit: limit_by_organisation, schedule_type:)
       .map do |us|
         { guiders: us.attributes['guiders'], start: us.start_at, end: us.end_at, selected: false }
       end

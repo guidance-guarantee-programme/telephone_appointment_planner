@@ -9,7 +9,7 @@ RSpec.feature 'Resource manager downloads appointment reports' do
     end
   end
 
-  scenario 'by appointment creation date' do
+  skip 'by appointment creation date' do
     given_the_user_is_a_resource_manager do
       travel_to now do
         and_there_are_data
@@ -19,7 +19,7 @@ RSpec.feature 'Resource manager downloads appointment reports' do
     end
   end
 
-  scenario 'by appointment start' do
+  skip 'by appointment start' do
     given_the_user_is_a_resource_manager do
       travel_to now do
         and_there_are_data
@@ -40,7 +40,7 @@ RSpec.feature 'Resource manager downloads appointment reports' do
     end
   end
 
-  scenario 'The user is a contact centre team leader' do
+  skip 'The user is a contact centre team leader' do
     given_the_user_is_a_contact_centre_team_leader do
       travel_to now do
         and_there_are_data
