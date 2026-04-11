@@ -78,6 +78,7 @@ RSpec.feature 'User views appointment activities' do
     AuditActivity.from(
       OpenStruct.new(
         user_id: current_user.id,
+        auditable_type: Appointment.model_name,
         audited_changes: { 'thing' => nil },
         appointment_id: @appointment.id
       ),

@@ -1,6 +1,7 @@
 # rubocop:disable Metrics/ClassLength
 class Appointment < ApplicationRecord
   audited on: %i[create update]
+  has_associated_audits
 
   acts_as_copy_target
 
@@ -164,6 +165,9 @@ class Appointment < ApplicationRecord
   belongs_to :guider, class_name: 'User'
   belongs_to :previous_guider, class_name: 'User', optional: true
   belongs_to :rebooked_from, class_name: 'Appointment', optional: true
+
+  has_one :vulnerability_profile, dependent: :destroy
+  accepts_nested_attributes_for :vulnerability_profile
 
   has_many :activities, -> { order('created_at DESC') }, dependent: :destroy
   has_many :status_transitions, dependent: :destroy
@@ -398,6 +402,10 @@ class Appointment < ApplicationRecord
 
   def future?
     start_at.advance(hours: -1) > Time.zone.now
+  end
+
+  def past?
+    start_at.advance(hours: -1) < Time.zone.now
   end
 
   def age_at_appointment

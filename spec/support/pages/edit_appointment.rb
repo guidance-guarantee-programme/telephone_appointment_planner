@@ -58,14 +58,29 @@ module Pages
       element :submit, '.t-submit-message'
 
       element :further_activities, '.t-further-activities'
-      element :audit_activity, '.t-audit-activity'
+      elements :audit_activities, '.t-audit-activity'
       element :hidden_activity, '.t-hidden-activity'
       elements :high_priority_activities, '.t-high-priority-activity'
       element :resolved_activities, '.t-resolved-activity'
       element :unresolved_activities, '.t-unresolved-activity'
       element :resolve_activity_button, '.t-resolve-activity'
-      element :more_activity_link, '.t-activity-more'
     end
+
+    element :disability_yes, '.t-disability-yes'
+    element :disability_no, '.t-disability-no'
+    element :mental_health_condition_yes, '.t-mental-health-condition-yes'
+    element :mental_health_condition_no, '.t-mental-health-condition-no'
+    element :vulnerable_customer_yes, '.t-vulnerable-customer-yes'
+    element :vulnerable_customer_no, '.t-vulnerable-customer-no'
+    element :falling_into_financial_difficulties, '.t-falling-into-financial-difficulties'
+    element :separating_or_getting_divorced, '.t-separating-or-getting-divorced'
+    element :being_diagnosed_with_a_health_condition, '.t-being-diagnosed-with-a-health-condition'
+    element :dealing_with_bereavement, '.t-dealing-with-bereavement'
+    element :starting_changing_or_losing_a_job, '.t-starting-changing-or-losing-a-job'
+    element :approaching_later_life, '.t-approaching-later-life'
+    element :moving_or_losing_a_home, '.t-moving-or-losing-a-home'
+    element :partially_or_fully_retiring, '.t-partially-or-fully-retiring'
+    element :getting_married_or_becoming_civil_partners, '.t-getting-married-or-becoming-civil-partners'
 
     section :breadcrumb, '.t-breadcrumb' do
       elements :links, 'a'

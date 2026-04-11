@@ -14,14 +14,25 @@ class AuditPresenter < SimpleDelegator
   def changes
     audited_changes.each_with_object({}) do |(key, value), memo|
       field = key.humanize
-      before = value.first.to_s
-      after = value.last.to_s
+      before, after = *parse_before_after(value)
 
       memo[field] = {
         before: before.empty? ? '-' : formatted_value(key, before),
         after: after.empty? ? '-' : formatted_value(key, after)
       }
     end
+  end
+
+  def parse_before_after(value)
+    before = ''
+
+    if value.is_a?(Array)
+      before, after = *value.map(&:to_s)
+    else
+      after = value.to_s
+    end
+
+    [before, after]
   end
 
   def formatted_value(key, value)
