@@ -2,6 +2,14 @@ require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
 RSpec.feature 'Guider edits an appointment' do
+  scenario 'Guider edits a PSG appointment' do
+    given_the_user_is_a_guider(organisation: :tpas) do
+      and_an_existing_psg_appointment_exists
+      when_they_attempt_to_edit_the_appointment
+      then_they_do_not_see_the_vulnerability_profile
+    end
+  end
+
   scenario 'Guider views appointments and schedule banners' do
     given_the_user_is_a_guider do
       and_an_appointment_exists_for_today
@@ -66,6 +74,11 @@ RSpec.feature 'Guider edits an appointment' do
     end
   end
 
+  def then_they_do_not_see_the_vulnerability_profile
+    expect(@page).to have_no_disability_yes
+    expect(@page).to have_no_falling_into_financial_difficulties
+  end
+
   def then_the_vulnerability_questions_are_disabled
     expect(@page.disability_yes).to be_disabled
     expect(@page.mental_health_condition_yes).to be_disabled
@@ -103,7 +116,7 @@ RSpec.feature 'Guider edits an appointment' do
 
   def and_an_existing_psg_appointment_exists
     # two appointments otherwise the search results redirect to the only one
-    @appointment_one = create(:appointment, :due_diligence)
+    @appointment = @appointment_one = create(:appointment, :due_diligence)
     @appointment_two = create(:appointment, :due_diligence)
   end
 
