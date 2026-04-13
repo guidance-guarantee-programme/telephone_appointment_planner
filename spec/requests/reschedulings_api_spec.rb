@@ -39,6 +39,16 @@ RSpec.describe 'POST /api/v1/appointments/{id}/reschedule' do # rubocop:disable 
     end
   end
 
+  scenario 'Attempting to reschedule during the appointment' do
+    given_the_user_is_a_pension_wise_api_user do
+      and_a_pending_appointment_exists
+      travel_to @appointment.start_at.advance(minutes: -10) do
+        when_the_client_attempts_to_reschedule_during_the_appointment
+      end
+      then_the_service_responds_with_a_422
+    end
+  end
+
   def when_the_client_posts_an_invalid_reschedule_request
     post api_v1_appointment_reschedule_path(@appointment, params: {}, as: :json)
   end
@@ -64,6 +74,10 @@ RSpec.describe 'POST /api/v1/appointments/{id}/reschedule' do # rubocop:disable 
     }
 
     post api_v1_appointment_reschedule_path(@appointment, params: @payload, as: :json)
+  end
+
+  def when_the_client_attempts_to_reschedule_during_the_appointment
+    when_the_client_posts_a_valid_reschedule_request
   end
 
   def then_the_service_responds_with_a_200 # rubocop:disable Naming/VariableNumber

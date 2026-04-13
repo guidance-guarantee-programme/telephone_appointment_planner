@@ -5,7 +5,7 @@ RSpec.describe Api::V1::AppointmentCancellation, '#cancel' do # rubocop:disable 
     it 'returns false' do
       @appointment = create(:appointment, start_at: Time.zone.parse('2024-10-01 13:00'))
 
-      travel_to Time.zone.parse('2024-10-01 12:00') do
+      travel_to Time.zone.parse('2024-10-01 11:00') do
         expect(
           described_class.new(
             appointment_id: @appointment.id,

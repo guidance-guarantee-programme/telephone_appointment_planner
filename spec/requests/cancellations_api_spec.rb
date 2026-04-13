@@ -34,6 +34,16 @@ RSpec.describe 'POST /api/v1/appointments/{id}/cancel' do # rubocop:disable Metr
     end
   end
 
+  scenario 'whilst the appointment is taking place' do
+    given_the_user_is_a_pension_wise_api_user do
+      and_a_pending_appointment_exists
+      travel_to @appointment.start_at.advance(minutes: -20) do
+        when_the_client_attempts_to_cancel_the_appointment
+        then_the_service_responds_with_a_422
+      end
+    end
+  end
+
   def and_a_pending_appointment_exists
     @appointment = create(:appointment, date_of_birth: '1970-01-01')
   end
@@ -48,6 +58,10 @@ RSpec.describe 'POST /api/v1/appointments/{id}/cancel' do # rubocop:disable Metr
     @payload = { 'date_of_birth' => '1970-01-01', 'secondary_status' => '32', 'other_reason' => '' }
 
     post api_v1_appointment_cancel_path(@appointment, params: @payload, as: :json)
+  end
+
+  def when_the_client_attempts_to_cancel_the_appointment
+    when_the_client_posts_a_valid_cancellation_request
   end
 
   def then_the_service_responds_with_a_201 # rubocop:disable Naming/VariableNumber
