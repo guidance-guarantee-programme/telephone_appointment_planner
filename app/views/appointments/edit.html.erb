@@ -155,42 +155,44 @@
 <%= form_for @appointment, layout: :basic, html: { data: { module: 'form-change-monitor' } } do |f| %>
   <%= render partial: 'personal_details_form', locals: { f: f, edit: true } %>
 
-  <hr>
-  <%= f.fields_for :vulnerability_profile, layout: :basic, fieldset: false do |vp_form| %>
-  <h2 class="h3">Extra profile information <small>for completion by guider post-appointment</small></h2>
-  <div class="row form-group">
-    <div class="col-md-6">
-      <div class="form-group">
-        <p><strong>Disability?</strong></p>
-        <%= vp_form.radio_button :disability, true, label: 'Yes', class: 't-disability-yes', disabled: !@appointment.past? %>
-        <%= vp_form.radio_button :disability, false, label: 'No', class: 't-disability-no', disabled: !@appointment.past? %>
-      </div>
+  <% if @appointment.pension_wise? %>
+    <hr>
+    <%= f.fields_for :vulnerability_profile, layout: :basic, fieldset: false do |vp_form| %>
+    <h2 class="h3">Extra profile information <small>for completion by guider post-appointment</small></h2>
+    <div class="row form-group">
+      <div class="col-md-6">
+        <div class="form-group">
+          <p><strong>Disability?</strong></p>
+          <%= vp_form.radio_button :disability, true, label: 'Yes', class: 't-disability-yes', disabled: !@appointment.past? %>
+          <%= vp_form.radio_button :disability, false, label: 'No', class: 't-disability-no', disabled: !@appointment.past? %>
+        </div>
 
-      <div class="form-group">
-        <p><strong>Mental health condition?</strong></p>
-        <%= vp_form.radio_button :mental_health_condition, true, label: 'Yes', class: 't-mental-health-condition-yes', disabled: !@appointment.past? %>
-        <%= vp_form.radio_button :mental_health_condition, false, label: 'No', class: 't-mental-health-condition-no', disabled: !@appointment.past? %>
-      </div>
+        <div class="form-group">
+          <p><strong>Mental health condition?</strong></p>
+          <%= vp_form.radio_button :mental_health_condition, true, label: 'Yes', class: 't-mental-health-condition-yes', disabled: !@appointment.past? %>
+          <%= vp_form.radio_button :mental_health_condition, false, label: 'No', class: 't-mental-health-condition-no', disabled: !@appointment.past? %>
+        </div>
 
-      <div class="form-group">
-        <p><strong>Vulnerable customer?</strong></p>
-        <%= vp_form.radio_button :vulnerable_customer, true, label: 'Yes', class: 't-vulnerable-customer-yes', disabled: !@appointment.past? %>
-        <%= vp_form.radio_button :vulnerable_customer, false, label: 'No', class: 't-vulnerable-customer-no', disabled: !@appointment.past? %>
+        <div class="form-group">
+          <p><strong>Vulnerable customer?</strong></p>
+          <%= vp_form.radio_button :vulnerable_customer, true, label: 'Yes', class: 't-vulnerable-customer-yes', disabled: !@appointment.past? %>
+          <%= vp_form.radio_button :vulnerable_customer, false, label: 'No', class: 't-vulnerable-customer-no', disabled: !@appointment.past? %>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <p><strong>Life events</strong></p>
+        <%= vp_form.check_box :falling_into_financial_difficulties, class: 't-falling-into-financial-difficulties', label: 'Falling into financial difficulties', disabled: !@appointment.past? %>
+        <%= vp_form.check_box :separating_or_getting_divorced, class: 't-separating-or-getting-divorced', label: 'Separating or getting divorced', disabled: !@appointment.past? %>
+        <%= vp_form.check_box :being_diagnosed_with_a_health_condition, class: 't-being-diagnosed-with-a-health-condition', label: 'Being diagnosed with a health condition', disabled: !@appointment.past? %>
+        <%= vp_form.check_box :dealing_with_bereavement, class: 't-dealing-with-bereavement', label: 'Dealing with bereavement', disabled: !@appointment.past? %>
+        <%= vp_form.check_box :starting_changing_or_losing_a_job, class: 't-starting-changing-or-losing-a-job', label: 'Starting, changing or losing a job', disabled: !@appointment.past? %>
+        <%= vp_form.check_box :approaching_later_life, class: 't-approaching-later-life', label: 'Approaching later life', disabled: !@appointment.past? %>
+        <%= vp_form.check_box :moving_or_losing_a_home, class: 't-moving-or-losing-a-home', label: 'Moving or losing a home', disabled: !@appointment.past? %>
+        <%= vp_form.check_box :partially_or_fully_retiring, class: 't-partially-or-fully-retiring', label: 'Partially or fully retiring', disabled: !@appointment.past? %>
+        <%= vp_form.check_box :getting_married_or_becoming_civil_partners, class: 't-getting-married-or-becoming-civil-partners', label: 'Getting married / becoming civil partners', disabled: !@appointment.past? %>
       </div>
     </div>
-    <div class="col-md-6">
-      <p><strong>Life events</strong></p>
-      <%= vp_form.check_box :falling_into_financial_difficulties, class: 't-falling-into-financial-difficulties', label: 'Falling into financial difficulties', disabled: !@appointment.past? %>
-      <%= vp_form.check_box :separating_or_getting_divorced, class: 't-separating-or-getting-divorced', label: 'Separating or getting divorced', disabled: !@appointment.past? %>
-      <%= vp_form.check_box :being_diagnosed_with_a_health_condition, class: 't-being-diagnosed-with-a-health-condition', label: 'Being diagnosed with a health condition', disabled: !@appointment.past? %>
-      <%= vp_form.check_box :dealing_with_bereavement, class: 't-dealing-with-bereavement', label: 'Dealing with bereavement', disabled: !@appointment.past? %>
-      <%= vp_form.check_box :starting_changing_or_losing_a_job, class: 't-starting-changing-or-losing-a-job', label: 'Starting, changing or losing a job', disabled: !@appointment.past? %>
-      <%= vp_form.check_box :approaching_later_life, class: 't-approaching-later-life', label: 'Approaching later life', disabled: !@appointment.past? %>
-      <%= vp_form.check_box :moving_or_losing_a_home, class: 't-moving-or-losing-a-home', label: 'Moving or losing a home', disabled: !@appointment.past? %>
-      <%= vp_form.check_box :partially_or_fully_retiring, class: 't-partially-or-fully-retiring', label: 'Partially or fully retiring', disabled: !@appointment.past? %>
-      <%= vp_form.check_box :getting_married_or_becoming_civil_partners, class: 't-getting-married-or-becoming-civil-partners', label: 'Getting married / becoming civil partners', disabled: !@appointment.past? %>
-    </div>
-  </div>
+    <% end %>
   <% end %>
 
   <div class="row form-group">
