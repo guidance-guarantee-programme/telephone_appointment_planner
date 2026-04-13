@@ -123,9 +123,6 @@
       <%= f.check_box :nudged, class: 't-nudge-flag', label: 'Stronger Nudge signposting?' %>
     <% end %>
 
-    <% if bsl_video_visible?(current_user) %>
-     <%= f.check_box :bsl_video, class: 't-bsl-video', label: 'BSL video appointment?', disabled: bsl_video_disabled?(current_user) %>
-    <% end %>
     <%= f.check_box :extended_duration, class: 't-extended-duration', label: 'Extended duration?' %>
     <% if ms_teams_call_visible?(current_user) %>
     <%= f.check_box :ms_teams_call, class: 't-ms-teams-call', label: 'Phone call via MS Teams?' %>

@@ -104,10 +104,6 @@ class AppointmentMailerPreview < ActionMailer::Preview
     )
   end
 
-  def bsl_customer_exit_poll
-    AppointmentMailer.bsl_customer_exit_poll(random_appointment)
-  end
-
   private
 
   def random_appointment

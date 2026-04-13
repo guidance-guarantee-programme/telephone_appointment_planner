@@ -51,24 +51,6 @@ RSpec.describe SmsCancellationSuccessJob, '#perform' do
       end
     end
 
-    context 'for a BSL appointment' do
-      it 'sends an SMS with the appropriate template' do
-        appointment.bsl_video = true
-
-        expect(client).to receive(:send_sms).with(
-          phone_number: '07715 930 444',
-          template_id: SmsCancellationSuccessJob::BSL_TEMPLATE_ID,
-          reference: appointment.to_param,
-          personalisation: {
-            date: '1:00pm, 1 Jan 2019 (GMT)',
-            reference: appointment.to_param
-          }
-        )
-
-        described_class.new.perform(appointment)
-      end
-    end
-
     before do
       ENV['PENSION_WISE_NOTIFY_API_KEY'] = 'blahblah'
 

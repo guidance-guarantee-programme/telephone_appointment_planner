@@ -1,4 +1,3 @@
-# rubocop:disable Metrics/ClassLength
 class Notifier
   NOTIFY_RESOURCE_MANAGER_ATTRIBUTES = %w[
     first_name
@@ -51,7 +50,7 @@ class Notifier
     Array(appointment.previous_changes.fetch('guider_id', appointment.guider_id))
   end
 
-  def notify_customer # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+  def notify_customer # rubocop:disable Metrics/AbcSize
     if appointment_cancelled?
       CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::CANCELLED_MESSAGE)
     elsif appointment_missed?
@@ -62,7 +61,6 @@ class Notifier
 
     DueDiligenceReferenceNumberJob.perform_now(appointment) if due_diligence_appointment_complete?
     PrintedConfirmationJob.perform_later(appointment) if appointment_rescheduled?
-    BslCustomerExitPollJob.set(wait: 24.hours).perform_later(appointment) if bsl_appointment_complete?
   end
 
   def requires_potential_duplicates_notification?
@@ -75,10 +73,6 @@ class Notifier
     appointment.previous_changes.slice(
       *Appointment::ADJUSTMENT_ATTRIBUTES
     ).present? && appointment.adjustments?
-  end
-
-  def bsl_appointment_complete?
-    appointment.bsl_video? && appointment_complete?
   end
 
   def due_diligence_appointment_complete?
@@ -129,4 +123,3 @@ class Notifier
 
   attr_reader :appointment, :modifying_agent
 end
-# rubocop:enable Metrics/ClassLength

@@ -214,7 +214,6 @@ class AppointmentsController < ApplicationController
       :postcode,
       :gdpr_consent,
       :smarter_signposted,
-      :bsl_video,
       :third_party_booking,
       :data_subject_name,
       :data_subject_age,

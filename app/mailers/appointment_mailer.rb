@@ -1,6 +1,6 @@
 # NOTE: When adding new mailings, add to `DropForm::IGNORED_MESSAGE_TYPES`
 # for excluding deliveries to internal system recipients
-class AppointmentMailer < ApplicationMailer # rubocop:disable Metrics/ClassLength
+class AppointmentMailer < ApplicationMailer
   rescue_from Net::SMTPUnknownError do |exception|
     Rails.logger.error(exception)
   end
@@ -112,14 +112,6 @@ class AppointmentMailer < ApplicationMailer # rubocop:disable Metrics/ClassLengt
     return unless appointment.email?
 
     mailgun_headers('booking_missed', appointment.id)
-    @appointment = decorate(appointment)
-    mail to: @appointment.email
-  end
-
-  def bsl_customer_exit_poll(appointment)
-    return unless appointment.email?
-
-    mailgun_headers('bsl_exit_poll', appointment.id)
     @appointment = decorate(appointment)
     mail to: @appointment.email
   end

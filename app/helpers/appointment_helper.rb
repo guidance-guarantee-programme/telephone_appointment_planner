@@ -29,18 +29,8 @@ module AppointmentHelper
     (current_user.tp_agent? || current_user.tpas_agent?) && appointment.pension_wise?
   end
 
-  def bsl_video_visible?(current_user)
-    current_user.administrator? || current_user.tp? || current_user.lancashire_west? || current_user.tpas_agent?
-  end
-
   def ms_teams_call_visible?(current_user)
     current_user.administrator? || current_user.tpas?
-  end
-
-  def bsl_video_disabled?(current_user)
-    return false if current_user.administrator? || current_user.lancashire_west?
-
-    true
   end
 
   def boolean_yes_no(value)
