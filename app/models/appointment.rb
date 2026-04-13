@@ -573,7 +573,7 @@ class Appointment < ApplicationRecord
   def self.for_online_rescheduling(id, date_of_birth)
     pending
       .where(schedule_type: User::PENSION_WISE_SCHEDULE_TYPE)
-      .where('? < start_at', Time.zone.now)
+      .where('? < start_at', BookableSlot.time_now)
       .where(date_of_birth:)
       .find_by(id:)
   end
