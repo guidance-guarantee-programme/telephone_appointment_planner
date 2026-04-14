@@ -489,6 +489,8 @@ GEM
       erb
       psych (>= 4.0.0)
       tsort
+    readline (0.0.4)
+      reline
     redis-client (0.23.1)
       connection_pool
     regexp_parser (2.8.1)
@@ -611,7 +613,7 @@ GEM
     unicode-display_width (2.4.2)
     uri (1.1.1)
     useragent (0.16.11)
-    vcr (6.1.0)
+    vcr (6.4.0)
     version_gem (1.1.9)
     warden (1.2.9)
       rack (>= 2.0.9)
@@ -696,6 +698,7 @@ DEPENDENCIES
   rails-assets-pusher!
   rails-assets-qTip2!
   rails-assets-zloirock--core-js (= 2.5.1)!
+  readline
   rspec-rails
   rspec-retry
   rubocop
@@ -717,7 +720,7 @@ DEPENDENCIES
   working_hours
 
 RUBY VERSION
-   ruby 3.4.2p28
+  ruby 4.0.2p0
 
 BUNDLED WITH
-   2.4.19
+  4.0.10
