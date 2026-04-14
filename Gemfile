@@ -72,6 +72,7 @@ group :development, :test do
   gem 'parallel_tests'
   gem 'pry-byebug'
   gem 'pusher-fake'
+  gem 'readline'
   gem 'rspec-rails'
   gem 'rubocop', require: false
   gem 'rubocop-rails', require: false
