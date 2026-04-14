@@ -37,3 +37,6 @@ RSpec.configure do |config|
   config.before(:each) { ActionMailer::Base.deliveries.clear }
   config.after(:each) { GDS::SSO.test_user = nil }
 end
+
+# silence sidekiq's redis startup
+Sidekiq.default_configuration.logger.level = Logger::WARN
