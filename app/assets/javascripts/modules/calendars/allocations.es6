@@ -162,6 +162,8 @@
 
       // reset form fields
       $('input[name="rescheduling_reason"]').prop('checked', false);
+      $('input[name="rescheduling_route"]').prop('checked', false);
+      $('#client-rescheduled-route,#office-rescheduled-route,#office-reallocated-route').hide();
 
       this.$modal.modal({keyboard: false});
     }
