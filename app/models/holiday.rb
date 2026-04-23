@@ -31,6 +31,7 @@ class Holiday < ApplicationRecord
     includes(:user)
       .where(users: { organisation_content_id: [user.organisation_content_id, nil] })
       .where('(holidays.start_at, holidays.end_at) OVERLAPS (?, ?)', start_at, end_at)
+      .where.not("holidays.title ilike 'HIDE%'")
   end
 
   def holiday_ids

@@ -146,6 +146,15 @@ RSpec.describe Holiday, type: :model do
       )
     end
 
+    let!(:hidden_holiday) do
+      create(
+        :bank_holiday,
+        title: 'HIDE - The Big Block',
+        start_at: start_at + 3.days,
+        end_at: end_at + 5.days
+      )
+    end
+
     let(:result) do
       described_class.overlapping_or_inside(start_at, end_at, resource_manager)
     end
@@ -171,6 +180,10 @@ RSpec.describe Holiday, type: :model do
 
       it 'lists holidays overlapping the range' do
         expect(result).to include holiday_overlapping_range
+      end
+
+      it 'excludes holidays named `hide*`' do
+        expect(result).to_not include(hidden_holiday)
       end
     end
   end
