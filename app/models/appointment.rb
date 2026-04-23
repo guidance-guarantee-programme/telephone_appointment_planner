@@ -37,7 +37,8 @@ class Appointment < ApplicationRecord
     'planned_absence' => 'Planned Absence',
     'meeting_training' => 'Meeting / Training',
     'urgent_appointment' => 'Urgent Appointment',
-    'accreditation' => 'Accreditation'
+    'accreditation' => 'Accreditation',
+    'incorrect_schedule' => 'Incorrect Schedule'
   }.freeze
 
   ATTENDED_DIGITAL_OPTIONS = %w[yes no not-sure].freeze
