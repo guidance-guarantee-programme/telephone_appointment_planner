@@ -23,13 +23,23 @@ module UserHelper
     end
   end
 
-  def guider_options(user)
+  def guider_options(user, include_reset: true)
     groups = Group.for_user(user).includes(:users)
 
-    {
-      'Groups' => group_options(groups),
-      'Users'  => user_options(user)
-    }
+    options = include_reset ? { 'Reset' => reset_options } : {}
+    options['Groups'] = group_options(groups)
+    options['Users']  = user_options(user)
+    options
+  end
+
+  def reset_options
+    [
+      [
+        'Reset all filters',
+        'Reset all filters',
+        { data: { icon: 'glyphicon-remove', children_to_select: [] } }
+      ]
+    ]
   end
 
   def group_options(groups)
