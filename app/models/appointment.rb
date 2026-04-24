@@ -251,6 +251,13 @@ class Appointment < ApplicationRecord
   before_create :track_initial_status
   before_update :track_status_transitions
 
+  def prepare_for_rescheduling
+    self.start_at = nil
+    self.end_at = nil
+    self.rescheduling_reason = ''
+    self.rescheduling_route = ''
+  end
+
   def resend_email_confirmation
     CustomerUpdateJob.perform_later(self, CustomerUpdateActivity::CONFIRMED_MESSAGE)
   end

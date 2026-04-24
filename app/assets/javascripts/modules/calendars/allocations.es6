@@ -145,16 +145,8 @@
 
     eventDrop(event, delta, revertFunc) {
       this.$modal = $('#rescheduling-reasons-modal');
-
-      this.$modal.one('hide.bs.modal', event, () => {
-        // if they try to navigate away without specifying a reason, revert
-        if (event.reschedulingReason === undefined) {
-          revertFunc();
-        }
-      });
-
       this.$modal.find('.js-modal-title').text(`Reason for rescheduling ${event.title} #${event.id}`);
-      this.$modal.find('.js-save').on(
+      this.$modal.find('.js-save').one(
         'click',
         {event: event, revertFunc: revertFunc},
         this.assignReschedulingReason.bind(this)
@@ -165,7 +157,7 @@
       $('input[name="rescheduling_route"]').prop('checked', false);
       $('#client-rescheduled-route,#office-rescheduled-route,#office-reallocated-route').hide();
 
-      this.$modal.modal({keyboard: false});
+      this.$modal.modal({keyboard: false, backdrop: 'static'});
     }
 
     assignReschedulingReason(e) {
@@ -180,10 +172,10 @@
         if(route === undefined && reason == 'client_rescheduled') {
           alert('You must specify a rescheduling route');
         }
-        else if (route == undefined && reason == 'office_rescheduled') {
+        else if (route === undefined && reason == 'office_rescheduled') {
           alert('You must specify rescheduled due to');
         }
-        else if (route == undefined && reason == 'office_reallocated') {
+        else if (route === undefined && reason == 'office_reallocated') {
           alert('You must specify reallocated due to');
         }
         else {
