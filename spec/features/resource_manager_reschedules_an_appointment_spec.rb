@@ -2,6 +2,14 @@ require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
 RSpec.feature 'Resource manager reschedules an appointment', js: true do
+  scenario 'A previously rescheduled appointment displays correctly' do
+    given_the_user_is_a_resource_manager(organisation: :tpas) do
+      and_there_is_a_previously_rescheduled_appointment
+      when_they_attempt_to_reschedule_the_appointment
+      then_the_rescheduling_options_are_presented_correctly
+    end
+  end
+
   scenario 'TPAS resource manager reschedules another organisation’s appointment' do
     given_the_user_is_a_resource_manager(organisation: :tpas) do
       travel_to '2022-06-20 13:00' do
@@ -58,6 +66,15 @@ RSpec.feature 'Resource manager reschedules an appointment', js: true do
         then_the_resulting_appointment_is_correctly_allocated_to_cas
       end
     end
+  end
+
+  def and_there_is_a_previously_rescheduled_appointment
+    @appointment = create(:appointment, :pension_wise_rescheduled)
+  end
+
+  def then_the_rescheduling_options_are_presented_correctly
+    expect(@page.client_rescheduled).not_to be_selected
+    expect(@page.pension_wise_rescheduled).not_to be_selected
   end
 
   def and_there_are_many_tpas_slots_and_one_external_slot

@@ -20,7 +20,7 @@
           <%= f.radio_button :rescheduling_reason, 'client_rescheduled', label: 'Client rescheduled', class: 't-client-rescheduled', data: { target: 'rescheduling_route' } %>
         </div>
         <div class="radio">
-          <%= f.radio_button :rescheduling_reason, 'office_rescheduled', label: 'Pension Wise rescheduled', class: 't-pension-wise-rescheduled' %>
+          <%= f.radio_button :rescheduling_reason, 'office_rescheduled', label: 'Office rescheduled', class: 't-pension-wise-rescheduled', data: { target: 'office_rescheduling_route' } %>
         </div>
       </div>
     </div>
@@ -33,6 +33,16 @@
         <div class="radio">
           <%= f.radio_button :rescheduling_route, 'email_or_crm', label: 'Email or CRM', class: 't-via-email-or-crm' %>
         </div>
+      </div>
+    </div>
+    <div class="row form-group" id="office_rescheduling_route">
+      <div class="col-md-12">
+        <label><%= required_label('Office rescheduled due to') %></label>
+        <% Appointment::OFFICE_RESCHEDULED_OPTIONS.each do |key, label| %>
+          <div class="radio">
+            <%= f.radio_button :rescheduling_route, key, label: label, class: "t-via-#{key.dasherize}" %>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>

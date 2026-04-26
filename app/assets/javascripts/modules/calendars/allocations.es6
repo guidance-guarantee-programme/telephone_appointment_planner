@@ -144,31 +144,28 @@
     }
 
     eventDrop(event, delta, revertFunc) {
-      if (delta.hours() != 0 || delta.minutes() != 0) {
-        this.$modal = $('#rescheduling-reasons-modal');
+      this.$modal = $('#rescheduling-reasons-modal');
 
-        this.$modal.one('hide.bs.modal', event, () => {
-          // if they try to navigate away without specifying a reason, revert
-          if (event.reschedulingReason === undefined) {
-            revertFunc();
-          }
-        });
+      this.$modal.one('hide.bs.modal', event, () => {
+        // if they try to navigate away without specifying a reason, revert
+        if (event.reschedulingReason === undefined) {
+          revertFunc();
+        }
+      });
 
-        this.$modal.find('.js-modal-title').text(`Reason for rescheduling ${event.title} #${event.id}`);
-        this.$modal.find('.js-save').on(
-          'click',
-          {event: event, revertFunc: revertFunc},
-          this.assignReschedulingReason.bind(this)
-        );
+      this.$modal.find('.js-modal-title').text(`Reason for rescheduling ${event.title} #${event.id}`);
+      this.$modal.find('.js-save').on(
+        'click',
+        {event: event, revertFunc: revertFunc},
+        this.assignReschedulingReason.bind(this)
+      );
 
-        // reset form fields
-        $('input[name="rescheduling_reason"]').prop('checked', false);
+      // reset form fields
+      $('input[name="rescheduling_reason"]').prop('checked', false);
+      $('input[name="rescheduling_route"]').prop('checked', false);
+      $('#client-rescheduled-route,#office-rescheduled-route,#office-reallocated-route').hide();
 
-        this.$modal.modal({keyboard: false});
-      }
-      else {
-        this.handleEventChange(event, revertFunc);
-      }
+      this.$modal.modal({keyboard: false});
     }
 
     assignReschedulingReason(e) {
@@ -182,6 +179,12 @@
 
         if(route === undefined && reason == 'client_rescheduled') {
           alert('You must specify a rescheduling route');
+        }
+        else if (route == undefined && reason == 'office_rescheduled') {
+          alert('You must specify rescheduled due to');
+        }
+        else if (route == undefined && reason == 'office_reallocated') {
+          alert('You must specify reallocated due to');
         }
         else {
           e.data.event.reschedulingReason = reason;
