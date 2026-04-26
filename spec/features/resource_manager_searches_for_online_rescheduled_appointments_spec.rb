@@ -56,6 +56,7 @@ RSpec.feature 'Resource manager searches online rescheduled appointments' do # r
       expect(result.customer_name).to have_text(@first.name)
       expect(result.previous_guider_name).to have_text(@first.previous_guider.name)
       expect(result.appointment_date_time).to have_text('01 February 2025 12:00')
+      expect(result.appointment_new_date_time).to have_text('02 February 2025 13:00')
       expect(result.rescheduled_date_time).to have_text('30 January 2025 13:00')
       expect(result.processed).to have_text('Yes')
     end

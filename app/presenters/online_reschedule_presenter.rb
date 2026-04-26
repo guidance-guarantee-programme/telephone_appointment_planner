@@ -15,6 +15,10 @@ class OnlineReschedulePresenter < SimpleDelegator
     previous_start_at.strftime(DATE_FORMAT)
   end
 
+  def new_date
+    appointment.start_at.strftime(DATE_FORMAT)
+  end
+
   def reference
     appointment.id
   end
