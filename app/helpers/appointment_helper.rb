@@ -79,10 +79,11 @@ module AppointmentHelper
     return unless appointment.rebooked_from_id?
 
     online = appointment.rebooked_from.cancelled_by_customer_online? ? 'online ' : ''
+    link_html = link_to("##{appointment.rebooked_from_id}", edit_appointment_path(appointment.rebooked_from))
 
     content_tag(
       :h2,
-      "Rebooked #{online}from ##{appointment.rebooked_from_id}",
+      "Rebooked #{online}from #{link_html}".html_safe, # rubocop:disable Rails/OutputSafety
       class: 't-original-appointment text-muted'
     )
   end
