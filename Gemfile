@@ -65,6 +65,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'working_hours'
 
 group :development, :test do
+  gem 'benchmark'
   gem 'capybara'
   gem 'factory_bot_rails', '4.11.0'
   gem 'faker'
