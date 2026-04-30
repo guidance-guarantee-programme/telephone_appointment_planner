@@ -4,7 +4,7 @@ Reference number: <%= @appointment.id %>
 
 Dear <%= @appointment.first_name %>,
 
-Your <%= @appointment.type %> appointment is booked for <%= @appointment.start_at.to_date.to_fs(:govuk_date) %> at <%= "#{@appointment.start_at.to_time.to_fs(:govuk_time)} (#{@appointment.timezone})" %>.
+Your <%= @appointment.type %> appointment is booked for <%= @appointment.start_at.to_date.to_fs(:govuk_date) %> at <%= "#{@appointment.start_at.to_time.to_fs(:govuk_time)} (#{@appointment.timezone})" %>. Your appointment will usually last around 60 minutes.
 
 <%= render 'shared/email/appointment_details' %>
 <%= render 'shared/email/preparing_for_appointment' %>
