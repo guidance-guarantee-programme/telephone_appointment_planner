@@ -51,6 +51,8 @@
   <% end %>
 <% end %>
 
-<%= p do %>
-  <strong>There’s currently a longer wait for phone appointments than normal.</strong>
+<% if @appointment.pension_wise? %>
+  <%= p do %>
+    <strong>There’s currently a longer wait for phone appointments than normal.</strong>
+  <% end %>
 <% end %>
