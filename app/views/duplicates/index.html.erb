@@ -21,7 +21,7 @@
   <% @appointment.potential_duplicates(only_pending: false).each do |duplicate| %>
     <% @duplicate = DuplicatePresenter.new(duplicate) %>
     <tr class="t-duplicate">
-      <td><%= @duplicate.id %> <small>(<%= @duplicate.schedule_type %>)</small></td>
+      <td><%= link_to "##{@duplicate.id}", edit_appointment_path(@duplicate) %> <small>(<%= @duplicate.schedule_type %>)</small></td>
       <td><%= @duplicate.organisation_name %> <small><%= @duplicate.email %></small></td>
       <td><%= @duplicate.start %></td>
       <td><%= @duplicate.status %></td>

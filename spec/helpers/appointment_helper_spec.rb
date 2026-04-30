@@ -22,7 +22,10 @@ describe AppointmentHelper do
             )
           )
 
-          expect(helper.rebooked_from_heading(appointment)).to match(/Rebooked online from #123456/)
+          expect(helper.rebooked_from_heading(appointment)).to eq(
+            '<h2 class="t-original-appointment text-muted">Rebooked online from ' \
+            '<a href="/appointments/123456/edit">#123456</a></h2>'
+          )
         end
       end
 
@@ -36,7 +39,10 @@ describe AppointmentHelper do
             )
           )
 
-          expect(helper.rebooked_from_heading(appointment)).to match(/Rebooked from #123456/)
+          expect(helper.rebooked_from_heading(appointment)).to eq(
+            '<h2 class="t-original-appointment text-muted">Rebooked from ' \
+            '<a href="/appointments/123456/edit">#123456</a></h2>'
+          )
         end
       end
     end
