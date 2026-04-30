@@ -1,6 +1,12 @@
-One of our pension specialists will call you on <%= @appointment.phone %> and quote the memorable word you’ve given us (<%= @appointment.memorable_word(obscure: true) %>) – so you know it’s us calling.
+One of our pension specialists will call you <% if @appointment.pension_wise? %>on <%= @appointment.phone %><% else %>from 0800 015 4906 <% end %> and quote the memorable word you’ve given us (<%= @appointment.memorable_word(obscure: true) %>) – so you know it’s us calling.
 
-Your appointment will usually last around 60 minutes. <% if @appointment.extended_duration? %>As you’re rescheduling an appointment that lasts over one hour, we need to confirm we have pension specialists available. We’ll be in touch if we need to adjust the start time.<% end %>
+<% if @appointment.due_diligence? %>
+Your pension provider must have referred you to book this appointment. We can’t help if they haven’t done this. 
+<% end %>
+
+<% if @appointment.extended_duration? %>
+As you’re rescheduling an appointment that lasts over one hour, we need to confirm we have pension specialists available. We’ll be in touch if we need to adjust the start time.
+<% end %>
 
 You’ll need to rebook if:
   * you’re not available at your appointment time or
@@ -19,9 +25,10 @@ To change any other information you’ve given us, call 0800 138 3944 (+44 20 37
 
 We’re open between 9am and 5pm, Monday to Friday. Closed on bank holidays.
 <% else %>
-How to cancel or change your appointment
+To change or cancel your Pension Safeguarding Guidance appointment, you can:
 
-To change or cancel your Pension Safeguarding Guidance appointment, call 0800 015 4906.
+* reply to this email
+* call 0800 015 4906 (+44 20 7630 2283 if you’re outside the UK).
 
 We’re open between 9am and 5pm, Monday to Friday. Closed on bank holidays.
 <% end %>
