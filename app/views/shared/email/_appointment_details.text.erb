@@ -26,4 +26,4 @@ To change or cancel your Pension Safeguarding Guidance appointment, call 0800 01
 We’re open between 9am and 5pm, Monday to Friday. Closed on bank holidays.
 <% end %>
 
-There’s currently a longer wait for phone appointments than normal.
+<% if @appointment.pension_wise? %>There’s currently a longer wait for phone appointments than normal.<% end %>
