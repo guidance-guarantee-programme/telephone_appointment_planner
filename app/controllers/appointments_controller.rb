@@ -30,8 +30,7 @@ class AppointmentsController < ApplicationController
                          warning: 'You cannot reschedule this appointment.'
     end
 
-    @appointment.start_at = nil
-    @appointment.end_at = nil
+    @appointment.prepare_for_rescheduling
   end
 
   def update_reschedule # rubocop:disable Metrics/MethodLength

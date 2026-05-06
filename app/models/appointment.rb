@@ -24,13 +24,22 @@ class Appointment < ApplicationRecord
 
   RESCHEDULING_REASONS = [
     CLIENT_RESCHEDULED = 'client_rescheduled'.freeze,
-    OFFICE_RESCHEDULED = 'office_rescheduled'.freeze
+    OFFICE_RESCHEDULED = 'office_rescheduled'.freeze,
+    OFFICE_REALLOCATED = 'office_reallocated'.freeze
   ].freeze
   RESCHEDULING_ROUTES = [
     RESCHEDULED_PHONE = 'phone'.freeze,
     RESCHEDULED_EMAIL_OR_CRM = 'email_or_crm'.freeze,
     RESCHEDULED_ONLINE = 'online'.freeze
   ].freeze
+  OFFICE_RESCHEDULED_OPTIONS = {
+    'unplanned_absence' => 'Unplanned Absence',
+    'planned_absence' => 'Planned Absence',
+    'meeting_training' => 'Meeting / Training',
+    'urgent_appointment' => 'Urgent Appointment',
+    'accreditation' => 'Accreditation',
+    'incorrect_schedule' => 'Incorrect Schedule'
+  }.freeze
 
   ATTENDED_DIGITAL_OPTIONS = %w[yes no not-sure].freeze
 
@@ -241,6 +250,13 @@ class Appointment < ApplicationRecord
   before_validation :format_name, on: :create
   before_create :track_initial_status
   before_update :track_status_transitions
+
+  def prepare_for_rescheduling
+    self.start_at = nil
+    self.end_at = nil
+    self.rescheduling_reason = ''
+    self.rescheduling_route = ''
+  end
 
   def resend_email_confirmation
     CustomerUpdateJob.perform_later(self, CustomerUpdateActivity::CONFIRMED_MESSAGE)
@@ -610,6 +626,10 @@ class Appointment < ApplicationRecord
     result
   end
 
+  def requires_office_rescheduling_route?
+    created_at > Time.zone.parse(ENV.fetch('RESCHEDULING_REASONS_CUT_OFF') { '2026-02-17 00:00' })
+  end
+
   private
 
   def track_initial_status
@@ -862,16 +882,35 @@ class Appointment < ApplicationRecord
     errors.add(:gdpr_consent, :inclusion) unless inclusion.include?(gdpr_consent)
   end
 
-  def validate_rescheduling_reason
-    return unless start_at_changed?
+  def validate_rescheduling_reason # rubocop:disable Metrics/CyclomaticComplexity
+    return unless start_at_changed? || guider_id_changed?
 
     errors.add(:rescheduling_reason, 'must be specified') unless RESCHEDULING_REASONS.include?(rescheduling_reason)
-    errors.add(:rescheduling_route, 'must be specified') if client_rescheduled? &&
-                                                            !RESCHEDULING_ROUTES.include?(rescheduling_route)
+
+    return errors.add(:rescheduling_route, 'must be specified') if client_rescheduled? &&
+                                                                   !RESCHEDULING_ROUTES.include?(rescheduling_route)
+
+    validate_office_rescheduling_route if office_rescheduled? || office_reallocated?
+  end
+
+  def validate_office_rescheduling_route
+    return unless requires_office_rescheduling_route?
+
+    return if OFFICE_RESCHEDULED_OPTIONS.keys.include?(rescheduling_route)
+
+    errors.add(:rescheduling_route, 'must be specified')
+  end
+
+  def office_rescheduled?
+    rescheduling_reason == OFFICE_RESCHEDULED
   end
 
   def client_rescheduled?
     rescheduling_reason == CLIENT_RESCHEDULED
+  end
+
+  def office_reallocated?
+    rescheduling_reason == OFFICE_REALLOCATED
   end
 
   def validate_welsh_language
