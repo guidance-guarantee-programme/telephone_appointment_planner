@@ -38,7 +38,10 @@ class Appointment < ApplicationRecord
     'meeting_training' => 'Meeting / Training',
     'urgent_appointment' => 'Urgent Appointment',
     'accreditation' => 'Accreditation',
-    'incorrect_schedule' => 'Incorrect Schedule'
+    'incorrect_schedule' => 'Incorrect Schedule',
+    'assigning_from_overspill' => 'Assigning from Overspill',
+    'assigning_to_tier_2' => 'Assigning to Tier 2',
+    'guider_overrunning' => 'Guider Overrunning'
   }.freeze
 
   ATTENDED_DIGITAL_OPTIONS = %w[yes no not-sure].freeze
