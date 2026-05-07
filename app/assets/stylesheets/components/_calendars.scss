@@ -7,6 +7,8 @@ $calendar-appointment-background: $color-boston-blue;
 $calendar-past-appointment-background: lighten($color-boston-blue, 20%);
 $calendar-appointment-cancelled-background: $color-medium-carmine;
 $calendar-past-appointment-cancelled-background: lighten($color-medium-carmine, 20%);
+$calendar-appointment-noshow-background: $color-porsche;
+$calendar-past-appointment-noshow-background: lighten($color-porsche, 20%);
 $calendar-appointment-moved-background: $color-green;
 $calendar-holiday-anchor-visited: $color-white;
 $calendar-holiday-background: darken($color-alto, 10%);
@@ -270,6 +272,33 @@ $guider-row-height: 120px;
   &.fc--past {
     @include striped($calendar-past-appointment-cancelled-background);
     border-color: $calendar-past-appointment-cancelled-background;
+
+    &.fc-event--ms-teams-call {
+      @include hard-striped($calendar-appointment-cancelled-background, $color-black);
+  }
+
+    &:hover td {
+      @include striped($calendar-past-appointment-cancelled-background);
+    }
+  }
+}
+
+.fc-event--noshow {
+  @include striped($calendar-appointment-noshow-background);
+  margin: 1.5px;
+  border-color: $calendar-appointment-noshow-background;
+
+  &.fc-event--ms-teams-call {
+    @include hard-striped($calendar-appointment-noshow-background, $color-black);
+  }
+
+  &:hover td {
+    @include striped($calendar-appointment-noshow-background);
+  }
+
+  &.fc--past {
+    @include striped($calendar-past-appointment-noshow-background);
+    border-color: $calendar-past-appointment-noshow-background;
 
     &.fc-event--ms-teams-call {
       @include hard-striped($calendar-appointment-cancelled-background, $color-black);
