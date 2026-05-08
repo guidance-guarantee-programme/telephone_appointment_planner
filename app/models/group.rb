@@ -1,4 +1,6 @@
 class Group < ApplicationRecord
+  audited on: :destroy
+
   default_scope { order(:name) }
 
   has_many :group_assignments, dependent: :destroy

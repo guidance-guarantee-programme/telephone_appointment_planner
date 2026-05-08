@@ -14,12 +14,12 @@ class GroupsController < ApplicationController
       current_user
     ).call
 
-    go_back_with_success('assigned to')
+    go_back_with_success('assigned')
   end
 
   def destroy
     DestroyGroupAssignments.new(user_ids, params[:id]).call
-    go_back_with_success('unassigned from')
+    go_back_with_success('unassigned')
   end
 
   private
@@ -27,7 +27,7 @@ class GroupsController < ApplicationController
   def go_back_with_success(action)
     redirect_back(
       fallback_location: users_path,
-      success: "The users were #{action} the specified groups"
+      success: "The users/groups were successfully #{action}"
     )
   end
 

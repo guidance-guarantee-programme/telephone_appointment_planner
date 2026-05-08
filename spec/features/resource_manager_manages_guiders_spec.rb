@@ -52,6 +52,53 @@ RSpec.feature 'Resource manager manages guiders' do
     end
   end
 
+  scenario 'Deleting a group and all user assignments', js: true do
+    given_the_user_is_a_resource_manager do
+      and_multiple_guiders_are_assigned_to_a_group
+      when_they_visit_the_guiders_page
+      and_delete_the_group
+      then_the_group_and_assignments_are_deleted
+    end
+  end
+
+  scenario 'Failing confirmation and not deleting the group and user assignments', js: true do
+    given_the_user_is_a_resource_manager do
+      and_multiple_guiders_are_assigned_to_a_group
+      when_they_visit_the_guiders_page
+      and_they_attempt_to_delete_the_group
+      then_the_group_and_assignments_are_not_deleted
+    end
+  end
+
+  def and_multiple_guiders_are_assigned_to_a_group
+    @group  = create(:group, name: 'All Guiders')
+    @guider = create(:guider) { |g| g.groups << @group }
+    @other  = create(:guider) { |g| g.groups << @group }
+  end
+
+  def and_delete_the_group
+    @page.guiders.first.groups.first.click
+    @page.wait_until_delete_prompt_visible
+    @page.delete_prompt.group.set('All Guiders')
+    @page.delete_prompt.ok.click
+  end
+
+  def then_the_group_and_assignments_are_deleted
+    expect(@page).to have_flash_of_success
+    expect(Group.count).to be_zero
+    expect(GroupAssignment.count).to be_zero
+  end
+
+  def and_they_attempt_to_delete_the_group
+    @page.guiders.first.groups.first.click
+    @page.wait_until_delete_prompt_visible
+    @page.delete_prompt.group.set('Whoops Bad')
+  end
+
+  def then_the_group_and_assignments_are_not_deleted
+    expect { @page.delete_prompt.ok.click }.not_to(change { Group.count })
+  end
+
   def and_they_choose_to_remove_groups_from_multiple_guiders
     and_they_choose_to_add_groups_to_multiple_guiders
   end

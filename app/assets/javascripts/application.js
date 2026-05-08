@@ -23,6 +23,7 @@
 //= require pusher
 //= require jquery.postcodes/dist/postcodes.js
 //= require govuk-admin-template/modules/checkbox_toggle
+//= require alertify
 
 //= require tap-base
 //= require modules/calendar

@@ -1,3 +1,18 @@
 .form-group--email-validator {
   position: relative;
 }
+
+.form-group--delete-group {
+  @extend .form-group;
+  @extend .pull-left;
+
+  margin-bottom: 0;
+
+  .btn {
+    margin-right: 5px;
+
+    &:hover {
+      @extend .btn-danger;
+    }
+  }
+}
