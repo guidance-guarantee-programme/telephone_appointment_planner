@@ -191,11 +191,14 @@
 
     styleEvents(event, element) {
       element.removeClass('fc-event--moved fc-event--cancelled');
+      element.removeClass('fc-event--moved fc-event--noshow');
 
       if (event.hasChanged) {
         element.addClass('fc-event--moved');
       } else if(event.cancelled) {
         element.addClass('fc-event--cancelled');
+      } else if(event.noShow) {
+        element.addClass('fc-event--noshow');
       }
 
       if (event.className.indexOf('fc-helper') > -1) {

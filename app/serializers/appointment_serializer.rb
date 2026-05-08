@@ -10,6 +10,7 @@ class AppointmentSerializer < ActiveModel::Serializer
   attribute :url
   attribute :status
   attribute :cancelled
+  attribute :no_show?, key: :noShow
   attribute :guider_id, key: :resourceId
   attribute :pension_wise?, key: :pensionWise
   attribute :extended_duration?, key: :extendedDuration
