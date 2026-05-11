@@ -8,6 +8,8 @@ module Pages
     element :multi_day, '.t-multi-day'
     element :recur, '.t-recur'
     element :recur_end_at, '.t-recur-end-at'
+    element :description, '.t-description'
+    element :additional_information, '.t-additional-information'
 
     section :multiple_day, Sections::MultipleDay, '.t-multi-day-container'
     section :single_day, Sections::SingleDay, '.t-single-day-container'

@@ -3,25 +3,33 @@ class BatchUpsertHolidays
   include DateRangePickerHelper
   extend ActiveModel::Naming
 
-  attr_reader :title, :users, :all_day, :start_at, :end_at, :recur, :single_day_recur_end_at
+  attr_reader :title, :users, :all_day, :start_at, :end_at, :recur, :single_day_recur_end_at,
+              :description, :additional_information, :creator, :created_at
 
   alias single_day_start_at start_at
   alias single_day_end_at end_at
   alias multi_day_start_at start_at
   alias multi_day_end_at end_at
+  alias creator? creator
 
   validates :title, presence: true
   validates :users, presence: true
+  validates :description, presence: true
+  validates :creator, presence: true
   validate :end_at_comes_after_start_at
   validate :validate_recurrence_dates
 
-  def initialize(options = {})
+  def initialize(options = {}) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     @previous_holidays = options[:previous_holidays]
     @users   = options[:users]
     @title   = options[:title]
     @all_day = sanitise_boolean(options[:all_day])
     @recur   = sanitise_boolean(options[:recur])
     @single_day_recur_end_at = options.fetch(:single_day_recur_end_at) { Date.current }
+    @description             = options[:description]
+    @additional_information  = options[:additional_information]
+    @creator                 = options[:creator]
+    @created_at              = options[:created_at]
 
     calculate_range(options)
   end
@@ -83,14 +91,17 @@ class BatchUpsertHolidays
     end
   end
 
-  def create_holiday_for_user(user, starting: start_at, ending: end_at)
+  def create_holiday_for_user(user, starting: start_at, ending: end_at) # rubocop:disable Metrics/MethodLength
     Holiday.create!(
       title:,
       all_day:,
       bank_holiday: false,
       user:,
       start_at: starting,
-      end_at: ending
+      end_at: ending,
+      creator:,
+      description:,
+      additional_information:
     )
   end
 

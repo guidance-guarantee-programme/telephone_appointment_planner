@@ -3,6 +3,21 @@ require 'rails_helper'
 # rubocop:disable Metrics/BlockLength
 RSpec.describe Holiday, type: :model do
   describe 'validations' do
+    it 'requires a description' do
+      holiday = build_stubbed(:holiday, description: '')
+      expect(holiday).to_not be_valid
+    end
+
+    it 'requires a creator' do
+      holiday = build_stubbed(:holiday, creator: nil)
+      expect(holiday).to_not be_valid
+    end
+
+    it 'permits certain length additional information' do
+      holiday = build_stubbed(:holiday, additional_information: '*' * 301)
+      expect(holiday).to_not be_valid
+    end
+
     it 'requires all_day' do
       holiday = build_stubbed(:holiday, all_day: nil)
       expect(holiday).to_not be_valid

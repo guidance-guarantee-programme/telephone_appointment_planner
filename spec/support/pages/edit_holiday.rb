@@ -7,6 +7,9 @@ module Pages
     element :save, '.t-save'
     element :delete, '.t-delete'
     element :multi_day, '.t-multi-day'
+    element :created_info, '.t-created-info'
+    element :description, '.t-description'
+    element :additional_information, '.t-additional-information'
 
     section :multiple_day, Sections::MultipleDay, '.t-multi-day-container'
     section :single_day, Sections::SingleDay, '.t-single-day-container'

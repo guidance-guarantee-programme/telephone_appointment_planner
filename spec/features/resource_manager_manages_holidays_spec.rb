@@ -51,6 +51,7 @@ RSpec.feature 'Resource manager manages holidays' do
           when_they_view_holidays
           and_they_edit_the_multiple_day_holiday
           then_they_can_see_the_updated_multiple_day_holiday
+          and_the_extra_fields_are_presented_correctly
         end
       end
     end
@@ -158,6 +159,8 @@ RSpec.feature 'Resource manager manages holidays' do
     @page = Pages::NewHoliday.new
 
     @page.title.set 'Holiday Title'
+    @page.description.select('Other')
+    @page.additional_information.set 'Notes'
     @page.select_all_users
 
     @page.single_day.set_date_range(
@@ -245,6 +248,8 @@ RSpec.feature 'Resource manager manages holidays' do
     @page = Pages::NewHoliday.new
 
     @page.title.set 'Holiday Title'
+    @page.description.select('Other')
+    @page.additional_information.set 'Notes'
     @page.select_all_users
     @page.multi_day.set(true)
     @page.multiple_day.set_date_range(
@@ -262,6 +267,8 @@ RSpec.feature 'Resource manager manages holidays' do
     @page = Pages::NewHoliday.new
 
     @page.title.set 'Holiday Title'
+    @page.description.select('Other')
+    @page.additional_information.set 'Notes'
     @page.select_all_users
     @page.multi_day.set(false)
     @page.single_day.set_date_range(
@@ -336,6 +343,7 @@ RSpec.feature 'Resource manager manages holidays' do
     @page = Pages::EditHoliday.new
     @page.title.set 'Some other holiday title'
     @page.select_user(@guiders.first)
+    @page.additional_information.set 'Notes'
     @page.multiple_day.set_date_range(
       Time.zone.now.to_date,
       Time.zone.now.to_date + 2.days
@@ -365,6 +373,16 @@ RSpec.feature 'Resource manager manages holidays' do
       start_at: '2016-10-18',
       end_at:   '2016-10-21'
     )
+  end
+
+  def and_the_extra_fields_are_presented_correctly
+    @page.wait_until_events_visible
+    @page.events.first.content.click
+
+    @page = Pages::EditHoliday.new
+    expect(@page.description.value).to eq('other')
+    expect(@page.additional_information).to have_text('Notes')
+    expect(@page.created_info).to have_text(current_user.name)
   end
 
   def then_they_can_see_the_updated_single_day_holiday

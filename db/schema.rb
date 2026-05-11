@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_08_132740) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_11_102011) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
   enable_extension "pg_catalog.plpgsql"
@@ -201,9 +201,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_08_132740) do
   end
 
   create_table "holidays", id: :serial, force: :cascade do |t|
+    t.string "additional_information", default: "", null: false
     t.boolean "all_day", default: false, null: false
     t.boolean "bank_holiday", null: false
     t.datetime "created_at", precision: nil, null: false
+    t.bigint "creator_id"
+    t.string "description", default: "", null: false
     t.datetime "end_at", precision: nil
     t.datetime "start_at", precision: nil
     t.string "title"
@@ -211,6 +214,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_08_132740) do
     t.integer "user_id"
     t.index "tsrange(start_at, end_at)", name: "index_holidays_tsrange_start_at_end_at", using: :gist
     t.index "user_id, tsrange(start_at, end_at)", name: "index_holidays_userid_tsrange", using: :gist
+    t.index ["creator_id"], name: "index_holidays_on_creator_id"
     t.index ["start_at", "end_at"], name: "index_holidays_on_start_at_and_end_at"
     t.index ["user_id"], name: "index_holidays_on_user_id"
   end

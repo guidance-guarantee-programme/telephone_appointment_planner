@@ -19,6 +19,21 @@
     </div>
   </div>
   <div class="row">
+    <div class="col-md-6">
+      <%= form.select :description,
+            options_for_select(Holiday::DESCRIPTION_OPTIONS.invert.to_a, holiday.description),
+            { include_blank: '' }, { class: 't-description form-control' }
+      %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <%= form.text_area :additional_information, autocomplete: 'off', maxlength: 300, class: 't-additional-information js-additional-information js-character-limit-input form-control', rows: 6,
+        placeholder: 'Additional information', data: { module: 'character-limit', maxlength: 300 }
+      %>
+    </div>
+  </div>
+  <div class="row">
     <div class="col-md-12">
       <%= form.check_box :all_day, label: 'This holiday lasts for multiple days', value: 'true', class: 'js-multi-day t-multi-day' %>
     </div>
@@ -128,6 +143,17 @@
     </div>
     <% end %>
   </div>
+
+  <% if holiday.creator? %>
+  <div class="row">
+    <div class="col-md-6 t-created-info">
+      <hr>
+      <strong>Created By:</strong> <%= holiday.creator.name %><br>
+      <strong>Created At:</strong> <%= holiday.created_at.in_time_zone('London').to_fs(:govuk_date) %>
+      <hr>
+    </div>
+  </div>
+  <% end %>
 
   <div class="row">
     <div class="col-md-12">
