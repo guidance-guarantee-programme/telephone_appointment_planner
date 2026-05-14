@@ -133,12 +133,19 @@
         this.assignReschedulingReason.bind(this)
       );
 
+      this.$modal.one('hide.bs.modal', event, () => {
+        // if they try to navigate away without specifying a reason, revert
+        if (event.reschedulingReason === undefined) {
+          revertFunc();
+        }
+      });
+
       // reset form fields
       $('input[name="rescheduling_reason"]').prop('checked', false);
       $('input[name="rescheduling_route"]').prop('checked', false);
       $('#client-rescheduled-route,#office-rescheduled-route,#office-reallocated-route').hide();
 
-      this.$modal.modal({keyboard: false, backdrop: 'static'});
+      this.$modal.modal({keyboard: false});
     }
 
     assignReschedulingReason(e) {
