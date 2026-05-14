@@ -2,6 +2,8 @@ require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
 RSpec.describe BatchUpsertHolidays do
+  let(:creator) { create(:resource_manager) }
+
   describe 'validations' do
     subject do
       described_class.new(
@@ -16,6 +18,14 @@ RSpec.describe BatchUpsertHolidays do
 
     it 'validates presence of users' do
       expect(subject.errors[:users]).to_not be_empty
+    end
+
+    it 'validates presence of description' do
+      expect(subject.errors[:description]).to_not be_empty
+    end
+
+    it 'validates presence of creator' do
+      expect(subject.errors[:creator]).to_not be_empty
     end
   end
 
@@ -39,7 +49,10 @@ RSpec.describe BatchUpsertHolidays do
           title: 'Holiday name',
           all_day:,
           multi_day_start_at: '20/10/2016',
-          multi_day_end_at: '20/10/2016'
+          multi_day_end_at: '20/10/2016',
+          description: 'other',
+          additional_information: 'notes',
+          creator:
         }
       end
 
@@ -70,14 +83,21 @@ RSpec.describe BatchUpsertHolidays do
           all_day: true,
           user: users.first,
           start_at:,
-          end_at:
+          end_at:,
+          description: 'other',
+          additional_information: 'notes',
+          creator:
         )
+
         expect(results.second).to have_attributes(
           title: 'Holiday name',
           all_day: true,
           user: users.second,
           start_at:,
-          end_at:
+          end_at:,
+          description: 'other',
+          additional_information: 'notes',
+          creator:
         )
       end
 
@@ -107,7 +127,10 @@ RSpec.describe BatchUpsertHolidays do
           'single_day_start_at(4i)': '12',
           'single_day_start_at(5i)': '0',
           'single_day_end_at(4i)': '14',
-          'single_day_end_at(5i)': '0'
+          'single_day_end_at(5i)': '0',
+          description: 'other',
+          additional_information: 'notes',
+          creator:
         }
       end
 
@@ -141,14 +164,21 @@ RSpec.describe BatchUpsertHolidays do
           all_day: false,
           user: users.first,
           start_at:,
-          end_at:
+          end_at:,
+          description: 'other',
+          additional_information: 'notes',
+          creator:
         )
+
         expect(results.second).to have_attributes(
           title: 'Holiday name',
           all_day: false,
           user: users.second,
           start_at:,
-          end_at:
+          end_at:,
+          description: 'other',
+          additional_information: 'notes',
+          creator:
         )
       end
 

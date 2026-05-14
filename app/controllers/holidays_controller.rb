@@ -1,4 +1,4 @@
-class HolidaysController < ApplicationController
+class HolidaysController < ApplicationController # rubocop:disable Metrics/ClassLength
   before_action :authorise_for_resource_managers!
 
   def merged
@@ -37,7 +37,7 @@ class HolidaysController < ApplicationController
     end
   end
 
-  def edit
+  def edit # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     holidays = Holiday.where(id: holiday_ids)
 
     @holiday = BatchUpsertHolidays.new(
@@ -46,7 +46,11 @@ class HolidaysController < ApplicationController
       previous_holidays: holiday_ids,
       users: holidays.pluck(:user_id),
       start_at: holidays.first.start_at,
-      end_at: holidays.first.end_at
+      end_at: holidays.first.end_at,
+      description: holidays.first.description,
+      additional_information: holidays.first.additional_information,
+      creator: holidays.first.creator,
+      created_at: holidays.first.created_at
     )
   end
 
@@ -93,9 +97,11 @@ class HolidaysController < ApplicationController
         :multi_day_start_at,
         :multi_day_end_at,
         :recur,
-        :single_day_recur_end_at
+        :single_day_recur_end_at,
+        :description,
+        :additional_information
       )
-      .merge(users: user_ids)
+      .merge(users: user_ids, creator: current_user)
   end
 
   def user_ids

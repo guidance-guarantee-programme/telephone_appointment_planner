@@ -6,6 +6,9 @@ FactoryBot.define do
     all_day { false }
     start_at { Time.zone.now.at_midday }
     end_at { Time.zone.now.at_midday + 1.hour }
+    description { 'other' }
+    additional_information { '' }
+    creator { create(:resource_manager) }
 
     factory :bank_holiday do
       user { nil }

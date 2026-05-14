@@ -17,8 +17,7 @@
             click: this.fullscreenClick.bind(this)
           }
         },
-        selectable: true,
-        selectOverlap: this.selectOverlap
+        selectable: false
       };
 
       this.eventChanges = [];
@@ -37,24 +36,6 @@
 
       this.setCalendarToCorrectHeight();
       this.setupUndo();
-    }
-
-    select(start, end, jsEvent, view, resource) {
-      let title = prompt(`Name of holiday period for ${resource.title}?`);
-
-      if (title) {
-        this.$holidayForm.find('.js-user-id').val(resource.id);
-        this.$holidayForm.find('.js-title').val(title);
-        this.$holidayForm.find('.js-start-at').val(start.format());
-        this.$holidayForm.find('.js-end-at').val(end.format());
-        this.$holidayForm.submit();
-      }
-
-      this.$el.fullCalendar('unselect');
-    }
-
-    selectOverlap(event) {
-      return (event.source.eventType != 'holiday');
     }
 
     bindEvents() {
