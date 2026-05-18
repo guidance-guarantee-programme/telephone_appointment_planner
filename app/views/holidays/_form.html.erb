@@ -144,7 +144,7 @@
     <% end %>
   </div>
 
-  <% if holiday.creator? %>
+  <% if holiday.creator? && holiday.created_at? %>
   <div class="row">
     <div class="col-md-6 t-created-info">
       <hr>

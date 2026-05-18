@@ -699,7 +699,7 @@ RSpec.describe Appointment, type: :model do
       context 'when before the cut-off' do
         it 'permits empty `rescheduling_route`' do
           subject.start_at = 3.days.ago
-          subject.created_at = 3.months.ago
+          subject.created_at = 1.year.ago
           subject.rescheduling_reason = 'office_rescheduled'
 
           expect(subject).to be_valid
