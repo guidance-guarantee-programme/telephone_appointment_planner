@@ -11,6 +11,7 @@ class BatchUpsertHolidays
   alias multi_day_start_at start_at
   alias multi_day_end_at end_at
   alias creator? creator
+  alias created_at? created_at
 
   validates :title, presence: true
   validates :users, presence: true
