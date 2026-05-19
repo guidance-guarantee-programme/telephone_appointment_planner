@@ -398,7 +398,7 @@ RSpec.describe Appointment, type: :model do
     end
   end
 
-  skip 'Grace period bug regression' do
+  describe 'Grace period bug regression' do
     it 'does not permit bookings inside the grace period' do
       travel_to '2017-03-26 11:05 UTC' do
         # force new_record? to evaluate truthily
@@ -941,7 +941,7 @@ RSpec.describe Appointment, type: :model do
         end
 
         context 'when the appointment is not owned by the agent org' do
-          skip 'cannot be booked within the grace period' do
+          it 'cannot be booked within the grace period' do
             subject.agent = build_stubbed(:resource_manager, :waltham_forest)
             subject.start_at = BusinessDays.from_now(1).beginning_of_day
 
@@ -1339,7 +1339,7 @@ RSpec.describe Appointment, type: :model do
           build_stubbed(:guider)
         end
 
-        skip 'is false' do
+        it 'is false' do
           expect(result).to be false
         end
       end
@@ -1356,7 +1356,7 @@ RSpec.describe Appointment, type: :model do
         context 'when the appointment is for another organisation' do
           let(:user) { build_stubbed(:resource_manager, :cas) }
 
-          skip 'is false' do
+          it 'is false' do
             expect(result).to be false
           end
         end

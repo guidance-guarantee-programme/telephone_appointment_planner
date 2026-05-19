@@ -10,7 +10,7 @@ RSpec.describe 'GET /api/v1/bookable_slots' do
     end
   end
 
-  skip 'retrieving slots for the booking window' do
+  scenario 'retrieving slots for the booking window' do
     travel_to '2017-01-01 12:00' do
       given_bookable_slots_for_the_booking_window_exist
       when_the_client_requests_bookable_slots
@@ -31,7 +31,7 @@ RSpec.describe 'GET /api/v1/bookable_slots' do
     then_the_response_is_empty
   end
 
-  skip 'retrieving DD slots for the booking window' do
+  scenario 'retrieving DD slots for the booking window' do
     travel_to '2017-01-09 12:00' do
       given_bookable_slots_for_the_booking_window_exist
       when_the_client_requests_due_diligence_bookable_slots

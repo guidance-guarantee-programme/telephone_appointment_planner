@@ -19,7 +19,7 @@ class BookableSlot < ApplicationRecord
   end
 
   def self.limit_by_organisation(from, to) # rubocop:disable Metrics/MethodLength
-    tpas_start_at = time_now
+    tpas_start_at = BusinessDays.from_now(5).change(hour: 21, min: 0).in_time_zone('London')
     tpas_start_at = from if from > tpas_start_at
 
     joins(:guider)
@@ -46,8 +46,14 @@ class BookableSlot < ApplicationRecord
     end
   end
 
-  def self.next_valid_start_date(*)
-    time_now
+  def self.next_valid_start_date(user = nil, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE, external: false)
+    return time_now if user&.resource_manager? && !external
+
+    if schedule_type == User::DUE_DILIGENCE_SCHEDULE_TYPE || user&.tpas_guider?
+      BusinessDays.from_now(5).change(hour: 21, min: 0).in_time_zone('London')
+    else
+      BusinessDays.from_now(1).change(hour: 21, min: 0).in_time_zone('London')
+    end
   end
 
   def self.find_available_slot(start_at, agent, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE, scoped: true, external: false, rebooking: false) # rubocop:disable Layout/LineLength, Metrics/AbcSize, Metrics/ParameterLists, Metrics/MethodLength
