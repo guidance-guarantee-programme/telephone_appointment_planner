@@ -24,6 +24,7 @@ class Holiday < ApplicationRecord
     'directorate_event' => 'Directorate Event',
     'all_organisation_event' => 'All Organisation Event',
     'overspill_management' => 'Overspill Management',
+    'extended_duration_appointment' => 'Extended Duration Appointment',
     'other' => 'Other'
   }.freeze
 
