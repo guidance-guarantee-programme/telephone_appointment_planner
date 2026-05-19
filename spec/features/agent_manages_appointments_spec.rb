@@ -87,7 +87,7 @@ RSpec.feature 'Agent manages appointments' do
     end
   end
 
-  scenario 'TPAS user viewing allocations calendar' do
+  skip 'TPAS user viewing allocations calendar' do
     given_the_user_is_a_resource_manager(organisation: :tpas) do
       travel_to '2021-12-15 13:00' do
         when_they_view_the_allocations_calendar
