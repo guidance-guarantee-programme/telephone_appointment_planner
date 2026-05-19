@@ -14,7 +14,7 @@ RSpec.feature 'Agent rebooks appointments' do
     end
   end
 
-  skip 'CAS agent rebooks an appointment seeing only their availability', js: true do
+  scenario 'CAS agent rebooks an appointment seeing only their availability', js: true do
     given_the_user_is_a_resource_manager(organisation: :cas) do
       travel_to '2022-06-20 09:00' do
         and_there_is_cross_organisational_availability
