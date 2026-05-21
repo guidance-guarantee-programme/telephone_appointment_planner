@@ -1,13 +1,14 @@
 class BatchAppointmentUpdate
-  def initialize(changes)
+  def initialize(changes, current_user)
     @changes = JSON.parse(changes)
+    @current_user = current_user
   end
 
   def call
     changes.each do |change|
       appointment = update_appointment(change)
 
-      Notifier.new(appointment).call
+      Notifier.new(appointment, @current_user).call
     end
   end
 

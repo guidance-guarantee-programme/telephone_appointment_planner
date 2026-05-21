@@ -54,6 +54,17 @@ RSpec.feature 'Resource manager modifies appointments' do
     wait_for_ajax_to_complete
   end
 
+  scenario 'Appointment changes refresh viewed calendars', js: true do
+    given_the_user_is_a_resource_manager do
+      and_an_appointment_exists
+      travel_to @appointment.start_at do
+        when_they_view_the_allocations_calendar
+        and_someone_modifies_the_appointment
+        then_the_calendar_is_refreshed
+      end
+    end
+  end
+
   scenario 'Rescheduling an appointment notifies the guider and customer', js: true do
     # create the guiders and appointments up front
     when_there_are_appointments_for_multiple_guiders
@@ -120,6 +131,25 @@ RSpec.feature 'Resource manager modifies appointments' do
         then_they_can_see_the_bookable_slot
       end
     end
+  end
+
+  def and_an_appointment_exists
+    @appointment = create(:appointment, start_at: Time.zone.parse('2024-05-15 13:00'))
+  end
+
+  def when_they_view_the_allocations_calendar
+    @page = Pages::Allocations.new
+    @page.load
+  end
+
+  def and_someone_modifies_the_appointment
+    @appointment.update!(status: :cancelled_by_customer_sms)
+    Notifier.new(@appointment).call
+  end
+
+  def then_the_calendar_is_refreshed
+    wait_for_ajax_to_complete
+    expect(@page.find('a.fc-event--cancelled')).to have_text(@appointment.name)
   end
 
   def and_there_is_an_appointment

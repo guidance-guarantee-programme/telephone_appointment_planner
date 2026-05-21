@@ -1,4 +1,4 @@
-/* global CompanyCalendar */
+/* global CompanyCalendar, Pusher */
 {
   'use strict';
 
@@ -36,6 +36,41 @@
 
       this.setCalendarToCorrectHeight();
       this.setupUndo();
+    }
+
+    viewRender(view) {
+      const channel = Pusher.instance.subscribe('telephone_appointment_planner');
+      channel.bind(`${view.start.format('YYYY-MM-DD')}-${this.config.userOrganisationId}`, this.handlePushEvent.bind(this));
+    }
+
+    handlePushEvent(data) {
+      if (this.config.userUid != data.ownerId) {
+        if (this.$actionPanel.is(':visible')) {
+          alert('The calendar events have changed and the calendar will be refreshed.');
+          this.$actionPanel.find('.js-action-panel-undo-all').click();
+        }
+      }
+
+      this.$el.fullCalendar('removeEvents');
+      this.$el.fullCalendar('refetchEvents');
+    }
+
+    select(start, end, jsEvent, view, resource) {
+      let title = prompt(`Name of holiday period for ${resource.title}?`);
+
+      if (title) {
+        this.$holidayForm.find('.js-user-id').val(resource.id);
+        this.$holidayForm.find('.js-title').val(title);
+        this.$holidayForm.find('.js-start-at').val(start.format());
+        this.$holidayForm.find('.js-end-at').val(end.format());
+        this.$holidayForm.submit();
+      }
+
+      this.$el.fullCalendar('unselect');
+    }
+
+    selectOverlap(event) {
+      return (event.source.eventType != 'holiday');
     }
 
     bindEvents() {

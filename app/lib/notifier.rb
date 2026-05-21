@@ -1,4 +1,4 @@
-class Notifier
+class Notifier # rubocop:disable Metrics/ClassLength
   NOTIFY_RESOURCE_MANAGER_ATTRIBUTES = %w[
     first_name
     last_name
@@ -20,9 +20,16 @@ class Notifier
     notify_customer
     notify_guiders
     notify_resource_managers
+    notify_calendar_alterations
   end
 
   private
+
+  def notify_calendar_alterations
+    return unless status_changed? || appointment_reallocated?
+
+    PusherAppointmentCalendarAlterationsJob.perform_later(appointment, modifying_agent)
+  end
 
   def notify_resource_managers # rubocop:disable Metrics/AbcSize
     if appointment_cancelled?
@@ -80,8 +87,7 @@ class Notifier
   end
 
   def appointment_complete?
-    appointment.previous_changes.slice('status').present? &&
-      appointment.complete?
+    status_changed? && appointment.complete?
   end
 
   def requires_agent_changed_notification?
@@ -99,13 +105,11 @@ class Notifier
   end
 
   def appointment_cancelled?
-    appointment.previous_changes.slice('status').present? &&
-      appointment.cancelled?
+    status_changed? && appointment.cancelled?
   end
 
   def appointment_missed?
-    appointment.previous_changes.slice('status').present? &&
-      appointment.no_show?
+    status_changed? && appointment.no_show?
   end
 
   def appointment_reallocated?
@@ -119,6 +123,10 @@ class Notifier
   def requires_rescheduled_away_notification?
     appointment.previous_changes.slice('previous_guider_id').present? &&
       appointment.guider_organisation_differs?
+  end
+
+  def status_changed?
+    appointment.previous_changes.slice('status').present?
   end
 
   attr_reader :appointment, :modifying_agent
