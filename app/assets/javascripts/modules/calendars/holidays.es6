@@ -32,6 +32,12 @@
 
       super.start(el);
     }
+
+    eventAfterRender(event, element) {
+      if(event.multipleGuiders === true) {
+        element.addClass('fc-event--multiple-guiders');
+      }
+    }
   }
 
   window.GOVUKAdmin.Modules.HolidaysCalendar = HolidaysCalendar;

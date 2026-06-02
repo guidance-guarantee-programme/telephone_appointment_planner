@@ -18,5 +18,13 @@ class HolidaySerializer < ActiveModel::Serializer
     edit_holiday_path(object.holiday_ids || object.id)
   end
 
+  attribute :multipleGuiders do
+    if object.holiday_ids
+      object.holiday_ids.split(',').size > 1
+    else
+      false
+    end
+  end
+
   delegate :bank_holiday?, to: :object
 end
