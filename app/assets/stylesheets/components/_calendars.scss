@@ -58,6 +58,12 @@ $guider-row-height: 120px;
       color: $calendar-holiday-anchor-visited;
     }
   }
+
+  .fc-event--multiple-guiders {
+    // scss-lint:disable ImportantRule
+    background: darken($calendar-holiday-background, 30%) !important;
+    // scss-lint:enable ImportantRule
+  }
 }
 
 .company-calendar {

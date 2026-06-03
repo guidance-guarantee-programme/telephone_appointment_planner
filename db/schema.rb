@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_11_102011) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_03_085938) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
   enable_extension "pg_catalog.plpgsql"
@@ -216,6 +216,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_11_102011) do
     t.index "user_id, tsrange(start_at, end_at)", name: "index_holidays_userid_tsrange", using: :gist
     t.index ["creator_id"], name: "index_holidays_on_creator_id"
     t.index ["start_at", "end_at"], name: "index_holidays_on_start_at_and_end_at"
+    t.index ["title", "start_at", "end_at", "user_id"], name: "uniqueness_in_holidays", unique: true, where: "(start_at > '2026-06-03 00:00:00'::timestamp without time zone)"
     t.index ["user_id"], name: "index_holidays_on_user_id"
   end
 
