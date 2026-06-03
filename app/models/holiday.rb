@@ -37,6 +37,7 @@ class Holiday < ApplicationRecord
   validates :end_at, presence: true
   validates :description, inclusion: { in: DESCRIPTION_OPTIONS.keys }
   validates :additional_information, length: { maximum: 300 }
+  validates :title, uniqueness: { scope: %i[user_id start_at end_at] }
 
   def self.merged_for_calendar_view(start_at, end_at, user) # rubocop:disable Metrics/MethodLength
     select(

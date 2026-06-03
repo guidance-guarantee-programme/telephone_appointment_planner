@@ -3,6 +3,14 @@ require 'rails_helper'
 # rubocop:disable Metrics/BlockLength
 RSpec.describe Holiday, type: :model do
   describe 'validations' do
+    it 'validates uniqueness of title, user ID, start and end' do
+      guider    = create(:guider)
+      duplicate = build(:holiday, title: 'Whoops', user: guider)
+      create(:holiday, title: 'Whoops', user: guider)
+
+      expect(duplicate).to be_invalid
+    end
+
     it 'requires a description' do
       holiday = build_stubbed(:holiday, description: '')
       expect(holiday).to_not be_valid
