@@ -9,19 +9,15 @@ module Genesys
       end
 
       def start_at
-        return start_at_in_time_zone(appointment.start_at) unless rescheduling?
+        return start_at_in_time_zone(appointment.start_at) unless rescheduling? && appointment.previous_start_at?
 
-        start_at_in_time_zone(last_audited_changes['start_at'].first)
+        start_at_in_time_zone(appointment.previous_start_at)
       end
 
       def guider
-        return appointment.guider unless rescheduling?
+        return appointment.guider unless rescheduling? && appointment.previous_guider_id?
 
-        if (guider_ids = last_audited_changes['guider_id'])
-          User.find(guider_ids.first)
-        else
-          appointment.guider
-        end
+        appointment.previous_guider
       end
 
       def genesys_activity_code_id
@@ -46,10 +42,6 @@ module Genesys
 
       def rescheduling?
         @rescheduling
-      end
-
-      def last_audited_changes
-        appointment.audits.last.audited_changes
       end
     end
   end

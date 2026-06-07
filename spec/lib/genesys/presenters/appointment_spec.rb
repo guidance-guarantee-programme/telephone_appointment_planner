@@ -20,6 +20,7 @@ RSpec.describe Genesys::Presenters::Appointment do
         @previous_guider = appointment.guider
 
         appointment.update!(
+          previous_guider: @previous_guider,
           guider: create(:guider),
           rescheduling_reason: 'office_rescheduled',
           rescheduling_route: 'unplanned_absence'
@@ -38,6 +39,7 @@ RSpec.describe Genesys::Presenters::Appointment do
         it 'is shifted an hour to allow for timezone differences' do
           travel_to '2026-06-01 13:00' do
             appointment.update!(
+              previous_start_at: appointment.start_at.dup,
               start_at: appointment.start_at.change(hour: 18),
               end_at: appointment.end_at.change(hour: 19),
               rescheduling_reason: 'office_rescheduled',
@@ -53,6 +55,7 @@ RSpec.describe Genesys::Presenters::Appointment do
         it 'is not shifted' do
           travel_to '2025-11-05 13:00' do
             appointment.update!(
+              previous_start_at: appointment.start_at.dup,
               start_at: appointment.start_at.change(hour: 18),
               end_at: appointment.end_at.change(hour: 19),
               rescheduling_reason: 'office_rescheduled',
