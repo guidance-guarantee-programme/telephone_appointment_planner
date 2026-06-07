@@ -19,7 +19,7 @@ class ReallocatesController < ApplicationController
   private
 
   def reallocation_params
-    params.fetch(:reallocate, {}).permit(:guider_id, :rescheduling_route)
+    params.fetch(:reallocate, {}).permit(:previous_guider_id, :guider_id, :rescheduling_route)
   end
 
   def load_form

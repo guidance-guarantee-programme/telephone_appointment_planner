@@ -1245,6 +1245,21 @@ RSpec.describe Appointment, type: :model do
         expect(@appointment).to be_processed_at
       end
     end
+
+    it 'stores the previous guider and start date/time' do
+      @bookable_slot = create(:bookable_slot)
+      @appointment = create(:appointment)
+
+      @previous_guider_id = @appointment.guider_id
+      @previous_start_at = @appointment.start_at
+
+      @appointment.online_reschedule(start_at: @bookable_slot.start_at, reason: '1')
+
+      expect(@appointment.reload).to have_attributes(
+        previous_guider_id: @previous_guider_id,
+        previous_start_at: @previous_start_at
+      )
+    end
   end
 
   describe '#can_be_reallocated_by?' do

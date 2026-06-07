@@ -629,6 +629,7 @@ class Appointment < ApplicationRecord
       processed_at:
     )
 
+    self.previous_start_at = self.start_at
     self.start_at = start_at
     self.online_rescheduling_reason = reason
     self.rescheduled_at = Time.zone.now

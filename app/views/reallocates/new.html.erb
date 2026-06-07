@@ -7,6 +7,7 @@
 <h1>Reallocate an appointment for <%= @appointment.name %></h1>
 
 <%= form_for @appointment, url: appointment_reallocate_path(@appointment.model), method: :post, layout: :basic do |f| %>
+  <%= f.hidden_field :previous_guider_id, value: @appointment.model.guider_id.dup %>
   <div class="form-group <%= 'has-error' if @appointment.errors.include?(:guider_id) %>">
     <%=
       f.select(

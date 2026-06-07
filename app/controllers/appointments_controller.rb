@@ -30,6 +30,8 @@ class AppointmentsController < ApplicationController
                          warning: 'You cannot reschedule this appointment.'
     end
 
+    @previous_guider_id = @appointment.guider_id.dup
+    @previous_start_at  = @appointment.start_at.dup
     @appointment.prepare_for_rescheduling
   end
 
@@ -286,7 +288,7 @@ class AppointmentsController < ApplicationController
   def update_reschedule_params
     params
       .require(:appointment)
-      .permit(:end_at, :guider_id, :rescheduling_reason, :rescheduling_route)
+      .permit(:previous_start_at, :previous_guider_id, :end_at, :guider_id, :rescheduling_reason, :rescheduling_route)
       .merge(
         start_at: munge_start_at,
         agent: current_user
