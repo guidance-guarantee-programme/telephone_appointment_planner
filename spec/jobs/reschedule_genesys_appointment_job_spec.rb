@@ -20,18 +20,18 @@ RSpec.describe RescheduleGenesysAppointmentJob, '#perform' do # rubocop:disable 
 
   context 'when the appointment is rescheduled away from genesys' do
     let(:appointment) { double(:appointment, genesys_operation_id?: true, genesys_pushable_guider?: false) }
-    let(:genesys_push) { instance_double(Genesys::Push) }
+    let(:genesys_cancel) { instance_double(Genesys::Cancel) }
 
     before do
-      allow(Genesys::Push).to receive(:new).with(appointment).and_return(genesys_push)
+      allow(Genesys::Cancel).to receive(:new).with(appointment).and_return(genesys_cancel)
     end
 
-    it 'delegates to the genesys pusher for cancellation' do
-      allow(genesys_push).to receive(:call)
+    it 'delegates to genesys for cancellation' do
+      allow(genesys_cancel).to receive(:call)
 
       described_class.perform_now(appointment)
 
-      expect(genesys_push).to have_received(:call)
+      expect(genesys_cancel).to have_received(:call)
     end
   end
 

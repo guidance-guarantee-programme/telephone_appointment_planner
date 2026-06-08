@@ -7,7 +7,7 @@ class RescheduleGenesysAppointmentJob < ApplicationJob
     if unpushed_appointment_reallocated_to_genesys_guider?(appointment)
       Genesys::Push.new(appointment).call
     elsif pushed_appointment_reallocated_to_non_genesys_guider?(appointment)
-      Genesys::Push.new(appointment).call
+      Genesys::Cancel.new(appointment).call
     else
       Genesys::Reschedule.new(appointment).call
     end
