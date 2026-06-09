@@ -56,8 +56,8 @@ module Genesys
         "#{appointment.guider.genesys_management_unit_id}/agentschedules/search"
 
       payload = {
-        'startDate' => appointment.start_at.beginning_of_month.iso8601,
-        'endDate' => appointment.start_at.end_of_month.iso8601,
+        'startDate' => appointment.start_at.beginning_of_week.iso8601,
+        'endDate' => appointment.start_at.end_of_week.iso8601,
         'userIds' => Array(appointment.guider.genesys_agent_id)
       }
 
