@@ -33,16 +33,11 @@ RSpec.describe Genesys::Models::AgentSchedule do
 
   subject { described_class.new(agent_schedules_hash) }
 
-  it 'maps `fullDayTimeOffMarkers`' do
-    expect(subject.full_day_time_off_markers).to eq([])
-  end
-
   describe '#to_h' do
     it 'maps to the correct API payload' do
       expect(subject.to_h).to eq(
         {
           'userId' => '17cf0981-df81-4407-9bac-fedca56c8755',
-          'fullDayTimeOffMarkers' => [],
           'metadata' => { 'version' => 1 },
           'shifts' => [
             {
