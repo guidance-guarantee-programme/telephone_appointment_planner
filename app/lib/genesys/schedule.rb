@@ -5,7 +5,10 @@ module Genesys
     end
 
     def published_schedule_uri
-      response.parsed['result']['publishedSchedules'].last['selfUri']
+      Rails.logger.info('Genesys Published Schedules')
+      Rails.logger.info(response.parsed['result']['publishedSchedules'])
+
+      response.parsed['result']['publishedSchedules'].first['selfUri']
     end
 
     private

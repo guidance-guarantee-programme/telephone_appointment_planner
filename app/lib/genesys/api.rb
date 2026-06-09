@@ -6,17 +6,24 @@ module Genesys
       @client = client
     end
 
-    def push(appointment, rescheduling: false) # rubocop:disable Metrics/MethodLength
+    def push(appointment, rescheduling: false) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
       appointment      = Genesys::Presenters::Appointment.new(appointment, rescheduling:)
       schedule         = find_schedule(appointment)
       schedule_version = find_schedule_version(schedule)
       agent_schedule   = find_agent_schedule(schedule, appointment)
       activity         = Genesys::Models::Activity.from_appointment(appointment, rescheduling:)
 
-      agent_schedule.assign_activity(activity)
+      Rails.logger.info('Genesys Activity')
+      Rails.logger.info(activity)
+      Rails.logger.info(agent_schedule)
+
+      raise 'The activity could not be assigned to the agent schedule' unless agent_schedule.assign_activity(activity)
 
       schedule_payload = Genesys::Presenters::Schedule.new(schedule_version, agent_schedule).to_h
-      upload_details   = signed_upload(schedule, schedule_payload)
+      Rails.logger.info('Genesys Schedule Payload')
+      Rails.logger.info(schedule_payload)
+
+      upload_details = signed_upload(schedule, schedule_payload)
       perform_upload(upload_details, schedule_payload)
       operation_response = process_upload(schedule, upload_details)
 
