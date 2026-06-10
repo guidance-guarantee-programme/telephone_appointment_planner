@@ -1,18 +1,27 @@
 module Genesys
   class Schedule
-    def initialize(response)
+    def initialize(response, appointment)
       @response = response
+      @appointment = appointment
     end
 
     def published_schedule_uri
-      Rails.logger.info('Genesys Published Schedules')
-      Rails.logger.info(response.parsed['result']['publishedSchedules'])
+      result = published_schedules.find { |schedule| schedule['weekDate'] == appointment.week_date }
 
-      response.parsed['result']['publishedSchedules'].first['selfUri']
+      unless result
+        Rails.logger.debug(published_schedules)
+        raise "Could not find a published schedule for #{appointment.id} on #{appointment.week_date}"
+      end
+
+      result['selfUri']
     end
 
     private
 
-    attr_reader :response
+    def published_schedules
+      Array(response.parsed.dig('result', 'publishedSchedules'))
+    end
+
+    attr_reader :response, :appointment
   end
 end

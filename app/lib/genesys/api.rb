@@ -63,7 +63,7 @@ module Genesys
 
       response = token.post(path, body: payload.to_json, headers: { 'Content-Type' => 'application/json' })
 
-      Schedule.new(response)
+      Schedule.new(response, appointment)
     end
 
     def find_schedule_version(schedule)

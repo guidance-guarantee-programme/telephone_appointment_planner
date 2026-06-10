@@ -26,6 +26,12 @@ module Genesys
         appointment.genesys_activity_code_id
       end
 
+      def week_date
+        date = rescheduling? && appointment.previous_start_at? ? appointment.previous_start_at : appointment.start_at
+
+        date.beginning_of_week.to_date.iso8601
+      end
+
       delegate :id, to: :appointment
 
       private

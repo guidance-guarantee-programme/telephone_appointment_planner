@@ -4,6 +4,30 @@ require 'rails_helper'
 RSpec.describe Genesys::Presenters::Appointment do
   let(:appointment) { create(:appointment, :genesys_guider) }
 
+  describe '#week_date' do
+    context 'when not rescheduling' do
+      subject { described_class.new(appointment, rescheduling: false) }
+
+      it 'returns the appointment week date' do
+        travel_to '2026-06-10 13:00' do
+          expect(subject.week_date).to eq('2026-06-15')
+        end
+      end
+    end
+
+    context 'when rescheduling' do
+      subject { described_class.new(appointment, rescheduling: true) }
+
+      it 'returns the previous week date' do
+        appointment.update!(previous_start_at: '2026-06-12 13:00')
+
+        travel_to '2026-06-10 13:00' do
+          expect(subject.week_date).to eq('2026-06-08')
+        end
+      end
+    end
+  end
+
   describe '#guider' do
     context 'when not rescheduling' do
       subject { described_class.new(appointment, rescheduling: false) }
