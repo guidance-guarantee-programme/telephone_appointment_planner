@@ -1,4 +1,4 @@
-class Notifier
+class Notifier # rubocop:disable Metrics/ClassLength
   NOTIFY_RESOURCE_MANAGER_ATTRIBUTES = %w[
     first_name
     last_name
@@ -20,9 +20,18 @@ class Notifier
     notify_customer
     notify_guiders
     notify_resource_managers
+    notify_genesys
   end
 
   private
+
+  def notify_genesys
+    if appointment_cancelled?
+      CancelGenesysAppointmentJob.perform_later(appointment)
+    elsif appointment_reallocated?
+      RescheduleGenesysAppointmentJob.perform_later(appointment)
+    end
+  end
 
   def notify_resource_managers # rubocop:disable Metrics/AbcSize
     if appointment_cancelled?

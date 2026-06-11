@@ -96,6 +96,7 @@ class Appointment < ApplicationRecord
     adjustments
     extended_duration
     ms_teams_call
+    genesys_operation_id
   ].freeze
 
   ADJUSTMENT_ATTRIBUTES = %w[
@@ -262,6 +263,15 @@ class Appointment < ApplicationRecord
     self.rescheduling_route = ''
   end
 
+  def genesys_activity_code_id
+    return '0' if cancelled?
+
+    return ENV.fetch('GENESYS_PENSION_WISE_ACTIVITY_ID', '69c595d1-a305-4be7-a3f0-bf3a8324992f')  if pension_wise?
+    return ENV.fetch('GENESYS_DUE_DILIGENCE_ACTIVITY_ID', '71876e55-8410-4ac4-b675-ec6724cde3ec') if due_diligence?
+
+    raise 'Unmapped Genesys Activity Code ID'
+  end
+
   def resend_email_confirmation
     CustomerUpdateJob.perform_later(self, CustomerUpdateActivity::CONFIRMED_MESSAGE)
   end
@@ -298,6 +308,14 @@ class Appointment < ApplicationRecord
 
   def pension_wise?
     schedule_type == User::PENSION_WISE_SCHEDULE_TYPE
+  end
+
+  def process_genesys_creation!(genesys_operation_id)
+    update!(genesys_operation_id:)
+  end
+
+  def process_genesys_rescheduling!(genesys_operation_id)
+    update!(genesys_rescheduling_operation_id: genesys_operation_id)
   end
 
   def process!(by)
@@ -459,6 +477,10 @@ class Appointment < ApplicationRecord
     guider&.tp?
   end
 
+  def genesys_pushable_guider?
+    guider&.genesys_pushable?
+  end
+
   def agent_is_pension_wise_api?
     agent&.pension_wise_api?
   end
@@ -607,6 +629,7 @@ class Appointment < ApplicationRecord
       processed_at:
     )
 
+    self.previous_start_at = self.start_at
     self.start_at = start_at
     self.online_rescheduling_reason = reason
     self.rescheduled_at = Time.zone.now
@@ -632,6 +655,14 @@ class Appointment < ApplicationRecord
 
   def requires_office_rescheduling_route?
     created_at > Time.zone.parse(ENV.fetch('RESCHEDULING_REASONS_CUT_OFF') { '2026-02-17 00:00' })
+  end
+
+  def push_to_genesys?
+    (pending? || cancelled?) && genesys_pushable_guider?
+  end
+
+  def cancel_to_genesys?
+    genesys_operation_id? && cancelled?
   end
 
   private

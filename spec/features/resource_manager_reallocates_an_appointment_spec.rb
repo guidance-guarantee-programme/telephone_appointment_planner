@@ -40,6 +40,9 @@ RSpec.feature 'Resource manager reallocates an appointment', js: true do
     @page.load(id: @appointment.id)
 
     expect(@page.guider).to have_text(@guider.name)
+
+    @appointment.reload
+    expect(@appointment).to be_previous_guider_id
   end
 end
 # rubocop:enable Metrics/BlockLength

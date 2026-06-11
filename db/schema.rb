@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_11_102011) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_07_121711) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
   enable_extension "pg_catalog.plpgsql"
@@ -93,6 +93,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_11_102011) do
     t.boolean "extended_duration", default: false, null: false
     t.string "first_name", null: false
     t.string "gdpr_consent", default: "", null: false
+    t.string "genesys_operation_id"
+    t.string "genesys_rescheduling_operation_id"
     t.integer "guider_id", null: false
     t.string "last_name", null: false
     t.boolean "lloyds_signposted", default: false, null: false
@@ -110,6 +112,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_11_102011) do
     t.string "postcode", default: "", null: false
     t.boolean "power_of_attorney", default: false, null: false
     t.bigint "previous_guider_id"
+    t.datetime "previous_start_at"
     t.boolean "printed_consent_form_required", default: false, null: false
     t.datetime "processed_at", precision: nil
     t.integer "rebooked_from_id"
@@ -134,6 +137,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_11_102011) do
     t.integer "where_you_heard", default: 0, null: false
     t.index "guider_id, tsrange(start_at, end_at)", name: "index_appointments_guider_id_tsrange_start_at_end_at", using: :gist
     t.index "tsrange(start_at, end_at)", name: "index_appointments_tsrange_start_at_end_at", using: :gist
+    t.index ["genesys_operation_id"], name: "index_appointments_on_genesys_operation_id"
+    t.index ["genesys_rescheduling_operation_id"], name: "index_appointments_on_genesys_rescheduling_operation_id"
     t.index ["guider_id", "start_at"], name: "index_appointments_guider_start_schedule_status", where: "(((schedule_type)::text = 'pension_wise'::text) AND (status <> ALL ('{6,7,8,9}'::integer[])))"
     t.index ["guider_id", "start_at"], name: "unique_slot_guider_in_appointment", unique: true, where: "((status <> ALL (ARRAY[5, 6, 7, 8, 9])) AND (start_at > '2024-01-01 00:00:00'::timestamp without time zone))"
     t.index ["guider_id"], name: "index_appointments_guider_schedule_status", where: "(((schedule_type)::text = 'pension_wise'::text) AND (status <> ALL ('{6,7,8,9}'::integer[])))"

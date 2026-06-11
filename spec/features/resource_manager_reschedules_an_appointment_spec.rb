@@ -174,6 +174,10 @@ RSpec.feature 'Resource manager reschedules an appointment', js: true do
     @page = Pages::EditAppointment.new
     expect(@page).to be_displayed(id: @appointment.id)
     expect(@page).to have_flash_of_success
+
+    @appointment.reload
+    expect(@appointment).to be_previous_start_at
+    expect(@appointment).to be_previous_guider_id
   end
 
   def and_there_is_a_tpas_guider_slot

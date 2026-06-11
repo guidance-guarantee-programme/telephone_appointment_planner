@@ -1,7 +1,7 @@
 class Reallocate
   include ActiveModel::Model
 
-  attr_accessor :guider_id, :rescheduling_route
+  attr_accessor :guider_id, :rescheduling_route, :previous_guider_id
 
   validates :guider_id, presence: true
   validates :rescheduling_route, presence: true
@@ -17,7 +17,12 @@ class Reallocate
 
   def update
     if valid?
-      @appointment.update(guider_id:, rescheduling_route:, rescheduling_reason:)
+      @appointment.update(
+        previous_guider_id:,
+        guider_id:,
+        rescheduling_route:,
+        rescheduling_reason:
+      )
     else
       false
     end

@@ -63,7 +63,7 @@ class OnlineReschedulingsSearch
   end
 
   def within_date_range(results)
-    results.where('previous_start_at between ? and ?', start_at, end_at)
+    results.where('online_reschedules.previous_start_at between ? and ?', start_at, end_at)
   end
 
   def search_without_query

@@ -8,6 +8,9 @@
 
 <%= render 'shared/required_fields_note' %>
 <%= form_for [@appointment], url: appointment_update_reschedule_path(@appointment), layout: :basic do |f| %>
+  <%= f.hidden_field :previous_guider_id, value: @previous_guider_id %>
+  <%= f.hidden_field :previous_start_at, value: @previous_start_at %>
+
   <% if current_user.tp? %>
     <%= f.hidden_field :rescheduling_reason, value: 'client_rescheduled' %>
     <%= f.hidden_field :rescheduling_route, value: 'phone' %>

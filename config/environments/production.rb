@@ -6,13 +6,15 @@ Rails.application.configure do
   config.active_storage.service = :amazon
 
   # use lograge and log in single-line heroku router style
-  config.lograge.enabled = true
-  config.lograge.custom_options = lambda do |event|
-    {
-      params: event.payload[:params].except(*EXCEPTIONS),
-      remote_ip: event.payload[:remote_ip],
-      user_id: event.payload[:user_id]
-    }
+  if ENV['ENABLE_LOGRAGE']
+    config.lograge.enabled = true
+    config.lograge.custom_options = lambda do |event|
+      {
+        params: event.payload[:params].except(*EXCEPTIONS),
+        remote_ip: event.payload[:remote_ip],
+        user_id: event.payload[:user_id]
+      }
+    end
   end
 
   # Code is not reloaded between requests.
@@ -59,7 +61,7 @@ Rails.application.configure do
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
-  config.log_level = :info
+  config.log_level = ENV.fetch('RAILS_LOG_LEVEL') { 'info' }
 
   # Prepend all log lines with the following tags.
   config.log_tags = [:request_id]
