@@ -13,8 +13,14 @@ class BatchAppointmentUpdate
 
   private
 
-  def update_appointment(change)
-    appointment = Appointment.update(change['id'], permitted_attributes(change))
+  def update_appointment(change) # rubocop:disable Metrics/MethodLength
+    appointment = Appointment.find(change['id'])
+    attributes  = permitted_attributes(change).merge(
+      previous_guider_id: appointment.guider_id.dup,
+      previous_start_at: appointment.start_at.dup
+    )
+
+    appointment.update(attributes)
 
     if appointment.invalid?
       Rails.logger.info('Allocations calendar batch failure')
