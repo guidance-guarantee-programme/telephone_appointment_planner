@@ -32,6 +32,8 @@ module Genesys
       end
 
       def overlaps?(activity)
+        return false if start_date == activity.end_date
+
         date_range.overlap?(activity.date_range)
       end
 
