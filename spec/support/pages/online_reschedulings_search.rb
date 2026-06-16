@@ -4,6 +4,7 @@ module Pages
 
     sections :results, '.t-result' do
       element :id, '.t-id'
+      element :edit_link, '.t-edit-link'
       element :customer_name, '.t-name'
       element :previous_guider_name, '.t-previous-guider-name'
       element :appointment_date_time, '.t-appointment-date-time'
