@@ -17,7 +17,7 @@ module Genesys
       Rails.logger.info(activity)
       Rails.logger.info(agent_schedule)
 
-      raise 'The activity could not be assigned to the agent schedule' unless agent_schedule.assign_activity(activity)
+      raise Genesys::ActivityUnassignableError unless agent_schedule.assign_activity(activity)
 
       schedule_payload = Genesys::Presenters::Schedule.new(schedule_version, agent_schedule).to_h
       Rails.logger.info('Genesys Schedule Payload')

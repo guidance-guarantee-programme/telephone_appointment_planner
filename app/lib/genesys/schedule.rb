@@ -10,7 +10,7 @@ module Genesys
 
       unless result
         Rails.logger.debug(published_schedules)
-        raise "Could not find a published schedule for #{appointment.id} on #{appointment.week_date}"
+        raise PublishedScheduleMissingError, "No published schedule for #{appointment.id} on #{appointment.week_date}"
       end
 
       result['selfUri']

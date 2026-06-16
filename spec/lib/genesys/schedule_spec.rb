@@ -23,7 +23,10 @@ RSpec.describe Genesys::Schedule, '#published_schedule_uri' do
     let(:appointment) { double(week_date: '2025-01-01', id: 123) }
 
     it 'raises an error' do
-      expect { subject.published_schedule_uri }.to raise_error(RuntimeError)
+      expect { subject.published_schedule_uri }.to raise_error(
+        Genesys::PublishedScheduleMissingError,
+        'No published schedule for 123 on 2025-01-01'
+      )
     end
   end
 
