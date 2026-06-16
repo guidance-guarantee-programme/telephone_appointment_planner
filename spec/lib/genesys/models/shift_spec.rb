@@ -29,6 +29,100 @@ RSpec.describe Genesys::Models::Shift do
 
   subject { described_class.new(shift_hash) }
 
+  context 'when precisely matching end/start `overlaps`' do
+    let(:shift_hash) do
+      {
+        'id' => '0',
+        'startDate' => '2026-06-16T10:30:00Z',
+        'lengthMinutes' => 480,
+        'activities' => [
+          {
+            'startDate' => '2026-06-16T10:30:00Z',
+            'lengthMinutes' => 30,
+            'description' => 'oq-1',
+            'activityCodeId' => '0',
+            'paid' => true
+          },
+          {
+            'startDate' => '2026-06-16T11:00:00Z',
+            'lengthMinutes' => 70,
+            'description' => 'pw-1',
+            'activityCodeId' => 'pw-1',
+            'paid' => true
+          },
+          {
+            'startDate' => '2026-06-16T12:10:00Z',
+            'lengthMinutes' => 10,
+            'description' => 'oq-2',
+            'activityCodeId' => '0',
+            'paid' => true
+          },
+          {
+            'startDate' => '2026-06-16T12:20:00Z',
+            'lengthMinutes' => 70,
+            'description' => 'pw-2',
+            'activityCodeId' => 'pw-2',
+            'paid' => true
+          },
+          {
+            'startDate' => '2026-06-16T13:30:00Z',
+            'lengthMinutes' => 90,
+            'description' => 'oq-3',
+            'activityCodeId' => '0',
+            'paid' => true
+          },
+          {
+            'startDate' => '2026-06-16T15:00:00Z',
+            'lengthMinutes' => 60,
+            'description' => 'meeting',
+            'activityCodeId' => 'meeting',
+            'paid' => true
+          },
+          {
+            'startDate' => '2026-06-16T16:00:00Z',
+            'lengthMinutes' => 75,
+            'description' => 'oq-4',
+            'activityCodeId' => '0',
+            'paid' => true
+          },
+          {
+            'startDate' => '2026-06-16T17:15:00Z',
+            'lengthMinutes' => 15,
+            'description' => 'break',
+            'activityCodeId' => 'break',
+            'paid' => true
+          },
+          {
+            'startDate' => '2026-06-16T17:30:00Z',
+            'lengthMinutes' => 60,
+            'description' => 'oq-5',
+            'activityCodeId' => '0',
+            'paid' => true
+          }
+        ],
+        'manuallyEdited' => false
+      }
+    end
+
+    let(:activity) do
+      Genesys::Models::Activity.new(
+        'startDate' => '2026-06-16T13:50:00Z',
+        'lengthMinutes' => 70,
+        'description' => 'pw-3'
+      )
+    end
+
+    it 'does not overwrite the activity starting at the same time as the new one ends' do
+      # verify the right initial order
+      expect(subject.activities.map(&:description)).to eq(%w[oq-1 pw-1 oq-2 pw-2 oq-3 meeting oq-4 break oq-5])
+
+      subject.create_activity(activity)
+
+      # verify the right final order
+      expect(subject.activities.map(&:description)).to eq(%w[oq-1 pw-1 oq-2 pw-2 Filler pw-3 meeting oq-4 break oq-5])
+    end
+  end
+
   it 'maps its basic attributes' do
     expect(subject).to have_attributes(
       id: '0',
