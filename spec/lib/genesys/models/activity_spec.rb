@@ -14,10 +14,21 @@ RSpec.describe Genesys::Models::Activity do # rubocop:disable Metrics/BlockLengt
   subject { described_class.new(activity_hash) }
 
   describe '#overlaps?' do
-    context 'when the activity end matches the argument start' do
+    context 'when the activity start matches the argument end' do
       it 'is not overlapping' do
         activity = described_class.new(
           'startDate' => '2025-10-27T07:00:00Z',
+          'lengthMinutes' => 60
+        )
+
+        expect(subject.overlaps?(activity)).to be false
+      end
+    end
+
+    context 'when the activity end matches the argument start' do
+      it 'is not overlapping' do
+        activity = described_class.new(
+          'startDate' => '2025-10-27T10:00:00Z',
           'lengthMinutes' => 60
         )
 

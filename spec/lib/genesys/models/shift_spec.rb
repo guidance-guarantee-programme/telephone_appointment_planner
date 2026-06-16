@@ -29,6 +29,58 @@ RSpec.describe Genesys::Models::Shift do
 
   subject { described_class.new(shift_hash) }
 
+  context 'when precisely matching start/end `overlaps`' do
+    let(:shift_hash) do
+      {
+        'id' => '0',
+        'startDate' => '2026-06-16T08:00:00Z',
+        'lengthMinutes' => 135,
+        'activities' => [
+          {
+            'startDate' => '2026-06-16T08:00:00Z',
+            'lengthMinutes' => 30,
+            'description' => 'huddle',
+            'activityCodeId' => 'huddle',
+            'paid' => true
+          },
+          {
+            'startDate' => '2026-06-16T08:30:00Z',
+            'lengthMinutes' => 90,
+            'description' => 'oq-1',
+            'activityCodeId' => 'oq-1',
+            'paid' => true
+          },
+          {
+            'startDate' => '2026-06-16T10:00:00Z',
+            'lengthMinutes' => 15,
+            'description' => 'break',
+            'activityCodeId' => 'break',
+            'paid' => true
+          }
+        ],
+        'manuallyEdited' => false
+      }
+    end
+
+    let(:activity) do
+      Genesys::Models::Activity.new(
+        'startDate' => '2026-06-16T08:30:00Z',
+        'lengthMinutes' => 70,
+        'description' => 'pw-1'
+      )
+    end
+
+    it 'does not overwrite the activity ending at the same time as the new one starts' do
+      # verify the right initial order
+      expect(subject.activities.map(&:description)).to eq(%w[huddle oq-1 break])
+
+      subject.create_activity(activity)
+
+      # verify the right final order
+      expect(subject.activities.map(&:description)).to eq(%w[huddle pw-1 Filler break])
+    end
+  end
+
   context 'when precisely matching end/start `overlaps`' do
     let(:shift_hash) do
       {
