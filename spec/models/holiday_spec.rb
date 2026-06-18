@@ -2,6 +2,20 @@ require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
 RSpec.describe Holiday, type: :model do
+  describe '.for_email_digest' do
+    it 'returns 14 days of holidays assigned to more than 2 people' do
+      guiders = create_list(:guider, 3)
+      guiders.each { |guider| create(:holiday, user: guider, title: 'Block Booking') }
+
+      create(:holiday) # excluded from the results
+
+      results = Holiday.for_email_digest
+
+      expect(results.size).to eq(1)
+      expect(results.first.title).to eq('Block Booking')
+    end
+  end
+
   describe 'validations' do
     it 'requires a description' do
       holiday = build_stubbed(:holiday, description: '')
