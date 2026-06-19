@@ -97,6 +97,9 @@ class Appointment < ApplicationRecord
     extended_duration
     ms_teams_call
     genesys_operation_id
+    genesys_rescheduling_operation_id
+    previous_guider_id
+    previous_start_at
   ].freeze
 
   ADJUSTMENT_ATTRIBUTES = %w[
