@@ -1,6 +1,8 @@
 class Holiday < ApplicationRecord
   acts_as_copy_target
 
+  BLOCK_DIGEST_RANGE_DAYS = 7
+
   DESCRIPTION_OPTIONS = {
     'annual_leave' => 'Annual Leave',
     'sick_leave' => 'Sick Leave',
@@ -41,15 +43,15 @@ class Holiday < ApplicationRecord
   def self.merged_for_calendar_view(start_at, end_at, user) # rubocop:disable Metrics/MethodLength
     select(
       <<-SQL
-        DISTINCT ON(holidays.bank_holiday, holidays.all_day, holidays.start_at, holidays.end_at, holidays.title)
-        holidays.bank_holiday, holidays.all_day, holidays.title, holidays.start_at, holidays.end_at,
+        DISTINCT ON(holidays.bank_holiday, holidays.all_day, holidays.start_at, holidays.end_at, holidays.title, holidays.description)
+        holidays.bank_holiday, holidays.all_day, holidays.title, holidays.start_at, holidays.end_at, holidays.description,
         string_agg(holidays.id::text, ',') as holiday_ids
       SQL
     )
       .joins('LEFT JOIN users ON users.id = holidays.user_id')
       .where(users: { organisation_content_id: [user.organisation_content_id, nil] })
       .where('(holidays.start_at, holidays.end_at) OVERLAPS (?, ?)', start_at, end_at)
-      .group(:bank_holiday, :all_day, :start_at, :end_at, :title)
+      .group(:bank_holiday, :all_day, :start_at, :end_at, :title, :description)
       .order(:start_at)
   end
 
@@ -62,6 +64,14 @@ class Holiday < ApplicationRecord
       .where(users: { organisation_content_id: [user.organisation_content_id, nil] })
       .where('(holidays.start_at, holidays.end_at) OVERLAPS (?, ?)', start_at, end_at)
       .where.not("holidays.title ilike 'HIDE%'")
+  end
+
+  def self.for_email_digest
+    merged_for_calendar_view(
+      Time.zone.now.beginning_of_day,
+      BLOCK_DIGEST_RANGE_DAYS.days.from_now.end_of_day,
+      OpenStruct.new(organisation_content_id: Provider::TPAS.id)
+    ).having('count(holidays.id) > 2').to_a
   end
 
   def holiday_ids

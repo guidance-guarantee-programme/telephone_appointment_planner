@@ -1,0 +1,13 @@
+<h1 style="color: #0F19A0 !important;font-family: Calibri, Arial, sans-serif;margin: 15px 0;font-weight: 700;font-size: 20px;line-height: 1.111111111;padding: 15px 0;">
+  Holiday blocks for the next <%= Holiday::BLOCK_DIGEST_RANGE_DAYS %> days
+</h1>
+
+<% @holidays.each do |holiday| %>
+  <% @holiday = HolidayEmailPresenter.new(holiday) %>
+
+  <%= p do %>
+    <a href="<%= edit_holiday_url(@holiday.holiday_ids) %>"><strong><%= @holiday.title %></strong></a><br>
+    <%= @holiday.full_description %><br>
+    <%= @holiday.from %> - <%= @holiday.to %> <%= @holiday.all_day_label %><br>
+  <% end %>
+<% end %>

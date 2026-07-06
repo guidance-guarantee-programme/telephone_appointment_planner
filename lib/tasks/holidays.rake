@@ -1,4 +1,9 @@
 namespace :holidays do
+  desc 'Send 7 day digest email for holiday blocks'
+  task send_digest: :environment do
+    HolidayBlockSummary.new.call
+  end
+
   desc 'Allow CAS to receive bookings during given holidays'
   task exclude: :environment do
     BankHolidayExcluder.new.call
