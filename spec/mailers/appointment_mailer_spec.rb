@@ -77,6 +77,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
     subject { described_class.guider_summary_document_missing(appointment) }
 
     it 'renders the headers' do
+      expect(subject.from).to eq(['no-reply@maps.org.uk'])
       expect(subject.to).to eq(['some-name@example.org'])
       expect(subject.subject).to eq('Pension Wise No Summary Document Generated')
     end
@@ -101,6 +102,7 @@ RSpec.describe AppointmentMailer, type: :mailer do
     subject { described_class.guider_status_reminder(appointment) }
 
     it 'renders the headers' do
+      expect(subject.from).to eq(['no-reply@maps.org.uk'])
       expect(subject.to).to eq(['some-name@example.org'])
       expect(subject.subject).to eq('Pension Wise Appointment status not updated')
     end
