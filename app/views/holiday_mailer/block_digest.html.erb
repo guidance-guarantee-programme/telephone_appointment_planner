@@ -7,7 +7,7 @@
 
   <%= p do %>
     <a href="<%= edit_holiday_url(@holiday.holiday_ids) %>"><strong><%= @holiday.title %></strong></a><br>
-    <%= @holiday.full_description %><br>
+    <% if @holiday.full_description.present? %><%= @holiday.full_description %><br><% end %>
     <%= @holiday.from %> - <%= @holiday.to %> <%= @holiday.all_day_label %><br>
   <% end %>
 <% end %>
