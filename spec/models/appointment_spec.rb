@@ -4,6 +4,20 @@ NORMALISED_NUMBERS = %w[+447715930455 447715930455 07715930455 00447715930455].f
 
 # rubocop:disable Metrics/BlockLength
 RSpec.describe Appointment, type: :model do
+  describe '.for_genesys_newly_published_schedule' do
+    it 'returns the appointments that are due to be pushed' do
+      @included       = create(:appointment, :genesys_guider)
+      @not_pending    = create(:appointment, :genesys_guider, status: :complete)
+      @already_pushed = create(:appointment, :genesys_guider, genesys_operation_id: 'deadbeef')
+      @beyond_date    = create(:appointment, :genesys_guider, start_at: 8.weeks.from_now)
+
+      results = Appointment.for_genesys_newly_published_schedule
+
+      expect(results.size).to eq(1)
+      expect(results).to include(@included)
+    end
+  end
+
   describe '.needing_status_reminder' do
     it 'returns appointments that are pending still at one day after the appointment' do
       @included = create(:appointment, start_at: 2.days.ago)
