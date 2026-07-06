@@ -1,7 +1,16 @@
 require 'faye/websocket'
 require 'eventmachine'
 
-namespace :genesys do
+namespace :genesys do # rubocop:disable Metrics/BlockLength
+  namespace :publisher do
+    desc 'Pushes appointments when they have newly published/available Genesys schedules'
+    task push: :environment do
+      appointments = Appointment.for_genesys_newly_published_schedule
+
+      Genesys::Services::PublishedScheduleAppointmentSynchroniser.new(appointments).call
+    end
+  end
+
   namespace :notifications do
     desc 'Subscribe and process messages for schedule updates'
     task subscribe: :environment do

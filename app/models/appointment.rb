@@ -544,6 +544,14 @@ class Appointment < ApplicationRecord
     SECONDARY_STATUSES.values.reduce(&:merge)[key] || '-'
   end
 
+  def self.for_genesys_newly_published_schedule
+    pending
+      .where(genesys_operation_id: nil)
+      .where('start_at < ?', 5.weeks.from_now.end_of_week(:saturday))
+      .joins(:guider).where.not(users: { genesys_agent_id: nil })
+      .order(:start_at)
+  end
+
   def self.for_redaction
     where
       .not(first_name: 'redacted')
