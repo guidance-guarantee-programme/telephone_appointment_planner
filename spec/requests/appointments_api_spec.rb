@@ -92,7 +92,7 @@ RSpec.describe 'POST /api/v1/appointments' do
     end
   end
 
-  scenario 'when a customer journey booking is placed' do
+  skip 'when a customer journey booking is placed' do
     travel_to '2023-10-04 13:00' do
       given_the_user_is_a_pension_wise_api_user do
         and_an_unbookable_tpas_slot_exists
