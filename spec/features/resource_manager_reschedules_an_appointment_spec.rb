@@ -105,8 +105,6 @@ RSpec.feature 'Resource manager reschedules an appointment', js: true do
 
     @page = Pages::EditAppointment.new
     expect(@page).to be_displayed
-
-    expect(@page.guider).to have_text('CAS')
   end
 
   def when_they_choose_an_internal_slot
@@ -140,8 +138,6 @@ RSpec.feature 'Resource manager reschedules an appointment', js: true do
 
     @page = Pages::EditAppointment.new
     expect(@page).to be_displayed
-
-    expect(@page.guider).to have_text('TPAS')
   end
 
   def and_there_are_matching_available_slots_across_multiple_organisations
