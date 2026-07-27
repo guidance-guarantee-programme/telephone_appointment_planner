@@ -1,4 +1,4 @@
-/* global CompanyCalendar */
+/* global moment, CompanyCalendar */
 {
   'use strict';
 
@@ -23,7 +23,6 @@
 
       this.eventChanges = [];
       this.isFullscreen = false;
-      this.$actionPanel = $('.js-action-panel');
       this.$savedChanges = $('.js-saved-changes');
       this.$form = $('.js-changes-form');
       this.$holidayForm = $('.js-holiday-form');
@@ -36,7 +35,6 @@
       this.$rowHighlighterTime = $('<div class="calendar-row-highlighter-time"/>').insertAfter(this.$el);
 
       this.setCalendarToCorrectHeight();
-      this.setupUndo();
     }
 
     bindEvents() {
@@ -49,7 +47,6 @@
     afterChangesSaved() {
       this.eventChanges = [];
       this.clearUnloadEvent();
-      this.checkToShowActionPanel();
       this.$el.fullCalendar('refetchEvents');
       this.$savedChanges.show();
       this.showAlert('.alert-success');
@@ -110,10 +107,6 @@
         height -= 20;
       }
 
-      if (this.$actionPanel.is(':visible')) {
-        height -= this.$actionPanel.height();
-      }
-
       return height;
     }
 
@@ -127,7 +120,8 @@
 
     eventDrop(event, delta, revertFunc) {
       this.$modal = $('#rescheduling-reasons-modal');
-      this.$modal.find('.js-modal-title').text(`Reason for rescheduling ${event.title} #${event.id}`);
+      this.$modal.find('.js-modal-title').text(`Reschedule ${event.title} #${event.id}`);
+      this.bindReschedulingPanels(this.$modal, event);
       this.$modal.find('.js-save').one(
         'click',
         {event: event, revertFunc: revertFunc},
@@ -147,6 +141,19 @@
       $('#client-rescheduled-route,#office-rescheduled-route,#office-reallocated-route').hide();
 
       this.$modal.modal({keyboard: false});
+    }
+
+    bindReschedulingPanels(modal, event) {
+      this.bindReschedulingPanel(modal, 'before', event.originalStart, event.originalEnd, event.originalResourceId);
+      this.bindReschedulingPanel(modal, 'after', event.start, event.end, event.resourceId);
+    }
+
+    bindReschedulingPanel(modal, label, start, end, resourceId) {
+      const timeFormat = 'h:mma';
+
+      modal.find(`.js-${label}-start`).text(moment.utc(start).format(timeFormat));
+      modal.find(`.js-${label}-end`).text(moment.utc(end).format(timeFormat));
+      modal.find(`.js-${label}-guider`).text(this.$el.fullCalendar('getResourceById', resourceId).title);
     }
 
     assignReschedulingReason(e) {
@@ -173,6 +180,7 @@
 
           this.handleEventChange(e.data.event, e.data.revertFunc);
           this.$modal.modal('hide');
+          this.save();
         }
       }
 
@@ -245,12 +253,6 @@
       $(`tr[data-time]`).find('.fc-time').removeClass('active');
     }
 
-    setupUndo() {
-      this.$actionPanel.find('.js-action-panel-undo-all').on('click', this.undoAllChanges.bind(this));
-      this.$actionPanel.find('.js-action-panel-undo-one').on('click', this.undoOneChange.bind(this));
-      this.$actionPanel.find('.js-action-panel-save').on('click', this.save.bind(this));
-    }
-
     handleEventChange(event, revertFunc) {
       event.hasChanged = true;
 
@@ -260,8 +262,6 @@
       });
 
       this.$el.fullCalendar('rerenderEvents');
-
-      this.checkToShowActionPanel();
     }
 
     undoOneChange(evt) {
@@ -273,8 +273,6 @@
       event.eventObj.hasChanged = this.hasEventChanged(event.eventObj);
 
       this.rerenderEvents();
-
-      this.checkToShowActionPanel();
     }
 
     hasEventChanged(event) {
@@ -297,14 +295,11 @@
 
       this.eventChanges = [];
       this.rerenderEvents();
-
-      this.checkToShowActionPanel();
     }
 
-    save(evt) {
+    save() {
       const $hiddenInput = this.$form.find('#event-changes');
 
-      evt.preventDefault();
       this.$savedChanges.hide();
       $hiddenInput.val(this.getEventChangesForForm());
       this.$form.submit();
@@ -340,26 +335,6 @@
       // events who are left in red after event changes are undone
       this.$el.fullCalendar('rerenderEvents');
       this.$el.fullCalendar('rerenderEvents');
-    }
-
-    checkToShowActionPanel() {
-      const eventsChanged = this.uniqueEventsChanged();
-
-      let fadeAction = 'fadeIn';
-
-      if (eventsChanged > 0) {
-        this.$actionPanel.find('.js-action-panel-event-count').html(
-          `${eventsChanged} event${eventsChanged == 1 ? '':'s'}`
-        );
-        this.setUnloadEvent();
-      } else {
-        fadeAction = 'fadeOut';
-        this.clearUnloadEvent();
-      }
-
-      this.$actionPanel[fadeAction]({
-        complete: this.alterHeight.bind(this)
-      });
     }
 
     uniqueEventsChanged() {

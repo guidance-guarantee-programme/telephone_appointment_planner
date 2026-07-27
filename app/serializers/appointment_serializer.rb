@@ -12,6 +12,9 @@ class AppointmentSerializer < ActiveModel::Serializer
   attribute :cancelled
   attribute :no_show?, key: :noShow
   attribute :guider_id, key: :resourceId
+  attribute :guider_id, key: :originalResourceId
+  attribute :start_at, key: :originalStart
+  attribute :end_at, key: :originalEnd
   attribute :pension_wise?, key: :pensionWise
   attribute :extended_duration?, key: :extendedDuration
   attribute :ms_teams_call?, key: :msTeamsCall

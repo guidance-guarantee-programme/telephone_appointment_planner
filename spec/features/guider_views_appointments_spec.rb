@@ -104,10 +104,6 @@ RSpec.feature 'Guider views appointments' do
     @page.rescheduling_reason_modal.wait_until_via_unplanned_absence_visible
     @page.rescheduling_reason_modal.via_unplanned_absence.set(true)
     @page.rescheduling_reason_modal.save.click
-
-    @page.wait_until_action_panel_visible
-    @page.action_panel.save.click
-    @page.wait_until_saved_changes_message_visible
   end
 
   def then_they_are_notified_of_the_change
