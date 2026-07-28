@@ -13,6 +13,18 @@ RSpec.describe 'POST /api/v1/appointments/{id}/reschedule' do # rubocop:disable 
     end
   end
 
+  scenario 'Rescheduling with a non-UK mobile' do
+    given_the_user_is_a_pension_wise_api_user do
+      travel_to '2025-07-08 13:00' do
+        and_a_pending_appointment_without_uk_mobile_exists
+        when_the_client_posts_a_valid_reschedule_request
+        then_the_service_responds_with_a_200
+        and_the_appointment_is_rescheduled
+        and_the_customer_does_not_receive_an_updated_sms
+      end
+    end
+  end
+
   scenario 'Successfully rescheduling the appointment' do
     given_the_user_is_a_pension_wise_api_user do
       travel_to '2025-07-08 13:00' do
@@ -59,6 +71,14 @@ RSpec.describe 'POST /api/v1/appointments/{id}/reschedule' do # rubocop:disable 
 
   def and_a_pending_appointment_exists
     @appointment     = create(:appointment, date_of_birth: '1970-01-01')
+    @previous_guider = @appointment.guider
+    @bookable_slot   = create(:bookable_slot, :cas, start_at: Time.zone.parse('2025-07-10 13:00'))
+
+    @previous_start_at = @appointment.start_at
+  end
+
+  def and_a_pending_appointment_without_uk_mobile_exists
+    @appointment     = create(:appointment, date_of_birth: '1970-01-01', mobile: '+341234567890')
     @previous_guider = @appointment.guider
     @bookable_slot   = create(:bookable_slot, :cas, start_at: Time.zone.parse('2025-07-10 13:00'))
 
@@ -127,5 +147,9 @@ RSpec.describe 'POST /api/v1/appointments/{id}/reschedule' do # rubocop:disable 
 
   def and_the_customer_receives_an_updated_sms
     expect(SmsAppointmentConfirmationJob).to have_received(:perform_later)
+  end
+
+  def and_the_customer_does_not_receive_an_updated_sms
+    expect(SmsAppointmentConfirmationJob).not_to have_received(:perform_later)
   end
 end

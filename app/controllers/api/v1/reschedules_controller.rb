@@ -5,7 +5,7 @@ module Api
         @reschedule = AppointmentRescheduling.new(create_params)
 
         if @reschedule.reschedule
-          SmsAppointmentConfirmationJob.perform_later(@reschedule.model)
+          SmsAppointmentConfirmationJob.perform_later(@reschedule.model) if @reschedule.model.mobile?
           Notifier.new(@reschedule.model).call
 
           head :ok
