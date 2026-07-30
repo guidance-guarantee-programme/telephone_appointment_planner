@@ -79,6 +79,19 @@ RSpec.feature 'Resource manager manages holidays' do
         end
       end
     end
+
+    scenario 'Duplicates a holiday for multiple guiders', js: true do
+      given_the_user_is_a_resource_manager do
+        travel_to today do
+          and_there_is_a_single_day_holiday_for_multiple_guiders
+          when_they_edit_the_holiday
+          and_duplicate_the_holiday
+          then_the_original_holiday_information_is_carried_over
+          when_the_save_the_duplicate_holiday
+          then_it_is_created
+        end
+      end
+    end
   end
 
   scenario 'Views holidays', js: true do
@@ -287,6 +300,67 @@ RSpec.feature 'Resource manager manages holidays' do
       title:    'Holiday Title',
       start_at: '2016-10-18T14:00:00Z',
       end_at:   '2016-10-18T16:00:00Z'
+    )
+  end
+
+  def and_there_is_a_single_day_holiday_for_multiple_guiders
+    @guider_one = create(:guider, name: 'George Lovell')
+    @guider_two = create(:guider, name: 'Daisy Lovell')
+
+    [@guider_one, @guider_two].each do |guider|
+      create(:holiday, title: 'Group Holiday', user: guider, additional_information: 'Some notes')
+    end
+  end
+
+  def when_they_edit_the_holiday
+    @holiday_ids = Holiday.where(title: 'Group Holiday').pluck(:id)
+    @page = Pages::EditHoliday.new
+    @page.load(ids: @holiday_ids)
+    expect(@page).to be_displayed
+  end
+
+  def and_duplicate_the_holiday
+    @page.duplicate.click
+  end
+
+  def then_the_original_holiday_information_is_carried_over
+    expect(@page.title.value).to eq('Group Holiday')
+    expect(@page.user_options.map(&:text).sort).to eq(['Daisy Lovell', 'George Lovell'])
+    expect(@page.description.value).to eq('other')
+    expect(@page.additional_information.value).to eq('Some notes')
+    expect(@page.single_day.date.value).to eq('18/10/2016')
+    expect(@page.single_day.start_at_hour.value).to eq('12')
+    expect(@page.single_day.start_at_minute.value).to eq('00')
+    expect(@page.single_day.end_at_hour.value).to eq('13')
+    expect(@page.single_day.end_at_minute.value).to eq('00')
+  end
+
+  def when_the_save_the_duplicate_holiday
+    @page.single_day.set_date_range(
+      Time.zone.now.beginning_of_day.change(hour: 8),
+      Time.zone.now.beginning_of_day.change(hour: 10)
+    )
+
+    @page.save.click
+  end
+
+  def then_it_is_created
+    @page = Pages::Holidays.new
+    expect(@page).to be_displayed
+
+    expect_holidays_to_match(
+      [
+        {
+          title:    'Group Holiday',
+          start_at: '2016-10-18T08:00:00Z',
+          end_at:   '2016-10-18T10:00:00Z'
+        },
+        {
+          title:    'Group Holiday',
+          start_at: '2016-10-18T12:00:00Z',
+          end_at:   '2016-10-18T13:00:00Z'
+        }
+      ]
     )
   end
 

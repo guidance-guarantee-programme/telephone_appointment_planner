@@ -6,6 +6,7 @@ module Pages
     elements :user_options, '.t-users option'
     element :save, '.t-save'
     element :delete, '.t-delete'
+    element :duplicate, '.t-duplicate'
     element :multi_day, '.t-multi-day'
     element :created_info, '.t-created-info'
     element :description, '.t-description'

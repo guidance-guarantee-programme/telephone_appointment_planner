@@ -23,6 +23,17 @@ class HolidaysController < ApplicationController # rubocop:disable Metrics/Class
     )
   end
 
+  def new_copy
+    @start = Time.zone.parse(params[:batch_upsert_holidays][:start_at])
+    @end   = Time.zone.parse(params[:batch_upsert_holidays][:end_at])
+
+    @holiday = BatchUpsertHolidays.new(
+      batch_create_params.merge(start_at: @start, end_at: @end)
+    )
+
+    render :new
+  end
+
   def create
     Holiday.create!(create_params)
   end
