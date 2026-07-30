@@ -29,20 +29,6 @@
 
 <div class="action-panel t-action-panel js-action-panel">
   <%= form_tag batch_update_appointments_path, method: :patch, remote: true, class: 'js-changes-form' do %>
-    <button class="btn btn-primary t-save js-action-panel-save">
-      <span class="glyphicon glyphicon-save" aria-hidden="true"></span> Save changes to
-      <b>
-        <span class="js-action-panel-event-count">0 events</span>
-      </b>
-    </button>
-
-    <button class="btn btn-warning js-action-panel-undo-one">
-      <span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span> Undo last change
-    </button>
-
-    <button class="btn btn-danger js-action-panel-undo-all">
-      <span class="glyphicon glyphicon-erase" aria-hidden="true"></span> Undo <b>all</b> changes
-    </button>
     <input type="hidden" name="changes" id="event-changes">
   <% end %>
 </div>
@@ -54,6 +40,27 @@
         <h4 class="modal-title js-modal-title" id="rescheduling-reasons-modal-label">Reason</h4>
       </div>
       <div class="modal-body" data-module="radio-toggle">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="panel panel-default">
+              <div class="panel-heading"><h4 class="panel-title">Before</h4></div>
+              <div class="panel-body">
+                Time: <span class="js-before-start t-before-start"></span> - <span class="js-before-end"></span><br>
+                Guider: <span class="js-before-guider t-before-guider"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="panel panel-default">
+              <div class="panel-heading"><h3 class="panel-title">After</h3></div>
+              <div class="panel-body">
+                Time: <span class="js-after-start t-after-start"></span> - <span class="js-after-end"></span><br>
+                Guider: <span class="js-after-guider t-after-guider"></span>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="radio">
           <div class="form-group">
             <div class="radio">

@@ -10,11 +10,12 @@ module Pages
     element :saved_changes_message, '.t-saved-changes'
     element :due_diligence_grace_period, '.t-due-diligence-grace-period'
 
-    section :action_panel, '.t-action-panel' do
-      element :save, '.t-save'
-    end
-
     section :rescheduling_reason_modal, '.t-rescheduling-reason-modal' do
+      element :before_guider, '.t-before-guider'
+      element :before_start, '.t-before-start'
+      element :after_guider, '.t-after-guider'
+      element :after_start, '.t-after-start'
+
       element :pension_wise, '.t-pension-wise-rescheduled'
       element :client, '.t-client-rescheduled'
       element :via_phone, '.t-via-phone'

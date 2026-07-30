@@ -39,7 +39,6 @@ RSpec.feature 'Resource manager modifies appointments' do
         when_they_view_the_appointments
         then_they_see_appointments_for_multiple_guiders
         when_they_change_the_guider
-        and_commit_their_modifications
         then_the_guider_is_modified
         and_no_customer_notifications_are_sent
       end
@@ -69,7 +68,6 @@ RSpec.feature 'Resource manager modifies appointments' do
         when_they_view_the_appointments
         then_they_see_appointments_for_multiple_guiders
         when_they_reschedule_an_appointment
-        and_commit_their_modifications
         then_the_appointment_is_modified
         and_the_customer_is_notified_of_the_appointment_change
       end
@@ -208,6 +206,12 @@ RSpec.feature 'Resource manager modifies appointments' do
 
     # this is being triggered for test purposes only
     @page.wait_until_rescheduling_reason_modal_visible
+
+    expect(@page.rescheduling_reason_modal.before_guider.text).to eq('Ben Lovell')
+    expect(@page.rescheduling_reason_modal.before_start.text).to eq('9:00am')
+    expect(@page.rescheduling_reason_modal.after_guider.text).to eq('Jan Schwifty')
+    expect(@page.rescheduling_reason_modal.after_start.text).to eq('9:00am')
+
     @page.rescheduling_reason_modal.pension_wise.set(true)
     @page.rescheduling_reason_modal.wait_until_via_unplanned_absence_visible
     @page.rescheduling_reason_modal.via_unplanned_absence.set(true)
@@ -215,6 +219,7 @@ RSpec.feature 'Resource manager modifies appointments' do
   end
 
   def then_the_guider_is_modified
+    @page.wait_until_saved_changes_message_visible
     expect(@appointment.reload.guider_id).to eq(@jan.id)
   end
 
@@ -258,6 +263,12 @@ RSpec.feature 'Resource manager modifies appointments' do
 
     wait_for_ajax_to_complete
     @page.wait_until_rescheduling_reason_modal_visible
+
+    expect(@page.rescheduling_reason_modal.before_guider.text).to eq('Ben Lovell')
+    expect(@page.rescheduling_reason_modal.before_start.text).to eq('9:00am')
+    expect(@page.rescheduling_reason_modal.after_guider.text).to eq('Ben Lovell')
+    expect(@page.rescheduling_reason_modal.after_start.text).to eq('1:30pm')
+
     @page.rescheduling_reason_modal.pension_wise.set(true)
     expect(@page.rescheduling_reason_modal).to have_no_via_phone
     @page.rescheduling_reason_modal.client.set(true)
@@ -266,13 +277,8 @@ RSpec.feature 'Resource manager modifies appointments' do
     @page.rescheduling_reason_modal.save.click
   end
 
-  def and_commit_their_modifications
-    @page.wait_until_action_panel_visible
-    @page.action_panel.save.click
-    @page.wait_until_saved_changes_message_visible
-  end
-
   def then_the_appointment_is_modified
+    @page.wait_until_saved_changes_message_visible
     @appointment.reload
 
     expect(@appointment.start_at.hour).to eq(13)
