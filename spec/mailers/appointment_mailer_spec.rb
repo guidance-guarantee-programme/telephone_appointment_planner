@@ -314,9 +314,9 @@ RSpec.describe AppointmentMailer, type: :mailer do
       expect(subject.body.encoded).to include('appointment on behalf')
     end
 
-    context 'when `Appointment#adjustments?` is false' do
+    context 'when `Appointment#notify_adjustments?` is false' do
       it 'does nothing' do
-        allow(appointment).to receive(:adjustments?).and_return(false)
+        allow(appointment).to receive(:notify_adjustments?).and_return(false)
 
         expect(mail.message).to be_an(ActionMailer::Base::NullMail)
       end

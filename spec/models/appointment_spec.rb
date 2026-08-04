@@ -98,6 +98,31 @@ RSpec.describe Appointment, type: :model do
     end
   end
 
+  describe '#notify_adjustments?' do
+    context 'when only third party adjustment' do
+      it 'is false' do
+        appointment = build(
+          :appointment,
+          third_party_booking: true,
+          welsh: false,
+          ms_teams_call: false,
+          extended_duration: false,
+          accessibility_requirements: false
+        )
+
+        expect(appointment).not_to be_notify_adjustments
+      end
+    end
+
+    context 'when not only third party adjustments' do
+      it 'is true' do
+        appointment = build(:appointment)
+
+        expect(appointment).to be_notify_adjustments
+      end
+    end
+  end
+
   describe '#adjustments?' do
     context 'when the appointment is Pension Wise' do
       context 'for Welsh' do

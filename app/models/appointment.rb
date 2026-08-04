@@ -342,6 +342,10 @@ class Appointment < ApplicationRecord
     attributes.slice(*ADJUSTMENT_ATTRIBUTES).values.any?
   end
 
+  def notify_adjustments?
+    true unless attributes.slice(*ADJUSTMENT_ATTRIBUTES).values.one? && third_party_booking?
+  end
+
   def address?
     [address_line_one, town, postcode].all?(&:present?)
   end

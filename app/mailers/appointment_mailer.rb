@@ -73,7 +73,7 @@ class AppointmentMailer < ApplicationMailer
   end
 
   def adjustment(appointment, recipient)
-    return unless appointment.adjustments?
+    return unless appointment.notify_adjustments?
 
     mailgun_headers('adjustment', appointment.id)
     @appointment = decorate(appointment)
