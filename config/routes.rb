@@ -76,6 +76,7 @@ Rails.application.routes.draw do
     end
     delete '/', on: :collection, action: :destroy
     get 'merged', on: :collection
+    get 'new_copy', on: :collection
   end
   resources :bookable_slots, only: :index do
     collection do
