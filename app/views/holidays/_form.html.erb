@@ -161,23 +161,6 @@
       <% if params[:id].present? %>
         <%=
           link_to(
-            'Duplicate holiday',
-            new_copy_holidays_path(
-              batch_upsert_holidays: {
-                holiday_ids: params[:id],
-                title: holiday.title,
-                users: holiday.users,
-                description: holiday.description,
-                additional_information: holiday.additional_information,
-                all_day: holiday.all_day,
-                start_at: holiday.start_at,
-                end_at: holiday.end_at
-            }),
-            class: 'btn btn-default t-duplicate'
-          )
-        %>
-        <%=
-          link_to(
             'Delete holiday',
             holidays_path(holiday_ids: params[:id]),
             method: :delete,

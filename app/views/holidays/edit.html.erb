@@ -10,3 +10,25 @@
 <%= form_for @holiday, url: batch_upsert_holidays_path(id: params[:id]), method: :patch, layout: :basic do |f| %>
   <%= render 'form', form: f, holiday: @holiday, guider_options: guider_options(current_user, include_reset: false), recurrence: false %>
 <% end %>
+
+<br>
+<%=
+  button_to(
+    'Duplicate holiday',
+    new_copy_holidays_path,
+    params: {
+      batch_upsert_holidays: {
+        holiday_ids: params[:id],
+        title: @holiday.title,
+        users: @holiday.users,
+        description: @holiday.description,
+        additional_information: @holiday.additional_information,
+        all_day: @holiday.all_day,
+        start_at: @holiday.start_at,
+        end_at: @holiday.end_at
+      }
+    },
+    class: 'btn btn-default t-duplicate',
+    method: :post
+  )
+%>
