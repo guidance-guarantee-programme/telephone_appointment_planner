@@ -463,7 +463,7 @@ RSpec.describe Appointment, type: :model do
       travel_to '2017-03-26 11:05 UTC' do
         # force new_record? to evaluate truthily
         appointment = Appointment.new(
-          attributes_for(:appointment, agent: build_stubbed(:agent), start_at: Time.zone.parse('2017-03-27 11:20 UTC'))
+          attributes_for(:appointment, agent: build_stubbed(:agent), start_at: Time.zone.parse('2017-03-26 11:20 UTC'))
         )
 
         expect(appointment).to be_invalid
@@ -1401,12 +1401,12 @@ RSpec.describe Appointment, type: :model do
       end
     end
 
-    context 'appointment is less than two days in the future' do
+    context 'appointment is less than 1 days in the future' do
       before { travel_to '2023-04-01 13:00' }
       after { travel_back }
 
       let(:appointment) do
-        build_stubbed(:appointment, start_at: BusinessDays.from_now(1))
+        build_stubbed(:appointment, start_at: Time.zone.parse('2023-04-01 16:00'))
       end
 
       context 'user is a guider' do
