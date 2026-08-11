@@ -60,11 +60,11 @@ RSpec.describe BookableSlot, type: :model do
           agent = double(pension_wise_api?: true)
 
           # falls outside the starting window
-          slot = create(:bookable_slot, start_at: Time.zone.parse('2023-10-04 13:00'))
+          slot = create(:bookable_slot, start_at: Time.zone.parse('2023-10-02 14:00'))
           expect(BookableSlot.find_available_slot(slot.start_at, agent)).to be_nil
 
           # falls inside the starting window
-          slot = create(:bookable_slot, start_at: Time.zone.parse('2023-10-14 13:00'))
+          slot = create(:bookable_slot, start_at: Time.zone.parse('2023-10-04 13:00'))
           expect(BookableSlot.find_available_slot(slot.start_at, agent)).to eq(slot)
         end
       end
@@ -154,9 +154,9 @@ RSpec.describe BookableSlot, type: :model do
         end
 
         # BST
-        travel_to '2020-04-14 13:00' do
+        travel_to '2020-04-15 13:00' do
           expect(BookableSlot.next_valid_start_date(user))
-            .to eq(Time.zone.parse('2020-04-15 21:00 UTC')
+            .to eq(Time.zone.parse('2020-04-16 22:00 BST')
             .in_time_zone('London'))
         end
       end
@@ -465,13 +465,14 @@ RSpec.describe BookableSlot, type: :model do
         )
       end
 
-      it 'excludes bookables slots that start within two business days' do
+      it 'excludes bookables slots that start within 1 business days' do
         create(
           :bookable_slot,
           guider: create(:guider),
-          start_at: BusinessDays.from_now(1).change(hour: 10, min: 30),
-          end_at: BusinessDays.from_now(1).change(hour: 11, min: 30)
+          start_at: BusinessDays.from_now(1).change(hour: 4, min: 30),
+          end_at: BusinessDays.from_now(1).change(hour: 5, min: 30)
         )
+
         expect(result).to eq(
           [
             guiders: 3,
