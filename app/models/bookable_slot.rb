@@ -19,7 +19,7 @@ class BookableSlot < ApplicationRecord
   end
 
   def self.limit_by_organisation(from, to) # rubocop:disable Metrics/MethodLength
-    tpas_start_at = BusinessDays.from_now(1).change(hour: 21, min: 0).in_time_zone('London')
+    tpas_start_at = BusinessDays.from_now(2).change(hour: 21, min: 0).in_time_zone('London')
     tpas_start_at = from if from > tpas_start_at
 
     joins(:guider)
@@ -52,7 +52,7 @@ class BookableSlot < ApplicationRecord
     if schedule_type == User::DUE_DILIGENCE_SCHEDULE_TYPE || user&.tpas_guider?
       BusinessDays.from_now(5).change(hour: 21, min: 0).in_time_zone('London')
     else
-      BusinessDays.from_now(1).change(hour: 21, min: 0).in_time_zone('London')
+      BusinessDays.from_now(2).change(hour: 21, min: 0).in_time_zone('London')
     end
   end
 
@@ -159,7 +159,7 @@ class BookableSlot < ApplicationRecord
     return normal_scope if schedule_type == User::DUE_DILIGENCE_SCHEDULE_TYPE
 
     if user.tpas_agent?
-      from = BusinessDays.from_now(1).change(hour: 21, min: 0).in_time_zone('London')
+      from = BusinessDays.from_now(2).change(hour: 21, min: 0).in_time_zone('London')
 
       joins(:guider)
         .where(
