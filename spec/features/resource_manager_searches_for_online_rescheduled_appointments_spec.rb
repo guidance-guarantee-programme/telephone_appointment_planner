@@ -16,7 +16,7 @@ RSpec.feature 'Resource manager searches online rescheduled appointments' do # r
 
     @first = create(
       :appointment,
-      start_at: Time.zone.parse('2025-02-02 13:00'),
+      start_at: Time.zone.parse('2025-02-04 13:00'),
       rescheduled_at: Time.zone.parse('2025-02-01 12:00'),
       previous_guider: create(:guider, :manchester),
       guider: @guider
@@ -30,7 +30,7 @@ RSpec.feature 'Resource manager searches online rescheduled appointments' do # r
 
     @second = create(
       :appointment,
-      start_at: Time.zone.parse('2025-02-02 14:00'),
+      start_at: Time.zone.parse('2025-02-04 14:00'),
       rescheduled_at: Time.zone.parse('2025-02-01 13:00'),
       previous_guider: create(:guider, :manchester),
       guider: @guider
@@ -57,7 +57,7 @@ RSpec.feature 'Resource manager searches online rescheduled appointments' do # r
       expect(result.customer_name).to have_text(@first.name)
       expect(result.previous_guider_name).to have_text(@first.previous_guider.name)
       expect(result.appointment_date_time).to have_text('01 February 2025 12:00')
-      expect(result.appointment_new_date_time).to have_text('02 February 2025 13:00')
+      expect(result.appointment_new_date_time).to have_text('04 February 2025 13:00')
       expect(result.rescheduled_date_time).to have_text('30 January 2025 13:00')
       expect(result.processed).to have_text('Yes')
     end

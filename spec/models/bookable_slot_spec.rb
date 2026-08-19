@@ -64,7 +64,7 @@ RSpec.describe BookableSlot, type: :model do
           expect(BookableSlot.find_available_slot(slot.start_at, agent)).to be_nil
 
           # falls inside the starting window
-          slot = create(:bookable_slot, start_at: Time.zone.parse('2023-10-04 13:00'))
+          slot = create(:bookable_slot, start_at: Time.zone.parse('2023-10-05 13:00'))
           expect(BookableSlot.find_available_slot(slot.start_at, agent)).to eq(slot)
         end
       end
@@ -113,13 +113,13 @@ RSpec.describe BookableSlot, type: :model do
         after { travel_back }
 
         {
-          'Monday'    => 'Tuesday',
-          'Tuesday'   => 'Wednesday',
-          'Wednesday' => 'Thursday',
-          'Thursday'  => 'Friday',
-          'Friday'    => 'Monday',
-          'Saturday'  => 'Monday',
-          'Sunday'    => 'Monday'
+          'Monday'    => 'Wednesday',
+          'Tuesday'   => 'Thursday',
+          'Wednesday' => 'Friday',
+          'Thursday'  => 'Monday',
+          'Friday'    => 'Tuesday',
+          'Saturday'  => 'Tuesday',
+          'Sunday'    => 'Tuesday'
         }.each do |day, expected_day|
           context "Day is #{day}" do
             it "next valid start date is #{expected_day}" do
@@ -140,7 +140,7 @@ RSpec.describe BookableSlot, type: :model do
           travel_to '2021-12-25 12:00' do
             # this ought to be excluded but is a bug in working_hours
             # but we can circumvent this by adding 'bank holiday' blocks
-            expect(subject.to_date).to eq('2021-12-27'.to_date)
+            expect(subject.to_date).to eq('2021-12-28'.to_date)
           end
         end
       end
@@ -149,14 +149,14 @@ RSpec.describe BookableSlot, type: :model do
         # DST
         travel_to '2020-01-01 13:00' do
           expect(BookableSlot.next_valid_start_date(user))
-            .to eq(Time.zone.parse('2020-01-02 21:00 UTC')
+            .to eq(Time.zone.parse('2020-01-03 21:00 UTC')
             .in_time_zone('London'))
         end
 
         # BST
         travel_to '2020-04-15 13:00' do
           expect(BookableSlot.next_valid_start_date(user))
-            .to eq(Time.zone.parse('2020-04-16 22:00 BST')
+            .to eq(Time.zone.parse('2020-04-17 22:00 BST')
             .in_time_zone('London'))
         end
       end
@@ -396,8 +396,8 @@ RSpec.describe BookableSlot, type: :model do
         @tpas_guider = create(:guider, :tpas)
         @cas_guider  = create(:guider, :cas)
 
-        create(:bookable_slot, guider: @cas_guider, start_at: Time.zone.parse('2022-09-08 10:30am'))
-        create(:bookable_slot, guider: @tpas_guider, start_at: Time.zone.parse('2022-09-08 10:30am'))
+        create(:bookable_slot, guider: @cas_guider, start_at: Time.zone.parse('2022-09-09 10:30am'))
+        create(:bookable_slot, guider: @tpas_guider, start_at: Time.zone.parse('2022-09-09 10:30am'))
 
         travel_to '2022-09-06 07:00' do
           # when contextually rescheduling
