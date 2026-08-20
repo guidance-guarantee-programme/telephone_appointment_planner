@@ -135,8 +135,11 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
     return unless permissions_previously_changed?
     return unless permission_revoked?(GUIDER_PERMISSION) || permission_revoked?(SIGNIN_PERMISSION)
 
+    attrs = { active: false }
+    attrs.merge!(permissions: [GUIDER_PERMISSION]) if permission_revoked?(GUIDER_PERMISSION)
+
     transaction do
-      update!(active: false)
+      update!(attrs)
       delete_future_slots!
     end
   end
