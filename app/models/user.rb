@@ -38,7 +38,15 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
   scope :guiders, -> { where('permissions @> ?', %(["#{GUIDER_PERMISSION}"])) }
   scope :active, -> { where(active: true) }
   scope :enabled, -> { where(disabled: false) }
+  scope :disabled, -> { where(disabled: true) }
   scope :unexcluded, -> { where.not(uid: RESOURCE_MANAGER_EXCEPTIONS) }
+  scope :recently_suspended_guiders, lambda { |current_user|
+    current_user
+      .colleagues
+      .disabled
+      .where('updated_at > ?', 3.months.ago)
+      .where.not(genesys_agent_id: nil)
+  }
 
   ALL_PERMISSIONS.each do |permission|
     define_method "#{permission}?" do

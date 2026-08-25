@@ -30,7 +30,7 @@
       </thead>
       <tbody class="list">
         <% @guiders.each do |guider| %>
-          <tr class="t-guider guider js-multi-checkbox-group">
+          <tr class="t-guider guider js-multi-checkbox-group <%= 'warning' if guider.disabled? %>">
             <td>
               <label for="guider_<%= guider.id %>" class="show-with-js">
                 <input type="checkbox" name="guider_<%= guider.id %>" id="guider_<%= guider.id %>" value="<%= guider.id %>" class="guider__checkbox t-checkbox js-multi-checkbox-item">
