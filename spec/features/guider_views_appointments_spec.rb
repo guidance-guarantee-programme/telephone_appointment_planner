@@ -33,13 +33,13 @@ RSpec.feature 'Guider views appointments' do
     end
   end
 
-  scenario 'Guider does not see deactivated and/or other organisation guiders', js: true do
+  scenario 'Guider sees recently suspended guiders', js: true do
     given_the_user_is_a_guider do
       and_there_is_a_guider_from_another_organisation
-      and_there_is_a_deactivated_guider
+      and_there_is_a_recently_suspended_guider
       when_they_view_the_company_calendar
       then_they_see_the_guider
-      and_they_do_not_see_the_deactivated_guider
+      and_they_see_the_recently_suspended_guider
       and_they_do_not_see_the_guider_from_another_organisation
     end
   end
@@ -254,16 +254,16 @@ RSpec.feature 'Guider views appointments' do
     expect(@page.calendar.guiders).to_not include(@tp_guider.name)
   end
 
-  def and_there_is_a_deactivated_guider
-    @deactivated_guider = create(:deactivated_guider)
+  def and_there_is_a_recently_suspended_guider
+    @suspended_guider = create(:guider, :suspended)
   end
 
   def then_they_see_the_guider
     expect(@page.calendar.guiders).to include @guider.name
   end
 
-  def and_they_do_not_see_the_deactivated_guider
-    expect(@page.calendar.guiders).to_not include @deactivated_guider.name
+  def and_they_see_the_recently_suspended_guider
+    expect(@page.calendar.guiders).to include @suspended_guider.name
   end
 end
 # rubocop:enable Metrics/BlockLength
