@@ -74,7 +74,7 @@
                   <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
                   <span class="sr-only">Deactivate #{guider.name}</span>
                 <% end %>
-              <% else %>
+              <% elsif !guider.disabled? %>
                 <%= link_to user_activate_path(guider), method: 'PATCH', title: "Activate #{guider.name}", class: 'btn btn-success t-activate', 'data-confirm': t('users.activate_confirm') do %>
                   <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
                   <span class="sr-only">Activate #{guider.name}</span>
