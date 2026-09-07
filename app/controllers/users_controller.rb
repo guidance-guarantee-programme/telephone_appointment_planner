@@ -3,7 +3,13 @@ class UsersController < ApplicationController
   before_action :authorise_for_administrators_or_business_analysts!, only: :update
 
   def index
-    @guiders = current_user.colleagues.guiders.includes(:groups)
+    @guiders = current_user
+               .colleagues
+               .guiders
+               .enabled
+               .includes(:groups)
+               .or(User.recently_suspended_guiders(current_user))
+
     @groups = Group.for_user(current_user)
   end
 

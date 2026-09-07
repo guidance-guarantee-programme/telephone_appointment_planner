@@ -38,7 +38,15 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
   scope :guiders, -> { where('permissions @> ?', %(["#{GUIDER_PERMISSION}"])) }
   scope :active, -> { where(active: true) }
   scope :enabled, -> { where(disabled: false) }
+  scope :disabled, -> { where(disabled: true) }
   scope :unexcluded, -> { where.not(uid: RESOURCE_MANAGER_EXCEPTIONS) }
+  scope :recently_suspended_guiders, lambda { |current_user|
+    current_user
+      .colleagues
+      .disabled
+      .where('updated_at > ?', 3.months.ago)
+      .where.not(genesys_agent_id: nil)
+  }
 
   ALL_PERMISSIONS.each do |permission|
     define_method "#{permission}?" do
@@ -135,8 +143,11 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
     return unless permissions_previously_changed?
     return unless permission_revoked?(GUIDER_PERMISSION) || permission_revoked?(SIGNIN_PERMISSION)
 
+    attrs = { active: false }
+    attrs.merge!(permissions: [GUIDER_PERMISSION]) if permission_revoked?(GUIDER_PERMISSION)
+
     transaction do
-      update!(active: false)
+      update!(attrs)
       delete_future_slots!
     end
   end
