@@ -163,7 +163,7 @@ RSpec.feature 'Agent manages appointments' do
   end
 
   def then_they_see_the_longer_grace_period
-    expect(@page.due_diligence_grace_period).to have_text('23 December 2021')
+    expect(@page.due_diligence_grace_period).to have_text('15 December 2021')
   end
 
   def and_slots_exist_for_due_diligence_availability

@@ -73,10 +73,10 @@ RSpec.describe BookableSlot, type: :model do
 
   describe '#next_valid_start_date' do
     context 'for the due diligence schedule type' do
-      it 'is effectively 5 days' do
+      it 'is effectively nothing' do
         travel_to '2021-10-25 10:00' do
           actual = BookableSlot.next_valid_start_date(user, User::DUE_DILIGENCE_SCHEDULE_TYPE)
-          expect(actual).to eq(Time.zone.parse('2021-11-01 21:00'))
+          expect(actual).to eq(Time.zone.parse('2021-10-25 12:00 BST'))
         end
       end
     end
@@ -89,7 +89,7 @@ RSpec.describe BookableSlot, type: :model do
           travel_to '2023-03-01 10:00' do
             actual = BookableSlot.next_valid_start_date(user)
 
-            expect(actual).to eq(Time.zone.parse('2023-03-08 21:00'))
+            expect(actual).to eq(Time.zone.parse('2023-03-01 10:00'))
           end
         end
       end
@@ -403,12 +403,12 @@ RSpec.describe BookableSlot, type: :model do
           # when contextually rescheduling
           expect(result([@tpas_resource_manager, @tpas_guider]).first).to include(guiders: 2)
 
-          expect(result(@tpas_guider).first).to include(guiders: 1)
+          expect(result(@tpas_guider).first).to include(guiders: 2)
           expect(result(@cas_guider).first).to include(guiders: 1)
         end
 
         travel_to '2022-09-08 07:00' do
-          expect(result(@tpas_guider)).to be_empty
+          expect(result(@tpas_guider)).to be_present
           expect(result(@cas_guider)).to be_empty
 
           expect(result(@tpas_resource_manager).first).to include(guiders: 1)

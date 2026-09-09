@@ -50,7 +50,7 @@ class BookableSlot < ApplicationRecord
     return time_now if user&.resource_manager? && !external
 
     if schedule_type == User::DUE_DILIGENCE_SCHEDULE_TYPE || user&.tpas_guider?
-      BusinessDays.from_now(5).change(hour: 21, min: 0).in_time_zone('London')
+      time_now
     else
       BusinessDays.from_now(2).change(hour: 21, min: 0).in_time_zone('London')
     end
