@@ -1,3 +1,5 @@
+require 'open-uri'
+
 class GenerateBankHolidaysJob < ApplicationJob
   queue_as :default
 
@@ -21,13 +23,18 @@ class GenerateBankHolidaysJob < ApplicationJob
       start_at:,
       end_at:,
       all_day: true,
-      bank_holiday: true
+      bank_holiday: true,
+      description: 'annual_leave',
+      creator:
     )
   end
 
+  def creator
+    @creator ||= User.find_by(name: 'Ben Lovell')
+  end
+
   def retrieve_holidays
-    require 'open-uri'
-    response = open('https://www.gov.uk/bank-holidays.json').read
+    response = URI.open('https://www.gov.uk/bank-holidays.json').read
     holidays = JSON.parse(response).with_indifferent_access
     holidays['england-and-wales'][:events]
   end
