@@ -15,6 +15,13 @@ FactoryBot.define do
       end
     end
 
+    trait :suspended do
+      disabled { true }
+      active { false }
+      permissions { [User::GUIDER_PERMISSION] }
+      genesys_agent_id { SecureRandom.uuid }
+    end
+
     trait :due_diligence do
       schedule_type { User::DUE_DILIGENCE_SCHEDULE_TYPE }
     end

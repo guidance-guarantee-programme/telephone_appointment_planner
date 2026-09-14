@@ -38,5 +38,7 @@ RSpec.describe 'PUT /auth/gds/api/users/:id' do # rubocop:disable Metrics/BlockL
     expect(@guider.bookable_slots).to be_empty
     # ensure guider is inactive so no future schedules are generated
     expect(@guider).not_to be_active
+    # ensure guider retains `guider` permission so they're visible when suspended
+    expect(@guider).to be_guider
   end
 end

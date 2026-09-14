@@ -217,7 +217,12 @@ class CompanyCalendar extends Calendar {
   resourceRender(resourceObj, labelTds, bodyTds, view) {
     if (view.type === 'agendaDay') {
       labelTds.html('');
-      $(`<div>${resourceObj.title}</div>`).prependTo(labelTds);
+
+      if (resourceObj.suspended) {
+        $(`<div class="bg-danger">${resourceObj.title}</div>`).prependTo(labelTds);
+      } else {
+        $(`<div>${resourceObj.title}</div>`).prependTo(labelTds);
+      }
     } else {
       $('<span aria-hidden="true" class="glyphicon glyphicon-user" style="margin-right: 5px;"></span>').prependTo(
         labelTds.find('.fc-cell-text')

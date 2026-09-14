@@ -2,6 +2,15 @@ require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
 RSpec.feature 'Resource manager manages guiders' do
+  scenario 'Viewing suspended guiders' do
+    given_the_user_is_a_resource_manager do
+      and_there_is_a_guider_suspended_recently
+      and_there_is_a_guider_suspended_non_recently
+      when_they_visit_the_guiders_page
+      then_they_see_the_recently_suspended_guider
+    end
+  end
+
   scenario 'Viewing and filtering by groups', js: true do
     given_the_user_is_a_resource_manager do
       and_there_are_guiders_assigned_to_groups
@@ -68,6 +77,19 @@ RSpec.feature 'Resource manager manages guiders' do
       and_they_attempt_to_delete_the_group
       then_the_group_and_assignments_are_not_deleted
     end
+  end
+
+  def and_there_is_a_guider_suspended_recently
+    @recently_suspended = create(:guider, :suspended, updated_at: 1.month.ago, name: 'Mr Recent')
+  end
+
+  def and_there_is_a_guider_suspended_non_recently
+    @non_recently_suspended = create(:guider, :suspended, updated_at: 6.months.ago)
+  end
+
+  def then_they_see_the_recently_suspended_guider
+    expect(@page).to have_guiders(count: 1)
+    expect(@page.guiders.first).to have_text('Mr Recent')
   end
 
   def and_multiple_guiders_are_assigned_to_a_group
