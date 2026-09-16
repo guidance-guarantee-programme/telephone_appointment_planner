@@ -419,6 +419,10 @@ class Appointment < ApplicationRecord
     super().to_s.gsub(/(?!\A).(?!\Z)/, '*')
   end
 
+  def can_force_push_to_genesys?(user)
+    user.resource_manager? && genesys_force_pushable?
+  end
+
   def can_be_rescheduled_by?(user)
     return false unless pending?
     return true if user.resource_manager? && owned_by_my_organisation?(user)
@@ -488,6 +492,14 @@ class Appointment < ApplicationRecord
     guider&.genesys_pushable?
   end
 
+  def genesys_force_pushable?
+    pending? && genesys_pushable_guider? && genesys_schedule_published?
+  end
+
+  def genesys_schedule_published?
+    start_at < self.class.genesys_publishable_end
+  end
+
   def agent_is_pension_wise_api?
     agent&.pension_wise_api?
   end
@@ -551,9 +563,13 @@ class Appointment < ApplicationRecord
   def self.for_genesys_newly_published_schedule
     pending
       .where(genesys_operation_id: nil)
-      .where('start_at < ?', 5.weeks.from_now.end_of_week(:saturday))
+      .where('start_at < ?', genesys_publishable_end)
       .joins(:guider).where.not(users: { genesys_agent_id: nil })
       .order(:start_at)
+  end
+
+  def self.genesys_publishable_end
+    5.weeks.from_now.end_of_week(:saturday)
   end
 
   def self.for_redaction

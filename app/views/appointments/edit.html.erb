@@ -73,6 +73,12 @@
     <%= rebooked_from_heading(@appointment) %>
   </div>
   <div class="col-md-5 action-buttons">
+    <% if @appointment.can_force_push_to_genesys?(current_user) %>
+      <%= link_to appointment_push_genesys_path(@appointment), method: :post, title: 'Push to Genesys', class: 'btn btn-info t-genesys', data: { confirm: 'Push the appointment to Genesys?' } do %>
+        <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
+        <span>Genesys</span>
+      <% end %>
+    <% end %>
     <% if can_process?(current_user, @appointment) %>
       <%= link_to appointment_process_path(@appointment), method: :post, title: 'Process', class: 'btn btn-info t-process' do %>
         <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>

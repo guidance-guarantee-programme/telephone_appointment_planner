@@ -231,6 +231,44 @@ RSpec.describe Appointment, type: :model do
     end
   end
 
+  describe '#genesys_force_pushable?' do
+    context 'when pending' do
+      context 'when guider is pushable' do
+        context 'when appointment starts during genesys schedule period' do
+          it 'returns true' do
+            appointment = build_stubbed(:appointment, :genesys_guider)
+
+            expect(appointment).to be_genesys_force_pushable
+          end
+        end
+
+        context 'when the appointment is after the genesys schedule period' do
+          it 'returns false' do
+            appointment = build_stubbed(:appointment, :genesys_guider, start_at: 3.months.from_now)
+
+            expect(appointment).to_not be_genesys_force_pushable
+          end
+        end
+      end
+
+      context 'when guider is not pushable' do
+        it 'returns false' do
+          appointment = build_stubbed(:appointment)
+
+          expect(appointment).to_not be_genesys_force_pushable
+        end
+      end
+    end
+
+    context 'when not pending' do
+      it 'is false' do
+        appointment = build_stubbed(:appointment, :genesys_guider, status: :complete)
+
+        expect(appointment).to_not be_genesys_force_pushable
+      end
+    end
+  end
+
   describe '#push_to_genesys?' do
     context 'when pushable' do
       context 'when pending' do
