@@ -40,6 +40,7 @@ module Pages
     element :resend_print_confirmation, '.t-resend-print-confirmation'
     element :reschedule, '.t-reschedule'
     element :reallocate, '.t-reallocate'
+    element :push_to_genesys, '.t-genesys'
 
     element :third_party_booked,                    '.t-third-party-booked'
     element :data_subject_name,                     '.t-data-subject-name'
