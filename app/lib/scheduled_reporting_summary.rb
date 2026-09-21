@@ -20,7 +20,7 @@ class ScheduledReportingSummary
   end
 
   def total_slots_available(organisation_id)
-    start_date, end_date = *BookableSlot.date_range(schedule_type, nil)
+    start_date, end_date = *BookableSlot.date_range(nil)
 
     fake_user = OpenStruct.new(organisation_content_id: organisation_id)
 
@@ -33,7 +33,7 @@ class ScheduledReportingSummary
   end
 
   def total_slots_created(organisation_id)
-    start_date, end_date = *BookableSlot.date_range(schedule_type, nil)
+    start_date, end_date = *BookableSlot.date_range(nil)
 
     fake_user = OpenStruct.new(organisation_content_id: organisation_id)
 

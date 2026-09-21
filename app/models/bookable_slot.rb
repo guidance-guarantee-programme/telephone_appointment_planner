@@ -46,14 +46,10 @@ class BookableSlot < ApplicationRecord
     end
   end
 
-  def self.next_valid_start_date(user = nil, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE, external: false)
+  def self.next_valid_start_date(user = nil, external: false)
     return time_now if user&.resource_manager? && !external
 
-    if schedule_type == User::DUE_DILIGENCE_SCHEDULE_TYPE || user&.tpas_guider?
-      BusinessDays.from_now(5).change(hour: 21, min: 0).in_time_zone('London')
-    else
-      BusinessDays.from_now(2).change(hour: 21, min: 0).in_time_zone('London')
-    end
+    BusinessDays.from_now(2).change(hour: 21, min: 0).in_time_zone('London')
   end
 
   def self.find_available_slot(start_at, agent, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE, scoped: true, external: false, rebooking: false) # rubocop:disable Layout/LineLength, Metrics/AbcSize, Metrics/ParameterLists, Metrics/MethodLength
@@ -77,7 +73,7 @@ class BookableSlot < ApplicationRecord
   end
 
   def self.grouped(organisation_id = nil, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE, day = nil) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-    from, to = date_range(schedule_type, day)
+    from, to = date_range(day)
     limit_by_organisation = schedule_type == User::PENSION_WISE_SCHEDULE_TYPE
 
     scope = bookable(from, to).within_date_range(from, to, organisation_limit: limit_by_organisation)
@@ -97,11 +93,11 @@ class BookableSlot < ApplicationRecord
     end
   end
 
-  def self.date_range(schedule_type, day)
+  def self.date_range(day)
     if day
       [Time.zone.parse(day).beginning_of_day, Time.zone.parse(day).end_of_day]
     else
-      [next_valid_start_date(nil, schedule_type), end_of_window]
+      [next_valid_start_date(nil), end_of_window]
     end
   end
 
@@ -153,7 +149,7 @@ class BookableSlot < ApplicationRecord
   end
 
   def self.starting_after_next_valid_start_date(user, schedule_type: User::PENSION_WISE_SCHEDULE_TYPE, external: false) # rubocop:disable Metrics/MethodLength
-    starting_from = next_valid_start_date(user, schedule_type, external:)
+    starting_from = next_valid_start_date(user, external:)
     normal_scope = where("#{quoted_table_name}.start_at > ?", starting_from)
 
     return normal_scope if schedule_type == User::DUE_DILIGENCE_SCHEDULE_TYPE
