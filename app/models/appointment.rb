@@ -734,7 +734,7 @@ class Appointment < ApplicationRecord
     return unless new_record? && start_at?
     return if agent_is_resource_manager? && owned_by_my_organisation?(agent)
 
-    too_soon = start_at < BookableSlot.next_valid_start_date(nil, schedule_type)
+    too_soon = start_at < BookableSlot.next_valid_start_date(nil)
     errors.add(:start_at, 'must be more than two business days from now') if too_soon
   end
 
