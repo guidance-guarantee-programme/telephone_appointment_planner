@@ -42,7 +42,9 @@ class Appointment < ApplicationRecord
     'assigning_from_overspill' => 'Assigning from Overspill',
     'assigning_to_tier_2' => 'Assigning to Tier 2',
     'guider_overrunning' => 'Guider Overrunning',
-    'extended_duration_appointment' => 'Extended Duration Appointment'
+    'extended_duration_appointment' => 'Extended Duration Appointment',
+    'colleague_unresponsive' => 'Colleague Unresponsive',
+    'app_schedule_amended' => 'Appointment Schedule Amended'
   }.freeze
 
   ATTENDED_DIGITAL_OPTIONS = %w[yes no not-sure].freeze
