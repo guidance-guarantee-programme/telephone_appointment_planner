@@ -30,6 +30,8 @@ class Holiday < ApplicationRecord
     'qa' => 'Quality Assurance',
     '121' => '1-2-1',
     'outreach' => 'Outreach',
+    'colleague_unresponsive' => 'Colleague Unresponsive',
+    'app_schedule_amended' => 'Appointment Schedule Amended',
     'other' => 'Other'
   }.freeze
 
