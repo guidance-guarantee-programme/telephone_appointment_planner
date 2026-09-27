@@ -26,7 +26,7 @@
       <%= render 'eligibility_reason', form: f %>
     <% end %>
 
-    <% unless @appointment.due_diligence? %>
+    <% if @appointment.pension_wise? %>
     <h2 class="h3">Eligibility</h2>
 
     <div class="form-group" data-module="type-of-appointment">
@@ -42,7 +42,9 @@
         class: 't-type-of-appointment-50-54 js-type-of-appointment-50-54'
       %>
     </div>
+    <% end %>
 
+    <% if @appointment.pension_wise? || @appointment.persisted? %>
     <h2 class="h3">Research</h2>
 
     <div class="form-group">
@@ -53,7 +55,9 @@
       <%= f.radio_button :gdpr_consent, '', label: 'No response', class: 't-gdpr-consent-no-response', disabled: true %>
       <% end %>
     </div>
+    <% end %>
 
+    <% if @appointment.pension_wise? %>
     <div class="form-group">
       <p><strong>Have you completed an online Pension Wise appointment?</strong></p>
       <span class="help-block text-left">This helps us understand how Pension Wise is used.</span>
