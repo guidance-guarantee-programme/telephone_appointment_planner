@@ -159,7 +159,8 @@ RSpec.describe 'POST /api/v1/appointments' do
       'notes'                      => '',
       'lloyds_signposted'          => false,
       'referrer'                   => 'MMM',
-      'rebooked_from_id'           => '1234567'
+      'rebooked_from_id'           => '1234567',
+      'waitlist_opt_in'            => true
     }
 
     post api_v1_appointments_path, params: @payload, as: :json
@@ -219,7 +220,8 @@ RSpec.describe 'POST /api/v1/appointments' do
       'country_code'      => 'FR',
       'accessibility_requirements' => false,
       'transferring_pension_to' => 'Other Pension Ltd',
-      'adjustments' => ''
+      'adjustments' => '',
+      'waitlist_opt_in' => false
     }
 
     post api_v1_appointments_path, params: @payload, as: :json
@@ -302,7 +304,8 @@ RSpec.describe 'POST /api/v1/appointments' do
       'notes'            => '',
       'lloyds_signposted' => true,
       'rebooked_from_id'  => '1234567',
-      'attended_digital'  => 'yes'
+      'attended_digital'  => 'yes',
+      'waitlist_opt_in'   => true
     }
 
     post api_v1_appointments_path, params: @payload, as: :json
@@ -323,7 +326,8 @@ RSpec.describe 'POST /api/v1/appointments' do
       'accessibility_requirements' => true,
       'adjustments' => 'I am hard of hearing',
       'lloyds_signposted' => false,
-      'nudged' => true
+      'nudged' => true,
+      'waitlist_opt_in' => true
     }
 
     post api_v1_appointments_path, params: @payload, as: :json
@@ -363,7 +367,8 @@ RSpec.describe 'POST /api/v1/appointments' do
         pension_provider: 'n/a',
         lloyds_signposted: true,
         rebooked_from_id: 1_234_567,
-        attended_digital: 'yes'
+        attended_digital: 'yes',
+        waitlist_opt_in: true
       )
 
       # defaults to pension wise when the schedule type is unspecified

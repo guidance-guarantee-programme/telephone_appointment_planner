@@ -246,6 +246,7 @@ class AppointmentsController < ApplicationController
       :adjustments,
       :extended_duration,
       :ms_teams_call,
+      :waitlist_opt_in,
       { vulnerability_profile_attributes: %i[
         id
         disability
