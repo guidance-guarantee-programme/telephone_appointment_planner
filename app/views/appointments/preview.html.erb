@@ -66,6 +66,7 @@
   <%= f.hidden_field :consent_county %>
   <%= f.hidden_field :consent_postcode %>
   <%= f.hidden_field :email_consent %>
+  <%= f.hidden_field :waitlist_opt_in %>
 
   <div class="t-preview appointment-preview">
     <div class="row">
@@ -236,6 +237,12 @@
             <% if @appointment.ms_teams_call? %>
             <tr>
               <td class="active"><b>Phone call via MS Teams?</b></td>
+              <td>Yes</td>
+            </tr>
+            <% end %>
+            <% if @appointment.waitlist_opt_in? %>
+            <tr>
+              <td class="active"><b>Opt-in to short notice appointment waitlist?</b></td>
               <td>Yes</td>
             </tr>
             <% end %>

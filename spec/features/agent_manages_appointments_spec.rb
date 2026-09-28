@@ -508,6 +508,7 @@ RSpec.feature 'Agent manages appointments' do
     @page.postcode.set(options[:postcode]) if options[:postcode]
     @page.stronger_nudged.set(options[:stronger_nudge]) if options[:stronger_nudge]
     @page.attended_digital_yes.set(true) if options[:attended_digital]
+    @page.waitlist_opt_in.set(true) if @page.has_waitlist_opt_in?
 
     @page.preview_appointment.click
   end
