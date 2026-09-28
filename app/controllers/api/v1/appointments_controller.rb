@@ -63,7 +63,8 @@ module Api
           :nudged,
           :rebooked_from_id,
           :attended_digital,
-          :adjustments
+          :adjustments,
+          :waitlist_opt_in
         ).merge(
           agent: current_user,
           schedule_type:
