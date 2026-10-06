@@ -3,20 +3,6 @@ ruby IO.read('.ruby-version').strip
 # force Bundler to use SSL
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-# temporarily switch to this since Travis can't resolve the new certificate chain
-source 'https://rails-assets.org' do
-  gem 'rails-assets-bootstrap-daterangepicker', '2.1.27'
-  gem 'rails-assets-eonasdan-bootstrap-datetimepicker'
-  gem 'rails-assets-fullcalendar', '3.2.0'
-  gem 'rails-assets-fullcalendar-scheduler', '1.5.1'
-  gem 'rails-assets-jquery.postcodes'
-  gem 'rails-assets-listjs'
-  gem 'rails-assets-moment', '2.15.1'
-  gem 'rails-assets-pusher'
-  gem 'rails-assets-qTip2'
-  gem 'rails-assets-zloirock--core-js', '2.5.1'
-end
-
 source 'https://rubygems.org'
 
 gem 'active_link_to'
