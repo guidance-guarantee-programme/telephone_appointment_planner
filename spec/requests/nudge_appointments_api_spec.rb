@@ -8,7 +8,8 @@ RSpec.describe 'POST /api/v1/nudge_appointments' do
       AppointmentCreatedNotificationsJob,
       CustomerUpdateJob,
       AdjustmentNotificationsJob,
-      SmsAppointmentConfirmationJob
+      SmsAppointmentConfirmationJob,
+      PushGenesysAppointmentJob
     ].each do |expected_job|
       allow(expected_job).to receive(:perform_later)
     end
@@ -26,6 +27,7 @@ RSpec.describe 'POST /api/v1/nudge_appointments' do
         and_the_customer_receives_a_confirmation_email
         and_the_resource_manager_receives_an_accessibility_notification
         and_the_resource_manager_receives_a_new_appointment_notification
+        and_the_appointment_is_pushed_to_genesys
       end
     end
   end
@@ -159,6 +161,10 @@ RSpec.describe 'POST /api/v1/nudge_appointments' do
 
   def and_the_customer_receives_an_sms_confirmation
     expect(SmsAppointmentConfirmationJob).to have_received(:perform_later)
+  end
+
+  def and_the_appointment_is_pushed_to_genesys
+    expect(PushGenesysAppointmentJob).to have_received(:perform_later)
   end
 end
 # rubocop:enable Metrics/BlockLength
