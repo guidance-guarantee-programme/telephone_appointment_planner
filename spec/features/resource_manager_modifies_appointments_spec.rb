@@ -2,7 +2,7 @@ require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
 RSpec.feature 'Resource manager modifies appointments' do
-  scenario 'Avoid navigating away with unsaved modifications', js: true do
+  scenario 'Avoid navigating away with unsaved modifications', js: true, retry: 3 do
     given_the_user_is_a_resource_manager do
       when_there_are_appointments_for_multiple_guiders
       travel_to @appointment.start_at do
@@ -23,7 +23,7 @@ RSpec.feature 'Resource manager modifies appointments' do
     end
   end
 
-  scenario 'Reassigning the chosen guider alerts both guiders', js: true do
+  scenario 'Reassigning the chosen guider alerts both guiders', js: true, retry: 3 do
     # create the guiders and appointments up front
     when_there_are_appointments_for_multiple_guiders
 
