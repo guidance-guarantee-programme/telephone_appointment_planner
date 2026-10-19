@@ -39,6 +39,8 @@ module Pages
     element :suggestion,                            '.t-suggestion'
     element :where_you_heard, '.t-where-you-heard'
     element :hidden_where_you_heard, '.t-hidden-where-you-heard', visible: false
+    element :waitlist_opt_in, '.t-waitlist-opt-in'
+    element :hidden_waitlist_opt_in, '.t-hidden-waitlist-opt-in', visible: false
     element :referrer, '.t-referrer'
     element :transferring_pension_to, '.t-transferring-pension-to'
     element :address_line_one, '.t-address-line-one'

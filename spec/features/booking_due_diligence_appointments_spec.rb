@@ -164,6 +164,7 @@ RSpec.feature 'Booking due diligence appointments', js: true do
     expect(@page).to_not have_text('Confirmation address')
 
     expect(@page.hidden_where_you_heard.value).to eq('2') # A Pension Provider
+    expect(@page.hidden_waitlist_opt_in.value).to eq('no')
   end
 
   def when_they_fill_in_the_appointment_details

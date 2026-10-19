@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_07_121711) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_28_104101) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
   enable_extension "pg_catalog.plpgsql"
@@ -133,6 +133,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_07_121711) do
     t.string "type_of_appointment", default: "", null: false
     t.string "unique_reference_number", default: "", null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.boolean "waitlist_opt_in", default: false, null: false
     t.boolean "welsh", default: false, null: false
     t.integer "where_you_heard", default: 0, null: false
     t.index "guider_id, tsrange(start_at, end_at)", name: "index_appointments_guider_id_tsrange_start_at_end_at", using: :gist
