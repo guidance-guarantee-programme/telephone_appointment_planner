@@ -9,7 +9,7 @@ RSpec.describe Appointment, type: :model do
       @included       = create(:appointment, :genesys_guider)
       @not_pending    = create(:appointment, :genesys_guider, status: :complete)
       @already_pushed = create(:appointment, :genesys_guider, genesys_operation_id: 'deadbeef')
-      @beyond_date    = create(:appointment, :genesys_guider, start_at: 8.weeks.from_now)
+      @beyond_date    = create(:appointment, :genesys_guider, start_at: 7.weeks.from_now)
 
       results = Appointment.for_genesys_newly_published_schedule
 
