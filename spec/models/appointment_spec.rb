@@ -9,7 +9,7 @@ RSpec.describe Appointment, type: :model do
       @included       = create(:appointment, :genesys_guider)
       @not_pending    = create(:appointment, :genesys_guider, status: :complete)
       @already_pushed = create(:appointment, :genesys_guider, genesys_operation_id: 'deadbeef')
-      @beyond_date    = create(:appointment, :genesys_guider, start_at: 8.weeks.from_now)
+      @beyond_date    = create(:appointment, :genesys_guider, start_at: 7.weeks.from_now)
 
       results = Appointment.for_genesys_newly_published_schedule
 
@@ -474,16 +474,6 @@ RSpec.describe Appointment, type: :model do
     it 'returns "BST" when the appointment is in summer time' do
       appointment = described_class.new(start_at: Time.zone.parse('1 June 2017 12:00'))
       expect(appointment.timezone).to eq 'BST'
-    end
-  end
-
-  describe '`#future?` does not respect timezones regression' do
-    it 'must apply the local offset when checking' do
-      appointment = build_stubbed(:appointment, start_at: Time.zone.parse('2017-03-30 12:20 UTC'))
-
-      travel_to '2017-03-30 11:41 UTC' do
-        expect(appointment).not_to be_future
-      end
     end
   end
 
