@@ -11,8 +11,8 @@ module Pages
     element :due_diligence, '.t-due-diligence'
     element :any, '.t-any'
 
-    element :search,     '.t-search'
-    element :rebook,     '.t-rebook'
+    element :search, '.t-search'
+    element :rebook, '.t-rebook'
 
     sections :results, '.t-result' do
       element :id, '.t-id'
