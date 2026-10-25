@@ -471,10 +471,12 @@ RSpec.describe BookableSlot, type: :model do
       it 'returns bookable slots' do
         expect(result).to eq(
           [
-            guiders: 3,
+            {
+              guiders: 3,
             start: make_time(10, 30),
             end: make_time(11, 30),
             selected: false
+            }
           ]
         )
       end
@@ -489,10 +491,12 @@ RSpec.describe BookableSlot, type: :model do
 
         expect(result).to eq(
           [
-            guiders: 3,
+            {
+              guiders: 3,
             start: make_time(10, 30),
             end: make_time(11, 30),
             selected: false
+            }
           ]
         )
       end
@@ -540,10 +544,12 @@ RSpec.describe BookableSlot, type: :model do
 
           expect(result).to eq(
             [
-              guiders: 2,
+              {
+                guiders: 2,
               start: make_time(10, 30),
               end: make_time(11, 30),
               selected: false
+              }
             ]
           )
         end
@@ -570,10 +576,12 @@ RSpec.describe BookableSlot, type: :model do
 
           expect(result).to eq(
             [
-              guiders: 3,
+              {
+                guiders: 3,
               start: make_time(10, 30),
               end: make_time(11, 30),
               selected: false
+              }
             ]
           )
         end
@@ -601,10 +609,12 @@ RSpec.describe BookableSlot, type: :model do
           )
 
           expect(result).to eq [
-            guiders: 3,
+            {
+              guiders: 3,
             start: make_time(10, 30),
             end: make_time(11, 30),
             selected: false
+            }
           ]
         end
       end
@@ -621,10 +631,12 @@ RSpec.describe BookableSlot, type: :model do
 
           expect(result).to eq(
             [
-              guiders: 2,
+              {
+                guiders: 2,
               start: make_time(10, 30),
               end: make_time(11, 30),
               selected: false
+              }
             ]
           )
         end

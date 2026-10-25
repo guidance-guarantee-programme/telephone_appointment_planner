@@ -772,7 +772,7 @@ class Appointment < ApplicationRecord
   end
 
   def email_valid
-    unless /.+@.+\..+/ === email.to_s # rubocop:disable Style/CaseEquality, Style/GuardClause
+    unless /.+@.+\..+/ === email.to_s # rubocop:disable Style/GuardClause
       errors.add(
         :email,
         'must be valid'
