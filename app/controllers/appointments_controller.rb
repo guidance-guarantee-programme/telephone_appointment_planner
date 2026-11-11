@@ -81,7 +81,8 @@ class AppointmentsController < ApplicationController
       via_slot: calendar_scheduling?,
       agent: current_user,
       scoped: !@appointment.internal_availability?,
-      rebooking: rebooking?
+      rebooking: rebooking?,
+      same_day: same_day_scheduling?
     )
 
     if @appointment.valid?
@@ -97,7 +98,8 @@ class AppointmentsController < ApplicationController
       via_slot: calendar_scheduling?,
       agent: current_user,
       scoped: !@appointment.internal_availability?,
-      rebooking: rebooking?
+      rebooking: rebooking?,
+      same_day: same_day_scheduling?
     )
     @appointment.copy_attachments!
 
@@ -128,6 +130,7 @@ class AppointmentsController < ApplicationController
   private
 
   def send_notifications(appointment)
+    PusherAppointmentChangedJob.perform_later(appointment.guider_id, appointment) if appointment.start_at.today?
     SmsAppointmentConfirmationJob.perform_later(appointment) if appointment.mobile?
     AdjustmentNotificationsJob.perform_later(appointment) if appointment.adjustments?
     AppointmentMailer.potential_duplicates(appointment).deliver_later if appointment.potential_duplicates?
@@ -146,6 +149,11 @@ class AppointmentsController < ApplicationController
     ActiveRecord::Type::Boolean.new.deserialize(params.fetch(:scheduled, true))
   end
   helper_method :calendar_scheduling?
+
+  def same_day_scheduling?
+    params[:scheduled] == 'same_day'
+  end
+  helper_method :same_day_scheduling?
 
   def schedule_type
     @schedule_type = params.fetch(:schedule_type) { User::PENSION_WISE_SCHEDULE_TYPE }
@@ -273,15 +281,17 @@ class AppointmentsController < ApplicationController
     if calendar_scheduling?
       params[:appointment][:start_at]
     else
-      ad_hoc_start_at = params[:appointment][:ad_hoc_start_at]
-      ad_hoc_start_at.presence || params[:appointment][:start_at]
+      ad_hoc_start_at   = params[:appointment][:ad_hoc_start_at]
+      same_day_start_at = params[:appointment][:same_day_start_at]
+
+      ad_hoc_start_at || same_day_start_at || params[:appointment][:start_at]
     end
   end
 
   def create_params
     params
       .require(:appointment)
-      .permit(updateable_params.concat(%i[ad_hoc_start_at guider_id end_at rebooked_from_id]))
+      .permit(updateable_params.concat(%i[same_day_start_at ad_hoc_start_at guider_id end_at rebooked_from_id]))
       .merge(start_at: munge_start_at)
   end
 

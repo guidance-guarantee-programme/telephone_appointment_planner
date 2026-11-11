@@ -17,6 +17,17 @@ RSpec.feature 'Agent manages appointments' do
 
   let(:day) { BusinessDays.from_now(5) }
 
+  scenario 'Agent places a same-day appointment' do
+    given_the_user_is_a_resource_manager do
+      travel_to '2026-11-11 11:11' do
+        and_there_is_a_same_day_guider_with_available_slots_today
+        when_they_attempt_to_book_a_same_day_appointment
+        then_the_same_day_appointment_is_booked
+        and_the_guider_is_push_notified
+      end
+    end
+  end
+
   scenario 'Non Cardiff and Vale cannot place Welsh bookings' do
     given_the_user_is_a_resource_manager(organisation: :waltham_forest) do
       when_they_try_to_book_an_appointment
@@ -106,6 +117,46 @@ RSpec.feature 'Agent manages appointments' do
         then_they_see_only_general_availability
       end
     end
+  end
+
+  def and_there_is_a_same_day_guider_with_available_slots_today
+    @slot = create(:bookable_slot, :same_day, start_at: Time.zone.parse('2026-11-11 13:00'))
+  end
+
+  def when_they_attempt_to_book_a_same_day_appointment
+    @page = Pages::NewAppointment.new.tap(&:load)
+    expect(@page).to be_displayed
+
+    @page.date_of_birth_day.set '23'
+    @page.date_of_birth_month.set '10'
+    @page.date_of_birth_year.set '1950'
+    @page.first_name.set 'Some'
+    @page.last_name.set 'Person'
+    @page.email.set 'email@example.org'
+    @page.phone.set '0208 252 4729'
+    @page.memorable_word.set 'lozenge'
+    @page.gdpr_consent_yes.set true
+    @page.availability_calendar_same_day.set true
+    @page.same_day_start_at.select '13:00'
+    @page.type_of_appointment_standard.set true
+    @page.where_you_heard.select 'Other'
+
+    @page.preview_appointment.click
+
+    @page = Pages::PreviewAppointment.new
+    expect(@page).to be_displayed
+    @page.confirm_appointment.click
+  end
+
+  def then_the_same_day_appointment_is_booked
+    @appointment = Appointment.first
+
+    expect(@appointment.start_at).to eq(@slot.start_at)
+    expect(@appointment.guider_id).to eq(@slot.guider_id)
+  end
+
+  def and_the_guider_is_push_notified
+    expect(PusherAppointmentChangedJob).to have_received(:perform_later)
   end
 
   def when_they_try_to_book_an_appointment

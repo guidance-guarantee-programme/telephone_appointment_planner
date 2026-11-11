@@ -72,6 +72,25 @@ class BookableSlot < ApplicationRecord
     without_appointments(from, to).without_holidays
   end
 
+  def self.find_available_same_day_slot(start_at)
+    available_same_day
+      .where(start_at: start_at)
+      .limit(1)
+      .first
+  end
+
+  def self.available_same_day
+    from = Time.zone.now
+    to   = Time.zone.now.end_of_day
+
+    scope = bookable(from, to).within_date_range(from, to)
+    scope = for_schedule_type(schedule_type: User::PENSION_WISE_SCHEDULE_TYPE, scope:)
+    scope
+      .distinct(:start_at)
+      .joins(:guider).where(users: { same_day: true })
+      .order(:start_at)
+  end
+
   def self.grouped(organisation_id = nil, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE, day = nil) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     from, to = date_range(day)
     limit_by_organisation = schedule_type == User::PENSION_WISE_SCHEDULE_TYPE
