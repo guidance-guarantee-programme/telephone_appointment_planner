@@ -1,5 +1,5 @@
 <div class="col-md-12" data-module="radio-toggle">
-  <% if current_user.resource_manager? %>
+  <% if current_user.tpas_agent? %>
     <div class="radio">
       <%= label_tag :scheduled_true do %>
         <%= radio_button_tag :scheduled, 'true', calendar_scheduling?, class: 't-availability-calendar-on', data: { target: 'availability-calendar-on' } %>
@@ -12,6 +12,14 @@
         <strong>Choose from ad-hoc availability</strong>
       <% end %>
     </div>
+    <% if @appointment.pension_wise? %>
+    <div class="radio">
+      <%= label_tag :scheduled_same_day do %>
+        <%= radio_button_tag :scheduled, 'same_day', same_day_scheduling?, class: 't-availability-calendar-same-day', data: { target: 'availability-calendar-same-day' } %>
+        <strong>Choose from same-day availability</strong>
+      <% end %>
+    </div>
+    <% end %>
     <div class="col-md-4" id="availability-calendar-off">
       <div class="form-group">
         <%= form.text_field(
@@ -35,6 +43,17 @@
     </div>
     <div id="availability-calendar-on">
       <%= render 'availability_calendar', form: form, rescheduling: rescheduling, schedule_type: @appointment.schedule_type %>
+    </div>
+    <div class="col-md-4" id="availability-calendar-same-day">
+      <div class="form-group">
+        <%= form.select(
+            :same_day_start_at,
+            options_for_select(available_same_day_slot_options, @appointment.same_day_start_at),
+            { label: 'Slot', include_blank: true },
+            class: 't-same-day-start-at'
+          )
+        %>
+      </div>
     </div>
   <% else %>
     <%= hidden_field_tag :scheduled, true %>

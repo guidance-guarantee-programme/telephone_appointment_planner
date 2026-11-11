@@ -191,6 +191,7 @@ RSpec.feature 'Booking due diligence appointments', js: true do
   end
 
   def then_they_see_only_due_diligence_availability
+    expect(@page).to have_no_availability_calendar_same_day
     @page.wait_until_calendar_events_visible
 
     # they're deduplicated properly given one is PW and one is DD
