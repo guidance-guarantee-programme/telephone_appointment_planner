@@ -12,7 +12,7 @@
         <strong>Choose from ad-hoc availability</strong>
       <% end %>
     </div>
-    <% if @appointment.pension_wise? %>
+    <% if @appointment.pension_wise? && !rescheduling %>
     <div class="radio">
       <%= label_tag :scheduled_same_day do %>
         <%= radio_button_tag :scheduled, 'same_day', same_day_scheduling?, class: 't-availability-calendar-same-day', data: { target: 'availability-calendar-same-day' } %>
