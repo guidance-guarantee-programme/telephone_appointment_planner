@@ -91,12 +91,17 @@ class BookableSlot < ApplicationRecord
       .order(:start_at)
   end
 
+  def self.without_same_day_guiders
+    joins(:guider).where.not(users: { same_day: true })
+  end
+
   def self.grouped(organisation_id = nil, schedule_type = User::PENSION_WISE_SCHEDULE_TYPE, day = nil) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     from, to = date_range(day)
     limit_by_organisation = schedule_type == User::PENSION_WISE_SCHEDULE_TYPE
 
     scope = bookable(from, to).within_date_range(from, to, organisation_limit: limit_by_organisation)
     scope = scope.joins(:guider).where(users: { organisation_content_id: organisation_id }) if organisation_id
+    scope = scope.without_same_day_guiders
     scope = for_schedule_type(schedule_type:, scope:)
     scope = scope.select("#{quoted_table_name}.start_at::date as start_date")
     scope = scope.select("json_agg(distinct(#{quoted_table_name}.start_at))") if day
@@ -205,6 +210,7 @@ class BookableSlot < ApplicationRecord
       .starting_after_next_valid_start_date(agent, schedule_type:, external:)
       .for_schedule_type(schedule_type:)
       .for_organisation(user, lloyds:, scoped:, internal:, external:)
+      .without_same_day_guiders
       .group("#{quoted_table_name}.start_at, #{quoted_table_name}.end_at")
       .within_date_range(from, to, organisation_limit: limit_by_organisation)
       .map do |us|
