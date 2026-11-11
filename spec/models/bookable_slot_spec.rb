@@ -409,9 +409,11 @@ RSpec.describe BookableSlot, type: :model do
         @tpas_resource_manager = create(:resource_manager, :tpas)
         @tpas_guider = create(:guider, :tpas)
         @cas_guider  = create(:guider, :cas)
+        @same_day_guider = create(:same_day_guider)
 
         create(:bookable_slot, guider: @cas_guider, start_at: Time.zone.parse('2022-09-09 10:30am'))
         create(:bookable_slot, guider: @tpas_guider, start_at: Time.zone.parse('2022-09-09 10:30am'))
+        create(:bookable_slot, guider: @same_day_guider, start_at: Time.zone.parse('2022-09-09 10:30am'))
 
         travel_to '2022-09-06 07:00' do
           # when contextually rescheduling

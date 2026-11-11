@@ -1,4 +1,10 @@
 module AppointmentHelper
+  def available_same_day_slot_options
+    BookableSlot.available_same_day.map do |bookable_slot|
+      [bookable_slot.start_at.to_fs(:time), bookable_slot.start_at.iso8601]
+    end
+  end
+
   def summary_prompt_data(appointment)
     return {} unless appointment.summarised?
 

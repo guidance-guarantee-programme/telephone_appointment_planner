@@ -125,6 +125,9 @@ RSpec.describe 'GET /api/v1/bookable_slots' do
 
     # extended due diligence slot
     create(:bookable_slot, :due_diligence, start_at: Time.zone.parse('2017-03-12 14:00'))
+
+    # same-day guider slot that will never be visible
+    create(:bookable_slot, :same_day, start_at: 3.days.from_now.advance(hours: 1))
   end
 
   def when_the_client_requests_bookable_slots
