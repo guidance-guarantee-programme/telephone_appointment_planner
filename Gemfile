@@ -49,7 +49,7 @@ gem 'sidekiq'
 gem 'sinatra', require: false
 gem 'sortable-rails'
 gem 'sprockets-es6'
-gem 'uglifier', '>= 1.3.0'
+gem 'terser'
 gem 'working_hours'
 
 group :development, :test do
