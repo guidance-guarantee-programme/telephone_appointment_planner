@@ -26,6 +26,10 @@ FactoryBot.define do
       schedule_type { User::DUE_DILIGENCE_SCHEDULE_TYPE }
     end
 
+    factory :same_day_guider, parent: :guider do
+      same_day { true }
+    end
+
     factory :business_analyst, traits: [:tpas] do
       permissions { [User::BUSINESS_ANALYST_PERMISSION, User::RESOURCE_MANAGER_PERMISSION] }
     end

@@ -2,6 +2,14 @@ require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
 RSpec.feature 'Resource manager manages guiders' do
+  scenario 'Viewing same-day guiders' do
+    given_the_user_is_a_resource_manager do
+      and_there_is_a_same_day_guider
+      when_they_visit_the_guiders_page
+      then_they_see_the_same_day_guider_designation
+    end
+  end
+
   scenario 'Viewing suspended guiders' do
     given_the_user_is_a_resource_manager do
       and_there_is_a_guider_suspended_recently
@@ -77,6 +85,15 @@ RSpec.feature 'Resource manager manages guiders' do
       and_they_attempt_to_delete_the_group
       then_the_group_and_assignments_are_not_deleted
     end
+  end
+
+  def and_there_is_a_same_day_guider
+    @guider = create(:same_day_guider)
+  end
+
+  def then_they_see_the_same_day_guider_designation
+    expect(@page).to have_guiders(count: 1)
+    expect(@page.guiders.first).to have_text('(Same-day)')
   end
 
   def and_there_is_a_guider_suspended_recently
