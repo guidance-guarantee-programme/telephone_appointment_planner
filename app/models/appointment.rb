@@ -711,8 +711,6 @@ class Appointment < ApplicationRecord
   end
 
   def allocate_slot(agent, scoped, rebooking, same_day) # rubocop:disable Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/AbcSize
-    slot = nil
-
     if same_day
       slot = BookableSlot.find_available_same_day_slot(same_day_start_at)
     else
