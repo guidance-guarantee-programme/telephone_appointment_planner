@@ -21,13 +21,7 @@
 <% end %>
 
 <% content_for :content do %>
-  <% unless current_user.tpas? %>
-    <p class="alert alert-warning">
-      <strong>Reminder:</strong> Existing Pension Wise Sign On accounts will be
-      disabled on 31 March 2026 (5pm). Please complete all outstanding actions on
-      TAP, Planner and Summary Document Generator.
-    </p>
-  <% end %>
+  <p class="alert alert-warning"><strong>Notice:</strong> Emails to Microsoft-hosted email accounts will be experiencing delayed delivery due to an ongoing service outage.</p>
 
   <%= yield %>
 <% end %>
