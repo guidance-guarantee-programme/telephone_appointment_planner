@@ -5,7 +5,7 @@ class Appointment < ApplicationRecord
 
   acts_as_copy_target
 
-  attr_accessor :current_user, :internal_availability, :ad_hoc_start_at
+  attr_accessor :current_user, :internal_availability, :ad_hoc_start_at, :same_day_start_at
 
   MOBILE_PREFIXES = %w[+44 0044 44 0].freeze
   MOBILE_REGEX = /^(07|\+447|00447)/
@@ -385,9 +385,9 @@ class Appointment < ApplicationRecord
     status.start_with?('cancelled')
   end
 
-  def allocate(via_slot: true, agent: nil, scoped: false, rebooking: false)
+  def allocate(via_slot: true, agent: nil, scoped: false, rebooking: false, same_day: false)
     if via_slot
-      allocate_slot(agent, scoped, rebooking)
+      allocate_slot(agent, scoped, rebooking, same_day)
     else
       return unless start_at?
 
@@ -710,17 +710,22 @@ class Appointment < ApplicationRecord
     self.unique_reference_number = '' if status_changed?(from: 'complete') && due_diligence?
   end
 
-  def allocate_slot(agent, scoped, rebooking) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
-    args = agent&.tpas_agent? && pension_wise? && scoped ? { external: true } : {}
-    args = { external: scoped, rebooking: true } if agent&.non_tpas_resource_manager? && pension_wise? && rebooking
+  def allocate_slot(agent, scoped, rebooking, same_day) # rubocop:disable Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/AbcSize
+    if same_day
+      slot = BookableSlot.find_available_same_day_slot(same_day_start_at)
+    else
+      args = agent&.tpas_agent? && pension_wise? && scoped ? { external: true } : {}
+      args = { external: scoped, rebooking: true } if agent&.non_tpas_resource_manager? && pension_wise? && rebooking
 
-    slot = BookableSlot.find_available_slot(start_at, agent, schedule_type, scoped:, **args)
+      slot = BookableSlot.find_available_slot(start_at, agent, schedule_type, scoped:, **args)
+    end
 
     self.guider = nil
     return unless slot
 
-    self.end_at = slot.end_at
-    self.guider = slot.guider
+    self.start_at  = slot.start_at
+    self.end_at    = slot.end_at
+    self.guider    = slot.guider
   end
 
   def format_name
