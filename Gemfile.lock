@@ -702,7 +702,7 @@ DEPENDENCIES
   working_hours
 
 RUBY VERSION
-  ruby 4.0.2p0
+  ruby 4.0.10
 
 BUNDLED WITH
   4.0.10
