@@ -285,6 +285,10 @@ class Appointment < ApplicationRecord
     PrintedConfirmationJob.perform_later(self)
   end
 
+  def survey_consent?
+    gdpr_consent == 'yes'
+  end
+
   def guider_organisation_differs?
     return unless guider && previous_guider
 
