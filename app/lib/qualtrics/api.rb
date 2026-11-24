@@ -7,7 +7,22 @@ module Qualtrics
       )
     end
 
+    def appointment_completed(json_payload, pension_wise: true)
+      connection.post(
+        trigger_path(pension_wise:),
+        json_payload
+      )
+    end
+
     private
+
+    def trigger_path(pension_wise:)
+      if pension_wise
+        'triggers?urlTokenId=2f76f7a3-f44b-4083-91bf-2ed8860f05e8'
+      else
+        'triggers?urlTokenId=6465ca89-5f31-4cde-9589-12e2216c4f78'
+      end
+    end
 
     def connection
       @connection ||= Faraday.new(connection_options) do |faraday|
