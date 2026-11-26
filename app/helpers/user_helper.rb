@@ -5,6 +5,12 @@ module UserHelper
     content_tag(:small, ' (PSG)')
   end
 
+  def same_day_banner(guider)
+    return unless guider.same_day?
+
+    content_tag(:small, ' (Same-day)')
+  end
+
   def can_switch_availability?(current_user, appointment, rebooking, rescheduling)
     return false unless appointment.pension_wise?
     return true if current_user.tpas_agent? && !rescheduling

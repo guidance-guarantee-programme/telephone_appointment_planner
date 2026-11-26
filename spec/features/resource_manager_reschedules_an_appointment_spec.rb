@@ -73,6 +73,7 @@ RSpec.feature 'Resource manager reschedules an appointment', js: true do
   end
 
   def then_the_rescheduling_options_are_presented_correctly
+    expect(@page).to have_no_availability_calendar_same_day
     expect(@page.client_rescheduled).not_to be_selected
     expect(@page.pension_wise_rescheduled).not_to be_selected
   end

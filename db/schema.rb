@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_07_121711) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_11_110743) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
   enable_extension "pg_catalog.plpgsql"
@@ -300,6 +300,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_07_121711) do
     t.string "schedule_type", default: "pension_wise", null: false
     t.string "uid"
     t.datetime "updated_at", precision: nil, null: false
+    t.boolean "same_day", default: false, null: false
     t.index ["organisation_content_id"], name: "index_users_on_organisation_content_id"
     t.index ["permissions"], name: "index_users_on_permissions", using: :gin
     t.index ["schedule_type"], name: "index_users_on_schedule_type"
