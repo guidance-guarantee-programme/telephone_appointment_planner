@@ -8,7 +8,8 @@ RSpec.describe 'POST /api/v1/appointments' do
       SmsAppointmentConfirmationJob,
       AdjustmentNotificationsJob,
       AppointmentCreatedNotificationsJob,
-      PushGenesysAppointmentJob
+      PushGenesysAppointmentJob,
+      QualtricsAppointmentBookedJob
     ].each do |job|
       allow(job).to receive(:perform_later)
     end
@@ -77,6 +78,7 @@ RSpec.describe 'POST /api/v1/appointments' do
         and_the_resource_manager_receives_an_accessibility_notification
         and_the_resource_manager_receives_a_new_appointment_notification
         and_a_genesys_push_is_enqueued
+        and_the_appointment_is_pushed_to_qualtrics
       end
     end
   end
@@ -389,6 +391,10 @@ RSpec.describe 'POST /api/v1/appointments' do
 
   def and_a_genesys_push_is_enqueued
     expect(PushGenesysAppointmentJob).to have_received(:perform_later)
+  end
+
+  def and_the_appointment_is_pushed_to_qualtrics
+    expect(QualtricsAppointmentBookedJob).to have_received(:perform_later)
   end
 end
 # rubocop:enable Metrics/BlockLength

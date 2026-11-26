@@ -59,7 +59,7 @@ class Notifier # rubocop:disable Metrics/ClassLength
     Array(appointment.previous_changes.fetch('guider_id', appointment.guider_id))
   end
 
-  def notify_customer # rubocop:disable Metrics/AbcSize
+  def notify_customer # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
     if appointment_cancelled?
       CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::CANCELLED_MESSAGE)
     elsif appointment_missed?
@@ -68,6 +68,7 @@ class Notifier # rubocop:disable Metrics/ClassLength
       CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::UPDATED_MESSAGE)
     end
 
+    QualtricsAppointmentCompletedJob.perform_later(appointment) if appointment_complete?
     DueDiligenceReferenceNumberJob.perform_now(appointment) if due_diligence_appointment_complete?
     PrintedConfirmationJob.perform_later(appointment) if appointment_rescheduled?
   end

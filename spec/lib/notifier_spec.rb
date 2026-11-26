@@ -125,27 +125,37 @@ RSpec.describe Notifier, '#call' do
   end
 
   context 'when any appointment is completed' do
-    it 'enqueues the summary document check to run in 24 hours' do
-      scheduler = double(perform_later: true)
+    let(:scheduler) { double(perform_later: true) }
+
+    before do
       appointment.update(status: :complete)
 
+      allow(QualtricsAppointmentCompletedJob).to receive(:perform_later).with(appointment)
+      allow(SummaryDocumentCheckJob).to receive(:set).with(wait: 24.hours).and_return(scheduler)
+      allow(scheduler).to receive(:perform_later).with(appointment)
+    end
+
+    it 'enqueues the summary document check to run in 24 hours' do
       expect(SummaryDocumentCheckJob).to receive(:set).with(wait: 24.hours).and_return(scheduler)
       expect(scheduler).to receive(:perform_later).with(appointment)
 
       subject.call
     end
-  end
 
-  context 'when a DD appointment is completed' do
-    it 'executes the DD reference number generation job synchronously' do
-      scheduler = double(perform_later: true)
-      appointment.update(schedule_type: 'due_diligence', status: :complete)
-
-      expect(DueDiligenceReferenceNumberJob).to receive(:perform_now).with(appointment)
-      expect(SummaryDocumentCheckJob).to receive(:set).with(wait: 24.hours).and_return(scheduler)
-      expect(scheduler).to receive(:perform_later).with(appointment)
+    it 'enqueues the Qualtrics completed job' do
+      expect(QualtricsAppointmentCompletedJob).to receive(:perform_later).with(appointment)
 
       subject.call
+    end
+
+    context 'when a DD appointment is completed' do
+      it 'executes the DD reference number generation job synchronously' do
+        appointment.schedule_type = 'due_diligence'
+
+        expect(DueDiligenceReferenceNumberJob).to receive(:perform_now).with(appointment)
+
+        subject.call
+      end
     end
   end
 

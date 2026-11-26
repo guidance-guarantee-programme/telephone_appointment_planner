@@ -80,6 +80,16 @@ RSpec.describe Appointment, type: :model do
     end
   end
 
+  describe '#survey_consent?' do
+    it 'is true when GDPR consent is yet' do
+      appointment = build(:appointment)
+      expect(appointment).to be_survey_consent
+
+      appointment.gdpr_consent = ''
+      expect(appointment).not_to be_survey_consent
+    end
+  end
+
   describe '#summarised?' do
     context 'when it has an summary activity' do
       it 'is true' do

@@ -35,6 +35,7 @@ module Api
         CustomerUpdateJob.perform_later(appointment, CustomerUpdateActivity::CONFIRMED_MESSAGE)
         AppointmentCreatedNotificationsJob.perform_later(appointment)
         PushGenesysAppointmentJob.perform_later(appointment)
+        QualtricsAppointmentBookedJob.perform_later(appointment)
       end
 
       def show_params
